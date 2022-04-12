@@ -24,11 +24,11 @@ interface TalSelectedTechInterface
 
     public function getResearchState();
 
-    public function getExcludes(): array;
+    public function getDistinctExcludeNames(): array;
 
     public function hasExcludes(): bool;
 
-    public function getPositiveDependencies(): array;
+    public function getDistinctPositiveDependencyNames(): array;
 
     public function hasPositiveDependencies(): bool;
 

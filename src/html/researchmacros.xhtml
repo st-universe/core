@@ -73,10 +73,10 @@
 				</tr>
 				<tr>
 					<td>
-						<div style="float: left; width: 200px;" tal:repeat="data SELECTED_RESEARCH/getExcludes">
+						<div style="float: left; width: 200px;"
+							tal:repeat="data SELECTED_RESEARCH/getDistinctExcludeNames">
 							<div class="divbody" style="text-align: center;">
-								<span tal:content="data/getResearchDependOn/getName"
-									style="font-weight: bold;">NAME</span>
+								<span tal:content="data" style="font-weight: bold;">NAME</span>
 							</div>
 						</div>
 					</td>
@@ -92,9 +92,9 @@
 				<tr>
 					<td>
 						<div style="float: left; width: 200px;"
-							tal:repeat="data SELECTED_RESEARCH/getPositiveDependencies">
+							tal:repeat="data SELECTED_RESEARCH/getDistinctPositiveDependencyNames">
 							<div class="divbody" style="text-align: center;">
-								<span tal:content="data/getName" style="font-weight: bold;">NAME</span>
+								<span tal:content="data" style="font-weight: bold;">NAME</span>
 							</div>
 						</div>
 					</td>

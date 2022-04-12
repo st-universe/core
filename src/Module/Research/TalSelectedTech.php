@@ -8,6 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\ResearchDependencyInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
@@ -102,32 +103,52 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->state;
     }
 
-    public function getExcludes(): array
+    public function getDistinctExcludeNames(): array
     {
         if ($this->excludes === null) {
-            $this->excludes = $this->researchDependencyRepository->getExcludesByResearch($this->research->getId());
+            $result = [];
+
+            array_walk(
+                $this->researchDependencyRepository->getExcludesByResearch($this->research->getId()),
+                function (ResearchDependencyInterface $dependecy) use ($result): void {
+                    $name = $dependecy->getResearchDependOn()->getName();
+                    $result[$name] = $name;
+                }
+            );
+
+            $this->excludes = $result;
         }
         return $this->excludes;
     }
 
     public function hasExcludes(): bool
     {
-        return count($this->getExcludes()) > 0;
+        return count($this->getDistinctExcludeNames()) > 0;
     }
 
-    public function getPositiveDependencies(): array
+    public function getDistinctPositiveDependencyNames(): array
     {
         if ($this->dependencies === null) {
-            $this->dependencies = $this->researchRepository->getPossibleResearchByParent(
-                $this->research->getId()
+            $result = [];
+
+            array_walk(
+                $this->researchRepository->getPossibleResearchByParent(
+                    $this->research->getId()
+                ),
+                function (ResearchInterface $research) use ($result): void {
+                    $name = $research->getName();
+                    $result[$name] = $name;
+                }
             );
+
+            $this->dependencies = $result;
         }
         return $this->dependencies;
     }
 
     public function hasPositiveDependencies(): bool
     {
-        return count($this->getPositiveDependencies()) > 0;
+        return count($this->getDistinctPositiveDependencyNames()) > 0;
     }
 
     public function getDonePoints(): int
