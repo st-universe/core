@@ -8,9 +8,13 @@ interface UserLockInterface
 
     public function getUserId(): int;
 
+    public function setUserId(?int $userId): UserLockInterface;
+
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): UserLockInterface;
+
+    public function setFormerUserId(?int $userId): UserLockInterface;
 
     public function getRemainingTicks(): int;
 

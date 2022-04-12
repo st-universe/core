@@ -19,8 +19,11 @@ class UserLock implements UserLockInterface
      */
     private $id;
 
-    /** @Column(type="integer") */
-    private $user_id = 0;
+    /** @Column(type="integer", nullable=true) */
+    private $user_id;
+
+    /** @Column(type="integer", nullable=true) */
+    private $former_user_id;
 
     /** @Column(type="integer") */
     private $remaining_ticks = 0;
@@ -39,6 +42,12 @@ class UserLock implements UserLockInterface
         return $this->id;
     }
 
+    public function setUserId(?int $userId): UserLockInterface
+    {
+        $this->user_id = $userId;
+        return $this;
+    }
+
     public function getUserId(): int
     {
         return $this->user_id;
@@ -52,6 +61,12 @@ class UserLock implements UserLockInterface
     public function setUser(UserInterface $user): UserLockInterface
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function setFormerUserId(?int $userId): UserLockInterface
+    {
+        $this->former_user_id = $userId;
         return $this;
     }
 
