@@ -14,7 +14,5 @@ interface UserLockRepositoryInterface extends ObjectRepository
 
     public function save(UserLockInterface $researched): void;
 
-    public function delete(UserLockInterface $researched): void;
-
     public function prototype(): UserLockInterface;
 }

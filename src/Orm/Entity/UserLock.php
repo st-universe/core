@@ -58,7 +58,7 @@ class UserLock implements UserLockInterface
         return $this->user;
     }
 
-    public function setUser(UserInterface $user): UserLockInterface
+    public function setUser(?UserInterface $user): UserLockInterface
     {
         $this->user = $user;
         return $this;

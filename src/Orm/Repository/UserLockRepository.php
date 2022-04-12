@@ -12,9 +12,17 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
 {
     public function getByUser(int $userId): ?UserLockInterface
     {
-        return $this->findOneBy([
-            'user_id' => $userId,
-        ]);
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ul FROM %s ul WHERE ul.user_id = :userId
+                ORDER BY ul.id DESC',
+                UserLock::class
+            )
+        )->setParameters([
+            'userId' => $userId
+        ])
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
     }
 
     public function save(UserLockInterface $award): void
@@ -22,14 +30,6 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
         $em = $this->getEntityManager();
 
         $em->persist($award);
-    }
-
-    public function delete(UserLockInterface $award): void
-    {
-        $em = $this->getEntityManager();
-
-        $em->remove($award);
-        $em->flush();
     }
 
     public function prototype(): UserLockInterface
