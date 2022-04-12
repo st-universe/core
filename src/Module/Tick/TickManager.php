@@ -72,6 +72,7 @@ final class TickManager implements TickManagerInterface
                 $lock->setUser(null);
                 $lock->setUserId(null);
                 $lock->setFormerUserId($userId);
+                $lock->setRemainingTicks(0);
             } else {
                 $lock->setRemainingTicks($remainingTicks - 1);
             }
