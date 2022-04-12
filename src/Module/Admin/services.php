@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin;
 
 use Stu\Module\Admin\Action\ClearFaultyBBCodes;
+use Stu\Module\Admin\Action\LockUser;
 use Stu\Module\Admin\Action\Map\CreateInfluenceAreas\CreateInfluenceAreas;
 use Stu\Module\Admin\Action\Map\EditField\EditField;
 use Stu\Module\Admin\Action\Map\EditField\EditFieldRequest;
@@ -61,7 +62,8 @@ return [
         DoManualProcessTick2::ACTION_IDENTIFIER => autowire(DoManualProcessTick2::class),
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),
         ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
-        SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class)
+        SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class),
+        LockUser::ACTION_IDENTIFIER => autowire(LockUser::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
