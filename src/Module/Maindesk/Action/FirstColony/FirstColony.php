@@ -69,7 +69,7 @@ final class FirstColony implements ActionControllerInterface
             $this->buildingRepository->find($user->getFaction()->getStartBuildingId())
         );
 
-        $user->setActive(PlayerEnum::USER_COLONIZED);
+        $user->setActive(PlayerEnum::USER_ACTIVE);
 
         $this->userRepository->save($user);
 

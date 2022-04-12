@@ -30,7 +30,16 @@
                 <img title="Zuletzt online" src="/assets/buttons/time.png" /> <span
                   tal:content="datetime:data/getLastAction">DATE</span>
               </div>
-              <div>STATE: ${data/getUserStateDescription}</div>
+              <div>STATE: <span style="color: ${user/getUserStateColor};">${user/getUserStateDescription}</span> <a
+                  tal:condition="not:user/isUserLocked" href="/admin/?SET_USER_LOCKED=1&uid=${data/getId}"
+                  onmouseover="cp('lock${data/getId}','buttons/lock2', 'png');"
+                  onmouseout="cp('lock${data/getId}','buttons/lock1', 'png');"><img src="/assets/buttons/lock1.png"
+                    name="lock${data/getId}" title="Spieler sperren" /></a> <a tal:condition="user/isUserLocked"
+                  href="/admin/?SET_USER_ACTIVE=1&uid=${data/getId}"
+                  onmouseover="cp('activate${data/getId}','buttons/active2', 'png');"
+                  onmouseout="cp('activate${data/getId}','buttons/active1', 'png');"><img
+                    src="/assets/buttons/active1.png" name="activate${data/getId}" title="Spieler entsperren" /></a>
+              </div>
               <div>
                 <div tal:repeat="tag user/getTags" tal:content="tag/label" class="userTag userTag${tag/typeId}">LABEL
                 </div>

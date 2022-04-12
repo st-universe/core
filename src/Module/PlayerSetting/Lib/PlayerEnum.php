@@ -6,8 +6,8 @@ final class PlayerEnum
 {
     // user state
     public const USER_NEW = 0;
-    public const USER_ACTIVE = 1;
-    public const USER_COLONIZED = 2;
+    public const USER_UNCOLONIZED = 1;
+    public const USER_ACTIVE = 2;
     public const USER_LOCKED = 4;
 
     //DELMARK
@@ -23,10 +23,10 @@ final class PlayerEnum
         switch ($userState) {
             case self::USER_NEW:
                 return _("NEU");
-            case self::USER_ACTIVE:
+            case self::USER_UNCOLONIZED:
                 return _("OHNE KOLONIEN");
-            case self::USER_COLONIZED:
-                return _("MIT KOLONIEN");
+            case self::USER_ACTIVE:
+                return _("AKTIV");
             case self::USER_LOCKED:
                 return _("GESPERRT");
         }

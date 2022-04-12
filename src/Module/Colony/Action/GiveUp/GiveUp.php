@@ -60,7 +60,7 @@ final class GiveUp implements ActionControllerInterface
         $colonyAmount--;
 
         if ($colonyAmount === 0) {
-            $user->setActive(PlayerEnum::USER_ACTIVE);
+            $user->setActive(PlayerEnum::USER_UNCOLONIZED);
 
             $this->userRepository->save($user);
         }

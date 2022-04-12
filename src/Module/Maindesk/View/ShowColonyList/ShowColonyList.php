@@ -27,7 +27,7 @@ final class ShowColonyList implements ViewControllerInterface
         $user = $game->getUser();
         $active = $user->getActive();
 
-        if ($active !== PlayerEnum::USER_ACTIVE) {
+        if ($active !== PlayerEnum::USER_UNCOLONIZED) {
             throw new AccessViolation(sprintf(_('User is not active, but tried to enter colony list. Fool: %d, Active: %d', $user->getId(), $active)));
         }
         $game->setTemplateFile("html/maindesk_colonylist.xhtml");

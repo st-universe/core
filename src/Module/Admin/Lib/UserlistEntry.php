@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Lib;
 
 use Stu\Component\Player\PlayerTagTypeEnum;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserTagInterface;
 use Stu\Orm\Repository\UserTagRepositoryInterface;
@@ -26,6 +27,32 @@ final class UserlistEntry
     public function getUser(): UserInterface
     {
         return $this->user;
+    }
+
+    public function getUserStateDescription(): string
+    {
+        return PlayerEnum::getUserStateDescription($this->user->getActive());
+    }
+
+    public function getUserStateColor(): string
+    {
+        switch ($this->user->getActive()) {
+            case PlayerEnum::USER_ACTIVE:
+                return _("greenyellow");
+            case PlayerEnum::USER_LOCKED:
+                return _("red");
+        }
+        return '#dddddd';
+    }
+
+    public function isUserActive(): bool
+    {
+        return $this->user->getActive() === PlayerEnum::USER_ACTIVE;
+    }
+
+    public function isUserLocked(): bool
+    {
+        return $this->user->getActive() === PlayerEnum::USER_LOCKED;
     }
 
     public function getTags(): iterable

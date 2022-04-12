@@ -120,7 +120,7 @@ final class Session implements SessionInterface
         }
 
         if ($result->getActive() === PlayerEnum::USER_NEW) {
-            $result->setActive(PlayerEnum::USER_ACTIVE);
+            $result->setActive(PlayerEnum::USER_UNCOLONIZED);
 
             $this->userRepository->save($result);
         }
