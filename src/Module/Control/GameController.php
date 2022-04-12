@@ -515,6 +515,15 @@ final class GameController implements GameControllerInterface
             }
 
             if ($this->getUser() !== null) {
+                if ($this->getUser()->getId() === 102) {
+                    $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+                }
+
+                if ($this->getUser()->isLocked()) {
+                    $this->loggerUtil->log('main-102-userIsLocked');
+                    $this->session->logout();
+                    throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde gesperrt'));
+                }
                 $gameState = $this->getGameState();
                 if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
                     throw new TickGameStateException();
