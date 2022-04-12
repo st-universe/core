@@ -34,6 +34,7 @@ use Stu\Module\Admin\Action\Ticks\DoManualMaintenance;
 use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
 use Stu\Module\Admin\Action\Ticks\DoManualProcessTick2;
 use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
+use Stu\Module\Admin\Action\UnlockUser;
 use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\ResearchTree\ShowResearchTree;
@@ -64,7 +65,8 @@ return [
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),
         ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
         SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class),
-        LockUser::ACTION_IDENTIFIER => autowire(LockUser::class)
+        LockUser::ACTION_IDENTIFIER => autowire(LockUser::class),
+        UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
