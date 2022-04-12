@@ -36,24 +36,30 @@ final class LockUser implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init('admin', LoggerEnum::LEVEL_ERROR);
         $game->setView(Playerlist::VIEW_IDENTIFIER);
 
+        $this->loggerUtil->log('A');
         // only Admins can trigger ticks
         if (!$game->getUser()->isAdmin()) {
             $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
+        $this->loggerUtil->log('B');
         $userIdToLock = request::getIntFatal('uid');
 
         $userToLock = $this->userRepository->find($userIdToLock);
 
+        $this->loggerUtil->log('C');
         if ($userToLock === null) {
+            $this->loggerUtil->log('D');
             return;
         }
-
+        $this->loggerUtil->log('E');
         //destroy session
         $this->session->logout($userToLock);
+        $this->loggerUtil->log('F');
 
         $game->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getName(), $userIdToLock);
     }
