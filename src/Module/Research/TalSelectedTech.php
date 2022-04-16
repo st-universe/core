@@ -121,7 +121,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
             array_walk(
                 $excludes,
-                function (ResearchDependencyInterface $dependecy) use ($result): void {
+                function (ResearchDependencyInterface $dependecy) use (&$result): void {
                     $name = $dependecy->getResearchDependOn()->getName();
                     $result[$name] = $name;
                 }
