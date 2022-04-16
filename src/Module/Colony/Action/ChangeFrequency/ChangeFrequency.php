@@ -48,7 +48,7 @@ final class ChangeFrequency implements ActionControllerInterface
             $game->addInformation(_('Unerlaubte Frequenz (Maximum: 6 Zeichen)'));
             return;
         }
-        $colony->setShieldFrequency($frequency);
+        $colony->setShieldFrequency((int)$frequency);
         $this->colonyRepository->save($colony);
 
         $game->addInformation(_('Die Schildfrequenz wurde geändert'));
