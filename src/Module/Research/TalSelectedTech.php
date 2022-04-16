@@ -114,16 +114,19 @@ final class TalSelectedTech implements TalSelectedTechInterface
     {
         if ($this->excludes === null) {
             $result = [];
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
+            $excludes = $this->researchDependencyRepository->getExcludesByResearch($this->research->getId());
+            $this->loggerUtil->log(sprintf('excludesSize: %d', count($excludes)));
 
             array_walk(
-                $this->researchDependencyRepository->getExcludesByResearch($this->research->getId()),
+                $excludes,
                 function (ResearchDependencyInterface $dependecy) use ($result): void {
                     $name = $dependecy->getResearchDependOn()->getName();
                     $result[$name] = $name;
                 }
             );
 
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(print_r($result, true));
 
             $this->excludes = $result;
