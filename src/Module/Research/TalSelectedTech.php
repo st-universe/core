@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Noodlehaus\ConfigInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
@@ -114,20 +113,14 @@ final class TalSelectedTech implements TalSelectedTechInterface
     {
         if ($this->excludes === null) {
             $result = [];
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-
-            $excludes = $this->researchDependencyRepository->getExcludesByResearch($this->research->getId());
-            $this->loggerUtil->log(sprintf('excludesSize: %d', count($excludes)));
 
             array_walk(
-                $excludes,
+                $this->researchDependencyRepository->getExcludesByResearch($this->research->getId()),
                 function (ResearchDependencyInterface $dependecy) use (&$result): void {
                     $name = $dependecy->getResearchDependOn()->getName();
                     $result[$name] = $name;
                 }
             );
-
-            $this->loggerUtil->log(print_r($result, true));
 
             $this->excludes = $result;
         }
@@ -148,7 +141,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
                 $this->researchRepository->getPossibleResearchByParent(
                     $this->research->getId()
                 ),
-                function (ResearchInterface $research) use ($result): void {
+                function (ResearchInterface $research) use (&$result): void {
                     $name = $research->getName();
                     $result[$name] = $name;
                 }
