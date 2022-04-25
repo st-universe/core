@@ -13,6 +13,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
@@ -30,18 +31,22 @@ final class BeamFrom implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private PositionCheckerInterface $positionChecker;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipLoader = $shipLoader;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -61,6 +66,10 @@ final class BeamFrom implements ActionControllerInterface
         }
         $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
+            return;
+        }
+
+        if (!$this->positionChecker->checkColonyPosition($colony, $target)) {
             return;
         }
 
