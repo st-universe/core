@@ -1513,14 +1513,8 @@ class Ship implements ShipInterface
         if ($this->isShuttle()) {
             return false;
         }
-        // @todo refactor
-        global $container;
 
-        $colonyRepository = $container->get(ColonyRepositoryInterface::class);
-
-        $currentColony = $colonyRepository->getByPosition(
-            $this->getStarsystemMap()
-        );
+        $currentColony = $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getColony() : null;
 
         if ($currentColony === null) {
             return false;
@@ -1528,6 +1522,9 @@ class Ship implements ShipInterface
         if ($currentColony->getUser() !== $this->getUser()) {
             return false;
         }
+
+        // @todo refactor
+        global $container;
 
         return $container->get(ColonyLibFactoryInterface::class)
             ->createColonySurface($currentColony)
