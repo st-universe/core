@@ -39,7 +39,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): array
     {
-        $this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
 
         $informations = [];
 
@@ -280,15 +280,15 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $defender = [$leadShip->getId() => $leadShip];
         }
 
-        $this->loggerUtil->log(sprintf('before_shipAttackCycle, attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
+        //$this->loggerUtil->log(sprintf('before_shipAttackCycle, attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
 
         $this->shipAttackCycle->init($attacker, $defender);
         $this->shipAttackCycle->cycle(true);
         $messages = $this->shipAttackCycle->getMessages();
 
         if (empty($messages)) {
-            $this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
-            $this->loggerUtil->log(sprintf('attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
+            //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
+            //$this->loggerUtil->log(sprintf('attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
         }
 
         $pm = sprintf(_('Eigene Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getSectorString());

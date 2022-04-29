@@ -6,5 +6,5 @@ namespace Stu\Component\Game;
 
 final class SemaphoreEnum
 {
-    public const MAIN_SHIP_SEMAPHORE_KEY = 0;
+    public const MAIN_SHIP_SEMAPHORE_KEY = 4342338;
 }
