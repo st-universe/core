@@ -111,17 +111,9 @@ final class ShipLoader implements ShipLoaderInterface
             return null;
         }
 
-        //fleet or ship semas
-        if ($ship->getFleet() !== null) {
-            foreach ($ship->getFleet()->getShips() as $fleetShip) {
-                $fleetShipId = $fleetShip->getId();
-                $semaphore = $this->semaphoreUtil->getSemaphore($fleetShipId);
-                $this->semaphoreUtil->acquireSemaphore($fleetShipId, $semaphore);
-            }
-        } else {
-            $semaphore = $this->semaphoreUtil->getSemaphore($shipId);
-            $this->semaphoreUtil->acquireSemaphore($shipId, $semaphore);
-        }
+        $key = $ship->getUser()->getId();
+        $semaphore = $this->semaphoreUtil->getSemaphore($key, true);
+        $this->semaphoreUtil->acquireSemaphore($key, $semaphore);
 
         return $ship;
     }

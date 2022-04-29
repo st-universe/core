@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Game\SemaphoreEnum;
-use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -26,8 +24,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     private FightLibInterface $fightLib;
 
     private LoggerUtilInterface $loggerUtil;
-
-    private SemaphoreUtilInterface $semaphoreUtil;
 
     /**
      * @return ShipInterface[]
@@ -52,7 +48,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         EnergyWeaponPhaseInterface $energyWeaponPhase,
         ProjectileWeaponPhaseInterface $projectileWeaponPhase,
         FightLibInterface $fightLib,
-        SemaphoreUtilInterface $semaphoreUtil,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
@@ -60,7 +55,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->projectileWeaponPhase = $projectileWeaponPhase;
         $this->fightLib = $fightLib;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->semaphoreUtil = $semaphoreUtil;
     }
 
     public function init(
@@ -72,40 +66,9 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->defender = $defendingShips;
         $this->oneWay = $oneWay;
 
-        //concurrency
-        // this already happens in AttackShip, and shouldnt be used here
-        // could cause deadlocks in Alert Red situations
-        //$this->acquireSemaphores(current($attackingShips)->getUser()->getId());
-
         $this->firstStrike = true;
         $this->messages = [];
         $this->usedShips = ['attacker' => [], 'defender' => []];
-    }
-
-    private function acquireSemaphores(int $userId): void
-    {
-        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY, true);
-        $this->semaphoreUtil->acquireMainSemaphore($mainSema);
-
-        $this->loggerUtil->log(sprintf('inside main semaphore, userId: %d', $userId));
-
-        $shipSemaphores = [];
-
-        foreach ($this->attacker as $ship) {
-            $shipSemaphores[$ship->getId()] = $this->semaphoreUtil->getSemaphore($ship->getId());
-            $this->loggerUtil->log(sprintf('  A-shipId: %d', $ship->getId()));
-        }
-        foreach ($this->defender as $ship) {
-            $shipSemaphores[$ship->getId()] = $this->semaphoreUtil->getSemaphore($ship->getId());
-            $this->loggerUtil->log(sprintf('  D-shipId: %d', $ship->getId()));
-        }
-
-        foreach ($shipSemaphores as $key => $sema) {
-            $this->semaphoreUtil->acquireSemaphore($key, $sema);
-        }
-
-        $this->loggerUtil->log(sprintf('leaving main semaphore, userId: %d', $userId));
-        $this->semaphoreUtil->releaseSemaphore($mainSema);
     }
 
     /**
