@@ -147,8 +147,8 @@ final class TalSelectedTech implements TalSelectedTechInterface
                 function (ResearchInterface $research) use (&$result): void {
                     $name = $research->getName();
 
-                    if ($name !== $this->research->getName()) {
-                        $result[$name] = $name;
+                    if (!array_key_exists($name, $result) && $name !== $this->research->getName()) {
+                        $result[$name] = new TechDependency($name, $research->getGood());
                     }
                 }
             );

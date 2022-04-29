@@ -94,7 +94,9 @@
 						<div style="float: left; width: 200px;"
 							tal:repeat="data SELECTED_RESEARCH/getDistinctPositiveDependencyNames">
 							<div class="divbody" style="text-align: center;">
-								<span tal:content="data" style="font-weight: bold;">NAME</span>
+								<span tal:content="data/getName" style="font-weight: bold;">NAME</span> <img
+									src="assets/goods/${data/getCommodity/getId}.png"
+									tal:attributes="title data/getCommodity/getName" />
 							</div>
 						</div>
 					</td>
