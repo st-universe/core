@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Noodlehaus\ConfigInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
@@ -137,6 +138,9 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     public function getDistinctPositiveDependencyNames(): array
     {
+        if ($this->currentUser->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
         if ($this->dependencies === null) {
             $result = [];
 
@@ -146,6 +150,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
                 ),
                 function (ResearchInterface $research) use (&$result): void {
                     $name = $research->getName();
+                    $this->loggerUtil->log(sprintf('%s : %s', $name, $research->getGood()->getName()));
 
                     if (!array_key_exists($name, $result) && $name !== $this->research->getName()) {
                         $result[$name] = new TechDependency($name, $research->getGood());
