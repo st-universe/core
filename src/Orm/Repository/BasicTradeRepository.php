@@ -31,7 +31,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
                 'SELECT bt FROM %1$s bt
                 WHERE bt.faction_id IN (SELECT tp.trade_network
                                         FROM %2$s tl
-                                        JOIN %3$s tp ON tl.posts_id = tp.id
+                                        JOIN %3$s tp WITH tl.posts_id = tp.id
                                         WHERE tl.user_id = :userId
                                         GROUP BY tp.trade_network)
                 AND bt.random = (SELECT random FROM %1$s bt2
