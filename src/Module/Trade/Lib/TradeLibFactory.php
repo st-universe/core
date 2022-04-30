@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -52,6 +53,26 @@ final class TradeLibFactory implements TradeLibFactoryInterface
             $this->tradeOfferRepository,
             $this->tradeStorageRepository,
             $tradePost,
+            $userId
+        );
+    }
+
+    public function createBasicTradeAccountTal(
+        TradePostInterface $tradePost,
+        array $basicTrades,
+        int $userId
+    ): BasicTradeAccountTalInterface {
+        $filteredBasicTrades = array_filter(
+            $basicTrades,
+            function (BasicTradeInterface $basicTrade) use ($tradePost): bool {
+                return $basicTrade->getFaction()->getId() === $tradePost->getTradeNetwork();
+            }
+        );
+
+        return new BasicTradeAccountTal(
+            $this->tradeStorageRepository,
+            $tradePost,
+            $filteredBasicTrades,
             $userId
         );
     }

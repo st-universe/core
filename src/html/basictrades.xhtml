@@ -1,0 +1,50 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<div class="box" tal:condition="not:TRADES">
+			<div class="box_title">Meldung</div>
+			<div class="box_body">
+				<span>Keine Warenkonten vorhanden</span>
+			</div>
+		</div>
+		<tal:block tal:repeat="data ACCOUNTS">
+			<table class="tcal">
+				<tr>
+					<th colspan="6" tal:content="structure bbcode:data/getShip/getName">POST</th>
+				</tr>
+				<tr tal:define="ship data/getShip">
+					<td rowspan="4">
+						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+					</td>
+					<th>lagernd</th>
+					<th>kurs kaufen</th>
+					<th>kurs verkaufen</th>
+					<td class="darkbg" style="clear: both; width: 200px;">Standort</td>
+					<td style="width: 200px;">${ship/getCX}|${ship/getCY}</td>
+				</tr>
+				<tr tal:repeat="item data/getBasicTradeItems">
+					<td><img src="assets/goods/${item/getCommodity/getId}.png"
+							tal:attributes="title item/getCommodity/getId" /> <span
+							tal:replace="item/getStoredAmount">COUNT</span></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="darkbg">Lagerraum</td>
+					<td>
+						<span tal:condition="data/isOverStorage" class="negative"
+							tal:content="data/getStorageSum">STORAGESUM</span>
+						<span tal:condition="not:data/isOverStorage" class="positive"
+							tal:content="data/getStorageSum">STORAGESUM</span>
+						(<span tal:content="data/getStorageCapacity">STORAGE</span> pro Siedler)
+					</td>
+				</tr>
+			</table>
+			<br />
+		</tal:block>
+	</metal:macro>
+</metal:macro>
+
+</html>

@@ -24,6 +24,7 @@ use Stu\Module\Trade\Lib\TradeLibFactory;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseList;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequest;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequestInterface;
@@ -94,6 +95,7 @@ return [
         ShowShoutBoxList::VIEW_IDENTIFIER => autowire(ShowShoutBoxList::class),
         ShowSearchDemand::VIEW_IDENTIFIER => autowire(ShowSearchDemand::class),
         ShowSearchOffer::VIEW_IDENTIFIER => autowire(ShowSearchOffer::class),
-        ShowSearchBoth::VIEW_IDENTIFIER => autowire(ShowSearchBoth::class)
+        ShowSearchBoth::VIEW_IDENTIFIER => autowire(ShowSearchBoth::class),
+        ShowBasicTrade::VIEW_IDENTIFIER => autowire(ShowBasicTrade::class)
     ],
 ];

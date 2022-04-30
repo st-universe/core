@@ -13,4 +13,6 @@ interface BasicTradeRepositoryInterface extends ObjectRepository
     public function prototype(): BasicTradeInterface;
 
     public function save(BasicTradeInterface $basicTrade): void;
+
+    public function getBasicTrades(int $userId): array;
 }

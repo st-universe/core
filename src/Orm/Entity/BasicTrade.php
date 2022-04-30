@@ -61,6 +61,11 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
+    public function getFaction(): FactionInterface
+    {
+        return $this->faction;
+    }
+
     public function setCommodity(CommodityInterface $commodity): BasicTradeInterface
     {
         $this->commodity = $commodity;
@@ -68,11 +73,21 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
+    public function getCommodity(): CommodityInterface
+    {
+        return $this->commodity;
+    }
+
     public function setValue(int $value): BasicTradeInterface
     {
         $this->value = $value;
 
         return $this;
+    }
+
+    public function getValue(): int
+    {
+        return $this->value;
     }
 
     public function setDate(int $date): BasicTradeInterface
@@ -85,6 +100,8 @@ class BasicTrade implements BasicTradeInterface
     public function setRandom(int $random): BasicTradeInterface
     {
         $this->random = $random;
+
+        //TODO besser string mit uniqid() ?!
 
         return $this;
     }
