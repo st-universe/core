@@ -36,7 +36,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
                                         GROUP BY tp.trade_network)
                 AND bt.random = (SELECT random FROM %1$s bt2
                                 WHERE bt.faction_id = bt2.faction_id AND bt.commodity_id = bt2.commodity_id
-                                ORDER BY date DESC LIMIT 1)
+                                ORDER BY bt2.date DESC LIMIT 1)
                 ORDER BY bt.commodity_id ASC',
                 BasicTrade::class,
                 TradeLicense::class,
