@@ -37,6 +37,6 @@ final class CreateOfferRequest implements CreateOfferRequestInterface
 
     public function getOfferAmount(): int
     {
-        return $this->bodyParameter('amount')->int()->required();
+        return $this->bodyParameter('amount')->int()->defaultsTo(0);
     }
 }

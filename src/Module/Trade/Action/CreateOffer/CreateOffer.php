@@ -68,7 +68,7 @@ final class CreateOffer implements ActionControllerInterface
         if ($giveGoodId === $wantedGoodId) {
             return;
         }
-        if ($giveAmount < 1 || $wantedAmount < 1) {
+        if ($giveAmount < 1 || $wantedAmount < 1 || $offerAmount < 1) {
             return;
         }
 
