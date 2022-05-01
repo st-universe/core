@@ -28,7 +28,6 @@ use Stu\Module\Ship\Lib\ShipRepairCost;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

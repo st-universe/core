@@ -12,11 +12,11 @@ final class BasicTradeItem implements BasicTradeItemInterface
 {
     private BasicTradeInterface $basicTrade;
 
-    private TradeStorageInterface $tradeStorage;
+    private ?TradeStorageInterface $tradeStorage;
 
     public function __construct(
         BasicTradeInterface $basicTrade,
-        TradeStorageInterface $tradeStorage
+        ?TradeStorageInterface $tradeStorage
     ) {
         $this->basicTrade = $basicTrade;
         $this->tradeStorage = $tradeStorage;
@@ -29,7 +29,7 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     public function getStoredAmount(): int
     {
-        return $this->tradeStorage->getAmount();
+        return $this->tradeStorage !== null ? $this->tradeStorage->getAmount() : 0;
     }
 
     public function getBuyValue(): int
