@@ -34,6 +34,12 @@ class BasicTrade implements BasicTradeInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
+    /** @Column(type="string", nullable=true) */
+    private $uniqid;
+
+    /** @Column(type="integer", nullable=true) * */
+    private $user_id;
+
     /**
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id")
