@@ -34,9 +34,6 @@ class BasicTrade implements BasicTradeInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
-    /** @Column(type="integer") * */
-    private $random = 0;
-
     /**
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id")
@@ -95,19 +92,5 @@ class BasicTrade implements BasicTradeInterface
         $this->date = $date;
 
         return $this;
-    }
-
-    public function setRandom(int $random): BasicTradeInterface
-    {
-        $this->random = $random;
-
-        //TODO besser string mit uniqid() ?!
-
-        return $this;
-    }
-
-    public function getRandom(): int
-    {
-        return $this->random;
     }
 }

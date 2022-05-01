@@ -19,8 +19,4 @@ interface BasicTradeInterface
     public function getValue(): int;
 
     public function setDate(int $date): BasicTradeInterface;
-
-    public function setRandom(int $random): BasicTradeInterface;
-
-    public function getRandom(): int;
 }
