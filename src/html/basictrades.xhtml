@@ -12,7 +12,7 @@
 		<tal:block tal:repeat="data ACCOUNTS">
 			<table class="tcal">
 				<tr>
-					<th colspan="6" tal:content="structure bbcode:data/getShip/getName">POST</th>
+					<th colspan="4" tal:content="structure bbcode:data/getShip/getName">POST</th>
 				</tr>
 				<tr tal:define="ship data/getShip">
 					<td rowspan="4">
@@ -24,20 +24,18 @@
 							src="assets/buttons/info2.png" style="height:16px;" /></th>
 					<th title="1 Latinum kostet diese Anzahl der Ware">Kurs "Verkaufen" <img
 							src="assets/buttons/info2.png" style="height:16px;" /></th>
-					<td class="darkbg" style="clear: both; width: 200px;">Standort</td>
-					<td style="width: 200px;">${ship/getCX}|${ship/getCY}</td>
 				</tr>
 				<tr tal:repeat="item data/getBasicTradeItems">
 					<td><img src="assets/goods/${item/getCommodity/getId}.png"
 							tal:attributes="title item/getCommodity/getId" /> <span
 							tal:replace="item/getStoredAmount">COUNT</span></td>
 					<td><span tal:replace="item/getBuyValue">BUY</span> <button type="submit" name="B_JOIN_FLEET"
-							value="Schiff hinzufügen" title="Schiff hinzufügen">
-							<img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" />
+							value="Ware kaufen" title="Ware kaufen">
+							<img src="assets/buttons/b_from1.png" alt="Ware kaufen" />
 						</button></td>
 					<td><span tal:replace="item/getSellValue">SELL</span> <button type="submit" name="B_JOIN_FLEET"
-							value="Schiff hinzufügen" title="Schiff hinzufügen">
-							<img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" />
+							value="Ware verkaufen" title="Ware verkaufen">
+							<img src="assets/buttons/b_to1.png" alt="Ware verkaufen" />
 						</button></td>
 				</tr>
 				<tr>
@@ -49,6 +47,8 @@
 							tal:content="data/getStorageSum">STORAGESUM</span>
 						(<span tal:content="data/getStorageCapacity">STORAGE</span> pro Siedler)
 					</td>
+					<td class="darkbg" style="clear: both; width: 200px;">Standort</td>
+					<td style="width: 200px;">${ship/getCX}|${ship/getCY}</td>
 				</tr>
 			</table>
 			<br />
