@@ -47,7 +47,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
         ])->getResult();
     }
 
-    public function getByUniqId(int $uniqId): ?BasicTradeInterface
+    public function getByUniqId(string $uniqId): ?BasicTradeInterface
     {
         return $this->findOneBy([
             'uniqid' => $uniqId
