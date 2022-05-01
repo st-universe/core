@@ -20,7 +20,7 @@ interface BasicTradeInterface
 
     public function setDate(int $date): BasicTradeInterface;
 
-    public function setUniqId(string $uniqid): BasicTradeInterface;
+    public function setRandom(int $random): BasicTradeInterface;
 
-    public function getUniqId(): string;
+    public function getRandom(): int;
 }

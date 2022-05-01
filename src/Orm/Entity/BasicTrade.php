@@ -34,8 +34,8 @@ class BasicTrade implements BasicTradeInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
-    /** @Column(type="string") */
-    private $uniqid = '';
+    /** @Column(type="integer") * */
+    private $random = 0;
 
     /**
      * @ManyToOne(targetEntity="Faction")
@@ -97,15 +97,17 @@ class BasicTrade implements BasicTradeInterface
         return $this;
     }
 
-    public function setUniqId(string $uniqid): BasicTradeInterface
+    public function setRandom(int $random): BasicTradeInterface
     {
-        $this->uniqid = $uniqid;
+        $this->random = $random;
+
+        //TODO besser string mit uniqid() ?!
 
         return $this;
     }
 
-    public function getUniqId(): string
+    public function getRandom(): int
     {
-        return $this->uniqid;
+        return $this->random;
     }
 }
