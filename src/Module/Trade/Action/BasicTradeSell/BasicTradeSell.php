@@ -2,24 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\Action\BasicTradeBuy;
+namespace Stu\Module\Trade\Action\BasicTradeSell;
 
 use request;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 use Stu\Orm\Repository\BasicTradeRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
-final class BasicTradeBuy implements ActionControllerInterface
+final class BasicTradeSell implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_BASIC_BUY';
+    public const ACTION_IDENTIFIER = 'B_BASIC_SELL';
 
     private TradeLibFactoryInterface $tradeLibFactory;
 
@@ -27,23 +24,18 @@ final class BasicTradeBuy implements ActionControllerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         TradeLibFactoryInterface $tradeLibFactory,
         BasicTradeRepositoryInterface $basicTradeRepository,
-        TradePostRepositoryInterface $tradePostRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->tradeLibFactory = $tradeLibFactory;
         $this->basicTradeRepository = $basicTradeRepository;
         $this->tradePostRepository = $tradePostRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
         $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -59,7 +51,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $isNewest = $this->basicTradeRepository->isNewest($basicTrade);
 
         if (!$isNewest) {
-            $game->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht gekauft werden");
+            $game->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht verkauft werden");
             return;
         }
 
@@ -76,17 +68,17 @@ final class BasicTradeBuy implements ActionControllerInterface
             return;
         }
 
-        $latinumStorage = $storageManager->getStorage()[CommodityTypeEnum::GOOD_LATINUM];
+        $commodityStorage = $storageManager->getStorage()[$basicTrade->getCommodity()->getId()];
 
-        if ($latinumStorage === null || $latinumStorage < 1) {
-            $game->addInformation("Dein Warenkonto verfügt über kein Latinum - es konnte nicht gekauft werden");
+        if ($commodityStorage === null || $commodityStorage < ((int)($basicTrade->getValue() / 100))) {
+            $game->addInformation("Dein Warenkonto verfügt nicht über ausreichend Waren - es konnte nicht verkauft werden");
             return;
         }
 
         $latestRates = $this->basicTradeRepository->getLatestRates($basicTrade);
 
         $newValue = null;
-        $summand = 1;
+        $summand = TradeEnum::BASIC_TRADE_SELL_MODIFIER;
 
         foreach ($latestRates as $basicTrade) {
             if ($newValue === null) {
@@ -100,7 +92,7 @@ final class BasicTradeBuy implements ActionControllerInterface
         $newBasicTrade = $this->basicTradeRepository->prototype();
         $newBasicTrade->setFaction($basicTrade->getFaction());
         $newBasicTrade->setCommodity($basicTrade->getCommodity());
-        $newBasicTrade->setBuySell(TradeEnum::BASIC_TRADE_BUY_MODIFIER);
+        $newBasicTrade->setBuySell(TradeEnum::BASIC_TRADE_SELL_MODIFIER);
         $newBasicTrade->setValue($newValue);
         $newBasicTrade->setDate(time());
         $newBasicTrade->setUniqId(uniqid());
@@ -108,11 +100,10 @@ final class BasicTradeBuy implements ActionControllerInterface
 
         $this->basicTradeRepository->save($newBasicTrade);
 
-        $this->loggerUtil->log(sprintf('BUY. upper: %s', $basicTrade->getCommodity()->getName()));
-        $storageManager->upperStorage($basicTrade->getCommodity()->getId(), (int) ($basicTrade->getValue() / 100));
-        $storageManager->lowerStorage(CommodityTypeEnum::GOOD_LATINUM, 1);
+        $storageManager->upperStorage(CommodityTypeEnum::GOOD_LATINUM, 1);
+        $storageManager->lowerStorage($basicTrade->getCommodity()->getId(), (int) ($basicTrade->getValue() / 100));
 
-        $game->addInformation('Die Waren wurden gekauft');
+        $game->addInformation('Die Waren wurden verkauft');
     }
 
     public function performSessionCheck(): bool

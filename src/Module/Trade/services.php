@@ -9,6 +9,7 @@ use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntry;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequest;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequestInterface;
 use Stu\Module\Trade\Action\BasicTradeBuy\BasicTradeBuy;
+use Stu\Module\Trade\Action\BasicTradeSell\BasicTradeSell;
 use Stu\Module\Trade\Action\CancelOffer\CancelOffer;
 use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequest;
 use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequestInterface;
@@ -80,7 +81,8 @@ return [
         CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
         AddShoutBoxEntry::ACTION_IDENTIFIER => autowire(AddShoutBoxEntry::class),
         TransferGoods::ACTION_IDENTIFIER => autowire(TransferGoods::class),
-        BasicTradeBuy::ACTION_IDENTIFIER => autowire(BasicTradeBuy::class)
+        BasicTradeBuy::ACTION_IDENTIFIER => autowire(BasicTradeBuy::class),
+        BasicTradeSell::ACTION_IDENTIFIER => autowire(BasicTradeSell::class)
     ],
     'TRADE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
