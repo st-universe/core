@@ -26,17 +26,22 @@
 							src="assets/buttons/info2.png" style="height:16px;" /></th>
 				</tr>
 				<tr tal:repeat="item data/getBasicTradeItems">
-					<td><img src="assets/goods/${item/getCommodity/getId}.png"
-							tal:attributes="title item/getCommodity/getId" /> <span
-							tal:replace="item/getStoredAmount">COUNT</span></td>
-					<td><span tal:replace="item/getBuyValue">BUY</span> <button type="submit" name="B_JOIN_FLEET"
-							value="Ware kaufen" title="Ware kaufen">
-							<img src="assets/buttons/b_from1.png" alt="Ware kaufen" />
-						</button></td>
-					<td><span tal:replace="item/getSellValue">SELL</span> <button type="submit" name="B_JOIN_FLEET"
-							value="Ware verkaufen" title="Ware verkaufen">
-							<img src="assets/buttons/b_to1.png" alt="Ware verkaufen" />
-						</button></td>
+					<form method="post" action="trade.php">
+						<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+						<input type="hidden" name="uid" tal:attributes="value data/getUniqId" />
+						<input type="hidden" name="tsid" tal:attributes="value data/getTradeStorageId" />
+						<td><img src="assets/goods/${item/getCommodity/getId}.png"
+								tal:attributes="title item/getCommodity/getId" /> <span
+								tal:replace="item/getStoredAmount">COUNT</span></td>
+						<td><span tal:replace="item/getBuyValue">BUY</span> <button type="submit" name="B_BASIC_BUY"
+								value="Ware kaufen" title="Ware kaufen">
+								<img src="assets/buttons/b_from1.png" alt="Ware kaufen" />
+							</button></td>
+						<td><span tal:replace="item/getSellValue">SELL</span> <button type="submit" name="B_BASIC_SELL"
+								value="Ware verkaufen" title="Ware verkaufen">
+								<img src="assets/buttons/b_to1.png" alt="Ware verkaufen" />
+							</button></td>
+					</form>
 				</tr>
 				<tr>
 					<td class="darkbg">Lagerraum</td>
