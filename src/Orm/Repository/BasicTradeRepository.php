@@ -46,4 +46,26 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
             'userId' => $userId
         ])->getResult();
     }
+
+    public function getBasicTrade(int $userId, int $commodityId, int): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT bt FROM %1$s bt
+                WHERE bt.faction_id IN (SELECT tp.trade_network
+                                        FROM %2$s tl
+                                        JOIN %3$s tp WITH tl.posts_id = tp.id
+                                        WHERE tl.user_id = :userId
+                                        GROUP BY tp.trade_network)
+                AND bt.date = (SELECT max(bt2.date) FROM %1$s bt2
+                                WHERE bt.faction_id = bt2.faction_id AND bt.commodity_id = bt2.commodity_id)
+                ORDER BY bt.commodity_id ASC',
+                BasicTrade::class,
+                TradeLicense::class,
+                TradePost::class
+            )
+        )->setParameters([
+            'userId' => $userId
+        ])->getResult();
+    }
 }
