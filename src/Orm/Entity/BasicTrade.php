@@ -81,6 +81,18 @@ class BasicTrade implements BasicTradeInterface
         return $this->commodity;
     }
 
+    public function setBuySell(int $buySell): BasicTradeInterface
+    {
+        $this->buy_sell = $buySell;
+
+        return $this;
+    }
+
+    public function getBuySell(): int
+    {
+        return $this->buy_sell;
+    }
+
     public function setValue(int $value): BasicTradeInterface
     {
         $this->value = $value;
@@ -98,6 +110,11 @@ class BasicTrade implements BasicTradeInterface
         $this->date = $date;
 
         return $this;
+    }
+
+    public function getDate(): int
+    {
+        return $this->date;
     }
 
     public function setUniqId(string $uniqid): BasicTradeInterface

@@ -75,7 +75,6 @@ final class CreateOffer implements ActionControllerInterface
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($trade_post, $userId);
 
         if ($storageManager->getFreeStorage() <= 0) {
-            $game->setView(ShowAccounts::VIEW_IDENTIFIER);
             $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - Angebot kann nicht erstellt werden");
             return;
         }

@@ -22,11 +22,6 @@ final class BasicTradeItem implements BasicTradeItemInterface
         $this->tradeStorage = $tradeStorage;
     }
 
-    public function getTradeStorageId(): ?int
-    {
-        return $this->tradeStorage !== null ? $this->tradeStorage->getId() : 0;
-    }
-
     public function getUniqId(): string
     {
         return $this->basicTrade->getUniqId();
