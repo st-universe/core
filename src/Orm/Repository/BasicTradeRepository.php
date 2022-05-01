@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\BasicTrade;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradeLicense;
@@ -44,5 +45,45 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
         )->setParameters([
             'userId' => $userId
         ])->getResult();
+    }
+
+    public function getByUniqId(int $uniqId): ?BasicTradeInterface
+    {
+        return $this->findOneBy([
+            'uniqid' => $uniqId
+        ]);
+    }
+
+    public function isNewest(BasicTradeInterface $basicTrade): bool
+    {
+        return empty($this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT bt FROM %s bt
+                WHERE bt.faction_id = :factionId
+                AND bt.commodity_id = :commodityId
+                AND bt.date > :myDate',
+                BasicTrade::class
+            )
+        )->setParameters([
+            'factionId' => $basicTrade->getFaction()->getId(),
+            'commodityId' => $basicTrade->getCommodity()->getId(),
+            'myDate' => $basicTrade->getDate()
+        ])->getResult());
+    }
+
+    public function getLatestRates(BasicTradeInterface $basicTrade): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT bt FROM %s bt
+                WHERE bt.faction_id = :factionId
+                AND bt.commodity_id = :commodityId
+                ORDER BY bt.date DESC',
+                BasicTrade::class
+            )
+        )->setParameters([
+            'factionId' => $basicTrade->getFaction()->getId(),
+            'commodityId' => $basicTrade->getCommodity()->getId()
+        ])->setMaxResults(TradeEnum::BASIC_TRADE_LATEST_RATE_AMOUNT)->getResult();
     }
 }
