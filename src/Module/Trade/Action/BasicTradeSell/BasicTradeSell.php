@@ -87,7 +87,7 @@ final class BasicTradeSell implements ActionControllerInterface
                 $summand += $basicTrade->getBuySell();
             }
         }
-        $newValue += (int)($summand / (count($latestRates) + 1)) * 100;
+        $newValue += (int)($summand * 100 / (count($latestRates) + 1));
 
         $newBasicTrade = $this->basicTradeRepository->prototype();
         $newBasicTrade->setFaction($basicTrade->getFaction());
