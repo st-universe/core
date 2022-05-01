@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -27,13 +28,16 @@ final class TradeLibFactory implements TradeLibFactoryInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private LoggerUtilFactoryInterface $loggerUtilFactory;
+
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
         CommodityRepositoryInterface $commodityRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransferRepository = $tradeTransferRepository;
@@ -41,6 +45,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->commodityRepository = $commodityRepository;
         $this->userRepository = $userRepository;
+        $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
     public function createTradeAccountTal(
@@ -73,7 +78,8 @@ final class TradeLibFactory implements TradeLibFactoryInterface
             $this->tradeStorageRepository,
             $tradePost,
             $filteredBasicTrades,
-            $userId
+            $userId,
+            $this->loggerUtilFactory
         );
     }
 

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\TradeStorageInterface;
@@ -21,16 +24,20 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
 
     private $storage;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         TradeStorageRepositoryInterface $tradeStorageRepository,
         TradePostInterface $tradePost,
         array $basicTrades,
-        int $userId
+        int $userId,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->tradePost = $tradePost;
         $this->basicTrades = $basicTrades;
         $this->userId = $userId;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getId(): int
@@ -50,6 +57,8 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
 
     public function getBasicTradeItems(): array
     {
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
         $result = [];
 
         $storage = $this->getStorage();
@@ -57,6 +66,12 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
         foreach ($this->basicTrades as $basicTrade) {
             $commodityId = $basicTrade->getCommodity()->getId();
             $result[] = new BasicTradeItem($basicTrade, $storage[$commodityId]);
+
+            $this->loggerUtil->log(sprintf(
+                'basicTradeCID: %d, storageCN: %s',
+                $basicTrade->getCommodity()->getId(),
+                $storage[$commodityId]->getGood()->getName()
+            ));
         }
 
         return $result;
