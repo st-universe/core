@@ -34,12 +34,12 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     public function getBuyValue(): int
     {
-        return $this->basicTrade->getValue();
+        return (int) ($this->basicTrade->getValue() / 100);
     }
 
     public function getSellValue(): int
     {
         //TODO how to delta?
-        return $this->basicTrade->getValue() + 10;
+        return (int)($this->basicTrade->getValue() / 100 * 1.1);
     }
 }

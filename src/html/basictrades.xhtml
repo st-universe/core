@@ -18,9 +18,12 @@
 					<td rowspan="4">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 					</td>
-					<th>lagernd</th>
-					<th>kurs kaufen</th>
-					<th>kurs verkaufen</th>
+					<th title="auf diesem Warenposten lagernd">lagernd <img src="assets/buttons/info2.png"
+							style="height:16px;" /></th>
+					<th title="Für 1 Latinum bekommt man diese Anzahl der Ware">Kurs "Kaufen" <img
+							src="assets/buttons/info2.png" style="height:16px;" /></th>
+					<th title="1 Latinum kostet diese Anzahl der Ware">Kurs "Verkaufen" <img
+							src="assets/buttons/info2.png" style="height:16px;" /></th>
 					<td class="darkbg" style="clear: both; width: 200px;">Standort</td>
 					<td style="width: 200px;">${ship/getCX}|${ship/getCY}</td>
 				</tr>
@@ -28,8 +31,14 @@
 					<td><img src="assets/goods/${item/getCommodity/getId}.png"
 							tal:attributes="title item/getCommodity/getId" /> <span
 							tal:replace="item/getStoredAmount">COUNT</span></td>
-					<td></td>
-					<td></td>
+					<td><span tal:replace="item/getBuyValue">BUY</span> <button type="submit" name="B_JOIN_FLEET"
+							value="Schiff hinzufügen" title="Schiff hinzufügen">
+							<img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" />
+						</button></td>
+					<td><span tal:replace="item/getSellValue">SELL</span> <button type="submit" name="B_JOIN_FLEET"
+							value="Schiff hinzufügen" title="Schiff hinzufügen">
+							<img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" />
+						</button></td>
 				</tr>
 				<tr>
 					<td class="darkbg">Lagerraum</td>
