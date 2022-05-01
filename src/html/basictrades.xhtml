@@ -28,8 +28,8 @@
 				<tr tal:repeat="item data/getBasicTradeItems">
 					<form method="post" action="trade.php">
 						<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-						<input type="hidden" name="uid" tal:attributes="value data/getUniqId" />
-						<input type="hidden" name="tsid" tal:attributes="value data/getTradeStorageId" />
+						<input type="hidden" name="uid" tal:attributes="value item/getUniqId" />
+						<input type="hidden" name="tsid" tal:attributes="value item/getTradeStorageId" />
 						<td><img src="assets/goods/${item/getCommodity/getId}.png"
 								tal:attributes="title item/getCommodity/getId" /> <span
 								tal:replace="item/getStoredAmount">COUNT</span></td>

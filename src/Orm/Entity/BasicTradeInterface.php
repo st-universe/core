@@ -19,4 +19,10 @@ interface BasicTradeInterface
     public function getValue(): int;
 
     public function setDate(int $date): BasicTradeInterface;
+
+    public function setUniqId(string $uniqid): BasicTradeInterface;
+
+    public function getUniqId(): string;
+
+    public function setUserId(int $userId): BasicTradeInterface;
 }

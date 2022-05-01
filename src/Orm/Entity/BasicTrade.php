@@ -99,4 +99,23 @@ class BasicTrade implements BasicTradeInterface
 
         return $this;
     }
+
+    public function setUniqId(string $uniqid): BasicTradeInterface
+    {
+        $this->uniqid = $uniqid;
+
+        return $this;
+    }
+
+    public function getUniqId(): string
+    {
+        return $this->uniqid;
+    }
+
+    public function setUserId(int $userId): BasicTradeInterface
+    {
+        $this->user_id = $userId;
+
+        return $this;
+    }
 }
