@@ -68,8 +68,9 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
             $result[] = new BasicTradeItem($basicTrade, $storage[$commodityId]);
 
             $this->loggerUtil->log(sprintf(
-                'basicTradeCID: %d, storageCN: %s',
+                'basicTradeCID: %d, storageCID: %d, storageCN: %s',
                 $basicTrade->getCommodity()->getId(),
+                $storage[$commodityId] !== null ? $storage[$commodityId]->getGood()->getId : 0,
                 $storage[$commodityId] !== null ? $storage[$commodityId]->getGood()->getName() : 'null'
             ));
         }
