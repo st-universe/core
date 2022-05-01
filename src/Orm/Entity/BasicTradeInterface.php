@@ -14,17 +14,11 @@ interface BasicTradeInterface
 
     public function getCommodity(): CommodityInterface;
 
-    public function setBuySell(int $buySell): BasicTradeInterface;
-
-    public function getBuySell(): int;
-
     public function setValue(int $value): BasicTradeInterface;
 
     public function getValue(): int;
 
     public function setDate(int $date): BasicTradeInterface;
-
-    public function getDate(): int;
 
     public function setUniqId(string $uniqid): BasicTradeInterface;
 

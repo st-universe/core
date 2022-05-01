@@ -14,17 +14,5 @@ interface BasicTradeRepositoryInterface extends ObjectRepository
 
     public function save(BasicTradeInterface $basicTrade): void;
 
-    /**
-     * @return BasicTradeInterface[]
-     */
     public function getBasicTrades(int $userId): array;
-
-    public function getByUniqId(int $uniqId): ?BasicTradeInterface;
-
-    public function isNewest(BasicTradeInterface $basicTrade): bool;
-
-    /**
-     * @return BasicTradeInterface[]
-     */
-    public function getLatestRates(BasicTradeInterface $basicTrade): array;
 }
