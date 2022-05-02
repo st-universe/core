@@ -7,7 +7,10 @@ namespace Stu\Orm\Entity;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BasicTradeRepository")
  * @Table(
- *     name="stu_basic_trade"
+ *     name="stu_basic_trade",
+ *     indexes={
+ *         @Index(name="base_trade_idx", columns={"faction_id,commodity_id,date"})
+ *     }
  * )
  **/
 class BasicTrade implements BasicTradeInterface
