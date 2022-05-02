@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_basic_trade",
  *     indexes={
- *         @Index(name="base_trade_idx", columns={"faction_id","commodity_id","date"})
+ *         @Index(name="base_trade_idx", columns={"faction_id","commodity_id","date_ms"})
  *     }
  * )
  **/
