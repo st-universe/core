@@ -120,7 +120,7 @@ class BasicTrade implements BasicTradeInterface
 
     public function getDate(): int
     {
-        return $this->date_ms;
+        return (int)$this->date_ms;
     }
 
     public function setUniqId(string $uniqid): BasicTradeInterface
