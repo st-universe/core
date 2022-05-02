@@ -95,7 +95,7 @@ final class BasicTradeSell implements ActionControllerInterface
         $newBasicTrade->setCommodity($basicTrade->getCommodity());
         $newBasicTrade->setBuySell(TradeEnum::BASIC_TRADE_SELL_MODIFIER);
         $newBasicTrade->setValue($newValue);
-        $newBasicTrade->setDate(time());
+        $newBasicTrade->setDate((int)round(microtime(true) * 1000));
         $newBasicTrade->setUniqId(uniqid());
         $newBasicTrade->setUserId($game->getUser()->getId());
 
