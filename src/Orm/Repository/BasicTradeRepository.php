@@ -78,7 +78,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
                 'SELECT bt FROM %s bt
                 WHERE bt.faction_id = :factionId
                 AND bt.commodity_id = :commodityId
-                ORDER BY bt._ms DESC',
+                ORDER BY bt.date_ms DESC',
                 BasicTrade::class
             )
         )->setParameters([
