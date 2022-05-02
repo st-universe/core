@@ -102,10 +102,18 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
 
     public function getByTradePostAndUser(int $tradePostId, int $userId): array
     {
-        return $this->findBy([
-            'posts_id' => $tradePostId,
-            'user_id' => $userId
-        ], ['goods_id' => 'ASC']);
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ts FROM %s ts INDEX BY ts.goods_id
+                    WHERE ts.posts_id = :tradePostId
+                    AND ts.user_id = :userId
+                    ORDER BY ts.goods_id ASC',
+                TradeStorage::class
+            )
+        )->setParameters([
+            'tradePostId' => $tradePostId,
+            'userId' => $userId
+        ])->getResult();
     }
 
     public function getByUserAccumulated(int $userId): iterable
