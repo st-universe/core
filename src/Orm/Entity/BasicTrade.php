@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
-//TODO indizes
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BasicTradeRepository")
  * @Table(
@@ -22,7 +22,7 @@ class BasicTrade implements BasicTradeInterface
      */
     private $id;
 
-    /** @Column(type="integer", nullable=true) */
+    /** @Column(type="integer", nullable=true)  */
     private $faction_id;
 
     /** @Column(type="integer") */
