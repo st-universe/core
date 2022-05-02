@@ -25,22 +25,25 @@ class BasicTrade implements BasicTradeInterface
     /** @Column(type="integer", nullable=true) */
     private $faction_id;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer") */
     private $commodity_id = 0;
 
     /** @Column(type="smallint") */
     private $buy_sell = 0;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer") */
     private $value = 0;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer") */
     private $date = 0;
+
+    /** @Column(type="bigint", nullable=true) */
+    private $date_ms;
 
     /** @Column(type="string", nullable=true) */
     private $uniqid;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer", nullable=true) */
     private $user_id;
 
     /**
