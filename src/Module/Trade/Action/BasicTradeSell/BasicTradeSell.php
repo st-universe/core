@@ -69,8 +69,9 @@ final class BasicTradeSell implements ActionControllerInterface
         }
 
         $commodityStorage = $storageManager->getStorage()[$basicTrade->getCommodity()->getId()];
+        $sellValue = (int)($basicTrade->getValue() / 100 * 1.1);
 
-        if ($commodityStorage === null || $commodityStorage < ((int)($basicTrade->getValue() / 100))) {
+        if ($commodityStorage === null || $commodityStorage->getAmount() < $sellValue) {
             $game->addInformation("Dein Warenkonto verfügt nicht über ausreichend Waren - es konnte nicht verkauft werden");
             return;
         }
@@ -101,7 +102,7 @@ final class BasicTradeSell implements ActionControllerInterface
         $this->basicTradeRepository->save($newBasicTrade);
 
         $storageManager->upperStorage(CommodityTypeEnum::GOOD_LATINUM, 1);
-        $storageManager->lowerStorage($basicTrade->getCommodity()->getId(), (int) ($basicTrade->getValue() / 100));
+        $storageManager->lowerStorage($basicTrade->getCommodity()->getId(), $sellValue);
 
         $game->addInformation('Die Waren wurden verkauft');
     }
