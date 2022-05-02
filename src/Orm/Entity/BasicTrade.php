@@ -120,6 +120,7 @@ class BasicTrade implements BasicTradeInterface
 
     public function getDate(): int
     {
+
         return (int)$this->date_ms;
     }
 
