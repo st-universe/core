@@ -113,14 +113,14 @@ class BasicTrade implements BasicTradeInterface
 
     public function setDate(int $date): BasicTradeInterface
     {
-        $this->date = $date;
+        $this->date_ms = $date;
 
         return $this;
     }
 
     public function getDate(): int
     {
-        return $this->date;
+        return $this->date_ms;
     }
 
     public function setUniqId(string $uniqid): BasicTradeInterface
