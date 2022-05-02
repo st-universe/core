@@ -12,10 +12,10 @@
 		<tal:block tal:repeat="data ACCOUNTS">
 			<table class="tcal">
 				<tr>
-					<th colspan="4" tal:content="structure bbcode:data/getShip/getName">POST</th>
+					<th colspan="4" rowspan="4" tal:content="structure bbcode:data/getShip/getName">POST</th>
 				</tr>
 				<tr tal:define="ship data/getShip">
-					<td rowspan="4" style="width: 66%;">
+					<td rowspan="5" style="width: 66%;">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 					</td>
 					<th title="auf diesem Warenposten lagernd">lagernd <img src="assets/buttons/info2.png"
@@ -42,6 +42,13 @@
 								<img src="assets/buttons/b_to1.png" alt="Ware verkaufen" />
 							</button></td>
 					</form>
+				</tr>
+				<tr tal:define="latinum data/getLatinumItem">
+					<td><img src="assets/goods/${latinum/getCommodity/getId}.png"
+							tal:attributes="title item/getCommodity/getId" /> <span
+							tal:replace="latinum/getStoredAmount">COUNT</span></td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr tal:define="ship data/getShip">
 					<td class="darkbg">Lagerraum</td>

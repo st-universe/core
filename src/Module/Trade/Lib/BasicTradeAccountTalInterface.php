@@ -14,6 +14,8 @@ interface BasicTradeAccountTalInterface
 
     public function getBasicTradeItems(): array;
 
+    public function getLatinumItem(): BasicTradeItem;
+
     public function getStorageSum(): int;
 
     public function isOverStorage(): bool;

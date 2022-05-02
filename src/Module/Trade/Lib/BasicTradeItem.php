@@ -10,12 +10,12 @@ use Stu\Orm\Entity\TradeStorageInterface;
 
 final class BasicTradeItem implements BasicTradeItemInterface
 {
-    private BasicTradeInterface $basicTrade;
+    private ?BasicTradeInterface $basicTrade;
 
     private ?TradeStorageInterface $tradeStorage;
 
     public function __construct(
-        BasicTradeInterface $basicTrade,
+        ?BasicTradeInterface $basicTrade,
         ?TradeStorageInterface $tradeStorage
     ) {
         $this->basicTrade = $basicTrade;
@@ -29,7 +29,8 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     public function getCommodity(): CommodityInterface
     {
-        return $this->basicTrade->getCommodity();
+        return $this->tradeStorage !== null ? $this->tradeStorage->getCommodity()
+            : $this->basicTrade->getCommodity();
     }
 
     public function getStoredAmount(): int

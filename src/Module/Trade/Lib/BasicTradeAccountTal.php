@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -76,6 +77,12 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
         }
 
         return $result;
+    }
+
+    public function getLatinumItem(): BasicTradeItem
+    {
+        $latinumStorage = $this->getStorage()[CommodityTypeEnum::GOOD_LATINUM];
+        return new BasicTradeItem(null, $latinumStorage);
     }
 
     private function getStorage(): array
