@@ -35,7 +35,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
                                         JOIN %3$s tp WITH tl.posts_id = tp.id
                                         WHERE tl.user_id = :userId
                                         GROUP BY tp.trade_network)
-                AND bt.date = (SELECT max(bt2.date) FROM %1$s bt2
+                AND bt.date_ms = (SELECT max(bt2.date_ms) FROM %1$s bt2
                                 WHERE bt.faction_id = bt2.faction_id AND bt.commodity_id = bt2.commodity_id)
                 ORDER BY bt.commodity_id ASC',
                 BasicTrade::class,
@@ -61,7 +61,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
                 'SELECT bt FROM %s bt
                 WHERE bt.faction_id = :factionId
                 AND bt.commodity_id = :commodityId
-                AND bt.date > :myDate',
+                AND bt.date_ms > :myDate',
                 BasicTrade::class
             )
         )->setParameters([
@@ -78,7 +78,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
                 'SELECT bt FROM %s bt
                 WHERE bt.faction_id = :factionId
                 AND bt.commodity_id = :commodityId
-                ORDER BY bt.date DESC',
+                ORDER BY bt._ms DESC',
                 BasicTrade::class
             )
         )->setParameters([
