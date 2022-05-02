@@ -9,7 +9,6 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -43,7 +42,6 @@ final class BasicTradeBuy implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
         $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -108,7 +106,6 @@ final class BasicTradeBuy implements ActionControllerInterface
 
         $this->basicTradeRepository->save($newBasicTrade);
 
-        $this->loggerUtil->log(sprintf('BUY. upper: %s', $basicTrade->getCommodity()->getName()));
         $storageManager->upperStorage($basicTrade->getCommodity()->getId(), (int) ($basicTrade->getValue() / 100));
         $storageManager->lowerStorage(CommodityTypeEnum::GOOD_LATINUM, 1);
 

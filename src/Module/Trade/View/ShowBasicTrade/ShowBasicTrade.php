@@ -34,12 +34,6 @@ final class ShowBasicTrade implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        // only Admins can trigger ticks
-        if (!$game->getUser()->isAdmin()) {
-            $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
-            return;
-        }
-
         $userId = $game->getUser()->getId();
 
         $basicTrades = $this->basicTradeRepository->getBasicTrades($userId);

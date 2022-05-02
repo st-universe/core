@@ -14,12 +14,16 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     private ?TradeStorageInterface $tradeStorage;
 
+    private ?CommodityInterface $commodity;
+
     public function __construct(
         ?BasicTradeInterface $basicTrade,
-        ?TradeStorageInterface $tradeStorage
+        ?TradeStorageInterface $tradeStorage,
+        ?CommodityInterface $commodity = null
     ) {
         $this->basicTrade = $basicTrade;
         $this->tradeStorage = $tradeStorage;
+        $this->commodity = $commodity;
     }
 
     public function getUniqId(): string
@@ -29,7 +33,7 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     public function getCommodity(): CommodityInterface
     {
-        return $this->tradeStorage !== null ? $this->tradeStorage->getCommodity()
+        return $this->commodity !== null ? $this->commodity
             : $this->basicTrade->getCommodity();
     }
 

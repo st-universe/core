@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\TradeStorageInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
@@ -25,6 +25,8 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
 
     private $storage;
 
+    private CommodityRepositoryInterface $commodityRepository;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -32,12 +34,14 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
         TradePostInterface $tradePost,
         array $basicTrades,
         int $userId,
+        CommodityRepositoryInterface $commodityRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->tradePost = $tradePost;
         $this->basicTrades = $basicTrades;
         $this->userId = $userId;
+        $this->commodityRepository = $commodityRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -58,8 +62,6 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
 
     public function getBasicTradeItems(): array
     {
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-
         $result = [];
 
         $storage = $this->getStorage();
@@ -67,13 +69,6 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
         foreach ($this->basicTrades as $basicTrade) {
             $commodityId = $basicTrade->getCommodity()->getId();
             $result[] = new BasicTradeItem($basicTrade, $storage[$commodityId]);
-
-            $this->loggerUtil->log(sprintf(
-                'basicTradeCID: %d, storageCID: %d, storageCN: %s',
-                $basicTrade->getCommodity()->getId(),
-                $storage[$commodityId] !== null ? $storage[$commodityId]->getGood()->getId() : 0,
-                $storage[$commodityId] !== null ? $storage[$commodityId]->getGood()->getName() : 'null'
-            ));
         }
 
         return $result;
@@ -82,7 +77,8 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
     public function getLatinumItem(): BasicTradeItem
     {
         $latinumStorage = $this->getStorage()[CommodityTypeEnum::GOOD_LATINUM];
-        return new BasicTradeItem(null, $latinumStorage);
+        $latinumCommodity = $this->commodityRepository->find(CommodityTypeEnum::GOOD_LATINUM);
+        return new BasicTradeItem(null, $latinumStorage, $latinumCommodity);
     }
 
     private function getStorage(): array
