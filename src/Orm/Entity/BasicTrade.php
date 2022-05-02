@@ -34,7 +34,7 @@ class BasicTrade implements BasicTradeInterface
     /** @Column(type="integer") * */
     private $value = 0;
 
-    /** @Column(type="bigint") * */
+    /** @Column(type="integer") * */
     private $date = 0;
 
     /** @Column(type="string", nullable=true) */
