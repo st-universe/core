@@ -16,7 +16,7 @@ final class StartMirrorWorld implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MIRROR_START';
 
-    public const MIRROR_FROM_DB_NAME = 'mirrorfrom';
+    public const MIRROR_FROM_DB_NAME = 'stu';
     public const MIRROR_TO_DB_NAME = 'mirrorto';
     public const MIRROR_WORLD_DUMP_NAME = 'mirrorWorld.dump';
 
