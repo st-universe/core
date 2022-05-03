@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,11 +17,15 @@ final class StartMirrorWorld implements ActionControllerInterface
 
     public const MIRROR_WORLD_DUMP_NAME = 'mirrorWorld.dump';
 
+    private ConfigInterface $config;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
+        ConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
+        $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
