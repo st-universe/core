@@ -16,6 +16,8 @@ final class StartMirrorWorld implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MIRROR_START';
 
+    public const MIRROR_FROM_DB_NAME = 'mirrorfrom';
+    public const MIRROR_TO_DB_NAME = 'mirrorto';
     public const MIRROR_WORLD_DUMP_NAME = 'mirrorWorld.dump';
 
     private ConfigInterface $config;
@@ -44,10 +46,18 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         $this->cleanup();
 
-        $this->backupDatabase($game);
-        $this->dropDatabse($game);
-        $this->createDatabse($game);
-        $this->restoreDatabase($game);
+        if (!$this->backupDatabase($game)) {
+            return;
+        }
+        if (!$this->dropDatabse($game)) {
+            return;
+        }
+        if (!$this->createDatabse($game)) {
+            return;
+        }
+        if (!$this->restoreDatabase($game)) {
+            return;
+        }
 
         $game->addInformation('die Spiegelwelt wurde erstellt');
     }
@@ -68,48 +78,54 @@ final class StartMirrorWorld implements ActionControllerInterface
         $dir->close();
     }
 
-    private function dropDatabse(GameControllerInterface $game): void
+    private function dropDatabse(GameControllerInterface $game): bool
     {
         $cmd = sprintf(
             'PGPASSWORD="%s" dropdb -U %s -h %s --if-exists %s',
             $this->config->get('db.pass'),
             $this->config->get('db.user'),
             $this->config->get('db.host'),
-            'mirrorTo',
+            self::MIRROR_TO_DB_NAME,
         );
 
         $this->loggerUtil->log(sprintf('dropDatabase: %s', $cmd));
 
         if (!system($cmd)) {
             $game->addInformation('drop database failed');
+            return false;
         }
+
+        return true;
     }
 
-    private function createDatabse(GameControllerInterface $game): void
+    private function createDatabse(GameControllerInterface $game): bool
     {
         $cmd = sprintf(
             'PGPASSWORD="%s" createdb -U %s -h %s -T template0 %s',
             $this->config->get('db.pass'),
             $this->config->get('db.user'),
             $this->config->get('db.host'),
-            'mirrorTo',
+            self::MIRROR_TO_DB_NAME,
         );
 
         $this->loggerUtil->log(sprintf('createDatabase: %s', $cmd));
 
         if (!system($cmd)) {
             $game->addInformation('create database failed');
+            return false;
         }
+
+        return true;
     }
 
-    private function backupDatabase(GameControllerInterface $game): void
+    private function backupDatabase(GameControllerInterface $game): bool
     {
         $cmd = sprintf(
             'PGPASSWORD="%s" pg_dump -Fc -U %s -h %s %s > %s/%s',
             $this->config->get('db.pass'),
             $this->config->get('db.user'),
             $this->config->get('db.host'),
-            'mirrorFrom', //$this->config->get('db.database'), TODO reactivate after testing!
+            self::MIRROR_FROM_DB_NAME, //$this->config->get('db.database'), TODO reactivate after testing!
             $this->config->get('db.backup_dir'),
             self::MIRROR_WORLD_DUMP_NAME
         );
@@ -118,16 +134,19 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         if (!system($cmd)) {
             $game->addInformation('backup failed');
+            return false;
         }
+
+        return true;
     }
 
-    private function restoreDatabase(GameControllerInterface $game): void
+    private function restoreDatabase(GameControllerInterface $game): bool
     {
         $cmd = sprintf(
             //pg_restore -d stu -U postgres -C dd-MM-yyyy.dump
             'PGPASSWORD="%s" pg_restore -d %s -U %s -h %s -C %s/%s',
             $this->config->get('db.pass'),
-            'mirrorTo',
+            self::MIRROR_TO_DB_NAME,
             $this->config->get('db.user'),
             $this->config->get('db.host'),
             $this->config->get('db.backup_dir'),
@@ -138,7 +157,10 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         if (!system($cmd)) {
             $game->addInformation('restore failed');
+            return false;
         }
+
+        return true;
     }
 
     public function performSessionCheck(): bool
