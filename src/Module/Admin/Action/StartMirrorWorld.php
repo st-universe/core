@@ -43,7 +43,10 @@ final class StartMirrorWorld implements ActionControllerInterface
         $this->loggerUtil->init('mirror', LoggerEnum::LEVEL_ERROR);
 
         $this->cleanup();
+
         $this->backupDatabase($game);
+        $this->dropDatabse($game);
+        $this->createDatabse($game);
         $this->restoreDatabase($game);
 
         $game->addInformation('die Spiegelwelt wurde erstellt');
@@ -63,6 +66,40 @@ final class StartMirrorWorld implements ActionControllerInterface
             }
         }
         $dir->close();
+    }
+
+    private function dropDatabse(GameControllerInterface $game): void
+    {
+        $cmd = sprintf(
+            'PGPASSWORD="%s" dropdb -U %s -h %s --if-exists %s',
+            $this->config->get('db.pass'),
+            $this->config->get('db.user'),
+            $this->config->get('db.host'),
+            'mirrorTo',
+        );
+
+        $this->loggerUtil->log(sprintf('dropDatabase: %s', $cmd));
+
+        if (!system($cmd)) {
+            $game->addInformation('drop database failed');
+        }
+    }
+
+    private function createDatabse(GameControllerInterface $game): void
+    {
+        $cmd = sprintf(
+            'PGPASSWORD="%s" createdb -U %s -h %s -T template0 %s',
+            $this->config->get('db.pass'),
+            $this->config->get('db.user'),
+            $this->config->get('db.host'),
+            'mirrorTo',
+        );
+
+        $this->loggerUtil->log(sprintf('createDatabase: %s', $cmd));
+
+        if (!system($cmd)) {
+            $game->addInformation('create database failed');
+        }
     }
 
     private function backupDatabase(GameControllerInterface $game): void
