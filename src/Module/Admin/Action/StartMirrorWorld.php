@@ -125,7 +125,7 @@ final class StartMirrorWorld implements ActionControllerInterface
     {
         $cmd = sprintf(
             //pg_restore -d stu -U postgres -C dd-MM-yyyy.dump
-            'PGPASSWORD="%s" pg_restore -D %s -U %s -h %s -C %s/%s',
+            'PGPASSWORD="%s" pg_restore -d %s -U %s -h %s -C %s/%s',
             $this->config->get('db.pass'),
             'mirrorTo',
             $this->config->get('db.user'),
