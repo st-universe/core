@@ -132,8 +132,11 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         $this->loggerUtil->log(sprintf('backupDatabase: %s', $cmd));
 
-        if (!system($cmd)) {
+        $output = [];
+
+        if (!exec($cmd, $output)) {
             $game->addInformation('backup failed');
+            $game->addInformationMergeDown($output);
             return false;
         }
 
