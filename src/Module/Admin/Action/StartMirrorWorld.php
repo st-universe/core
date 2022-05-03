@@ -134,7 +134,7 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         if (!system($cmd)) {
             $game->addInformation('backup failed');
-            return false;
+            //return false;
         }
 
         return true;
