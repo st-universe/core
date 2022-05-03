@@ -92,7 +92,7 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         if (!system($cmd)) {
             $game->addInformation('drop database failed');
-            return false;
+            //return false;
         }
 
         return true;
@@ -112,7 +112,7 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         if (!system($cmd)) {
             $game->addInformation('create database failed');
-            return false;
+            //return false;
         }
 
         return true;
@@ -157,7 +157,7 @@ final class StartMirrorWorld implements ActionControllerInterface
 
         if (!system($cmd)) {
             $game->addInformation('restore failed');
-            return false;
+            //return false;
         }
 
         return true;
