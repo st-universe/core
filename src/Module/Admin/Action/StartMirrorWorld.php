@@ -8,6 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
@@ -39,9 +40,11 @@ final class StartMirrorWorld implements ActionControllerInterface
             return;
         }
 
+        $this->loggerUtil->init('mirror', LoggerEnum::LEVEL_ERROR);
+
         $this->cleanup();
-        $this->backupDatabase();
-        $this->restoreDatabase();
+        $this->backupDatabase($game);
+        $this->restoreDatabase($game);
 
         $game->addInformation('die Spiegelwelt wurde erstellt');
     }
@@ -55,13 +58,14 @@ final class StartMirrorWorld implements ActionControllerInterface
             $filename = sprintf('%s/%s', $backup_dir, $file);
 
             if (is_file($filename) && $filename === self::MIRROR_WORLD_DUMP_NAME) {
+                $this->loggerUtil->log('mirrorWorld dump deleted');
                 unlink($filename);
             }
         }
         $dir->close();
     }
 
-    private function backupDatabase(): void
+    private function backupDatabase(GameControllerInterface $game): void
     {
         $cmd = sprintf(
             'PGPASSWORD="%s" pg_dump -Fc -U %s -h %s %s > %s/%s',
@@ -73,10 +77,14 @@ final class StartMirrorWorld implements ActionControllerInterface
             self::MIRROR_WORLD_DUMP_NAME
         );
 
-        system($cmd);
+        $this->loggerUtil->log(sprintf('backupDatabase: %s', $cmd));
+
+        if (!system($cmd)) {
+            $game->addInformation('backup failed');
+        }
     }
 
-    private function restoreDatabase(): void
+    private function restoreDatabase(GameControllerInterface $game): void
     {
         $cmd = sprintf(
             //pg_restore -d stu -U postgres -C dd-MM-yyyy.dump
@@ -89,7 +97,11 @@ final class StartMirrorWorld implements ActionControllerInterface
             self::MIRROR_WORLD_DUMP_NAME
         );
 
-        system($cmd);
+        $this->loggerUtil->log(sprintf('restoreDatabase: %s', $cmd));
+
+        if (!system($cmd)) {
+            $game->addInformation('restore failed');
+        }
     }
 
     public function performSessionCheck(): bool
