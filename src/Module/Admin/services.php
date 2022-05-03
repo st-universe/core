@@ -14,6 +14,7 @@ use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemField;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequest;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequestInterface;
 use Stu\Module\Admin\Action\SendMassMail;
+use Stu\Module\Admin\Action\StartMirrorWorld;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
 use Stu\Module\Admin\View\Map\EditSection\EditSectionRequest;
 use Stu\Module\Admin\View\Map\EditSection\EditSectionRequestInterface;
@@ -66,7 +67,8 @@ return [
         ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
         SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class),
         LockUser::ACTION_IDENTIFIER => autowire(LockUser::class),
-        UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class)
+        UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class),
+        StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
