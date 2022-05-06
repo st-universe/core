@@ -24,6 +24,7 @@ use Stu\Module\Index\Action\ResetPassword\ResetPasswordRequestInterface;
 use Stu\Module\Index\Action\SendPassword\SendPassword;
 use Stu\Module\Index\Action\SendPassword\SendPasswordRequest;
 use Stu\Module\Index\Action\SendPassword\SendPasswordRequestInterface;
+use Stu\Module\Index\Action\SmsVerification\SmsVerification;
 use Stu\Module\Index\View\Overview\Overview;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
 use Stu\Module\Index\View\ShowHelp\ShowHelp;
@@ -55,6 +56,7 @@ return [
         ResetPassword::ACTION_IDENTIFIER => autowire(ResetPassword::class),
         Logout::ACTION_IDENTIFIER => autowire(Logout::class),
         DeletionConfirmation::ACTION_IDENTIFIER => autowire(DeletionConfirmation::class),
+        SmsVerification::ACTION_IDENTIFIER => autowire(SmsVerification::class)
     ],
     'INDEX_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

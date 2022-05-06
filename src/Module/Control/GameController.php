@@ -35,9 +35,11 @@ use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Exception\StuException;
 use Stu\Exception\UnallowedUplinkOperation;
+use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Ubench;
 
@@ -524,6 +526,9 @@ final class GameController implements GameControllerInterface
                         sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
                     );
                 }
+                if ($this->getUser()->getActive() === PlayerEnum::USER_SMS_VERIFICATION) {
+                    throw new AccountNotVerifiedException();
+                }
                 $gameState = $this->getGameState();
                 if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
                     throw new TickGameStateException();
@@ -554,6 +559,12 @@ final class GameController implements GameControllerInterface
             $this->setTemplateFile('html/accountlocked.xhtml');
             $this->talPage->setVar('THIS', $this);
             $this->talPage->setVar('REASON', $e->getDetails());
+        } catch (AccountNotVerifiedException $e) {
+            $this->setTemplateFile('html/smsverification.xhtml');
+            $this->talPage->setVar('THIS', $this);
+            if ($e->getMessage() !== '') {
+                $this->talPage->setVar('REASON', $e->getMessage());
+            }
         } catch (TickGameStateException $e) {
             $this->setPageTitle(_('Rundenwechsel aktiv'));
             $this->setTemplateFile('html/tick.xhtml');
