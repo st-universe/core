@@ -120,7 +120,8 @@ final class PlayerCreator implements PlayerCreatorInterface
 
     private function isMobileNumberCountryAllowed(string $mobile): bool
     {
-        return strpos($mobile, '+49') === 0 || strpos($mobile, '+41') === 0 || strpos($mobile, '+43') === 0;
+        return strpos($mobile, '+49') === 0 || strpos($mobile, '+41') === 0 || strpos($mobile, '+43') === 0
+            || strpos($mobile, '0049') === 0 || strpos($mobile, '0041') === 0 || strpos($mobile, '0043') === 0;
     }
 
     private function isMobileFormatCorrect(string $mobile): bool
