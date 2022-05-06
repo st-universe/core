@@ -19,7 +19,7 @@ function checkEmail(el, value) {
 		$('emaildup').hide();
 		return false;
 	}
-	var varcheck = regVarCheck('email', value.replace('+', '%2B'));
+	var varcheck = regVarCheck('email', value);
 	if (varcheck == 0) {
 		$('emailok').hide();
 		$('emailerror').show();
@@ -46,7 +46,7 @@ function checkMobile(el, value) {
 		$('mobileupd').hide();
 		return false;
 	}
-	var varcheck = regVarCheck('mobile', value);
+	var varcheck = regVarCheck('mobile', value.replace('+', '%2B'));
 	if (varcheck == 0) {
 		$('mobileok').hide();
 		$('mobileerror').show();
