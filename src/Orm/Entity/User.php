@@ -48,6 +48,9 @@ class User implements UserInterface
     /** @Column(type="string", length=255) */
     private $pass = '';
 
+    /** @Column(type="string", length=6, nullable=true) */
+    private $sms_code;
+
     /** @Column(type="string", length=200) */
     private $email = '';
 
@@ -61,7 +64,7 @@ class User implements UserInterface
     private $race;
 
     /** @Column(type="smallint") */
-    private $aktiv = 0;
+    private $aktiv = PlayerEnum::USER_NEW;
 
     /** @Column(type="string", length=200) */
     private $propic = '';
@@ -209,6 +212,17 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getSmsCode(): ?string
+    {
+        return $this->sms_code;
+    }
+
+    public function setSmsCode(?string $code): UserInterface
+    {
+        $this->sms_code = $code;
+        return $this;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
@@ -273,6 +287,7 @@ class User implements UserInterface
         return $this->colonies;
     }
 
+    //TODO rename to state, constants in PlayerEnum too
     public function getActive(): int
     {
         return $this->aktiv;

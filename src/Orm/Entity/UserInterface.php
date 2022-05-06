@@ -20,6 +20,10 @@ interface UserInterface
 
     public function setPassword(string $password): UserInterface;
 
+    public function getSmsCode(): ?string;
+
+    public function setSmsCode(?string $code): UserInterface;
+
     public function getEmail(): string;
 
     public function setEmail(string $email): UserInterface;
