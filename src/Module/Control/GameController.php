@@ -526,7 +526,7 @@ final class GameController implements GameControllerInterface
                         sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
                     );
                 }
-                if ($this->getUser()->getActive() === PlayerEnum::USER_SMS_VERIFICATION) {
+                if (!request::postString('smscode') && $this->getUser()->getActive() === PlayerEnum::USER_SMS_VERIFICATION) {
                     throw new AccountNotVerifiedException();
                 }
                 $gameState = $this->getGameState();
