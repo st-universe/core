@@ -50,8 +50,14 @@
       "tokens_per_user": 2,
       "ttl": 86400
     },
-    "registration_enabled": false,
-    "registration_via_sms": false,
+    "registration": {
+      "enabled": false,
+      "sms_code_verification": {
+        "enabled": false,
+        "email_to_sms_mail_domain": "pro.vider",
+        "email_sender_address": "foo@bar.de"
+      }
+    },
     "email_sender_address": "some@e.mail",
     "admins": [
       101,

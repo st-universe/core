@@ -20,6 +20,11 @@ final class RegisterRequest implements RegisterRequestInterface
         return $this->queryParameter('email')->string()->defaultsToIfEmpty('');
     }
 
+    public function getMobileNumber(): ?string
+    {
+        return $this->queryParameter('mobile')->string()->defaultsToIfEmpty(null);
+    }
+
     public function getFactionId(): int
     {
         return $this->queryParameter('factionid')->int()->required();

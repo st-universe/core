@@ -2,12 +2,14 @@
 
 namespace Stu\Module\PlayerSetting\Lib;
 
+//TODO rename to UserEnum
 final class PlayerEnum
 {
     // user state
     public const USER_NEW = 0;
     public const USER_UNCOLONIZED = 1;
     public const USER_ACTIVE = 2;
+    public const USER_SMS_VERIFICATION = 3;
 
     //DELMARK
     public const DELETION_REQUESTED = 1;
@@ -26,6 +28,8 @@ final class PlayerEnum
                 return _("OHNE KOLONIEN");
             case self::USER_ACTIVE:
                 return _("AKTIV");
+            case self::USER_SMS_VERIFICATION:
+                return _("SMS VERIFIKATION");
         }
         return '';
     }

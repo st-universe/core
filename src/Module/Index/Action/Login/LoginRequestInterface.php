@@ -7,4 +7,6 @@ interface LoginRequestInterface
     public function getLoginName(): string;
 
     public function getPassword(): string;
+
+    public function getSmsVerificationCode(): ?string;
 }

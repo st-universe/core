@@ -9,7 +9,9 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
+use Stu\Component\Player\Register\Exception\MobileNumberInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
@@ -23,6 +25,8 @@ final class PlayerCreator implements PlayerCreatorInterface
 
     private RegistrationEmailSenderInterface $registrationEmailSender;
 
+    private SmsVerificationCodeSenderInterface $smsVerificationCodeSender;
+
     private UserInvitationRepositoryInterface $userInvitationRepository;
 
     private ConfigInterface $config;
@@ -33,6 +37,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         UserRepositoryInterface $userRepository,
         PlayerDefaultsCreatorInterface $playerDefaultsCreator,
         RegistrationEmailSenderInterface $registrationEmailSender,
+        SmsVerificationCodeSenderInterface $smsVerificationCodeSender,
         UserInvitationRepositoryInterface $userInvitationRepository,
         ConfigInterface $config,
         PasswordGeneratorInterface $passwordGenerator
@@ -40,29 +45,19 @@ final class PlayerCreator implements PlayerCreatorInterface
         $this->userRepository = $userRepository;
         $this->playerDefaultsCreator = $playerDefaultsCreator;
         $this->registrationEmailSender = $registrationEmailSender;
+        $this->smsVerificationCodeSender = $smsVerificationCodeSender;
         $this->userInvitationRepository = $userInvitationRepository;
         $this->config = $config;
         $this->passwordGenerator = $passwordGenerator;
     }
 
-    public function create(
+    public function createViaToken(
         string $loginName,
         string $emailAddress,
         FactionInterface $faction,
         string $token
     ): void {
-        if (
-            !preg_match('/^[a-zA-Z0-9]+$/i', $loginName) ||
-            mb_strlen($loginName) < 6
-        ) {
-            throw new LoginNameInvalidException();
-        }
-        if (!filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
-            throw new EmailAddressInvalidException();
-        }
-        if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress)) {
-            throw new PlayerDuplicateException();
-        }
+        $this->checkForException($loginName, $emailAddress);
 
         $invitation = $this->userInvitationRepository->getByToken($token);
 
@@ -81,10 +76,64 @@ final class PlayerCreator implements PlayerCreatorInterface
         $this->userInvitationRepository->save($invitation);
     }
 
+    public function createWithMobileNumber(
+        string $loginName,
+        string $emailAddress,
+        FactionInterface $faction,
+        string $mobile
+    ): void {
+        $this->checkForException($loginName, $emailAddress, $mobile);
+
+        $randomHash = substr(md5(uniqid(strval(rand()), true)), 16, 6);
+
+        $player = $this->createPlayer(
+            $loginName,
+            $emailAddress,
+            $faction,
+            $mobile,
+            $randomHash
+        );
+
+        $this->smsVerificationCodeSender->send($player, $randomHash);
+    }
+
+    private function checkForException($loginName, $emailAddress, $mobile = null): void
+    {
+        if (
+            !preg_match('/^[a-zA-Z0-9]+$/i', $loginName) ||
+            mb_strlen($loginName) < 6
+        ) {
+            throw new LoginNameInvalidException();
+        }
+        if (!filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
+            throw new EmailAddressInvalidException();
+        }
+        if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress) || $this->userRepository->getByMobile($mobile)) {
+            throw new PlayerDuplicateException();
+        }
+        if ($mobile !== null) {
+            if (!$this->isMobileNumberCountryAllowed($mobile) || !$this->isMobileFormatCorrect($mobile)) {
+                throw new MobileNumberInvalidException();
+            }
+        }
+    }
+
+    private function isMobileNumberCountryAllowed(string $mobile): bool
+    {
+        return strpos($mobile, '+49') === 0 || strpos($mobile, '+41') === 0 || strpos($mobile, '+43') === 0;
+    }
+
+    private function isMobileFormatCorrect(string $mobile): bool
+    {
+        return !preg_match('/[^0-9+]/', $mobile);
+    }
+
     public function createPlayer(
         string $loginName,
         string $emailAddress,
-        FactionInterface $faction
+        FactionInterface $faction,
+        string $mobile = null,
+        string $smsCode = null
     ): UserInterface {
         $player = $this->userRepository->prototype();
         $player->setLogin(mb_strtolower($loginName));
@@ -99,6 +148,13 @@ final class PlayerCreator implements PlayerCreatorInterface
         $player->setTick(1);
         $player->setCreationDate(time());
         $player->setPassword(password_hash($password, PASSWORD_DEFAULT));
+
+        // set player state to awaiting sms code
+        if ($mobile !== null) {
+            $player->setMobile($mobile);
+            $player->setSmsCode($smsCode);
+            $player->setActive(PlayerEnum::USER_SMS_VERIFICATION);
+        }
 
         $this->userRepository->save($player);
 

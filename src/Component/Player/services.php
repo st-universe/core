@@ -21,6 +21,8 @@ use Stu\Component\Player\Register\RegistrationEmailSender;
 use Stu\Component\Player\Register\RegistrationEmailSenderInterface;
 use Stu\Component\Player\Register\PlayerDefaultsCreator;
 use Stu\Component\Player\Register\PlayerDefaultsCreatorInterface;
+use Stu\Component\Player\Register\SmsVerificationCodeSender;
+use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
 use Stu\Component\Player\Validation\LoginValidation;
 use Stu\Component\Player\Validation\LoginValidationInterface;
 use Stu\Component\Player\Validation\Validators\IpIntelValidator;
@@ -54,4 +56,5 @@ return [
     PlayerCreatorInterface::class => autowire(PlayerCreator::class),
     PlayerDefaultsCreatorInterface::class => autowire(PlayerDefaultsCreator::class),
     RegistrationEmailSenderInterface::class => autowire(RegistrationEmailSender::class),
+    SmsVerificationCodeSenderInterface::class => autowire(SmsVerificationCodeSender::class)
 ];

@@ -19,4 +19,9 @@ final class LoginRequest implements LoginRequestInterface
     {
         return $this->queryParameter('pass')->string()->defaultsToIfEmpty('');
     }
+
+    public function getSmsVerificationCode(): ?string
+    {
+        return $this->queryParameter('smscode')->string()->defaultsToIfEmpty(null);
+    }
 }

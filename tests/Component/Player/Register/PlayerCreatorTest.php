@@ -79,7 +79,7 @@ class PlayerCreatorTest extends MockeryTestCase
     {
         $this->expectException(LoginNameInvalidException::class);
 
-        $this->creator->create(
+        $this->creator->createViaToken(
             'meh',
             'lol',
             Mockery::mock(FactionInterface::class),
@@ -91,7 +91,7 @@ class PlayerCreatorTest extends MockeryTestCase
     {
         $this->expectException(EmailAddressInvalidException::class);
 
-        $this->creator->create(
+        $this->creator->createViaToken(
             'mehzomglol',
             'lol',
             Mockery::mock(FactionInterface::class),
@@ -110,7 +110,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturn(Mockery::mock(UserInterface::class));
 
-        $this->creator->create(
+        $this->creator->createViaToken(
             $loginname,
             'lol@example.com',
             Mockery::mock(FactionInterface::class),
@@ -134,7 +134,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturn(Mockery::mock(UserInterface::class));
 
-        $this->creator->create(
+        $this->creator->createViaToken(
             $loginname,
             $email,
             Mockery::mock(FactionInterface::class),
@@ -164,7 +164,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturnNull();
 
-        $this->creator->create(
+        $this->creator->createViaToken(
             $loginname,
             $email,
             Mockery::mock(FactionInterface::class),
@@ -207,7 +207,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturnFalse();
 
-        $this->creator->create(
+        $this->creator->createViaToken(
             $loginname,
             $email,
             Mockery::mock(FactionInterface::class),
@@ -314,7 +314,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->with($user, $generated_password)
             ->once();
 
-        $this->creator->create(
+        $this->creator->createViaToken(
             $loginname,
             $email,
             $faction,

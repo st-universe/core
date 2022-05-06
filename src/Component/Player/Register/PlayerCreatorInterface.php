@@ -11,11 +11,21 @@ interface PlayerCreatorInterface
     /**
      * @throws RegistrationException
      */
-    public function create(
+    public function createViaToken(
         string $loginName,
         string $emailAddress,
         FactionInterface $faction,
         string $token
+    ): void;
+
+    /**
+     * @throws RegistrationException
+     */
+    public function createWithMobileNumber(
+        string $loginName,
+        string $emailAddress,
+        FactionInterface $faction,
+        string $mobile
     ): void;
 
     public function createPlayer(

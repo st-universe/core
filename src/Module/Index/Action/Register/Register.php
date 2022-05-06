@@ -40,12 +40,9 @@ final class Register implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $loginname = $this->registerRequest->getLoginName();
-        $email = $this->registerRequest->getEmailAddress();
         $factionId = $this->registerRequest->getFactionId();
-        $token = $this->registerRequest->getToken();
 
-        if (!$this->config->get('game.registration_enabled')) {
+        if (!$this->config->get('game.registration.enabled')) {
             return;
         }
 
@@ -59,18 +56,47 @@ final class Register implements ActionControllerInterface
             return;
         }
 
+        $loginname = $this->registerRequest->getLoginName();
+        $email = $this->registerRequest->getEmailAddress();
+
         try {
-            $this->playerCreator->create(
-                $loginname,
-                $email,
-                current($factions),
-                $token
-            );
+            if ($this->config->get('game.registration.sms_code_verification.enabled')) {
+                $mobileNumber = $this->registerRequest->getMobileNumber();
+
+                if ($mobileNumber === null) {
+                    return;
+                }
+                $this->registerViaSms($loginname, $email, $mobileNumber, $factions);
+            } else {
+                $this->registerViaToken($loginname, $email, $factions);
+            }
         } catch (RegistrationException $e) {
             return;
         }
 
         $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
+    }
+
+    private function registerViaSms(string $loginname, string $email, string $mobileNumber, array $factions): void
+    {
+        $this->playerCreator->createWithMobileNumber(
+            $loginname,
+            $email,
+            current($factions),
+            $mobileNumber
+        );
+    }
+
+    private function registerViaToken(string $loginname, string $email, array $factions): void
+    {
+        $token = $this->registerRequest->getToken();
+
+        $this->playerCreator->createViaToken(
+            $loginname,
+            $email,
+            current($factions),
+            $token
+        );
     }
 
     public function performSessionCheck(): bool

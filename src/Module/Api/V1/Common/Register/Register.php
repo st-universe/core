@@ -44,7 +44,7 @@ final class Register extends Action
         JsonResponseInterface $response,
         array $args
     ): JsonResponseInterface {
-        if ($this->config->get('game.registration_enabled') === false) {
+        if ($this->config->get('game.registration.enabled') === false) {
             return $response->withError(
                 ErrorCodeEnum::REGISTRATION_NOT_PERMITTED,
                 'The registration of new player is disabled'
@@ -67,7 +67,7 @@ final class Register extends Action
         }
 
         try {
-            $this->playerCreator->create(
+            $this->playerCreator->createViaToken(
                 $data->loginName,
                 $data->emailAddress,
                 current($factions),

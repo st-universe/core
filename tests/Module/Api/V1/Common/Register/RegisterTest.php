@@ -57,7 +57,7 @@ class RegisterTest extends StuApiV1TestCase
     public function testActionThrowsErrorIgRegistrationIsDisabled(): void
     {
         $this->config->shouldReceive('get')
-            ->with('game.registration_enabled')
+            ->with('game.registration.enabled')
             ->once()
             ->andReturnFalse();
 
@@ -79,7 +79,7 @@ class RegisterTest extends StuApiV1TestCase
         $faction = $this->mock(FactionInterface::class);
 
         $this->config->shouldReceive('get')
-            ->with('game.registration_enabled')
+            ->with('game.registration.enabled')
             ->once()
             ->andReturnTrue();
 
@@ -116,7 +116,7 @@ class RegisterTest extends StuApiV1TestCase
         $faction = $this->mock(FactionInterface::class);
 
         $this->config->shouldReceive('get')
-            ->with('game.registration_enabled')
+            ->with('game.registration.enabled')
             ->once()
             ->andReturnTrue();
 
@@ -160,7 +160,7 @@ class RegisterTest extends StuApiV1TestCase
         $faction = $this->mock(FactionInterface::class);
 
         $this->config->shouldReceive('get')
-            ->with('game.registration_enabled')
+            ->with('game.registration.enabled')
             ->once()
             ->andReturnTrue();
 
@@ -214,7 +214,7 @@ class RegisterTest extends StuApiV1TestCase
         $faction = $this->mock(FactionInterface::class);
 
         $this->config->shouldReceive('get')
-            ->with('game.registration_enabled')
+            ->with('game.registration.enabled')
             ->once()
             ->andReturnTrue();
 

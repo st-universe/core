@@ -14,4 +14,5 @@ final class ErrorCodeEnum
     public const NOT_FOUND = 100006;
     public const REGISTRATION_NOT_PERMITTED = 100007;
     public const REGISTRATION_TOKEN_INVALID = 100008;
+    public const SMS_VERIFICATION_CODE_INVALID = 100009;
 }
