@@ -10,6 +10,9 @@ use Stu\Orm\Entity\TradeStorageInterface;
 
 final class BasicTradeItem implements BasicTradeItemInterface
 {
+    public const BASIC_TRADE_VALUE_SCALE = 100;
+    public const BASIC_TRADE_SELL_BUY_ALPHA = 1.1;
+
     private ?BasicTradeInterface $basicTrade;
 
     private ?TradeStorageInterface $tradeStorage;
@@ -44,12 +47,11 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     public function getBuyValue(): int
     {
-        return (int) ($this->basicTrade->getValue() / 100);
+        return (int) ($this->basicTrade->getValue() / self::BASIC_TRADE_VALUE_SCALE);
     }
 
     public function getSellValue(): int
     {
-        //TODO how to delta?
-        return (int)($this->basicTrade->getValue() / 100 * 1.1);
+        return (int)($this->basicTrade->getValue() / self::BASIC_TRADE_VALUE_SCALE * self::BASIC_TRADE_SELL_BUY_ALPHA);
     }
 }

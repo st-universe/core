@@ -97,9 +97,6 @@ final class EditDetails implements ActionControllerInterface
                     $alliance->getName()
                 );
                 $this->privateMessageSender->send(GameEnum::USER_NOONE, $applicant->getUserId(), $text);
-
-                //TODO why does this method call exist here?
-                //$applicant->deleteFromDatabase();
             }
         }
 

@@ -32,12 +32,11 @@ final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterf
         $mail->setFrom($this->config->get('game.registration.sms_code_verification.email_sender_address'));
         $mail->setBody(sprintf($body, $code));
 
-        //try {
-        $transport = new Sendmail();
-        $transport->send($mail);
-        //} catch (RuntimeException $e) {
-        return;
-        //}
-        //TODO try catch wieder rein
+        try {
+            $transport = new Sendmail();
+            $transport->send($mail);
+        } catch (RuntimeException $e) {
+            return;
+        }
     }
 }

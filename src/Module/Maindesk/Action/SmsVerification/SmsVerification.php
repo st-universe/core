@@ -29,7 +29,6 @@ final class SmsVerification implements ActionControllerInterface
     ) {
         $this->userRepository = $userRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->loggerUtil->init('login', LoggerEnum::LEVEL_ERROR);
     }
 
     public function handle(GameControllerInterface $game): void

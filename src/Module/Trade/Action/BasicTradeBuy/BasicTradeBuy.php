@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Trade\Lib\BasicTradeItem;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 use Stu\Orm\Repository\BasicTradeRepositoryInterface;
@@ -93,7 +94,7 @@ final class BasicTradeBuy implements ActionControllerInterface
                 $summand += $basicTrade->getBuySell();
             }
         }
-        $newValue += (int)($summand * 100 / (count($latestRates) + 1));
+        $newValue += (int)($summand * BasicTradeItem::BASIC_TRADE_VALUE_SCALE / (count($latestRates) + 1));
 
         $newBasicTrade = $this->basicTradeRepository->prototype();
         $newBasicTrade->setFaction($basicTrade->getFaction());
@@ -106,7 +107,7 @@ final class BasicTradeBuy implements ActionControllerInterface
 
         $this->basicTradeRepository->save($newBasicTrade);
 
-        $storageManager->upperStorage($basicTrade->getCommodity()->getId(), (int) ($basicTrade->getValue() / 100));
+        $storageManager->upperStorage($basicTrade->getCommodity()->getId(), (int) ($basicTrade->getValue() / BasicTradeItem::BASIC_TRADE_VALUE_SCALE));
         $storageManager->lowerStorage(CommodityTypeEnum::GOOD_LATINUM, 1);
 
         $game->addInformation('Die Waren wurden gekauft');

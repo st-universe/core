@@ -9,6 +9,7 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Trade\Lib\BasicTradeItem;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 use Stu\Orm\Repository\BasicTradeRepositoryInterface;
@@ -69,7 +70,7 @@ final class BasicTradeSell implements ActionControllerInterface
         }
 
         $commodityStorage = $storageManager->getStorage()[$basicTrade->getCommodity()->getId()];
-        $sellValue = (int)($basicTrade->getValue() / 100 * 1.1);
+        $sellValue = (int)($basicTrade->getValue() / BasicTradeItem::BASIC_TRADE_VALUE_SCALE * BasicTradeItem::BASIC_TRADE_SELL_BUY_ALPHA);
 
         if ($commodityStorage === null || $commodityStorage->getAmount() < $sellValue) {
             $game->addInformation("Dein Warenkonto verfügt nicht über ausreichend Waren - es konnte nicht verkauft werden");
@@ -88,7 +89,7 @@ final class BasicTradeSell implements ActionControllerInterface
                 $summand += $basicTrade->getBuySell();
             }
         }
-        $newValue += (int)($summand * 100 / (count($latestRates) + 1));
+        $newValue += (int)($summand * BasicTradeItem::BASIC_TRADE_VALUE_SCALE / (count($latestRates) + 1));
 
         $newBasicTrade = $this->basicTradeRepository->prototype();
         $newBasicTrade->setFaction($basicTrade->getFaction());
