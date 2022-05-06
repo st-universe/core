@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\CheckInput;
 
 use Noodlehaus\ConfigInterface;
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -50,10 +51,11 @@ final class CheckInput implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $var = $this->checkInputRequest->getVariable();
-        $value = $this->checkInputRequest->getValue();
+        $value = request::getString('value');
         $state = self::REGISTER_STATE_NOK;
         switch ($var) {
             default:
+                break;
             case 'loginname':
                 if (!preg_match('=^[a-zA-Z0-9]+$=i', $value)) {
                     break;
