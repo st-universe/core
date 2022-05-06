@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Index\Action\SmsVerification;
+namespace Stu\Module\Maindesk\Action\SmsVerification;
 
 use request;
 use Stu\Lib\AccountNotVerifiedException;
