@@ -48,10 +48,15 @@ final class SmsVerification implements ActionControllerInterface
         }
         $this->loggerUtil->log('Y');
 
-        $user->setActive(PlayerEnum::USER_NEW);
+        $user->setActive(PlayerEnum::USER_UNCOLONIZED);
         $this->userRepository->save($user);
 
         $this->loggerUtil->log('Z');
+
+        $game->setTemplateVar(
+            'DISPLAY_FIRST_COLONY_DIALOGUE',
+            $user->getActive() === 1
+        );
 
         $game->setView(GameController::DEFAULT_VIEW);
 

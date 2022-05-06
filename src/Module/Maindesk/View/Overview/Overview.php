@@ -13,6 +13,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -84,7 +85,7 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
-            $user->getActive() === 1
+            $user->getActive() === PlayerEnum::USER_UNCOLONIZED
         );
         $this->newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
         $game->setTemplateVar(
