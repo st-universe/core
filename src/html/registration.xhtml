@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metal:macro metal:use-macro="html/sitemacros.xhtml/siteindex">
 	<metal:macro metal:fill-slot="body">
-		<form action="/index.php" method="post" onsubmit="checkSubmit(); return false;" id="registerform">
+		<form action="/index.php" method="post" onsubmit="checkSubmit(${IS_SMS_REGISTRATION}); return false;"
+			id="registerform">
 			<input type="hidden" name="B_SEND_REGISTRATION" value="1" />
 			<input type="hidden" name="factionid" id="factionid" value="0" />
 			<div style="display: inline-block; width: 300px; padding-right: 5px;">
@@ -26,13 +27,32 @@
 						registriert</div>
 				</div>
 				<br />
-				<div class="divhead">Einladungs-Code</div>
-				<div class="divbody">
-					<input tal:attributes="value TOKEN" type="text" class="text" size="25" name="token" id="token"
-						onblur="checkToken(this,this.value)" />
-					<span id="tokenerror" style="display: none; color: #FF0000;">Fehler</span>
-					<span id="tokenok" style="display: none; color: Green;">OK</span>
-				</div>
+				<tal:block tal:condition="not:IS_SMS_REGISTRATION">
+					<div class="divhead">Einladungs-Code</div>
+					<div class="divbody">
+						<input tal:attributes="value TOKEN" type="text" class="text" size="25" name="token" id="token"
+							onblur="checkToken(this,this.value)" />
+						<span id="tokenerror" style="display: none; color: #FF0000;">Fehler</span>
+						<span id="tokenok" style="display: none; color: Green;">OK</span>
+					</div>
+				</tal:block>
+				<tal:block tal:condition="IS_SMS_REGISTRATION">
+					<div class="divhead">Mobilfunknummer zur SMS Verifikation (DE/AT/CH)<img
+							title="z.B. +49 176 55555, oder +491501234567" src="assets/buttons/info2.png"
+							style="height:16px;" /></div>
+					<div class="divbody">
+						<input value="+49" type="text" class="text" size="25" name="mobile" id="mobile"
+							onblur="checkMobile(this,this.value)" />
+						<span id="mobileerror" style="display: none; color: #FF0000;">Fehler</span>
+						<span id="mobileok" style="display: none; color: Green;">OK</span>
+						<div id="mobiledup" style="color: #FFAA00; display: none;">Diese Mobilfunknummer ist bereits
+							registriert</div>
+						<div id="mobileucp" style="color: #FFAA00; display: none;">Nur +49, +41 und +43 werden
+							unterstützt (DE/AT/CH)</div>
+						<div id="mobileupd" style="color: #FFAA00; display: none;">ungültige Zeichen enthalten, nur 0-9
+							und + erlaubt</div>
+					</div>
+				</tal:block>
 				<br />
 				<div class="divhead">Regeln</div>
 				<div class="divbody">
@@ -46,7 +66,7 @@
 				</div>
 				<br />
 				<input tal:condition="REGISTRATION_POSSIBLE" type="submit" name="B_REGISTER" value="Registrieren"
-					class="button" onclick="checkSubmit();" />
+					class="button" onclick="checkSubmit(${IS_SMS_REGISTRATION});" />
 				<tal:block tal:condition="not:REGISTRATION_POSSIBLE">
 					<div class="divhead">Hinweis</div>
 					<div class="divbody">Im Moment sind leider keine weiteren Anmeldungen möglich</div>

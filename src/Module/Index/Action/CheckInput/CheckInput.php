@@ -16,7 +16,9 @@ final class CheckInput implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_CHECK_REGVAR';
     public const REGISTER_STATE_OK = "OK";
     public const REGISTER_STATE_NOK = "NA";
-    public const REGISTER_STATE_DUP = "DUP";
+    public const REGISTER_STATE_DUP = "DUP"; //duplication
+    public const REGISTER_STATE_UCP = "UCP"; //unknown country prefix
+    public const REGISTER_STATE_UPD = "UPD"; //unknown phone digits
 
     private CheckInputRequestInterface $checkInputRequest;
 
@@ -76,10 +78,35 @@ final class CheckInput implements ActionControllerInterface
                 }
                 $state = self::REGISTER_STATE_OK;
                 break;
-
+            case 'mobile':
+                $trimmedMobile = str_replace(' ', '', trim($value));
+                if (!$this->isMobileNumberCountryAllowed($trimmedMobile)) {
+                    $state = self::REGISTER_STATE_UCP;
+                    break;
+                }
+                if (!$this->isMobileFormatCorrect($trimmedMobile)) {
+                    $state = self::REGISTER_STATE_UPD;
+                    break;
+                }
+                if ($this->userRepository->getByMobile($trimmedMobile)) {
+                    $state = self::REGISTER_STATE_DUP;
+                    break;
+                }
+                $state = self::REGISTER_STATE_OK;
+                break;
         }
         echo $state;
         exit;
+    }
+
+    private function isMobileNumberCountryAllowed(string $mobile): bool
+    {
+        return strpos($mobile, '+49') === 0 || strpos($mobile, '+41') === 0 || strpos($mobile, '+43') === 0;
+    }
+
+    private function isMobileFormatCorrect(string $mobile): bool
+    {
+        return !preg_match('/[^0-9+]/', $mobile);
     }
 
     public function performSessionCheck(): bool

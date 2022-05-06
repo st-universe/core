@@ -9,6 +9,7 @@ use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
@@ -69,7 +70,7 @@ final class Register implements ActionControllerInterface
             return;
         }
 
-        $game->setView('SHOW_REGISTRATION_END');
+        $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool

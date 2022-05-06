@@ -220,6 +220,17 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getMobile(): string
+    {
+        return $this->mobile;
+    }
+
+    public function setMobile(string $mobile): UserInterface
+    {
+        $this->mobile = $mobile;
+        return $this;
+    }
+
     public function getRgbCode(): string
     {
         return $this->rgb_code;

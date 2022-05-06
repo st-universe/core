@@ -24,6 +24,10 @@ interface UserInterface
 
     public function setEmail(string $email): UserInterface;
 
+    public function getMobile(): string;
+
+    public function setMobile(string $mobile): UserInterface;
+
     public function getRgbCode(): string;
 
     public function setRgbCode(string $rgbCode): UserInterface;

@@ -95,6 +95,13 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ]);
     }
 
+    public function getByMobile(string $mobile): ?UserInterface
+    {
+        return $this->findOneBy([
+            'mobile' => $mobile
+        ]);
+    }
+
     public function getByLogin(string $loginName): ?UserInterface
     {
         return $this->findOneBy([

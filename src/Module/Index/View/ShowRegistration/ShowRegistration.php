@@ -35,6 +35,7 @@ final class ShowRegistration implements ViewControllerInterface
         $game->setTemplateFile('html/registration.xhtml');
 
         $game->setTemplateVar('REGISTRATION_POSSIBLE', $this->config->get('game.registration_enabled'));
+        $game->setTemplateVar('IS_SMS_REGISTRATION', $this->config->get('game.registration_via_sms'));
         $game->setTemplateVar('POSSIBLE_FACTIONS', $this->factionRepository->getByChooseable(true));
         $game->setTemplateVar('TOKEN', $this->showRegistrationRequest->getToken());
         $game->setTemplateVar('WIKI', $this->config->get('wiki.base_url'));
