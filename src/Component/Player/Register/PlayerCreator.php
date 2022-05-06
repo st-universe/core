@@ -82,7 +82,8 @@ final class PlayerCreator implements PlayerCreatorInterface
         FactionInterface $faction,
         string $mobile
     ): void {
-        $this->checkForException($loginName, $emailAddress, $mobile);
+        $mobileWithDoubleZero = str_replace('+', '00', $mobile);
+        $this->checkForException($loginName, $emailAddress, $mobileWithDoubleZero);
 
         $randomHash = substr(md5(uniqid(strval(rand()), true)), 16, 6);
 
@@ -90,7 +91,7 @@ final class PlayerCreator implements PlayerCreatorInterface
             $loginName,
             $emailAddress,
             $faction,
-            $mobile,
+            $mobileWithDoubleZero,
             $randomHash
         );
 
@@ -120,13 +121,12 @@ final class PlayerCreator implements PlayerCreatorInterface
 
     private function isMobileNumberCountryAllowed(string $mobile): bool
     {
-        return strpos($mobile, '+49') === 0 || strpos($mobile, '+41') === 0 || strpos($mobile, '+43') === 0
-            || strpos($mobile, '0049') === 0 || strpos($mobile, '0041') === 0 || strpos($mobile, '0043') === 0;
+        return strpos($mobile, '0049') === 0 || strpos($mobile, '0041') === 0 || strpos($mobile, '0043') === 0;
     }
 
     private function isMobileFormatCorrect(string $mobile): bool
     {
-        return !preg_match('/[^0-9+]/', $mobile);
+        return !preg_match('/[^0-9]/', $mobile);
     }
 
     public function createPlayer(
