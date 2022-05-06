@@ -46,7 +46,7 @@ function checkMobile(el, value) {
 		$('mobileupd').hide();
 		return false;
 	}
-	var varcheck = regVarCheck('mobile', value.replace('+', '%2B'));
+	var varcheck = regVarCheck('mobile', value.replace('+', '00'));
 	if (varcheck == 0) {
 		$('mobileok').hide();
 		$('mobileerror').show();
