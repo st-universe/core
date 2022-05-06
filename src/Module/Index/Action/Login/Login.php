@@ -64,11 +64,11 @@ final class Login implements ActionControllerInterface
         // check for sms verification
         if ($user !== null && $user->getActive() === PlayerEnum::USER_SMS_VERIFICATION) {
             $this->loggerUtil->log('A');
-            $smsCode = $this->loginRequest->getSmsVerificationCode();
-            if ($smsCode === null || $smsCode !== $user->getSmsCode()) {
-                $this->loggerUtil->log('B');
-                throw new LoginException(_('SMS-Verifikation Code inkorrekt'));
-            }
+
+            throw new LoginException(
+                _('Dein Spieleraccount ist noch nicht verifiziert'),
+                _('Dein Spieleraccount ist noch nicht verifiziert. Bitte gib den erhaltenen SMS Code ein.')
+            );
 
             $this->loggerUtil->log('C');
             // sms code was correct, activate user
