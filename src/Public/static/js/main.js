@@ -19,7 +19,7 @@ function checkEmail(el, value) {
 		$('emaildup').hide();
 		return false;
 	}
-	var varcheck = regVarCheck('email', value);
+	var varcheck = regVarCheck('email', value.replace('+', '%2B'));
 	if (varcheck == 0) {
 		$('emailok').hide();
 		$('emailerror').show();
