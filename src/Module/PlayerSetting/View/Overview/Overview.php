@@ -76,11 +76,12 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('USER', $user);
         $game->setTemplateVar('WIKI', $this->config->get('wiki.base_url'));
 
+        $invitations = $this->userInvitationRepository->getInvitationsByUser($user);
+
         //invitation only possible if sms registration disabled
         if ($this->config->get('game.registration.sms_code_verification.enabled')) {
             $game->setTemplateVar('INVITATION_POSSIBLE', false);
         } else {
-            $invitations = $this->userInvitationRepository->getInvitationsByUser($user);
             $game->setTemplateVar(
                 'INVITATION_POSSIBLE',
                 count($invitations) < $this->config->get('game.invitation.tokens_per_user')
