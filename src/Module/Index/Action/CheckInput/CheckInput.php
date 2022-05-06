@@ -7,6 +7,9 @@ namespace Stu\Module\Index\Action\CheckInput;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -28,16 +31,20 @@ final class CheckInput implements ActionControllerInterface
 
     private ConfigInterface $config;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         CheckInputRequestInterface $checkInputRequest,
         UserRepositoryInterface $userRepository,
         UserInvitationRepositoryInterface $userInvitationRepository,
-        ConfigInterface $config
+        ConfigInterface $config,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->checkInputRequest = $checkInputRequest;
         $this->userRepository = $userRepository;
         $this->userInvitationRepository = $userInvitationRepository;
         $this->config = $config;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -79,7 +86,10 @@ final class CheckInput implements ActionControllerInterface
                 $state = self::REGISTER_STATE_OK;
                 break;
             case 'mobile':
+                $this->loggerUtil->init('check', LoggerEnum::LEVEL_ERROR);
+
                 $trimmedMobile = str_replace(' ', '', trim($value));
+                $this->loggerUtil->log(sprintf('trimmedMobile: %d', $trimmedMobile));
                 if (!$this->isMobileNumberCountryAllowed($trimmedMobile)) {
                     $state = self::REGISTER_STATE_UCP;
                     break;
