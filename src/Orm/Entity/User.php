@@ -51,6 +51,9 @@ class User implements UserInterface
     /** @Column(type="string", length=200) */
     private $email = '';
 
+    /** @Column(type="string", length=50, nullable=true) */
+    private $mobile;
+
     /** @Column(type="integer", nullable=true) */
     private $allys_id;
 

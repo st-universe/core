@@ -51,6 +51,7 @@
       "ttl": 86400
     },
     "registration_enabled": false,
+    "registration_via_sms": false,
     "email_sender_address": "some@e.mail",
     "admins": [
       101,
