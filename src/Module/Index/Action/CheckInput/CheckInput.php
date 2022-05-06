@@ -51,7 +51,7 @@ final class CheckInput implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $var = $this->checkInputRequest->getVariable();
-        $value = request::getString('value');
+        $value = $this->checkInputRequest->getValue();
         $state = self::REGISTER_STATE_NOK;
         switch ($var) {
             default:
@@ -90,10 +90,10 @@ final class CheckInput implements ActionControllerInterface
             case 'mobile':
                 $this->loggerUtil->init('check', LoggerEnum::LEVEL_ERROR);
 
-                $this->loggerUtil->log(sprintf('mobile: %d', $value));
+                $this->loggerUtil->log(sprintf('mobile: %s', $value));
 
                 $trimmedMobile = str_replace('+', '00', str_replace(' ', '', trim($value, " \t\n\r\x0B")));
-                $this->loggerUtil->log(sprintf('trimmedMobile: %d', $trimmedMobile));
+                $this->loggerUtil->log(sprintf('trimmedMobile: %s', $trimmedMobile));
                 if (!$this->isMobileNumberCountryAllowed($trimmedMobile)) {
                     $state = self::REGISTER_STATE_UCP;
                     break;
