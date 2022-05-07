@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Player;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Player\ColonyLimitCalculator;
@@ -39,6 +40,7 @@ return [
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
     PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
         get(UserRepositoryInterface::class),
+        get(ConfigInterface::class),
         [
             autowire(Handler\AllianceDeletionHandler::class),
             autowire(Handler\ColonyDeletionHandler::class),

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -18,17 +19,22 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private ConfigInterface $config;
+
     private array $deletionHandler;
 
     /**
      * @param UserRepositoryInterface $userRepository
+     * @param ConfigInterface $config
      * @param PlayerDeletionHandlerInterface[] $deletionHandler
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
+        ConfigInterface $config,
         array $deletionHandler
     ) {
         $this->userRepository = $userRepository;
+        $this->config = $config;
         $this->deletionHandler = $deletionHandler;
     }
 
@@ -37,7 +43,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
         $list = $this->userRepository->getDeleteable(
             time() - PlayerDeletion::USER_IDLE_TIME,
             time() - PlayerDeletion::USER_IDLE_TIME_VACATION,
-            [101]
+            $this->config->get('game.admins')
         );
 
         foreach ($list as $player) {
