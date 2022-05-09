@@ -48,7 +48,7 @@ final class SmsVerification implements ActionControllerInterface
         $this->loggerUtil->log('Y');
 
         $user->setActive(PlayerEnum::USER_UNCOLONIZED);
-        $user->setMobile(md5($user->getMobile()));
+        $user->setMobile(sha1($user->getMobile()));
         $this->userRepository->save($user);
 
         $this->loggerUtil->log('Z');
