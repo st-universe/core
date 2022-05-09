@@ -88,12 +88,8 @@ final class CheckInput implements ActionControllerInterface
                 $state = self::REGISTER_STATE_OK;
                 break;
             case 'mobile':
-                $this->loggerUtil->init('check', LoggerEnum::LEVEL_ERROR);
-
-                $this->loggerUtil->log(sprintf('mobile: %s', $value));
 
                 $trimmedMobile = str_replace('+', '00', str_replace(' ', '', trim($value, " \t\n\r\x0B")));
-                $this->loggerUtil->log(sprintf('trimmedMobile: %s', $trimmedMobile));
                 if (!$this->isMobileNumberCountryAllowed($trimmedMobile)) {
                     $state = self::REGISTER_STATE_UCP;
                     break;
