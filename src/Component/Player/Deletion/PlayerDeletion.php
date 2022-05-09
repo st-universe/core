@@ -11,6 +11,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlayerDeletion implements PlayerDeletionInterface
 {
+    //3 days
+    public const USER_IDLE_REGISTRATION = 259200;
+
     //3 months
     public const USER_IDLE_TIME = 7905600;
 
@@ -40,12 +43,20 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     public function handleDeleteable(): void
     {
+        //delete all accounts that have not been activated
+        $list = $this->userRepository->getIdleRegistrations(
+            time() - self::USER_IDLE_REGISTRATION
+        );
+        foreach ($list as $player) {
+            $this->delete($player);
+        }
+
+        //delete all other deleatable accounts
         $list = $this->userRepository->getDeleteable(
-            time() - PlayerDeletion::USER_IDLE_TIME,
-            time() - PlayerDeletion::USER_IDLE_TIME_VACATION,
+            time() - self::USER_IDLE_TIME,
+            time() - self::USER_IDLE_TIME_VACATION,
             $this->config->get('game.admins')
         );
-
         foreach ($list as $player) {
             $this->delete($player);
         }

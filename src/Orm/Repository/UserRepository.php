@@ -88,6 +88,22 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ])->getResult();
     }
 
+    public function getIdleRegistrations(
+        int $idleTimeThreshold
+    ): iterable {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u
+                 WHERE u.active = :newUser
+                 AND u.creation < :idleTimeThreshold',
+                User::class
+            )
+        )->setParameters([
+            'idleTimeThreshold' => $idleTimeThreshold,
+            'newUser' => PlayerEnum::USER_NEW
+        ])->getResult();
+    }
+
     public function getByEmail(string $email): ?UserInterface
     {
         return $this->findOneBy([

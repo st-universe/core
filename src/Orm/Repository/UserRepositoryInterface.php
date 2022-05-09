@@ -35,6 +35,13 @@ interface UserRepositoryInterface extends ObjectRepository
         array $ignoreIds
     ): iterable;
 
+    /**
+     * @return UserInterface[]
+     */
+    public function getIdleRegistrations(
+        int $idleTimeThreshold
+    ): iterable;
+
     public function getByEmail(string $email): ?UserInterface;
 
     public function getByMobile(string $trimmedMobile): ?UserInterface;
