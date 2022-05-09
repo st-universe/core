@@ -97,9 +97,17 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
 
     public function getByMobile(string $mobile): ?UserInterface
     {
-        return $this->findOneBy([
-            'mobile' => $mobile
-        ]);
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u
+                WHERE u.mobile = :mobile
+                OR u.mobile = :mobileHash',
+                User::class
+            )
+        )->setParameters([
+            'mobile' => $mobile,
+            'mobileHash' => md5($mobile, true)
+        ])->getOneOrNullResult();
     }
 
     public function getByLogin(string $loginName): ?UserInterface
