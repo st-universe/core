@@ -106,7 +106,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'mobile' => $mobile,
-            'mobileHash' => md5($mobile, true)
+            'mobileHash' => md5($mobile)
         ])->getOneOrNullResult();
     }
 
