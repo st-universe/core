@@ -55,6 +55,7 @@
       "sms_code_verification": {
         "enabled": false,
         "email_to_sms_mail_domain": "pro.vider",
+        "email_to_sms_token": "optionalToken",
         "email_sender_address": "foo@bar.de"
       }
     },
