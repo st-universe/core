@@ -23,8 +23,9 @@ final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterf
     public function send(UserInterface $player, string $code): void
     {
         $body = <<<EOT
-        Dein SMS-Verifikation Code lautet\n\n
-        %s
+        Dein Aktivierungscode für Star Trek Universe lautet:\n\n
+        %s\n\n
+        Viel Spaß!
         EOT;
 
         $mail = new Message();
