@@ -80,7 +80,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $sigmod = array();
         $crew_usage = $rump->getBaseCrew();
         $error = false;
-        for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
+        for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             $this->loggerUtil->log(sprintf('%d', $i));
             $module = request::postArray('mod_' . $i);
             if (

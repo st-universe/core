@@ -32,6 +32,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_BEAM_BLOCKER = 22;
     public const SYSTEM_CONSTRUCTION_HUB = 23;
     public const SYSTEM_UPLINK = 24;
+    public const SYSTEM_FUSION_REACTOR = 25;
 
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
@@ -39,6 +40,7 @@ final class ShipSystemTypeEnum
         ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT => 10,
         ShipSystemTypeEnum::SYSTEM_EPS => 6,
         ShipSystemTypeEnum::SYSTEM_WARPCORE => 5,
+        ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => 5,
         ShipSystemTypeEnum::SYSTEM_DEFLECTOR => 4,
         ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS => 3,
         ShipSystemTypeEnum::SYSTEM_COMPUTER => 2,
@@ -77,13 +79,13 @@ final class ShipSystemTypeEnum
             case ShipSystemTypeEnum::SYSTEM_WARPCORE:
                 return _('Warpkern');
             case ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER:
-                return _('Tachyon-Scanner');
+                return _('Tachyonscanner');
             case ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT:
                 return _('Lebenserhaltungssystem');
             case ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM:
                 return _('Traktorstrahl');
             case ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS:
-                return _('Truppen-Quartiere');
+                return _('Truppenquartiere');
             case ShipSystemTypeEnum::SYSTEM_DEFLECTOR:
                 return _('Deflektor');
             case ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY:
@@ -95,13 +97,15 @@ final class ShipSystemTypeEnum
             case ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE:
                 return _('Torpedolager');
             case ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP:
-                return _('Shuttle-Rampe');
+                return _('Shuttlerampe');
             case ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER:
                 return _('Beamblocker');
             case ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB:
                 return _('Werfthub');
             case ShipSystemTypeEnum::SYSTEM_UPLINK:
                 return _('Uplink');
+            case ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR:
+                return _('Fusionsreaktor');
         }
         return '';
     }

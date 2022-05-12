@@ -32,6 +32,7 @@ use Stu\Component\Ship\System\Type\ComputerShipSystem;
 use Stu\Component\Ship\System\Type\ConstructionHubShipSystem;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Ship\System\Type\DeflectorShipSystem;
+use Stu\Component\Ship\System\Type\FusionReactorShipSystem;
 use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Component\Ship\System\Type\ShuttleRampShipSystem;
 use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
@@ -73,7 +74,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP => autowire(ShuttleRampShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER => autowire(BeamBlockerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB => autowire(ConstructionHubShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_UPLINK => autowire(UplinkShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_UPLINK => autowire(UplinkShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => autowire(FusionReactorShipSystem::class)
         ]
     )
 ];

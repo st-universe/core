@@ -213,6 +213,9 @@ final class ShipCreator implements ShipCreatorInterface
                         $systems[ShipSystemTypeEnum::SYSTEM_WARPDRIVE] = $module->getModule();
                     }
                     break;
+                case ShipModuleTypeEnum::MODULE_TYPE_REACTOR:
+                    $systems[ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR] = $module->getModule();
+                    break;
                 case ShipModuleTypeEnum::MODULE_TYPE_COMPUTER:
                     $systems[ShipSystemTypeEnum::SYSTEM_COMPUTER] = $module->getModule();
                     $systems[ShipSystemTypeEnum::SYSTEM_LSS] = 0;

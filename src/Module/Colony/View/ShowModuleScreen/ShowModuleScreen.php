@@ -58,12 +58,12 @@ final class ShowModuleScreen implements ViewControllerInterface
         }
 
         $moduleScreenTabs = new ModuleScreenTabWrapper;
-        for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
+        for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             $moduleScreenTabs->register(new ModuleScreenTab($i, $colony, $rump));
         }
 
         $moduleSelectors = [];
-        for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
+        for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             if ($i == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 $moduleSelectors[] = new ModuleSelectorSpecial(
                     $i,
@@ -109,7 +109,7 @@ final class ShowModuleScreen implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('RUMP', $rump);
         $game->setTemplateVar('MODULE_SCREEN_TABS', $moduleScreenTabs);
-        $game->setTemplateVar('MODULE_SLOTS', range(1, ShipModuleTypeEnum::MODULE_TYPE_COUNT));
+        $game->setTemplateVar('MODULE_SLOTS', range(1, ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT));
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
         $game->setTemplateVar('PLAN', false);
         $game->setTemplateVar('HAS_STORAGE', new ColonyStorageGoodWrapper($colony->getStorage()));

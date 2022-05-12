@@ -118,7 +118,7 @@ final class BuildShip implements ActionControllerInterface
         $modules = array();
         $sigmod = array();
         $crew_usage = $rump->getBaseCrew();
-        for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
+        for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             $module = request::postArray('mod_' . $i);
             if (
                 $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
