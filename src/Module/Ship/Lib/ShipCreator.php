@@ -16,6 +16,7 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperHull;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperImpulseDrive;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperInterface;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperProjectileWeapon;
+use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperReactor;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperShield;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSpecial;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpcore;
@@ -106,6 +107,9 @@ final class ShipCreator implements ShipCreatorInterface
             ShipModuleTypeEnum::MODULE_TYPE_WARPCORE => function (ShipInterface $ship): ModuleRumpWrapperInterface {
                 return new ModuleRumpWrapperWarpcore($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_WARPCORE), null);
             },
+            ShipModuleTypeEnum::MODULE_TYPE_REACTOR => function (ShipInterface $ship): ModuleRumpWrapperInterface {
+                return new ModuleRumpWrapperReactor($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_REACTOR), null);
+            },
             ShipModuleTypeEnum::MODULE_TYPE_COMPUTER => function (ShipInterface $ship): ModuleRumpWrapperInterface {
                 return new ModuleRumpWrapperComputer($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_COMPUTER), null);
             },
@@ -116,7 +120,7 @@ final class ShipCreator implements ShipCreatorInterface
                 return new ModuleRumpWrapperProjectileWeapon($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_TORPEDO), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                $specialMods = $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL); //$progress->getSpecialModules()->getValues();
+                $specialMods = $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL);
                 return new ModuleRumpWrapperSpecial($ship->getRump(), $specialMods, null);
             },
         ];
