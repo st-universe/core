@@ -21,7 +21,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function getSemaphore(int $key, bool $autoRelease = false)
+    public function getSemaphore(int $key)
     {
         return sem_get($key, 1, 0666, 1);
     }

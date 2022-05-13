@@ -88,7 +88,7 @@ final class ShipLoader implements ShipLoaderInterface
         $result = [];
 
         //main ship sema on
-        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY, true);
+        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY);
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
 
         $result[$shipId] = $this->acquireSemaphoresWithoutMain($shipId);
@@ -112,7 +112,7 @@ final class ShipLoader implements ShipLoaderInterface
         }
 
         $key = $ship->getUser()->getId();
-        $semaphore = $this->semaphoreUtil->getSemaphore($key, true);
+        $semaphore = $this->semaphoreUtil->getSemaphore($key);
         $this->semaphoreUtil->acquireSemaphore($key, $semaphore);
 
         return $ship;
