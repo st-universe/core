@@ -109,7 +109,7 @@ use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequest;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
 use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
 use Stu\Module\Ship\Action\TroopTransfer\TroopTransfer;
-use Stu\Module\Ship\Action\LoadWarpcore\LoadWarpcore;
+use Stu\Module\Ship\Action\LoadReactor\LoadReactor;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
 use Stu\Module\Ship\Action\MoveShipDown\MoveShipDown;
 use Stu\Module\Ship\Action\MoveShipLeft\MoveShipLeft;
@@ -153,8 +153,8 @@ use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtility;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
-use Stu\Module\Ship\Lib\WarpcoreUtil;
-use Stu\Module\Ship\Lib\WarpcoreUtilInterface;
+use Stu\Module\Ship\Lib\ReactorUtil;
+use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -210,7 +210,7 @@ return [
     JoinFleetRequestInterface::class => autowire(JoinFleetRequest::class),
     ShipLoaderInterface::class => autowire(ShipLoader::class),
     PriorizeFleetRequestInterface::class => autowire(PriorizeFleetRequest::class),
-    WarpcoreUtilInterface::class => autowire(WarpcoreUtil::class),
+    ReactorUtilInterface::class => autowire(ReactorUtil::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
@@ -288,7 +288,7 @@ return [
         FleetAlertGreen::ACTION_IDENTIFIER => autowire(FleetAlertGreen::class),
         FleetAlertYellow::ACTION_IDENTIFIER => autowire(FleetAlertYellow::class),
         FleetAlertRed::ACTION_IDENTIFIER => autowire(FleetAlertRed::class),
-        LoadWarpcore::ACTION_IDENTIFIER => autowire(LoadWarpcore::class),
+        LoadReactor::ACTION_IDENTIFIER => autowire(LoadReactor::class),
         EscapeTractorBeam::ACTION_IDENTIFIER => autowire(EscapeTractorBeam::class),
         Colonize::ACTION_IDENTIFIER => autowire(Colonize::class),
         RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),

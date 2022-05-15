@@ -9,10 +9,10 @@ use Stu\Orm\Entity\UserInterface;
 
 interface ColonyLibFactoryInterface
 {
-    public function createOrbitShipItem(
+    public function createOrbitManagementShipItem(
         ShipInterface $ship,
         int $ownerUserId
-    ): OrbitShipItemInterface;
+    ): OrbitManagementShipItem;
 
     public function createOrbitFleetItem(
         int $fleetId,

@@ -1,7 +1,6 @@
 <?php
 
-// @todo active strict typing
-declare(strict_types=0);
+declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
@@ -10,7 +9,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
-final class OrbitShipItem implements OrbitShipItemInterface
+final class OrbitManagementShipItem
 {
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
@@ -63,7 +62,7 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function ownedByUser(): bool
     {
-        return $this->ship->getUserId() == $this->userId;
+        return $this->ship->getUser()->getId() === $this->userId;
     }
 
     public function canLoadTorpedos(): bool
@@ -110,14 +109,15 @@ final class OrbitShipItem implements OrbitShipItemInterface
         return $this->ship->getMaxEbatt();
     }
 
-    public function getWarpCoreLoad(): int
+    public function getReactorLoad(): int
     {
-        return $this->ship->getWarpcoreLoad();
+
+        return $this->ship->getReactorLoad();
     }
 
-    public function getWarpCoreCapacity(): int
+    public function getReactorCapacity(): int
     {
-        return $this->ship->getWarpcoreCapacity();
+        return $this->ship->getReactorCapacity();
     }
 
     public function getRumpId(): int
@@ -143,6 +143,16 @@ final class OrbitShipItem implements OrbitShipItemInterface
     public function hasShuttleRamp(): bool
     {
         return $this->ship->hasShuttleRamp();
+    }
+
+    public function hasWarpcore(): bool
+    {
+        return $this->ship->hasWarpcore();
+    }
+
+    public function hasFusionReactor(): bool
+    {
+        return $this->ship->hasFusionReactor();
     }
 
     public function isShuttleRampHealthy(): bool

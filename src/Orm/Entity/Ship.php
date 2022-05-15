@@ -453,14 +453,14 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
-    public function getWarpcoreLoad(): int
+    public function getReactorLoad(): int
     {
         return $this->warpcore;
     }
 
-    public function setWarpcoreLoad(int $warpcoreLoad): ShipInterface
+    public function setReactorLoad(int $reactorload): ShipInterface
     {
-        $this->warpcore = $warpcoreLoad;
+        $this->warpcore = $reactorload;
         return $this;
     }
 
@@ -781,16 +781,24 @@ class Ship implements ShipInterface
     }
 
     /**
-     * proportional to warpcore system status
+     * proportional to reactor system status
      */
     public function getReactorOutput(): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
+        $hasWarpcore = $this->hasWarpcore();
+        $hasReactor = $this->hasFusionReactor();
+
+        if (!$hasWarpcore && !$hasReactor) {
             return $this->reactor_output;
         }
 
-        return (int) (ceil($this->reactor_output
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100));
+        if ($hasReactor) {
+            return (int) (ceil($this->reactor_output
+                * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR)->getStatus() / 100));
+        } else {
+            return (int) (ceil($this->reactor_output
+                * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100));
+        }
     }
 
     public function getTheoreticalReactorOutput(): int
@@ -1030,18 +1038,22 @@ class Ship implements ShipInterface
         return $modules;
     }
 
-    public function getWarpcoreCapacity(): int
-    {
-        return $this->getTheoreticalReactorOutput() * ShipEnum::WARPCORE_CAPACITY_MULTIPLIER;
-    }
-
     public function getReactorCapacity(): int
     {
-        if (!$this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
-            return 0;
+        if ($this->hasWarpcore()) {
+            return $this->getTheoreticalReactorOutput() * ShipEnum::WARPCORE_CAPACITY_MULTIPLIER;
         }
-        if ($this->getReactorOutput() > $this->getWarpcoreLoad()) {
-            return $this->getWarpcoreLoad();
+        if ($this->hasFusionReactor()) {
+            return $this->getTheoreticalReactorOutput() * ShipEnum::REACTOR_CAPACITY_MULTIPLIER;
+        }
+
+        return 0;
+    }
+
+    public function getReactorOutputCappedByReactorLoad(): int
+    {
+        if ($this->getReactorOutput() > $this->getReactorLoad()) {
+            return $this->getReactorLoad();
         }
         return $this->getReactorOutput();
     }
@@ -1079,7 +1091,7 @@ class Ship implements ShipInterface
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
-            $prod = $this->getReactorCapacity() - $this->getEpsUsage();
+            $prod = $this->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
             if ($prod <= 0) {
                 return $prod;
             }
@@ -1757,6 +1769,11 @@ class Ship implements ShipInterface
     public function hasWarpdrive(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+    }
+
+    public function hasFusionReactor(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR);
     }
 
     public function hasNbsLss(): bool

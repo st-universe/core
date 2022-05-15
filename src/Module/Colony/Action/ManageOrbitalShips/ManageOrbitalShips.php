@@ -30,7 +30,7 @@ use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\WarpcoreUtilInterface;
+use Stu\Module\Ship\Lib\ReactorUtilInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -58,7 +58,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
-    private WarpcoreUtilInterface $warpcoreUtil;
+    private ReactorUtilInterface $reactorUtil;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -74,7 +74,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker,
-        WarpcoreUtilInterface $warpcoreUtil,
+        ReactorUtilInterface $reactorUtil,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -88,7 +88,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
-        $this->warpcoreUtil = $warpcoreUtil;
+        $this->reactorUtil = $reactorUtil;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -113,7 +113,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $batt = request::postArrayFatal('batt');
         $man = request::postArray('man');
         $unman = request::postArray('unman');
-        $wk = request::postArray('wk');
+        $reactor = request::postArray('reactor');
         $torp = request::postArray('torp');
         $torp_type = request::postArray('torp_type');
         $storage = $colony->getStorage();
@@ -225,20 +225,29 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
                 $shipobj->setAlertStateGreen();
             }
-            if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
-                if ($this->warpcoreUtil->storageContainsNeededCommodities($storage)) {
-                    $load = $wk[$shipobj->getId()] == 'm' ? PHP_INT_MAX : (int)$wk[$shipobj->getId()];
-                    $loadMessage = $this->warpcoreUtil->loadWarpcore($shipobj, $load, $colony);
+            if (isset($reactor[$shipobj->getId()]) && $reactor[$shipobj->getId()] > 0) {
+                $hasWarpcore = $ship->hasWarpcore();
+                $hasFusionReactor = $ship->hasFusionReactor();
+
+                if (!$hasWarpcore && !$hasFusionReactor) {
+                    throw new Exception();
+                }
+
+                if ($this->reactorUtil->storageContainsNeededCommodities($storage, $hasWarpcore)) {
+                    $load = $reactor[$shipobj->getId()] == 'm' ? PHP_INT_MAX : (int)$reactor[$shipobj->getId()];
+                    $loadMessage = $this->reactorUtil->loadReactor($shipobj, $load, $colony, null, $hasWarpcore);
 
                     if ($loadMessage !== null) {
                         $msg[] = $loadMessage;
                     }
                 } else {
                     $msg[] = sprintf(
-                        _('%s: Es werden mindestens folgende Waren zum Aufladen des Warpkerns benötigt:'),
-                        $shipobj->getName()
+                        _('%s: Es werden mindestens folgende Waren zum Aufladen des %s benötigt:'),
+                        $shipobj->getName(),
+                        $hasWarpcore ? 'Warpkerns' : 'Fusionsreaktors'
                     );
-                    foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+                    $costs = $hasWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
+                    foreach ($costs as $commodityId => $loadCost) {
                         $msg[] = sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId));
                     }
                 }
@@ -251,13 +260,13 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 }
                 try {
                     if ($count < 0) {
-                        throw new Exception;
+                        throw new Exception();
                     }
                     if ($count == $shipobj->getTorpedoCount()) {
-                        throw new Exception;
+                        throw new Exception();
                     }
                     if ($shipobj->getUser() !== $user && $count <= $shipobj->getTorpedoCount()) {
-                        throw new Exception;
+                        throw new Exception();
                     }
 
                     if ($shipobj->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
@@ -270,7 +279,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->getTorpedoCount() == 0 && (!isset($torp_type[$shipobj->getId()]) ||
                             !array_key_exists($torp_type[$shipobj->getId()], $possibleTorpedoTypes))
                     ) {
-                        throw new Exception;
+                        throw new Exception();
                     }
                     if ($count > $shipobj->getMaxTorpedos()) {
                         $count = $shipobj->getMaxTorpedos();
@@ -342,7 +351,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $type = (int) $torp_type[$shipobj->getId()];
                         $torp_obj = $this->torpedoTypeRepository->find($type);
                         if (!$storage->containsKey($torp_obj->getGoodId())) {
-                            throw new Exception;
+                            throw new Exception();
                         }
                         if ($count > $storage[$torp_obj->getGoodId()]->getAmount()) {
                             $count = $storage[$torp_obj->getGoodId()]->getAmount();

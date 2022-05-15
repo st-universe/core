@@ -66,11 +66,17 @@
                 </div>
               </td>
               <td>
-                <div>
-                  <img class="center" onclick="this.up('div').down('input').value=${ship/getWarpcoreCapacity}"
+                <div tal:condition="ship/hasWarpcore">
+                  <img class="center" onclick="this.up('div').down('input').value=${ship/getReactorCapacity}"
                     src="assets/buttons/warpk.png" title="Warpkernladung" />
-                  <input type="text" size="3" name="wk[${ship/getId}]" />
-                  <span tal:condition="ship/ownedByUser">${ship/getWarpCoreLoad}/${ship/getWarpcoreCapacity}</span>
+                  <input type="text" size="3" name="reactor[${ship/getId}]" />
+                  <span tal:condition="ship/ownedByUser">${ship/getReactorLoad}/${ship/getReactorCapacity}</span>
+                </div>
+                <div tal:condition="ship/hasFusionReactor">
+                  <img class="center" onclick="this.up('div').down('input').value=${ship/getReactorCapacity}"
+                    src="assets/buttons/warpk.png" title="Fusionsreaktorladung" />
+                  <input type="text" size="3" name="reactor[${ship/getId}]" />
+                  <span tal:condition="ship/ownedByUser">${ship/getReactorLoad}/${ship/getReactorCapacity}</span>
                 </div>
               </td>
               <td>

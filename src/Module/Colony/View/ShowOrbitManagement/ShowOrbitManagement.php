@@ -61,7 +61,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
                 $groupedList[$fleetId] = [];
             }
 
-            $groupedList[$fleetId][] = $this->colonyLibFactory->createOrbitShipItem($ship, $userId);
+            $groupedList[$fleetId][] = $this->colonyLibFactory->createOrbitManagementShipItem($ship, $userId);
         }
 
         $list = [];

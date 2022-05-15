@@ -13,7 +13,7 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
 {
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->getWarpcoreLoad() == 0) {
+        if ($ship->getReactorLoad() == 0) {
             $reason = _('keine Warpkernladung vorhanden ist');
             return false;
         }

@@ -57,9 +57,9 @@ interface ShipInterface
 
     public function getWarpState(): bool;
 
-    public function getWarpcoreLoad(): int;
+    public function getReactorLoad(): int;
 
-    public function setWarpcoreLoad(int $warpcoreLoad): ShipInterface;
+    public function setReactorLoad(int $reactorload): ShipInterface;
 
     public function getCloakState(): bool;
 
@@ -230,9 +230,9 @@ interface ShipInterface
 
     public function getModules(): array;
 
-    public function getWarpcoreCapacity(): int;
-
     public function getReactorCapacity(): int;
+
+    public function getReactorOutputCappedByReactorLoad(): int;
 
     public function isWarpcoreHealthy(): bool;
 
@@ -430,6 +430,8 @@ interface ShipInterface
     public function hasWarpcore(): bool;
 
     public function hasWarpdrive(): bool;
+
+    public function hasFusionReactor(): bool;
 
     public function hasNbsLss(): bool;
 

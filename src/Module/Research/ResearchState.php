@@ -118,7 +118,7 @@ final class ResearchState implements ResearchStateInterface
         $ship = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId(), current($userColonies));
 
         $ship->setEps($ship->getTheoreticalMaxEps());
-        $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
+        $ship->setReactorLoad($ship->getReactorCapacity());
         $ship->setEBatt($ship->getMaxEBatt());
 
         if ($plan->getCrew() > 0) {

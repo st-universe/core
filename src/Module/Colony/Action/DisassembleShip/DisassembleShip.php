@@ -8,6 +8,7 @@ use request;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -123,7 +124,10 @@ final class DisassembleShip implements ActionControllerInterface
 
     private function retrieveWarpcoreLoad(ShipInterface $ship, $colony, $game): void
     {
-        $loads = (int) floor($ship->getWarpcoreLoad() / ShipEnum::WARPCORE_LOAD);
+        if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
+            return;
+        }
+        $loads = (int) floor($ship->getReactorLoad() / ShipEnum::WARPCORE_LOAD);
 
         if ($loads < 1) {
             return;

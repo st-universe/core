@@ -25,7 +25,7 @@ use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\WarpcoreUtilInterface;
+use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -53,7 +53,7 @@ final class ManageShips implements ActionControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
-    private WarpcoreUtilInterface $warpcoreUtil;
+    private ReactorUtilInterface $reactorUtil;
 
     private StationUtilityInterface $stationUtility;
 
@@ -68,7 +68,7 @@ final class ManageShips implements ActionControllerInterface
         CommodityRepositoryInterface $commodityRepository,
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker,
-        WarpcoreUtilInterface $warpcoreUtil,
+        ReactorUtilInterface $reactorUtil,
         StationUtilityInterface $stationUtility
     ) {
         $this->shipLoader = $shipLoader;
@@ -81,7 +81,7 @@ final class ManageShips implements ActionControllerInterface
         $this->commodityRepository = $commodityRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
-        $this->warpcoreUtil = $warpcoreUtil;
+        $this->reactorUtil = $reactorUtil;
         $this->stationUtility = $stationUtility;
     }
 
@@ -110,7 +110,7 @@ final class ManageShips implements ActionControllerInterface
         $batt = request::postArrayFatal('batt');
         $man = request::postArray('man');
         $unman = request::postArray('unman');
-        $wk = request::postArray('wk');
+        $reactor = request::postArray('reactor');
         $torp = request::postArray('torp');
         $torp_type = request::postArray('torp_type');
         $storage = $station->getStorage();
@@ -217,20 +217,29 @@ final class ManageShips implements ActionControllerInterface
                 $this->shipSystemManager->deactivateAll($shipobj);
                 $shipobj->setAlertStateGreen();
             }
-            if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
-                if ($this->warpcoreUtil->storageContainsNeededCommodities($storage)) {
-                    $load = $wk[$shipobj->getId()] == 'm' ? PHP_INT_MAX : (int)$wk[$shipobj->getId()];
-                    $loadMessage = $this->warpcoreUtil->loadWarpcore($shipobj, $load, null, $station);
+            if (isset($reactor[$shipobj->getId()]) && $reactor[$shipobj->getId()] > 0) {
+                $hasWarpcore = $shipobj->hasWarpcore();
+                $hasFusionReactor = $shipobj->hasFusionReactor();
+
+                if (!$hasWarpcore && !$hasFusionReactor) {
+                    throw new Exception();
+                }
+
+                if ($this->reactorUtil->storageContainsNeededCommodities($storage, $hasWarpcore)) {
+                    $load = $reactor[$shipobj->getId()] == 'm' ? PHP_INT_MAX : (int)$reactor[$shipobj->getId()];
+                    $loadMessage = $this->reactorUtil->loadReactor($shipobj, $load, null, $station, $hasWarpcore);
 
                     if ($loadMessage !== null) {
                         $msg[] = $loadMessage;
                     }
                 } else {
                     $msg[] = sprintf(
-                        _('%s: Es werden mindestens folgende Waren zum Aufladen des Warpkerns benötigt:'),
-                        $shipobj->getName()
+                        _('%s: Es werden mindestens folgende Waren zum Aufladen des %s benötigt:'),
+                        $shipobj->getName(),
+                        $hasWarpcore ? 'Warpkerns' : 'Fusionsreaktors'
                     );
-                    foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+                    $costs = $hasWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
+                    foreach ($costs as $commodityId => $loadCost) {
                         $msg[] = sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId));
                     }
                 }

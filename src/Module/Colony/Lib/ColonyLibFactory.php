@@ -69,11 +69,11 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
-    public function createOrbitShipItem(
+    public function createOrbitManagementShipItem(
         ShipInterface $ship,
         int $ownerUserId
-    ): OrbitShipItemInterface {
-        return new OrbitShipItem(
+    ): OrbitManagementShipItem {
+        return new OrbitManagementShipItem(
             $this->torpedoTypeRepository,
             $ship,
             $ownerUserId

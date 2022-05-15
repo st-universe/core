@@ -92,14 +92,14 @@ final class ShipTick implements ShipTickInterface
                 }
             }
 
-            $eps = $ship->getEps();
+            $availableEps = $ship->getEps();
         } else {
-            $eps = $ship->getEps() + $ship->getReactorCapacity();
+            $availableEps = $ship->getEps() + $ship->getReactorOutputCappedByReactorLoad();
         }
 
         //try to save energy by reducing alert state
-        if ($ship->getEpsUsage() > $eps) {
-            $malus = $ship->getEpsUsage() - $eps;
+        if ($ship->getEpsUsage() > $availableEps) {
+            $malus = $ship->getEpsUsage() - $availableEps;
             $alertUsage = $ship->getAlertState() - 1;
 
             if ($alertUsage > 0) {
@@ -117,7 +117,7 @@ final class ShipTick implements ShipTickInterface
         }
 
         //try to save energy by deactivating systems from low to high priority
-        if ($ship->getEpsUsage() > $eps) {
+        if ($ship->getEpsUsage() > $availableEps) {
             $activeSystems = $ship->getActiveSystems(true);
 
             foreach ($activeSystems as $system) {
@@ -128,7 +128,7 @@ final class ShipTick implements ShipTickInterface
                 }
 
                 //echo "- eps: ".$eps." - usage: ".$ship->getEpsUsage()."\n";
-                if ($eps - $ship->getEpsUsage() - $energyConsumption < 0) {
+                if ($availableEps - $ship->getEpsUsage() - $energyConsumption < 0) {
                     //echo "-- hit system: ".$system->getDescription()."\n";
 
                     $this->shipSystemManager->deactivate($ship, $system->getSystemType(), true);
@@ -143,19 +143,21 @@ final class ShipTick implements ShipTickInterface
                         return;
                     }
                 }
-                if ($ship->getEpsUsage() <= $eps) {
+                if ($ship->getEpsUsage() <= $availableEps) {
                     break;
                 }
             }
         }
-        $eps -= $ship->getEpsUsage();
-        if ($eps > $ship->getMaxEps()) {
-            $eps = $ship->getMaxEps();
+        $newEps = $availableEps - $ship->getEpsUsage();
+        if ($newEps > $ship->getMaxEps()) {
+            $newEps = $ship->getMaxEps();
         }
-        $wkuse = $ship->getEpsUsage() + ($eps - $ship->getEps());
+        $usedEnergy = $ship->getEpsUsage() + ($newEps - $ship->getEps());
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$ship->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
-        $ship->setEps($eps);
-        $ship->setWarpcoreLoad($ship->getWarpcoreLoad() - $wkuse);
+        $ship->setEps($newEps);
+
+        //core OR fusion
+        $ship->setReactorLoad($ship->getReactorLoad() - $usedEnergy);
 
         $this->checkForFinishedAstroMapping($ship);
 

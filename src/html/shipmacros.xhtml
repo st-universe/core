@@ -235,7 +235,10 @@
     </td>
     <td>
       <div style="float: left; width: 50%">
-        <img src="assets/buttons/warpk.png" title="Warpkern" /> <span tal:replace="ship/getWarpcoreLoad">Warpcore</span>
+        <img tal:condition="ship/hasWarpcore" src="assets/buttons/warpk.png" title="Warpkern" /> <span
+          tal:replace="ship/getReactorLoad">Warpcore</span>
+        <img tal:condition="ship/hasFusionReactor" src="assets/buttons/warpk.png" title="Fusionsreaktor" /> <span
+          tal:replace="ship/getReactorLoad">Fusioncore</span>
       </div>
       <div style="float: left; width: 50%">
         <img src="assets/buttons/batt.png" title="Ersatzbatterie" /> <span tal:replace="ship/getEBatt">BATTERY</span>

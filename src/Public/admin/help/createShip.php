@@ -47,7 +47,7 @@ if ($torptypeId > 0 || $noTorps) {
         $outerMap = $mapRepo->getByCoordinates($cx, $cy);
         $ship->setMap($outerMap);
         $ship->setEps($ship->getMaxEps());
-        $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
+        $ship->setReactorLoad($ship->getReactorCapacity());
         $ship->setShield($ship->getMaxShield());
         $ship->setEBatt($ship->getMaxEBatt());
 

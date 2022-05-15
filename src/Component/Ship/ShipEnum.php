@@ -30,6 +30,13 @@ final class ShipEnum
     ];
     public const WARPCORE_CAPACITY_MULTIPLIER = 15;
 
+    //reactor stuff
+    public const REACTOR_LOAD = 2;
+    public const REACTOR_LOAD_COST = [
+        CommodityTypeEnum::GOOD_DEUTERIUM => 1
+    ];
+    public const REACTOR_CAPACITY_MULTIPLIER = 10;
+
     //flight and signature directions
     public const DIRECTION_LEFT = 1;
     public const DIRECTION_BOTTOM = 2;
