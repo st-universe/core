@@ -62,12 +62,12 @@ final class ReactorUtil implements ReactorUtilInterface
             return null;
         }
 
-        $loadUnits = $isWarpcore ? ShipEnum::WARPCORE_LOAD : ShipEnum::REACTOR_LOAD;
+        $capaPerLoad = $isWarpcore ? ShipEnum::WARPCORE_LOAD : ShipEnum::REACTOR_LOAD;
 
         //check for core limitation
-        $loadUnits = ceil($additionalLoad / $loadUnits);
-        if ($loadUnits * $loadUnits > $ship->getReactorCapacity() - $ship->getReactorLoad()) {
-            $loadUnits = ceil(($ship->getReactorCapacity() - $ship->getReactorLoad()) / $loadUnits);
+        $loadUnits = ceil($additionalLoad /  $capaPerLoad);
+        if ($loadUnits *  $capaPerLoad > $ship->getReactorCapacity() - $ship->getReactorLoad()) {
+            $loadUnits = ceil(($ship->getReactorCapacity() - $ship->getReactorLoad()) /  $capaPerLoad);
         }
 
         $loadUnits = (int) $loadUnits;
@@ -116,10 +116,10 @@ final class ReactorUtil implements ReactorUtilInterface
         }
 
         //truncate output
-        if ($ship->getReactorLoad() + $loadUnits * $loadUnits > $ship->getReactorCapacity()) {
+        if ($ship->getReactorLoad() + $loadUnits *  $capaPerLoad > $ship->getReactorCapacity()) {
             $loadUnits = $ship->getReactorCapacity() - $ship->getReactorLoad();
         } else {
-            $loadUnits = $loadUnits * $loadUnits;
+            $loadUnits = $loadUnits *  $capaPerLoad;
         }
         $ship->setReactorLoad($ship->getReactorLoad() + $loadUnits);
         $this->shipRepository->save($ship);
