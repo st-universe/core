@@ -226,8 +226,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 $shipobj->setAlertStateGreen();
             }
             if (isset($reactor[$shipobj->getId()]) && $reactor[$shipobj->getId()] > 0) {
-                $hasWarpcore = $ship->hasWarpcore();
-                $hasFusionReactor = $ship->hasFusionReactor();
+                $hasWarpcore = $shipobj->hasWarpcore();
+                $hasFusionReactor = $shipobj->hasFusionReactor();
 
                 if (!$hasWarpcore && !$hasFusionReactor) {
                     throw new Exception();
