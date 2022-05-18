@@ -39,6 +39,8 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
         $curx = 0;
 
         foreach ($this->mapRepository->getAllOrdered() as $data) {
+            $col = null;
+
             if ($startY != $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;
@@ -52,42 +54,42 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
             $border = imagecreatetruecolor(15, 15);
             if ($data->getSystem()) {
                 $col = imagecolorallocate($border, 255, 0, 0);
-            } else {
-                $customColor = null;
+            } else if ($showAllyAreas) {
                 $influenceArea = $data->getInfluenceArea();
                 if ($influenceArea !== null) {
                     $base = $influenceArea->getBase();
 
-                    $ally = $base->getUser()->getAlliance();
+                    if ($base !== null) {
+                        $ally = $base->getUser()->getAlliance();
 
-                    if ($ally !== null) {
-                        $rgbCode = $ally->getRgbCode();
-                    } else {
-                        $rgbCode = $base->getUser()->getRgbCode();
-                    }
-
-                    if ($rgbCode !== '') {
-                        $red = 100;
-                        $green = 100;
-                        $blue = 100;
-
-                        $ret = [];
-                        if (mb_eregi("[#]?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", $rgbCode, $ret)) {
-
-                            $red = hexdec($ret[1]);
-
-                            $green = hexdec($ret[2]);
-
-                            $blue = hexdec($ret[3]);
+                        if ($ally !== null) {
+                            $rgbCode = $ally->getRgbCode();
+                        } else {
+                            $rgbCode = $base->getUser()->getRgbCode();
                         }
-                        $customColor = $rgbCode;
-                        $col = imagecolorallocate($border, $red, $green, $blue);
+
+                        if ($rgbCode !== '') {
+                            $red = 100;
+                            $green = 100;
+                            $blue = 100;
+
+                            $ret = [];
+                            if (mb_eregi("[#]?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", $rgbCode, $ret)) {
+
+                                $red = hexdec($ret[1]);
+
+                                $green = hexdec($ret[2]);
+
+                                $blue = hexdec($ret[3]);
+                            }
+                            $col = imagecolorallocate($border, $red, $green, $blue);
+                        }
                     }
                 }
+            }
 
-                if ($customColor === null) {
-                    $col = imagecolorallocate($border, $rest, $rest, $rest);
-                }
+            if ($col === null) {
+                $col = imagecolorallocate($border, $rest, $rest, $rest);
             }
 
             imagefill($border, 0, 0, $col);
