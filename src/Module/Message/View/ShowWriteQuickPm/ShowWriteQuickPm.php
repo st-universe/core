@@ -35,7 +35,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
 
 
     public function __construct(
-        Parser $bbCodeParser
+        Parser $bbCodeParser,
         UserRepositoryInterface $userRepository,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
