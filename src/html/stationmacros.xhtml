@@ -261,12 +261,12 @@
     </td>
     <td>
       <a tal:condition="ship/isBase" href="javascript:void(0);"
-        onclick="openPmWindow(${STATION/getId},${ship/getUserId},4,4)"
+        onclick="openPmWindow(${STATION/getId},${ship/getId},4,4)"
         title="Nachricht an ${bbcode2txt:ship/getUserName} verfassen"
         onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')" onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
         <img src="/assets/buttons/msg1.png" name="nbsPm${ship/getId}" /></a>
       <a tal:condition="ship/isBase" href="javascript:void(0);"
-        onclick="openPmWindow(${STATION/getId},${ship/getUserId},4,2)"
+        onclick="openPmWindow(${STATION/getId},${ship/getId},4,2)"
         title="Nachricht an ${bbcode2txt:ship/getUserName} verfassen"
         onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')" onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
         <img src="/assets/buttons/msg1.png" name="nbsPm${ship/getId}" /></a>

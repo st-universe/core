@@ -88,14 +88,14 @@
               <td>
                 <div id="fleetuser${data/getId}" style="display: none;">
                   <a tal:condition="SHIP/isBase" href="javascript:void(0);"
-                    onclick="openPmWindow(${SHIP/getId},${data/getUserId},4,3)"
+                    onclick="openPmWindow(${SHIP/getId},${data/getId},4,3)"
                     title="Nachricht an ${bbcode2txt:data/getUserName} verfassen"
                     onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
                     onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
                     <img src="/assets/buttons/msg1.png" name="nbsPm${data/getId}" />
                   </a>
                   <a tal:condition="not:SHIP/isBase" href="javascript:void(0);"
-                    onclick="openPmWindow(${SHIP/getId},${data/getUserId},2,3)"
+                    onclick="openPmWindow(${SHIP/getId},${data/getId},2,3)"
                     title="Nachricht an ${bbcode2txt:data/getUserName} verfassen"
                     onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
                     onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
@@ -152,14 +152,14 @@
               <td>
                 <div id="fleetuser${data/getId}">
                   <a tal:condition="SHIP/isBase" href="javascript:void(0);"
-                    onclick="openPmWindow(${SHIP/getId},${data/getUserId},4,3)"
+                    onclick="openPmWindow(${SHIP/getId},${data/getId},4,3)"
                     title="Nachricht an ${bbcode2txt:data/getUserName} verfassen"
                     onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
                     onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
                     <img src="/assets/buttons/msg1.png" name="nbsPm${data/getId}" />
                   </a>
                   <a tal:condition="not:SHIP/isBase" href="javascript:void(0);"
-                    onclick="openPmWindow(${SHIP/getId},${data/getUserId},2,3)"
+                    onclick="openPmWindow(${SHIP/getId},${data/getId},2,3)"
                     title="Nachricht an ${bbcode2txt:data/getUserName} verfassen"
                     onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
                     onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
@@ -505,24 +505,24 @@
     <td>
       <tal:block tal:condition="SHIP/isBase">
         <a tal:condition="ship/isBase" href="javascript:void(0);"
-          onclick="openPmWindow(${SHIP/getId},${ship/getUserId},4,4)"
+          onclick="openPmWindow(${SHIP/getId},${ship/getId},4,4)"
           title="Nachricht an ${bbcode2txt:ship/getUserName} verfassen"
           onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')" onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
           <img src="/assets/buttons/msg1.png" name="nbsPm${ship/getId}" /></a>
         <a tal:condition="not:ship/isBase" href="javascript:void(0);"
-          onclick="openPmWindow(${SHIP/getId},${ship/getUserId},4,2)"
+          onclick="openPmWindow(${SHIP/getId},${ship/getId},4,2)"
           title="Nachricht an ${bbcode2txt:ship/getUserName} verfassen"
           onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')" onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
           <img src="/assets/buttons/msg1.png" name="nbsPm${ship/getId}" /></a>
       </tal:block>
       <tal:block tal:condition="not:SHIP/isBase">
         <a tal:condition="ship/isBase" href="javascript:void(0);"
-          onclick="openPmWindow(${SHIP/getId},${ship/getUserId},2,4)"
+          onclick="openPmWindow(${SHIP/getId},${ship/getId},2,4)"
           title="Nachricht an ${bbcode2txt:ship/getUserName} verfassen"
           onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')" onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
           <img src="/assets/buttons/msg1.png" name="nbsPm${ship/getId}" /></a>
         <a tal:condition="not:ship/isBase" href="javascript:void(0);"
-          onclick="openPmWindow(${SHIP/getId},${ship/getUserId},2,2)"
+          onclick="openPmWindow(${SHIP/getId},${ship/getId},2,2)"
           title="Nachricht an ${bbcode2txt:ship/getUserName} verfassen"
           onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')" onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
           <img src="/assets/buttons/msg1.png" name="nbsPm${ship/getId}" /></a>
