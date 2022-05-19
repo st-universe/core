@@ -373,6 +373,14 @@ final class TroopTransfer implements ActionControllerInterface
 
             $target->getDockedShips()->clear();
             $this->shipLoader->save($target);
+        } else {
+            if (
+                $target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+                && $target->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+                && $target->getCrewCount() <= $target->getBuildplan()->getCrew()
+            ) {
+                $this->helper->deactivate($target->getId(), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
+            }
         }
 
         return $amount;
