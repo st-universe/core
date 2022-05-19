@@ -895,6 +895,9 @@
         <td>Ziel: <span tal:replace="structure bbcode:target/getName">...</span></td>
       </tr>
       <tr tal:condition="php: NOT IS_COLONY AND target.getBuildplan()">
+        <td>Aktuelle Crewanzahl des Ziels: ${target/getCrewCount}</td>
+      </tr>
+      <tr tal:condition="php: NOT IS_COLONY AND target.getBuildplan()">
         <td>Minimalcrew des Ziels: ${target/getBuildplan/getCrew}</td>
       </tr>
       <tr>
