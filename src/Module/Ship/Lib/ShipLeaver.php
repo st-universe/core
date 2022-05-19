@@ -176,8 +176,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setMaxHuell(1);
         $pods->setAlertStateGreen();
 
-        $pods->setMap($ship->getMap());
-        $pods->setStarsystemMap($ship->getStarsystemMap());
+        $pods->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
         //return to save place
         $this->returnToSafety($pods, $ship);

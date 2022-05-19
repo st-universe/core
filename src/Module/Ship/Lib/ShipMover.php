@@ -506,9 +506,9 @@ final class ShipMover implements ShipMoverInterface
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
         if ($ship->getSystem() === null) {
-            $ship->setMap($nextField);
+            $ship->updateLocation($nextField, null);
         } else {
-            $ship->setStarsystemMap($nextField);
+            $ship->updateLocation(null, $nextField);
         }
         $this->hasTravelled = true;
         if ($ship === $leadShip) {
@@ -528,9 +528,9 @@ final class ShipMover implements ShipMoverInterface
             $ship->setEps($ship->getEps() - $tractoredShip->getRump()->getFlightEcost());
             $this->$met($tractoredShip);
             if ($ship->getSystem() === null) {
-                $tractoredShip->setMap($nextField);
+                $tractoredShip->updateLocation($nextField, null);
             } else {
-                $tractoredShip->setStarsystemMap($nextField);
+                $tractoredShip->updateLocation(null, $nextField);
             }
 
             //check for tractor system health

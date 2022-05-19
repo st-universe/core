@@ -225,8 +225,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $ship->setDockedTo(null);
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 
-        $ship->setMap($map);
-        $ship->setStarsystemMap(null);
+        $ship->updateLocation($map, null);
     }
 
     private function getNewDirection(ShipInterface $ship): int

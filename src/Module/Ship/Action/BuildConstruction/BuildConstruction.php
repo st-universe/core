@@ -260,8 +260,7 @@ final class BuildConstruction implements ActionControllerInterface
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_ON);
 
-        $workbee->setMap($ship->getMap());
-        $workbee->setStarsystemMap($ship->getStarsystemMap());
+        $workbee->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
         $shipCrewArray = $ship->getCrewlist()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
@@ -293,8 +292,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction->setMaxHuell($rump->getBaseHull());
         $construction->setAlertStateGreen();
 
-        $construction->setMap($ship->getMap());
-        $construction->setStarsystemMap($ship->getStarsystemMap());
+        $construction->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
         $this->shipRepository->save($construction);
 

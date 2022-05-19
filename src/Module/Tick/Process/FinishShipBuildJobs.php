@@ -68,8 +68,7 @@ final class FinishShipBuildJobs implements ProcessTickInterface
                 $obj->getShipBuildplan()->getId()
             );
 
-            $ship->setMap($shipyard->getMap());
-            $ship->setStarsystemMap($shipyard->getStarsystemMap());
+            $ship->updateLocation($shipyard->getMap(), $shipyard->getStarsystemMap());
 
             $this->shipyardShipQueueRepository->delete($obj);
 

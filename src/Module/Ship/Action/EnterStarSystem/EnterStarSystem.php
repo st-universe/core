@@ -215,8 +215,7 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private function enterStarSystem(ShipInterface $ship, StarSystemMapInterface $starsystemMap): void
     {
-        $ship->setStarsystemMap($starsystemMap);
-        $ship->setMap(null);
+        $ship->updateLocation(null, $starsystemMap);
         $ship->setDockedTo(null);
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 

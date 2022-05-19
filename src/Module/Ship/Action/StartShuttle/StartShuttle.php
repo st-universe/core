@@ -167,8 +167,7 @@ final class StartShuttle implements ActionControllerInterface
         $shuttle->setEps($shuttle->getMaxEps());
         $shuttle->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
 
-        $shuttle->setMap($ship->getMap());
-        $shuttle->setStarsystemMap($ship->getStarsystemMap());
+        $shuttle->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
         $shipCrewArray = $ship->getCrewlist()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
