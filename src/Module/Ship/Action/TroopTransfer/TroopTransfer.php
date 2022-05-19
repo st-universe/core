@@ -156,13 +156,13 @@ final class TroopTransfer implements ActionControllerInterface
 
                 $this->loggerUtil->log('A');
                 $isUplinkSituation = false;
+                $ownCrewOnTarget = $this->transferUtility->ownCrewOnTarget($user, $target);
 
                 if ($target->getUser() !== $user) {
                     $this->loggerUtil->log('B');
                     if ($target->hasUplink()) {
                         $this->loggerUtil->log('C');
                         $isUplinkSituation = true;
-                        $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $target);
                     } else {
                         return;
                     }
@@ -188,9 +188,9 @@ final class TroopTransfer implements ActionControllerInterface
                         }
                     }
 
-                    $amount = $this->transferToShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownForeignerCount, $game);
+                    $amount = $this->transferToShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownCrewOnTarget, $game);
                 } else {
-                    $amount = $this->transferFromShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownForeignerCount, $game);
+                    $amount = $this->transferFromShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownCrewOnTarget, $game);
                 }
             }
         } catch (ShipSystemException $e) {
@@ -263,7 +263,7 @@ final class TroopTransfer implements ActionControllerInterface
         ShipInterface $ship,
         ShipInterface $target,
         bool $isUplinkSituation,
-        ?int $ownForeignerCount,
+        int $ownCrewOnTarget,
         GameControllerInterface $game
     ): int {
         if (!$target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
@@ -272,13 +272,13 @@ final class TroopTransfer implements ActionControllerInterface
             throw new SystemNotFoundException();
         }
 
-        $this->loggerUtil->log(sprintf('ownForeignerCount: %d', $ownForeignerCount));
+        $this->loggerUtil->log(sprintf('ownCrewOnTarget: %d', $ownCrewOnTarget));
 
         $amount = min(
             $requestedTransferCount,
             $this->transferUtility->getBeamableTroopCount($ship),
             $this->transferUtility->getFreeQuarters($target),
-            $isUplinkSituation ? ($ownForeignerCount === 0 ? 1 : 0) : PHP_INT_MAX
+            $isUplinkSituation ? ($ownCrewOnTarget === 0 ? 1 : 0) : PHP_INT_MAX
         );
 
         $array = $ship->getCrewlist()->getValues();
@@ -313,14 +313,13 @@ final class TroopTransfer implements ActionControllerInterface
         ShipInterface $ship,
         ShipInterface $target,
         bool $isUplinkSituation,
-        ?int $ownForeignerCount,
+        int $ownCrewOnTarget,
         GameControllerInterface $game
     ): int {
         $amount = min(
             $requestedTransferCount,
-            $target->getCrewCount() - $this->transferUtility->foreignerCount($target),
             $this->transferUtility->getFreeQuarters($ship),
-            $isUplinkSituation ? $ownForeignerCount : PHP_INT_MAX
+            $ownCrewOnTarget
         );
 
         if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {

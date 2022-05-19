@@ -71,11 +71,11 @@ final class ShowTroopTransfer implements ViewControllerInterface
             }
         } else {
             $target = $this->shipRepository->find((int)request::getIntFatal('target'));
+            $ownCrewOnTarget = $this->transferUtility->ownCrewOnTarget($user, $target);
 
             if ($target->getUser() !== $user) {
                 if ($target->hasUplink()) {
                     $isUplinkSituation = true;
-                    $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $target);
                 } else {
                     return;
                 }
@@ -85,14 +85,13 @@ final class ShowTroopTransfer implements ViewControllerInterface
                 $max = min(
                     $this->transferUtility->getBeamableTroopCount($ship),
                     $this->transferUtility->getFreeQuarters($target),
-                    $isUplinkSituation ? ($ownForeignerCount === 0 ? 1 : 0) : PHP_INT_MAX
+                    $isUplinkSituation ? ($ownCrewOnTarget === 0 ? 1 : 0) : PHP_INT_MAX
                 );
                 $game->setPageTitle(_('Truppen zu Schiff beamen'));
             } else {
                 $max = min(
-                    $target->getCrewCount(),
-                    $this->transferUtility->getFreeQuarters($ship),
-                    $isUplinkSituation ? $ownForeignerCount : PHP_INT_MAX
+                    $ownCrewOnTarget,
+                    $this->transferUtility->getFreeQuarters($ship)
                 );
                 $game->setPageTitle(_('Truppen von Schiff beamen'));
             }

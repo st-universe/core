@@ -29,7 +29,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         return max(0, $max);
     }
 
-    public function ownForeignerCount(UserInterface $user, ShipInterface $ship): int
+    public function ownCrewOnTarget(UserInterface $user, ShipInterface $ship): int
     {
         $count = 0;
 
