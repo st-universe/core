@@ -231,10 +231,10 @@ function openBoardSettings(obj, bid) {
         openWindowPosition(elt, 1, 200, pos[0] - 200, pos[1]);
         ajax_update(elt, "alliance.php?SHOW_BOARD_SETTINGS=1&bid=" + bid);
 }
-function openPmWindow(userId) {
+function openPmWindow(fromId, toId, fromType, toType) {
         elt = 'pmwindow';
         openWindowPosition(elt, 1, 600, 90, 60);
-        ajax_update(elt, '/pm.php?SHOW_WRITE_QUICKPM=1&recipient=' + userId);
+        ajax_update(elt, '/pm.php?SHOW_WRITE_QUICKPM=1&fromid=' + fromId + '&toid=' + toId + '&fromtype=' + fromType + '&totype=' + toType);
 }
 function sendQuickPM(userId) {
         var elem = $('quickpm').serialize() + '&sstr=' + $('pm_sstr').value;

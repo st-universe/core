@@ -1,8 +1,9 @@
 <html xmlns:stu="stu">
 <tal:block metal:define-macro="pmwindow" tal:define="handle THIS/getUniqId">
   <a href="javascript:void(0);" onmouseover="cp('${handle}','buttons/msg2', 'png');"
-    onmouseout="cp('${handle}','buttons/msg1', 'png');" onclick="closePopup();openPmWindow(${id});"><img
-      src="/assets/buttons/msg1.png" tal:attributes="name handle" title="Nachricht senden" /></a>
+    onmouseout="cp('${handle}','buttons/msg1', 'png');"
+    onclick="closePopup();openPmWindow(${USER/getId}, ${id}, 1,1);"><img src="/assets/buttons/msg1.png"
+      tal:attributes="name handle" title="Nachricht senden" /></a>
 </tal:block>
 <tal:block metal:define-macro="userprofile" tal:define="handle THIS/getUniqId">
   <a href="/userprofile.php?uid=${id}" onmouseover="cp('${handle}','buttons/info2', 'png');"

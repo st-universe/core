@@ -72,14 +72,11 @@ use Stu\Module\Message\View\ShowWritePm\ShowWritePm;
 use Stu\Module\Message\View\ShowWritePm\ShowWritePmRequest;
 use Stu\Module\Message\View\ShowWritePm\ShowWritePmRequestInterface;
 use Stu\Module\Message\View\ShowWriteQuickPm\ShowWriteQuickPm;
-use Stu\Module\Message\View\ShowWriteQuickPm\ShowWriteQuickPmRequest;
-use Stu\Module\Message\View\ShowWriteQuickPm\ShowWriteQuickPmRequestInterface;
 use function DI\autowire;
 
 return [
     PrivateMessageSenderInterface::class => autowire(PrivateMessageSender::class),
     OverviewRequestInterface::class => autowire(OverviewRequest::class),
-    ShowWriteQuickPmRequestInterface::class => autowire(ShowWriteQuickPmRequest::class),
     ShowWritePmRequestInterface::class => autowire(ShowWritePmRequest::class),
     ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
     ShowContactModeSwitchRequestInterface::class => autowire(ShowContactModeSwitchRequest::class),

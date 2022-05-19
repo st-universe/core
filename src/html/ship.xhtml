@@ -654,9 +654,21 @@
 							<span tal:condition="not:CURRENT_COLONY/isFree"
 								tal:replace="structure bbcode:CURRENT_COLONY/getName">NAME</span>
 						</span>
-						<div>
-							<metal:block metal:use-macro="html/macros.xhtml/pmwindow"
-								tal:define="id CURRENT_COLONY/getUserId;handle bbcode2txt:CURRENT_COLONY/getUser/getName" />
+						<div tal:define="handle THIS/getUniqId">
+							<tal:block tal:condition="SHIP/isBase">
+								<a href="javascript:void(0);" onmouseover="cp('${handle}','buttons/msg2', 'png');"
+									onmouseout="cp('${handle}','buttons/msg1', 'png');"
+									onclick="closePopup();openPmWindow(${SHIP/getId}, ${CURRENT_COLONY/getId}, 4,5);"><img
+										src="/assets/buttons/msg1.png" tal:attributes="name handle"
+										title="Nachricht an Kolonie senden" /></a>
+							</tal:block>
+							<tal:block tal:condition="not:SHIP/isBase">
+								<a href="javascript:void(0);" onmouseover="cp('${handle}','buttons/msg2', 'png');"
+									onmouseout="cp('${handle}','buttons/msg1', 'png');"
+									onclick="closePopup();openPmWindow(${SHIP/getId}, ${CURRENT_COLONY/getId}, 2,5);"><img
+										src="/assets/buttons/msg1.png" tal:attributes="name handle"
+										title="Nachricht an Kolonie senden" /></a>
+							</tal:block>
 							<span tal:replace="structure bbcode:CURRENT_COLONY/getUser/getName">USERNAME</span>
 						</div>
 					</tal:block>
