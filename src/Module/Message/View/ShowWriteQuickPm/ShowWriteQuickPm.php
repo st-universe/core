@@ -80,30 +80,32 @@ final class ShowWriteQuickPm implements ViewControllerInterface
         switch ($toType) {
             case self::TYPE_USER:
                 $to = $this->userRepository->find($toId);
+                $recipient = $to;
                 $setTemplateText = false;
                 break;
             case self::TYPE_SHIP:
                 $to = $this->shipRepository->find($toId);
                 $toText = _('der');
+                $recipient = $to->getUser();
                 break;
             case self::TYPE_FLEET:
                 $to = $this->fleetRepository->find($toId);
                 $toText = _('der Flotte');
+                $recipient = $to->getUser();
                 break;
             case self::TYPE_STATION:
                 $to = $this->shipRepository->find($toId);
                 $toText = _('der Station');
+                $recipient = $to->getUser();
                 break;
             case self::TYPE_COLONY:
                 $to = $this->colonyRepository->find($toId);
                 $toText = _('der Kolonie');
+                $recipient = $to->getUser();
                 break;
         }
 
-        $game->setTemplateVar(
-            'RECIPIENT',
-            $this->userRepository->find($this->showWriteQuickPmRequest->getRecipientId())
-        );
+        $game->setTemplateVar('RECIPIENT', $recipient);
         $game->setTemplateVar(
             'TEMPLATETEXT',
             $setTemplateText ? sprintf(
