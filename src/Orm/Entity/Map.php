@@ -248,4 +248,9 @@ class Map implements MapInterface
     {
         return $this->signatures;
     }
+
+    public function getSectorString(): string
+    {
+        return  $this->getCx() . '|' . $this->getCy();
+    }
 }

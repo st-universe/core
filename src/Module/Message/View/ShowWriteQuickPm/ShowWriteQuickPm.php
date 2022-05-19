@@ -57,23 +57,42 @@ final class ShowWriteQuickPm implements ViewControllerInterface
         switch ($fromType) {
             case self::TYPE_USER:
                 $from = $this->userRepository->find($fromId);
+                if ($from != $game->getUser()) {
+                    return;
+                }
                 $setTemplateText = false;
                 break;
             case self::TYPE_SHIP:
                 $from = $this->shipRepository->find($fromId);
+                if ($from->getUser() != $game->getUser()) {
+                    return;
+                }
                 $whoText = _('Die');
+                $sectorString = $from->getSectorString();
                 break;
             case self::TYPE_FLEET:
                 $from = $this->fleetRepository->find($fromId);
+                if ($from->getUser() != $game->getUser()) {
+                    return;
+                }
                 $whoText = _('Die Flotte');
+                $sectorString = $from->getLeadShip()->getSectorString();
                 break;
             case self::TYPE_STATION:
                 $from = $this->shipRepository->find($fromId);
+                if ($from->getUser() != $game->getUser()) {
+                    return;
+                }
                 $whoText = _('Die Station');
+                $sectorString = $from->getSectorString();
                 break;
             case self::TYPE_COLONY:
                 $from = $this->colonyRepository->find($fromId);
+                if ($from->getUser() != $game->getUser()) {
+                    return;
+                }
                 $whoText = _('Die Kolonie');
+                $sectorString = $from->getSectorString();
                 break;
         }
 
@@ -109,11 +128,12 @@ final class ShowWriteQuickPm implements ViewControllerInterface
         $game->setTemplateVar(
             'TEMPLATETEXT',
             $setTemplateText ? sprintf(
-                _('%s %s sendet %s %s folgende Nachricht:'),
+                _('%s %s sendet %s %s in Sektor %s folgende Nachricht:'),
                 $whoText,
                 $from->getName(),
                 $toText,
-                $to->getName()
+                $to->getName(),
+                $sectorString
             ) : ''
         );
     }

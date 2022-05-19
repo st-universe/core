@@ -176,4 +176,6 @@ interface ColonyInterface
     public function lowerEps(int $value): void;
 
     public function upperEps(int $value): void;
+
+    public function getSectorString(): string;
 }

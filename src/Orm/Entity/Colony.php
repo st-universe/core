@@ -746,4 +746,9 @@ class Colony implements ColonyInterface
     {
         $this->setEps($this->getEps() + $value);
     }
+
+    public function getSectorString(): string
+    {
+        return $this->getStarsystemMap()->getSectorString();
+    }
 }

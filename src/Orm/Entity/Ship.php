@@ -1248,11 +1248,11 @@ class Ship implements ShipInterface
 
     public function getSectorString(): string
     {
-        $str = $this->getPosX() . '|' . $this->getPosY();
-        if ($this->getSystem() !== null) {
-            $str .= ' (' . $this->getSystem()->getName() . '-System)';
+        if ($this->getStarsystemMap() !== null) {
+            return $this->getStarsystemMap()->getSectorString();
+        } else {
+            return $this->getMap()->getSectorString();
         }
-        return $str;
     }
 
     public function getBuildplan(): ?ShipBuildplanInterface

@@ -53,4 +53,6 @@ interface MapInterface
     public function getShips(): Collection;
 
     public function getSignatures(): Collection;
+
+    public function getSectorString(): string;
 }
