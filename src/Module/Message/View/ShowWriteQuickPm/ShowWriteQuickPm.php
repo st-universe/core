@@ -134,7 +134,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
         $game->setTemplateVar(
             'TEMPLATETEXT',
             $setTemplateText ? sprintf(
-                _('%s %s sendet %s %s in Sektor %s folgende Nachricht:'),
+                _('%s "%s" sendet %s "%s" in Sektor %s folgende Nachricht:'),
                 $whoText,
                 $this->bbCodeParser->parse($from->getName())->getAsText(),
                 $toText,
