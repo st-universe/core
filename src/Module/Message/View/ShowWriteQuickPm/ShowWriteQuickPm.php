@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
 use request;
+use JBBCode\Parser;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -22,6 +23,8 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     public const TYPE_STATION = 4;
     public const TYPE_COLONY = 5;
 
+    private Parser $bbCodeParser;
+
     private UserRepositoryInterface $userRepository;
 
     private FleetRepositoryInterface $fleetRepository;
@@ -30,12 +33,15 @@ final class ShowWriteQuickPm implements ViewControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+
     public function __construct(
+        Parser $bbCodeParser
         UserRepositoryInterface $userRepository,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository
     ) {
+        $this->bbCodeParser = $bbCodeParser;
         $this->userRepository = $userRepository;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
@@ -130,9 +136,9 @@ final class ShowWriteQuickPm implements ViewControllerInterface
             $setTemplateText ? sprintf(
                 _('%s %s sendet %s %s in Sektor %s folgende Nachricht:'),
                 $whoText,
-                $from->getName(),
+                $this->bbCodeParser->parse($from->getName())->getAsText(),
                 $toText,
-                $to->getName(),
+                $this->bbCodeParser->parse($to->getName())->getAsText(),
                 $sectorString
             ) : ''
         );
