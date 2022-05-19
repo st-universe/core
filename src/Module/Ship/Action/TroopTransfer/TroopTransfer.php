@@ -334,7 +334,7 @@ final class TroopTransfer implements ActionControllerInterface
 
         $i = 0;
         foreach ($array as $shipCrew) {
-            if ($isUplinkSituation && $shipCrew->getCrew()->getUser() !== $ship->getUser()) {
+            if ($shipCrew->getCrew()->getUser() !== $ship->getUser()) {
                 continue;
             }
 
