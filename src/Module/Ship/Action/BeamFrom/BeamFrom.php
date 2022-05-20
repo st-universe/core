@@ -52,11 +52,20 @@ final class BeamFrom implements ActionControllerInterface
         $ship = $shipArray[$shipId];
         $target = $shipArray[$targetId];
 
+        //bad request
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
+        if ($target === null) {
+            return;
+        }
+        if (!$ship->canInteractWith($target, false, true)) {
+            return;
+        }
 
-        if ($ship->getEps() == 0) {
+        //sanity checks
+        $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
+        if (!$isDockTransfer && $ship->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -72,12 +81,6 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
-        if ($target === null) {
-            return;
-        }
-        if (!$ship->canInteractWith($target, false, true)) {
-            return;
-        }
         if ($target->getWarpState()) {
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
@@ -90,8 +93,6 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;
         }
-
-        $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
 
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
