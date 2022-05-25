@@ -1203,11 +1203,8 @@ class Ship implements ShipInterface
 
     public function updateLocation(?MapInterface $map, ?StarSystemMapInterface $starsystem_map): ShipInterface
     {
-        if ($map !== null) {
-            $this->setMap($map);
-        } else if ($starsystem_map !== null) {
-            $this->setStarsystemMap($starsystem_map);
-        }
+        $this->setMap($map);
+        $this->setStarsystemMap($starsystem_map);
 
         return $this;
     }
