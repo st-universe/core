@@ -352,3 +352,10 @@ function getCommodityLocations(commodityId) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'database.php?commodityId=' + commodityId + '&SHOW_GOODS_LOCATIONS=1');
 }
+function maximizeGoodAmounts() {
+	var list = document.getElementsByClassName('goodAmount');
+	var n;
+	for (n = 0; n < list.length; ++n) {
+		list[n].value = 'm';
+	}
+}

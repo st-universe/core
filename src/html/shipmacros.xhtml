@@ -661,7 +661,8 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="submit" class="button" value="Beamen" name="B_BEAMTO" />
+          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+            class="button" value="Beamen" name="B_BEAMTO" />
         </td>
       </tr>
     </table>
@@ -728,7 +729,8 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="submit" class="button" value="Beamen" name="B_BEAMFROM" />
+          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+            class="button" value="Beamen" name="B_BEAMFROM" />
         </td>
       </tr>
     </table>
@@ -800,7 +802,8 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="submit" class="button" value="Beamen" name="B_BEAMTO_COLONY" />
+          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+            class="button" value="Beamen" name="B_BEAMTO_COLONY" />
         </td>
       </tr>
     </table>
@@ -872,7 +875,8 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="submit" class="button" value="Beamen" name="B_BEAMFROM_COLONY" />
+          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+            class="button" value="Beamen" name="B_BEAMFROM_COLONY" />
         </td>
       </tr>
     </table>
@@ -904,14 +908,14 @@
         <td>Maximalcrew des Ziels: ${target/getMaxCrewCount}</td>
       </tr>
       <tr>
-        <td>Verfügbare Truppen: ${MAXIMUM}</td>
+        <td>Beambare Truppen: ${MAXIMUM}</td>
       </tr>
       <tr>
         <td>
           <img tal:condition="IS_UNLOAD" src="assets/buttons/bt_down1.png" title="Truppen hinbeamen" />
           <img tal:condition="not:IS_UNLOAD" src="assets/buttons/bt_up1.png" title="Truppen wegbeamen" />
           <input type="text" size="4" name="tcount" id="ttransfer_value" />
-          <input type="submit" class="button" value="beamen" name="B_TROOP_TRANSFER" id="ttransfer_button" />
+          <input type="submit" class="button" value="Beamen" name="B_TROOP_TRANSFER" id="ttransfer_button" />
           <input type="button" class="button" value="max"
             onclick="$('ttransfer_value').value = '${MAXIMUM}'; $('ttransfer_button').click()" />
         </td>
@@ -940,7 +944,7 @@
           <img tal:condition="IS_UNLOAD" src="assets/buttons/btorp_down1.png" title="Torpedos hinbeamen" />
           <img tal:condition="not:IS_UNLOAD" src="assets/buttons/btorp_up1.png" title="Torpedos wegbeamen" />
           <input type="text" size="4" name="tcount" id="torptransfer_value" />
-          <input type="submit" class="button" value="beamen" name="B_TORPEDO_TRANSFER" id="torptransfer_button" />
+          <input type="submit" class="button" value="Beamen" name="B_TORPEDO_TRANSFER" id="torptransfer_button" />
           <input type="button" class="button" value="max"
             onclick="$('torptransfer_value').value = '${MAXIMUM}'; $('torptransfer_button').click()" />
         </td>
