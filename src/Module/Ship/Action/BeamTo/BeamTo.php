@@ -10,9 +10,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -26,18 +23,14 @@ final class BeamTo implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipRepository = $shipRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,10 +38,6 @@ final class BeamTo implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
-
-        if ($userId === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
 
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
@@ -118,16 +107,13 @@ final class BeamTo implements ActionControllerInterface
         ));
         foreach ($goods as $key => $value) {
             $commodityId = (int) $value;
-            $this->loggerUtil->log('A');
 
             if (!$isDockTransfer && $ship->getEps() < 1) {
                 break;
             }
             if (!array_key_exists($key, $gcount)) {
-                $this->loggerUtil->log('B');
                 continue;
             }
-            $this->loggerUtil->log('C');
 
             $storage = $shipStorage[$commodityId] ?? null;
 
@@ -143,13 +129,11 @@ final class BeamTo implements ActionControllerInterface
                 continue;
             }
             if ($count == "m") {
-                $this->loggerUtil->log('D');
                 $count = $storage->getAmount();
             } else {
                 $count = (int)$count;
             }
             if ($count < 1) {
-                $this->loggerUtil->log('E');
                 continue;
             }
             if ($target->getStorageSum() >= $target->getMaxStorage()) {
