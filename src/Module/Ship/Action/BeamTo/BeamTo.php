@@ -108,7 +108,7 @@ final class BeamTo implements ActionControllerInterface
         foreach ($goods as $key => $value) {
             $commodityId = (int) $value;
 
-            if ($ship->getEps() < 1) {
+            if (!$isDockTransfer && $ship->getEps() < 1) {
                 break;
             }
             if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
