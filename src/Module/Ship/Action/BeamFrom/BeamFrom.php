@@ -119,7 +119,7 @@ final class BeamFrom implements ActionControllerInterface
             if (!$isDockTransfer && $ship->getEps() < 1) {
                 break;
             }
-            if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
+            if (!array_key_exists($key, $gcount)) {
                 continue;
             }
             $storage = $targetStorage[$commodityId] ?? null;

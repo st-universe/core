@@ -119,7 +119,7 @@ final class BeamTo implements ActionControllerInterface
             if ($colony->getEps() < 1) {
                 break;
             }
-            if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
+            if (!array_key_exists($key, $gcount)) {
                 continue;
             }
             $good = $storage[$value] ?? null;

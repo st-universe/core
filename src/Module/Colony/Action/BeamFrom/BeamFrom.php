@@ -133,7 +133,7 @@ final class BeamFrom implements ActionControllerInterface
             if ($colony->getStorageSum() >= $colony->getMaxStorage()) {
                 break;
             }
-            if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
+            if (!array_key_exists($key, $gcount)) {
                 continue;
             }
             $count = $gcount[$key];

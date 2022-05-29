@@ -112,7 +112,7 @@ final class BeamFromColony implements ActionControllerInterface
             if ($ship->getEps() < 1) {
                 break;
             }
-            if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
+            if (!array_key_exists($key, $gcount)) {
                 continue;
             }
             $good = $target->getStorage()[$value] ?? null;
