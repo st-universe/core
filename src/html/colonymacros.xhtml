@@ -570,8 +570,7 @@
               <tr>
                 <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
                 <td>
-                  <input type="text" size="5" name="frequency" class="goodAmount"
-                    tal:attributes="value COLONY/getShieldFrequency"
+                  <input type="text" size="5" name="frequency" tal:attributes="value COLONY/getShieldFrequency"
                     onkeydown="event.key == 'Enter' &&  $('changeFrequencyButton').click()" />
                   <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
                     id="changeFrequencyButton" />
