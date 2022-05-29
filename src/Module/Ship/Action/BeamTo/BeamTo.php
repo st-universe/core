@@ -123,7 +123,7 @@ final class BeamTo implements ActionControllerInterface
             if (!$isDockTransfer && $ship->getEps() < 1) {
                 break;
             }
-            if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
+            if (!array_key_exists($key, $gcount)) {
                 $this->loggerUtil->log('B');
                 continue;
             }
