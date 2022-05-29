@@ -124,7 +124,7 @@ final class BeamFromColony implements ActionControllerInterface
                 $game->addInformation(sprintf(_('%s ist nicht beambar'), $good->getGood()->getName()));
                 continue;
             }
-            if ($count == "m") {
+            if ($count == "max") {
                 $count = (int) $good->getAmount();
             } else {
                 $count = (int) $count;

@@ -117,7 +117,7 @@ final class TransferToAccount implements ActionControllerInterface
 
             $commodity = $storage->getCommodity();
 
-            if ($count == "m") {
+            if ($count == "max") {
                 $count = $storage->getAmount();
             } else {
                 $count = (int) $count;

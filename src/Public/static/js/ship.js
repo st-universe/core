@@ -234,6 +234,6 @@ function maximizeGoodAmounts() {
 	var list = document.getElementsByClassName('goodAmount');
 	var n;
 	for (n = 0; n < list.length; ++n) {
-		list[n].value = 'm';
+		list[n].value = 'max';
 	}
 }
