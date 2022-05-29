@@ -230,3 +230,6 @@ function renameCrew(crew_id) {
 	}
 	ajax_update('rn_crew_' + crew_id, 'ship.php?B_RENAME_CREW=1&id=' + shipid + '&crewid=' + crew_id + '&' + Form.Element.serialize('rn_crew_' + crew_id + '_value'));
 }
+function maximizeGoodAmounts() {
+	$(".goodAmount").val('m');
+}
