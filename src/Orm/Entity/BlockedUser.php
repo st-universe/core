@@ -60,7 +60,7 @@ class BlockedUser implements BlockedUserInterface
         return $this;
     }
 
-    public function getMobile(): string
+    public function getMobile(): ?string
     {
         return $this->mobile;
     }

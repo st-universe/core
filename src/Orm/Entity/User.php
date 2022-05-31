@@ -234,12 +234,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getMobile(): string
+    public function getMobile(): ?string
     {
         return $this->mobile;
     }
 
-    public function setMobile(string $mobile): UserInterface
+    public function setMobile(?string $mobile): UserInterface
     {
         $this->mobile = $mobile;
         return $this;

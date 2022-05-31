@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -68,11 +69,18 @@ final class BlockUser implements ActionControllerInterface
         $blockedUser->setId($userIdToBlock);
         $blockedUser->setTime(time());
         $blockedUser->setEmail(sha1($userToBlock->getEmail()));
-        $blockedUser->setMobile(sha1($userToBlock->getMobile()));
+        if ($userToBlock->getMobile() !== null) {
+            $blockedUser->setMobile(sha1($userToBlock->getMobile()));
+        }
+        $this->blockedUserRepository->save($blockedUser);
+
+        // mark user as deletable
+        $userToBlock->setActive(PlayerEnum::DELETION_CONFIRMED);
+        $this->userRepository->save($userToBlock);
 
         $this->loggerUtil->log('E');
 
-        $game->addInformationf(_('Der Spieler %s (%d) ist nun blockiert'), $userToBlock->getName(), $userIdToBlock);
+        $game->addInformationf(_('Der Spieler %s (%d) ist nun blockiert und zur Löschung freigegeben!'), $userToBlock->getName(), $userIdToBlock);
     }
 
     public function performSessionCheck(): bool

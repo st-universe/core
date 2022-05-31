@@ -16,7 +16,7 @@ interface BlockedUserInterface
 
     public function setEmail(string $email): BlockedUserInterface;
 
-    public function getMobile(): string;
+    public function getMobile(): ?string;
 
     public function setMobile(?string $mobile): BlockedUserInterface;
 }
