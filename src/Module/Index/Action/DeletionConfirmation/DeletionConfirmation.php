@@ -31,7 +31,7 @@ final class DeletionConfirmation implements ActionControllerInterface
 
         $user = $this->userRepository->getByResetToken($token);
 
-        if ($user === null || $user->getDeletionMark() !== 1) {
+        if ($user === null || $user->getDeletionMark() !== PlayerEnum::DELETION_REQUESTED) {
             return;
         }
 

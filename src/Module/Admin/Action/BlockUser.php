@@ -75,7 +75,7 @@ final class BlockUser implements ActionControllerInterface
         $this->blockedUserRepository->save($blockedUser);
 
         // mark user as deletable
-        $userToBlock->setActive(PlayerEnum::DELETION_CONFIRMED);
+        $userToBlock->setDeletionMark(PlayerEnum::DELETION_CONFIRMED);
         $this->userRepository->save($userToBlock);
 
         $this->loggerUtil->log('E');

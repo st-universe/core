@@ -131,7 +131,7 @@ final class Session implements SessionInterface
                 sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
             );
         }
-        if ($result->getDeletionMark() == 2) {
+        if ($result->getDeletionMark() === PlayerEnum::DELETION_CONFIRMED) {
             throw new LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
         }
         if ($this->loginValidation->validate($result) === false) {
@@ -218,7 +218,7 @@ final class Session implements SessionInterface
         if ($result->isLocked()) {
             throw new SessionInvalidException("Gesperrt");
         }
-        if ($result->getDeletionMark() == 2) {
+        if ($result->getDeletionMark() === PlayerEnum::DELETION_CONFIRMED) {
             throw new SessionInvalidException("Löschung");
         }
         if ($result->isVacationMode() === true) {
