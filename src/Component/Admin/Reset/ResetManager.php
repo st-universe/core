@@ -68,6 +68,11 @@ final class ResetManager implements ResetManagerInterface
         $this->deleteKnPlots();
         $this->deleteHistory();
         $this->resetGameTurns();
+
+        // clear game data
+        // flight signatures
+        // user locks
+        // blocked users
     }
 
     /**

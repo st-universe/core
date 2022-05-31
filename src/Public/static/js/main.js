@@ -17,6 +17,7 @@ function checkEmail(el, value) {
 		$('emailok').hide();
 		$('emailerror').show();
 		$('emaildup').hide();
+		$('emailblk').hide();
 		return false;
 	}
 	var varcheck = regVarCheck('email', value);
@@ -24,16 +25,26 @@ function checkEmail(el, value) {
 		$('emailok').hide();
 		$('emailerror').show();
 		$('emaildup').hide();
+		$('emailblk').hide();
 		return false;
 	}
 	if (varcheck == 2) {
 		$('emailok').hide();
 		$('emailerror').hide();
 		$('emaildup').show();
+		$('emailblk').hide();
+		return false;
+	}
+	if (varcheck == 5) {
+		$('emailok').hide();
+		$('emailerror').hide();
+		$('emaildup').hide();
+		$('emailblk').show();
 		return false;
 	}
 	$('emailerror').hide();
 	$('emaildup').hide();
+	$('emailblk').hide();
 	$('emailok').show();
 	return true;
 }
@@ -44,6 +55,7 @@ function checkMobile(el, value) {
 		$('mobiledup').hide();
 		$('mobileucp').hide();
 		$('mobileupd').hide();
+		$('mobileblk').hide();
 		return false;
 	}
 	var varcheck = regVarCheck('mobile', value.replace('+', '00'));
@@ -53,6 +65,7 @@ function checkMobile(el, value) {
 		$('mobiledup').hide();
 		$('mobileucp').hide();
 		$('mobileupd').hide();
+		$('mobileblk').hide();
 		return false;
 	}
 	if (varcheck == 2) {
@@ -61,6 +74,7 @@ function checkMobile(el, value) {
 		$('mobiledup').show();
 		$('mobileucp').hide();
 		$('mobileupd').hide();
+		$('mobileblk').hide();
 		return false;
 	}
 	if (varcheck == 3) {
@@ -69,6 +83,7 @@ function checkMobile(el, value) {
 		$('mobiledup').hide();
 		$('mobileucp').show();
 		$('mobileupd').hide();
+		$('mobileblk').hide();
 		return false;
 	}
 	if (varcheck == 4) {
@@ -77,12 +92,23 @@ function checkMobile(el, value) {
 		$('mobiledup').hide();
 		$('mobileucp').hide();
 		$('mobileupd').show();
+		$('mobileblk').hide();
+		return false;
+	}
+	if (varcheck == 5) {
+		$('mobileok').hide();
+		$('mobileerror').hide();
+		$('mobiledup').hide();
+		$('mobileucp').hide();
+		$('mobileupd').hide();
+		$('mobileblk').show();
 		return false;
 	}
 	$('mobileerror').hide();
 	$('mobiledup').hide();
 	$('mobileucp').hide();
 	$('mobileupd').hide();
+	$('mobileblk').hide();
 	$('mobileok').show();
 	return true;
 }
@@ -166,6 +192,9 @@ function regVarCheck(vari, value) {
 			}
 			if (transport.responseText.match(/UPD/)) {
 				varcheck = 4;
+			}
+			if (transport.responseText.match(/BLK/)) {
+				varcheck = 5;
 			}
 		}
 	});

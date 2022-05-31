@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -23,12 +24,15 @@ final class CheckInput implements ActionControllerInterface
     public const REGISTER_STATE_DUP = "DUP"; //duplication
     public const REGISTER_STATE_UCP = "UCP"; //unknown country prefix
     public const REGISTER_STATE_UPD = "UPD"; //unknown phone digits
+    public const REGISTER_STATE_BLK = "BLK"; //blocked
 
     private CheckInputRequestInterface $checkInputRequest;
 
     private UserRepositoryInterface $userRepository;
 
     private UserInvitationRepositoryInterface $userInvitationRepository;
+
+    private BlockedUserRepositoryInterface $blockedUserRepository;
 
     private ConfigInterface $config;
 
@@ -38,12 +42,14 @@ final class CheckInput implements ActionControllerInterface
         CheckInputRequestInterface $checkInputRequest,
         UserRepositoryInterface $userRepository,
         UserInvitationRepositoryInterface $userInvitationRepository,
+        BlockedUserRepositoryInterface $blockedUserRepository,
         ConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->checkInputRequest = $checkInputRequest;
         $this->userRepository = $userRepository;
         $this->userInvitationRepository = $userInvitationRepository;
+        $this->blockedUserRepository = $blockedUserRepository;
         $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -77,6 +83,10 @@ final class CheckInput implements ActionControllerInterface
                     $state = self::REGISTER_STATE_DUP;
                     break;
                 }
+                if ($this->blockedUserRepository->getByEmail($value)) {
+                    $state = self::REGISTER_STATE_BLK;
+                    break;
+                }
                 $state = self::REGISTER_STATE_OK;
                 break;
             case 'token':
@@ -100,6 +110,10 @@ final class CheckInput implements ActionControllerInterface
                 }
                 if ($this->userRepository->getByMobile($trimmedMobile)) {
                     $state = self::REGISTER_STATE_DUP;
+                    break;
+                }
+                if ($this->blockedUserRepository->getByMobile($value)) {
+                    $state = self::REGISTER_STATE_BLK;
                     break;
                 }
                 $state = self::REGISTER_STATE_OK;

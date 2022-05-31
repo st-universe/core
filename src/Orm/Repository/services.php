@@ -14,6 +14,7 @@ use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\BasicTrade;
+use Stu\Orm\Entity\BlockedUser;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
@@ -151,6 +152,11 @@ return [
         ContainerInterface $c
     ): BasicTradeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(BasicTrade::class);
+    },
+    BlockedUserRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): BlockedUserRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(BlockedUser::class);
     },
     BuildingRepositoryInterface::class => function (
         ContainerInterface $c
