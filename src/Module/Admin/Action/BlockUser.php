@@ -47,7 +47,7 @@ final class BlockUser implements ActionControllerInterface
         }
 
         $this->loggerUtil->log('B');
-        $userIdToBlock = request::postIntFatal('uid');
+        $userIdToBlock = request::getIntFatal('uid');
 
         $userToBlock = $this->userRepository->find($userIdToBlock);
         $blockedUser = $this->blockedUserRepository->find($userIdToBlock);
