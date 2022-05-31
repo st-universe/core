@@ -112,7 +112,7 @@ final class CheckInput implements ActionControllerInterface
                     $state = self::REGISTER_STATE_DUP;
                     break;
                 }
-                if ($this->blockedUserRepository->getByMobile($value)) {
+                if ($this->blockedUserRepository->getByMobile($trimmedMobile)) {
                     $state = self::REGISTER_STATE_BLK;
                     break;
                 }
