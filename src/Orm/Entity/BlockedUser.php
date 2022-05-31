@@ -24,8 +24,8 @@ class BlockedUser implements BlockedUserInterface
     /** @Column(type="string", length=200) */
     private $email = '';
 
-    /** @Column(type="string", length=50) */
-    private $mobile = '';
+    /** @Column(type="string", length=50, nullable=true) */
+    private $mobile;
 
     public function getId(): int
     {
@@ -65,7 +65,7 @@ class BlockedUser implements BlockedUserInterface
         return $this->mobile;
     }
 
-    public function setMobile(string $mobile): BlockedUserInterface
+    public function setMobile(?string $mobile): BlockedUserInterface
     {
         $this->mobile = $mobile;
         return $this;

@@ -18,5 +18,5 @@ interface BlockedUserInterface
 
     public function getMobile(): string;
 
-    public function setMobile(string $mobile): BlockedUserInterface;
+    public function setMobile(?string $mobile): BlockedUserInterface;
 }
