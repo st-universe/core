@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin;
 
+use Stu\Module\Admin\Action\BlockUser;
 use Stu\Module\Admin\Action\ClearFaultyBBCodes;
 use Stu\Module\Admin\Action\LockUser;
 use Stu\Module\Admin\Action\Map\CreateInfluenceAreas\CreateInfluenceAreas;
@@ -68,6 +69,7 @@ return [
         SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class),
         LockUser::ACTION_IDENTIFIER => autowire(LockUser::class),
         UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class),
+        BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),
         StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class)
     ],
     'ADMIN_VIEWS' => [

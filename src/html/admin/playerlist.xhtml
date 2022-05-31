@@ -42,7 +42,9 @@
                   href="/admin/?B_UNLOCK_USER=1&uid=${data/getId}&sstr=${THIS/getSessionString}"
                   onmouseover="cp('activate${data/getId}','buttons/update1', 'png');"
                   onmouseout="cp('activate${data/getId}','buttons/update0', 'png');"><img
-                    src="/assets/buttons/update0.png" name="activate${data/getId}" title="Spieler entsperren" /></a>
+                    src="/assets/buttons/update0.png" name="activate${data/getId}" title="Spieler entsperren" /></a> <a
+                  href="/admin/?B_BLOCK_USER=1&uid=${data/getId}&sstr=${THIS/getSessionString}"><img
+                    src="/assets/buttons/selfdes2.png" name="block${data/getId}" title="Spieler blockieren" /></a>
               </div>
               <div>
                 <div tal:repeat="tag user/getTags" tal:content="tag/label" class="userTag userTag${tag/typeId}">LABEL
