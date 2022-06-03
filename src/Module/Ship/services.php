@@ -155,6 +155,8 @@ use Stu\Module\Ship\Lib\TroopTransferUtility;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\ReactorUtil;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
+use Stu\Module\Ship\Lib\ShipMover2;
+use Stu\Module\Ship\Lib\ShipMover2Interface;
 use Stu\Module\Ship\Lib\UpdateLocationConsequences;
 use Stu\Module\Ship\Lib\UpdateLocationConsequencesInterface;
 use Stu\Module\Ship\View\Noop\Noop;
@@ -187,6 +189,7 @@ use function DI\autowire;
 
 return [
     ShipMoverInterface::class => autowire(ShipMover::class),
+    ShipMover2Interface::class => autowire(ShipMover2::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     PositionCheckerInterface::class => autowire(PositionChecker::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),

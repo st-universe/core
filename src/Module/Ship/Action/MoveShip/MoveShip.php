@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipMover2Interface;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -19,12 +20,16 @@ final class MoveShip implements ActionControllerInterface
 
     private ShipMoverInterface $shipMover;
 
+    private ShipMover2Interface $shipMover2;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipMoverInterface $shipMover
+        ShipMoverInterface $shipMover,
+        ShipMover2Interface $shipMover2
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipMover = $shipMover;
+        $this->shipMover2 = $shipMover2;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,12 +41,21 @@ final class MoveShip implements ActionControllerInterface
             $userId
         );
 
-        $this->shipMover->checkAndMove(
-            $ship,
-            request::getIntFatal('posx'),
-            request::getIntFatal('posy')
-        );
-        $game->addInformationMerge($this->shipMover->getInformations());
+        if ($ship->getId() === 7396) {
+            $this->shipMover2->checkAndMove(
+                $ship,
+                request::getIntFatal('posx'),
+                request::getIntFatal('posy')
+            );
+            $game->addInformationMerge($this->shipMover2->getInformations());
+        } else {
+            $this->shipMover->checkAndMove(
+                $ship,
+                request::getIntFatal('posx'),
+                request::getIntFatal('posy')
+            );
+            $game->addInformationMerge($this->shipMover->getInformations());
+        }
 
         if ($ship->getIsDestroyed()) {
             return;
