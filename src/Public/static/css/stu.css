@@ -114,7 +114,9 @@ a:visited {
 }
 
 a:hover {
-    COLOR: #dddddd;
+    background-color: #020211;
+    border: 1px groove #F5F5F5;
+    color: #FFD700;
 }
 
 a:active {
@@ -1095,9 +1097,7 @@ ul.pm_categories li:not(:first-child) {
 }
 
 .title {
-    background-color: #020211;
-    border: 1px groove #F5F5F5;
-    color: #FFD700;
+    background-color: #121220;
     padding: 3px;
 }
 
