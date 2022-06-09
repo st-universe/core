@@ -629,6 +629,8 @@ final class GameController implements GameControllerInterface
 
     private function releaseAndRemoveSemaphores(): void
     {
+        return; //only a try
+
         if (!empty($this->semaphores)) {
             $userId = $this->getUser()->getId();
 
