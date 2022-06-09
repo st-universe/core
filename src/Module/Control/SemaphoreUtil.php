@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Control;
 
+use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\SemaphoreException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -23,7 +24,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
     public function getSemaphore(int $key)
     {
-        return sem_get($key, 1, 0666, 1);
+        return sem_get($key, 1, 0666, SemaphoreConstants::AUTO_RELEASE_SEMAPHORES);
     }
 
     public function acquireMainSemaphore($semaphore): void

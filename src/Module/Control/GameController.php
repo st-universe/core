@@ -8,6 +8,7 @@ use Stu\Exception\SessionInvalidException;
 use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\SemaphoreException;
@@ -629,7 +630,9 @@ final class GameController implements GameControllerInterface
 
     private function releaseAndRemoveSemaphores(): void
     {
-        return; //only a try
+        if (!SemaphoreConstants::AUTO_RELEASE_SEMAPHORES) {
+            return; //nothing to do
+        }
 
         if (!empty($this->semaphores)) {
             $userId = $this->getUser()->getId();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Game\SemaphoreEnum;
+use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\ShipDoesNotExistException;
@@ -88,7 +88,7 @@ final class ShipLoader implements ShipLoaderInterface
         $result = [];
 
         //main ship sema on
-        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY);
+        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
 
         $result[$shipId] = $this->acquireSemaphoresWithoutMain($shipId);
