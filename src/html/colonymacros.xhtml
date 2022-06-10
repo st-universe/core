@@ -1327,20 +1327,22 @@
               <span>Integrität</span>: ${FIELD/getIntegrity}/${FIELD/getBuilding/getIntegrity}
             </div>
             <br /><br />
-            <tal:block tal:condition="BUILDING_FUNCTION/isShipyard">
-              <div class="fabutton">
-                <a href="javascript:void(0)"
-                  onclick="switchColonyMenu(8,${BUILDING_FUNCTION/getShipyardBuildingFunctionId});cClick();"
-                  class="fabutton">Schiffbau</a>
-              </div>
-              <div class="fabutton">
-                <a href="colony.php?id=${COLONY/getId}&SHOW_SHIP_REPAIR=1&fid=${FIELD/getFieldId}"
-                  class="fabutton">Schiffsreparatur</a>
-              </div>
-              <div class="fabutton">
-                <a href="colony.php?id=${COLONY/getId}&SHOW_SHIP_DISASSEMBLY=1&fid=${FIELD/getFieldId}"
-                  class="fabutton">Schiffsdemontage</a>
-              </div>
+            <tal:block tal:condition="not:BUILDING_FUNCTION/isFighterShipyard">
+              <tal:block tal:condition="BUILDING_FUNCTION/isShipyard">
+                <div class="fabutton">
+                  <a href="javascript:void(0)"
+                    onclick="switchColonyMenu(8,${BUILDING_FUNCTION/getShipyardBuildingFunctionId});cClick();"
+                    class="fabutton">Schiffbau</a>
+                </div>
+                <div class="fabutton">
+                  <a href="colony.php?id=${COLONY/getId}&SHOW_SHIP_REPAIR=1&fid=${FIELD/getFieldId}"
+                    class="fabutton">Schiffsreparatur</a>
+                </div>
+                <div class="fabutton">
+                  <a href="colony.php?id=${COLONY/getId}&SHOW_SHIP_DISASSEMBLY=1&fid=${FIELD/getFieldId}"
+                    class="fabutton">Schiffsdemontage</a>
+                </div>
+              </tal:block>
             </tal:block>
             <div class="fabutton" tal:condition="BUILDING_FUNCTION/isAirfield">
               <a href="javascript:void(0)" onclick="switchColonyMenu(6);cClick();" class="fabutton">Hangar</a>
