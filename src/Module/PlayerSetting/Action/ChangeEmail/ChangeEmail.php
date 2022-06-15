@@ -32,6 +32,15 @@ final class ChangeEmail implements ActionControllerInterface
             return;
         }
 
+        if ($this->userRepository->getByEmail($value)) {
+            $game->addInformation(_('Die E-Mailadresse wird bereits verwendet'));
+            return;
+        }
+        if ($this->blockedUserRepository->getByEmail($value)) {
+            $game->addInformation(_('Die E-Mailadresse ist blockiert'));
+            return;
+        }
+
         $user = $game->getUser();
 
         $user->setEmail($value);
