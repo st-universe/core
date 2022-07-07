@@ -13,8 +13,6 @@ $loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
 
 $entityManager = $container->get(EntityManagerInterface::class);
 
-$entityManager->beginTransaction();
-
 $doThrowExceptionCount = 3;
 
 $remainingtries = 5;
@@ -53,6 +51,8 @@ while ($remainingtries > 0) {
 function tryTick($container, $entityManager, $doThrowExceptionCount): ?Exception
 {
     try {
+        $entityManager->beginTransaction();
+
         if ($doThrowExceptionCount > 0) {
             throw new Exception('flaflifu');
         }
