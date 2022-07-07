@@ -10,23 +10,40 @@ $entityManager = $container->get(EntityManagerInterface::class);
 
 $entityManager->beginTransaction();
 
-try {
-    $container->get(ShipTickManagerInterface::class)->work();
-    $entityManager->flush();
-    $entityManager->commit();
-} catch (Exception $e) {
-    $entityManager->rollback();
+$remainingtries = 5;
+while ($remainingtries > 0) {
+    $remainingtries -= 1;
+    $exception = tryTick($container, $entityManager);
 
-    $emailSender = $container->get(FailureEmailSenderInterface::class);
-    $emailSender->sendMail(
-        "stu shiptick failure",
-        sprintf(
-            "Current system time: %s\nThe shiptick cron caused an error:\n\n%s\n\n%s",
-            date('Y-m-d H:i:s'),
-            $e->getMessage(),
-            $e->getTraceAsString()
-        )
-    );
+    if ($exception === null) {
+        break;
+    } else if ($remainingtries === 0) {
+        $emailSender = $container->get(FailureEmailSenderInterface::class);
+        $emailSender->sendMail(
+            "stu shiptick failure",
+            sprintf(
+                "Current system time: %s\nThe shiptick cron caused an error:\n\n%s\n\n%s",
+                date('Y-m-d H:i:s'),
+                $exception->getMessage(),
+                $exception->getTraceAsString()
+            )
+        );
 
-    throw $e;
+        throw $exception;
+    }
+}
+
+function tryTick($container, $entityManager): ?Exception
+{
+    try {
+        $container->get(ShipTickManagerInterface::class)->work();
+        $entityManager->flush();
+        $entityManager->commit();
+
+        return null;
+    } catch (Exception $e) {
+        $entityManager->rollback();
+
+        return $e;
+    }
 }
