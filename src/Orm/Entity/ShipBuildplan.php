@@ -63,7 +63,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     private $user;
 
     /**
-     * @OneToMany(targetEntity="BuildplanModule", mappedBy="colony", indexBy="module_id", fetch="EXTRA_LAZY")
+     * @OneToMany(targetEntity="BuildplanModule", mappedBy="buildplan", indexBy="module_id", fetch="EXTRA_LAZY")
      */
     private $modules;
 
