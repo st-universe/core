@@ -55,6 +55,7 @@ class FlightSignature implements FlightSignatureInterface
     /** @Column(type="boolean") */
     private $is_cloaked = false;
 
+    //TODO remove reference, should not be deleted if user is removed
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
