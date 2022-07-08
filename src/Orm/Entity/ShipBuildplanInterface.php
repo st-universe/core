@@ -52,7 +52,10 @@ interface ShipBuildplanInterface
      */
     public function getModulesByType($type): array;
 
-    public function getModules(): array;
+    /**
+     * @return BuildplanModuleInterface[]
+     */
+    public function getModules(): Collection;
 
     public function getModule(): ModuleSelectWrapper;
 }

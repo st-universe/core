@@ -46,7 +46,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     private $crew = 0;
 
     /**
-     * @OneToMany(targetEntity="Ship", mappedBy="buildplan")
+     * @OneToMany(targetEntity="Ship", mappedBy="buildplan", fetch="EXTRA_LAZY")
      */
     private $ships;
 
@@ -70,6 +70,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     public function __construct()
     {
         $this->ships = new ArrayCollection();
+        $this->modules = new ArrayCollection();
     }
 
     public function getId(): int
@@ -201,12 +202,9 @@ class ShipBuildplan implements ShipBuildplanInterface
         );
     }
 
-    public function getModules(): array
+    public function getModules(): Collection
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(BuildplanModuleRepositoryInterface::class)->getByBuildplan($this->getId());
+        return $this->modules;
     }
 
     public function getModule(): ModuleSelectWrapper
