@@ -62,6 +62,11 @@ class ShipBuildplan implements ShipBuildplanInterface
      */
     private $user;
 
+    /**
+     * @OneToMany(targetEntity="BuildplanModule", mappedBy="colony", indexBy="module_id", fetch="EXTRA_LAZY")
+     */
+    private $modules;
+
     public function __construct()
     {
         $this->ships = new ArrayCollection();

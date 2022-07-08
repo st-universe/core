@@ -220,7 +220,7 @@ final class BuildShip implements ActionControllerInterface
             foreach ($modules as $obj) {
                 $mod = $this->buildplanModuleRepository->prototype();
                 $mod->setModuleType((int) $obj->getType());
-                $mod->setBuildplanId((int) $plan->getId());
+                $mod->setBuildplan($plan);
                 $mod->setModule($obj);
                 $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
 

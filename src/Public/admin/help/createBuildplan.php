@@ -102,7 +102,7 @@ if ($rumpId !== 0) {
 
                 $mod = $buildplanModuleRepo->prototype();
                 $mod->setModuleType($module->getType());
-                $mod->setBuildplanId($plan->getId());
+                $mod->setBuildplan($plan);
                 $mod->setModule($module);
 
                 $buildplanModuleRepo->save($mod);
@@ -116,7 +116,7 @@ if ($rumpId !== 0) {
 
                 $mod = $buildplanModuleRepo->prototype();
                 $mod->setModuleType($module->getType());
-                $mod->setBuildplanId($plan->getId());
+                $mod->setBuildplan($plan);
                 $mod->setModule($module);
                 $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($module->getSpecials()));
 

@@ -6,9 +6,9 @@ interface BuildplanModuleInterface
 {
     public function getId(): int;
 
-    public function getBuildplanid(): int;
+    public function getBuildplan(): ShipBuildplanInterface;
 
-    public function setBuildplanId(int $buildplanId): BuildplanModuleInterface;
+    public function setBuildplan(ShipBuildplanInterface $buildplan): BuildplanModuleInterface;
 
     public function getModuleType(): int;
 
