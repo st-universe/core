@@ -70,6 +70,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     public function __construct()
     {
         $this->ships = new ArrayCollection();
+
         $this->modules = new ArrayCollection();
     }
 
