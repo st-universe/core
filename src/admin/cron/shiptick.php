@@ -13,17 +13,14 @@ $loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
 
 $entityManager = $container->get(EntityManagerInterface::class);
 
-$doThrowExceptionCount = 3;
-
 $remainingtries = 5;
 while ($remainingtries > 0) {
     $remainingtries -= 1;
-    $exception = tryTick($container, $entityManager, $doThrowExceptionCount);
+    $exception = tryTick($container, $entityManager);
 
     if ($exception === null) {
         break;
     } else {
-        $doThrowExceptionCount -= 1;
         // logging problem
         $loggerUtil->log(sprintf(
             "Shiptick caused an exception. Remaing tries: %d",
@@ -48,14 +45,10 @@ while ($remainingtries > 0) {
     }
 }
 
-function tryTick($container, $entityManager, $doThrowExceptionCount): ?Exception
+function tryTick($container, $entityManager): ?Exception
 {
     try {
         $entityManager->beginTransaction();
-
-        if ($doThrowExceptionCount > 0) {
-            throw new Exception('flaflifu');
-        }
 
         $container->get(ShipTickManagerInterface::class)->work();
         $entityManager->flush();
