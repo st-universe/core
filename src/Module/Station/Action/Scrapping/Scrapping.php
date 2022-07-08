@@ -99,11 +99,12 @@ final class Scrapping implements ActionControllerInterface
         $station->getSystems()->clear();
 
         //setup scrapping progress
-        $progress = $this->constructionProgressRepository->prototype();
-        $progress->setShipId($station->getId());
+        $progress = $this->constructionProgressRepository->getByShip($station->getId());
         $progress->setRemainingTicks($station->getRump()->getBuildtime());
 
         $this->constructionProgressRepository->save($progress);
+
+        $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
 
         $intactModules = $this->retrieveSomeIntactModules($station);
 
