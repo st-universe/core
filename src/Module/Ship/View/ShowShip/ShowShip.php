@@ -11,6 +11,7 @@ use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
@@ -276,6 +277,8 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('WORKBEECOLOR', $dockedWorkbees < $neededWorkbees ? 'red' : 'green');
         }
         $game->setTemplateVar('PROGRESS', $progress);
+        $game->setTemplateVar('SHIP_STATE_UNDER_CONSTRUCTION', ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
+        $game->setTemplateVar('SHIP_STATE_UNDER_SCRAPPING', ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING);
 
         if ($progress === null) {
             $plans = $this->stationUtility->getStationBuildplansByUser($game->getUser()->getId());

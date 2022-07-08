@@ -974,6 +974,28 @@
     </table>
   </form>
 </metal:block>
+<metal:block metal:define-macro="scrapping">
+  <form action="ship.php" method="post">
+    <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+    <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
+    <table class="tcal">
+      <tr>
+        <td colspan="2">Tippe folgenden Code in das Feld um das Abwracken zu bestätigen.</td>
+      </tr>
+      <tr>
+        <td tal:content="SCRAP_CODE" style="text-align: center; color: Red;">CODE</td>
+        <td>
+          <input type="text" size="8" name="scrapcode" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="submit" class="button" name="B_SCRAP" value="Bestätigen" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</metal:block>
 <metal:block metal:define-macro="show_ship_scan">
   <metal:block tal:condition="THIS/getInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
   <tal:block tal:condition="exists:SHIP">

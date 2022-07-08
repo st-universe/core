@@ -903,7 +903,10 @@
 	</tal:block>
 	<table class="tcal" tal:condition="exists: PROGRESS">
 		<tr>
-			<th colspan="2"><img src="assets/buttons/rep2.png" style="height:20px;" /> Baufortschritt</th>
+			<th tal:condition="php: SHIP.getState() EQ SHIP_STATE_UNDER_CONSTRUCTION" colspan="2"><img
+					src="assets/buttons/rep2.png" style="height:20px;" /> Baufortschritt</th>
+			<th tal:condition="php: SHIP.getState() EQ SHIP_STATE_UNDER_SCRAPPING" colspan="2"><img
+					src="assets/buttons/rep2.png" style="height:20px;" /> Abwrackfortschritt</th>
 		</tr>
 		<tr>
 			<td style="width: 70%;">Verbleibende Ticks:</td>
@@ -1098,6 +1101,11 @@
 								onmouseover="cp('selfdestruct','buttons/selfdes2');"
 								onmouseout="cp('selfdestruct','buttons/selfdes1');">
 								<img src="assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerstörung" />
+							</a>
+							<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING) AND (SHIP.getState() != SHIP_STATE_UNDER_CONSTRUCTION)"
+								href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
+								onmouseover="cp('scrap','buttons/scrap2');" onmouseout="cp('scrap','buttons/scrap1');">
+								<img src="assets/buttons/scrap1.png" name="scrap" title="Abwracken" />
 							</a>
 						</td>
 					</tr>

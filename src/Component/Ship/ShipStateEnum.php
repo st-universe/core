@@ -12,4 +12,5 @@ final class ShipStateEnum
     public const SHIP_STATE_SYSTEM_MAPPING = 2;
     public const SHIP_STATE_UNDER_CONSTRUCTION = 3;
     public const SHIP_STATE_REPAIR_ACTIVE = 4;
+    public const SHIP_STATE_UNDER_SCRAPPING = 5;
 }

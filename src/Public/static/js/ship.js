@@ -91,6 +91,11 @@ function showSelfdestructWindow(target) {
 	openWindow('elt', 1, 300);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SELFDESTRUCT_AJAX=1&target=' + target);
 }
+function showScrapWindow(target) {
+	closeAjaxWindow();
+	openWindow('elt', 1, 300);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SCRAP_AJAX=1&target=' + target);
+}
 function showScanWindow(shipid, target) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
