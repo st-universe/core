@@ -1,5 +1,6 @@
 data/Makefile
 src/Public/avatare
+src/Public/sites
 *.po~
 docu/de/_build/*
 vendor
