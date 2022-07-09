@@ -1443,7 +1443,9 @@ class Ship implements ShipInterface
 
     public function getDockingSlotCount(): int
     {
-        return ($this->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION) ? 50 : $this->getRump()->getDockingSlots();
+        return ($this->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION)
+            || ($this->getState() === ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING)
+            ? 50 : $this->getRump()->getDockingSlots();
     }
 
     public function hasFreeDockingSlots(): bool
