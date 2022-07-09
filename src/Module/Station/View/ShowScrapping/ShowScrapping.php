@@ -32,7 +32,7 @@ final class ShowScrapping implements ViewControllerInterface
 
         $code = substr(md5($ship->getName()), 0, 6);
 
-        $game->setPageTitle(_('Abwracken'));
+        $game->setPageTitle(_('Demontage'));
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/scrapping');
 
         $game->setTemplateVar('SHIP', $ship);

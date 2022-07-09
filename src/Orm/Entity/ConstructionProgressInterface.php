@@ -12,6 +12,9 @@ interface ConstructionProgressInterface
 
     public function setShipId(int $shipId): ConstructionProgressInterface;
 
+    /**
+     * @return ConstructionProgressModule[]
+     */
     public function getSpecialModules(): Collection;
 
     public function getRemainingTicks(): int;

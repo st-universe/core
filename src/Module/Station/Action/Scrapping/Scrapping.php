@@ -81,7 +81,7 @@ final class Scrapping implements ActionControllerInterface
         }
 
         if ($ship->getCrewCount() > 0) {
-            $game->addInformation(_('Zum Abwracken muss die Station unbemannt sein'));
+            $game->addInformation(_('Zum Demontieren muss die Station unbemannt sein'));
             return;
         }
 
@@ -90,13 +90,13 @@ final class Scrapping implements ActionControllerInterface
         $code = trim(request::postString('scrapcode'));
 
         if ($code !== substr(md5($ship->getName()), 0, 6)) {
-            $game->addInformation(_('Der Abwrackcode war fehlerhaft'));
+            $game->addInformation(_('Der Demontagecode war fehlerhaft'));
             return;
         }
 
         $this->startScrapping($ship);
 
-        $game->addInformation(_('Das Abwracken hat begonnen'));
+        $game->addInformation(_('Das Demontieren hat begonnen'));
     }
 
     private function startScrapping(ShipInterface $station): void
@@ -105,7 +105,7 @@ final class Scrapping implements ActionControllerInterface
 
         //setup scrapping progress
         $progress = $this->constructionProgressRepository->getByShip($station->getId());
-        $progress->setRemainingTicks($station->getRump()->getBuildtime());
+        $progress->setRemainingTicks((int)ceil($station->getRump()->getBuildtime() / 2));
 
         $this->constructionProgressRepository->save($progress);
 

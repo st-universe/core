@@ -178,29 +178,42 @@ final class ShipTick implements ShipTickInterface
             return false;
         }
 
+        $isUnderConstruction = $ship->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION;
+
         if (!$this->stationUtility->hasEnoughDockedWorkbees($ship, $ship->getRump())) {
+            $neededWorkbees = $isUnderConstruction ? $ship->getRump()->getNeededWorkbees() :
+                (int)ceil($ship->getRump()->getNeededWorkbees() / 2);
+
             $this->msg[] = sprintf(
-                _('Nicht genügend Workbees (%d/%d) angedockt um den Bau weiterführen zu können'),
+                _('Nicht genügend Workbees (%d/%d) angedockt um %s weiterführen zu können'),
                 $this->stationUtility->getDockedWorkbeeCount($ship),
-                $ship->getRump()->getNeededWorkbees()
+                $neededWorkbees,
+                $isUnderConstruction ? 'den Bau' : 'die Demontage'
             );
             return true;
         }
 
         if ($progress->getRemainingTicks() === 1) {
-            $this->stationUtility->finishStation($ship, $progress);
+            if ($isUnderConstruction) {
+                $this->stationUtility->finishStation($ship, $progress);
+            } else {
+                $this->stationUtility->finishScrapping($ship, $progress);
+            }
 
             $this->msg[] = sprintf(
-                _('%s: Bau bei %s fertiggestellt'),
+                _('%s: %s bei %s fertiggestellt'),
                 $ship->getRump()->getName(),
+                $isUnderConstruction ? 'Bau' : 'Demontage',
                 $ship->getSectorString()
             );
         } else {
             $this->stationUtility->reduceRemainingTicks($progress);
 
-            // raise hull
-            $increase = intdiv($ship->getMaxHuell(), 2 * $ship->getRump()->getBuildtime());
-            $ship->setHuell($ship->getHuell() + $increase);
+            if ($isUnderConstruction) {
+                // raise hull
+                $increase = intdiv($ship->getMaxHuell(), 2 * $ship->getRump()->getBuildtime());
+                $ship->setHuell($ship->getHuell() + $increase);
+            }
         }
 
         return true;

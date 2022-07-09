@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Station;
 
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -28,6 +30,8 @@ final class StationUtility implements StationUtilityInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipStorageManagerInterface $shipStorageManager;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -35,12 +39,14 @@ final class StationUtility implements StationUtilityInterface
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
+        ShipStorageManagerInterface $shipStorageManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
+        $this->shipStorageManager = $shipStorageManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
@@ -115,7 +121,12 @@ final class StationUtility implements StationUtilityInterface
 
     public function hasEnoughDockedWorkbees(ShipInterface $ship, ShipRumpInterface $rump): bool
     {
-        return $this->getDockedWorkbeeCount($ship) >= $rump->getNeededWorkbees();
+        $isUnderConstruction = $ship->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION;
+
+        $neededWorkbees = $isUnderConstruction ? $rump->getNeededWorkbees() :
+            (int)ceil($rump->getNeededWorkbees() / 2);
+
+        return $this->getDockedWorkbeeCount($ship) >= $neededWorkbees;
     }
 
     public function getConstructionProgress(ShipInterface $ship): ?ConstructionProgressInterface
@@ -146,6 +157,31 @@ final class StationUtility implements StationUtilityInterface
         // set progress finished
         $progress->setRemainingTicks(0);
         $this->constructionProgressRepository->save($progress);
+    }
+
+    public function finishScrapping(ShipInterface $station, ConstructionProgressInterface $progress): void
+    {
+        // transform to construction
+        $rumpId = $station->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
+        $rump = $this->shipRumpRepository->find($rumpId);
+
+        $station->setRump($rump);
+        $station->setName($rump->getName());
+        $station->setHuell($rump->getBaseHull());
+        $station->setMaxHuell($rump->getBaseHull());
+        $this->shipRepository->save($station);
+
+        // salvage modules
+        foreach ($progress->getSpecialModules() as $progressModule) {
+            $this->shipStorageManager->upperStorage(
+                $station,
+                $progressModule->getModule()->getCommodity(),
+                1
+            );
+        }
+
+        // delete progress
+        $this->constructionProgressRepository->delete($progress);
     }
 
     public function canManageShips(ShipInterface $ship): bool

@@ -906,14 +906,14 @@
 			<th tal:condition="php: SHIP.getState() EQ SHIP_STATE_UNDER_CONSTRUCTION" colspan="2"><img
 					src="assets/buttons/rep2.png" style="height:20px;" /> Baufortschritt</th>
 			<th tal:condition="php: SHIP.getState() EQ SHIP_STATE_UNDER_SCRAPPING" colspan="2"><img
-					src="assets/buttons/rep2.png" style="height:20px;" /> Abwrackfortschritt</th>
+					src="assets/buttons/rep2.png" style="height:20px;" /> Demontagefortschritt</th>
 		</tr>
 		<tr>
 			<td style="width: 70%;">Verbleibende Ticks:</td>
 			<td style="width: 30%; text-align: center;"><span tal:replace="PROGRESS/getRemainingTicks">TICKS</span></td>
 		</tr>
 		<tr>
-			<td style="width: 70%;">benötigte angedockte Workbees:</td>
+			<td style="width: 70%;">Benötigte angedockte Workbees:</td>
 			<td style="width: 30%; text-align: center; color: ${WORKBEECOLOR};"><span
 					tal:replace="DOCKED">DOCKED</span>/<span tal:replace="NEEDED">NEEDED</span>
 			</td>
@@ -1105,7 +1105,7 @@
 							<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING) AND (SHIP.getState() != SHIP_STATE_UNDER_CONSTRUCTION)"
 								href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
 								onmouseover="cp('scrap','buttons/scrap2');" onmouseout="cp('scrap','buttons/scrap1');">
-								<img src="assets/buttons/scrap1.png" name="scrap" title="Abwracken" />
+								<img src="assets/buttons/scrap1.png" name="scrap" title="Demontieren" />
 							</a>
 						</td>
 					</tr>

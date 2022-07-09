@@ -31,6 +31,8 @@ interface StationUtilityInterface
 
     public function finishStation(ShipInterface $ship, ConstructionProgressInterface $progress): void;
 
+    public function finishScrapping(ShipInterface $station, ConstructionProgressInterface $progress): void;
+
     public function canManageShips(ShipInterface $ship): bool;
 
     public function canRepairShips(ShipInterface $ship): bool;
