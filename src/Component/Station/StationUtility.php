@@ -16,6 +16,7 @@ use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -26,6 +27,8 @@ final class StationUtility implements StationUtilityInterface
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     private ConstructionProgressRepositoryInterface $constructionProgressRepository;
+
+    private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
 
     private ShipCreatorInterface $shipCreator;
 
@@ -40,6 +43,7 @@ final class StationUtility implements StationUtilityInterface
     public function __construct(
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
+        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
         ShipStorageManagerInterface $shipStorageManager,
@@ -48,6 +52,7 @@ final class StationUtility implements StationUtilityInterface
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
+        $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
         $this->shipStorageManager = $shipStorageManager;
@@ -184,6 +189,9 @@ final class StationUtility implements StationUtilityInterface
                 1
             );
         }
+
+        // delete progress modules
+        $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
 
         // delete progress
         $this->constructionProgressRepository->delete($progress);
