@@ -19,6 +19,7 @@ use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class StationUtility implements StationUtilityInterface
 {
@@ -32,6 +33,8 @@ final class StationUtility implements StationUtilityInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
+    private ShipRumpRepositoryInterface $shipRumpRepository;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -40,6 +43,7 @@ final class StationUtility implements StationUtilityInterface
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
         ShipStorageManagerInterface $shipStorageManager,
+        ShipRumpRepositoryInterface $shipRumpRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
@@ -47,6 +51,7 @@ final class StationUtility implements StationUtilityInterface
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
         $this->shipStorageManager = $shipStorageManager;
+        $this->shipRumpRepository = $shipRumpRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
