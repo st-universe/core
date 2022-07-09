@@ -168,7 +168,7 @@ final class Scrapping implements ActionControllerInterface
         //retrieve 50% of all intact modules
         $recycleCount = (int) ceil(count($intactModules) / 2);
         for ($i = 1; $i <= $recycleCount; $i++) {
-            $module = $intactModules[array_rand($intactModules)];
+            [$module, $count] = $intactModules[array_rand($intactModules)];
             unset($intactModules[$module->getId()]);
         }
 
