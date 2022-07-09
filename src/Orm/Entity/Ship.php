@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Exception;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
@@ -954,9 +955,14 @@ class Ship implements ShipInterface
         if (!$result) {
             if ($game !== null) {
                 $game->addInformationf(
-                    _("Es werden %d Crewmitglieder benötigt"),
+                    _("Es werden mindestens %d Crewmitglieder benötigt"),
                     $this->getBuildplan()->getCrew()
                 );
+
+                if ($game->getUser()->getId() === 126 || $game->getUser()->getId() === 102) {
+                    $e = new Exception('flafliflu');
+                    $game->log($e->getTraceAsString());
+                }
             }
         }
 

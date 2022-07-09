@@ -732,6 +732,11 @@ final class GameController implements GameControllerInterface
         return $this->loginError;
     }
 
+    public function log(string $msg): void
+    {
+        $this->loggerUtil->log($msg);
+    }
+
     public function getBenchmarkResult(): array
     {
         $this->loggerUtil->log(sprintf('getBenchmarkResult, timestamp: %F', microtime(true)));
