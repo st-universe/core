@@ -94,10 +94,6 @@ final class Scrapping implements ActionControllerInterface
     {
         $station->setState(ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING);
 
-        //remove ship systems
-        $this->shipSystemRepository->truncateByShip($station->getId());
-        $station->getSystems()->clear();
-
         //setup scrapping progress
         $progress = $this->constructionProgressRepository->getByShip($station->getId());
         $progress->setRemainingTicks($station->getRump()->getBuildtime());
@@ -119,6 +115,10 @@ final class Scrapping implements ActionControllerInterface
                 $this->constructionProgressModuleRepository->save($progressModule);
             }
         }
+
+        //remove ship systems
+        $this->shipSystemRepository->truncateByShip($station->getId());
+        $station->getSystems()->clear();
 
         $this->shipRepository->save($station);
     }
