@@ -9,6 +9,9 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -31,22 +34,28 @@ final class Scrapping implements ActionControllerInterface
 
     private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository
+        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemRepository = $shipSystemRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
         $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -139,6 +148,16 @@ final class Scrapping implements ActionControllerInterface
 
                 if (!array_key_exists($module->getId(), $intactModules)) {
                     $buildplanModule = $modules->get($module->getId());
+
+                    if ($buildplanModule === null) {
+                        $this->loggerUtil->log(sprintf(
+                            'systemName: %s, moduleId: %d, moduleName: %s',
+                            $system->getName(),
+                            $module->getId(),
+                            $module->getName()
+                        ));
+                    }
+
                     $count = $buildplanModule->getModuleCount();
 
                     $intactModules[$module->getId()] = [$module, $count];
