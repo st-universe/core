@@ -193,8 +193,12 @@ final class StationUtility implements StationUtilityInterface
         // delete progress modules
         $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
 
+        // set progress finished
+        $progress->setRemainingTicks(0);
+        $this->constructionProgressRepository->save($progress);
+
         // delete progress
-        $this->constructionProgressRepository->delete($progress);
+        //$this->constructionProgressRepository->delete($progress);
     }
 
     public function canManageShips(ShipInterface $ship): bool
