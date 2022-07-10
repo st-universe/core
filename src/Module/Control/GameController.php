@@ -40,7 +40,7 @@ use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Ubench;
 
@@ -527,7 +527,7 @@ final class GameController implements GameControllerInterface
                         sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
                     );
                 }
-                if (!request::postString('smscode') && $this->getUser()->getActive() === PlayerEnum::USER_SMS_VERIFICATION) {
+                if (!request::postString('smscode') && $this->getUser()->getActive() === UserEnum::USER_STATE_SMS_VERIFICATION) {
                     throw new AccountNotVerifiedException();
                 }
                 $gameState = $this->getGameState();

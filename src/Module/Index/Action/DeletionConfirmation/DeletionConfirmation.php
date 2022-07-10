@@ -6,7 +6,7 @@ namespace Stu\Module\Index\Action\DeletionConfirmation;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeletionConfirmation implements ActionControllerInterface
@@ -31,12 +31,12 @@ final class DeletionConfirmation implements ActionControllerInterface
 
         $user = $this->userRepository->getByResetToken($token);
 
-        if ($user === null || $user->getDeletionMark() !== PlayerEnum::DELETION_REQUESTED) {
+        if ($user === null || $user->getDeletionMark() !== UserEnum::DELETION_REQUESTED) {
             return;
         }
 
         $user->setPasswordToken('');
-        $user->setDeletionMark(PlayerEnum::DELETION_CONFIRMED);
+        $user->setDeletionMark(UserEnum::DELETION_CONFIRMED);
 
         $this->userRepository->save($user);
 

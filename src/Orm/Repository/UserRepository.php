@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\ContactListModeEnum;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
@@ -83,8 +83,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'idleTimeThreshold' => $idleTimeThreshold,
             'idleTimeVacationThreshold' => $idleTimeVacationThreshold,
             'ignoreIds' => $ignoreIds,
-            'deletionMark' => PlayerEnum::DELETION_CONFIRMED,
-            'deletionForbidden' => PlayerEnum::DELETION_FORBIDDEN
+            'deletionMark' => UserEnum::DELETION_CONFIRMED,
+            'deletionForbidden' => UserEnum::DELETION_FORBIDDEN
         ])->getResult();
     }
 
@@ -100,8 +100,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
-            'newUser' => PlayerEnum::USER_NEW,
-            'smsVerification' => PlayerEnum::USER_SMS_VERIFICATION
+            'newUser' => UserEnum::USER_STATE_NEW,
+            'smsVerification' => UserEnum::USER_STATE_SMS_VERIFICATION
         ])->getResult();
     }
 

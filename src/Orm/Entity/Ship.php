@@ -164,7 +164,7 @@ class Ship implements ShipInterface
     private $shield_regeneration_timer = 0;
 
     /** @Column(type="smallint", length=3) */
-    private $state = 0;
+    private $state = ShipStateEnum::SHIP_STATE_NONE;
 
     /** @Column(type="integer", nullable=true) */
     private $astro_start_turn;

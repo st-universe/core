@@ -11,7 +11,7 @@ use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\MobileNumberInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
@@ -154,7 +154,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         if ($mobile !== null) {
             $player->setMobile($mobile);
             $player->setSmsCode($smsCode);
-            $player->setActive(PlayerEnum::USER_SMS_VERIFICATION);
+            $player->setActive(UserEnum::USER_STATE_SMS_VERIFICATION);
         }
 
         $this->userRepository->save($player);

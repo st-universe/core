@@ -11,7 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -75,7 +75,7 @@ final class BlockUser implements ActionControllerInterface
         $this->blockedUserRepository->save($blockedUser);
 
         // mark user as deletable
-        $userToBlock->setDeletionMark(PlayerEnum::DELETION_CONFIRMED);
+        $userToBlock->setDeletionMark(UserEnum::DELETION_CONFIRMED);
         $this->userRepository->save($userToBlock);
 
         $this->loggerUtil->log('E');

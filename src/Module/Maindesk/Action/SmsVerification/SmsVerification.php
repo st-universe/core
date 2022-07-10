@@ -12,7 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SmsVerification implements ActionControllerInterface
@@ -35,7 +35,7 @@ final class SmsVerification implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getActive() !== PlayerEnum::USER_SMS_VERIFICATION) {
+        if ($user->getActive() !== UserEnum::USER_STATE_SMS_VERIFICATION) {
             $this->loggerUtil->log('W');
             return;
         }
@@ -47,7 +47,7 @@ final class SmsVerification implements ActionControllerInterface
         }
         $this->loggerUtil->log('Y');
 
-        $user->setActive(PlayerEnum::USER_UNCOLONIZED);
+        $user->setActive(UserEnum::USER_STATE_UNCOLONIZED);
         $user->setMobile(sha1($user->getMobile()));
         $this->userRepository->save($user);
 

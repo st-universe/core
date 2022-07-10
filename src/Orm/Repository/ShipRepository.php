@@ -14,7 +14,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Ship;
@@ -193,7 +193,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'ignoreId' => $ship->getUser()->getId(),
             'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
-            'vacationThreshold' => time() - PlayerEnum::VACATION_DELAY_IN_SECONDS
+            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
         ])->getResult();
     }
 
@@ -271,7 +271,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'userId' => $userId,
             'systemType' => ShipSystemTypeEnum::SYSTEM_UPLINK,
             'mode' => ShipSystemModeEnum::MODE_ON,
-            'vacationThreshold' => time() - PlayerEnum::VACATION_DELAY_IN_SECONDS
+            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
         ])
             ->getResult();
     }
@@ -412,7 +412,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'underConstruction' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
-            'vacationThreshold' => time() - PlayerEnum::VACATION_DELAY_IN_SECONDS
+            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
         ])->getResult();
     }
 

@@ -11,7 +11,7 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -64,7 +64,11 @@ class User implements UserInterface
     private $race;
 
     /** @Column(type="smallint") */
-    private $aktiv = PlayerEnum::USER_NEW;
+    private $aktiv = UserEnum::USER_STATE_NEW;
+
+    /** @Column(type="smallint", nullable=true) */
+    private $state;
+    //private $state = UserEnum::USER_STATE_NEW;
 
     /** @Column(type="string", length=200) */
     private $propic = '';
@@ -177,7 +181,7 @@ class User implements UserInterface
 
     public function getUserName(): string
     {
-        //wenn UMODE aktiv, eine Info an den Namen anhängen
+        //if UMODE active, add info to user name
         if ($this->isVacationRequestOldEnough()) {
             return $this->username . '[b][color=red] (UMODE)[/color][/b]';
         }
@@ -287,7 +291,7 @@ class User implements UserInterface
         return $this->colonies;
     }
 
-    //TODO rename to state, constants in PlayerEnum too
+    //TODO rename to state, constants in UserEnum too
     public function getActive(): int
     {
         return $this->aktiv;
@@ -303,12 +307,13 @@ class User implements UserInterface
         if ($this->isLocked()) {
             return _('GESPERRT');
         }
-        return PlayerEnum::getUserStateDescription($this->getActive());
+        return UserEnum::getUserStateDescription($this->getActive());
     }
 
     public function setActive(int $active): UserInterface
     {
         $this->aktiv = $active;
+        $this->state = $active;
         return $this;
     }
 
@@ -403,7 +408,7 @@ class User implements UserInterface
 
     public function isVacationRequestOldEnough(): bool
     {
-        return $this->isVacationMode() && (time() - $this->getVacationRequestDate() > PlayerEnum::VACATION_DELAY_IN_SECONDS);
+        return $this->isVacationMode() && (time() - $this->getVacationRequestDate() > UserEnum::VACATION_DELAY_IN_SECONDS);
     }
 
     public function isStorageNotification(): bool

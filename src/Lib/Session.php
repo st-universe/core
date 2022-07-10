@@ -5,7 +5,7 @@ namespace Stu\Lib;
 use DateTimeImmutable;
 use Stu\Exception\SessionInvalidException;
 use Stu\Component\Player\Validation\LoginValidationInterface;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
@@ -119,8 +119,8 @@ final class Session implements SessionInterface
             }
         }
 
-        if ($result->getActive() === PlayerEnum::USER_NEW) {
-            $result->setActive(PlayerEnum::USER_UNCOLONIZED);
+        if ($result->getActive() === UserEnum::USER_STATE_NEW) {
+            $result->setActive(UserEnum::USER_STATE_UNCOLONIZED);
 
             $this->userRepository->save($result);
         }
@@ -131,7 +131,7 @@ final class Session implements SessionInterface
                 sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
             );
         }
-        if ($result->getDeletionMark() === PlayerEnum::DELETION_CONFIRMED) {
+        if ($result->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
             throw new LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
         }
         if ($this->loginValidation->validate($result) === false) {
@@ -212,13 +212,13 @@ final class Session implements SessionInterface
             $this->destroySession();
             return;
         }
-        if ($result->getActive() == PlayerEnum::USER_NEW) {
+        if ($result->getActive() == UserEnum::USER_STATE_NEW) {
             throw new SessionInvalidException("Aktivierung");
         }
         if ($result->isLocked()) {
             throw new SessionInvalidException("Gesperrt");
         }
-        if ($result->getDeletionMark() === PlayerEnum::DELETION_CONFIRMED) {
+        if ($result->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
             throw new SessionInvalidException("Löschung");
         }
         if ($result->isVacationMode() === true) {

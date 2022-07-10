@@ -8,7 +8,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -69,7 +69,7 @@ final class FirstColony implements ActionControllerInterface
             $this->buildingRepository->find($user->getFaction()->getStartBuildingId())
         );
 
-        $user->setActive(PlayerEnum::USER_ACTIVE);
+        $user->setActive(UserEnum::USER_STATE_ACTIVE);
 
         $this->userRepository->save($user);
 
