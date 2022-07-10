@@ -293,7 +293,7 @@ class User implements UserInterface
     //TODO rename to state, constants in UserEnum too
     public function getActive(): int
     {
-        return $this->aktiv;
+        return $this->state;
     }
 
     public function isLocked(): bool
