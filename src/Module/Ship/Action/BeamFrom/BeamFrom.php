@@ -104,7 +104,7 @@ final class BeamFrom implements ActionControllerInterface
             return;
         }
         if (count($goods) == 0 || count($gcount) == 0) {
-            $game->addInformation(_("Es wurde keine Waren zum Beamen ausgewählt"));
+            $game->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
             return;
         }
         $game->addInformation(

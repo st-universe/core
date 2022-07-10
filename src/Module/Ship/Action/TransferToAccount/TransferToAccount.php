@@ -99,7 +99,7 @@ final class TransferToAccount implements ActionControllerInterface
             return;
         }
         if (count($goods) == 0 || count($gcount) == 0) {
-            $game->addInformation(_("Es wurde keine Waren zum Transferieren ausgewählt"));
+            $game->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
             return;
         }
         $game->addInformation(_("Es wurden folgende Waren ins Warenkonto transferiert"));
