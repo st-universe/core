@@ -57,7 +57,7 @@ interface UserInterface
 
     public function getUserStateDescription(): string;
 
-    public function setActive(int $active): UserInterface;
+    public function setState(int $state): UserInterface;
 
     public function getAvatar(): string;
 

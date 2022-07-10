@@ -308,9 +308,9 @@ class User implements UserInterface
         return UserEnum::getUserStateDescription($this->getState());
     }
 
-    public function setActive(int $active): UserInterface
+    public function setState(int $state): UserInterface
     {
-        $this->state = $active;
+        $this->state = $state;
         return $this;
     }
 
