@@ -63,8 +63,8 @@ class User implements UserInterface
     /** @Column(type="integer", nullable=true) */
     private $race;
 
-    /** @Column(type="smallint") */
-    private $aktiv = UserEnum::USER_STATE_NEW;
+    /** @Column(type="smallint", nullable=true) */
+    private $aktiv;
 
     /** @Column(type="smallint") */
     private $state = UserEnum::USER_STATE_NEW;
