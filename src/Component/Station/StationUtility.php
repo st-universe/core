@@ -180,10 +180,7 @@ final class StationUtility implements StationUtilityInterface
         $station->setName($rump->getName());
         $station->setHuell($rump->getBaseHull());
         $station->setMaxHuell($rump->getBaseHull());
-        $station->setShield(0);
-        $station->setEps(0);
-        $station->setMaxEBatt(0);
-        $station->setMaxShield(0);
+
         $this->shipRepository->save($station);
 
         // salvage modules

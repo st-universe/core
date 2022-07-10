@@ -129,6 +129,12 @@ final class Scrapping implements ActionControllerInterface
         $this->shipSystemRepository->truncateByShip($station->getId());
         $station->getSystems()->clear();
 
+        //clear system values
+        $station->setShield(0);
+        $station->setEps(0);
+        $station->setMaxEBatt(0);
+        $station->setMaxShield(0);
+
         $this->shipRepository->save($station);
     }
 
