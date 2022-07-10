@@ -64,6 +64,9 @@ class User implements UserInterface
     private $race;
 
     /** @Column(type="smallint") */
+    private $aktiv = UserEnum::USER_STATE_NEW;
+
+    /** @Column(type="smallint") */
     private $state = UserEnum::USER_STATE_NEW;
 
     /** @Column(type="string", length=200) */
@@ -308,6 +311,7 @@ class User implements UserInterface
 
     public function setActive(int $active): UserInterface
     {
+        $this->aktiv = $active;
         $this->state = $active;
         return $this;
     }
