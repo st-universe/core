@@ -270,11 +270,13 @@ final class ShowShip implements ViewControllerInterface
             $progress = null;
         } else {
             $dockedWorkbees = $this->stationUtility->getDockedWorkbeeCount($ship);
-            $neededWorkbees = $ship->getRump()->getNeededWorkbees();
+            $neededWorkbees = $ship->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION
+                ? $ship->getRump()->getNeededWorkbees() :
+                (int)ceil($ship->getRump()->getNeededWorkbees() / 2);
 
             $game->setTemplateVar('DOCKED', $dockedWorkbees);
             if ($ship->getState() === ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
-                $game->setTemplateVar('NEEDED', (int)ceil($neededWorkbees / 2));
+                $game->setTemplateVar('NEEDED', $neededWorkbees);
             } else {
                 $game->setTemplateVar('NEEDED', $neededWorkbees);
             }
