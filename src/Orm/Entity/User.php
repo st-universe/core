@@ -64,7 +64,11 @@ class User implements UserInterface
     private $race;
 
     /** @Column(type="smallint") */
-    private $state = UserEnum::USER_STATE_NEW;
+    private $aktiv = UserEnum::USER_STATE_NEW;
+
+    /** @Column(type="smallint", nullable=true) */
+    private $state;
+    //private $state = UserEnum::USER_STATE_NEW;
 
     /** @Column(type="string", length=200) */
     private $propic = '';
@@ -290,7 +294,7 @@ class User implements UserInterface
     //TODO rename to state, constants in UserEnum too
     public function getActive(): int
     {
-        return $this->state;
+        return $this->aktiv;
     }
 
     public function isLocked(): bool
@@ -308,6 +312,7 @@ class User implements UserInterface
 
     public function setActive(int $active): UserInterface
     {
+        $this->aktiv = $active;
         $this->state = $active;
         return $this;
     }
