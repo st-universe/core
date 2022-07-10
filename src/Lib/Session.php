@@ -119,7 +119,7 @@ final class Session implements SessionInterface
             }
         }
 
-        if ($result->getActive() === UserEnum::USER_STATE_NEW) {
+        if ($result->getState() === UserEnum::USER_STATE_NEW) {
             $result->setActive(UserEnum::USER_STATE_UNCOLONIZED);
 
             $this->userRepository->save($result);
@@ -212,7 +212,7 @@ final class Session implements SessionInterface
             $this->destroySession();
             return;
         }
-        if ($result->getActive() == UserEnum::USER_STATE_NEW) {
+        if ($result->getState() == UserEnum::USER_STATE_NEW) {
             throw new SessionInvalidException("Aktivierung");
         }
         if ($result->isLocked()) {

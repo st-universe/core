@@ -25,7 +25,7 @@ final class ShowColonyList implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $active = $user->getActive();
+        $active = $user->getState();
 
         if ($active !== UserEnum::USER_STATE_UNCOLONIZED) {
             throw new AccessViolation(sprintf(_('User is not uncolonized, but tried to enter first-colony-list. Fool: %d, Active: %d'), $user->getId(), $active));

@@ -35,7 +35,7 @@ final class SmsVerification implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getActive() !== UserEnum::USER_STATE_SMS_VERIFICATION) {
+        if ($user->getState() !== UserEnum::USER_STATE_SMS_VERIFICATION) {
             $this->loggerUtil->log('W');
             return;
         }
@@ -55,7 +55,7 @@ final class SmsVerification implements ActionControllerInterface
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
-            $user->getActive() === 1
+            $user->getState() === UserEnum::USER_STATE_UNCOLONIZED
         );
 
         $game->setView(GameController::DEFAULT_VIEW);

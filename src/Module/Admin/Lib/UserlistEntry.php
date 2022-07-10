@@ -40,7 +40,7 @@ final class UserlistEntry
         if ($user->isLocked()) {
             return _("red");
         }
-        if ($user->getActive() === UserEnum::USER_STATE_ACTIVE) {
+        if ($user->getState() === UserEnum::USER_STATE_ACTIVE) {
             return _("greenyellow");
         }
         return '#dddddd';
@@ -48,7 +48,7 @@ final class UserlistEntry
 
     public function isUserActive(): bool
     {
-        return $this->user->getActive() === UserEnum::USER_STATE_ACTIVE;
+        return $this->user->getState() === UserEnum::USER_STATE_ACTIVE;
     }
 
     public function isUserLocked(): bool

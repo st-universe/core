@@ -290,8 +290,7 @@ class User implements UserInterface
         return $this->colonies;
     }
 
-    //TODO rename to state, constants in UserEnum too
-    public function getActive(): int
+    public function getState(): int
     {
         return $this->state;
     }
@@ -306,7 +305,7 @@ class User implements UserInterface
         if ($this->isLocked()) {
             return _('GESPERRT');
         }
-        return UserEnum::getUserStateDescription($this->getActive());
+        return UserEnum::getUserStateDescription($this->getState());
     }
 
     public function setActive(int $active): UserInterface

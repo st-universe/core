@@ -85,7 +85,7 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
-            $user->getActive() === UserEnum::USER_STATE_UNCOLONIZED
+            $user->getState() === UserEnum::USER_STATE_UNCOLONIZED
         );
         $this->newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
         $game->setTemplateVar(

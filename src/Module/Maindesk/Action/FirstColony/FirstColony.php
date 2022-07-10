@@ -45,7 +45,7 @@ final class FirstColony implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        if ((int) $user->getActive() !== 1) {
+        if ((int) $user->getState() !== 1) {
             throw new AccessViolation();
         }
 
