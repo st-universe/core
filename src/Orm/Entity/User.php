@@ -66,9 +66,8 @@ class User implements UserInterface
     /** @Column(type="smallint") */
     private $aktiv = UserEnum::USER_STATE_NEW;
 
-    /** @Column(type="smallint", nullable=true) */
-    private $state;
-    //private $state = UserEnum::USER_STATE_NEW;
+    /** @Column(type="smallint") */
+    private $state = UserEnum::USER_STATE_NEW;
 
     /** @Column(type="string", length=200) */
     private $propic = '';
