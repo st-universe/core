@@ -311,7 +311,6 @@ class User implements UserInterface
 
     public function setActive(int $active): UserInterface
     {
-        $this->aktiv = $active;
         $this->state = $active;
         return $this;
     }

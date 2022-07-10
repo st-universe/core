@@ -94,7 +94,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u
-                 WHERE (u.aktiv = :newUser OR u.aktiv = :smsVerification)
+                 WHERE (u.state = :newUser OR u.state = :smsVerification)
                  AND u.creation < :idleTimeThreshold',
                 User::class
             )
