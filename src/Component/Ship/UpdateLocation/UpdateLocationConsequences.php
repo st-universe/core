@@ -70,6 +70,8 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
 
     private function scheduleMsgToOwnerOrPlayer(ShipInterface $ship, ?ShipInterface $tractoringShip, array $msgToSchedule, ?array &$msgToPlayer = null): void
     {
+        $this->loggerUtil->log(sprintf(' msgToScheduleSize: %d', count($msgToSchedule)));
+
         $scheduleToOwnerOfPassiveShip = $tractoringShip !== null && $tractoringShip->getUser() !== $ship->getUser();
 
         if ($scheduleToOwnerOfPassiveShip) {
