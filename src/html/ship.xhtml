@@ -1103,7 +1103,7 @@
 								<img src="assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerstörung" />
 							</a>
 							<tal:block tal:condition="not:SHIP/isConstruction">
-								<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING) AND (SHIP.getState() != SHIP_STATE_UNDER_CONSTRUCTION)"
+								<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING)"
 									href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
 									onmouseover="cp('scrap','buttons/scrap2');"
 									onmouseout="cp('scrap','buttons/scrap1');">
