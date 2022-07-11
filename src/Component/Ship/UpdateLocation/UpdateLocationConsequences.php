@@ -59,12 +59,11 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         array_walk(
             $handler,
             function (UpdateLocationHandlerInterface $handler, string $key) use ($ship, $tractoringShip, &$msgToPlayer): void {
-                $this->loggerUtil->log(sprintf('handler: %s', $key));
-
                 $handler->clearMessages();
                 $handler->handle($ship, $tractoringShip);
 
                 if (!empty($handler->getInternalMsg())) {
+                    $this->loggerUtil->log(sprintf('handler: %s', $key));
                     $this->scheduleMsgToOwnerOrPlayer($ship, $tractoringShip, $handler->getInternalMsg(), $msgToPlayer);
                 }
             }
@@ -83,8 +82,8 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         } else {
             $this->loggerUtil->log('  msgToPlayer');
             if ($msgToPlayer !== null) {
-                $this->loggerUtil->log(sprintf('    size: %d', count($msgToPlayer)));
                 $msgToPlayer = array_merge($msgToPlayer, $msgToSchedule);
+                $this->loggerUtil->log(sprintf('    size: %d', count($msgToPlayer)));
             }
         }
     }
