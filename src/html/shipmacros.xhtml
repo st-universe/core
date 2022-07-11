@@ -1022,9 +1022,9 @@
         <td>${targetShip/getEBatt}</td>
       </tr>
       <tr tal:condition="targetShip/getBuildplan">
-        <td>verbaute Module</td>
+        <td>Verbaute Module</td>
         <td><img tal:repeat="mod targetShip/getModules" style="margin-right: 5px;"
-            src="assets/goods/${mod/getGoodId}.png" /></td>
+            src="assets/goods/${mod/getGoodId}.png" title="${mod/getName}" /></td>
       </tr>
     </table>
     <br />
