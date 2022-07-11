@@ -78,7 +78,7 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         } else {
             $this->loggerUtil->log('  msgToPlayer');
             if ($msgToPlayer !== null) {
-                $this->loggerUtil->log('    msgToPlayer != null');
+                $this->loggerUtil->log(sprintf('    size: %d', count($msgToPlayer)));
                 $msgToPlayer = array_merge($msgToPlayer, $msgToSchedule);
             }
         }
