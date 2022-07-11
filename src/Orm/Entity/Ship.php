@@ -1640,7 +1640,7 @@ class Ship implements ShipInterface
 
     public function cancelRepair(): bool
     {
-        if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+        if ($this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
             $this->setStateNoneAndSave();
 
             global $container;
@@ -1649,7 +1649,7 @@ class Ship implements ShipInterface
             $container->get(StationShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
 
             return true;
-        } else if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
+        } else if ($this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
             $this->setStateNoneAndSave();
 
             // @todo inject

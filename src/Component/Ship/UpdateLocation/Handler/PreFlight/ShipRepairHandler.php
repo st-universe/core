@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\UpdateLocation\Handler\PreFlight;
 
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\UpdateLocation\Handler\AbstractUpdateLocationHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -24,7 +25,7 @@ final class ShipRepairHandler extends AbstractUpdateLocationHandler implements U
     {
         $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
-        $this->loggerUtil->log('     handle');
+        $this->loggerUtil->log(sprintf('     handle, shipState: %s', ShipStateEnum::getDescription($ship->getState())));
         if ($ship->cancelRepair()) {
             $this->loggerUtil->log('     canceledRepair');
             $this->addMessageInternal(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getName()));
