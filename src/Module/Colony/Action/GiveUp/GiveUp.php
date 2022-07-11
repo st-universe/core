@@ -45,6 +45,10 @@ final class GiveUp implements ActionControllerInterface
         $colonyAmount = $this->colonyRepository->getAmountByUser($user);
         $colony = $this->colonyRepository->find($this->giveupRequest->getColonyId());
 
+        if ($colony === null || $colony->getUserId() !== $userId) {
+            throw new AccessViolation();
+        }
+
         $code = trim(request::postString('giveupcode'));
 
         if ($code !== substr(md5($colony->getName()), 0, 6)) {
@@ -52,14 +56,11 @@ final class GiveUp implements ActionControllerInterface
             return;
         }
 
-        if ($colony === null || $colony->getUserId() !== $userId) {
-            throw new AccessViolation();
-        }
-
         $this->colonyResetter->reset($colony);
         $colonyAmount--;
 
-        if ($colonyAmount === 0) {
+        $isMoon = $colony->getPlanetType()->getIsMoon();
+        if (!$isMoon && $colonyAmount === 0) {
             $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
 
             $this->userRepository->save($user);
