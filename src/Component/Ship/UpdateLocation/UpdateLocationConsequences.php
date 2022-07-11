@@ -73,9 +73,12 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         $scheduleToOwnerOfPassiveShip = $tractoringShip !== null && $tractoringShip->getUser() !== $ship->getUser();
 
         if ($scheduleToOwnerOfPassiveShip) {
+            $this->loggerUtil->log('  scheduleToOwnerOfPassiveShip');
             $this->informOwnerOfTractoredShip($msgToSchedule);
         } else {
+            $this->loggerUtil->log('  msgToPlayer');
             if ($msgToPlayer !== null) {
+                $this->loggerUtil->log('    msgToPlayer != null');
                 $msgToPlayer = array_merge($msgToPlayer, $msgToSchedule);
             }
         }
