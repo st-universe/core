@@ -40,6 +40,12 @@ use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Ship\System\Type\UplinkShipSystem;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
+use Stu\Component\Ship\UpdateLocation\Handler\PostFlight\AstroMappingHandler;
+use Stu\Component\Ship\UpdateLocation\Handler\PostFlight\PostFlightTractorHandler;
+use Stu\Component\Ship\UpdateLocation\Handler\PreFlight\PreFlightTractorHandler;
+use Stu\Component\Ship\UpdateLocation\Handler\PreFlight\ShipRepairHandler;
+use Stu\Module\Ship\Lib\UpdateLocationConsequences;
+use Stu\Module\Ship\Lib\UpdateLocationConsequencesInterface;
 
 use function DI\autowire;
 use function DI\create;
@@ -77,5 +83,21 @@ return [
             ShipSystemTypeEnum::SYSTEM_UPLINK => autowire(UplinkShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => autowire(FusionReactorShipSystem::class)
         ]
-    )
+    ),
+    UpdateLocationConsequencesInterface::class => create(UpdateLocationConsequences::class)->constructor(
+        //get(UserRepositoryInterface::class),
+
+        // preMove Handler
+        //.. TODO
+        [
+            autowire(ShipRepairHandler::class),
+            autowire(PreFlightTractorHandler::class)
+        ],
+
+        // postMove Handler
+        [
+            autowire(AstroMappingHandler::class),
+            autowire(PostFlightTractorHandler::class)
+        ]
+    ),
 ];

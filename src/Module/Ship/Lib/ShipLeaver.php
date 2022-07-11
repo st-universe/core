@@ -90,7 +90,6 @@ final class ShipLeaver implements ShipLeaverInterface
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
-
         $ship->setAlertStateGreen();
         $ship->setDockedTo(null);
         $ship->setFleet(null);

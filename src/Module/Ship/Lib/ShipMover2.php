@@ -8,7 +8,6 @@ use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
@@ -40,9 +39,7 @@ final class ShipMover2 implements ShipMover2Interface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
-    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
-
-    private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
+    private UpdateLocationConsequencesInterface $updateLocationConsequences;
 
     private int $new_x = 0;
     private int $new_y = 0;
@@ -67,8 +64,7 @@ final class ShipMover2 implements ShipMover2Interface
         ApplyDamageInterface $applyDamage,
         AlertRedHelperInterface $alertRedHelper,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
-        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
-        TractorMassPayloadUtilInterface  $tractorMassPayloadUtil
+        UpdateLocationConsequencesInterface $updateLocationConsequences
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -79,8 +75,7 @@ final class ShipMover2 implements ShipMover2Interface
         $this->applyDamage = $applyDamage;
         $this->alertRedHelper = $alertRedHelper;
         $this->flightSignatureRepository = $flightSignatureRepository;
-        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
-        $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
+        $this->updateLocationConsequences = $updateLocationConsequences;
     }
 
     private function setDestination(
@@ -474,18 +469,14 @@ final class ShipMover2 implements ShipMover2Interface
         //MOVE!
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
-        if ($ship->getSystem() === null) {
-            //TODO msg[] rein und loggen
-            $ship->updateLocation($nextField, null);
-        } else {
-            //TODO msg[] rein und loggen
-            $ship->updateLocation(null, $nextField);
-        }
+        $msg = [];
+        $this->updateLocationConsequences->updateLocationWithConsequences($ship, null, $nextField, $msg);
+        $this->addInformationMerge($msg);
         $this->hasTravelled = true;
+
         if ($ship === $leadShip) {
             $this->leaderMovedToNextField = true;
         }
-
 
         if (!$this->isFleetMode() && $ship->getFleetId()) {
             $this->leaveFleet($ship);
@@ -505,17 +496,6 @@ final class ShipMover2 implements ShipMover2Interface
                 //TODO msg[] rein und loggen
                 $tractoredShip->updateLocation(null, $nextField);
             }
-
-            //check for tractor system health
-            $msg = [];
-            $tractorSystemSurvived = $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($ship, $tractoredShip, $msg);
-            if (!$tractorSystemSurvived) {
-                $this->deactivateTractorBeam($ship, current($msg));
-            } else {
-                $this->addInformationMerge($msg);
-            }
-
-            $this->addInformationMerge($this->cancelColonyBlockOrDefend->work($ship, true));
         }
 
         //create flight signatures
