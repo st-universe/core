@@ -8,6 +8,7 @@ use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\UpdateLocation\UpdateLocationConsequencesInterface;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
