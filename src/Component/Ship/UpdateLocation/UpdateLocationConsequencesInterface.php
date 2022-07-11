@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Component\Ship\UpdateLocation;
 
 use Stu\Orm\Entity\ShipInterface;
 

@@ -157,8 +157,6 @@ use Stu\Module\Ship\Lib\ReactorUtil;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ShipMover2;
 use Stu\Module\Ship\Lib\ShipMover2Interface;
-use Stu\Module\Ship\Lib\UpdateLocationConsequences;
-use Stu\Module\Ship\Lib\UpdateLocationConsequencesInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -216,7 +214,6 @@ return [
     ShipLoaderInterface::class => autowire(ShipLoader::class),
     PriorizeFleetRequestInterface::class => autowire(PriorizeFleetRequest::class),
     ReactorUtilInterface::class => autowire(ReactorUtil::class),
-    UpdateLocationConsequencesInterface::class => autowire(UpdateLocationConsequences::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),

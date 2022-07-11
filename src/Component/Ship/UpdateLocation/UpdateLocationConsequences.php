@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Component\Ship\UpdateLocation;
 
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
+use Stu\Module\Logging\LoggerUtilFactory;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class UpdateLocationConsequences implements UpdateLocationConsequencesInterface
@@ -12,14 +15,20 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
     private array $preMoveHandler;
     private array $postMoveHandler;
 
+    private LoggerUtilInterface $loggerUtil;
+
     /**
      *  @param UpdateLocationHandlerInterface[] $preMoveHandler
      *  @param UpdateLocationHandlerInterface[] $postMoveHandler
      */
-    public function __construct(array $preMoveHandler, array $postMoveHandler)
-    {
+    public function __construct(
+        array $preMoveHandler,
+        array $postMoveHandler,
+        LoggerUtilFactoryInterface $loggerUtilFactory
+    ) {
         $this->preMoveHandler = $preMoveHandler;
         $this->postMoveHandler = $postMoveHandler;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function updateLocationWithConsequences(

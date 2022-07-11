@@ -44,11 +44,13 @@ use Stu\Component\Ship\UpdateLocation\Handler\PostFlight\AstroMappingHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\PostFlight\PostFlightTractorHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\PreFlight\PreFlightTractorHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\PreFlight\ShipRepairHandler;
-use Stu\Module\Ship\Lib\UpdateLocationConsequences;
-use Stu\Module\Ship\Lib\UpdateLocationConsequencesInterface;
+use Stu\Component\Ship\UpdateLocation\UpdateLocationConsequences;
+use Stu\Component\Ship\UpdateLocation\UpdateLocationConsequencesInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 
 use function DI\autowire;
 use function DI\create;
+use function DI\get;
 
 return [
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
@@ -98,6 +100,8 @@ return [
         [
             autowire(AstroMappingHandler::class),
             autowire(PostFlightTractorHandler::class)
-        ]
+        ],
+
+        get(LoggerUtilFactoryInterface::class),
     ),
 ];
