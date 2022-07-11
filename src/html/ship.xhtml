@@ -1102,11 +1102,14 @@
 								onmouseout="cp('selfdestruct','buttons/selfdes1');">
 								<img src="assets/buttons/selfdes1.png" name="selfdestruct" title="Selbstzerstörung" />
 							</a>
-							<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING) AND (SHIP.getState() != SHIP_STATE_UNDER_CONSTRUCTION)"
-								href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
-								onmouseover="cp('scrap','buttons/scrap2');" onmouseout="cp('scrap','buttons/scrap1');">
-								<img src="assets/buttons/scrap1.png" name="scrap" title="Demontieren" />
-							</a>
+							<tal:block tal:condition="not:SHIP/isConstruction">
+								<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING) AND (SHIP.getState() != SHIP_STATE_UNDER_CONSTRUCTION)"
+									href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
+									onmouseover="cp('scrap','buttons/scrap2');"
+									onmouseout="cp('scrap','buttons/scrap1');">
+									<img src="assets/buttons/scrap1.png" name="scrap" title="Demontieren" />
+								</a>
+							</tal:block>
 						</td>
 					</tr>
 					<tr>

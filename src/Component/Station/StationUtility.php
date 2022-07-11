@@ -175,6 +175,7 @@ final class StationUtility implements StationUtilityInterface
         $rumpId = $station->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
         $rump = $this->shipRumpRepository->find($rumpId);
 
+        $station->setState(ShipStateEnum::SHIP_STATE_NONE);
         $station->setBuildplan(null);
         $station->setRump($rump);
         $station->setName($rump->getName());
