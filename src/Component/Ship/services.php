@@ -92,14 +92,14 @@ return [
         // preMove Handler
         //.. TODO
         [
-            autowire(ShipRepairHandler::class),
-            autowire(PreFlightTractorHandler::class)
+            'ShipRepairHandler' => autowire(ShipRepairHandler::class),
+            'PreFlightTractorHandler' => autowire(PreFlightTractorHandler::class)
         ],
 
         // postMove Handler
         [
-            autowire(AstroMappingHandler::class),
-            autowire(PostFlightTractorHandler::class)
+            'AstroMappingHandler' => autowire(AstroMappingHandler::class),
+            'ShipPostFlightTractorHandlerRepairHandler' => autowire(PostFlightTractorHandler::class)
         ],
 
         get(LoggerUtilFactoryInterface::class),

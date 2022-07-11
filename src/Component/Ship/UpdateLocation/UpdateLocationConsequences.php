@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\UpdateLocation;
 
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactory;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -37,6 +38,8 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         $nextField,
         array &$msgToPlayer = null
     ): void {
+        $this->loggerUtil->init('mov2', LoggerEnum::LEVEL_ERROR);
+
         // preMove handler
         $this->walkHandler($this->preMoveHandler, $ship, $tractoringShip, $msgToPlayer);
 
@@ -55,7 +58,9 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
     {
         array_walk(
             $handler,
-            function (UpdateLocationHandlerInterface $handler) use ($ship, $tractoringShip, $msgToPlayer): void {
+            function (UpdateLocationHandlerInterface $handler, string $key) use ($ship, $tractoringShip, $msgToPlayer): void {
+                $this->loggerUtil->log(sprintf('handler: %s', $key));
+
                 $handler->clearMessages();
                 $handler->handle($ship, $tractoringShip);
                 $this->scheduleMsgToOwnerOrPlayer($ship, $tractoringShip, $handler->getInternalMsg(), $msgToPlayer);
