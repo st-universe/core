@@ -1190,7 +1190,8 @@
 						</td>
 						<td colspan="2">
 							<img tal:condition="SHIP/getBuildplan" tal:repeat="mod SHIP/getModules"
-								style="margin-right: 5px;" src="assets/goods/${mod/getGoodId}.png" />
+								style="margin-right: 5px;" src="assets/goods/${mod/getGoodId}.png"
+								title="${mod/getName}" />
 						</td>
 						<td colspan="4">
 							<img tal:repeat="sys SHIP/getSystems" title="${sys/getName}: ${sys/getStatus}%"
