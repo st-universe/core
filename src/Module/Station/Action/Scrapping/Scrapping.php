@@ -13,6 +13,8 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
@@ -34,6 +36,8 @@ final class Scrapping implements ActionControllerInterface
 
     private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
 
+    private ShipRemoverInterface $shipRemover;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -42,6 +46,7 @@ final class Scrapping implements ActionControllerInterface
         ShipSystemRepositoryInterface $shipSystemRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
         ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
+        ShipRemoverInterface $shipRemover,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -49,6 +54,7 @@ final class Scrapping implements ActionControllerInterface
         $this->shipSystemRepository = $shipSystemRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
         $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
+        $this->shipRemover = $shipRemover;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -58,43 +64,41 @@ final class Scrapping implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $station = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
         );
 
-        if (!$ship->isBase()) {
+        if (!$station->isBase()) {
             return;
         }
 
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION) {
+        if ($station->getState() === ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
             return;
         }
 
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
+        $code = trim(request::postString('scrapcode'));
+
+        if ($code !== substr(md5($station->getName()), 0, 6)) {
+            $game->addInformation(_('Der Bestätigungscode war fehlerhaft'));
             return;
         }
 
-        if ($ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_CONSTRUCTION) {
-            $game->addInformation(_('Konstrukte können nicht abgewrackt werden'));
+        if ($station->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_CONSTRUCTION) {
+            $game->setView(Overview::VIEW_IDENTIFIER);
+            $this->shipRemover->remove($station);
+            $game->addInformation(_('Konstrukt wurde entfernt'));
             return;
         }
 
-        if ($ship->getCrewCount() > 0) {
+        if ($station->getCrewCount() > 0) {
             $game->addInformation(_('Zum Demontieren muss die Station unbemannt sein'));
             return;
         }
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $code = trim(request::postString('scrapcode'));
-
-        if ($code !== substr(md5($ship->getName()), 0, 6)) {
-            $game->addInformation(_('Der Demontagecode war fehlerhaft'));
-            return;
-        }
-
-        $this->startScrapping($ship);
+        $this->startScrapping($station);
 
         $game->addInformation(_('Das Demontieren hat begonnen'));
     }
