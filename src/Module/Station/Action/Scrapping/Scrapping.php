@@ -84,7 +84,7 @@ final class Scrapping implements ActionControllerInterface
             return;
         }
 
-        if ($station->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_CONSTRUCTION) {
+        if ($station->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION) {
             $game->setView(Overview::VIEW_IDENTIFIER);
             $this->shipRemover->remove($station);
             $game->addInformation(_('Konstrukt wurde entfernt'));
