@@ -36,7 +36,7 @@
 							<tal:block tal:condition="posts" tal:repeat="data posts">
 								<tr>
 									<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
-										<a href="userprofile.php?uid=${data/getUserId}">
+										<a href="userprofile.php?uid=${data/getUser/getId}">
 											<img src="runtime" style="width: 50px; height: 50px;"
 												tal:attributes="src data/getUser/getFullAvatarPath" />
 										</a>
@@ -74,7 +74,7 @@
 									<tal:block tal:define="RECENT_POST data/getLatestPost">
 										<tr>
 											<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
-												<a href="userprofile.php?uid=${RECENT_POST/getUserId}">
+												<a href="userprofile.php?uid=${RECENT_POST/getUser/getId}">
 													<img src="runtime" style="width: 50px; height: 50px;"
 														tal:attributes="src RECENT_POST/getUser/getFullAvatarPath" />
 												</a>
@@ -148,7 +148,7 @@
 									tal:condition="not:RECENT_PROFILE_VISITORS">
 									Keine Besucher
 								</div>
-								<a style="padding: 5px;" href="userprofile.php?uid=${data/getUserId}"
+								<a style="padding: 5px;" href="userprofile.php?uid=${data/getUser/getId}"
 									tal:repeat="data RECENT_PROFILE_VISITORS">
 									<img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55"
 										height="55"
