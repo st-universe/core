@@ -47,7 +47,7 @@
 				</tr>
 				<tr>
 					<td colspan="2" tal:attributes="class string:row${repeat/post/odd}">
-						<div tal:define="id post/getUserId">
+						<div tal:define="id post/getUser/getId">
 							<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
 							<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
 						</div>
