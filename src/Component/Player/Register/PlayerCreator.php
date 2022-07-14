@@ -154,7 +154,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         if ($mobile !== null) {
             $player->setMobile($mobile);
             $player->setSmsCode($smsCode);
-            $player->setActive(UserEnum::USER_STATE_SMS_VERIFICATION);
+            $player->setState(UserEnum::USER_STATE_SMS_VERIFICATION);
         }
 
         $this->userRepository->save($player);
