@@ -132,6 +132,12 @@ class AllianceBoardPost implements AllianceBoardPostInterface
         return $this->user_id;
     }
 
+    public function setUserId(int $userId): AllianceBoardPostInterface
+    {
+        $this->userId = $userId;
+        return $this;
+    }
+
     public function getUser(): UserInterface
     {
         return $this->user;
