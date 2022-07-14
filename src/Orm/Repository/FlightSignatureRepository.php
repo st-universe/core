@@ -88,11 +88,10 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm->addScalarResult('maxy', 'maxy', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT min(m.cx) as minx, max(m.cx) as maxx, min(m.cy) as miny, max(m.cy) as maxy
+            'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
             FROM stu_flight_sig fs
             JOIN stu_map m ON m.id = fs.map_id
-            WHERE fs.user_id = :userId
-            ',
+            WHERE fs.user_id = :userId',
             $rsm
         )
             ->setParameter('userId', $userId)
@@ -108,12 +107,11 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm->addScalarResult('maxy', 'maxy', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT min(m.cx) as minx, max(m.cx) as maxx, min(m.cy) as miny, max(m.cy) as maxy
+            'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
             FROM stu_flight_sig fs
             JOIN stu_map m ON m.id = fs.map_id
             JOIN stu_user u	ON fs.user_id = u.id
-            WHERE u.allys_id = :allyId
-            ',
+            WHERE u.allys_id = :allyId',
             $rsm
         )
             ->setParameter('allyId', $allyId)
