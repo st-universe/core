@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipCrewInterface;
 
@@ -27,7 +28,6 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        //$em->flush();
     }
 
     public function getByShip(int $shipId): array
@@ -58,6 +58,28 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         return $this->count([
             'user_id' => $userId
         ]);
+    }
+
+    public function getCrewsTop10(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('race', 'race', 'integer');
+        $rsm->addScalarResult('crewc', 'crewc', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT sc.user_id, count(*) as crewc,
+                (SELECT race
+                FROM stu_user u
+                WHERE sc.user_id = u.id)
+            FROM stu_ships_crew sc
+            WHERE sc.user_id > 100
+            GROUP BY sc.user_id
+            ORDER BY 2 DESC
+            LIMIT 10',
+            $rsm
+        )
+            ->getResult();
     }
 
     public function truncateByShip(int $shipId): void
