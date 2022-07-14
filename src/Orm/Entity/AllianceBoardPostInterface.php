@@ -28,8 +28,6 @@ interface AllianceBoardPostInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): AllianceBoardPostInterface;
-
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): AllianceBoardPostInterface;
