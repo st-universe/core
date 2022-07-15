@@ -605,7 +605,12 @@ final class ShipMover implements ShipMoverInterface
             $this->addInformationMerge($damageMsg);
 
             if ($tractoredShip->getIsDestroyed()) {
-                $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $tractoredShip->getName(), $tractoredShip->getSectorString()));
+                $this->entryCreator->addShipEntry(sprintf(
+                    _('Die %s (%s) wurde beim Einflug in Sektor %s zerstört'),
+                    $tractoredShip->getName(),
+                    $tractoredShip->getRump()->getName(),
+                    $tractoredShip->getSectorString()
+                ));
 
                 $this->shipRemover->destroy($tractoredShip);
             }
@@ -618,7 +623,12 @@ final class ShipMover implements ShipMoverInterface
         $this->addInformationMerge($damageMsg);
 
         if ($ship->getIsDestroyed()) {
-            $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getName(), $ship->getSectorString()));
+            $this->entryCreator->addShipEntry(sprintf(
+                _('Die %s (%s) wurde beim Einflug in Sektor %s zerstört'),
+                $ship->getName(),
+                $ship->getRump()->getName(),
+                $ship->getSectorString()
+            ));
 
             $this->shipRemover->destroy($ship);
             $this->addLostShip($ship, $leadShip, false, null);

@@ -65,8 +65,9 @@ final class SelfDestruct implements ActionControllerInterface
 
         $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
         $msg = sprintf(
-            _('Die %s hat sich in Sektor %s selbst zerstört'),
+            _('Die %s (%s) hat sich in Sektor %s selbst zerstört'),
             $ship->getName(),
+            $ship->getRump()->getName(),
             $ship->getSectorString()
         );
         if ($ship->isBase()) {
