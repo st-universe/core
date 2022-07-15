@@ -60,7 +60,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
             return;
         }
 
-        $plot = $this->rpgPlotRepository->find(request::postIntFatal('plotid'));
+        $plot = $this->rpgPlotRepository->find($plotId);
         if ($plot === null || !$plot->isActive()) {
             return;
         }
@@ -109,6 +109,6 @@ final class AddKnPostToPlot implements ActionControllerInterface
 
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
