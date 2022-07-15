@@ -15,6 +15,8 @@ use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMemberRequestInterf
 use Stu\Module\Communication\Action\AddKnPost\AddKnPost;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequest;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
+use Stu\Module\Communication\Action\AddKnPostToPlot\AddKnPostToPlot;
+use Stu\Module\Communication\Action\ApplyKnPostToPlot\ApplyKnPostToPlot;
 use Stu\Module\Communication\Action\CreateKnPlot\CreateKnPlot;
 use Stu\Module\Communication\Action\CreateKnPlot\CreateKnPlotRequest;
 use Stu\Module\Communication\Action\CreateKnPlot\CreateKnPlotRequestInterface;
@@ -99,6 +101,8 @@ return [
         DeleteKnPost::ACTION_IDENTIFIER => autowire(DeleteKnPost::class),
         EditKnPlot::ACTION_IDENTIFIER => autowire(EditKnPlot::class),
         AddKnPlotMember::ACTION_IDENTIFIER => autowire(AddKnPlotMember::class),
+        ApplyKnPostToPlot::ACTION_IDENTIFIER => autowire(ApplyKnPostToPlot::class),
+        AddKnPostToPlot::ACTION_IDENTIFIER => autowire(AddKnPostToPlot::class),
         DeleteKnPlotMember::ACTION_IDENTIFIER => autowire(DeleteKnPlotMember::class),
         CreateKnPlot::ACTION_IDENTIFIER => autowire(CreateKnPlot::class),
         EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),

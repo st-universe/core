@@ -338,6 +338,11 @@ return [
     ): KnPostRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(KnPost::class);
     },
+    KnPostToPlotApplicationRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): KnPostToPlotApplicationRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(KnPostToPlotApplication::class);
+    },
     MapBorderTypeRepositoryInterface::class => function (
         ContainerInterface $c
     ): MapBorderTypeRepositoryInterface {
