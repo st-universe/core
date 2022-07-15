@@ -50,6 +50,7 @@ use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\IgnoreList;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\KnPostToPlotApplication;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapFieldType;
