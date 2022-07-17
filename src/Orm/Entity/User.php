@@ -754,4 +754,9 @@ class User implements UserInterface
     {
         return $this->userLock;
     }
+
+    public function __toString()
+    {
+        return sprintf('userId: %d, userName: %s', $this->getId(), $this->getName());
+    }
 }
