@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use JBBCode\Parser;
 use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
@@ -14,6 +15,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
@@ -75,6 +77,12 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $pm->setRecipient($recipient);
         $pm->setSender($sender);
         $pm->setNew(true);
+
+        if ($recipient->getState() === UserEnum::DELETION_EXECUTED) {
+            $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+            $e = new Exception('flaflifu');
+            $this->loggerUtil->log(sprintf('text: %s, trace: %s', $text, $e->getTraceAsString()));
+        }
 
         $this->privateMessageRepository->save($pm);
 
