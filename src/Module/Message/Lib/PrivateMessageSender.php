@@ -80,7 +80,13 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         if ($recipient->getState() === UserEnum::DELETION_EXECUTED) {
             $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
-            $e = new Exception('flaflifu');
+            $e = new Exception('flaflifu1');
+            $this->loggerUtil->log(sprintf('text: %s, trace: %s', $text, $e->getTraceAsString()));
+        }
+
+        if ($recipientId === 356) {
+            $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+            $e = new Exception('flaflifu2');
             $this->loggerUtil->log(sprintf('text: %s, trace: %s', $text, $e->getTraceAsString()));
         }
 
