@@ -757,7 +757,6 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return $this->getId() !== null ? sprintf('userId: %d, userName: %s', $this->getId(), $this->getName()) :
-            sprintf('userId: null, userName: %s', $this->getName());
+        return sprintf('userName: %s', $this->getName());
     }
 }
