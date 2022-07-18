@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -29,23 +30,28 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private EntityManagerInterface $entityManager;
+
     private array $deletionHandler;
 
     /**
      * @param UserRepositoryInterface $userRepository
      * @param ConfigInterface $config
      * @param LoggerUtilFactoryInterface $loggerUtilFactory
+     * @param EntityManagerInterface $entityManager
      * @param PlayerDeletionHandlerInterface[] $deletionHandler
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
         ConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory,
+        EntityManagerInterface $entityManager,
         array $deletionHandler
     ) {
         $this->userRepository = $userRepository;
         $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->entityManager = $entityManager;
         $this->deletionHandler = $deletionHandler;
     }
 
@@ -91,6 +97,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
             }
         );
 
+        $this->entityManager->flush();
         $this->loggerUtil->log(sprintf('deleted userId: %d', $userId));
     }
 }

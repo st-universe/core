@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Player;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;
@@ -43,6 +44,7 @@ return [
         get(UserRepositoryInterface::class),
         get(ConfigInterface::class),
         get(LoggerUtilFactoryInterface::class),
+        get(EntityManagerInterface::class),
         [
             autowire(Handler\AllianceDeletionHandler::class),
             autowire(Handler\ColonyDeletionHandler::class),

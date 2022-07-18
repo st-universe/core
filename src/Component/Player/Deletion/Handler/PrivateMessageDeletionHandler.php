@@ -33,10 +33,10 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterf
     public function delete(UserInterface $user): void
     {
         //$this->loggerUtil->log('stu', LoggerEnum::LEVEL_ERROR);
-        $noOne = $this->userRepository->find(GameEnum::USER_NOONE);
+        $nobody = $this->userRepository->find(GameEnum::USER_NOONE);
 
         foreach ($this->privateMessageRepository->getBySender($user->getId()) as $pm) {
-            $pm->setSender($noOne);
+            $pm->setSender($nobody);
             $this->privateMessageRepository->save($pm);
         }
     }
