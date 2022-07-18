@@ -15,10 +15,6 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
     {
         $free = $ship->getMaxCrewCount() - $ship->getCrewCount();
 
-        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-            $free += TroopQuartersShipSystem::QUARTER_COUNT;
-        }
-
         return max(0, $free);
     }
 
