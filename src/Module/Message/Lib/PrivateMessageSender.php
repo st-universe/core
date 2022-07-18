@@ -84,7 +84,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $this->loggerUtil->log(sprintf('text: %s, trace: %s', $text, $e->getTraceAsString()));
         }
 
-        if ($recipientId === 356) {
+        if ($recipientId === 356 || $recipientId === 300) {
             $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
             $e = new Exception('flaflifu2');
             $this->loggerUtil->log(sprintf('text: %s, trace: %s', $text, $e->getTraceAsString()));
