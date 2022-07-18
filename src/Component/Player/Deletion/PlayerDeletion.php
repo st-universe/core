@@ -81,7 +81,8 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     private function delete(UserInterface $user): void
     {
-        $this->loggerUtil->log(sprintf('deleting userId: %d', $user->getId()));
+        $userId = $user->getId();
+        $this->loggerUtil->log(sprintf('deleting userId: %d', $userId));
 
         array_walk(
             $this->deletionHandler,
@@ -90,6 +91,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
             }
         );
 
-        $this->loggerUtil->log(sprintf('deleted userId: %d', $user->getId()));
+        $this->loggerUtil->log(sprintf('deleted userId: %d', $userId));
     }
 }
