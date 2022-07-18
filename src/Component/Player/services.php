@@ -27,6 +27,7 @@ use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
 use Stu\Component\Player\Validation\LoginValidation;
 use Stu\Component\Player\Validation\LoginValidationInterface;
 use Stu\Component\Player\Validation\Validators\IpIntelValidator;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
@@ -41,6 +42,7 @@ return [
     PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
         get(UserRepositoryInterface::class),
         get(ConfigInterface::class),
+        get(LoggerUtilFactoryInterface::class),
         [
             autowire(Handler\AllianceDeletionHandler::class),
             autowire(Handler\ColonyDeletionHandler::class),
