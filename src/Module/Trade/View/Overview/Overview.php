@@ -80,7 +80,7 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
         $game->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
 
-        $commodityList = $this->commodityRepository->getTradeable();
+        $commodityList = $this->commodityRepository->getViewable();
         $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
 
         $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENCE_COUNT);
