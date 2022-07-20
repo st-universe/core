@@ -28,8 +28,8 @@ final class ShowColony implements ViewControllerInterface
     private ShowColonyRequestInterface $showColonyRequest;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
-	
-	private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
+
+    private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
 
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
@@ -39,7 +39,7 @@ final class ShowColony implements ViewControllerInterface
         ShowColonyRequestInterface $showColonyRequest,
         ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-		DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory
+        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
@@ -51,8 +51,8 @@ final class ShowColony implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-		$user = $game->getUser();
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showColonyRequest->getColonyId(),
@@ -104,15 +104,10 @@ final class ShowColony implements ViewControllerInterface
         $game->setPagetitle(sprintf(_('Kolonie: %s'), $colony->getName()));
 
         $game->setTemplateVar('COLONY', $colony);
-		
-		$starsystem = null;
-		if ($colony->getSystem() !== null) {
-            $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $user);
-        }
-		$game->setTemplateVar('COLONY', $colony);
-        if ($starsystem !== null) {
-            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
-        }
+
+        $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $user);
+        $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
+
         $game->setTemplateVar(
             'SELECTED_COLONY_MENU',
             $this->colonyGuiHelper->getColonyMenu($menuId)
