@@ -101,7 +101,7 @@ final class ShowManagement implements ViewControllerInterface
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
 
-        $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $user);
+        $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $game->getUser());
         $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
 
         $particlePhalanxCount = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX, [0, 1]);
