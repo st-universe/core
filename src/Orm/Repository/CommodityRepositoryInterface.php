@@ -24,6 +24,11 @@ interface CommodityRepositoryInterface extends ObjectRepository
      * @return CommodityInterface[]
      */
     public function getViewable(): array;
+	
+	    /**
+     * @return CommodityInterface[]
+     */
+    public function getTradeable(): array;
 
     /**
      * @return CommodityInterface[]

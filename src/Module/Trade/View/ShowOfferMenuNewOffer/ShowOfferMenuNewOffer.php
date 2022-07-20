@@ -41,7 +41,7 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $commodityList = $this->commodityRepository->getViewable();
+        $commodityList = $this->commodityRepository->getTradeable();
 
         $game->showMacro('html/trademacros.xhtml/newoffermenu_newoffer');
         $game->setPageTitle(sprintf(
