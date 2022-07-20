@@ -47,6 +47,10 @@ final class SelfDestruct implements ActionControllerInterface
             $userId
         );
 
+        if ($ship->isConstruction()) {
+            return;
+        }
+
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
