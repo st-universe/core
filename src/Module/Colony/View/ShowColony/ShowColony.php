@@ -98,6 +98,15 @@ final class ShowColony implements ViewControllerInterface
         $game->setPagetitle(sprintf(_('Kolonie: %s'), $colony->getName()));
 
         $game->setTemplateVar('COLONY', $colony);
+		
+		$starsystem = null;
+		if ($colony->getSystem() !== null) {
+            $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $user);
+        }
+		$game->setTemplateVar('COLONY', $colony);
+        if ($starsystem !== null) {
+            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
+        }
         $game->setTemplateVar(
             'SELECTED_COLONY_MENU',
             $this->colonyGuiHelper->getColonyMenu($menuId)
