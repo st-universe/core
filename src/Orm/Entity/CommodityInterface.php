@@ -22,6 +22,10 @@ interface CommodityInterface
 
     public function setType(int $typeId): CommodityInterface;
 
+    public function getNPCgood(): bool;
+
+    public function setNPCgood(bool $npc_good): CommodityInterface;
+
     public function isTradeable(): bool;
 
     public function isBeamable(): bool;
