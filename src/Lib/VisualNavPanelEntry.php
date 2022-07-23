@@ -5,10 +5,6 @@ declare(strict_types=1);
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\MapBorderTypeInterface;
-use Stu\Orm\Entity\MapRegionInterface;
-use Stu\Orm\Entity\StarSystemInterface;
-
 
 class VisualNavPanelEntry
 {
@@ -18,12 +14,6 @@ class VisualNavPanelEntry
     private $isTachyonSystemActive;
 
     private $tachyonFresh;
-	
-    private ?MapBorderTypeInterface $mapBorderType;
-
-	private ?MapRegionInterface $adminRegion;
-	
-	private ?StarSystemInterface $influenceArea;
 
     private $ship;
 
@@ -55,7 +45,7 @@ class VisualNavPanelEntry
     {
         return $this->data['posy'];
     }
-	
+
     function getMapfieldType()
     {
         return $this->data['type'];
@@ -147,41 +137,11 @@ class VisualNavPanelEntry
         return false;
     }
 
-    function getBorder(): string
-    {
-        $borderType = $this->mapBorderType;
-        if ($borderType === null) {
-            if ($this->adminRegion === null) {
-                if ($this->influenceArea !== null) {
-                    $influenceArea = $this->influenceArea;
-                    $base = $influenceArea->getBase();
-
-                    if ($base !== null) {
-                        $user = $base->getUser();
-                        $ally = $user->getAlliance();
-
-                        if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
-                            return 'border: 1px solid ' . $ally->getRgbCode();
-                        } else if (strlen($user->getRgbCode()) > 0) {
-                            return 'border: 1px solid ' . $user->getRgbCode();
-                        }
-                    }
-                }
-            }
-        } else {
-            return 'border: 1px solid #' . $this->mapBorderType->getColor();
-        }
-
-        return '';
-    }
-
     //obsolete?
-    /**
-	function getBorder()
+    function getBorder()
     {
         return $this->data['color'];
     }
-	*/
 
     private $cssClass = 'lss';
 
