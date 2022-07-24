@@ -148,7 +148,7 @@ final class ShipCreator implements ShipCreatorInterface
 
         $ship->setAlertStateGreen();
         $ship->setMaxEBatt();
-		$ship->setLSSModeNormal();
+		$ship->->setLSSModeNormal();
 
         $this->shipRepository->save($ship);
         if ($colony) {
