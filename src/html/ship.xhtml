@@ -1188,6 +1188,16 @@
 								<img src="assets/buttons/shutdown1.png" title="Energieverbrauch minimieren"
 									name="shutdown" />
 							</a>
+							<a href="?B_SET_LSS_NORMAL=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+								tal:condition="SHIP/isLSSModeNormal" onmouseover="cp('actlss','buttons/lss_button2');"
+								onmouseout="cp('actlss','buttons/lss_button1');">
+								<img src="assets/buttons/lss_button1.png" name="actlss" />
+							</a>
+							<a href="?B_SET_LSS_BORDER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+								tal:condition="SHIP/isLSSModeBorder" onmouseover="cp('actlss','buttons/lss_button1');"
+								onmouseout="cp('actlss','buttons/lss_button2');">
+								<img src="assets/buttons/lss_button2.png" name="actlss" />
+							</a>
 							<a tal:condition="SHIP/canBeRepaired" href="javascript:void(0);"
 								onclick="showRepairOptions(${SHIP/getId});"
 								onmouseover="cp('selfrepair','buttons/rep2');"

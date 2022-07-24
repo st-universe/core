@@ -385,11 +385,21 @@ class Ship implements ShipInterface
 	{
 		return $this->lss_mode;
 	}
+
+    public function isLSSModeNormal(): bool
+    {
+        return $this->getLSSMode() === ShipLSSModeEnum::LSS_NORMAL;
+    }
 	
+    public function isLSSModeBorder(): bool
+    {
+        return $this->getLSSMode() === ShipLSSModeEnum::LSS_BORDER;
+    }
+
 	public function setLSSModeNormal(): ShipInterface
 	{
         $dummyMsg = null;
-        return $this->setLSSMode(ShipLSSmodeEnum::LSS_NORMAL, $dummyMsg);
+        return $this->setLSSMode(ShipLSSModeEnum::LSS_NORMAL, $dummyMsg);
     }		
 
     public function setLSSMode(int $lssMode, &$msg): ShipInterface
