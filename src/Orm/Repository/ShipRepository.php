@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -552,8 +551,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
         $rsm->addScalarResult('type', 'type', 'integer');
-		$rsm->addScalarResult('allycolor', 'allycolor', 'string');
-		$rsm->addScalarResult('usercolor', 'usercolor', 'string');
 
         if ($doSubspace) {
             $rsm->addScalarResult('d1c', 'd1c', 'integer');
@@ -580,16 +577,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                         FROM stu_ships_systems ss2
                                         WHERE c.id = ss2.ships_id
                                         AND ss2.system_type = :systemId
-                                        AND ss2.mode > 1)) as cloakcount,
-				(select al.rgb_code FROM stu_alliances al 
-					JOIN stu_user u ON al.id = u.allys_id 
-						JOIN stu_ships s ON u.id = s.user_id 
-							JOIN stu_map m ON m.influence_area_id = s.influence_area_id 
-							WHERE m.cx = a.cx and m.cy = a.cy) as allycolor,
-				(select u.rgb_code FROM stu_user u 
-					JOIN stu_ships s ON u.id = s.user_id 
-						JOIN stu_map m ON m.influence_area_id = s.influence_area_id
-						WHERE m.cx = a.cx and m.cy = a.cy) as usercolor
+                                        AND ss2.mode > 1)) as cloakcount
                 %s 
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id

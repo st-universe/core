@@ -123,7 +123,7 @@ class VisualNavPanelEntry
 
     function getCacheValue()
     {
-        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount() . "_" . $this->isClickAble() . "_" . $this->getBorder();
+        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount() . "_" . $this->isClickAble();
     }
 
     public $currentShipPosX = null;
@@ -140,16 +140,7 @@ class VisualNavPanelEntry
     //obsolete?
     function getBorder()
     {
-		if (empty($this->data['allycolor']) && empty($this->data['usercolor']) {
-			return '#2d2d2d';
-		}
-		
-		if (empty($this->data['allycolor']) {
-			return $this->data['usercolor'];
-		}
-		
-		else 
-			return $this->data['allycolor'];
+        return $this->data['color'];
     }
 
     private $cssClass = 'lss';
