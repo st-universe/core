@@ -83,7 +83,7 @@ class Ship implements ShipInterface
     /** @Column(type="smallint", length=1) */
     private $alvl = 0;
 	
-	    /** @Column(type="smallint", length=1) */
+	/** @Column(type="smallint", length=1) */
     private $lss_mode = 0;
 
     /** @Column(type="integer", length=5) */
@@ -383,7 +383,7 @@ class Ship implements ShipInterface
 
 	public function getLSSmode(): int
 	{
-		return $this->lss_mode;
+		return $this->$lss_mode;
 	}
 	
 	public function setLSSModeNormal(): ShipInterface
@@ -394,7 +394,7 @@ class Ship implements ShipInterface
 
     public function setLSSMode(int $lssMode, &$msg): ShipInterface
     {
-		$this->lss_mode = $lssMode;
+		$this->$lss_mode = $lssMode;
 		return $this;
 	}
 
