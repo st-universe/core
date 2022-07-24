@@ -280,19 +280,9 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     }
 
 	private function setLSSModeShip(ShipInterface $ship, int $lssMode, GameControllerInterface $game): bool
-	{
-		try {
-            $LSSmsg = null;
-            $ship->setLSSMode($lssMode, $LSSmsg);
-            $this->shipRepository->save($ship);
-
-            if ($LSSmsg !== null) {
-                $game->addInformation(sprintf(_('Die Territorialansicht in den Langstreckensensoren wurde geändert')));
-            }
-        }
-		
-		$this->shipRepository->save($ship);
-
+	{	$LSSmsg = 'test'
+        $ship->setLSSMode($lssMode, $LSSmsg);
+        $this->shipRepository->save($ship);
         return true;
     }
 
