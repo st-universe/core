@@ -585,11 +585,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 					JOIN stu_user u ON al.id = u.allys_id 
 						JOIN stu_ships s ON u.id = s.user_id 
 							JOIN stu_map m ON m.influence_area_id = s.influence_area_id 
-							WHERE m.cx = a.cx and m.cy = a.cy) as allycolor,
+							WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL) 
+							as allycolor,
 				(select u.rgb_code FROM stu_user u 
 					JOIN stu_ships s ON u.id = s.user_id 
 						JOIN stu_map m ON m.influence_area_id = s.influence_area_id
-						WHERE m.cx = a.cx and m.cy = a.cy) as usercolor
+						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL) 
+						as usercolor
                 %s 
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
