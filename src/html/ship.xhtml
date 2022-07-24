@@ -1188,12 +1188,12 @@
 								<img src="assets/buttons/shutdown1.png" title="Energieverbrauch minimieren"
 									name="shutdown" />
 							</a>
-							<a href="?B_SET_LSS_BORDER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+							<a href="?B_SET_LSS_BORDER=1&id=${SHIP/getId}&sstr=${sstr}"
 								tal:condition="SHIP/isLSSModeNormal" onmouseover="cp('actlss','buttons/lss_button2');"
 								onmouseout="cp('actlss','buttons/lss_button1');">
 								<img src="assets/buttons/lss_button1.png" name="actlss" />
 							</a>
-							<a href="?B_SET_LSS_NORMAL=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+							<a href="?B_SET_LSS_NORMAL=1&id=${SHIP/getId}&sstr=${sstr}"
 								tal:condition="SHIP/isLSSModeBorder" onmouseover="cp('actlss','buttons/lss_button1');"
 								onmouseout="cp('actlss','buttons/lss_button2');">
 								<img src="assets/buttons/lss_button2.png" name="actlss" />
