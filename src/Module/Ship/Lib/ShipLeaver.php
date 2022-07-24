@@ -9,6 +9,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -174,6 +175,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setHuell(1);
         $pods->setMaxHuell(1);
         $pods->setAlertStateGreen();
+		$pods->setLSSModeNormal();
 
         $pods->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
