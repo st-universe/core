@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship;
 
 final class ShipLSSModeEnum
+{
     // LSS modes
     public const LSS_NORMAL = 1;
     public const LSS_BORDER = 2;
