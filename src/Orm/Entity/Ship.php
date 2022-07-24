@@ -83,7 +83,7 @@ class Ship implements ShipInterface
     /** @Column(type="smallint", length=1) */
     private $alvl = 0;
 	
-	    /** @Column(type="smallint", length=1) */
+	/** @Column(type="smallint", length=1) */
     private $lss_mode = 0;
 
     /** @Column(type="integer", length=5) */
