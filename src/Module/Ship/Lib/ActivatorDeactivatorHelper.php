@@ -201,7 +201,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: System %s deaktiviert'), $systemName));
     }
 
-	public function setLSSmode(
+	public function setLSSMode(
 		int $shipId,
 		int $lssMode,
 		GameControllerInterface $game

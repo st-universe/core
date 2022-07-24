@@ -11,7 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
-final class SetLSSModeNormal implements ActionControllerInterface
+final class SetLSSModeBorder implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SET_LSS_BORDER';
 
