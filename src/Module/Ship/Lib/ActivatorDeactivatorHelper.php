@@ -212,6 +212,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 				$shipId,
 				$userId
 			);
+			}
 		
 		if ($lssMode === ShipLSSModeEnum::LSS_NORMAL) {
             $game->addInformation("Territoriale Grenzanzeige deaktiviert");
