@@ -12,7 +12,7 @@ use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\ShipLSSmodeEnum;
+use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
