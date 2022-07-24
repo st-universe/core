@@ -287,7 +287,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $this->shipRepository->save($ship);
 
             if ($LSSmsg !== null) {
-                $game->addInformation(sprintf(_('Die Territorialansicht in den Langstreckensensoren wurde geändert'));
+                $game->addInformation(sprintf(_('Die Territorialansicht in den Langstreckensensoren wurde geändert'))
             }
         }
 		
