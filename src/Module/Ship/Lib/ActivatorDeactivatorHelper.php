@@ -283,7 +283,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 	{
 		try {
             $LSSmsg = null;
-            $ship->setAlertState($alertState, $LSSmsg);
+            $ship->setLSSMode($lssMode, $LSSmsg);
             $this->shipRepository->save($ship);
 
             if ($LSSmsg !== null) {
