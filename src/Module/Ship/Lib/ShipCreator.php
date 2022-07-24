@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperComputer;
@@ -148,7 +147,6 @@ final class ShipCreator implements ShipCreatorInterface
 
         $ship->setAlertStateGreen();
         $ship->setMaxEBatt();
-		$ship->->setLSSModeNormal();
 
         $this->shipRepository->save($ship);
         if ($colony) {

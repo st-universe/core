@@ -32,12 +32,6 @@ interface ActivatorDeactivatorHelperInterface
         GameControllerInterface $game
     ): void;
 
-public function setLSSMode(
-        int $shipId,
-        int $lssMode,
-        GameControllerInterface $game
-    ): void;
-
     public function setAlertState(
         int $shipId,
         int $alertState,

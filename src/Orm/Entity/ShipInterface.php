@@ -42,12 +42,6 @@ interface ShipInterface
     public function getName(): string;
 
     public function setName(string $name): ShipInterface;
-	
-	public function getLSSmode(): int;
-	
-	public function setLSSModeNormal(): ShipInterface;
-	
-	public function setLSSMode(int $lssMode, &$msg): ShipInterface;
 
     public function getAlertState(): int;
 

@@ -12,7 +12,6 @@ use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\ShipLSSmodeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -82,9 +81,6 @@ class Ship implements ShipInterface
 
     /** @Column(type="smallint", length=1) */
     private $alvl = 0;
-	
-	    /** @Column(type="smallint", length=1) */
-    private $lss_mode = 0;
 
     /** @Column(type="integer", length=5) */
     private $warpcore = 0;
@@ -380,23 +376,6 @@ class Ship implements ShipInterface
         $this->name = $name;
         return $this;
     }
-
-	public function getLSSmode(): int
-	{
-		return $this->lss_mode;
-	}
-	
-	public function setLSSModeNormal(): ShipInterface
-	{
-        $dummyMsg = null;
-        return $this->setLSSMode(ShipLSSmodeEnum::LSS_NORMAL, $dummyMsg);
-    }		
-
-    public function setLSSMode(int $lssMode, &$msg): ShipInterface
-    {
-		$this->lss_mode = $lssMode;
-		return $this;
-	}
 
     public function getAlertState(): int
     {
