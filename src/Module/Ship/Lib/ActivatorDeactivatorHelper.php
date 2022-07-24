@@ -279,13 +279,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
     }
 
-	private function setLSSModeShip(ShipInterface $ship, int $lssMode, GameControllerInterface $game): bool
-	{	$LSSmsg = 'test'
-        $ship->setLSSMode($lssMode, $LSSmsg);
-        $this->shipRepository->save($ship);
-        return true;
-    }
-
     private function setAlertStateShip(ShipInterface $ship, int $alertState, GameControllerInterface $game): bool
     {
         // station constructions can't change alert state
