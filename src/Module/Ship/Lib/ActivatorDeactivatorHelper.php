@@ -212,14 +212,16 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 				$shipId,
 				$userId
 			);
-		
+			
+        if (!$this->setLSSModeShip($ship, $lssMode, $game)) {
+            return;
+        }		
 		if ($lssMode === ShipLSSModeEnum::LSS_NORMAL) {
             $game->addInformation("Territoriale Grenzanzeige deaktiviert");
         } elseif ($lssMode === ShipLSSModeEnum::LSS_BORDER) {
             $game->addInformation("Territoriale Grenzanzeige aktiviert");
         }    
 	}
-
 
     public function setAlertState(
         int $shipId,
@@ -275,6 +277,23 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         } elseif ($alertState === ShipAlertStateEnum::ALERT_GREEN) {
             $game->addInformation(_('Flottenbefehl ausgeführt: Alarmstufe [b][color=green]Grün[/color][/b]'));
         }
+    }
+
+	private function setLSSModeShip(ShipInterface $ship, int $lssMode, GameControllerInterface $game): bool
+	{
+		try {
+            $LSSmsg = null;
+            $ship->setAlertState($alertState, $LSSmsg);
+            $this->shipRepository->save($ship);
+
+            if ($LSSmsg !== null) {
+                $game->addInformation(sprintf(_('Die Territorialansicht in den Langstreckensensoren wurde geändert'));
+            }
+        }
+		
+		$this->shipRepository->save($ship);
+
+        return true;
     }
 
     private function setAlertStateShip(ShipInterface $ship, int $alertState, GameControllerInterface $game): bool
