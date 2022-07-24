@@ -125,6 +125,8 @@ use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequestInterface;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPods;
 use Stu\Module\Ship\Action\SelfDestruct\SelfDestruct;
 use Stu\Module\Ship\Action\Selfrepair\Selfrepair;
+use Stu\Module\Ship\Action\SetLSSModeBorder\SetLSSModeBorder;
+use Stu\Module\Ship\Action\SetLSSModeNormal\SetLSSModeNormal;
 use Stu\Module\Ship\Action\SetGreenAlert\SetGreenAlert;
 use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
