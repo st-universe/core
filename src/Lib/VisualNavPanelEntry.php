@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
@@ -137,20 +138,24 @@ class VisualNavPanelEntry
         return false;
     }
 
-    //obsolete?
     function getBorder()
     {
-		if (empty($this->data['allycolor']) && empty($this->data['usercolor'])) {
+		if ($this->$ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER){
+		
+			if (empty($this->data['allycolor']) && empty($this->data['usercolor'])) {
+				return '#2d2d2d';
+			}
+			
+			if (empty($this->data['allycolor'])) {
+				return $this->data['usercolor'];
+			}
+			
+			else 
+				return $this->data['allycolor'];
+			}
+		else
 			return '#2d2d2d';
-		}
-		
-		if (empty($this->data['allycolor'])) {
-			return $this->data['usercolor'];
-		}
-		
-		else 
-			return $this->data['allycolor'];
-    }
+	}
 
     private $cssClass = 'lss';
 
