@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
@@ -201,27 +200,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: System %s deaktiviert'), $systemName));
     }
 
-	public function setLSSmode(
-		int $shipId,
-		int $lssMode,
-		GameControllerInterface $game
-		): void {
-			$userId = $game->getUser()->getId();
-			
-			$ship = $this->shipLoader->getByIdAndUser(
-				$shipId,
-				$userId
-			);
-			}
-		
-		if ($lssMode === ShipLSSModeEnum::LSS_NORMAL) {
-            $game->addInformation("Territoriale Grenzanzeige deaktiviert");
-        } elseif ($lssMode === ShipLSSModeEnum::LSS_BORDER) {
-            $game->addInformation("Territoriale Grenzanzeige aktiviert");
-        }    
-	}
-
-
     public function setAlertState(
         int $shipId,
         int $alertState,
@@ -367,5 +345,3 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
     }
 }
-
-
