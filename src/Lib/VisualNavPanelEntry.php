@@ -22,6 +22,8 @@ class VisualNavPanelEntry
 
     private $system;
 
+    public $row;
+
     function __construct(
         &$entry = array(),
         bool $isTachyonSystemActive = false,
@@ -140,6 +142,12 @@ class VisualNavPanelEntry
 
     function getBorder()
     {
+        // current position gets grey border
+        if (!$this->getRow() && $this->isCurrentShipPosition()) {
+            return '#9b9b9b';
+        }
+
+        // hierarchy based border style
         if ($this->ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER) {
 
             $factionColor = $this->data['factioncolor'];
@@ -157,6 +165,8 @@ class VisualNavPanelEntry
                 return $userColor;
             }
         }
+
+        // default border style
         return '#2d2d2d';
     }
 
