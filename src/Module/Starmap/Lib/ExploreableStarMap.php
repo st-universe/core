@@ -127,7 +127,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
                 }
             }
         } else {
-            return 'border: 1px solid #' . $this->mapBorderType->getColor();
+            return 'border: 1px solid ' . $this->mapBorderType->getColor();
         }
 
         return '';

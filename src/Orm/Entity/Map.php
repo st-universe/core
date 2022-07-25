@@ -228,7 +228,7 @@ class Map implements MapInterface
         if ($borderType === null) {
             return '';
         }
-        return 'border: 1px solid #' . $borderType->getColor();
+        return 'border: 1px solid ' . $borderType->getColor();
     }
 
     public function getFieldStyle(): string

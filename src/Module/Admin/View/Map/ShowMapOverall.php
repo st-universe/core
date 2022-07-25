@@ -57,7 +57,7 @@ final class ShowMapOverall implements ViewControllerInterface
             $borderType = $data->getMapBorderType();
             if ($borderType !== null) {
                 $border = imagecreatetruecolor(15, 15);
-                $var = '#' . $borderType->getColor();
+                $var = $borderType->getColor();
                 $arr = sscanf($var, '#%2x%2x%2x');
                 $col = imagecolorallocate($border, $arr[0], $arr[1], $arr[2]);
                 imagefill($border, 0, 0, $col);
