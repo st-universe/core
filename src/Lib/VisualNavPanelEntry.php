@@ -144,7 +144,7 @@ class VisualNavPanelEntry
 
             $factionColor = $this->data['factioncolor'];
             if (!empty($factionColor)) {
-                return '#'$factionColor;
+                return $factionColor;
             }
 
             $allyColor = $this->data['allycolor'];
