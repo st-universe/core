@@ -554,6 +554,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('type', 'type', 'integer');
 		$rsm->addScalarResult('allycolor', 'allycolor', 'string');
 		$rsm->addScalarResult('usercolor', 'usercolor', 'string');
+		$rsm->addScalarResult('factioncolor', 'factioncolor', 'string');
 
         if ($doSubspace) {
             $rsm->addScalarResult('d1c', 'd1c', 'integer');
@@ -591,7 +592,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 					JOIN stu_ships s ON u.id = s.user_id 
 						JOIN stu_map m ON m.influence_area_id = s.influence_area_id
 						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL) 
-						as usercolor
+						as usercolor,
+				(select mb.color FROM stu_map_bordertypes mb
+					JOIN stu_map m ON m.bordertype_id = mb.id
+						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NOT NULL) 
+						as factioncolor
                 %s 
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
