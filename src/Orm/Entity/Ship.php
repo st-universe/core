@@ -82,9 +82,9 @@ class Ship implements ShipInterface
 
     /** @Column(type="smallint", length=1) */
     private $alvl = 0;
-	
-	/** @Column(type="smallint", length=1) */
-    private $lss_mode = 0;
+
+    /** @Column(type="smallint", length=1) */
+    private $lss_mode = ShipLSSModeEnum::LSS_NORMAL;
 
     /** @Column(type="integer", length=5) */
     private $warpcore = 0;
@@ -381,32 +381,26 @@ class Ship implements ShipInterface
         return $this;
     }
 
-	public function getLSSmode(): int
-	{
-		return $this->lss_mode;
-	}
+    public function getLSSmode(): int
+    {
+        return $this->lss_mode;
+    }
 
     public function isLSSModeNormal(): bool
     {
         return $this->getLSSMode() === ShipLSSModeEnum::LSS_NORMAL;
     }
-	
+
     public function isLSSModeBorder(): bool
     {
         return $this->getLSSMode() === ShipLSSModeEnum::LSS_BORDER;
     }
 
-	public function setLSSModeNormal(): ShipInterface
-	{
-        $dummyMsg = null;
-        return $this->setLSSMode(ShipLSSModeEnum::LSS_NORMAL, $dummyMsg);
-    }		
-
-    public function setLSSMode(int $lssMode, &$msg): ShipInterface
+    public function setLSSMode(int $lssMode): ShipInterface
     {
-		$this->lss_mode = $lssMode;
-		return $this;
-	}
+        $this->lss_mode = $lssMode;
+        return $this;
+    }
 
     public function getAlertState(): int
     {
