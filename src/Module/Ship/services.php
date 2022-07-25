@@ -312,7 +312,9 @@ return [
         BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class),
         ChangeFleetFixation::ACTION_IDENTIFIER => autowire(ChangeFleetFixation::class),
         DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
-        Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class)
+        Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
+        SetLSSModeNormal::ACTION_IDENTIFIER => autowire(SetLSSModeNormal::class),
+        SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

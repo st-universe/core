@@ -140,22 +140,25 @@ class VisualNavPanelEntry
 
     function getBorder()
     {
-		if ($this->ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER){
-		
-			if (empty($this->data['allycolor']) && empty($this->data['usercolor'])) {
-				return '#2d2d2d';
-			}
-			
-			if (empty($this->data['allycolor'])) {
-				return $this->data['usercolor'];
-			}
-			
-			else 
-				return $this->data['allycolor'];
-			}
-		else
-			return '#2d2d2d';
-	}
+        if ($this->ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER) {
+
+            $factionColor = $this->data['factioncolor'];
+            if (!empty($factionColor)) {
+                return $factionColor;
+            }
+
+            $allyColor = $this->data['allycolor'];
+            if (!empty($allyColor)) {
+                return $allyColor;
+            }
+
+            $userColor = $this->data['usercolor'];
+            if (!empty($userColor)) {
+                return $userColor;
+            }
+        }
+        return '#2d2d2d';
+    }
 
     private $cssClass = 'lss';
 
