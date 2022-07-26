@@ -9,7 +9,12 @@ use Stu\Orm\Entity\StarSystemInterface;
 
 class VisualNavPanelEntry
 {
+    public $currentShipPosX = null;
+    public $currentShipPosY = null;
+    public $currentShipSysId = null;
+    public $row;
 
+    //private fields
     private $data = array();
 
     private $isTachyonSystemActive;
@@ -22,7 +27,7 @@ class VisualNavPanelEntry
 
     private $system;
 
-    public $row;
+    private $cssClass = 'lss';
 
     function __construct(
         &$entry = array(),
@@ -47,6 +52,11 @@ class VisualNavPanelEntry
     function getPosY()
     {
         return $this->data['posy'];
+    }
+
+    function getSystemId()
+    {
+        return $this->data['sysid'];
     }
 
     function getMapfieldType()
@@ -129,12 +139,13 @@ class VisualNavPanelEntry
         return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount() . "_" . $this->isClickAble() . "_" . $this->getBorder();
     }
 
-    public $currentShipPosX = null;
-    public $currentShipPosY = null;
-
     function isCurrentShipPosition()
     {
-        if ($this->getPosX() == $this->currentShipPosX && $this->getPosY() == $this->currentShipPosY) {
+        if (
+            $this->getSystemId() == $this->currentShipSysId
+            && $this->getPosX() == $this->currentShipPosX
+            && $this->getPosY() == $this->currentShipPosY
+        ) {
             return true;
         }
         return false;
@@ -169,8 +180,6 @@ class VisualNavPanelEntry
         // default border style
         return '#2d2d2d';
     }
-
-    private $cssClass = 'lss';
 
     function setCSSClass($class)
     {

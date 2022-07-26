@@ -124,8 +124,10 @@ class VisualNavPanel
             //$this->loggerUtil->log(sprintf("\tloadLSS-query, seconds: %F", $endTime - $startTime));
         }
 
-        $cx = $this->getShip()->getPosX();
-        $cy = $this->getShip()->getPosY();
+        $currentShip = $this->getShip();
+
+        $cx = $currentShip->getPosX();
+        $cy = $currentShip->getPosY();
         $y = 0;
 
         if ($this->loggerUtil->doLog()) {
@@ -148,12 +150,13 @@ class VisualNavPanel
                 $data,
                 $this->isTachyonSystemActive,
                 $this->tachyonFresh,
-                $this->getShip(),
+                $currentShip,
                 $this->system
             );
             if ($this->system === null) {
                 $entry->currentShipPosX = $cx;
                 $entry->currentShipPosY = $cy;
+                $entry->currentShipSysId = $currentShip->getSystem()->getId();
             }
             $rows[$y]->addEntry($entry);
         }
