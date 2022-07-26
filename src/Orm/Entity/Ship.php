@@ -324,7 +324,7 @@ class Ship implements ShipInterface
 
     public function getSystemsId(): ?int
     {
-        return $this->getSystem()->getId();
+        return $this->getSystem() !== null ? $this->getSystem()->getId() : null;
     }
 
     public function getCx(): int

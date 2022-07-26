@@ -461,6 +461,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
         $rsm->addScalarResult('posy', 'posy', 'integer');
+        $rsm->addScalarResult('sysid', 'sysid', 'integer');
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
@@ -477,7 +478,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.sx as posx,a.sy as posy, d.type,
+                'SELECT a.id, a.sx as posx, a.sy as posy, a.systems_id as sysid, d.type,
                 (select count(distinct b.id)from stu_ships b
                     where a.id = b.starsystem_map_id
                     AND NOT EXISTS (SELECT ss.id
@@ -552,9 +553,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
         $rsm->addScalarResult('type', 'type', 'integer');
-		$rsm->addScalarResult('allycolor', 'allycolor', 'string');
-		$rsm->addScalarResult('usercolor', 'usercolor', 'string');
-		$rsm->addScalarResult('factioncolor', 'factioncolor', 'string');
+        $rsm->addScalarResult('allycolor', 'allycolor', 'string');
+        $rsm->addScalarResult('usercolor', 'usercolor', 'string');
+        $rsm->addScalarResult('factioncolor', 'factioncolor', 'string');
 
         if ($doSubspace) {
             $rsm->addScalarResult('d1c', 'd1c', 'integer');
