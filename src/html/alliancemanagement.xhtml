@@ -29,7 +29,8 @@
 				</td>
 				<td>
 					<img src="assets/planets/${col/getColonyClass}.gif" title="runtime"
-						tal:attributes="title bbcode2txt:col/getName" tal:repeat="col data/getColonies" />
+						tal:attributes="title bbcode2txt:col/getNameAndSectorString"
+						tal:repeat="col data/getColonies" />
 				</td>
 				<td>
 					<div style="display: inline-block; padding-left: 10px; text-align: center;"
