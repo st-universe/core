@@ -280,6 +280,19 @@
 				</td>
 			</tr>
 		</tal:block>
+		<tal:block tal:condition="SHIP/hasTranswarp">
+			<tr>
+				<td colspan="2">
+					X
+					<input type="text" size="2" name="transwarpcx" id="transwarpcx"
+						onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
+					Y
+					<input type="text" size="2" name="transwarpcy" id="transwarpcy"
+						onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />
+					<input type="submit" class="button" name="B_TRANSWARP" value="Transwarpflug" id="transwarpButton" />
+				</td>
+			</tr>
+		</tal:block>
 		<tal:block tal:condition="SHIP/hasUplink">
 			<tr>
 				<td colspan="2">
@@ -1180,12 +1193,14 @@
 							<a href="?B_SET_LSS_BORDER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 								tal:condition="SHIP/isLSSModeNormal" onmouseover="cp('actlss','buttons/lss_button1');"
 								onmouseout="cp('actlss','buttons/lss_button3');">
-								<img src="assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren" name="actlss" />
+								<img src="assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren"
+									name="actlss" />
 							</a>
 							<a href="?B_SET_LSS_NORMAL=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 								tal:condition="SHIP/isLSSModeBorder" onmouseover="cp('actlss','buttons/lss_button2');"
 								onmouseout="cp('actlss','buttons/lss_button1');">
-								<img src="assets/buttons/lss_button1.png" title="Territoriale Grenzansicht deaktivieren" name="actlss" />
+								<img src="assets/buttons/lss_button1.png" title="Territoriale Grenzansicht deaktivieren"
+									name="actlss" />
 							</a>
 							<a href="javascript:void(0);"
 								onclick="openStarMap(this,'${SHIP/getMapCX}','${SHIP/getMapCY}');"

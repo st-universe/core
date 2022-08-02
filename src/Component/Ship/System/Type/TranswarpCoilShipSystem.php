@@ -30,6 +30,11 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
         return true;
     }
 
+    public function getEnergyUsageForActivation(): int
+    {
+        return 55;
+    }
+
     public function activate(ShipInterface $ship): void
     {
         $ship->cancelRepair();
