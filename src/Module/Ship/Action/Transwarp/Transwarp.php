@@ -50,7 +50,7 @@ final class Transwarp implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getSystem() === null) {
+        if ($ship->getSystem() !== null) {
             $game->addInformation(_('Transwarp kann nur außerhalb von Systemen genutzt werden'));
             return;
         }
