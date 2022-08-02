@@ -486,7 +486,8 @@ final class ShipTickManager implements ShipTickManagerInterface
                     GameEnum::USER_NOONE,
                     $entity->getUserId(),
                     $entityOwnerMessage,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                    $isColony ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY :
+                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
                 );
             }
         }

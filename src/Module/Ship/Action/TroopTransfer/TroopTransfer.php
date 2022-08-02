@@ -247,6 +247,7 @@ final class TroopTransfer implements ActionControllerInterface
             $sc = $this->shipCrewRepository->prototype();
             $sc->setCrew($crew);
             $sc->setShip($ship);
+            //TODO set both ship and crew user
             $sc->setUser($ship->getUser());
             $sc->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
 
