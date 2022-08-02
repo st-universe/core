@@ -51,7 +51,8 @@ if ($rumpId !== 0) {
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR,
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY,
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_TORPEDO_STORAGE,
-        ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP
+        ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP,
+        ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL
     ];
 
     $moduleTypes = [

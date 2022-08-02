@@ -33,6 +33,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_CONSTRUCTION_HUB = 23;
     public const SYSTEM_UPLINK = 24;
     public const SYSTEM_FUSION_REACTOR = 25;
+    public const SYSTEM_TRANSWARP_COIL = 26;
 
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
@@ -106,6 +107,8 @@ final class ShipSystemTypeEnum
                 return _('Uplink');
             case ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR:
                 return _('Fusionsreaktor');
+            case ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL:
+                return _('Transwarpspule');
         }
         return '';
     }
