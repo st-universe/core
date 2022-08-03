@@ -402,7 +402,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                         FROM %s sc
                         WHERE sc.ships_id = s.id) > 0)
                     OR
-                        (s.state = :underConstruction)
+                        (s.state IN (:scrapping, :underConstruction))
                     OR
                         (p.crew = 0)) 
                 AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
@@ -413,6 +413,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'underConstruction' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
+            'scrapping' => ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
         ])->getResult();
     }
