@@ -443,6 +443,8 @@ interface ShipInterface
 
     public function hasUplink(): bool;
 
+    public function hasTranswarp(): bool;
+
     public function getMaxTorpedos(): int;
 
     public function getDockedShips(): Collection;

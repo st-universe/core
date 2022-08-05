@@ -169,8 +169,11 @@ class StarSystemMap implements StarSystemMapInterface
 
     public function getSectorString(): string
     {
-        $str = $this->getSx() . '|' . $this->getSy();
-        $str .= ' (' . $this->getSystem()->getName() . '-System)';
-        return $str;
+        return sprintf(
+            '%d|%d (%s-System)',
+            $this->getSx(),
+            $this->getSy(),
+            $this->getSystem()->getName()
+        );
     }
 }

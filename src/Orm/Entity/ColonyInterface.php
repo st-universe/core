@@ -21,6 +21,8 @@ interface ColonyInterface
 
     public function getName(): string;
 
+    public function getNameAndSectorString(): string;
+
     public function setName(string $name): ColonyInterface;
 
     public function getPlanetName(): string;

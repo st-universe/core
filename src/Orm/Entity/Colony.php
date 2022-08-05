@@ -196,6 +196,15 @@ class Colony implements ColonyInterface
         return $this->name;
     }
 
+    public function getNameAndSectorString(): string
+    {
+        return sprintf(
+            '%s %s',
+            $this->getName(),
+            $this->getSectorString()
+        );
+    }
+
     public function setName(string $name): ColonyInterface
     {
         $this->name = $name;

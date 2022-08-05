@@ -37,6 +37,7 @@ use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Component\Ship\System\Type\ShuttleRampShipSystem;
 use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
+use Stu\Component\Ship\System\Type\TranswarpCoilShipSystem;
 use Stu\Component\Ship\System\Type\UplinkShipSystem;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
@@ -83,7 +84,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER => autowire(BeamBlockerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB => autowire(ConstructionHubShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_UPLINK => autowire(UplinkShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => autowire(FusionReactorShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => autowire(FusionReactorShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL => autowire(TranswarpCoilShipSystem::class)
         ]
     ),
     UpdateLocationConsequencesInterface::class => create(UpdateLocationConsequences::class)->constructor(

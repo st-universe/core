@@ -69,8 +69,12 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
-        /** @var TradeOfferInterface $selectedOffer */
         $selectedOffer = $this->tradeOfferRepository->find($offerId);
+
+        if ($selectedOffer === null) {
+            $game->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            return;
+        }
 
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $selectedOffer->getTradePost()->getId())) {
             throw new AccessViolation(sprintf(

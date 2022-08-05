@@ -137,6 +137,7 @@ use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
+use Stu\Module\Ship\Action\Transwarp\Transwarp;
 use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefend;
@@ -314,7 +315,8 @@ return [
         DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
         SetLSSModeNormal::ACTION_IDENTIFIER => autowire(SetLSSModeNormal::class),
-        SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class)
+        SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
+        Transwarp::ACTION_IDENTIFIER => autowire(Transwarp::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

@@ -1821,6 +1821,11 @@ class Ship implements ShipInterface
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK);
     }
 
+    public function hasTranswarp(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL);
+    }
+
     public function getMaxTorpedos(): int
     {
         return $this->getRump()->getBaseTorpedoStorage()

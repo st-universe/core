@@ -251,7 +251,7 @@
 </tal:block>
 <metal:macro metal:define-macro="write_quick_pm">
   <input type="hidden" name="pm_sstr" id="pm_sstr" tal:attributes="value THIS/getSessionString" />
-  <form id="quickpm">
+  <form id="quickpm" tal:condition="exists: RECIPIENT">
     <table class="tcal" id="quickpm_compose">
       <tr>
         <td><span>Empfänger:</span> <span tal:replace="structure bbcode:RECIPIENT/getName"></span></td>
@@ -278,6 +278,13 @@
       </table>
     </div>
   </form>
+  <div tal:condition="not:exists: RECIPIENT">
+    <table class="tcal">
+      <tr>
+        <td>Aktion nicht gestattet</td>
+      </tr>
+    </table>
+  </div>
 </metal:macro>
 <metal:macro metal:define-macro="kncomments">
   <br />
