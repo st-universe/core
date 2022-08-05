@@ -195,46 +195,6 @@
 		</form>
 	</div>
 </metal:macro>
-<metal:macro metal:define-macro="tradelicencemenu">
-	<br />
-	<div style="width: 350px;">
-		<br />
-		<form method="post" action="trade.php">
-			<input type="hidden" name="postId" tal:attributes="value POST" />
-			<div id="tradelicencemenu">
-				<table class="tcal">
-					<tr>
-						<td style="vertical-align: middle;">Verlangte Ware</td>
-						<td>
-							<select name="wlgid">
-								<option value="0">----------------------</option>
-								<tal:block tal:repeat="data SELECTABLE_GOODS">
-									<option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
-								</tal:block>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td style="vertical-align: middle;">Verlangte Menge</td>
-						<td>
-							<input type="text" size="5" name="wlcount" />
-						</td>
-					</tr>
-					<tr>
-						<td style="vertical-align: middle;">Lizenzgültigkeit (in Tagen)</td>
-						<td>
-							<input type="text" size="5" name="ldays" />
-						</td>
-					</tr>
-				</table>
-				<br />
-				<div style="width: 100%; text-align: center;">
-					<input type="submit" value="Ok" name="B_CREATE_LICENCE" />
-				</div>
-			</div>
-		</form>
-	</div>
-</metal:macro>
 <metal:macro metal:define-macro="takeoffer">
 	<form method="post" action="trade.php">
 		<input type="hidden" name="offerid" tal:attributes="value SELECTED_OFFER/getId" />

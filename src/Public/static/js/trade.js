@@ -1,8 +1,3 @@
-function showLicenceMenu(postId) {
-	var elt = 'tradelicencemenu';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'trade.php?SHOW_LICENCE_MENU=1&postId=' + postId);
-}
 function openTradepostInfo(postId) {
 	var elt = 'tradepostinfo';
 	openPJsWin(elt, 1);
