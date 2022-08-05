@@ -13,6 +13,9 @@ use Stu\Module\Trade\Action\BasicTradeSell\BasicTradeSell;
 use Stu\Module\Trade\Action\CancelOffer\CancelOffer;
 use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequest;
 use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequestInterface;
+use Stu\Module\Trade\Action\CreateLicence\CreateLicence;
+use Stu\Module\Trade\Action\CreateLicence\CreateLicenceRequest;
+use Stu\Module\Trade\Action\CreateLicence\CreateLicenceRequestInterface;
 use Stu\Module\Trade\Action\CreateOffer\CreateOffer;
 use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequest;
 use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequestInterface;
@@ -30,6 +33,9 @@ use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseList;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequest;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequestInterface;
+use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenu;
+use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenuRequest;
+use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenuRequestInterface;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGood;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGoodRequest;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGoodRequestInterface;
@@ -61,9 +67,11 @@ use function DI\autowire;
 
 return [
     TradeLibFactoryInterface::class => autowire(TradeLibFactory::class),
+    ShowLicenceMenuRequestInterface::Class => autowire(ShowLicenceMenuRequest::class),
     ShowOfferMenuRequestInterface::class => autowire(ShowOfferMenuRequest::class),
     ShowTransferMenueRequestInterface::class => autowire(ShowTransferMenueRequest::class),
     ShowOfferMenuNewOfferRequestInterface::class => autowire(ShowOfferMenuNewOfferRequest::class),
+    CreateLicenceRequestInterface::class => autowrie(CreateLicenceRequest::class),
     CreateOfferRequestInterface::class => autowire(CreateOfferRequest::class),
     ShowTakeOfferRequestInterface::class => autowire(ShowTakeOfferRequest::class),
     ShowTradePostInfoRequestInterface::class => autowire(ShowTradePostInfoRequest::class),
@@ -76,6 +84,7 @@ return [
     AddShoutBoxEntryRequestInterface::class => autowire(AddShoutBoxEntryRequest::class),
     TransferGoodsRequestInterface::class => autowire(TransferGoodsRequest::class),
     'TRADE_ACTIONS' => [
+        CreateLicence::ACTION_IDENTIFIER => autowire(CreateLicence::class),
         CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
         CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
@@ -88,6 +97,7 @@ return [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowAccounts::VIEW_IDENTIFIER => autowire(ShowAccounts::class),
+        ShowLicenceMenu::VIEW_IDENTIFIER => autowire(ShowLicenceMenu::class),
         ShowOfferMenu::VIEW_IDENTIFIER => autowire(ShowOfferMenu::class),
         ShowTransferMenu::VIEW_IDENTIFIER => autowire(ShowTransferMenu::class),
         ShowOfferMenuNewOffer::VIEW_IDENTIFIER => autowire(ShowOfferMenuNewOffer::class),
