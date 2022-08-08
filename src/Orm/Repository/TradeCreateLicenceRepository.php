@@ -12,7 +12,7 @@ use Stu\Orm\Entity\TradeLicenceCreationInterface;
 final class TradeCreateLicenceRepository extends EntityRepository implements TradeCreateLicenceRepositoryInterface
 {
 
-    public function prototype(): TradeLicenseInterface
+    public function prototype(): TradeLicenceInterface
     {
         return new TradeLicenceCreation();
     }
