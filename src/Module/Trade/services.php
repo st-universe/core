@@ -72,7 +72,7 @@ return [
     ShowTradePostInfoRequestInterface::class => autowire(ShowTradePostInfoRequest::class),
     TakeOfferRequestInterface::class => autowire(TakeOfferRequest::class),
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
-    CreateLicenceRequestInterface::class => autowrie(CreateLicenceRequest::class),
+    CreateLicenceRequestInterface::class => autowire(CreateLicenceRequest::class),
     ShowLicenseListRequestInterface::class => autowire(ShowLicenseListRequest::class),
     ShowOfferGoodRequestInterface::class => autowire(ShowOfferGoodRequest::class),
     ShowShoutBoxRequestInterface::class => autowire(ShowShoutBoxRequest::class),
