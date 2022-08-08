@@ -598,7 +598,7 @@ return [
     TradeCreateLicenceRepositoryInterface::class => function (
         ContainerInterface $c
     ): TradeCreateLicenceRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeLicenceCreation::class);
+        return $c->get(EntityManagerInterface::class)->getRepository(TradeCreateLicence::class);
     },
     TradeLicenseRepositoryInterface::class => function (
         ContainerInterface $c
