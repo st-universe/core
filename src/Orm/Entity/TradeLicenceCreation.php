@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity(repositoryClass="Stu\Orm\Repository\TradeCreateLicenceRepository")
+ * @Entity(repositoryClass="Stu\Orm\Repository\TradeLicenceCreationRepository")
  * @Table(
  *     name="stu_trade_licences_creation",
  *     indexes={
