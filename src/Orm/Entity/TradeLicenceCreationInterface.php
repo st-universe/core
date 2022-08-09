@@ -26,4 +26,9 @@ public function setDate(int $date): TradeLicenceCreationInterface;
 public function getDays(): int;
 
 public function setDays(int $days): TradeLicenceCreationInterface;
+
+public function getTradePost(): TradePostInterface;
+
+public function setTradePost(TradePostInterface $tradePost): TradeLicenceCreationInterface;
+
 }

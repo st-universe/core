@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\TradeLicenceCreationInterface;
+use Stu\Orm\Entity\TradeCreateLicenceInterface;
 
-
+/**
+ * @method null|TradeCreateLicenceInterface find(integer $id)
+ */
 interface TradeCreateLicenceRepositoryInterface extends ObjectRepository
 {
-    /**
-    * @return TradeLicenceCreationInterface[]
-    */
-    public function prototype(): TradeLicenceCreationInterface;
+    public function prototype(): TradeCreateLicenceInterface;
 
-    public function save(TradeLicenceCreationInterface $post): void;
+    public function save(TradeCreateLicenceInterface $post): void;
 
-    public function delete(TradeLicenceCreationInterface $post): void;
+    public function delete(TradeCreateLicenceInterface $post): void;
+
 }

@@ -8,7 +8,6 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeCreateLicenceRepository;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
@@ -17,8 +16,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TradeLibFactory implements TradeLibFactoryInterface
 {
-    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
-
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
     private TradeTransferRepositoryInterface $tradeTransferRepository;
@@ -34,7 +31,6 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     private LoggerUtilFactoryInterface $loggerUtilFactory;
 
     public function __construct(
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
@@ -43,7 +39,6 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         UserRepositoryInterface $userRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
@@ -62,7 +57,6 @@ final class TradeLibFactory implements TradeLibFactoryInterface
             $this->tradeTransferRepository,
             $this->tradeOfferRepository,
             $this->tradeStorageRepository,
-            $this->tradCreateLicenceRepository,
             $tradePost,
             $userId
         );
