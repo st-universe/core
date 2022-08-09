@@ -8,7 +8,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
+use Stu\Orm\Repository\TradeCreateLicenceRepository;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
