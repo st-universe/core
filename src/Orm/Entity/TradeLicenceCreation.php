@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity(repositoryClass="Stu\Orm\Repository\TradeLicenceCreationRepository")
+ * @Entity(repositoryClass="Stu\Orm\Repository\TradeCreateLicenceRepository")
  * @Table(
  *     name="stu_trade_licences_creation",
  *     indexes={
@@ -104,18 +104,6 @@ class TradeLicenceCreation implements TradeLicenceCreationInterface
     public function setDays(int $days): TradeLicenceCreationInterface
     {
         $this->days = $days;
-
-        return $this;
-    }
-
-    public function getTradePost(): TradePostInterface
-    {
-        return $this->tradePost;
-    }
-
-    public function setTradePost(TradePostInterface $tradePost): TradeLicenceCreationInterface
-    {
-        $this->tradePost = $tradePost;
 
         return $this;
     }
