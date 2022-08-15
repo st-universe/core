@@ -35,6 +35,8 @@ interface TradeAccountTalInterface
 
     public function isOverStorage(): bool;
 
+    public function getTradePostbyUser(): bool;
+
     public function getStorageCapacity(): int;
 
     public function getLicenseCount(): int;
