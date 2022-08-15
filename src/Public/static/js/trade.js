@@ -23,6 +23,11 @@ function showOfferMenuTransfer(storid) {
 	$('tradeoffermenutransfer').addClassName('selected');
 	$('tradeoffermenunewoffer').removeClassName('selected');
 }
+function showLicenceMenu(postId) {
+	var elt = 'tradelicencemenu';
+	openPJsWin(elt, 1);
+	ajax_update(elt, 'trade.php?SHOW_LICENCE_MENU=1&postId=' + postId);
+}
 function takeTradeOffer(offerid) {
 	var elt = 'tradeoffer';
 	openPJsWin(elt, 1);
