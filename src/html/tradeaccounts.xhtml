@@ -85,8 +85,7 @@
 					<td class="darkbg">Handelslizenz Gebühren</td>
 					<td>
 						<span tal:condition="data/getTradePostbyUser">
-							<a href="javascript:void(0)"
-								onclick="showTradeLicenceMenu(this,${data/getId});">Bearbeiten</a></span>
+							<a href="javascript:void(0)" onclick="showLicenceMenu(${data/getId});">Bearbeiten</a></span>
 						<span tal:condition="not:data/getTradePostbyUser">Anzeigen</span>
 					</td>
 				</tr>
