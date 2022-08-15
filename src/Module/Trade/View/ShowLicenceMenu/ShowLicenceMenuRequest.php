@@ -12,6 +12,6 @@ final class ShowLicenceMenuRequest implements ShowLicenceMenuRequestInterface
 
     public function getTradePostId(): int
     {
-        return $this->queryParameter('tradpid')->int()->required();
+        return $this->queryParameter('postId')->int()->required();
     }
 }
