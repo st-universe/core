@@ -88,6 +88,8 @@ final class ShowScan implements ViewControllerInterface
         );
 
         $game->setTemplateVar('targetShip', $target);
+        $game->setTemplateVar('SHIELD_PERCENTAGE', (int)ceil($target->getShield() / $target->getMaxShield()));
+        $game->setTemplateVar('REACTOR_PERCENTAGE', (int)ceil($target->getReactorLoad() / $target->getReactorCapacity()));
         $game->setTemplateVar('SHIP', $ship);
     }
 }
