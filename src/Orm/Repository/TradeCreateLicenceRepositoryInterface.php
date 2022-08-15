@@ -10,9 +10,7 @@ use Stu\Orm\Entity\TradeLicenceCreationInterface;
 
 interface TradeCreateLicenceRepositoryInterface extends ObjectRepository
 {
-    /**
-    * @return TradeLicenceCreationInterface[]
-    */
+
     public function prototype(): TradeLicenceCreationInterface;
 
     public function save(TradeLicenceCreationInterface $post): void;
