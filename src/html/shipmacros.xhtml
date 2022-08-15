@@ -1014,12 +1014,20 @@
         </td>
       </tr>
       <tr>
+        <td>Schilde</td>
+        <td>${SHIELD_PERCENTAGE} %</td>
+      </tr>
+      <tr>
         <td>Energie</td>
         <td>${targetShip/getEps}</td>
       </tr>
       <tr>
         <td>Ersatzbatterie</td>
         <td>${targetShip/getEBatt}</td>
+      </tr>
+      <tr>
+        <td>Reaktor</td>
+        <td>${REACTOR_PERCENTAGE} %</td>
       </tr>
       <tr tal:condition="targetShip/getBuildplan">
         <td>Verbaute Module</td>
