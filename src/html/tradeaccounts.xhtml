@@ -12,13 +12,13 @@
 		<tal:block tal:repeat="data ACCOUNTS">
 			<table class="tcal">
 				<tr>
-					<th colspan="5" tal:content="structure bbcode:data/getShip/getName">POST</th>
+					<th colspan="6" tal:content="structure bbcode:data/getShip/getName">POST</th>
 				</tr>
 				<tr tal:define="ship data/getShip">
-					<td rowspan="5">
+					<td rowspan="6">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 					</td>
-					<td rowspan="5" style="width: 30%;">
+					<td rowspan="6" style="width: 30%;">
 						<div style="font-weight: bold">
 							Waren lagernd
 						</div>
@@ -31,7 +31,7 @@
 							</a>
 						</div>
 					</td>
-					<td rowspan="5" style="width: 30%;">
+					<td rowspan="6" style="width: 30%;">
 						<div style="font-weight: bold;">
 							Waren in Angeboten
 						</div>
@@ -82,11 +82,11 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="darkbg">Handelslizenz Gegenleistung</td>
+					<td class="darkbg">Handelslizenz Gebühren</td>
 					<td>
 						<span tal:condition="data/getTradePostbyUser"></span>
-						(<a href="javascript:void(0)"
-							onclick="showTradeLicenceMenu(this,${data/getId});">Bearbeiten</a>)
+						<a href="javascript:void(0)" onclick="showTradeLicenceMenu(this,${data/getId});">Bearbeiten</a>
+						<span tal:condition="not:data/getTradePostbyUser">Anzeigen</span>
 					</td>
 				</tr>
 			</table>
