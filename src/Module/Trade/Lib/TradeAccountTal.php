@@ -61,10 +61,9 @@ final class TradeAccountTal implements TradeAccountTalInterface
         return $this->tradePost->getDescription();
     }
 
-    public function getTradePostbyUser(): int
+    public function getTradePostbyUser(): bool
     {
-        if ($this->tradePost->getUserId() === $this->userId)
-            return $this->tradePost;
+        return $this->tradePost->getUserId() === $this->userId;
     }
 
     public function getStorage(): array
