@@ -69,6 +69,18 @@ final class ShowScan implements ViewControllerInterface
         if ($target->getRump()->getDatabaseId()) {
             $game->checkDatabaseItem($target->getRump()->getDatabaseId());
         }
+        if ($target->getMaxShield() === 0) {
+            $shieldpercentage = 0;
+        }
+        if ($target->getMaxShield() > 0) {
+            $shieldpercentage = (int)ceil($target->getShield() / $target->getMaxShield() * 100);
+        }
+        if ($target->getReactorCapacity() === 0) {
+            $reactorpercentage = 0;
+        }
+        if ($target->getReactorCapacity() > 0) {
+            $reactorpercentage = (int)ceil($target->getReactorLoad() / $target->getReactorCapacity() * 100);
+        }
 
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
 
@@ -88,8 +100,8 @@ final class ShowScan implements ViewControllerInterface
         );
 
         $game->setTemplateVar('targetShip', $target);
-        $game->setTemplateVar('SHIELD_PERCENTAGE', (int)ceil($target->getShield() / $target->getMaxShield() * 100));
-        $game->setTemplateVar('REACTOR_PERCENTAGE', (int)ceil($target->getReactorLoad() / $target->getReactorCapacity() * 100));
+        $game->setTemplateVar('SHIELD_PERCENTAGE', $shieldpercentage);
+        $game->setTemplateVar('REACTOR_PERCENTAGE', $reactorpercentage);
         $game->setTemplateVar('SHIP', $ship);
     }
 }
