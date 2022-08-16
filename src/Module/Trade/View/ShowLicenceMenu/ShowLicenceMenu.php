@@ -43,11 +43,11 @@ final class ShowLicenceMenu implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
 
-        $id = $this->tradePostRepository->find($this->showLicenceMenuRequest->getTradePostId());
-        if ($id === null) {
+        $trade_post = $this->tradePostRepository->find($this->showLicenceMenuRequest->getTradePostId());
+        if ($trade_post === null) {
             return;
         }
-        if ($id->getUserId() !== $userId) {
+        if ($trade_post->getUserId() !== $userId) {
             throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $userId));
         }
 
@@ -57,7 +57,7 @@ final class ShowLicenceMenu implements ViewControllerInterface
         $game->setPageTitle(sprintf(
             _('Lizenzmanagement')
         ));
-        $game->setTemplateVar('POST', $id);
+        $game->setTemplateVar('POST', $trade_post);
         $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
     }
 }
