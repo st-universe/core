@@ -11,6 +11,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowLicenceMenu implements ViewControllerInterface
 {
@@ -23,14 +24,18 @@ final class ShowLicenceMenu implements ViewControllerInterface
 
     private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
 
+    private TradePostRepositoryInterface $tradePostRepository;
+
     public function __construct(
         ShowLicenceMenuRequestInterface $showLicenceMenuRequest,
         CommodityRepositoryInterface $commodityRepository,
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository
+        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->showLicenceMenuRequest = $showLicenceMenuRequest;
         $this->commodityRepository = $commodityRepository;
         $this->tradeCreateLicenceeRepository = $tradeCreateLicenceRepository;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,7 +43,7 @@ final class ShowLicenceMenu implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
 
-        $trade_post = $this->showLicenceMenuRequest->getTradePostId();
+        $trade_post = $this->tradePostRepository->find($this->showLicenceMenuRequest->getTradePostId());
         if ($trade_post === null) {
             return;
         }
