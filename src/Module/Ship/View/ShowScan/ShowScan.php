@@ -6,13 +6,13 @@ namespace Stu\Module\Ship\View\ShowScan;
 
 use request;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 final class ShowScan implements ViewControllerInterface
 {
@@ -69,18 +69,6 @@ final class ShowScan implements ViewControllerInterface
         if ($target->getRump()->getDatabaseId()) {
             $game->checkDatabaseItem($target->getRump()->getDatabaseId());
         }
-        if ($target->getMaxShield() === 0) {
-            $shieldpercentage = 0;
-        }
-        if ($target->getMaxShield() > 0) {
-            $shieldpercentage = (int)ceil($target->getShield() / $target->getMaxShield() * 100);
-        }
-        if ($target->getReactorCapacity() === 0) {
-            $reactorpercentage = 0;
-        }
-        if ($target->getReactorCapacity() > 0) {
-            $reactorpercentage = (int)ceil($target->getReactorLoad() / $target->getReactorCapacity() * 100);
-        }
 
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
 
@@ -100,8 +88,22 @@ final class ShowScan implements ViewControllerInterface
         );
 
         $game->setTemplateVar('targetShip', $target);
-        $game->setTemplateVar('SHIELD_PERCENTAGE', $shieldpercentage);
-        $game->setTemplateVar('REACTOR_PERCENTAGE', $reactorpercentage);
+        $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
+        $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($target));
         $game->setTemplateVar('SHIP', $ship);
+    }
+
+    private function calculateShieldPercentage(ShipInterface $target): int
+    {
+        return $target->getMaxShield() === 0
+            ? 0
+            : (int)ceil($target->getShield() / $target->getMaxShield() * 100);
+    }
+
+    private function calculateReactorPercentage(ShipInterface $target): int
+    {
+        return $target->getReactorCapacity() === 0
+            ? 0
+            : (int)ceil($target->getReactorLoad() / $target->getReactorCapacity() * 100);
     }
 }
