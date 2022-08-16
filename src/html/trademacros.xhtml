@@ -200,10 +200,10 @@
 	<div style="width: 350px;">
 		<br />
 		<form method="post" action="trade.php">
-			<input type="hidden" name="postId" tal:attributes="value POST" />
+			<input type="hidden" name="postid" tal:attributes="value POST" />
 			<div id="tradelicencemenu">
 				<table class="tcal">
-					<tr>
+					<tr tal:repeat="data POST">
 						<td style="vertical-align: middle;">Verlangte Ware</td>
 						<td>
 							<select name="wlgid">
