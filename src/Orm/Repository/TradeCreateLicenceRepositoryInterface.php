@@ -16,4 +16,9 @@ interface TradeCreateLicenceRepositoryInterface extends ObjectRepository
     public function save(TradeLicenceCreationInterface $post): void;
 
     public function delete(TradeLicenceCreationInterface $post): void;
+
+    /**
+     * @return TradeLicenceCreationInterface[]
+     */
+    public function getByTradePost(int $tradePostId): array;
 }
