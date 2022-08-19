@@ -34,7 +34,7 @@ final class ShowLicenceMenu implements ViewControllerInterface
     ) {
         $this->showLicenceMenuRequest = $showLicenceMenuRequest;
         $this->commodityRepository = $commodityRepository;
-        $this->tradeCreateLicenceeRepository = $tradeCreateLicenceRepository;
+        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
         $this->tradePostRepository = $tradePostRepository;
     }
 
@@ -43,7 +43,7 @@ final class ShowLicenceMenu implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
 
-        $trade_post = $this->tradePostRepository->find($this->showLicenceMenuRequest->getTradePostId());
+        $trade_post = $this->tradeCreateLicenceRepository->find($this->showLicenceMenuRequest->getTradePostId());
         if ($trade_post === null) {
             return;
         }
