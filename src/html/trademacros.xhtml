@@ -196,12 +196,10 @@
 	</div>
 </metal:macro>
 <metal:macro metal:define-macro="tradelicencemenu">
-	<form method="post" action="trade.php">
-		<input type="hidden" name="postid" tal:attributes="value data/getByTradePost" />
-		<table class="tcal">
-			<td style="vertical-align: middle;">Verlangte Ware</td>
-		</table>
-	</form>
+	<input type="hidden" name="postid" tal:attributes="value data/getByTradePost" />
+	<table class="tcal">
+		<td style="vertical-align: middle;">Verlangte Ware</td>
+	</table>
 </metal:macro>
 <metal:macro metal:define-macro="takeoffer">
 	<form method="post" action="trade.php">
