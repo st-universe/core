@@ -196,7 +196,8 @@
 	</div>
 </metal:macro>
 <metal:macro metal:define-macro="tradelicencemenu">
-	<input type="hidden" name="postid" tal:attributes="value data/getByTradePost" />
+	<input type="hidden" name="tradepost" id="tradepost" tal:attributes="value TRADEPOST" />
+	<input type="hidden" name="selectgoods" id="selectgoods" tal:attributes="value SELECTABLE_GOODS" />
 	<table class="tcal">
 		<td style="vertical-align: middle;">Verlangte Ware</td>
 	</table>
