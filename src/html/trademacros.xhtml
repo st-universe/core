@@ -200,6 +200,7 @@
 		<input type="hidden" name="tradepost" tal:attributes="value TRADEPOST" />
 		<table class="tcal">
 			<tr>
+				<span tal:replace="data/getTradePostID">id</span>
 				<td style="vertical-align: middle;">Verlangte Ware</td>
 				<td>
 					<select name="wlgid">
