@@ -196,35 +196,35 @@
 	</div>
 </metal:macro>
 <metal:macro metal:define-macro="tradelicencemenu">
-	<form method="post" action="trade.php"></form>
-	<input type="hidden" name="tradepost" id="tradepost" tal:attributes="value TRADEPOST" />
-	<table class="tcal">
-		<tr>
-			<td style="vertical-align: middle;">Verlangte Ware</td>
+	<form method="post" action="trade.php">
+		<input type="hidden" name="tradepost" id="tradepost" tal:attributes="value TRADEPOST" />
+		<table class="tcal">
+			<tr>
+				<td style="vertical-align: middle;">Verlangte Ware</td>
+				<td>
+					<select name="wlgid">
+						<option value="0">------------</option>
+						<tal:block tal:repeat="data SELECTABLE_GOODS">
+							<option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
+						</tal:block>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: middle;">Verlangte Menge</td>
+				<td>
+					<input type="text" size="5" name="wlcount" />
+				</td>
+			</tr>
+			<td style="vertical-align: middle;">Lizenzgültigkeit (Tage)</td>
 			<td>
-				<select name="wlgid">
-					<option value="0">------------</option>
-					<tal:block tal:repeat="data SELECTABLE_GOODS">
-						<option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
-					</tal:block>
-				</select>
+				<input type="text" size="5" name="ldays" />
 			</td>
-		</tr>
-		<tr>
-			<td style="vertical-align: middle;">Verlangte Menge</td>
-			<td>
-				<input type="text" size="5" name="wlcount" />
-			</td>
-		</tr>
-		<td style="vertical-align: middle;">Lizenzgültigkeit (Tage)</td>
-		<td>
-			<input type="text" size="5" name="ldays" />
-		</td>
-	</table>
-	<br />
-	<div style="width: 100%; text-align: center;">
-		<input type="submit" value="Einstellen" name="B_CREATE_LICENCE" />
-	</div>
+		</table>
+		<br />
+		<div style="width: 100%; text-align: center;">
+			<input type="submit" value="Einstellen" name="B_CREATE_LICENCE" />
+		</div>
 	</form>
 </metal:macro>
 <metal:macro metal:define-macro="takeoffer">
