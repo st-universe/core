@@ -32,10 +32,10 @@ final class TradeCreateLicenceRepository extends EntityRepository implements Tra
         $em->flush();
     }
 
-    public function getByTradePost(int $tradePostId): array
+    public function getByTradePost(int $posts_id): array
     {
         return $this->findBy([
-            'tradepost' => $tradePostId
+            'tradepost' => $posts_id
         ]);
     }
 }

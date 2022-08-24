@@ -22,5 +22,5 @@ interface TradeCreateLicenceRepositoryInterface extends ObjectRepository
     /**
      * @return TradeLicenceCreationInterface[]
      */
-    public function getByTradePost(int $tradePostId): array;
+    public function getByTradePost(int $posts_id): array;
 }

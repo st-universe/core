@@ -41,7 +41,7 @@ class TradeLicenceCreation implements TradeLicenceCreationInterface
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradePostId;
+    private $tradepost;
 
     public function getId(): int
     {
@@ -53,9 +53,9 @@ class TradeLicenceCreation implements TradeLicenceCreationInterface
         return $this->posts_id;
     }
 
-    public function setTradePostId(int $tradePostId): TradeLicenceCreationInterface
+    public function setTradePostId(int $posts_id): TradeLicenceCreationInterface
     {
-        $this->posts_id = $tradePostId;
+        $this->posts_id = $posts_id;
 
         return $this;
     }
