@@ -12,21 +12,21 @@ final class CreateLicenceRequest implements CreateLicenceRequestInterface
 
     public function getTradePostId(): int
     {
-        return $this->bodyParameter('tradepost')->int()->defaultsTo(0);
+        return $this->bodyParameter('tradepost')->int()->required();
     }
 
     public function getWantedLicenceGoodId(): int
     {
-        return $this->bodyParameter('wlgid')->int()->defaultsTo(0);
+        return $this->bodyParameter('wlgid')->int()->required();
     }
 
     public function getWantedLicenceAmount(): int
     {
-        return $this->bodyParameter('wlcount')->int()->defaultsTo(0);
+        return $this->bodyParameter('wlcount')->int()->required();
     }
 
     public function getLicenceDays(): int
     {
-        return $this->bodyParameter('ldays')->int()->defaultsTo(0);
+        return $this->bodyParameter('ldays')->int()->required();
     }
 }
