@@ -61,7 +61,7 @@ final class CreateLicence implements ActionControllerInterface
         $setLicence = $this->tradeLicenceRepository->prototype();
         $setLicence->setTradePostId((int) $tradePostId);
         $setLicence->setDate(time());
-        $setLicence->setGoodsId((int) $this->commodityRepository->find($goods_id));
+        $setLicence->setGoodsId((int) $this->commodityRepository->$goods_id);
         $setLicence->setAmount((int) $giveAmount);
         $setLicence->setDays($days);
 
