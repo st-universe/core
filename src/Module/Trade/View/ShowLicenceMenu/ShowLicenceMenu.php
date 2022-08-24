@@ -33,13 +33,9 @@ final class ShowLicenceMenu implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
-
 
         $trade_post = $this->tradeCreateLicenceRepository->find($this->showLicenceMenuRequest->getTradePostId());
-        if ($trade_post === null) {
-            return;
-        }
+
 
         $commodityList = $this->commodityRepository->getTradeable();
 
