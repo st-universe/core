@@ -37,13 +37,13 @@ final class ShowLicenceMenu implements ViewControllerInterface
         $trade_post = $this->tradeCreateLicenceRepository->find($this->showLicenceMenuRequest->getTradePostId());
 
 
-        #        $commodityList = $this->commodityRepository->getTradeable();
+        $commodityList = $this->commodityRepository->getTradeable();
 
         $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicencemenu');
         $game->setPageTitle(sprintf(
             _('Lizenzmanagement')
         ));
         $game->setTemplateVar('TRADEPOST', $trade_post);
-        #        $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
+        $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
     }
 }
