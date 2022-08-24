@@ -57,14 +57,14 @@ final class CreateLicence implements ActionControllerInterface
         $days = $this->createLicenceRequest->getLicenceDays();
 
 
-        if ($giveAmount < 1 || $goods_id < 1 ) {
+        if ($giveAmount < 1 || $goods_id < 1) {
             return;
         }
 
         $setLicence = $this->tradeLicenceRepository->prototype();
-        $setLicence->setTradePostId($posts_id);
+        $setLicence->setTradePostId((int) $posts_id);
         $setLicence->setDate(time());
-        $setLicence->setGoodsId($this->commodityRepository->find($goods_id));
+        $setLicence->setGoodsId((int) $this->commodityRepository->find($goods_id));
         $setLicence->setAmount((int) $giveAmount);
         $setLicence->setDays($days);
 
