@@ -198,13 +198,25 @@
 <metal:macro metal:define-macro="tradelicencemenu">
 	<input type="hidden" name="tradepost" id="tradepost" tal:attributes="value TRADEPOST" />
 	<table class="tcal">
-		<td style="vertical-align: middle;">Verlangte Ware</td>
-		<select name="wlgid">
-			<option value="0">----------------------</option>
-			<tal:block tal:repeat="data SELECTABLE_GOODS">
-				<option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
-			</tal:block>
-		</select>
+		<tr>
+			<td style="vertical-align: middle;">Verlangte Ware</td>
+			<select name="wlgid">
+				<option value="0">----------------------</option>
+				<tal:block tal:repeat="data SELECTABLE_GOODS">
+					<option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
+				</tal:block>
+			</select>
+		</tr>
+		<tr>
+			<td style="vertical-align: middle;">Verlangte Menge</td>
+			<td>
+				<input type="text" size="5" name="wlcount" />
+			</td>
+		</tr>
+		<td style="vertical-align: middle;">Lizenzgültigkeit (Tage)</td>
+		<td>
+			<input type="text" size="5" name="ldays" />
+		</td>
 	</table>
 </metal:macro>
 <metal:macro metal:define-macro="takeoffer">

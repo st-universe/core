@@ -12,7 +12,7 @@ final class CreateLicenceRequest implements CreateLicenceRequestInterface
 
     public function getTradePostId(): int
     {
-        return $this->bodyParameter('tradpid')->int()->defaultsTo(0);
+        return $this->bodyParameter('tradepost')->int()->defaultsTo(0);
     }
 
     public function getWantedLicenceGoodId(): int
@@ -29,4 +29,4 @@ final class CreateLicenceRequest implements CreateLicenceRequestInterface
     {
         return $this->bodyParameter('ldays')->int()->defaultsTo(0);
     }
-} 
+}
