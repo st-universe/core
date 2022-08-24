@@ -45,6 +45,9 @@ final class CreateLicence implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $posts_id = $this->createLicenceRequest->getTradePostId();
+        if ($posts_id === null) {
+            throw new AccessViolation(sprintf("Tradepost not existent! Fool: %d", $posts_id));
+        }
 
         $goods_id = $this->createLicenceRequest->getWantedLicenceGoodId();
         $giveAmount = $this->createLicenceRequest->getWantedLicenceAmount();

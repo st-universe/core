@@ -15,9 +15,9 @@ interface TradeCreateLicenceRepositoryInterface extends ObjectRepository
 
     public function prototype(): TradeLicenceCreationInterface;
 
-    public function save(TradeLicenceCreationInterface $post): void;
+    public function save(TradeLicenceCreationInterface $setLicence): void;
 
-    public function delete(TradeLicenceCreationInterface $post): void;
+    public function delete(TradeLicenceCreationInterface $setLicence): void;
 
     /**
      * @return TradeLicenceCreationInterface[]

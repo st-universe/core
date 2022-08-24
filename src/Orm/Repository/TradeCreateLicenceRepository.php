@@ -17,14 +17,14 @@ final class TradeCreateLicenceRepository extends EntityRepository implements Tra
         return new TradeLicenceCreation();
     }
 
-    public function save(TradeLicenceCreationInterface $post): void
+    public function save(TradeLicenceCreationInterface $setLicence): void
     {
         $em = $this->getEntityManager();
 
         $em->persist($post);
     }
 
-    public function delete(TradeLicenceCreationInterface $post): void
+    public function delete(TradeLicenceCreationInterface $setLicence): void
     {
         $em = $this->getEntityManager();
 
