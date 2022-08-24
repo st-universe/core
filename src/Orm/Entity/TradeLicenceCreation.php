@@ -37,11 +37,6 @@ class TradeLicenceCreation implements TradeLicenceCreationInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
-    /**
-     * @ManyToOne(targetEntity="TradePost")
-     * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $tradePost;
 
     public function getId(): int
     {
@@ -68,7 +63,7 @@ class TradeLicenceCreation implements TradeLicenceCreationInterface
     public function setGoodsId(int $goods_id): TradeLicenceCreationInterface
     {
         $this->goods_id = $goods_id;
-        
+
         return $this;
     }
 
@@ -80,7 +75,7 @@ class TradeLicenceCreation implements TradeLicenceCreationInterface
     public function setAmount(int $amount): TradeLicenceCreationInterface
     {
         $this->amount = $amount;
-        
+
         return $this;
     }
 
