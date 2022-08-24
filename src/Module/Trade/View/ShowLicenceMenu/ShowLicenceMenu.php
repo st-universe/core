@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowLicenceMenu;
 
-use Stu\Exception\AccessViolation;
-use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
-use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowLicenceMenu implements ViewControllerInterface
 {
@@ -24,18 +20,15 @@ final class ShowLicenceMenu implements ViewControllerInterface
 
     private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
 
-    private TradePostRepositoryInterface $tradePostRepository;
 
     public function __construct(
         ShowLicenceMenuRequestInterface $showLicenceMenuRequest,
         CommodityRepositoryInterface $commodityRepository,
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
-        TradePostRepositoryInterface $tradePostRepository
+        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository
     ) {
         $this->showLicenceMenuRequest = $showLicenceMenuRequest;
         $this->commodityRepository = $commodityRepository;
         $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
-        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,9 +39,6 @@ final class ShowLicenceMenu implements ViewControllerInterface
         $trade_post = $this->tradeCreateLicenceRepository->find($this->showLicenceMenuRequest->getTradePostId());
         if ($trade_post === null) {
             return;
-        }
-        if ($trade_post->getUserId() !== $userId) {
-            throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $userId));
         }
 
         $commodityList = $this->commodityRepository->getTradeable();
