@@ -197,7 +197,7 @@
 </metal:macro>
 <metal:macro metal:define-macro="tradelicencemenu">
 	<form method="post" action="trade.php">
-		<input type="hidden" name="tradepost" tal:attributes="value TRADEPOST" />
+		<input type="hidden" name="tradepost" tal:attributes="9" />
 		<table class="tcal">
 			<tr>
 				<td style="vertical-align: middle;">Verlangte Ware</td>
@@ -220,11 +220,11 @@
 			<td>
 				<input type="text" size="5" name="ldays" />
 			</td>
-			<br />
-			<div style="width: 100%; text-align: center;">
-				<input type="submit" value="Einstellen" name="B_CREATE_LICENCE" />
-			</div>
 		</table>
+		<br />
+		<div style="width: 100%; text-align: center;">
+			<input type="submit" value="Einstellen" name="B_CREATE_LICENCE" />
+		</div>
 	</form>
 </metal:macro>
 <metal:macro metal:define-macro="takeoffer">
