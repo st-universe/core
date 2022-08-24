@@ -67,7 +67,7 @@ use function DI\autowire;
 
 return [
     TradeLibFactoryInterface::class => autowire(TradeLibFactory::class),
-    ShowLicenceMenuRequestInterface::Class => autowire(ShowLicenceMenuRequest::class),
+    ShowLicenceMenuRequestInterface::class => autowire(ShowLicenceMenuRequest::class),
     ShowOfferMenuRequestInterface::class => autowire(ShowOfferMenuRequest::class),
     ShowTransferMenueRequestInterface::class => autowire(ShowTransferMenueRequest::class),
     ShowOfferMenuNewOfferRequestInterface::class => autowire(ShowOfferMenuNewOfferRequest::class),
