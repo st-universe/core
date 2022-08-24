@@ -7,9 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\TradeLicenceCreationInterface;
 
-/**
- * @method null|TradeLicenceCreationInterface find(integer $id)
- */ #
+
 interface TradeCreateLicenceRepositoryInterface extends ObjectRepository
 {
 
