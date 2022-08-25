@@ -106,10 +106,11 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tlc.days FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC LIMIT 1',
+                    'SELECT tlc.days FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
                     TradeLicenceCreation::class
                 )
             )
+            ->setMaxResults(1)
             ->setParameters([
                 'trade_post' => $tradepost
             ])
