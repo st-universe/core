@@ -33,7 +33,7 @@ final class TradeCreateLicenceRepository extends EntityRepository implements Tra
         $em->flush();
     }
 
-    public function getUserByTradepost(int $posts_id): int
+    public function getUserByTradepost(int $posts_id): array
     {
         return $this->getEntityManager()
             ->createQuery(
