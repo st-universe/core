@@ -138,7 +138,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $licence->setTradePost($tradepost);
         $licence->setUser($game->getUser());
         $licence->setDate(time());
-        $licence->setExpired($expired);
+        $licence->setExpired(time() + $expired * 86400);
 
         $game->addInformation('Handelslizenz wurde erteilt');
 
