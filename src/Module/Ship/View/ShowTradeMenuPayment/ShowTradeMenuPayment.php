@@ -16,6 +16,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ShowTradeMenuPayment implements ViewControllerInterface
 {
@@ -33,6 +34,8 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private CommodityRepositoryInterface $commodityRepository;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -42,6 +45,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         TradePostRepositoryInterface $tradePostRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
         ShipRepositoryInterface $shipRepository,
+        CommodityRepositoryInterface $commodityRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -50,6 +54,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->shipRepository = $shipRepository;
+        $this->commodityRepository = $commodityRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -80,9 +85,11 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
 
+        $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
+
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
-            $licenseCostGood = $tradepost->getLicenceCostGood();
-            $licenseCost = $tradepost->calculateLicenceCost();
+            $licenseCostGood = $this->commodityRepository->find($commodityId);
+            $licenseCost = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
 
             $game->setTemplateVar(
                 'DOCKED_SHIPS_FOR_LICENSE',
