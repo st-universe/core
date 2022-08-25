@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
+use Stu\Orm\Entity\TradeLicenceCreation;
 
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
@@ -98,5 +99,20 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                 'tradeNetworkId' => $tradeNetworkId
             ])
             ->getSingleScalarResult() > 0;
+    }
+
+    public function getExpiredByTradepost(int $tradePostId): int
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tlc.expired FROM %s tlc WHERE tlc.posts_id = :trade_post order by id desc limit 1',
+                    TradeLicenceCreation::class
+                )
+            )
+            ->setParameters([
+                'trade_post' => $tradePostId
+            ])
+            ->getSingleScalarResult();
     }
 }

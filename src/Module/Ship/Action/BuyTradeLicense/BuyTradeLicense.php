@@ -67,6 +67,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
         /** @var TradePostInterface $tradepost */
         $tradepost = $this->tradePostRepository->find((int) request::getIntFatal('postid'));
+        $expired = $this->tradeLicenseRepository->getExpiredByTradepost((int) $tradepost);
         if ($tradepost === null) {
             return;
         }
@@ -137,6 +138,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $licence->setTradePost($tradepost);
         $licence->setUser($game->getUser());
         $licence->setDate(time());
+        $licence->setExpired($expired);
 
         $game->addInformation('Handelslizenz wurde erteilt');
 
