@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
 use Stu\Orm\Entity\TradeLicenceCreation;
-use Stu\Orm\Entity\TradePost;
 
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
@@ -109,8 +108,8 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tp.expired FROM %s tp WHERE tp.posts_id = :trade_post ORDER BY tp.id DESC',
-                    TradePost::class
+                    'SELECT tlc.expired FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
+                    TradeLicense::class
                 )
             )
             ->setMaxResults(1)
