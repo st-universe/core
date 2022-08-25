@@ -1366,7 +1366,7 @@
         <tr>
           <td>
             Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die einmalige Gebühr dafür beträgt:
-            <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span> <span
+            <span tal:replace="LICENSECOST">COST</span> <span
               tal:replace="TRADEPOST/getTradeLicenseCostsCommodity/getName">GOOD</span><br /><br />
             Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem
             Frachtraum des Schiffes beglichen werden.<br /><br />
@@ -1397,9 +1397,9 @@
         <td>
           Es werden nur angedockte Schiffe/Konten aufgelistet auf denen genug Waren vorhanden sind um die Gebühr zu
           begleichen.<br /><br />
-          <img src="assets/goods/${TRADEPOST/getTradeLicenseCostsCommodity/getId}.png"
+          <img src="assets/goods/${LICENSEGOOD}.png"
             tal:attributes="title TRADEPOST/getTradeLicenseCostsCommodity/getName" /> <span
-            tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span>
+            tal:replace="LICENSECOST">COST</span>
         </td>
       </tr>
     </table>

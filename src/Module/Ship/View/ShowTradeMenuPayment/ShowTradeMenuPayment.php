@@ -79,13 +79,13 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         if (!$ship->canInteractWith($tradepost->getShip())) {
             return;
         }
-
+        $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
         $game->showMacro('html/shipmacros.xhtml/trademenupayment');
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
-
-        $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
+        $game->setTemplateVar('LICENSEGOOD', $this->commodityRepository->find($commodityId));
+        $game->setTemplateVar('LICENSECOST', $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId()));
 
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
             $licenseCostGood = $this->commodityRepository->find($commodityId);
