@@ -50,7 +50,7 @@ final class CreateLicence implements ActionControllerInterface
             throw new AccessViolation(sprintf("Tradepost not existent! Fool: %d", $posts_id));
         }
         if ((int) $tradepost_user !== $userId) {
-            throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $userId));
+            throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $tradepost_user));
         }
 
 
