@@ -86,19 +86,37 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('amount', 'amount');
+        $time = time();
 
         return (int) $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT COUNT(c.id) as amount FROM stu_trade_licences c WHERE c.user_id = :userId AND c.posts_id IN (
+                'SELECT COUNT(c.id) as amount FROM stu_trade_licences c WHERE c.user_id = :userId AND c.expired > actualtime = :actime AND c.posts_id IN (
                     SELECT id FROM stu_trade_posts WHERE trade_network = :tradeNetworkId
                 )',
                 $rsm
             )
             ->setParameters([
                 'userId' => $userId,
-                'tradeNetworkId' => $tradeNetworkId
+                'tradeNetworkId' => $tradeNetworkId,
+                'actime' => $time
             ])
             ->getSingleScalarResult() > 0;
+    }
+
+    public function getExpiredTime(int $trade_post): int
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tlc.expired FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
+                    TradeLicenceCreation::class
+                )
+            )
+            ->setMaxResults(1)
+            ->setParameters([
+                'trade_post' => $trade_post
+            ])
+            ->getSingleScalarResult();
     }
 
     public function getExpiredByTradepost(int $tradepost): int

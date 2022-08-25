@@ -87,7 +87,10 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         $game->setTemplateVar('LICENSEGOOD', $commodityId);
         $game->setTemplateVar('LICENSECOST', $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId()));
 
-        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
+        if (
+            !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
+            || time() > $this->tradeLicenseRepository->getExpiredTime((int) $tradepost->getId())
+        ) {
             $licenseCostGood = $this->commodityRepository->find($commodityId);
             $licenseCost = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
 

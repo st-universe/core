@@ -87,7 +87,10 @@ final class BuyTradeLicense implements ActionControllerInterface
             return;
         }
 
-        if ($this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
+        if (
+            $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
+            && time() < $this->tradeLicenseRepository->getExpiredTime((int) $tradepost->getId())
+        ) {
             return;
         }
         switch ($mode) {
