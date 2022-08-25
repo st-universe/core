@@ -31,6 +31,9 @@ class TradeLicense implements TradeLicenseInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
+    /** @Column(type="integer") * */
+    private $expired = 0;
+
     /**
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
@@ -73,6 +76,18 @@ class TradeLicense implements TradeLicenseInterface
     public function setDate(int $date): TradeLicenseInterface
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getExpired(): int
+    {
+        return $this->expired;
+    }
+
+    public function setExpired(int $expired): TradeLicenseInterface
+    {
+        $this->expired = $expired;
 
         return $this;
     }

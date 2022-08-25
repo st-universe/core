@@ -16,6 +16,10 @@ interface TradeLicenseInterface
 
     public function setDate(int $date): TradeLicenseInterface;
 
+    public function getExpired(): int;
+
+    public function setExpired(int $expired): TradeLicenseInterface;
+
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): TradeLicenseInterface;
