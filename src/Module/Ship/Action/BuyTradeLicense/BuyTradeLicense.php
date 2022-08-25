@@ -33,6 +33,8 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
+    private CommodityRepositoryInterface $commodityRepository;
+
     private ShipRepositoryInterface $shipRepository;
 
     private PositionCheckerInterface $positionChecker;
@@ -44,6 +46,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         TradePostRepositoryInterface $tradePostRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipRepositoryInterface $shipRepository,
+        CommodityRepositoryInterface $commodityRepository,
         PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
@@ -52,6 +55,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $this->tradePostRepository = $tradePostRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipRepository = $shipRepository;
+        $this->commodityRepository = $commodityRepository;
         $this->positionChecker = $positionChecker;
     }
 
@@ -97,6 +101,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 }
 
                 $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
+                $commodity = $this->commodityRepository->find($commodityId);
                 $costs = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
                 $storage = $obj->getStorage()[$commodityId] ?? null;
                 if ($storage === null || $storage->getAmount() < $costs) {
@@ -104,7 +109,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 }
                 $this->shipStorageManager->lowerStorage(
                     $obj,
-                    $commodityId,
+                    $commodity,
                     $costs
                 );
                 break;
