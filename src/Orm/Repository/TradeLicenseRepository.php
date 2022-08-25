@@ -108,8 +108,8 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tp.expired FROM %s tp WHERE tp.posts_id = :trade_post ORDER BY tlc.id DESC',
-                    TradePost::class
+                    'SELECT tlc.expired FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
+                    TradeLicenceCreation::class
                 )
             )
             ->setMaxResults(1)
