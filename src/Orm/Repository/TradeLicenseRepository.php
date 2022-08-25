@@ -106,7 +106,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tlc.days FROM %s tlc WHERE tlc.posts_id = :trade_post',
+                    'SELECT tlc.days FROM %s tlc WHERE tlc.posts_id = 11',
                     TradeLicenceCreation::class
                 )
             )
