@@ -74,12 +74,13 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             $commoditySql = '';
         }
 
+        $time = time();
         /** @noinspection SyntaxError */
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT to FROM %s to WHERE to.posts_id IN (
-                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId
+                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime
                     ) %s %s
                     ORDER BY to.date DESC',
                     TradeOffer::class,
@@ -89,7 +90,8 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
                 )
             )
             ->setParameters([
-                'userId' => $userId
+                'userId' => $userId,
+                'actime' => $time
             ])
             ->getResult();
     }
