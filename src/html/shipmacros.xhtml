@@ -1366,7 +1366,7 @@
         <tr>
           <td>
             Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die einmalige Gebühr dafür beträgt:
-            <span tal:replace="LICENSECOST">COST</span> <span
+            <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span> <span
               tal:replace="TRADEPOST/getTradeLicenseCostsCommodity/getName">GOOD</span><br /><br />
             Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem
             Frachtraum des Schiffes beglichen werden.<br /><br />
