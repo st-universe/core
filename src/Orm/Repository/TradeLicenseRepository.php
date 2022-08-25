@@ -110,9 +110,6 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                     TradeLicenceCreation::class
                 )
             )
-            ->setParameters([
-                'trade_post' => $tradePostId
-            ])
             ->getSingleScalarResult();
     }
 }
