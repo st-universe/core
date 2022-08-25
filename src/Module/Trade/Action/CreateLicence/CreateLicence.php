@@ -59,7 +59,13 @@ final class CreateLicence implements ActionControllerInterface
         $days = $this->createLicenceRequest->getLicenceDays();
 
 
+        if ($days < 1 || $days > 365) {
+            $game->addInformation("Die Lizenzdauer muss zwischen 1 und 365 Tagen liegen");
+            return;
+        }
+
         if ($giveAmount < 1 || $goods_id < 1) {
+            $game->addInformation("Es wurde keine Ware oder keine Menge ausgewählt");
             return;
         }
 
