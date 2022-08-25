@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
 use Stu\Orm\Entity\TradeLicenceCreation;
-use Stu\Orm\Entity\TradePost;
 
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
