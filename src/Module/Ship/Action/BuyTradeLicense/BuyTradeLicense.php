@@ -17,6 +17,7 @@ use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class BuyTradeLicense implements ActionControllerInterface
 {
@@ -95,16 +96,16 @@ final class BuyTradeLicense implements ActionControllerInterface
                     return;
                 }
 
-                $commodityId = (int) $tradepost->getLicenceCostGood()->getId();
-
+                $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
+                $costs = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
                 $storage = $obj->getStorage()[$commodityId] ?? null;
-                if ($storage === null || $storage->getAmount() < $tradepost->calculateLicenceCost()) {
+                if ($storage === null || $storage->getAmount() < $costs) {
                     return;
                 }
                 $this->shipStorageManager->lowerStorage(
                     $obj,
-                    $tradepost->getLicenceCostGood(),
-                    $tradepost->calculateLicenceCost()
+                    $commodityId,
+                    $costs
                 );
                 break;
             case 'account':
@@ -115,8 +116,8 @@ final class BuyTradeLicense implements ActionControllerInterface
                 }
 
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager($targetTradepost, $userId);
-                $commodityId = (int) $tradepost->getLicenceCostGood()->getId();
-                $costs = (int) $tradepost->calculateLicenceCost();
+                $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
+                $costs = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
 
                 $stor = $storageManager->getStorage()[$commodityId] ?? null;
                 if ($stor === null) {

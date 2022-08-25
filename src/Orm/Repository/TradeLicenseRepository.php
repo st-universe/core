@@ -116,4 +116,36 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ])
             ->getSingleScalarResult();
     }
+
+    public function getLicenceGoodIdByTradepost(int $tradepost): int
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tlc.goods_id FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
+                    TradeLicenceCreation::class
+                )
+            )
+            ->setMaxResults(1)
+            ->setParameters([
+                'trade_post' => $tradepost
+            ])
+            ->getSingleScalarResult();
+    }
+
+    public function getLicenceGoodAmountByTradepost(int $tradepost): int
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tlc.amount FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
+                    TradeLicenceCreation::class
+                )
+            )
+            ->setMaxResults(1)
+            ->setParameters([
+                'trade_post' => $tradepost
+            ])
+            ->getSingleScalarResult();
+    }
 }
