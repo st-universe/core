@@ -76,10 +76,7 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
-        if (
-            !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $selectedOffer->getTradePost()->getId())
-            || time() > $this->tradeLicenseRepository->getExpiredTime($selectedOffer->getTradePost()->getId())
-        ) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $selectedOffer->getTradePost()->getId())) {
             throw new AccessViolation(sprintf(
                 _('UserId %d does not have trade license on tradePostId %d'),
                 $userId,

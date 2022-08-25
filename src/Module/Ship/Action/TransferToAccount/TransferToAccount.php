@@ -79,10 +79,7 @@ final class TransferToAccount implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        if (
-            !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
-            || time() > $this->tradeLicenseRepository->getExpiredTime((int) $tradepost->getId())
-        ) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
             return;
         }
 

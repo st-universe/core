@@ -44,10 +44,7 @@ final class ShowTradePostInfo implements ViewControllerInterface
             return;
         }
 
-        if (
-            !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $trade_post->getId())
-            || time() > $this->tradeLicenseRepository->getExpiredTime((int) $trade_post->getId())
-        ) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $trade_post->getId())) {
             throw new AccessViolation();
         }
 

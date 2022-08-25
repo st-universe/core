@@ -36,8 +36,6 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
 
     public function hasLicenseByUserAndNetwork(int $userId, int $tradeNetworkId): bool;
 
-    public function getExpiredTime(int $trade_post): int;
-
     public function getExpiredByTradepost(int $tradepost): int;
 
     public function getLicenceGoodIdByTradepost(int $tradepost): int;

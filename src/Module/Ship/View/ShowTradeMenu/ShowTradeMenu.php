@@ -83,7 +83,6 @@ final class ShowTradeMenu implements ViewControllerInterface
         $game->setTemplateVar(
             'HAS_LICENSE',
             $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
-                && time() < $this->tradeLicenseRepository->getExpiredTime((int) $tradepost->getId())
         );
         $game->setTemplateVar(
             'CAN_BUY_LICENSE',

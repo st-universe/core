@@ -91,10 +91,7 @@ final class TransferGoods implements ActionControllerInterface
             return;
         }
 
-        if (
-            !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradePostId)
-            || time() > $this->tradeLicenseRepository->getExpiredTime($tradePostId)
-        ) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradePostId)) {
             return;
         }
         if ($targetpost->getTradeNetwork() != $tradepost->getTradeNetwork()) {
