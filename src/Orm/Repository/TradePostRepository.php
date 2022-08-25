@@ -12,18 +12,20 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
 {
     public function getByUserLicense(int $userId): array
     {
+        $time = time();
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT tp FROM %s tp WHERE tp.id IN (
-                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId
+                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime
                     )',
                     TradePost::class,
                     TradeLicense::class
                 )
             )
             ->setParameters([
-                'userId' => $userId
+                'userId' => $userId,
+                'actime' => $time
             ])
             ->getResult();
     }
