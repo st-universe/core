@@ -101,6 +101,22 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->getSingleScalarResult() > 0;
     }
 
+    public function getExpiredForTradepost(int $tradepost): int
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tl.expired FROM %s tl WHERE tl.posts_id = :trade_post ORDER BY tlc.id DESC',
+                    TradeLicence::class
+                )
+            )
+            ->setMaxResults(1)
+            ->setParameters([
+                'trade_post' => $tradepost
+            ])
+            ->getSingleScalarResult();
+    }
+
     public function getExpiredByTradepost(int $tradepost): int
     {
         return $this->getEntityManager()
