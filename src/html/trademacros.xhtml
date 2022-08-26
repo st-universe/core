@@ -227,6 +227,27 @@
 		</div>
 	</form>
 </metal:macro>
+<metal:macro metal:define-macro="tradelicenceinfo">
+	<input type="hidden" name="tradepost" tal:attributes="value TRADEPOST" />
+	<table class="tcal">
+		<tr>
+			<td style="vertical-align: middle;">Verlangte Ware</td>
+			<td> <img src="assets/goods/${LICENSEGOOD}.png" tal:attributes="title LICENSEGOODNAME" /> <span
+					tal:replace="LICENSECOST">COST</span>
+			</td>
+		</tr>
+		<tr>
+			<td style="vertical-align: middle;">Laufzeit in Tagen</td>
+			<td>
+				<span tal:replace="LICENSEDAYS">DAYS</span>
+			</td>
+		</tr>
+		<td style="vertical-align: middle;">Lizenzgebühr zuletzt geändert</td>
+		<td>
+			<span tal:replace="LICENSEDATE">DATE</span>
+		</td>
+	</table>
+</metal:macro>
 <metal:macro metal:define-macro="takeoffer">
 	<form method="post" action="trade.php">
 		<input type="hidden" name="offerid" tal:attributes="value SELECTED_OFFER/getId" />

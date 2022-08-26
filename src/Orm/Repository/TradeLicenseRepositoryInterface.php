@@ -44,6 +44,10 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
 
     public function getExpiredByTradepost(int $tradepost): int;
 
+    public function getSetDateLicenceByTradepost(int $tradepost): int;
+
+    public function getLicenceDaysByTradepost(int $tradepost): int;
+
     public function getLicenceGoodIdByTradepost(int $tradepost): int;
 
     public function getLicenceGoodAmountByTradepost(int $tradepost): int;

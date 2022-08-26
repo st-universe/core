@@ -25,8 +25,13 @@ function showOfferMenuTransfer(storid) {
 }
 function showLicenceMenu(postId) {
 	var elt = 'tradelicencemenu';
-	openWindowPosition(elt, 1, 800, 90, 60);
+	openWindowPosition(elt, 1, 300, 90, 60);
 	ajax_update(elt, 'trade.php?SHOW_LICENCE_MENU=1&postid=' + postId);
+}
+function showLicenceInfo(postId) {
+	var elt = 'tradelicenceinfo';
+	openWindowPosition(elt, 1, 300, 90, 60);
+	ajax_update(elt, 'trade.php?SHOW_LICENCE_INFO=1&postid=' + postId);
 }
 function takeTradeOffer(offerid) {
 	var elt = 'tradeoffer';

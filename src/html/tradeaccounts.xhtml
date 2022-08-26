@@ -86,7 +86,8 @@
 					<td>
 						<span tal:condition="data/getTradePostbyUser">
 							<a href="javascript:void(0)" onclick="showLicenceMenu(${data/getId});">Bearbeiten</a></span>
-						<span tal:condition="not:data/getTradePostbyUser">Anzeigen</span>
+						<span tal:condition="not:data/getTradePostbyUser">
+							<a href="javascript:void(0)" onclick="showLicenceInfo(${data/getId});">Anzeigen</a></span>
 					</td>
 				</tr>
 			</table>

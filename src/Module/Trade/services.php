@@ -36,6 +36,9 @@ use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequestInterface;
 use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenu;
 use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenuRequest;
 use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenuRequestInterface;
+use Stu\Module\Trade\View\ShowLicenceInfo\ShowLicenceInfo;
+use Stu\Module\Trade\View\ShowLicenceInfo\ShowLicenceInfoRequest;
+use Stu\Module\Trade\View\ShowLicenceInfo\ShowLicenceInfoRequestInterface;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGood;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGoodRequest;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGoodRequestInterface;
@@ -68,6 +71,7 @@ use function DI\autowire;
 return [
     TradeLibFactoryInterface::class => autowire(TradeLibFactory::class),
     ShowLicenceMenuRequestInterface::class => autowire(ShowLicenceMenuRequest::class),
+    ShowLicenceInfoRequestInterface::class => autowire(ShowLicenceInfoRequest::class),
     ShowOfferMenuRequestInterface::class => autowire(ShowOfferMenuRequest::class),
     ShowTransferMenueRequestInterface::class => autowire(ShowTransferMenueRequest::class),
     ShowOfferMenuNewOfferRequestInterface::class => autowire(ShowOfferMenuNewOfferRequest::class),
@@ -98,6 +102,7 @@ return [
         Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowAccounts::VIEW_IDENTIFIER => autowire(ShowAccounts::class),
         ShowLicenceMenu::VIEW_IDENTIFIER => autowire(ShowLicenceMenu::class),
+        ShowLicenceInfo::VIEW_IDENTIFIER => autowire(ShowLicenceInfo::class),
         ShowOfferMenu::VIEW_IDENTIFIER => autowire(ShowOfferMenu::class),
         ShowTransferMenu::VIEW_IDENTIFIER => autowire(ShowTransferMenu::class),
         ShowOfferMenuNewOffer::VIEW_IDENTIFIER => autowire(ShowOfferMenuNewOffer::class),
