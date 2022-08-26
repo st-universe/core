@@ -100,6 +100,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                     return;
                 }
 
+                $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, (int) $tradepost->getUserId());
                 $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
                 $commodity = $this->commodityRepository->find($commodityId);
                 $costs = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
@@ -107,6 +108,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 if ($storage === null || $storage->getAmount() < $costs) {
                     return;
                 }
+                $storageManagerRemote->upperStorage($commodityId, $costs);
                 $this->shipStorageManager->lowerStorage(
                     $obj,
                     $commodity,
@@ -120,6 +122,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                     return;
                 }
 
+                $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, (int) $tradepost->getUserId());
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager($targetTradepost, $userId);
                 $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
                 $costs = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
@@ -135,6 +138,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                     return;
                 }
 
+                $storageManagerRemote->upperStorage($commodityId, $costs);
                 $storageManager->lowerStorage($commodityId, $costs);
                 break;
             default:
