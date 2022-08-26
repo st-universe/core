@@ -226,8 +226,6 @@ interface ShipInterface
 
     public function isFleetLeader(): bool;
 
-    public function getShipId(): ShipInterface;
-
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): ShipInterface;

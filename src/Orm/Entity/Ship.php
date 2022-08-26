@@ -186,13 +186,6 @@ class Ship implements ShipInterface
     private $influence_area_id;
 
     /**
-     * @ManyToOne(targetEntity="ShipId")
-     * @JoinColumn(name="id", referencedColumnName="id")
-     */
-    private $shipId;
-
-
-    /**
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id")
      */
@@ -1027,11 +1020,6 @@ class Ship implements ShipInterface
     public function isFleetLeader(): bool
     {
         return $this->getIsFleetLeader();
-    }
-
-    public function getShipId(): ShipInterface
-    {
-        return $this->shipId;
     }
 
     public function getUser(): UserInterface

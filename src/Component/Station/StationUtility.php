@@ -159,7 +159,7 @@ final class StationUtility implements StationUtilityInterface
     {
         $plan = $ship->getBuildplan();
         $rump = $ship->getRump();
-        $shipId = $ship->getShipId();
+        $shipId = $ship->getId();
 
         // transform ship
         $station = $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
