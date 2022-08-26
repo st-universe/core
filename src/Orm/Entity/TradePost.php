@@ -161,6 +161,11 @@ class TradePost implements TradePostInterface
         return $this->ship;
     }
 
+    public function setShip(ShipInterface $ship): TradePostInterface
+    {
+        return $this->ship_id = $ship;
+    }
+
     public function calculateLicenceCost(): int
     {
         // @todo Kostenkalkukation
