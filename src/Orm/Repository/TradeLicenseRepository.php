@@ -74,8 +74,8 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         $time = time();
         return (int) $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT COUNT(c.id) as amount FROM $s c WHERE c.user_id = :userId AND c.posts_id = :tradePostId AND c.expired > :actime',
-                TradeLicense::class,
+                'SELECT COUNT(c.id) as amount FROM stu_trade_licences c WHERE c.user_id = :userId AND c.posts_id = :tradePostId AND c.expired > :actime',
+
                 $rsm
             )
             ->setParameters([
