@@ -266,6 +266,12 @@ class Ship implements ShipInterface
     private $storage;
 
     /**
+     * @ManyToOne(targetEntity="TradePost")
+     * @JoinColumn(name="id", referencedColumnName="ship_id")
+     */
+    private $tradepost;
+
+    /**
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
@@ -1219,6 +1225,11 @@ class Ship implements ShipInterface
                 return $storage->getCommodity()->isBeamable() === true;
             }
         );
+    }
+
+    public function getTradePost(): ?TradePostInterface
+    {
+        return $this->tradepost;
     }
 
     public function getMap(): ?MapInterface
