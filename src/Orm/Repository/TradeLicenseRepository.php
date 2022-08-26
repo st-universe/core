@@ -63,6 +63,20 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         );
     }
 
+    public function getLicencesCountbyUser(int $userId): int
+    {
+        $time = time();
+        return (int) $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT COUNT(c.id) FROM stu_trade_licences c WHERE c.user_id = :userId AND c.expired > :actime',
+            )
+            ->setParameters([
+                'userId' => $userId,
+                'actime' => $time
+            ])
+            ->getSingleScalarResult();
+    }
+
     public function getAmountByUser(int $userId): int
     {
         return $this->count([
