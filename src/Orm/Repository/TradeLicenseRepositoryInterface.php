@@ -28,6 +28,8 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
      */
     public function getByUser(int $userId): array;
 
+    public function getByTradePostAndExpired(int $tradePostId): array;
+
     public function getAmountByUser(int $userId): int;
 
     public function hasLicenseByUserAndTradePost(int $userId, int $tradePostId): bool;

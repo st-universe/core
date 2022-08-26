@@ -53,6 +53,23 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         ]);
     }
 
+    public function getByTradePostAndExpired(int $tradePostId): array
+    {
+        $time = time();
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tl FROM %s tl WHERE tl.posts_id = :tradePostId AND tl.expired > :actime',
+                    TradeLicense::class
+                )
+            )
+            ->setParameters([
+                'tradePostId' => $tradePostId,
+                'actime' => $time
+            ])
+            ->getResult();
+    }
+
     public function getByUser(int $userId): array
     {
         return $this->findBy(
