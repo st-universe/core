@@ -78,7 +78,7 @@ final class Overview implements ViewControllerInterface
 
         $tradeLicenses = $this->tradeLicenseRepository->getLicencesCountbyUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
-        $game->setTemplateVar('TRADE_LICENSE_COUNT', $tradeLicenses);
+        $game->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
 
         $commodityList = $this->commodityRepository->getTradeable();
         $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
