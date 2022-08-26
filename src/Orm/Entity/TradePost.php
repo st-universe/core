@@ -101,7 +101,7 @@ class TradePost implements TradePostInterface
         return $this->ship_id;
     }
 
-    public function setShipId(ShipInterface $ship): TradePostInterface
+    public function setShip(ShipInterface $ship): TradePostInterface
     {
         $this->ship_id = $ship;
 
