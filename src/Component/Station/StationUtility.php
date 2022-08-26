@@ -175,7 +175,7 @@ final class StationUtility implements StationUtilityInterface
             $tradepost->setUserId($ship->getUser()->getId());
             $tradepost->setName('Handelsposten');
             $tradepost->setDescription('Privater Handelsposten');
-            $tradepost->setShipId((int) $station->getId());
+            $tradepost->setShipId((int) $ship->getId());
             $tradepost->setTradeNetwork($ship->getUser()->getId());
             $tradepost->setLevel((int) 1);
             $tradepost->setTransferCapacity((int) 0);
