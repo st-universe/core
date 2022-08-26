@@ -182,8 +182,8 @@ final class StationUtility implements StationUtilityInterface
             $tradepost->setStorage((int) 10000);
             $this->tradePostRepository->save($tradepost);
 
-            $station->setTradePostId($this->tradePostRepository->getTradePostIdByShip($ship->getId()));
-            $this->shipRepository->save($station);
+            //$station->setTradePostId($this->tradePostRepository->getTradePostIdByShip($ship->getId()));
+            //$this->shipRepository->save($station);
         }
 
         // set progress finished
