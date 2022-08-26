@@ -18,7 +18,7 @@ final class GameEnum
     public const USER_ONLINE_PERIOD = 300;
 
     //trade stuff
-    public const MAX_TRADELICENCE_COUNT = 7;
+    public const MAX_TRADELICENCE_COUNT = 9999;
 
     //fleet stuff
     public const CREW_PER_FLEET = 100;
