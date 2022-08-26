@@ -60,10 +60,8 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tl.id FROM %s to WHERE tl.user_id = :userId AND tl.expired > :actime
-                    ) %s %s
-                    ORDER BY tl.id DESC',
-                    TradeLicense::class,
+                    'SELECT tl.id FROM %s to WHERE tl.user_id = :userId AND tl.expired > :actime ORDER BY tl.id DESC',
+                    TradeLicense::class
                 )
             )
             ->setParameters([
