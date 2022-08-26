@@ -6,6 +6,8 @@ namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -37,6 +39,8 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     private PositionCheckerInterface $positionChecker;
 
     public function __construct(
@@ -47,6 +51,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         ShipStorageManagerInterface $shipStorageManager,
         ShipRepositoryInterface $shipRepository,
         CommodityRepositoryInterface $commodityRepository,
+        PrivateMessageSenderInterface $privateMessageSender,
         PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
@@ -56,6 +61,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $this->shipStorageManager = $shipStorageManager;
         $this->shipRepository = $shipRepository;
         $this->commodityRepository = $commodityRepository;
+        $this->privateMessageSender = $privateMessageSender;
         $this->positionChecker = $positionChecker;
     }
 
@@ -153,6 +159,15 @@ final class BuyTradeLicense implements ActionControllerInterface
         $game->addInformation('Handelslizenz wurde erteilt');
 
         $this->tradeLicenseRepository->save($licence);
+        $this->privateMessageSender->send(
+            $userId,
+            $tradepost->getUserId(),
+            sprintf(
+                'Am %s wurde eine Lizenz gekauft.',
+                $tradepost->getName()
+            ),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+        );
     }
 
     public function performSessionCheck(): bool
