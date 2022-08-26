@@ -20,7 +20,7 @@ interface TradePostInterface
 
     public function getShipId(): int;
 
-    public function setShipId(int $shipId): TradePostInterface;
+    public function setShipId(ShipInterface $ship): TradePostInterface;
 
     public function getTradeNetwork(): int;
 

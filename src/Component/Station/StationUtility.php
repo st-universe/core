@@ -159,7 +159,6 @@ final class StationUtility implements StationUtilityInterface
     {
         $plan = $ship->getBuildplan();
         $rump = $ship->getRump();
-        $shipId = $this->shipRepository->find($ship)->getId();
 
         // transform ship
         $station = $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
@@ -176,7 +175,7 @@ final class StationUtility implements StationUtilityInterface
             $tradepost->setUserId($ship->getUser()->getId());
             $tradepost->setName('Handelsposten');
             $tradepost->setDescription('Privater Handelsposten');
-            $tradepost->setShipId((int) $shipId);
+            $tradepost->setShipId($ship);
             $tradepost->setTradeNetwork($ship->getUser()->getId());
             $tradepost->setLevel((int) 1);
             $tradepost->setTransferCapacity((int) 0);
