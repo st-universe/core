@@ -21,6 +21,7 @@ use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class StationUtility implements StationUtilityInterface
 {
@@ -40,6 +41,8 @@ final class StationUtility implements StationUtilityInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private TradePostRepositoryInterface $tradePostRepository;
+
     public function __construct(
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
@@ -48,7 +51,8 @@ final class StationUtility implements StationUtilityInterface
         ShipRepositoryInterface $shipRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
@@ -58,6 +62,7 @@ final class StationUtility implements StationUtilityInterface
         $this->shipStorageManager = $shipStorageManager;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->tradePostRepository = $tradePostRepository;
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
@@ -161,6 +166,23 @@ final class StationUtility implements StationUtilityInterface
         // set influence area
         if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE) {
             $station->setInfluenceArea($station->getMap()->getSystem());
+            $this->shipRepository->save($station);
+        }
+
+        // make tradepost entry
+        if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_OUTPOST) {
+            $tradepost = $this->tradePostRepository->prototype();
+            $tradepost->setUserId($ship->getUser()->getId());
+            $tradepost->setName('Handelsposten');
+            $tradepost->setDescription('Privater Handelsposten');
+            $tradepost->setShipId($ship->getId());
+            $tradepost->setTradeNetwork($ship->getUser()->getId());
+            $tradepost->setLevel((int) 1);
+            $tradepost->setTransferCapacity((int) 0);
+            $tradepost->setStorage((int) 10000);
+            $this->tradePostRepository->save($tradepost);
+
+            $station->setTradePostId($this->tradePostRepository->getTradePostIdByShip($ship->getId()));
             $this->shipRepository->save($station);
         }
 

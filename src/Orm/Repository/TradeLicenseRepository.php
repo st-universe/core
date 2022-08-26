@@ -46,6 +46,20 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->execute();
     }
 
+    public function truncateByUserAndTraitpost(int $userId, int $tradePostId): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s t WHERE t.user_id = :userId AND t.posts_id = :TradePostId',
+                    TradeLicense::class
+                )
+            )
+            ->setParameter('userId', $userId)
+            ->setParameter('TradePostId', $tradePostId)
+            ->execute();
+    }
+
     public function getByTradePost(int $tradePostId): array
     {
         return $this->findBy([

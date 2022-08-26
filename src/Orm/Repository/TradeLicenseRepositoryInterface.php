@@ -18,6 +18,8 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
 
     public function truncateByUser(int $userId): void;
 
+    public function truncateByUserAndTraitpost(int $userId, int $tradePostId): void;
+
     /**
      * @return TradeLicenseInterface[]
      */

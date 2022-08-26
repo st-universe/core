@@ -163,7 +163,7 @@ final class BuyTradeLicense implements ActionControllerInterface
             $userId,
             $tradepost->getUserId(),
             sprintf(
-                'Am %s wurde eine Lizenz gekauft.',
+                'Am %s wurde eine Lizenz gekauft',
                 $tradepost->getName()
             ),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
