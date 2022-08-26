@@ -15,6 +15,7 @@ use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ShowTradeMenu implements ViewControllerInterface
 {
@@ -30,17 +31,21 @@ final class ShowTradeMenu implements ViewControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
+    private CommodityRepositoryInterface $commodityRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
+        CommodityRepositoryInterface $commodityRepository,
         PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->commodityRepository = $commodityRepository;
         $this->positionChecker = $positionChecker;
     }
 
@@ -77,7 +82,8 @@ final class ShowTradeMenu implements ViewControllerInterface
         if ($databaseEntryId > 0) {
             $game->checkDatabaseItem($databaseEntryId);
         }
-
+        $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
+        $commodityName = $this->commodityRepository->find($commodityId)->getName();
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar(
@@ -88,5 +94,8 @@ final class ShowTradeMenu implements ViewControllerInterface
             'CAN_BUY_LICENSE',
             $this->tradeLicenseRepository->getAmountByUser($userId) < GameEnum::MAX_TRADELICENCE_COUNT
         );
+        $game->setTemplateVar('LICENSEGOOD', $commodityId);
+        $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
+        $game->setTemplateVar('LICENSECOST', $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId()));
     }
 }
