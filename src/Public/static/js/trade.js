@@ -25,7 +25,7 @@ function showOfferMenuTransfer(storid) {
 }
 function showLicenceMenu(postId) {
 	var elt = 'tradelicencemenu';
-	openPJsWin(elt, 1);
+	openWindowPosition(elt, 1, 800, 90, 60);
 	ajax_update(elt, 'trade.php?SHOW_LICENCE_MENU=1&postid=' + postId);
 }
 function takeTradeOffer(offerid) {
