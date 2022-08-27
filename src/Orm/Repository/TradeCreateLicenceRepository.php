@@ -44,6 +44,6 @@ final class TradeCreateLicenceRepository extends EntityRepository implements Tra
             ->setParameters([
                 'trade_post' => $tradepostId
             ])
-            ->getOneOrNullResult();
+            ->getResult();
     }
 }
