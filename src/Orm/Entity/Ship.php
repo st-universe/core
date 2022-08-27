@@ -1221,12 +1221,12 @@ class Ship implements ShipInterface
         );
     }
 
-    public function getTradePost(): ShipInterface
+    public function getTradePost(): TradePostInterface
     {
         return $this->trade_post;
     }
 
-    public function setTradePost(ShipInterface $trade_post): ShipInterface
+    public function setTradePost(TradePostInterface $trade_post): ShipInterface
     {
         $this->trade_post = $trade_post;
 

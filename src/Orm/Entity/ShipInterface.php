@@ -288,9 +288,9 @@ interface ShipInterface
 
     public function updateLocation(?MapInterface $map, ?StarSystemMapInterface $starsystem_map): ShipInterface;
 
-    public function getTradePost(): ShipInterface;
+    public function getTradePost(): TradePostInterface;
 
-    public function setTradePost(ShipInterface $trade_post): ShipInterface;
+    public function setTradePost(TradePostInterface $trade_post): ShipInterface;
 
     public function getMap(): ?MapInterface;
 
