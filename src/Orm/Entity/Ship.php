@@ -1,4 +1,4 @@
-<?phpgetMap
+<?php
 
 declare(strict_types=1);
 
@@ -1220,19 +1220,6 @@ class Ship implements ShipInterface
             }
         );
     }
-
-    public function getTradePost(): ?TradePostInterface
-    {
-        return $this->trade_post;
-    }
-
-    public function setTradePost(?TradePostInterface $trade_post): ShipInterface
-    {
-        $this->trade_post = $trade_post;
-
-        return $this;
-    }
-
 
     public function getMap(): ?MapInterface
     {
