@@ -21,6 +21,7 @@ use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class StationUtility implements StationUtilityInterface
@@ -43,6 +44,8 @@ final class StationUtility implements StationUtilityInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+
     public function __construct(
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
@@ -52,7 +55,8 @@ final class StationUtility implements StationUtilityInterface
         ShipStorageManagerInterface $shipStorageManager,
         ShipRumpRepositoryInterface $shipRumpRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
@@ -63,6 +67,7 @@ final class StationUtility implements StationUtilityInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->tradePostRepository = $tradePostRepository;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
@@ -171,24 +176,38 @@ final class StationUtility implements StationUtilityInterface
 
         // make tradepost entry
         if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_OUTPOST) {
-            $tradepost = $this->tradePostRepository->prototype();
-            $tradepost->setUserId($station->getUser()->getId());
-            $tradepost->setName('Handelsposten');
-            $tradepost->setDescription('Privater Handelsposten');
-            $tradepost->setShip($station);
-            $tradepost->setTradeNetwork($station->getUser()->getId());
-            $tradepost->setLevel((int) 1);
-            $tradepost->setTransferCapacity((int) 0);
-            $tradepost->setStorage((int) 10000);
-            $this->tradePostRepository->save($tradepost);
-
-            $station->setTradePost($tradepost);
-            $this->shipRepository->save($station);
+            $this->createTradepostAndLicense($station);
         }
 
         // set progress finished
         $progress->setRemainingTicks(0);
         $this->constructionProgressRepository->save($progress);
+    }
+
+    private function createTradepostAndLicense(ShipInterface $station)
+    {
+        $owner = $station->getUser();
+        $tradepost = $this->tradePostRepository->prototype();
+        $tradepost->setUserId($owner->getId());
+        $tradepost->setName('Handelsposten');
+        $tradepost->setDescription('Privater Handelsposten');
+        $tradepost->setShip($station);
+        $tradepost->setTradeNetwork($owner->getId());
+        $tradepost->setLevel((int) 1);
+        $tradepost->setTransferCapacity((int) 0);
+        $tradepost->setStorage((int) 10000);
+        $this->tradePostRepository->save($tradepost);
+
+        $station->setTradePost($tradepost);
+        $this->shipRepository->save($station);
+
+        $licence = $this->tradeLicenseRepository->prototype();
+        $licence->setTradePost($tradepost);
+        $licence->setUser($owner);
+        $licence->setDate(time());
+        $licence->setExpired(2147483647); // 2147483647 = maxInt in postgres:  19. January 2038
+
+        $this->tradeLicenseRepository->save($licence);
     }
 
     public function finishScrapping(ShipInterface $station, ConstructionProgressInterface $progress): void
