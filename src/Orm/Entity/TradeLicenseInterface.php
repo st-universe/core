@@ -27,4 +27,8 @@ interface TradeLicenseInterface
     public function getTradePost(): TradePostInterface;
 
     public function setTradePost(TradePostInterface $tradePost): TradeLicenseInterface;
+
+    public function gettPost(): ?TradePostInterface;
+
+    public function settPost(?TradePostInterface $tPost): TradeLicenseInterface;
 }

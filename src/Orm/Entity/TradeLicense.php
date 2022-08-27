@@ -41,6 +41,12 @@ class TradeLicense implements TradeLicenseInterface
     private $tradePost;
 
     /**
+     * @OneToOne(targetEntity="TradePost", inversedBy="tradePostLicence")
+     * @JoinColumn(name="id", referencedColumnName="posts_id", onDelete="CASCADE")
+     */
+    private $tPost;
+
+    /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -111,6 +117,18 @@ class TradeLicense implements TradeLicenseInterface
     public function setTradePost(TradePostInterface $tradePost): TradeLicenseInterface
     {
         $this->tradePost = $tradePost;
+
+        return $this;
+    }
+
+    public function gettPost(): ?TradePostInterface
+    {
+        return $this->tPost;
+    }
+
+    public function settPost(?TradePostInterface $tPost): TradeLicenseInterface
+    {
+        $this->tPost = $tPost;
 
         return $this;
     }

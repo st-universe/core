@@ -1456,7 +1456,7 @@ class Ship implements ShipInterface
 
     public function dockedOnTradePost(): bool
     {
-        return $this->getDockedTo() && $this->getDockedTo()->getTradePost() !== null;
+        return $this->getDockedTo() && $this->getDockedTo()->getTradePost() !== null && $this->getDockedTo()->getTradePost()->getTradePostLicence() !== null;
     }
 
     public function getDockPrivileges(): Collection

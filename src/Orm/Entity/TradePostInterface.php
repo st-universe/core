@@ -34,6 +34,10 @@ interface TradePostInterface
 
     public function setTransferCapacity(int $transferCapacity): TradePostInterface;
 
+    public function getTradePostLicence(): ?TradeLicenseInterface;
+
+    public function setTradePostLicence(?TradeLicenseInterface $tradePostLicence): TradePostInterface;
+
     public function getStorage(): int;
 
     public function setStorage(int $storage): TradePostInterface;

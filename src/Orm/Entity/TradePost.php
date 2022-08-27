@@ -55,6 +55,11 @@ class TradePost implements TradePostInterface
      */
     private $ship;
 
+    /**
+     * @OneToOne(targetEntity="TradeLicense", mappedBy="tPost")
+     */
+    private $tradePostLicence;
+
     public function getId(): int
     {
         return $this->id;
@@ -164,6 +169,18 @@ class TradePost implements TradePostInterface
     public function setShip(ShipInterface $ship): TradePostInterface
     {
         $this->ship = $ship;
+
+        return $this;
+    }
+
+    public function getTradePostLicence(): ?TradeLicenseInterface
+    {
+        return $this->tradePostLicence;
+    }
+
+    public function setTradePostLicence(?TradeLicenseInterface $tradePostLicence): TradePostInterface
+    {
+        $this->tradePostLicence = $tradePostLicence;
 
         return $this;
     }
