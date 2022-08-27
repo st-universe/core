@@ -192,10 +192,9 @@ class Ship implements ShipInterface
     private $fleet;
 
     /**
-     * @OneToOne(targetEntity="TradePost")
-     * @JoinColumn(name="id", referencedColumnName="ship_id")
+     * @OneToOne(targetEntity="TradePost", mappedBy="ship")
      */
-    private $tradepost;
+    private $trade_post;
 
     /**
      * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
@@ -1023,17 +1022,6 @@ class Ship implements ShipInterface
         return $this->getIsFleetLeader();
     }
 
-    public function getTradePost(): TradePostInterface
-    {
-        return $this->tradepost;
-    }
-
-    public function setTradePost(?TradePostInterface $tradepost): ShipInterface
-    {
-        $this->tradepost = $tradepost;
-        return $this;
-    }
-
     public function getUser(): UserInterface
     {
         return $this->user;
@@ -1232,6 +1220,19 @@ class Ship implements ShipInterface
             }
         );
     }
+
+    public function getTradePost(): ?TradePostInterface
+    {
+        return $this->trade_post;
+    }
+
+    public function setTradePost(?TradePostInterface $trade_post): ShipInterface
+    {
+        $this->trade_post = $trade_post;
+
+        return $this;
+    }
+
 
     public function getMap(): ?MapInterface
     {
