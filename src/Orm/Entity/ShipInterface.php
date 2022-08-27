@@ -290,7 +290,7 @@ interface ShipInterface
 
     public function getTradePost(): ?TradePostInterface;
 
-    public function setTradePost(?TradePostInterface $trade_post): ShipInterface;
+    public function setTradePost(?TradePostInterface $tradepost): ShipInterface;
 
     public function getMap(): ?MapInterface;
 
