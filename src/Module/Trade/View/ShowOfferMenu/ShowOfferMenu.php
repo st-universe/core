@@ -49,7 +49,7 @@ final class ShowOfferMenu implements ViewControllerInterface
             $storage->getGood()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_LATINUM', (int) $storage->getGoodId() === CommodityTypeEnum::GOOD_LATINUM && (int) $storage->getTradePostId() < 18);
+        $game->setTemplateVar('IS_LATINUM', (int) $storage->getGoodId() === CommodityTypeEnum::GOOD_LATINUM);
         $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
     }
 }
