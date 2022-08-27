@@ -950,7 +950,15 @@
 		</tr>
 		<tr>
 			<td>
-				<img tal:condition="SHIP/isTractoring" src="assets/ships/${SHIP/getTractoredShip/getRump/getId}.png" />
+				<tal:block tal:condition="SHIP/isTractoring">
+					<a tal:condition="php:SHIP.isBase() AND NOT SHIP.getTractoredShip().getIsDestroyed()"
+						href="?B_DOCK_TRACTORED=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+						onmouseover="cp('docktractored','buttons/dock2')"
+						onmouseout="cp('docktractored','buttons/dock1')">
+						<img src="assets/buttons/dock1.png" name="docktractored" title="Gezogenes Schiff andocken" />
+					</a>
+					<img src="assets/ships/${SHIP/getTractoredShip/getRump/getId}.png" />
+				</tal:block>
 				<img tal:condition="SHIP/isTractored" src="assets/ships/${SHIP/getTractoringShip/getRump/getId}.png" />
 			</td>
 			<td>

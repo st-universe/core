@@ -14,6 +14,7 @@ use Stu\Module\Station\Action\CancelShipRepair\CancelShipRepair;
 use Stu\Module\Station\Action\DeactivateConstructionHub\DeactivateConstructionHub;
 use Stu\Module\Station\Action\DeleteDockPrivilege\DeleteDockPrivilege;
 use Stu\Module\Station\Action\DockFleet\DockFleet;
+use Stu\Module\Station\Action\DockTractoredShip\DockTractoredShip;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
 use Stu\Module\Station\Action\ManageShuttles\ManageShuttles;
 use Stu\Module\Station\Action\RepairShip\RepairShip;
@@ -57,6 +58,7 @@ return [
         RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class),
         CancelShipRepair::ACTION_IDENTIFIER => autowire(CancelShipRepair::class),
         DockFleet::ACTION_IDENTIFIER => autowire(DockFleet::class),
+        DockTractoredShip::ACTION_IDENTIFIER => autowire(DockTractoredShip::class),
         Scrapping::ACTION_IDENTIFIER => autowire(Scrapping::class)
     ],
     'STATION_VIEWS' => [
