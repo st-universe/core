@@ -50,8 +50,8 @@ class TradePost implements TradePostInterface
     private $storage = 0;
 
     /**
-     * @OneToOne(targetEntity="Ship", inversedBy="trade_post")
-     * @JoinColumn(name="ship_id", referencedColumnName="id")
+     * @OneToOne(targetEntity="Ship", inversedBy="tradePost")
+     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
 

@@ -129,10 +129,6 @@ interface ShipInterface
 
     public function setTorpedoCount(int $torpedoAmount): ShipInterface;
 
-    public function getTradePostId(): int;
-
-    public function setTradePostId(int $trade_post_id): ShipInterface;
-
     public function getEBattWaitingTime(): int;
 
     public function setEBattWaitingTime(int $batteryCooldown): ShipInterface;
@@ -288,9 +284,9 @@ interface ShipInterface
 
     public function updateLocation(?MapInterface $map, ?StarSystemMapInterface $starsystem_map): ShipInterface;
 
-    public function getTradePost(): TradePostInterface;
+    public function getTradePost(): ?TradePostInterface;
 
-    public function setTradePost(TradePostInterface $trade_post): ShipInterface;
+    public function setTradePost(?TradePostInterface $tradePost): ShipInterface;
 
     public function getMap(): ?MapInterface;
 

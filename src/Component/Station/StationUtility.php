@@ -172,17 +172,17 @@ final class StationUtility implements StationUtilityInterface
         // make tradepost entry
         if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_OUTPOST) {
             $tradepost = $this->tradePostRepository->prototype();
-            $tradepost->setUserId($ship->getUser()->getId());
+            $tradepost->setUserId($station->getUser()->getId());
             $tradepost->setName('Handelsposten');
             $tradepost->setDescription('Privater Handelsposten');
-            $tradepost->setShip($ship);
-            $tradepost->setTradeNetwork($ship->getUser()->getId());
+            $tradepost->setShip($station);
+            $tradepost->setTradeNetwork($station->getUser()->getId());
             $tradepost->setLevel((int) 1);
             $tradepost->setTransferCapacity((int) 0);
             $tradepost->setStorage((int) 10000);
             $this->tradePostRepository->save($tradepost);
 
-            $station->setTradePost($ship);
+            $station->setTradePost($tradepost);
             $this->shipRepository->save($station);
         }
 

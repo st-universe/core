@@ -128,9 +128,6 @@ class Ship implements ShipInterface
     /** @Column(type="smallint", length=4) */
     private $torpedo_count = 0;
 
-    /** @Column(type="smallint", length=4) */
-    private $trade_post_id = 0;
-
     /** @Column(type="integer") */
     private $batt_wait = 0;
 
@@ -194,7 +191,7 @@ class Ship implements ShipInterface
     /**
      * @OneToOne(targetEntity="TradePost", mappedBy="ship")
      */
-    private $trade_post;
+    private $tradePost;
 
     /**
      * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
@@ -672,17 +669,6 @@ class Ship implements ShipInterface
     public function setTorpedoCount(int $torpedoAmount): ShipInterface
     {
         $this->torpedo_count = $torpedoAmount;
-        return $this;
-    }
-
-    public function getTradePostId(): int
-    {
-        return $this->trade_post_id;
-    }
-
-    public function setTradePostId(int $trade_post_id): ShipInterface
-    {
-        $this->trade_post_id = $trade_post_id;
         return $this;
     }
 
@@ -1221,14 +1207,14 @@ class Ship implements ShipInterface
         );
     }
 
-    public function getTradePost(): TradePostInterface
+    public function getTradePost(): ?TradePostInterface
     {
-        return $this->trade_post;
+        return $this->tradePost;
     }
 
-    public function setTradePost(TradePostInterface $trade_post): ShipInterface
+    public function setTradePost(?TradePostInterface $tradePost): ShipInterface
     {
-        $this->trade_post = $trade_post;
+        $this->tradePost = $tradePost;
 
         return $this;
     }
@@ -1470,7 +1456,7 @@ class Ship implements ShipInterface
 
     public function dockedOnTradePost(): bool
     {
-        return $this->getDockedTo() && $this->getDockedTo()->getTradePostId() > 0;
+        return $this->getDockedTo() && $this->getDockedTo()->getTradePost() !== null;
     }
 
     public function getDockPrivileges(): Collection
