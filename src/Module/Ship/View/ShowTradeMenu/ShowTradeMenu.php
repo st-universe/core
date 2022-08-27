@@ -16,6 +16,7 @@ use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
 
 final class ShowTradeMenu implements ViewControllerInterface
 {
@@ -24,6 +25,8 @@ final class ShowTradeMenu implements ViewControllerInterface
     private ShipLoaderInterface $shipLoader;
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+
+    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
 
     private TradeLibFactoryInterface $tradeLibFactory;
 
@@ -36,6 +39,7 @@ final class ShowTradeMenu implements ViewControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         CommodityRepositoryInterface $commodityRepository,
@@ -43,6 +47,7 @@ final class ShowTradeMenu implements ViewControllerInterface
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->commodityRepository = $commodityRepository;
@@ -82,7 +87,8 @@ final class ShowTradeMenu implements ViewControllerInterface
         if ($databaseEntryId > 0) {
             $game->checkDatabaseItem($databaseEntryId);
         }
-        $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
+        $licenseInfo = $this->tradeCreateLicenceRepository->getLatestLicenseInfo($tradepost->getId());
+        $commodityId = $licenseInfo->getGoodsId();
         $commodityName = $this->commodityRepository->find($commodityId)->getName();
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
@@ -96,6 +102,6 @@ final class ShowTradeMenu implements ViewControllerInterface
         );
         $game->setTemplateVar('LICENSEGOOD', $commodityId);
         $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
-        $game->setTemplateVar('LICENSECOST', $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId()));
+        $game->setTemplateVar('LICENSECOST', $licenseInfo->getAmount());
     }
 }
