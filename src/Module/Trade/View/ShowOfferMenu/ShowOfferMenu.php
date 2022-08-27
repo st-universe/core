@@ -42,14 +42,14 @@ final class ShowOfferMenu implements ViewControllerInterface
         }
 
         $commodityList = $this->commodityRepository->getTradeable();
-        $tradepostUser = $this->tradeStorageRepository->getTradePostUser($storage->getTradePostId());
+
         $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradeoffermenu');
         $game->setPageTitle(sprintf(
             _('Management %s'),
             $storage->getGood()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_LATINUM', (int) $storage->getGoodId() === CommodityTypeEnum::GOOD_LATINUM && $tradepostUser < 100);
+        $game->setTemplateVar('IS_LATINUM', (int) $storage->getGoodId() === CommodityTypeEnum::GOOD_LATINUM);
         $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
     }
 }

@@ -141,16 +141,4 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
             'user_id' => $userId
         ], ['count' => 'DESC']);
     }
-
-    public function getTradePostUser(int $tradepostId): int
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf('SELECT tp.user_id FROM $s tp WHERE tp.id = :tradepost', TradePost::class)
-            )
-            ->setParameters([
-                'tradepost' => $tradepostId,
-            ])
-            ->getResult();
-    }
 }
