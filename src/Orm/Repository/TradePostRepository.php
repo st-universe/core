@@ -52,6 +52,26 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->getResult();
     }
 
+    public function getByUserLicenseOnlyNPC(int $userId): array
+    {
+        $time = time();
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tp FROM %s tp WHERE tp.user_id < 100 AND tp.id IN (
+                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime
+                    )',
+                    TradePost::class,
+                    TradeLicense::class
+                )
+            )
+            ->setParameters([
+                'userId' => $userId,
+                'actime' => $time
+            ])
+            ->getResult();
+    }
+
     public function getTradePostIdByShip(int $ship_id): int
     {
         return $this->getEntityManager()
