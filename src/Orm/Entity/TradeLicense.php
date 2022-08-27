@@ -42,7 +42,7 @@ class TradeLicense implements TradeLicenseInterface
 
     /**
      * @OneToOne(targetEntity="TradePost", inversedBy="tradePostLicence")
-     * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="id", referencedColumnName="posts_id", onDelete="CASCADE")
      */
     private $tPost;
 
