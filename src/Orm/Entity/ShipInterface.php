@@ -131,7 +131,7 @@ interface ShipInterface
 
     public function getTradePostId(): int;
 
-    public function setTradePostId(int $tradePostId): ShipInterface;
+    public function setTradePostId(int $trade_post_id): ShipInterface;
 
     public function getEBattWaitingTime(): int;
 
@@ -288,9 +288,9 @@ interface ShipInterface
 
     public function updateLocation(?MapInterface $map, ?StarSystemMapInterface $starsystem_map): ShipInterface;
 
-    public function getTradePost(): ?TradePostInterface;
+    public function getTradePost(): ShipInterface;
 
-    public function setTradePost(?TradePostInterface $trade_post): ShipInterface;
+    public function setTradePost(ShipInterface $trade_post): ShipInterface;
 
     public function getMap(): ?MapInterface;
 
