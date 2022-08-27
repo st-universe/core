@@ -43,7 +43,7 @@ final class CreateLicence implements ActionControllerInterface
         }
         $tradepost = $this->tradePostRepository->find($posts_id);
         $tradepost_user = $tradepost->getShip()->getUser();
-        if ((int) $tradepost_user !== $user) {
+        if ($tradepost_user !== $user) {
             throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $user->getId()));
         }
 
