@@ -161,21 +161,4 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ])
             ->getSingleScalarResult() > 0;
     }
-
-    public function TradePostHasLicenceInfo(int $tradePost): bool
-    {
-
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('amount', 'amount');
-
-        return (int) $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT COUNT(c.id) as amount FROM stu_trade_licences c WHERE c.posts_id = :tradePost',
-                $rsm
-            )
-            ->setParameters([
-                'tradePost' => $tradePost
-            ])
-            ->getSingleScalarResult() > 0;
-    }
 }
