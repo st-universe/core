@@ -98,7 +98,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'CAN_BUY_LICENSE',
-            $licenseInfo !== null
+            $this->tradeLicenseRepository->getAmountByUser($userId) < GameEnum::MAX_TRADELICENCE_COUNT
         );
         $game->setTemplateVar('LICENSEGOOD', $commodityId);
         $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
