@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
-use Stu\Orm\Entity\TradeLicenceCreation;
 
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
@@ -161,101 +160,5 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                 'tradeNetworkId' => $tradeNetworkId
             ])
             ->getSingleScalarResult() > 0;
-    }
-
-    public function getExpiredForTradepost(int $tradepost): int
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT tl.expired FROM %s tl WHERE tl.posts_id = :trade_post ORDER BY tl.id DESC',
-                    TradeLicense::class
-                )
-            )
-            ->setMaxResults(1)
-            ->setParameters([
-                'trade_post' => $tradepost
-            ])
-            ->getSingleScalarResult();
-    }
-
-    public function getExpiredByTradepost(int $tradepost): int
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT tlc.days FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
-                    TradeLicenceCreation::class
-                )
-            )
-            ->setMaxResults(1)
-            ->setParameters([
-                'trade_post' => $tradepost
-            ])
-            ->getSingleScalarResult();
-    }
-
-    public function getLicenceGoodIdByTradepost(int $tradepost): int
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT tlc.goods_id FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
-                    TradeLicenceCreation::class
-                )
-            )
-            ->setMaxResults(1)
-            ->setParameters([
-                'trade_post' => $tradepost
-            ])
-            ->getSingleScalarResult();
-    }
-
-    public function getLicenceDaysByTradepost(int $tradepost): int
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT tlc.days FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
-                    TradeLicenceCreation::class
-                )
-            )
-            ->setMaxResults(1)
-            ->setParameters([
-                'trade_post' => $tradepost
-            ])
-            ->getSingleScalarResult();
-    }
-
-    public function getSetDateLicenceByTradepost(int $tradepost): int
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT tlc.date FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
-                    TradeLicenceCreation::class
-                )
-            )
-            ->setMaxResults(1)
-            ->setParameters([
-                'trade_post' => $tradepost
-            ])
-            ->getSingleScalarResult();
-    }
-
-    public function getLicenceGoodAmountByTradepost(int $tradepost): int
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT tlc.amount FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
-                    TradeLicenceCreation::class
-                )
-            )
-            ->setMaxResults(1)
-            ->setParameters([
-                'trade_post' => $tradepost
-            ])
-            ->getSingleScalarResult();
     }
 }

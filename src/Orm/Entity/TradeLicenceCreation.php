@@ -14,6 +14,7 @@ namespace Stu\Orm\Entity;
  * )
  **/
 class TradeLicenceCreation implements TradeLicenceCreationInterface
+//TODO rename to TradeLicenseInfo.... :D
 {
     /** 
      * @Id

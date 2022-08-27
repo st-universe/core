@@ -20,14 +20,19 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
 
 final class BuyTradeLicense implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_PAY_TRADELICENCE';
 
+    private const SECONDS_PER_DAY = 86400;
+
     private ShipLoaderInterface $shipLoader;
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+
+    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenseRepository;
 
     private TradeLibFactoryInterface $tradeLibFactory;
 
@@ -46,6 +51,7 @@ final class BuyTradeLicense implements ActionControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeCreateLicenceRepositoryInterface $tradeCreateLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         ShipStorageManagerInterface $shipStorageManager,
@@ -56,6 +62,7 @@ final class BuyTradeLicense implements ActionControllerInterface
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeCreateLicenseRepository = $tradeCreateLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->shipStorageManager = $shipStorageManager;
@@ -78,7 +85,6 @@ final class BuyTradeLicense implements ActionControllerInterface
 
         /** @var TradePostInterface $tradepost */
         $tradepost = $this->tradePostRepository->find((int) request::getIntFatal('postid'));
-        $expired = $this->tradeLicenseRepository->getExpiredByTradepost((int) $tradepost->getId());
         if ($tradepost === null) {
             return;
         }
@@ -96,6 +102,12 @@ final class BuyTradeLicense implements ActionControllerInterface
         if ($this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
             return;
         }
+
+        $licenseInfo = $this->tradeCreateLicenseRepository->getLatestLicenseInfo($tradepost->getId());
+        $commodityId = $licenseInfo->getGoodsId();
+        $commodity = $this->commodityRepository->find($commodityId);
+        $costs = $licenseInfo->getAmount();
+
         switch ($mode) {
             case 'ship':
                 $obj = $this->shipRepository->find($targetId);
@@ -107,9 +119,6 @@ final class BuyTradeLicense implements ActionControllerInterface
                 }
 
                 $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, (int) $tradepost->getUserId());
-                $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
-                $commodity = $this->commodityRepository->find($commodityId);
-                $costs = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
                 $storage = $obj->getStorage()[$commodityId] ?? null;
                 if ($storage === null || $storage->getAmount() < $costs) {
                     return;
@@ -130,8 +139,6 @@ final class BuyTradeLicense implements ActionControllerInterface
 
                 $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, (int) $tradepost->getUserId());
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager($targetTradepost, $userId);
-                $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
-                $costs = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
 
                 $stor = $storageManager->getStorage()[$commodityId] ?? null;
                 if ($stor === null) {
@@ -150,11 +157,12 @@ final class BuyTradeLicense implements ActionControllerInterface
             default:
                 return;
         }
+
         $licence = $this->tradeLicenseRepository->prototype();
         $licence->setTradePost($tradepost);
         $licence->setUser($game->getUser());
         $licence->setDate(time());
-        $licence->setExpired(time() + $expired * 86400);
+        $licence->setExpired(time() + $licenseInfo->getDays() * self::SECONDS_PER_DAY);
 
         $game->addInformation('Handelslizenz wurde erteilt');
 

@@ -17,6 +17,7 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
 
 final class ShowTradeMenuPayment implements ViewControllerInterface
 {
@@ -25,6 +26,8 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
     private ShipLoaderInterface $shipLoader;
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+
+    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
 
     private TradeLibFactoryInterface $tradeLibFactory;
 
@@ -41,6 +44,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
@@ -50,6 +54,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
@@ -79,28 +84,30 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         if (!$ship->canInteractWith($tradepost->getShip())) {
             return;
         }
-        $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $tradepost->getId());
-        $commodityName = $this->commodityRepository->find($commodityId)->getName();
+        $licenseInfo = $this->tradeCreateLicenceRepository->getLatestLicenseInfo($tradepost->getId());
+        $commodityId = $licenseInfo->getGoodsId();
+        $commodity = $this->commodityRepository->find($commodityId);
+        $commodityName = $commodity->getName();
+        $licenseCost = $licenseInfo->getAmount();
+
         $game->showMacro('html/shipmacros.xhtml/trademenupayment');
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('LICENSEGOOD', $commodityId);
         $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
-        $game->setTemplateVar('LICENSECOST', $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId()));
+        $game->setTemplateVar('LICENSECOST', $licenseCost);
 
         if (
             !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
         ) {
-            $licenseCostGood = $this->commodityRepository->find($commodityId);
-            $licenseCost = $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $tradepost->getId());
 
             $game->setTemplateVar(
                 'DOCKED_SHIPS_FOR_LICENSE',
                 $this->shipRepository->getWithTradeLicensePayment(
                     $userId,
                     $tradepost->getShipId(),
-                    $licenseCostGood->getId(),
+                    $commodityId,
                     $licenseCost
                 )
             );
@@ -110,7 +117,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
                 $this->tradeStorageRepository->getByTradeNetworkAndUserAndCommodityAmount(
                     $tradepost->getTradeNetwork(),
                     $userId,
-                    $licenseCostGood->getId(),
+                    $commodityId,
                     $licenseCost
                 )
             );

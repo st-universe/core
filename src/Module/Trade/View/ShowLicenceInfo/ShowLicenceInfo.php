@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\View\ShowLicenceInfo;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
 
 final class ShowLicenceInfo implements ViewControllerInterface
 {
@@ -17,35 +17,38 @@ final class ShowLicenceInfo implements ViewControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
 
 
     public function __construct(
         ShowLicenceInfoRequestInterface $showLicenceInfoRequest,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
         CommodityRepositoryInterface $commodityRepository
     ) {
         $this->showLicenceInfoRequest = $showLicenceInfoRequest;
-        $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
         $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
 
-        $trade_post = $this->showLicenceInfoRequest->getTradePostId();
-        $commodityId = $this->tradeLicenseRepository->getLicenceGoodIdByTradepost((int) $trade_post);
+        $tradePostId = $this->showLicenceInfoRequest->getTradePostId();
+
+        //TODO sanity checks, postId not present? licenseInfo not present?
+        $licenseInfo = $this->tradeCreateLicenceRepository->getLatestLicenseInfo($tradePostId);
+        $commodityId = $licenseInfo->getGoodsId();
         $commodityName = $this->commodityRepository->find($commodityId)->getName();
 
         $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicenceinfo');
         $game->setPageTitle(sprintf(
             _('Lizenzinformation')
         ));
-        $game->setTemplateVar('TRADEPOST', $trade_post);
+        $game->setTemplateVar('TRADEPOST', $tradePostId);
         $game->setTemplateVar('LICENSEGOOD', $commodityId);
         $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
-        $game->setTemplateVar('LICENSECOST', $this->tradeLicenseRepository->getLicenceGoodAmountByTradepost((int) $trade_post));
-        $game->setTemplateVar('LICENSEDAYS', $this->tradeLicenseRepository->getLicenceDaysByTradepost((int) $trade_post));
-        $game->setTemplateVar('LICENSEDATE', $this->tradeLicenseRepository->getSetDateLicenceByTradepost((int) $trade_post));
+        $game->setTemplateVar('LICENSECOST', $licenseInfo->getAmount());
+        $game->setTemplateVar('LICENSEDAYS', $licenseInfo->getDays());
+        $game->setTemplateVar('LICENSEDATE', $licenseInfo->getDate());
     }
 }

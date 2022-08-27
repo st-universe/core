@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\TradeLicenceCreation;
 use Stu\Orm\Entity\TradeLicenceCreationInterface;
-use Stu\Orm\Entity\TradePost;
 
 final class TradeCreateLicenceRepository extends EntityRepository implements TradeCreateLicenceRepositoryInterface
 {
@@ -33,17 +31,18 @@ final class TradeCreateLicenceRepository extends EntityRepository implements Tra
         $em->flush();
     }
 
-    public function getUserByTradepost(int $posts_id): int
+    public function getLatestLicenseInfo(int $tradepostId): TradeLicenceCreationInterface
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tp.user_id FROM %s tp WHERE tp.id = :trade_post',
-                    TradePost::class
+                    'SELECT tlc FROM %s tlc WHERE tlc.posts_id = :trade_post ORDER BY tlc.id DESC',
+                    TradeLicenceCreation::class
                 )
             )
+            ->setMaxResults(1)
             ->setParameters([
-                'trade_post' => $posts_id
+                'trade_post' => $tradepostId
             ])
             ->getSingleScalarResult();
     }
