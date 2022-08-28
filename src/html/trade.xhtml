@@ -123,7 +123,7 @@
 						<metal:macro metal:use-macro="html/trademacros.xhtml/tradepost"
 							tal:define="handle string:hdlo${data/getId};id data/getTradepostId" />
 						<a href="javascript:void(0);" onclick="changeSearchTradepost(${data/getTradepostId});">
-							<span tal:replace="data/getTradePost/getName">TRADEPOST</span>
+							<span tal:replace="structure bbcode:data/getTradePost/getName">TRADEPOST</span>
 						</a>
 					</td>
 					<td tal:define="id data/getUserId">
