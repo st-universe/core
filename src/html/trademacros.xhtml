@@ -152,53 +152,52 @@
 										id="calcam">-</span>)
 								</td>
 							</tr>
+							<br />
+							<div style="width: 100%; text-align: center;">
+								<input type="submit" value="Angebot erstellen" name="B_CREATE_OFFER" />
+							</div>
+						</tal:block>
+						<tal:block tal:condition="not:IS_NPC_POST">
+							<tr>
+								<td style="vertical-align: middle;">Angebotene Menge</td>
+								<td>
+									<input type="text" name="gcount" size="5"
+										onchange="$('calcam').innerHTML = Math.floor(${STOR/getAmount}/parseInt(this.value))" />
+									(<span tal:replace="STOR/getAmount">COUNT</span>)
+								</td>
+							</tr>
+							<tr>
+								<td style="vertical-align: middle;">Verlangte Ware</td>
+								<td>
+									<select name="wgid">
+										<option value="0">----------------------</option>
+										<tal:block tal:repeat="data SELECTABLE_GOODS">
+											<option tal:condition="php:data.getId()!=STOR.getGoodId()"
+												tal:content="data/getName" tal:attributes="value data/getId">NAME
+											</option>
+										</tal:block>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td style="vertical-align: middle;">Verlangte Menge</td>
+								<td>
+									<input type="text" size="5" name="wcount" />
+								</td>
+							</tr>
+							<tr>
+								<td style="vertical-align: middle;">Anzahl Angebote</td>
+								<td>
+									<input type="test" size="2" name="amount" value="1" /> (max. 99/<span
+										id="calcam">-</span>)
+								</td>
+							</tr>
+							<br />
+							<div style="width: 100%; text-align: center;">
+								<input type="submit" value="Angebot erstellen" name="B_CREATE_OFFER" />
+							</div>
+						</tal:block>
 					</table>
-					<br />
-					<div style="width: 100%; text-align: center;">
-						<input type="submit" value="Angebot erstellen" name="B_CREATE_OFFER" />
-					</div>
-					</tal:block>
-					<tal:block tal:condition="not:IS_NPC_POST">
-						<tr>
-							<td style="vertical-align: middle;">Angebotene Menge</td>
-							<td>
-								<input type="text" name="gcount" size="5"
-									onchange="$('calcam').innerHTML = Math.floor(${STOR/getAmount}/parseInt(this.value))" />
-								(<span tal:replace="STOR/getAmount">COUNT</span>)
-							</td>
-						</tr>
-						<tr>
-							<td style="vertical-align: middle;">Verlangte Ware</td>
-							<td>
-								<select name="wgid">
-									<option value="0">----------------------</option>
-									<tal:block tal:repeat="data SELECTABLE_GOODS">
-										<option tal:condition="php:data.getId()!=STOR.getGoodId()"
-											tal:content="data/getName" tal:attributes="value data/getId">NAME
-										</option>
-									</tal:block>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td style="vertical-align: middle;">Verlangte Menge</td>
-							<td>
-								<input type="text" size="5" name="wcount" />
-							</td>
-						</tr>
-						<tr>
-							<td style="vertical-align: middle;">Anzahl Angebote</td>
-							<td>
-								<input type="test" size="2" name="amount" value="1" /> (max. 99/<span
-									id="calcam">-</span>)
-							</td>
-						</tr>
-						</table>
-						<br />
-						<div style="width: 100%; text-align: center;">
-							<input type="submit" value="Angebot erstellen" name="B_CREATE_OFFER" />
-						</div>
-					</tal:block>
 				</metal:macro>
 				<metal:macro metal:define-macro="newoffermenu_transfer">
 					<table class="tcal">
