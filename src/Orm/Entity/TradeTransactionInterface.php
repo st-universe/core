@@ -26,6 +26,10 @@ interface TradeTransactionInterface
 
     public function setDate(int $date): TradeTransactionInterface;
 
+    public function getTradePostId(): int;
+
+    public function setTradePostId(int $tradepost_id): TradeTransactionInterface;
+
     public function getWantedCommodity(): CommodityInterface;
 
     public function setWantedCommodity(CommodityInterface $wantedCommodity): TradeTransactionInterface;

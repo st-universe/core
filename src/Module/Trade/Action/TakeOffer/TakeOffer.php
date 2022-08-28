@@ -162,6 +162,7 @@ final class TakeOffer implements ActionControllerInterface
         $transaction->setWantedGoodCount($selectedOffer->getWantedGoodCount() * $amount);
         $transaction->setOfferedCommodity($selectedOffer->getOfferedCommodity());
         $transaction->setOfferedGoodCount($selectedOffer->getOfferedGoodCount() * $amount);
+        $transaction->setTradePostId($selectedOffer->getTradePostId());
         $this->tradeTransactionRepository->save($transaction);
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));

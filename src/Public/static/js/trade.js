@@ -25,7 +25,7 @@ function showOfferMenuTransfer(storid) {
 }
 function showLicenceMenu(postId) {
 	var elt = 'tradelicencemenu';
-	openWindowPosition(elt, 1, 300, 90, 250);
+	openWindowPosition(elt, 1, 300, 90, 250, 400);
 	ajax_update(elt, 'trade.php?SHOW_LICENCE_MENU=1&postid=' + postId);
 }
 function showLicenceInfo(postId) {

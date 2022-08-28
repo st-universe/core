@@ -34,6 +34,9 @@ class TradeTransaction implements TradeTransactionInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
+    /** @Column(type="integer") * */
+    private $tradepost_id = 0;
+
     /**
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="wg_id", referencedColumnName="id", onDelete="CASCADE")
@@ -107,6 +110,18 @@ class TradeTransaction implements TradeTransactionInterface
     public function setDate(int $date): TradeTransactionInterface
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getTradePostId(): int
+    {
+        return $this->tradepost_id;
+    }
+
+    public function setTradePostId(int $tradepost_id): TradeTransactionInterface
+    {
+        $this->tradepost_id = $tradepost_id;
 
         return $this;
     }
