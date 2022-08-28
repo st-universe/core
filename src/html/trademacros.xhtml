@@ -125,7 +125,7 @@
 							<td style="vertical-align: middle;">Verlangte Ware</td>
 							<td>
 								<tal:block tal:condition="not:IS_NPC_POST">
-									<select name="wgid">
+									<select name="wgid" tal:condition="not:IS_NPC_POST">
 										<option value="0">----------------------</option>
 										<tal:block tal:repeat="data SELECTABLE_GOODS">
 											<option tal:condition="php:data.getId()!=STOR.getGoodId()"
