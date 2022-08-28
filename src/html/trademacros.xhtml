@@ -96,12 +96,14 @@
 						Angebot erstellen
 					</a>
 				</td>
-				<td id="tradeoffermenutransfer">
-					<a class="tradebutton" href="javascript:void(0);" style="display: block;"
-						onclick="showOfferMenuTransfer(${STOR/getId});">
-						Transferieren
-					</a>
-				</td>
+				<tal:block tal:condition="IS_NPC_POST">
+					<td id="tradeoffermenutransfer">
+						<a class="tradebutton" href="javascript:void(0);" style="display: block;"
+							onclick="showOfferMenuTransfer(${STOR/getId});">
+							Transferieren
+						</a>
+					</td>
+				</tal:block>
 			</tr>
 		</table>
 		<br />
