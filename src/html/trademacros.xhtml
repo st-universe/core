@@ -9,7 +9,7 @@
 	<br />
 	<table class="tcal">
 		<tr>
-			<th colspan="3" tal:content="TRADE_POST_INFO/getShip/getName">NAME</th>
+			<th colspan="3" tal:content="structure bbcode:TRADE_POST_INFO/getShip/getName">NAME</th>
 		</tr>
 		<metal:macro metal:define-macro="tradepostdetails">
 			<tr tal:define="ship TRADE_POST_INFO/getShip">
