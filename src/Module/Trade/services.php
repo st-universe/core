@@ -13,6 +13,9 @@ use Stu\Module\Trade\Action\BasicTradeSell\BasicTradeSell;
 use Stu\Module\Trade\Action\CancelOffer\CancelOffer;
 use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequest;
 use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequestInterface;
+use Stu\Module\Trade\Action\ChangeTradePostName\ChangeTradePostName;
+use Stu\Module\Trade\Action\ChangeTradePostName\ChangeTradePostNameRequest;
+use Stu\Module\Trade\Action\ChangeTradePostName\ChangeTradePostNameRequestInterface;
 use Stu\Module\Trade\Action\CreateLicence\CreateLicence;
 use Stu\Module\Trade\Action\CreateLicence\CreateLicenceRequest;
 use Stu\Module\Trade\Action\CreateLicence\CreateLicenceRequestInterface;
@@ -76,6 +79,7 @@ return [
     ShowTransferMenueRequestInterface::class => autowire(ShowTransferMenueRequest::class),
     ShowOfferMenuNewOfferRequestInterface::class => autowire(ShowOfferMenuNewOfferRequest::class),
     CreateOfferRequestInterface::class => autowire(CreateOfferRequest::class),
+    ChangeTradePostNameRequestInterface::class => autowire(ChangeTradePostNameRequest::class),
     ShowTakeOfferRequestInterface::class => autowire(ShowTakeOfferRequest::class),
     ShowTradePostInfoRequestInterface::class => autowire(ShowTradePostInfoRequest::class),
     TakeOfferRequestInterface::class => autowire(TakeOfferRequest::class),
@@ -89,6 +93,7 @@ return [
     TransferGoodsRequestInterface::class => autowire(TransferGoodsRequest::class),
     'TRADE_ACTIONS' => [
         CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
+        ChangeTradePostName::ACTION_IDENTIFIER => autowire(ChangeTradePostName::class),
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
         CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
         AddShoutBoxEntry::ACTION_IDENTIFIER => autowire(AddShoutBoxEntry::class),

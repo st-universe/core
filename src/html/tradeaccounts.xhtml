@@ -13,6 +13,14 @@
 			<table class="tcal">
 				<tr>
 					<th colspan="6" tal:content="structure bbcode:data/getShip/getName">POST</th>
+					<td tal:condition="data/getTradePostbyUser" style="width: 20%;">
+						<input type="hidden" name="posts_id" tal:attributes="value STOR/getId" />
+						<input type="text" name="newtradepostname" style="width: 150px;"
+							tal:attributes="value data/getShip/getName" />
+						<button type="submit" name="B_TRADEPOST_CHANGE_NAME" value="Name ändern" title="Name ändern">
+							<img src="assets/buttons/knedit2.png" alt="Name ändern" />
+						</button>
+					</td>
 				</tr>
 				<tr tal:define="ship data/getShip">
 					<td rowspan="6">
