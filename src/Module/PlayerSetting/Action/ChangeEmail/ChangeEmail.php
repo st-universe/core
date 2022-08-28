@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeEmail;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangeEmail implements ActionControllerInterface
@@ -16,12 +17,16 @@ final class ChangeEmail implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private BlockedUserRepositoryInterface $blockedUserRepository;
+
     public function __construct(
         ChangeEmailRequestInterface $changeEmailRequest,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        BlockedUserRepositoryInterface $blockedUserRepository
     ) {
         $this->changeEmailRequest = $changeEmailRequest;
         $this->userRepository = $userRepository;
+        $this->blockedUserRepository = $blockedUserRepository;
     }
 
     public function handle(GameControllerInterface $game): void
