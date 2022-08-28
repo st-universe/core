@@ -7,35 +7,26 @@ namespace Stu\Module\Trade\View\ShowLicenceMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
 
 final class ShowLicenceMenu implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_LICENCE_MENU';
 
-
     private ShowLicenceMenuRequestInterface $showLicenceMenuRequest;
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
-
-
     public function __construct(
         ShowLicenceMenuRequestInterface $showLicenceMenuRequest,
-        CommodityRepositoryInterface $commodityRepository,
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->showLicenceMenuRequest = $showLicenceMenuRequest;
         $this->commodityRepository = $commodityRepository;
-        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-
         $trade_post = $this->showLicenceMenuRequest->getTradePostId();
-
 
         $commodityList = $this->commodityRepository->getTradeable();
 
