@@ -58,7 +58,8 @@ final class ShowTransferMenu implements ViewControllerInterface
 
         $game->showMacro('html/trademacros.xhtml/newoffermenu_transfer');
         $game->setPageTitle(sprintf(
-            _('Management %s'), $storage->getGood()->getName()
+            _('Management %s'),
+            $storage->getGood()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
         $game->setTemplateVar('IS_DILITHIUM', $storage->getGoodId() === CommodityTypeEnum::GOOD_DILITHIUM);
@@ -66,6 +67,7 @@ final class ShowTransferMenu implements ViewControllerInterface
             'TRADE_POST',
             $this->tradeLibFactory->createTradeAccountTal($tradePost, $userId)
         );
+        $game->setTemplateVar('IS_NPC_POST', $tradePost->getId < 18);
         $game->setTemplateVar(
             'AVAILABLE_TRADE_POSTS',
             $trade_post_list
