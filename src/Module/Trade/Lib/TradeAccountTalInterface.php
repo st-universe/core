@@ -15,6 +15,8 @@ interface TradeAccountTalInterface
 
     public function getTradePostDescription(): string;
 
+    public function getTradePostName(): string;
+
     /**
      * @return TradeStorageInterface[]
      */
