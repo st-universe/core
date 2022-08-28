@@ -37,6 +37,8 @@ interface TradeAccountTalInterface
 
     public function getTradePostbyUser(): bool;
 
+    public function getTradePostIsNPC(): bool;
+
     public function getStorageCapacity(): int;
 
     public function getLicenseCount(): int;

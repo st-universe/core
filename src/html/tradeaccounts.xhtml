@@ -62,7 +62,8 @@
 					<tr>
 						<td class="darkbg">Handelsnetz</td>
 						<td>
-							<img src="assets/rassen/${data/getTradeNetwork}s.png" />
+							<img tal:condition="data/getTradePostIsNPC"
+								src="assets/rassen/${data/getTradeNetwork}s.png" />
 							<a href="javascript:void(0);" onclick="openShoutbox(${data/getTradeNetwork})">Schwarzes
 								Brett</a>
 						</td>

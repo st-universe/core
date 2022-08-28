@@ -66,6 +66,11 @@ final class TradeAccountTal implements TradeAccountTalInterface
         return $this->tradePost->getUserId() === $this->userId;
     }
 
+    public function getTradePostIsNPC(): bool
+    {
+        return $this->tradePost->getUserId() < 100;
+    }
+
     public function getStorage(): array
     {
         if ($this->storage === null) {
