@@ -33,7 +33,7 @@
 							<select name="pid" id="tradepostSelect" style="width:100%;">
 								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data TRADE_LICENSES">
-									<option tal:content="data/getTradePost/getName"
+									<option tal:content="structure bbcode2txt:data/getTradePost/getName"
 										tal:attributes="value data/getTradePost/getId; selected php:POST_ID==data.getTradePost().getId()">
 										NAME</option>
 								</tal:block>
