@@ -13,11 +13,11 @@
 			<form action="trade.php" method="post">
 				<table class="tcal">
 					<tr>
-						<th colspan="4" tal:content="structure bbcode:data/getShip/getName">POST</th>
+						<th colspan="4" tal:content="structure bbcode:data/getTradePost/getName">POST</th>
 						<th tal:condition="data/getTradePostbyUser" style="width: 15%;">
 							<input type="hidden" name="posts_id" tal:attributes="value data/getId" />
 							<input type="text" name="newtradepostname" style="width: 150px;"
-								tal:attributes="value data/getShip/getName" />
+								tal:attributes="value data/getTradePost/getName" />
 							<button type="submit" name="B_TRADEPOST_CHANGE_NAME" value="Name ändern"
 								title="Name ändern">
 								<img src="assets/buttons/knedit2.png" alt="Name ändern" />
