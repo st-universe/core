@@ -79,7 +79,12 @@ final class BuildStation implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $wantedPlanId = (int)request::postIntFatal('plan_select');
+        $wantedPlanId = request::postInt('plan_select');
+
+        if (!$wantedPlanId) {
+            $game->addInformation('Bitte Stationstyp auswählen');
+            return;
+        }
 
         $plan = $this->stationUtility->getBuidplanIfResearchedByUser($wantedPlanId, $userId);
         if ($plan === null) {
