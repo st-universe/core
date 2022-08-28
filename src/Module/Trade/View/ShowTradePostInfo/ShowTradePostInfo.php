@@ -51,6 +51,7 @@ final class ShowTradePostInfo implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradepostinfo');
         $game->setPageTitle(_('Handelsposten Details'));
 
+        $game->setTemplateVar('IS_NPC_TRADEPOST', $trade_post->getUserId() < 100);
         $game->setTemplateVar(
             'TRADE_POST_INFO',
             $this->talFactory->createTradeAccountTal($trade_post, $userId)

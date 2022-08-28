@@ -22,10 +22,10 @@
 			<tr>
 				<th>Handelsnetz</th>
 				<td>
-					<img src="/assets/rassen/${TRADE_POST_INFO/getTradeNetwork}s.png" />
+					<img tal:condition="IS_NPC_POST" src="/assets/rassen/${TRADE_POST_INFO/getTradeNetwork}s.png" />
 				</td>
 			</tr>
-			<tr>
+			<tr tal:condition="IS_NPC_POST">
 				<th>Transferkapazität</th>
 				<td>
 					<span tal:content="TRADE_POST_INFO/getTransferCapacity">CAPACITY</span>
