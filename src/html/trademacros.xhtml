@@ -152,10 +152,6 @@
 										id="calcam">-</span>)
 								</td>
 							</tr>
-							<br />
-							<div style="width: 100%; text-align: center;">
-								<input type="submit" value="Angebot erstellen" name="B_CREATE_OFFER" />
-							</div>
 						</tal:block>
 						<tal:block tal:condition="not:IS_NPC_POST">
 							<tr>
@@ -193,11 +189,11 @@
 								</td>
 							</tr>
 							<br />
-							<div style="width: 100%; text-align: center;">
-								<input type="submit" value="Angebot erstellen" name="B_CREATE_OFFER" />
-							</div>
 						</tal:block>
 					</table>
+					<div style="width: 100%; text-align: center;">
+						<input type="submit" value="Angebot erstellen" name="B_CREATE_OFFER" />
+					</div>
 				</metal:macro>
 				<metal:macro metal:define-macro="newoffermenu_transfer">
 					<table class="tcal">

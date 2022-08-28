@@ -103,6 +103,7 @@ final class CreateOffer implements ActionControllerInterface
             }
         } else {
             if ($wantedGoodId != CommodityTypeEnum::GOOD_LATINUM) {
+                $game->addInformation("Hier");
                 return;
             }
         }
