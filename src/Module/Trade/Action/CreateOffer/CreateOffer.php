@@ -66,9 +66,21 @@ final class CreateOffer implements ActionControllerInterface
         $offerAmount = $this->createOfferRequest->getOfferAmount();
 
         if ($giveGoodId === $wantedGoodId) {
+            $game->addInformation("Es kann nicht die gleiche Ware eingetauscht werden");
             return;
         }
-        if ($giveAmount < 1 || $wantedAmount < 1 || $offerAmount < 1) {
+        if ($giveAmount < 1) {
+            $game->addInformation("Es wurde keine Angebotene Menge angeben");
+            return;
+        }
+
+        if ($wantedAmount < 1) {
+            $game->addInformation("Es wurde keine Verlangte Menge");
+            return;
+        }
+
+        if ($offerAmount < 1) {
+            $game->addInformation("Es wurde keine Anzahl an Angeboten angegeben");
             return;
         }
 
