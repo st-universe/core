@@ -11,7 +11,7 @@ class DatabaseTopActivTradePost extends DatabaseTopList
 
     function __construct($entry)
     {
-        parent::__construct($entry['name']);
+        parent::__construct($entry['id']);
         $this->name = $entry['name'];
         $this->transactions = $entry['transactions'];
     }
