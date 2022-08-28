@@ -12,8 +12,8 @@
 		<tal:block tal:repeat="data ACCOUNTS">
 			<table class="tcal">
 				<tr>
-					<th colspan="5" tal:content="structure bbcode:data/getShip/getName">POST</th>
-					<th colspan="4" tal:condition="data/getTradePostbyUser" style="width: 20%; text-align: center;">
+					<th colspan="4" tal:content="structure bbcode:data/getShip/getName">POST</th>
+					<th tal:condition="data/getTradePostbyUser" style="width: 20%; text-align: center;">
 						<input type="hidden" name="posts_id" tal:attributes="value data/getId" />
 						<input type="text" name="newtradepostname" style="width: 150px;"
 							tal:attributes="value data/getShip/getName" />
@@ -21,6 +21,7 @@
 							<img src="assets/buttons/knedit2.png" alt="Name ändern" />
 						</button>
 					</th>
+					<th tal:condition="not:data/getTradePostbyUser" tal:content="">NOTHING</th>
 				</tr>
 				<tr tal:define="ship data/getShip">
 					<td rowspan="6">
