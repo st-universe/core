@@ -88,8 +88,15 @@ final class ShowTradeMenu implements ViewControllerInterface
             $game->checkDatabaseItem($databaseEntryId);
         }
         $licenseInfo = $this->tradeCreateLicenceRepository->getLatestLicenseInfo($tradepost->getId());
-        $commodityId = $licenseInfo->getGoodsId();
-        $commodityName = $this->commodityRepository->find($commodityId)->getName();
+
+        if ($licenseInfo !== null) {
+            $commodityId = $licenseInfo->getGoodsId();
+            $commodityName = $this->commodityRepository->find($commodityId)->getName();
+        } else {
+            $commodityId = 1;
+            $commodityName = 'Keine Ware';
+        }
+
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar(
