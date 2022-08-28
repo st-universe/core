@@ -122,16 +122,29 @@
 						<tr>
 							<td style="vertical-align: middle;">Verlangte Ware</td>
 							<td>
-								<select name="wgid" tal:condition="IS_LATINUM">
-									<option value="0">----------------------</option>
-									<tal:block tal:repeat="data SELECTABLE_GOODS">
-										<option tal:condition="php:data.getId()!=STOR.getGoodId()"
-											tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
+								<tal:block tal:condition="not:IS_NPC_POST">
+									<select name="wgid">
+										<option value="0">----------------------</option>
+										<tal:block tal:repeat="data SELECTABLE_GOODS">
+											<option tal:condition="php:data.getId()!=STOR.getGoodId()"
+												tal:content="data/getName" tal:attributes="value data/getId">NAME
+											</option>
+										</tal:block>
+									</select>
+								</tal:block>
+								<tal:block tal:condition="Is_NPC_POST">
+									<select name="wgid" tal:condition="IS_LATINUM">
+										<option value="0">----------------------</option>
+										<tal:block tal:repeat="data SELECTABLE_GOODS">
+											<option tal:condition="php:data.getId()!=STOR.getGoodId()"
+												tal:content="data/getName" tal:attributes="value data/getId">NAME
+											</option>
+										</tal:block>
+									</select>
+									<tal:block tal:condition="not:IS_LATINUM">
+										<input type="hidden" name="wgid" value="50" />
+										<img src="assets/goods/50.png" title="Latinum" />
 									</tal:block>
-								</select>
-								<tal:block tal:condition="not:IS_LATINUM">
-									<input type="hidden" name="wgid" value="50" />
-									<img src="assets/goods/50.png" title="Latinum" />
 								</tal:block>
 							</td>
 						</tr>
