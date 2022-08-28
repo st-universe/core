@@ -47,7 +47,7 @@ function changeSearchTradepost(id) {
 function showTradeLicenceList(obj, postId) {
 	var elt = 'licencelist';
 	var pos = findObject(obj);
-	openWindowPosition(elt, 1, 300, pos[0] - 300, pos[1]);
+	openWindowPosition(elt, 1, 300, 300, 100);
 	ajax_update(elt, 'trade.php?SHOW_LICENSE_LIST=1&postid=' + postId);
 }
 function openShoutbox(networkid) {
