@@ -31,7 +31,7 @@ final class TradeCreateLicenceRepository extends EntityRepository implements Tra
         $em->flush();
     }
 
-    public function getLatestLicenseInfo(int $tradepostId): TradeLicenceCreationInterface
+    public function getLatestLicenseInfo(?int $tradepostId): TradeLicenceCreationInterface
     {
         return $this->getEntityManager()
             ->createQuery(
