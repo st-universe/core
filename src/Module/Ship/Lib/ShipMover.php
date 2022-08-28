@@ -97,7 +97,15 @@ final class ShipMover implements ShipMoverInterface
         int $posy
     ) {
         if ($leadShip->getPosX() != $posx && $leadShip->getPosY() != $posy) {
-            throw new InvalidParamException();
+            throw new InvalidParamException(sprintf(
+                'userId %d tried to navigate from %d|%d to invalid position %d|%d',
+                $leadShip->getUser()->getId(),
+                $leadShip->getPosX(),
+                $leadShip->getPosY(),
+                $posx,
+                $posy
+
+            ));
         }
         if ($posx < 1) {
             $posx = 1;
