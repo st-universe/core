@@ -92,9 +92,13 @@ final class ShowTradeMenu implements ViewControllerInterface
         if ($licenseInfo !== null) {
             $commodityId = $licenseInfo->getGoodsId();
             $commodityName = $this->commodityRepository->find($commodityId)->getName();
+            $licensecost = $licenseInfo->getAmount();
+            $licensedays = $licenseInfo->getDays();
         } else {
             $commodityId = 1;
             $commodityName = 'Keine Ware';
+            $licensecost = 0;
+            $licensedays = 0;
         }
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
@@ -109,7 +113,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         );
         $game->setTemplateVar('LICENSEGOOD', $commodityId);
         $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
-        $game->setTemplateVar('LICENSECOST', $licenseInfo->getAmount());
-        $game->setTemplateVar('LICENSEDAYS', $licenseInfo->getDays());
+        $game->setTemplateVar('LICENSECOST', $licensecost);
+        $game->setTemplateVar('LICENSEDAYS', $licensedays);
     }
 }
