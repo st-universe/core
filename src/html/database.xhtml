@@ -40,6 +40,7 @@
 				<a href="?SHOW_TOP_FLIGHTS=1">Top 10 der Vielflieger</a><br />
 				<a href="?SHOW_TOP_CREW=1">Top 10 der Ausbilder</a><br />
 				<a href="?SHOW_TOP_LATINUM=1">Die 10 Söhne des Nagus</a><br />
+				<a href="?SHOW_TOP_ACTIV_TRADEPOST=1">Die 10 aktivsten Handelsposten</a><br />
 				<a href="?SHOW_GOODS_OVERVIEW=1">Warenübersicht</a>
 			</div>
 		</div>
@@ -140,6 +141,27 @@
 							<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
 						</td>
 						<td tal:content="entry/getAmount">AMOUNT</td>
+					</tr>
+				</table>
+			</div>
+		</tal:block>
+	</tal:block>
+</metal:macro>
+<metal:macro metal:define-macro="top_activ_tradeposts">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<div style="float: left; width: 30%;">
+				<table class="tcal">
+					<tr>
+						<th>Handelsposten</th>
+						<th>Transaktionen</th>
+					</tr>
+					<tr tal:repeat="entry ACTIV_TRADEPOST" tal:attributes="class string:row${repeat/entry/odd}">
+						<td>
+							<span tal:replace="structure bbcode:entry/getName">NAME</span>
+						</td>
+						<td tal:content="entry/getTransactions">TRANSACTIONS</td>
 					</tr>
 				</table>
 			</div>

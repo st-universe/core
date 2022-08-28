@@ -21,6 +21,7 @@ use Stu\Module\Database\View\CrewRanking\CrewRanking;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\FlightRanking\FlightRanking;
 use Stu\Module\Database\View\LatinumRanking\LatinumRanking;
+use Stu\Module\Database\View\TradePostActivity\TradePostActivity;
 use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocations;
 use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequest;
 use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequestInterface;
@@ -41,6 +42,7 @@ return [
         Category::VIEW_IDENTIFIER => autowire(Category::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
         FlightRanking::VIEW_IDENTIFIER => autowire(FlightRanking::class),
+        TradePostActivity::VIEW_IDENTIFIER => autowire(TradePostActivity::class),
         LatinumRanking::VIEW_IDENTIFIER => autowire(LatinumRanking::class),
         CrewRanking::VIEW_IDENTIFIER => autowire(CrewRanking::class),
         ShowGoodsLocations::VIEW_IDENTIFIER => autowire(ShowGoodsLocations::class),
