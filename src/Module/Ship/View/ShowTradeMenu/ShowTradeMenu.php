@@ -103,5 +103,6 @@ final class ShowTradeMenu implements ViewControllerInterface
         $game->setTemplateVar('LICENSEGOOD', $commodityId);
         $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
         $game->setTemplateVar('LICENSECOST', $licenseInfo->getAmount());
+        $game->setTemplateVar('LICENSEDAYS', $licenseInfo->getDays());
     }
 }
