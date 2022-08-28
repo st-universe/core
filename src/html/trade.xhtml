@@ -107,7 +107,8 @@
 						<a href="javascript:void(0);"
 							onclick="changeSearchCommodity(${data/getOfferedCommodity/getId});">
 							<img src="assets/goods/${data/getOfferedCommodity/getId}.png"
-								tal:attributes="title data/getOfferedCommodity/getName" /> ${data/getOfferedGoodCount}
+								tal:attributes="title bbcode:data/getOfferedCommodity/getName" />
+							${data/getOfferedGoodCount}
 						</a>
 					</td>
 					<td>
@@ -122,7 +123,7 @@
 						<metal:macro metal:use-macro="html/trademacros.xhtml/tradepost"
 							tal:define="handle string:hdlo${data/getId};id data/getTradepostId" />
 						<a href="javascript:void(0);" onclick="changeSearchTradepost(${data/getTradepostId});">
-							<span tal:replace="bbcode:data/getTradePost/getName">TRADEPOST</span>
+							<span tal:replace="data/getTradePost/getName">TRADEPOST</span>
 						</a>
 					</td>
 					<td tal:define="id data/getUserId">
