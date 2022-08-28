@@ -19,11 +19,10 @@
 				<th>Standort</th>
 				<td>${ship/getCX}|${ship/getCY}</td>
 			</tr>
-			<tr>
+			<tr tal:condition="IS_NPC_TRADEPOST">
 				<th>Handelsnetz</th>
 				<td>
-					<img tal:condition="IS_NPC_TRADEPOST"
-						src="/assets/rassen/${TRADE_POST_INFO/getTradeNetwork}s.png" />
+					<img src="/assets/rassen/${TRADE_POST_INFO/getTradeNetwork}s.png" />
 				</td>
 			</tr>
 			<tr tal:condition="IS_NPC_TRADEPOST">

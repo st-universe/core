@@ -68,7 +68,7 @@
 								Brett</a>
 						</td>
 					</tr>
-					<tr>
+					<tr tal:condition="data/getTradePostIsNPC">
 						<td class="darkbg">Transferkapazität</td>
 						<td>
 							<span tal:replace="data/getFreeTransferCapacity">TRANSFERSUM</span>
