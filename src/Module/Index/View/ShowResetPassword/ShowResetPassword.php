@@ -29,7 +29,10 @@ final class ShowResetPassword implements ViewControllerInterface
     {
         $user = $this->userRepository->getByResetToken($this->showResetPasswordRequest->getToken());
         if ($user === null) {
-            throw new InvalidParamException;
+            throw new InvalidParamException(sprintf(
+                'Could not get user by reset token, userId: %d',
+                $game->getUser()->getId()
+            ));
         }
         $game->setTemplateFile('html/index_resetpassword.xhtml');
         $game->setPageTitle(_('Password zurücksetzen - Star Trek Universe'));
