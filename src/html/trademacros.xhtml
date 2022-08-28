@@ -90,12 +90,13 @@
 	<div style="width: 350px;">
 		<table class="tcal">
 			<tr>
-				<td style="width: 50%;" class="selected" id="tradeoffermenunewoffer">
+				<td tal:condition="IS_NPC_POST" style="width: 50%;" class="selected" id="tradeoffermenunewoffer">
 					<a class="tradebutton" href="javascript:void(0);" style="display: block;"
 						onclick="showOfferMenuNewOffer(${STOR/getId});">
 						Angebot erstellen
 					</a>
 				</td>
+				<td tal:condition="not:IS_NPC_POST" style="width: 50%; display: block;">Angebot erstellen</td>
 				<tal:block tal:condition="IS_NPC_POST">
 					<td id="tradeoffermenutransfer">
 						<a class="tradebutton" href="javascript:void(0);" style="display: block;"
