@@ -101,12 +101,8 @@ final class CreateOffer implements ActionControllerInterface
             if ($result === []) {
                 return;
             }
-        } else {
-            if ($wantedGoodId != CommodityTypeEnum::GOOD_LATINUM) {
-                $game->addInformation("Hier");
-                return;
-            }
         }
+
         if ($offerAmount < 1 || $offerAmount > 99) {
             $offerAmount = 1;
         }
