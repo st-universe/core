@@ -25,12 +25,12 @@ function showOfferMenuTransfer(storid) {
 }
 function showLicenceMenu(postId) {
 	var elt = 'tradelicencemenu';
-	openWindowPosition(elt, 1, 300, 90, 60);
+	openWindowPosition(elt, 1, 300, 90, 250);
 	ajax_update(elt, 'trade.php?SHOW_LICENCE_MENU=1&postid=' + postId);
 }
 function showLicenceInfo(postId) {
 	var elt = 'tradelicenceinfo';
-	openWindowPosition(elt, 1, 300, 90, 60);
+	openWindowPosition(elt, 1, 300, 90, 250);
 	ajax_update(elt, 'trade.php?SHOW_LICENCE_INFO=1&postid=' + postId);
 }
 function takeTradeOffer(offerid) {
@@ -47,7 +47,7 @@ function changeSearchTradepost(id) {
 function showTradeLicenceList(obj, postId) {
 	var elt = 'licencelist';
 	var pos = findObject(obj);
-	openWindowPosition(elt, 1, 300, 300, 100);
+	openWindowPosition(elt, 1, 300, 300, 250);
 	ajax_update(elt, 'trade.php?SHOW_LICENSE_LIST=1&postid=' + postId);
 }
 function openShoutbox(networkid) {
