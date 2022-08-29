@@ -29,7 +29,6 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
     }
 
     public function truncateByUser(int $userId): void
