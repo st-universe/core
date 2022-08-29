@@ -16,5 +16,6 @@ return [
     OldFlightSignatureDeletion::class => autowire(OldFlightSignatureDeletion::class),
     ColonyCorrectorHandler::class => autowire(ColonyCorrectorHandler::class),
     EmptyPlotDeletion::class => autowire(EmptyPlotDeletion::class),
-    IdleUserDeletion::class => autowire(IdleUserDeletion::class)
+    IdleUserDeletion::class => autowire(IdleUserDeletion::class),
+    OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class)
 ];

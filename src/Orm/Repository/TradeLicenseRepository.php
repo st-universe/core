@@ -45,7 +45,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->execute();
     }
 
-    public function truncateByUserAndTraitpost(int $userId, int $tradePostId): void
+    public function truncateByUserAndTradepost(int $userId, int $tradePostId): void
     {
         $this->getEntityManager()
             ->createQuery(
@@ -164,5 +164,20 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                 'tradeNetworkId' => $tradeNetworkId
             ])
             ->getSingleScalarResult() > 0;
+    }
+
+    public function getExpiredLicenses(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tl FROM %s tl WHERE tl.expired < :actualTime',
+                    TradeLicense::class
+                )
+            )
+            ->setParameters([
+                'actualTime' => time()
+            ])
+            ->getResult();
     }
 }

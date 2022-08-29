@@ -18,7 +18,7 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
 
     public function truncateByUser(int $userId): void;
 
-    public function truncateByUserAndTraitpost(int $userId, int $tradePostId): void;
+    public function truncateByUserAndTradepost(int $userId, int $tradePostId): void;
 
     /**
      * @return TradeLicenseInterface[]
@@ -41,4 +41,9 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
     public function hasLicenseByUserAndNetwork(int $userId, int $tradeNetworkId): bool;
 
     public function getLicencesCountbyUser(int $userId): array;
+
+    /**
+     * @return TradeLicenseInterface[]
+     */
+    public function getExpiredLicenses(): array;
 }
