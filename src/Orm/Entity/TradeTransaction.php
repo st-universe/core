@@ -34,7 +34,7 @@ class TradeTransaction implements TradeTransactionInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer", nullable=true) * */
     private $tradepost_id = 0;
 
     /**
