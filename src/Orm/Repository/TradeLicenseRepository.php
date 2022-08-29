@@ -153,7 +153,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                     FROM %s tl
                     WHERE tl.user_id = :userId
                         AND tl.posts_id IN (
-                            SELECT id FROM %s WHERE trade_network = :tradeNetworkId
+                            SELECT tp.id FROM %s tp WHERE tp.trade_network = :tradeNetworkId
                             )',
                     TradeLicense::class,
                     TradePost::class
