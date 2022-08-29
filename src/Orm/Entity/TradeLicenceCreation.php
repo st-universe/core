@@ -38,6 +38,12 @@ class TradeLicenceCreation implements TradeLicenceCreationInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
+    /**
+     * @ManyToOne(targetEntity="TradePost")
+     * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $tradePost;
+
     public function getId(): int
     {
         return $this->id;
