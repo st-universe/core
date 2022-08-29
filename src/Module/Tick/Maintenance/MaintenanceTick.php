@@ -6,7 +6,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
-final class Maintenance
+final class MaintenanceTick
 {
     private GameConfigRepositoryInterface $gameConfigRepository;
 

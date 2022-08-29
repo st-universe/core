@@ -9,7 +9,7 @@ use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Maintenance\DatabaseBackup;
-use Stu\Module\Tick\Maintenance\Maintenance;
+use Stu\Module\Tick\Maintenance\MaintenanceTick;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
 final class DoManualMaintenance implements ActionControllerInterface
@@ -36,7 +36,7 @@ final class DoManualMaintenance implements ActionControllerInterface
 
         global $container;
 
-        $maintenance = new Maintenance(
+        $maintenance = new MaintenanceTick(
             $container->get(GameConfigRepositoryInterface::class),
             array_filter(
                 $container->get('maintenance_handler'),
