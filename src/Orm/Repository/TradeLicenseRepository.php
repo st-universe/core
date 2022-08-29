@@ -66,7 +66,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         ]);
     }
 
-    public function getByTradePostAndExpired(int $tradePostId): array
+    public function getByTradePostAndNotExpired(int $tradePostId): array
     {
         return $this->getEntityManager()
             ->createQuery(

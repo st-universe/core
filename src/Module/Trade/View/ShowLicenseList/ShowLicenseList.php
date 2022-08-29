@@ -43,6 +43,6 @@ final class ShowLicenseList implements ViewControllerInterface
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($game->getUser()->getId(), $tradepost->getId())) {
             throw new AccessViolation();
         }
-        $game->setTemplateVar('LIST', $this->tradeLicenseRepository->getByTradePostAndExpired($tradepost->getId()));
+        $game->setTemplateVar('LIST', $this->tradeLicenseRepository->getByTradePostAndNotExpired($tradepost->getId()));
     }
 }
