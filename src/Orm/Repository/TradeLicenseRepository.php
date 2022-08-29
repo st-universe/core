@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
+use Stu\Orm\Entity\TradePost;
 
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
@@ -68,17 +68,16 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
 
     public function getByTradePostAndExpired(int $tradePostId): array
     {
-        $time = time();
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tl FROM %s tl WHERE tl.posts_id = :tradePostId AND tl.expired > :actime',
+                    'SELECT tl FROM %s tl WHERE tl.posts_id = :tradePostId AND tl.expired > :actualTime',
                     TradeLicense::class
                 )
             )
             ->setParameters([
                 'tradePostId' => $tradePostId,
-                'actime' => $time
+                'actualTime' => time()
             ])
             ->getResult();
     }
@@ -119,19 +118,21 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
 
     public function hasLicenseByUserAndTradePost(int $userId, int $tradePostId): bool
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('amount', 'amount');
-        $time = time();
         return (int) $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT COUNT(c.id) as amount FROM stu_trade_licences c WHERE c.user_id = :userId AND c.posts_id = :tradePostId AND c.expired > :actime',
-
-                $rsm
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(c.id) as amount
+                    FROM %s c
+                    WHERE c.user_id = :userId
+                        AND c.posts_id = :tradePostId
+                        AND c.expired > :actime',
+                    TradeLicense::class
+                )
             )
             ->setParameters([
                 'userId' => $userId,
                 'tradePostId' => $tradePostId,
-                'actime' => $time
+                'actime' => time()
             ])
             ->getSingleScalarResult() > 0;
     }
@@ -145,15 +146,18 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
 
     public function hasLicenseByUserAndNetwork(int $userId, int $tradeNetworkId): bool
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('amount', 'amount');
-
         return (int) $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT COUNT(c.id) as amount FROM stu_trade_licences c WHERE c.user_id = :userId AND c.posts_id IN (
-                    SELECT id FROM stu_trade_posts WHERE trade_network = :tradeNetworkId
-                )',
-                $rsm
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(tl.id)
+                    FROM %s tl
+                    WHERE tl.user_id = :userId
+                        AND tl.posts_id IN (
+                            SELECT id FROM %s WHERE trade_network = :tradeNetworkId
+                            )',
+                    TradeLicense::class,
+                    TradePost::class
+                )
             )
             ->setParameters([
                 'userId' => $userId,
