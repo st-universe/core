@@ -39,8 +39,8 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->createQuery(
                 sprintf(
                     'SELECT tp FROM %s tp WHERE tp.id IN (
-                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime ORDER BY tp.id ASC
-                    )',
+                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime
+                    ) ORDER BY tp.id ASC',
                     TradePost::class,
                     TradeLicense::class
                 )
