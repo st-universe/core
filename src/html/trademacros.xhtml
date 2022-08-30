@@ -336,6 +336,11 @@
 </metal:macro>
 <metal:macro metal:define-macro="tradelicencelist">
 	<table class="tcal" style="width: 400px;">
+		<tr>
+			<th>Siedler</th>
+			<th>Kaufdatum</th>
+			<th>Ablaufdatum</th>
+		</tr>
 		<tr tal:repeat="data LIST">
 			<td>
 				<metal:macro metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUserId" />
