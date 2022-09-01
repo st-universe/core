@@ -58,7 +58,7 @@ function openShoutbox(networkid) {
 }
 function openShiplist(tradepostid) {
 	var elt = 'shiplist';
-	openWindowPosition(elt, 1, 800, 90, 60);
+	openWindowPosition(elt, 1, 300, 300, 250);
 	ajax_update(elt, 'trade.php?SHOW_SHIPLIST=1&id=' + tradepostid);
 }
 function startKeyObserver() {
