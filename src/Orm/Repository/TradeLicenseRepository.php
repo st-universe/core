@@ -127,9 +127,9 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                 sprintf(
                     'SELECT tl
                     FROM %s tl
-                    WHERE c.user_id = :userId
-                        AND c.posts_id = :tradePostId
-                        AND c.expired > :actualTime
+                    WHERE tl.user_id = :userId
+                        AND tl.posts_id = :tradePostId
+                        AND tl.expired > :actualTime
                     ORDER BY tl.id DESC',
                     TradeLicense::class
                 )
