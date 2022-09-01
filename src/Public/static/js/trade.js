@@ -61,18 +61,6 @@ function openShiplist(tradepostid) {
 	openWindowPosition(elt, 1, 800, 90, 60);
 	ajax_update(elt, 'trade.php?SHOW_SHIPLIST=1&id=' + tradepostid);
 }
-function openStorageInit(obj, id) {
-	closeAjaxWindow();
-	var timer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
-	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
-}
-function openStorage(id) {
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?SHOW_SHIPSTORAGE=1&id=' + id);
-}
-function closeStorage() {
-	closeAjaxWindow();
-}
 function startKeyObserver() {
 	if (!$('shoutboxentry')) {
 		return;

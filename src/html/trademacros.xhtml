@@ -360,12 +360,11 @@
 		</tr>
 		<tr tal:repeat="ship LIST">
 			<td>
-				<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
-					onmouseout="closeStorage();">
+				<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
 					<img src="assets/ships/${ship/getRumpId}.png" tal:attributes="title ship/getRumpName" />
 				</a>
 			</td>
-			<td tal:content="ship/getName">NAME</td>
+			<td><span tal:content="structure bbcode:ship/getName">NAME</span></td>
 			<td>${ship/getStorageSum}/${ship/getMaxStorage}</td>
 		</tr>
 	</table>
