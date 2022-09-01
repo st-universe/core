@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -18,6 +17,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipCrew;
@@ -28,6 +28,7 @@ use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
@@ -125,6 +126,19 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'userId' => $fleetLeader->getUser()->getId(),
             'mapId' => $isSystem ? $fleetLeader->getStarsystemMap()->getId() : $fleetLeader->getMap()->getId()
         ])->getResult();
+    }
+
+    public function getByLocationAndUser(?StarSystemMapInterface $starSystemMap, ?MapInterface $map, UserInterface $user): array
+    {
+        return $this->findBy([
+            'user_id' => $user->getId(),
+            'starsystem_map_id' => $starSystemMap->getId(),
+            'map_id' => $map->getId()
+        ], [
+            'fleets_id' => 'desc',
+            'is_fleet_leader' => 'desc',
+            'id' => 'desc'
+        ]);
     }
 
     public function getByInnerSystemLocation(

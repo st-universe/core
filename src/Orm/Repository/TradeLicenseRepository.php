@@ -117,23 +117,30 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
 
     public function hasLicenseByUserAndTradePost(int $userId, int $tradePostId): bool
     {
-        return (int) $this->getEntityManager()
+        return $this->getLatestActiveLicenseByUserAndTradePost($userId, $tradePostId) !== null;
+    }
+
+    public function getLatestActiveLicenseByUserAndTradePost(int $userId, int $tradePostId): ?TradeLicenseInterface
+    {
+        return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT COUNT(c.id) as amount
-                    FROM %s c
+                    'SELECT tl
+                    FROM %s tl
                     WHERE c.user_id = :userId
                         AND c.posts_id = :tradePostId
-                        AND c.expired > :actime',
+                        AND c.expired > :actualTime
+                    ORDER BY tl.id DESC',
                     TradeLicense::class
                 )
             )
+            ->setMaxResults(1)
             ->setParameters([
                 'userId' => $userId,
                 'tradePostId' => $tradePostId,
-                'actime' => time()
+                'actualTime' => time()
             ])
-            ->getSingleScalarResult() > 0;
+            ->getOneOrNullResult();
     }
 
     public function getAmountByTradePost(int $tradePostId): int

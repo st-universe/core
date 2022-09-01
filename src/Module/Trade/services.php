@@ -54,6 +54,7 @@ use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequestInte
 use Stu\Module\Trade\View\ShowSearch\ShowSearchBoth;
 use Stu\Module\Trade\View\ShowSearch\ShowSearchDemand;
 use Stu\Module\Trade\View\ShowSearch\ShowSearchOffer;
+use Stu\Module\Trade\View\ShowShiplist\ShowShiplist;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBox;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBoxRequest;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBoxRequestInterface;
@@ -120,6 +121,7 @@ return [
         ShowSearchDemand::VIEW_IDENTIFIER => autowire(ShowSearchDemand::class),
         ShowSearchOffer::VIEW_IDENTIFIER => autowire(ShowSearchOffer::class),
         ShowSearchBoth::VIEW_IDENTIFIER => autowire(ShowSearchBoth::class),
-        ShowBasicTrade::VIEW_IDENTIFIER => autowire(ShowBasicTrade::class)
+        ShowBasicTrade::VIEW_IDENTIFIER => autowire(ShowBasicTrade::class),
+        ShowShiplist::VIEW_IDENTIFIER => autowire(ShowShiplist::class)
     ],
 ];

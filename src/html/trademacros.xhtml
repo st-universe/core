@@ -351,6 +351,25 @@
 		</tr>
 	</table>
 </metal:macro>
+<metal:macro metal:define-macro="tradepostshiplist">
+	<table class="tcal" style="width: 400px;">
+		<tr>
+			<th></th>
+			<th>Name</th>
+			<th>Belegter Laderaum</th>
+		</tr>
+		<tr tal:repeat="ship LIST">
+			<td>
+				<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
+					onmouseout="closeStorage();">
+					<img src="assets/ships/${ship/getRumpId}.png" tal:attributes="title ship/getRumpName" />
+				</a>
+			</td>
+			<td tal:content="date:ship/getName">NAME</td>
+			<td>${ship/getStorageSum}/${ship/getMaxStorage}</td>
+		</tr>
+	</table>
+</metal:macro>
 <metal:macro metal:define-macro="shoutbox">
 	<input type="hidden" name="network" id="network" tal:attributes="value NETWORK" />
 	<metal:macro metal:define-macro="shoutbox_entries">

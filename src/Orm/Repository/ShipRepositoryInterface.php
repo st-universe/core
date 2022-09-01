@@ -4,8 +4,10 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -48,6 +50,15 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getShipsForAlertRed(
         ShipInterface $ship
     ): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
+    public function getByLocationAndUser(
+        ?StarSystemMapInterface $starSystemMap,
+        ?MapInterface $map,
+        UserInterface $user
+    ): array;
 
     /**
      * @return ShipInterface[]
