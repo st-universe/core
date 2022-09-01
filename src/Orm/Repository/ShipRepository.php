@@ -132,8 +132,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     {
         return $this->findBy([
             'user_id' => $user->getId(),
-            'starsystem_map_id' => $starSystemMap->getId(),
-            'map_id' => $map->getId()
+            'starsystem_map_id' => $starSystemMap !== null ? $starSystemMap->getId() : null,
+            'map_id' => $map !== null ? $map->getId() : null
         ], [
             'fleets_id' => 'desc',
             'is_fleet_leader' => 'desc',
