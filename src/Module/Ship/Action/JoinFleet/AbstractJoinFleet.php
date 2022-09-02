@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\JoinFleet;
 
+use request;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
-use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
-final class JoinFleet implements ActionControllerInterface
+abstract class AbstractJoinFleet
 {
-    public const ACTION_IDENTIFIER = 'B_JOIN_FLEET';
-
-    private JoinFleetRequestInterface $joinFleetRequest;
-
     private FleetRepositoryInterface $fleetRepository;
 
     private ShipLoaderInterface $shipLoader;
@@ -25,45 +22,45 @@ final class JoinFleet implements ActionControllerInterface
     private PositionCheckerInterface $positionChecker;
 
     public function __construct(
-        JoinFleetRequestInterface $joinFleetRequest,
         FleetRepositoryInterface $fleetRepository,
         ShipLoaderInterface $shipLoader,
         PositionCheckerInterface $positionChecker
     ) {
-        $this->joinFleetRequest = $joinFleetRequest;
         $this->fleetRepository = $fleetRepository;
         $this->shipLoader = $shipLoader;
         $this->positionChecker = $positionChecker;
     }
 
-    public function handle(GameControllerInterface $game): void
+    public function tryToAddToFleet(GameControllerInterface $game): FleetInterface
     {
-        $ship = $this->shipLoader->getByIdAndUser($this->joinFleetRequest->getShipId(), $game->getUser()->getId());
+        $shipId = request::getIntFatal('id');
+        $fleetId = request::getIntFatal('fleetid');
 
-        $fleet = $this->fleetRepository->find($this->joinFleetRequest->getFleetId());
+        $ship = $this->shipLoader->getByIdAndUser($shipId, $game->getUser()->getId());
+        $fleet = $this->fleetRepository->find($fleetId);
 
         if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 
         if ($fleet->getLeadShip()->getId() === $ship->getId()) {
-            return;
+            return $fleet;
         }
         if (!$this->positionChecker->checkPosition($fleet->getLeadShip(), $ship)) {
-            return;
+            return $fleet;
         }
         if ($ship->isTractored()) {
             $game->addInformation(
                 _('Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
             );
-            return;
+            return $fleet;
         }
         if ($fleet->getCrewSum() + $ship->getBuildplan()->getCrew() > GameEnum::CREW_PER_FLEET) {
             $game->addInformation(sprintf(
                 _('Es sind maximal %d Crew pro Flotte möglich'),
                 GameEnum::CREW_PER_FLEET
             ));
-            return;
+            return $fleet;
         }
         $ship->setFleet($fleet);
 
@@ -76,10 +73,7 @@ final class JoinFleet implements ActionControllerInterface
             $ship->getName(),
             $fleet->getName()
         ));
-    }
 
-    public function performSessionCheck(): bool
-    {
-        return false;
+        return $fleet;
     }
 }
