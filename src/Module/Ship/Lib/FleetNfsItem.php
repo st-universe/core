@@ -51,7 +51,7 @@ final class FleetNfsItem
 
     public function showManagement(): bool
     {
-        return $this->currentShip->getUser()->getId() === $this->ships[0]['user_id'];
+        return $this->currentShip->getUser()->getId() === $this->ships[0]['userid'];
     }
 
     public function getName(): string
