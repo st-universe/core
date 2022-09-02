@@ -13,73 +13,7 @@
 		<tal:block tal:condition="SHIPS_AVAILABLE">
 			<script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js">< !--stuniverse --></script>
 			<tal:block tal:repeat="fleet FLEETS">
-				<form action="ship.php" method="post">
-					<input type="hidden" name="fleetid" value="runtime" tal:attributes="value fleet/getId" />
-					<table class="tcal">
-						<tr>
-							<td colspan="11">
-								<table style="width: 100%;">
-									<tr>
-										<td style="width: 35%;">
-											<div style="display: table-cell;">
-												<img src="assets/buttons/fleet.png" />
-											</div>
-											<div style="display: table-cell; vertical-align:middle;">
-												<span tal:replace="structure bbcode:fleet/getName">NAME</span>
-												<span>
-													(<span tal:replace="fleet/getCrewSum" />/<span
-														tal:replace="MAX_CREW_PER_FLEET" /> Crew)
-												</span>
-											</div>
-										</td>
-										<td style="width: 25%;">
-											<tal:block tal:condition="fleet/getDefendedColony">
-												<img src="/assets/buttons/defend1.png" title="verteidigt die Kolonie" />
-												<span
-													tal:replace="structure bbcode:fleet/getDefendedColony/getName">NAME</span>
-											</tal:block>
-											<tal:block tal:condition="fleet/getBlockedColony">
-												<img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
-												<span
-													tal:replace="structure bbcode:fleet/getBlockedColony/getName">NAME</span>
-											</tal:block>
-										</td>
-										<td style="width: 20%;">
-											<input type="text" name="fleetname" style="width: 150px;"
-												tal:attributes="value fleet/getName" />
-											<button type="submit" name="B_FLEET_CHANGE_NAME" value="Name ändern"
-												title="Name ändern">
-												<img src="assets/buttons/knedit2.png" alt="Name ändern" />
-											</button>
-										</td>
-										<td style="width: 20%; text-align: right;"
-											tal:define="availableShips fleet/getAvailableShips">
-											<tal:block tal:condition="availableShips">
-												<select name="id" style="width: 150px;">
-													<option tal:repeat="data availableShips"
-														tal:attributes="value data/getId"
-														tal:content="bbcode2txt:data/getName">.</option>
-												</select>
-												<button type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen"
-													title="Schiff hinzufügen">
-													<img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" />
-												</button>
-											</tal:block>
-											<a href="?B_FLEET_UP=1&id=${fleet/getId}">
-												<img src="assets/buttons/bt_up1.png"
-													title="Flotte nach oben schieben" />
-											</a>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
-						<tal:block tal:repeat="ship fleet/getShips">
-							<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
-						</tal:block>
-					</table>
-				</form>
+				<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_fleetform" />
 				<br />
 			</tal:block>
 
