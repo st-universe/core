@@ -66,6 +66,7 @@ final class BuildOnField implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowBuildResult::VIEW_IDENTIFIER);
+        $game->addExecuteJS('refreshColony();');
 
         $user = $game->getUser();
         $userId = $user->getId();

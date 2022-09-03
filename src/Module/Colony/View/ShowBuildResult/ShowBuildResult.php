@@ -14,7 +14,5 @@ final class ShowBuildResult implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->showMacro('html/sitemacros.xhtml/systeminformation');
-
-        $game->addExecuteJS('refreshColony();');
     }
 }
