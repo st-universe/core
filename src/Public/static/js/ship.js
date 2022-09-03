@@ -218,6 +218,18 @@ function showFleet(fleetid) {
 	$('fleetuser' + fleetid).hide();
 	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
 }
+function joinFleetInShiplist(fleetid) {
+	shipid = $('joinfleetshipselect_' + fleetid).value;
+
+	new Ajax.Updater('result', 'ship.php', {
+		method: 'get',
+		parameters: 'B_JOIN_FLEET=1&id=' + shipid + '&fleetid=' + fleetid,
+		evalScripts: true,
+		onComplete: function (transport) {
+			$('result').show();
+		}
+	});
+}
 function refreshShiplistFleet(fleetid) {
 	ajax_update('nbsfleetform_' + fleetid, 'ship.php?SHOW_SHIPLIST_FLEET=1&fleetid=' + fleetid);
 }

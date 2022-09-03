@@ -346,13 +346,12 @@
               </td>
               <td style="width: 20%; text-align: right;" tal:define="availableShips fleet/getAvailableShips">
                 <tal:block tal:condition="availableShips">
-                  <select name="id" style="width: 150px;">
+                  <select name="id" style="width: 150px;" id="joinfleetshipselect_${fleet/getId}">
                     <option tal:repeat="data availableShips" tal:attributes="value data/getId"
                       tal:content="bbcode2txt:data/getName">.</option>
                   </select>
-                  <button type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen" title="Schiff hinzufügen">
-                    <img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" />
-                  </button>
+                  <a href="javascript:void(0);" onclick="joinFleetInShiplist(${fleet/getId});"
+                    title="Schiff hinzufügen"><img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" /></a>
                 </tal:block>
                 <a href="?B_FLEET_UP=1&id=${fleet/getId}">
                   <img src="assets/buttons/bt_up1.png" title="Flotte nach oben schieben" />

@@ -17,7 +17,7 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
         $fleet = $this->tryToAddToFleet($game);
 
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS(sprintf('refreshFleet(%d);', $fleet->getId()));
+        $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', $fleet->getId()));
     }
 
     public function performSessionCheck(): bool
