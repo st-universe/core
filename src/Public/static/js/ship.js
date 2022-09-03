@@ -45,7 +45,7 @@ function showBFromWindow(target) {
 
 function showAvailableShips(fleetid) {
 	closeAjaxWindow();
-	openPJsWin('elt', 1);
+	openWindow('elt', 1, 300);
 	ajax_update('elt', 'ship.php?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid);
 }
 
@@ -235,6 +235,8 @@ function joinFleetInShiplist(fleetid) {
 			$('result').show();
 		}
 	});
+
+	closeAjaxWindow();
 }
 function leaveFleetInShiplist(shipid, sessionstring) {
 	new Ajax.Updater('result', 'ship.php', {
