@@ -100,8 +100,9 @@ use Stu\Module\Ship\Action\FleetDeactivateTorpedo\FleetDeactivateTorpedo;
 use Stu\Module\Ship\Action\FleetDeactivateWarp\FleetDeactivateWarp;
 use Stu\Module\Ship\Action\HideFleet\HideFleet;
 use Stu\Module\Ship\Action\InterceptShip\InterceptShip;
-use Stu\Module\Ship\Action\JoinFleet\JoinFleetFromNbs;
-use Stu\Module\Ship\Action\JoinFleet\JoinFleetInShiplist;
+use Stu\Module\Ship\Action\JoinFleet\JoinFleet;
+use Stu\Module\Ship\Action\JoinFleet\JoinFleetRequest;
+use Stu\Module\Ship\Action\JoinFleet\JoinFleetRequestInterface;
 use Stu\Module\Ship\Action\LandShuttle\LandShuttle;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleet;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequest;
@@ -212,6 +213,7 @@ return [
     DeleteFleetRequestInterface::class => autowire(DeleteFleetRequest::class),
     RenameFleetRequestInterface::class => autowire(RenameFleetRequest::class),
     LeaveFleetRequestInterface::class => autowire(LeaveFleetRequest::class),
+    JoinFleetRequestInterface::class => autowire(JoinFleetRequest::class),
     ShipLoaderInterface::class => autowire(ShipLoader::class),
     PriorizeFleetRequestInterface::class => autowire(PriorizeFleetRequest::class),
     ReactorUtilInterface::class => autowire(ReactorUtil::class),
@@ -221,8 +223,7 @@ return [
         DeleteFleet::ACTION_IDENTIFIER => autowire(DeleteFleet::class),
         RenameFleet::ACTION_IDENTIFIER => autowire(RenameFleet::class),
         LeaveFleet::ACTION_IDENTIFIER => autowire(LeaveFleet::class),
-        JoinFleetFromNbs::ACTION_IDENTIFIER => autowire(JoinFleetFromNbs::class),
-        JoinFleetInShiplist::ACTION_IDENTIFIER => autowire(JoinFleetInShiplist::class),
+        JoinFleet::ACTION_IDENTIFIER => autowire(JoinFleet::class),
         PriorizeFleet::ACTION_IDENTIFIER => autowire(PriorizeFleet::class),
         ChangeFleetFleader::ACTION_IDENTIFIER => autowire(ChangeFleetFleader::class),
         ActivateAstroLaboratory::ACTION_IDENTIFIER => autowire(ActivateAstroLaboratory::class),

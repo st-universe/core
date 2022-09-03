@@ -60,8 +60,7 @@
                 <span tal:replace="data/getVisibleShipsCount">COUNT</span> Schiffe
                 <tal:block tal:condition="data/showManagement">
                   <tal:block tal:condition="not:SHIP/getFleetId">
-                    (<a href="?B_JOIN_FLEET_NBS=1&id=${SHIP/getId}&fleetid=${data/getId}"
-                      title="Flotte beitreten">+</a>)
+                    (<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/getId}" title="Flotte beitreten">+</a>)
                   </tal:block>
                 </tal:block>
               </td>
@@ -125,8 +124,7 @@
                 <span tal:replace="data/getVisibleShipsCount">COUNT</span> Schiffe
                 <tal:block tal:condition="data/showManagement">
                   <tal:block tal:condition="not:SHIP/getFleetId">
-                    (<a href="?B_JOIN_FLEET_NBS=1&id=${SHIP/getId}&fleetid=${data/getId}"
-                      title="Flotte beitreten">+</a>)
+                    (<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/getId}" title="Flotte beitreten">+</a>)
                   </tal:block>
                 </tal:block>
               </td>
@@ -346,12 +344,11 @@
               </td>
               <td style="width: 20%; text-align: right;" tal:define="availableShips fleet/getAvailableShips">
                 <tal:block tal:condition="availableShips">
-                  <select name="id" style="width: 150px;" id="joinfleetshipselect_${fleet/getId}">
+                  <select name="id" style="width: 150px;">
                     <option tal:repeat="data availableShips" tal:attributes="value data/getId"
                       tal:content="bbcode2txt:data/getName">.</option>
                   </select>
-                  <button onclick="joinFleetInShiplist(${fleet/getId})" value="Schiff hinzufügen"
-                    title="Schiff hinzufügen">
+                  <button type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen" title="Schiff hinzufügen">
                     <img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" />
                   </button>
                 </tal:block>

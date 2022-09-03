@@ -218,11 +218,6 @@ function showFleet(fleetid) {
 	$('fleetuser' + fleetid).hide();
 	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
 }
-function joinFleetInShiplist(fleetid) {
-	shipid = $('joinfleetshipselect_' + fleetid).value;
-
-	ajax_update('nbsfleetform_' + fleetid, 'ship.php?B_JOIN_FLEET=1&id=' + shipid + '&fleetid=' + fleetid);
-}
 function showFightLog() {
 	openPJsWin('fightresult_content', 1);
 	$('fightresult_content').innerHTML = $('fightlog').innerHTML;
