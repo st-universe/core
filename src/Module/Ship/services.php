@@ -170,6 +170,7 @@ use Stu\Module\Ship\View\ShowBeamToColony\ShowBeamToColony;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
+use Stu\Module\Ship\View\ShowInformation\ShowInformation;
 use Stu\Module\Ship\View\ShowRegionInfo\ShowRegionInfo;
 use Stu\Module\Ship\View\ShowRenameCrew\ShowRenameCrew;
 use Stu\Module\Ship\View\ShowRepairOptions\ShowRepairOptions;
@@ -178,6 +179,7 @@ use Stu\Module\Ship\View\ShowSectorScan\ShowSectorScan;
 use Stu\Module\Ship\View\ShowSelfDestruct\ShowSelfDestruct;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\View\ShowShipDetails\ShowShipDetails;
+use Stu\Module\Ship\View\ShowShiplistFleet\ShowShiplistFleet;
 use Stu\Module\Ship\View\ShowShipStorage\ShowShipStorage;
 use Stu\Module\Ship\View\ShowTorpedoTransfer\ShowTorpedoTransfer;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
@@ -343,6 +345,8 @@ return [
         ShowColonization::VIEW_IDENTIFIER => autowire(ShowColonization::class),
         ShowRenameCrew::VIEW_IDENTIFIER => autowire(ShowRenameCrew::class),
         ShowRepairOptions::VIEW_IDENTIFIER => autowire(ShowRepairOptions::class),
+        ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
+        ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
 ];

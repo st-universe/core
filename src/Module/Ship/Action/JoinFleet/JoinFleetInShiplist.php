@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\JoinFleet;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\View\ShowInformation\ShowInformation;
 
 final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionControllerInterface
 {
@@ -15,8 +16,8 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
     {
         $fleet = $this->tryToAddToFleet($game);
 
-        $game->setTemplateVar('fleet', $fleet);
-        $game->setMacroAndTemplate('html/shipmacros.xhtml/shiplist_fleetform', 'html/empty.xhtml');
+        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $game->addExecuteJS(sprintf('refreshFleet(%d);', $fleet->getId()));
     }
 
     public function performSessionCheck(): bool
