@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowShiplistFleet;
 
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -38,6 +39,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
         }
 
         $game->setTemplateVar('fleet', $fleet);
+        $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
         $game->showMacro('html/shipmacros.xhtml/shiplist_fleetform');
     }
 }
