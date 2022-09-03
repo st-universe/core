@@ -942,12 +942,12 @@
   <form action="ship.php" method="post">
     <input type="hidden" name="fleetid" tal:attributes="value FLEET/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-    <select name="id" style="width: 150px;" id="joinfleetshipselect_${fleet/getId}">
+    <select name="id" style="width: 150px;" id="joinfleetshipselect_${FLEET/getId}">
       <option tal:repeat="data AVAILABLE_SHIPS" tal:attributes="value data/getId" tal:content="bbcode2txt:data/getName">
         .
       </option>
     </select>
-    <a href="javascript:void(0);" onclick="joinFleetInShiplist(${fleet/getId});" title="Schiff hinzufügen"><img
+    <a href="javascript:void(0);" onclick="joinFleetInShiplist(${FLEET/getId});" title="Schiff hinzufügen"><img
         src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" /></a>
   </form>
 </metal:block>
