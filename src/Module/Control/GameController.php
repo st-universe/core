@@ -161,19 +161,19 @@ final class GameController implements GameControllerInterface
     public function setMacroAndTemplate($macro, string $tpl): void
     {
         $this->macro = $macro;
-        $this->talPage->setTemplate($tpl);
+        $this->setTemplateFile($tpl);
     }
 
     public function setMacroInAjaxWindow($macro): void
     {
-        $this->setTemplateFile('html/ajaxwindow.xhtml');
         $this->macro = $macro;
+        $this->setTemplateFile('html/ajaxwindow.xhtml');
     }
 
     public function showMacro($macro): void
     {
-        $this->setTemplateFile('html/ajaxempty.xhtml');
         $this->macro = $macro;
+        $this->setTemplateFile('html/ajaxempty.xhtml');
     }
 
     public function getMacro(): string

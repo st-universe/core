@@ -16,7 +16,7 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
         $fleet = $this->tryToAddToFleet($game);
 
         $game->setTemplateVar('fleet', $fleet);
-        $game->showMacro('html/shipmacros.xhtml/shiplist_fleetform');
+        $game->setMacroAndTemplate('html/shipmacros.xhtml/shiplist_fleetform', 'html/empty.xhtml');
     }
 
     public function performSessionCheck(): bool
