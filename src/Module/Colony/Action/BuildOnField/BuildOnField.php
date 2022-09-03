@@ -11,7 +11,7 @@ use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
+use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -65,7 +65,7 @@ final class BuildOnField implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowBuildResult::VIEW_IDENTIFIER);
+        $game->setView(ShowInformation::VIEW_IDENTIFIER);
         $game->addExecuteJS('refreshColony();');
 
         $user = $game->getUser();

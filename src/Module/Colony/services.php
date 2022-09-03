@@ -109,9 +109,6 @@ use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPartRequestInterface;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlansRequest;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlansRequestInterface;
-use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
-use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResultRequest;
-use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResultRequestInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowColony\ShowColonyRequest;
 use Stu\Module\Colony\View\ShowColony\ShowColonyRequestInterface;
@@ -125,6 +122,7 @@ use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequest;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequestInterface;
 use Stu\Module\Colony\View\ShowGiveUp\ShowGiveUp;
+use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Colony\View\ShowManagement\ShowManagement;
 use Stu\Module\Colony\View\ShowManagement\ShowManagementRequest;
 use Stu\Module\Colony\View\ShowManagement\ShowManagementRequestInterface;
@@ -200,7 +198,6 @@ return [
     ShowBuildMenuRequestInterface::class => autowire(ShowBuildMenuRequest::class),
     ShowBuildMenuPartRequestInterface::class => autowire(ShowBuildMenuPartRequest::class),
     ShowBuildPlansRequestInterface::class => autowire(ShowBuildPlansRequest::class),
-    ShowBuildResultRequestInterface::class => autowire(ShowBuildResultRequest::class),
     ShowColonyRequestInterface::class => autowire(ShowColonyRequest::class),
     ShowEpsBarRequestInterface::class => autowire(ShowEpsBarRequest::class),
     ShowFieldRequestInterface::class => autowire(ShowFieldRequest::class),
@@ -284,7 +281,7 @@ return [
         ShowBuildPlans::VIEW_IDENTIFIER => autowire(ShowBuildPlans::class),
         ShowAirfield::VIEW_IDENTIFIER => autowire(ShowAirfield::class),
         ShowBuilding::VIEW_IDENTIFIER => autowire(ShowBuilding::class),
-        ShowBuildResult::VIEW_IDENTIFIER => autowire(ShowBuildResult::class),
+        ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
         ShowSurface::VIEW_IDENTIFIER => autowire(ShowSurface::class),
         ShowOrbitShiplist::VIEW_IDENTIFIER => autowire(ShowOrbitShiplist::class),
         ShowBeamTo::VIEW_IDENTIFIER => autowire(ShowBeamTo::class),
