@@ -35,6 +35,6 @@ final class ShowBuildResult implements ViewControllerInterface
         $game->showMacro('html/sitemacros.xhtml/systeminformation');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->addExecuteJS('refreshColony');
+        $game->addExecuteJS('refreshColony();');
     }
 }
