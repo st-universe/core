@@ -293,7 +293,8 @@
           onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag2')">
           <img src="assets/buttons/fl_flag2.png" name="fleet_${ship/getId}" title="Flotte auflösen" />
         </a>
-        <a href="?B_LEAVE_FLEET=1&id=${ship/getId}&sstr=${THIS/getSessionString}" tal:condition="not:ship/isFleetLeader"
+        <a href="javascript:void(0);" tal:condition="not:ship/isFleetLeader"
+          onclick="leaveFleetInShiplist(${ship/getId}, ${THIS/getSessionString});"
           onmouseover="cp('fleet_${ship/getId}','buttons/fl_raus2')"
           onmouseout="cp('fleet_${ship/getId}','buttons/fl_raus1')">
           <img src="assets/buttons/fl_raus1.png" name="fleet_${ship/getId}" title="Flotte verlassen" />

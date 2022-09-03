@@ -230,6 +230,16 @@ function joinFleetInShiplist(fleetid) {
 		}
 	});
 }
+function leaveFleetInShiplist(shipid, sessionstring) {
+	new Ajax.Updater('result', 'ship.php', {
+		method: 'get',
+		parameters: 'B_LEAVE_FLEET=1&id=' + shipid + '&sstr=' + sessionstring,
+		evalScripts: true,
+		onComplete: function (transport) {
+			$('result').show();
+		}
+	});
+}
 function refreshShiplistFleet(fleetid) {
 	ajax_update('nbsfleetform_' + fleetid, 'ship.php?SHOW_SHIPLIST_FLEET=1&fleetid=' + fleetid);
 }

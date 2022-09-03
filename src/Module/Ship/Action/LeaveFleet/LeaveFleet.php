@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\LeaveFleet;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowInformation\ShowInformation;
 
 final class LeaveFleet implements ActionControllerInterface
 {
@@ -34,6 +35,10 @@ final class LeaveFleet implements ActionControllerInterface
         if ($ship->isFleetLeader()) {
             return;
         }
+
+        $game->setView(ShowInformation::VIEW_IDENTIFIER);
+        $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', $ship->getFleetId()));
+
         $ship->getFleet()->getShips()->removeElement($ship);
         $ship->setFleet(null);
 
