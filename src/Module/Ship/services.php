@@ -163,6 +163,7 @@ use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
 use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
+use Stu\Module\Ship\View\ShowAvailableShips\ShowAvailableShips;
 use Stu\Module\Ship\View\ShowBeamFrom\ShowBeamFrom;
 use Stu\Module\Ship\View\ShowBeamFromColony\ShowBeamFromColony;
 use Stu\Module\Ship\View\ShowBeamTo\ShowBeamTo;
@@ -347,6 +348,7 @@ return [
         ShowRepairOptions::VIEW_IDENTIFIER => autowire(ShowRepairOptions::class),
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
         ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),
+        ShowAvailableShips::VIEW_IDENTIFIER => autowire(ShowAvailableShips::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
 ];

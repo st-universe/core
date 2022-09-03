@@ -43,6 +43,12 @@ function showBFromWindow(target) {
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
 }
 
+function showAvailableShips(fleetid) {
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'ship.php?SHOW_AVAILABLE_SHIPS=1&fleetid=' + fleetid);
+}
+
 function triggerBeamTo(target) {
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
 }

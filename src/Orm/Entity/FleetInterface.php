@@ -25,8 +25,6 @@ interface FleetInterface
 
     public function setLeadShip(ShipInterface $ship): FleetInterface;
 
-    public function getAvailableShips(): iterable;
-
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): FleetInterface;

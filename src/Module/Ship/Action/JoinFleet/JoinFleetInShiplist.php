@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\JoinFleet;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\View\ShowInformation\ShowInformation;
@@ -14,10 +15,10 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
 
     public function handle(GameControllerInterface $game): void
     {
-        $fleet = $this->tryToAddToFleet($game);
+        $this->tryToAddToFleet($game);
 
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', $fleet->getId()));
+        $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', request::getIntFatal('fleetid')));
     }
 
     public function performSessionCheck(): bool

@@ -10,7 +10,6 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 abstract class AbstractJoinFleet
@@ -31,7 +30,7 @@ abstract class AbstractJoinFleet
         $this->positionChecker = $positionChecker;
     }
 
-    public function tryToAddToFleet(GameControllerInterface $game): FleetInterface
+    public function tryToAddToFleet(GameControllerInterface $game): void
     {
         $shipId = request::getIntFatal('id');
         $fleetId = request::getIntFatal('fleetid');
@@ -43,24 +42,32 @@ abstract class AbstractJoinFleet
             throw new AccessViolation();
         }
 
+        if ($ship->getFleet() !== null) {
+            $game->addInformation(
+                _('Das Schiff ist bereits in einer Flotte.'),
+            );
+
+            return;
+        }
+
         if ($fleet->getLeadShip()->getId() === $ship->getId()) {
-            return $fleet;
+            return;
         }
         if (!$this->positionChecker->checkPosition($fleet->getLeadShip(), $ship)) {
-            return $fleet;
+            return;
         }
         if ($ship->isTractored()) {
             $game->addInformation(
                 _('Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
             );
-            return $fleet;
+            return;
         }
         if ($fleet->getCrewSum() + $ship->getBuildplan()->getCrew() > GameEnum::CREW_PER_FLEET) {
             $game->addInformation(sprintf(
                 _('Es sind maximal %d Crew pro Flotte möglich'),
                 GameEnum::CREW_PER_FLEET
             ));
-            return $fleet;
+            return;
         }
         $ship->setFleet($fleet);
 
@@ -73,7 +80,5 @@ abstract class AbstractJoinFleet
             $ship->getName(),
             $fleet->getName()
         ));
-
-        return $fleet;
     }
 }
