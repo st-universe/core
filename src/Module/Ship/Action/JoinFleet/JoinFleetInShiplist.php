@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Action\JoinFleet;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Ship\View\ShowInformation\ShowInformation;
 
 final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionControllerInterface
@@ -16,13 +15,7 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
 
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
-
         $chosenShipIds = request::postArray('chosen');
-
-        $this->loggerUtil->log(print_r($chosenShipIds, true));
 
         foreach ($chosenShipIds as $shipId) {
             $ship = $this->shipLoader->getByIdAndUser((int)$shipId, $game->getUser()->getId());
