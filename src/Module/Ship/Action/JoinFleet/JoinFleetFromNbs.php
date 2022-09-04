@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\JoinFleet;
 
+use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -14,7 +15,10 @@ final class JoinFleetFromNbs extends AbstractJoinFleet implements ActionControll
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->tryToAddToFleet($game);
+        $shipId = request::getIntFatal('id');
+        $ship = $this->shipLoader->getByIdAndUser($shipId, $game->getUser()->getId());
+
+        $this->tryToAddToFleet($ship, $game);
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }

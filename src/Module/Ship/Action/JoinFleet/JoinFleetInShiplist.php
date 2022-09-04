@@ -15,7 +15,11 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->tryToAddToFleet($game);
+        $chosenShipIds = request::postArray('chosen');
+        foreach ($chosenShipIds as $shipId) {
+            $ship = $this->shipLoader->getByIdAndUser($shipId, $game->getUser()->getId());
+            $this->tryToAddToFleet($ship, $game);
+        }
 
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
         $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', request::getIntFatal('fleetid')));
@@ -24,6 +28,6 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
 
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

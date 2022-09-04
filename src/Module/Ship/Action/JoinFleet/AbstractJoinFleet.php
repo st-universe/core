@@ -10,13 +10,14 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 abstract class AbstractJoinFleet
 {
     private FleetRepositoryInterface $fleetRepository;
 
-    private ShipLoaderInterface $shipLoader;
+    protected ShipLoaderInterface $shipLoader;
 
     private PositionCheckerInterface $positionChecker;
 
@@ -30,12 +31,9 @@ abstract class AbstractJoinFleet
         $this->positionChecker = $positionChecker;
     }
 
-    public function tryToAddToFleet(GameControllerInterface $game): void
+    public function tryToAddToFleet(ShipInterface $ship, GameControllerInterface $game): void
     {
-        $shipId = request::getIntFatal('id');
         $fleetId = request::getIntFatal('fleetid');
-
-        $ship = $this->shipLoader->getByIdAndUser($shipId, $game->getUser()->getId());
         $fleet = $this->fleetRepository->find($fleetId);
 
         if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
@@ -43,10 +41,7 @@ abstract class AbstractJoinFleet
         }
 
         if ($ship->getFleet() !== null) {
-            $game->addInformation(
-                _('Das Schiff ist bereits in einer Flotte.'),
-            );
-
+            $game->addInformationf(_('%s: Das Schiff ist bereits in einer Flotte.', $ship->getName()));
             return;
         }
 
@@ -57,14 +52,15 @@ abstract class AbstractJoinFleet
             return;
         }
         if ($ship->isTractored()) {
-            $game->addInformation(
-                _('Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
+            $game->addInformationf(
+                _('%s: Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.', $ship->getName()),
             );
             return;
         }
         if ($fleet->getCrewSum() + $ship->getBuildplan()->getCrew() > GameEnum::CREW_PER_FLEET) {
             $game->addInformation(sprintf(
-                _('Es sind maximal %d Crew pro Flotte möglich'),
+                _('%s: Es sind maximal %d Crew pro Flotte möglich'),
+                $ship->getName(),
                 GameEnum::CREW_PER_FLEET
             ));
             return;
