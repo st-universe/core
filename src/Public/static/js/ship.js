@@ -239,7 +239,7 @@ function joinFleetInShiplist(fleetid) {
 		parameters: {
 			'B_JOIN_FLEET': 1,
 			'fleetid': fleetid,
-			'chosen': chosenShipIdArray
+			'chosen[]': chosenShipIdArray
 		},
 		evalScripts: true,
 		onComplete: function (transport) {
