@@ -33,7 +33,7 @@ abstract class AbstractJoinFleet
 
     public function tryToAddToFleet(ShipInterface $ship, GameControllerInterface $game): void
     {
-        $fleetId = request::getIntFatal('fleetid');
+        $fleetId = request::indInt('fleetid');
         $fleet = $this->fleetRepository->find($fleetId);
 
         if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {

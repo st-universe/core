@@ -225,11 +225,9 @@ function showFleet(fleetid) {
 	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
 }
 function joinFleetInShiplist(fleetid) {
-	shipid = $('joinfleetshipselect_' + fleetid).value;
-
 	new Ajax.Updater('result', 'ship.php', {
-		method: 'get',
-		parameters: 'B_JOIN_FLEET=1&id=' + shipid + '&fleetid=' + fleetid,
+		method: 'post',
+		parameters: 'B_JOIN_FLEET=1&fleetid=' + fleetid,
 		evalScripts: true,
 		onComplete: function (transport) {
 			$('result').show();
