@@ -18,15 +18,7 @@
 			</tal:block>
 
 			<tal:block tal:condition="SHIPS">
-				<table class="tcal">
-					<tr>
-						<td colspan="11">Einzelschiffe</td>
-					</tr>
-					<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
-					<tal:block tal:repeat="ship SHIPS">
-						<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
-					</tal:block>
-				</table>
+				<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_singles" />
 			</tal:block>
 		</tal:block>
 	</metal:macro>

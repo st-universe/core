@@ -311,7 +311,7 @@
   </tr>
 </metal:macro>
 <metal:macro metal:define-macro="shiplist_fleetform">
-  <form action="ship.php" method="post" id="nbsfleetform_${fleet/getId}">
+  <form action="ship.php" method="post" id="shiplist_fleet_form_${fleet/getId}">
     <input type="hidden" name="fleetid" value="runtime" tal:attributes="value fleet/getId" />
     <table class="tcal">
       <tr>
@@ -362,6 +362,17 @@
       </tal:block>
     </table>
   </form>
+</metal:macro>
+<metal:macro metal:define-macro="shiplist_singles">
+  <table class="tcal" id="shiplist_singles_table">
+    <tr>
+      <td colspan="11">Einzelschiffe</td>
+    </tr>
+    <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
+    <tal:block tal:repeat="ship SHIPS">
+      <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
+    </tal:block>
+  </table>
 </metal:macro>
 <metal:macro metal:define-macro="shipimage">
   <tal:block tal:condition="ship/isTrumfield">

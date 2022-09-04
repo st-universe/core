@@ -38,6 +38,7 @@ final class LeaveFleet implements ActionControllerInterface
 
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
         $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', $ship->getFleetId()));
+        $game->addExecuteJS('refreshShiplistSingles();');
 
         $ship->getFleet()->getShips()->removeElement($ship);
         $ship->setFleet(null);

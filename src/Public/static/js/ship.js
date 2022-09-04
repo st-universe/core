@@ -249,7 +249,10 @@ function leaveFleetInShiplist(shipid, sessionstring) {
 	});
 }
 function refreshShiplistFleet(fleetid) {
-	ajax_update('nbsfleetform_' + fleetid, 'ship.php?SHOW_SHIPLIST_FLEET=1&fleetid=' + fleetid);
+	ajax_update('shiplist_fleet_form_' + fleetid, 'ship.php?SHOW_SHIPLIST_FLEET=1&fleetid=' + fleetid);
+}
+function refreshShiplistSingles() {
+	ajax_update('shiplist_singles_table', 'ship.php?SHOW_SHIPLIST_SINGLES=1');
 }
 function showFightLog() {
 	openPJsWin('fightresult_content', 1);

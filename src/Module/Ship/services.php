@@ -181,6 +181,7 @@ use Stu\Module\Ship\View\ShowSelfDestruct\ShowSelfDestruct;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\View\ShowShipDetails\ShowShipDetails;
 use Stu\Module\Ship\View\ShowShiplistFleet\ShowShiplistFleet;
+use Stu\Module\Ship\View\ShowShiplistSingles\ShowShiplistSingles;
 use Stu\Module\Ship\View\ShowShipStorage\ShowShipStorage;
 use Stu\Module\Ship\View\ShowTorpedoTransfer\ShowTorpedoTransfer;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
@@ -348,6 +349,7 @@ return [
         ShowRepairOptions::VIEW_IDENTIFIER => autowire(ShowRepairOptions::class),
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
         ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),
+        ShowShiplistSingles::VIEW_IDENTIFIER => autowire(ShowShiplistSingles::class),
         ShowAvailableShips::VIEW_IDENTIFIER => autowire(ShowAvailableShips::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
