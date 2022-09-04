@@ -955,7 +955,7 @@
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <table class="tcal">
       <tr tal:repeat="ship AVAILABLE_SHIPS">
-        <td><input type="radio" name="chosen[]" value="${ship/getId}" /><span
+        <td><input type="checkbox" name="chosen[]" value="${ship/getId}" /><span
             tal:content="structure bbcode:ship/getName">NAME</span></td>
       </tr>
     </table>
