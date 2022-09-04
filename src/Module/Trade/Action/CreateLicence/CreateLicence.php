@@ -17,17 +17,17 @@ final class CreateLicence implements ActionControllerInterface
 
     private CreateLicenceRequestInterface $createLicenceRequest;
 
-    private TradeCreateLicenceRepositoryInterface $tradeLicenceRepository;
+    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
 
     private TradePostRepositoryInterface $tradePostRepository;
 
     public function __construct(
         CreateLicenceRequestInterface $createLicenceRequest,
-        TradeCreateLicenceRepositoryInterface $tradeLicenceRepository,
+        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
         TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->createLicenceRequest = $createLicenceRequest;
-        $this->tradeLicenceRepository = $tradeLicenceRepository;
+        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
         $this->tradePostRepository = $tradePostRepository;
     }
 
@@ -38,10 +38,10 @@ final class CreateLicence implements ActionControllerInterface
         $user = $game->getUser();
 
         $posts_id = $this->createLicenceRequest->getTradePostId();
-        if ($posts_id === null) {
-            throw new AccessViolation(sprintf("Tradepost not existent! Fool: %d", $posts_id));
-        }
         $tradepost = $this->tradePostRepository->find($posts_id);
+        if ($tradepost === null) {
+            throw new AccessViolation(sprintf("Tradepost with ID %d not existent! Fool: %d", $posts_id, $user->getId()));
+        }
         $tradepost_user = $tradepost->getShip()->getUser();
         if ($tradepost_user !== $user) {
             throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $user->getId()));
@@ -50,7 +50,6 @@ final class CreateLicence implements ActionControllerInterface
         $goods_id = $this->createLicenceRequest->getWantedLicenceGoodId();
         $giveAmount = $this->createLicenceRequest->getWantedLicenceAmount();
         $days = $this->createLicenceRequest->getLicenceDays();
-
 
         if ($days < 1 || $days > 365) {
             $game->addInformation("Die Lizenzdauer muss zwischen 1 und 365 Tagen liegen");
@@ -62,14 +61,14 @@ final class CreateLicence implements ActionControllerInterface
             return;
         }
 
-        $setLicence = $this->tradeLicenceRepository->prototype();
+        $setLicence = $this->tradeCreateLicenceRepository->prototype();
         $setLicence->setTradePostId((int) $posts_id);
         $setLicence->setDate(time());
         $setLicence->setGoodsId((int) $goods_id);
         $setLicence->setAmount((int) $giveAmount);
         $setLicence->setDays($days);
 
-        $this->tradeLicenceRepository->save($setLicence);
+        $this->tradeCreateLicenceRepository->save($setLicence);
 
 
         $game->addInformation('Handelslizenz geändert');
