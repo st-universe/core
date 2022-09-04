@@ -49,6 +49,13 @@ class TradeLicenceCreation implements TradeLicenceCreationInterface
         return $this->id;
     }
 
+    public function setTradepost(TradePostInterface $tradepost): TradeLicenceCreationInterface
+    {
+        $this->tradePost = $tradepost;
+
+        return $this;
+    }
+
     public function getTradePostId(): int
     {
         return $this->posts_id;

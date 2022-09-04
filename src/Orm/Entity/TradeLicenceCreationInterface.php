@@ -7,6 +7,8 @@ interface TradeLicenceCreationInterface
 
     public function getId(): int;
 
+    public function setTradepost(TradePostInterface $tradepost): TradeLicenceCreationInterface;
+
     public function getTradePostId(): int;
 
     public function setTradePostId(int $posts_id): TradeLicenceCreationInterface;
