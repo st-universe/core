@@ -9,6 +9,8 @@ use Stu\Exception\AccessViolation;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -21,14 +23,18 @@ abstract class AbstractJoinFleet
 
     private PositionCheckerInterface $positionChecker;
 
+    protected LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
         ShipLoaderInterface $shipLoader,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->shipLoader = $shipLoader;
         $this->positionChecker = $positionChecker;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function tryToAddToFleet(ShipInterface $ship, GameControllerInterface $game): void
