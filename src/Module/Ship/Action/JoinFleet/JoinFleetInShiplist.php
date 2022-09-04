@@ -22,7 +22,7 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
         }
 
         $game->setView(ShowInformation::VIEW_IDENTIFIER);
-        $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', request::getIntFatal('fleetid')));
+        $game->addExecuteJS(sprintf('refreshShiplistFleet(%d);', request::postIntFatal('fleetid')));
         $game->addExecuteJS('refreshShiplistSingles();');
     }
 
