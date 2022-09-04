@@ -25,7 +25,7 @@ final class JoinFleetInShiplist extends AbstractJoinFleet implements ActionContr
         $this->loggerUtil->log(print_r($chosenShipIds, true));
 
         foreach ($chosenShipIds as $shipId) {
-            $ship = $this->shipLoader->getByIdAndUser($shipId, $game->getUser()->getId());
+            $ship = $this->shipLoader->getByIdAndUser((int)$shipId, $game->getUser()->getId());
             $this->tryToAddToFleet($ship, $game);
         }
 
