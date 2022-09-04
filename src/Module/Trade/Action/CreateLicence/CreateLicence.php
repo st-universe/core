@@ -40,17 +40,13 @@ final class CreateLicence implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser()->getId() === 11) {
-            $this->loggerUtil->init('trade', LoggerEnum::LEVEL_ERROR);
-        }
+        //$this->loggerUtil->init('trade', LoggerEnum::LEVEL_ERROR);
 
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
 
         $user = $game->getUser();
 
         $posts_id = $this->createLicenceRequest->getTradePostId();
-
-        $this->loggerUtil->log(sprintf('posts_id: %d', $posts_id));
 
         $tradepost = $this->tradePostRepository->find($posts_id);
         if ($tradepost === null) {
@@ -77,7 +73,6 @@ final class CreateLicence implements ActionControllerInterface
 
         $setLicence = $this->tradeCreateLicenceRepository->prototype();
         $setLicence->setTradepost($tradepost);
-
         $setLicence->setDate(time());
         $setLicence->setGoodsId((int) $goods_id);
         $setLicence->setAmount((int) $giveAmount);
