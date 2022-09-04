@@ -225,9 +225,22 @@ function showFleet(fleetid) {
 	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
 }
 function joinFleetInShiplist(fleetid) {
+
+	chosenShipIdArray = [];
+
+	Element.select($('availableShipsTable'), '.chosenShipsCheckbox').each(function (elem) {
+		if (elem.checked) {
+			chosenShipIdArray.push(elem.value);
+		}
+	});
+
 	new Ajax.Updater('result', 'ship.php', {
 		method: 'post',
-		parameters: 'B_JOIN_FLEET=1&fleetid=' + fleetid,
+		parameters: {
+			'B_JOIN_FLEET': 1,
+			'fleetid': fleetid,
+			'chosen': chosenShipIdArray
+		},
 		evalScripts: true,
 		onComplete: function (transport) {
 			$('result').show();

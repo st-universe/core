@@ -953,9 +953,12 @@
   <form action="ship.php" method="post">
     <input type="hidden" name="fleetid" tal:attributes="value FLEET/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-    <table class="tcal">
+    <table class="tcal" id="availableShipsTable">
       <tr tal:repeat="ship AVAILABLE_SHIPS">
-        <td><input type="checkbox" name="chosen[]" value="${ship/getId}" /><span
+        <td>
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+        </td>
+        <td><input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="${ship/getId}" /><span
             tal:content="structure bbcode:ship/getName">NAME</span></td>
       </tr>
     </table>
