@@ -7,6 +7,9 @@ namespace Stu\Module\Trade\Action\CreateLicence;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -21,23 +24,34 @@ final class CreateLicence implements ActionControllerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         CreateLicenceRequestInterface $createLicenceRequest,
         TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->createLicenceRequest = $createLicenceRequest;
         $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
         $this->tradePostRepository = $tradePostRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        if ($game->getUser()->getId() === 11) {
+            $this->loggerUtil->init('trade', LoggerEnum::LEVEL_ERROR);
+        }
+
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
 
         $user = $game->getUser();
 
         $posts_id = $this->createLicenceRequest->getTradePostId();
+
+        $this->loggerUtil->log(sprintf('posts_id: %d', $posts_id));
+
         $tradepost = $this->tradePostRepository->find($posts_id);
         if ($tradepost === null) {
             throw new AccessViolation(sprintf("Tradepost with ID %d not existent! Fool: %d", $posts_id, $user->getId()));
