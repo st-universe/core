@@ -228,7 +228,7 @@ function toggleFleet(fleetid) {
 	var x = document.getElementById('fleetbody_' + fleetid);
 
 	if (x.style.display === "none") {
-		x.style.display = "contents";
+		x.style.display = "";
 	} else {
 		x.style.display = "none";
 	}
