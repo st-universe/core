@@ -320,7 +320,9 @@
             <tr>
               <td style="width: 35%;">
                 <div style="display: table-cell;">
-                  <img src="assets/buttons/fleet.png" />
+                  <a href="javascript:void(0);" onclick="toggleFleet(${fleet/getId});" title="zuklappen/aufklappen">
+                    <img src="assets/buttons/fleet.png" />
+                  </a>
                 </div>
                 <div style="display: table-cell; vertical-align:middle;">
                   <span tal:replace="structure bbcode:fleet/getName">NAME</span>
@@ -356,6 +358,8 @@
           </table>
         </td>
       </tr>
+    </table>
+    <table tal:attributes="style string:${fleet/getHiddenStyle};" class="tcal" id="fleetbody_${fleet/getId}">
       <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
       <tal:block tal:repeat="ship fleet/getShips">
         <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />

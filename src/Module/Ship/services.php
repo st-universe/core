@@ -133,6 +133,7 @@ use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
 use Stu\Module\Ship\Action\Shutdown\Shutdown;
 use Stu\Module\Ship\Action\StartShuttle\StartShuttle;
 use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
+use Stu\Module\Ship\Action\ToggleFleetVisibility\ToggleFleetVisibility;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
@@ -319,7 +320,8 @@ return [
         Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class),
         SetLSSModeNormal::ACTION_IDENTIFIER => autowire(SetLSSModeNormal::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
-        Transwarp::ACTION_IDENTIFIER => autowire(Transwarp::class)
+        Transwarp::ACTION_IDENTIFIER => autowire(Transwarp::class),
+        ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

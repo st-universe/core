@@ -46,4 +46,6 @@ interface FleetInterface
     public function setIsFleetFixed(bool $isFixed): FleetInterface;
 
     public function getCrewSum(): int;
+
+    public function getHiddenStyle(): string;
 }

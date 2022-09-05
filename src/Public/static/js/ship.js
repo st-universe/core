@@ -224,6 +224,17 @@ function showFleet(fleetid) {
 	$('fleetuser' + fleetid).hide();
 	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
 }
+function toggleFleet(fleetid) {
+	var x = document.getElementById('fleetbody_' + fleetid);
+
+	if (x.style.display === "none") {
+		x.style.display = "contents";
+	} else {
+		x.style.display = "none";
+	}
+
+	ajaxrequest('ship.php?B_TOGGLE_FLEET=1&fleet=' + fleetid);
+}
 function joinFleetInShiplist(fleetid) {
 
 	chosenShipIdArray = [];

@@ -6,7 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Lib\SessionInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\FleetRepository")
@@ -189,5 +189,13 @@ class Fleet implements FleetInterface
             },
             0
         );
+    }
+
+    public function getHiddenStyle(): string
+    {
+        // @todo refactor
+        global $container;
+
+        return $container->get(SessionInterface::class)->hasSessionValue('hiddenshiplistfleets', $this->getId()) ? 'display: none' : '';
     }
 }
