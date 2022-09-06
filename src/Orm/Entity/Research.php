@@ -47,6 +47,9 @@ class Research implements ResearchInterface
     /** @Column(type="integer", nullable=true) * */
     private $reward_buildplan_id;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $needed_award;
+
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
