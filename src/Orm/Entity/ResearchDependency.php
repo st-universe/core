@@ -26,8 +26,8 @@ class ResearchDependency implements ResearchDependencyInterface
     /** @Column(type="smallint") * */
     private $mode;
 
-    /** @Column(type="boolean", nullable=true) */
-    private $is_award_dependency; // = false;
+    /** @Column(type="boolean") */
+    private $is_award_dependency = false;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
