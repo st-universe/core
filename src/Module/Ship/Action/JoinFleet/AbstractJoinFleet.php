@@ -47,7 +47,7 @@ abstract class AbstractJoinFleet
         }
 
         if ($ship->getFleet() !== null) {
-            $game->addInformationf(_('%s: Das Schiff ist bereits in einer Flotte.', $ship->getName()));
+            $game->addInformationf(_('%s: Das Schiff ist bereits in einer Flotte.'), $ship->getName());
             return;
         }
 
@@ -59,7 +59,8 @@ abstract class AbstractJoinFleet
         }
         if ($ship->isTractored()) {
             $game->addInformationf(
-                _('%s: Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.', $ship->getName()),
+                _('%s: Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
+                $ship->getName(),
             );
             return;
         }
