@@ -51,40 +51,30 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         $result = $this->researchRepository->getAvailableResearch($user->getId());
         $list_result = [];
 
-        $dependencies = [];
-        $dependencies_result = $this->researchDependencyRepository->getByMode(
-            [ResearchEnum::RESEARCH_MODE_REQUIRE, ResearchEnum::RESEARCH_MODE_REQUIRE_SOME]
-        );
-        $excludes = [];
-        $exclude_result = $this->researchDependencyRepository->getByMode([ResearchEnum::RESEARCH_MODE_EXCLUDE]);
+        //load dependencies
+        $dependencies = $this->loadDependencies();
 
-        foreach ($dependencies_result as $dependency) {
-            $research_id = $dependency->getResearchId();
-            if (array_key_exists($research_id, $dependencies) === false) {
-                $dependencies[$research_id] = [];
-            }
-            $dependencies[$research_id][] = $dependency;
-        }
-        foreach ($exclude_result as $dependency) {
-            $research_id = $dependency->getDependsOn();
-            if (array_key_exists($research_id, $excludes) === false) {
-                $excludes[$research_id] = [];
-            }
-            $excludes[$research_id][] = $dependency;
-        }
+        //load excludes
+        $excludes = $this->loadExcludes();
 
+        // calculate possible research items
         foreach ($result as $obj) {
             $key = $obj->getId();
             if (isset($excludes[$key])) {
                 foreach ($excludes[$key] as $exclude) {
                     if (
-                    in_array($exclude->getResearchId(), $finished_list)
+                        in_array($exclude->getResearchId(), $finished_list)
                     ) {
                         continue 2;
                     }
                 }
             }
             if (!isset($dependencies[$key])) {
+                if ($obj->getNeededAward() !== null) {
+                    if (!$user->getAwards()->containsKey($obj->getNeededAward())) {
+                        continue;
+                    }
+                }
                 $list_result[$key] = $obj;
                 continue;
             }
@@ -124,6 +114,41 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         }
 
         return $list_result;
+    }
+
+    private function loadDependencies(): array
+    {
+        $dependencies = [];
+
+        $dependencies_result = $this->researchDependencyRepository->getByMode(
+            [ResearchEnum::RESEARCH_MODE_REQUIRE, ResearchEnum::RESEARCH_MODE_REQUIRE_SOME]
+        );
+
+        foreach ($dependencies_result as $dependency) {
+            $research_id = $dependency->getResearchId();
+            if (array_key_exists($research_id, $dependencies) === false) {
+                $dependencies[$research_id] = [];
+            }
+            $dependencies[$research_id][] = $dependency;
+        }
+
+        return $dependencies;
+    }
+
+    private function loadExcludes(): array
+    {
+        $excludes = [];
+        $exclude_result = $this->researchDependencyRepository->getByMode([ResearchEnum::RESEARCH_MODE_EXCLUDE]);
+
+        foreach ($exclude_result as $dependency) {
+            $research_id = $dependency->getDependsOn();
+            if (array_key_exists($research_id, $excludes) === false) {
+                $excludes[$research_id] = [];
+            }
+            $excludes[$research_id][] = $dependency;
+        }
+
+        return $excludes;
     }
 
     public function getFinishedResearchList(UserInterface $user): array
