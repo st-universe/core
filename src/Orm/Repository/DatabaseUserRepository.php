@@ -90,7 +90,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
                     FROM %s de
                     WHERE de.category_id = :categoryId
                     AND NOT EXISTS
-                        (SELECT *
+                        (SELECT du.id
                         FROM %s du
                         WHERE du.database_id = de.id
                         AND du.user_id = :userId)',
