@@ -20,4 +20,6 @@ interface DatabaseUserRepositoryInterface extends ObjectRepository
     public function getTopList(): array;
 
     public function getCountForUser(int $userId): int;
+
+    public function hasUserCompletedCategory(int $userId, int $categoryId): bool;
 }

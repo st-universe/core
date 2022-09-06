@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\DatabaseUserInterface;
 
@@ -78,5 +79,29 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
                 'userId' => $userId
             ])
             ->getSingleScalarResult();
+    }
+
+    public function hasUserCompletedCategory(int $userId, int $categoryId): bool
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(de.id)
+                    FROM %s de
+                    WHERE de.category_id = :categoryId
+                    AND NOT EXISTS
+                        (SELECT *
+                        FROM %s du
+                        WHERE du.database_id = de.id
+                        AND du.user_id = :userId)',
+                    DatabaseEntry::class,
+                    DatabaseUser::class
+                )
+            )
+            ->setParameters([
+                'userId' => $userId,
+                'categoryId' => $categoryId
+            ])
+            ->getSingleScalarResult() == 0;
     }
 }
