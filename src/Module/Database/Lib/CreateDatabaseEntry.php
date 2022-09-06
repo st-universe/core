@@ -46,7 +46,9 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
             $this->databaseUserRepository->save($userEntry);
         }
 
-        $this->checkForCompletion($user, $databaseEntry->getCategory()->getId());
+        if ($user->getId() > 100) {
+            $this->checkForCompletion($user, $databaseEntry->getCategory()->getId());
+        }
 
         return $databaseEntry;
     }

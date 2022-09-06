@@ -45,8 +45,6 @@ final class UserAwardEnum
 
     public const ADVENT = 19;
 
-    public const COMPLETED_ASTRO = 20;
-
     public const FINDING_CAPTAIN = 100;
 
     public static function getDescription(int $awardType): string
@@ -81,7 +79,7 @@ final class UserAwardEnum
             case UserAwardEnum::BORG_FIGHT:
                 return _("Der Spieler hat sich den Borg im Kampf gestellt");
             case UserAwardEnum::INTERSTELLAR_RESEARCH:
-                return _("Der Spieler hat Einblicke in die Geheimnisse des Weltalls gewonnen");
+                return _("Der Spieler hat sämtliche Sternensysteme kartographiert");
             case UserAwardEnum::SPACECRAFT:
                 return _("Der Spieler hat die Raumfahrt gemeistert");
             case UserAwardEnum::IMPORTANT_ROLE:
@@ -90,8 +88,6 @@ final class UserAwardEnum
                 return _("Der Spieler hat an der Erforschung einer aquatischen Welt teilgenommen");
             case UserAwardEnum::ADVENT:
                 return _("Der Spieler hat an dem Weihnachtskalender teilgenommen");
-            case UserAwardEnum::COMPLETED_ASTRO:
-                return _("Der Spieler hat sämtliche Sternensysteme kartographiert");
             case UserAwardEnum::FINDING_CAPTAIN:
                 return _("Der Spieler hatte im Jahr 2392 Probleme den ranghöchsten Offizier zu finden");
         }

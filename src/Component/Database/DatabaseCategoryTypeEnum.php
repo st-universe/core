@@ -18,5 +18,5 @@ final class DatabaseCategoryTypeEnum
     public const DATABASE_CATEGORY_STARSYSTEM = 7;
     public const DATABASE_CATEGORY_STATIONRUMP = 9;
 
-    public const CATEGORY_TO_AWARD = [self::DATABASE_CATEGORY_STARSYSTEM => UserAwardEnum::COMPLETED_ASTRO];
+    public const CATEGORY_TO_AWARD = [self::DATABASE_CATEGORY_STARSYSTEM => UserAwardEnum::INTERSTELLAR_RESEARCH];
 }
