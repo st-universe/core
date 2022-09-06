@@ -1145,7 +1145,10 @@
 					</tr>
 					<tr>
 						<td rowspan="2" tal:define="ship SHIP" style="vertical-align: middle; text-align: center;">
-							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+							<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);"
+								title="Lagerraum anzeigen">
+								<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+							</a>
 						</td>
 						<td style="text-align: center;">
 							<a href="javascript:void(0);" onclick="showALvlWindow();"><img
