@@ -59,6 +59,14 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
         // calculate possible research items
         foreach ($result as $obj) {
+
+            // check for existent user award
+            if ($obj->getNeededAward() !== null) {
+                if (!$user->getAwards()->containsKey($obj->getNeededAward())) {
+                    continue;
+                }
+            }
+
             $key = $obj->getId();
             if (isset($excludes[$key])) {
                 foreach ($excludes[$key] as $exclude) {
@@ -70,11 +78,6 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                 }
             }
             if (!isset($dependencies[$key])) {
-                if ($obj->getNeededAward() !== null) {
-                    if (!$user->getAwards()->containsKey($obj->getNeededAward())) {
-                        continue;
-                    }
-                }
                 $list_result[$key] = $obj;
                 continue;
             }
@@ -100,6 +103,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                     }
                 }
             }
+
             $list_result[$key] = $obj;
         }
 
