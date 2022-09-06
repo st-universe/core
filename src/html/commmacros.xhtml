@@ -3,7 +3,7 @@
   <script language="Javascript">
     var sstr = '${THIS/getSessionString}';
   </script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/comm.js">< !--stuniverse --></script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/comm.js"></script>
 </metal:block>
 
 <metal:macro metal:define-macro="knnavigation">
@@ -142,10 +142,10 @@
 
 <tal:block metal:define-macro="catsortjs">
   <script type="text/javascript" defer="defer">
-      Sortable.create('catlist', {
-        tag: 'li',
-        onUpdate: updateCategoryOrder,
-      });
+    Sortable.create('catlist', {
+      tag: 'li',
+      onUpdate: updateCategoryOrder,
+    });
   </script>
 </tal:block>
 

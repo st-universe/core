@@ -11,7 +11,7 @@
 			</tr>
 		</table>
 		<tal:block tal:condition="SHIPS_AVAILABLE">
-			<script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js">< !--stuniverse --></script>
+			<script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js"></script>
 			<tal:block tal:repeat="fleet FLEETS">
 				<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_fleetform" />
 				<br />
