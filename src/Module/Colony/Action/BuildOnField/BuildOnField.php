@@ -13,6 +13,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Orm\Entity\BuildingCostInterface;
+use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -141,69 +144,9 @@ final class BuildOnField implements ActionControllerInterface
             $building = $alt_building->getAlternativeBuilding();
         }
 
-        $storage = $colony->getStorage();
-        foreach ($building->getCosts() as $obj) {
-            $commodityId = $obj->getGoodId();
-
-            $currentBuildingCost = [];
-
-            if ($field->hasBuilding()) {
-
-                $currentBuildingCost = $field->getBuilding()->getCosts()->toArray();
-
-                $result = array_filter(
-                    $currentBuildingCost,
-                    function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
-                        return $commodityId === $buildingCost->getGoodId();
-                    }
-                );
-
-                if (
-                    !$storage->containsKey($commodityId) &&
-                    $result === []
-                ) {
-                    $game->addInformationf(
-                        _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
-                        $obj->getAmount(),
-                        $obj->getGood()->getName()
-                    );
-                    return;
-                }
-            } else {
-                if (!$storage->containsKey($commodityId)) {
-                    $game->addInformationf(
-                        _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
-                        $obj->getAmount(),
-                        $obj->getGood()->getName()
-                    );
-                    return;
-                }
-            }
-            if (!$storage->containsKey($commodityId)) {
-                $amount = 0;
-            } else {
-                $amount = $storage[$commodityId]->getAmount();
-            }
-            if ($field->hasBuilding()) {
-                $result = array_filter(
-                    $currentBuildingCost,
-                    function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
-                        return $commodityId === $buildingCost->getGoodId();
-                    }
-                );
-                if ($result !== []) {
-                    $amount += current($result)->getHalfAmount();
-                }
-            }
-            if ($obj->getAmount() > $amount) {
-                $game->addInformationf(
-                    _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
-                    $obj->getAmount(),
-                    $obj->getGood()->getName(),
-                    $amount
-                );
-                return;
-            }
+        //check for sufficient commodities
+        if (!$this->checkBuildingCosts($colony, $building, $field, $game)) {
+            return;
         }
 
         if ($colony->getEps() < $building->getEpsCost()) {
@@ -229,8 +172,8 @@ final class BuildOnField implements ActionControllerInterface
         $this->entityManager->flush();
         $colony = $this->colonyRepository->find(request::indInt('id'));
 
-        foreach ($building->getCosts() as $obj) {
-            $this->colonyStorageManager->lowerStorage($colony, $obj->getGood(), $obj->getAmount());
+        foreach ($building->getCosts() as $cost) {
+            $this->colonyStorageManager->lowerStorage($colony, $cost->getGood(), $cost->getAmount());
         }
 
         $colony->lowerEps($building->getEpsCost());
@@ -247,6 +190,86 @@ final class BuildOnField implements ActionControllerInterface
             $building->getName(),
             date('d.m.Y H:i', $field->getActive())
         );
+    }
+
+    private function checkBuildingCosts(
+        ColonyInterface $colony,
+        BuildingInterface $building,
+        PlanetFieldInterface $field,
+        GameControllerInterface $game
+    ): bool {
+
+        $isEnoughAvailable = true;
+        $storage = $colony->getStorage();
+
+        foreach ($building->getCosts() as $cost) {
+            $commodityId = $cost->getGoodId();
+
+            $currentBuildingCost = [];
+
+            if ($field->hasBuilding()) {
+
+                $currentBuildingCost = $field->getBuilding()->getCosts()->toArray();
+
+                $result = array_filter(
+                    $currentBuildingCost,
+                    function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
+                        return $commodityId === $buildingCost->getGoodId();
+                    }
+                );
+
+                if (
+                    !$storage->containsKey($commodityId) &&
+                    $result === []
+                ) {
+                    $game->addInformationf(
+                        _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
+                        $cost->getAmount(),
+                        $cost->getGood()->getName()
+                    );
+                    $isEnoughAvailable = false;
+                    continue;
+                }
+            } else {
+                if (!$storage->containsKey($commodityId)) {
+                    $game->addInformationf(
+                        _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
+                        $cost->getAmount(),
+                        $cost->getGood()->getName()
+                    );
+                    $isEnoughAvailable = false;
+                    continue;
+                }
+            }
+            if (!$storage->containsKey($commodityId)) {
+                $amount = 0;
+            } else {
+                $amount = $storage[$commodityId]->getAmount();
+            }
+            if ($field->hasBuilding()) {
+                $result = array_filter(
+                    $currentBuildingCost,
+                    function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
+                        return $commodityId === $buildingCost->getGoodId();
+                    }
+                );
+                if ($result !== []) {
+                    $amount += current($result)->getHalfAmount();
+                }
+            }
+            if ($cost->getAmount() > $amount) {
+                $game->addInformationf(
+                    _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
+                    $cost->getAmount(),
+                    $cost->getGood()->getName(),
+                    $amount
+                );
+                $isEnoughAvailable = false;
+                continue;
+            }
+        }
+
+        return $isEnoughAvailable;
     }
 
     public function performSessionCheck(): bool
