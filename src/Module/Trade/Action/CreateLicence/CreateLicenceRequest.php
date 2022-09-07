@@ -17,16 +17,16 @@ final class CreateLicenceRequest implements CreateLicenceRequestInterface
 
     public function getWantedLicenceGoodId(): int
     {
-        return $this->bodyParameter('wlgid')->int()->required();
+        return $this->bodyParameter('wlgid')->int()->defaultsTo(0);
     }
 
     public function getWantedLicenceAmount(): int
     {
-        return $this->bodyParameter('wlcount')->int()->required();
+        return $this->bodyParameter('wlcount')->int()->defaultsTo(0);
     }
 
     public function getLicenceDays(): int
     {
-        return $this->bodyParameter('ldays')->int()->required();
+        return $this->bodyParameter('ldays')->int()->defaultsTo(0);
     }
 }
