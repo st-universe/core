@@ -51,6 +51,10 @@ abstract class AbstractJoinFleet
             return;
         }
 
+        if ($ship->isBase()) {
+            return;
+        }
+
         if ($fleet->getLeadShip()->getId() === $ship->getId()) {
             return;
         }
