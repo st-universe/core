@@ -275,6 +275,7 @@ function refreshShiplistFleet(fleetid) {
 }
 function refreshShiplistSingles() {
 	ajax_update('shiplist_singles_table', 'ship.php?SHOW_SHIPLIST_SINGLES=1');
+	$('shiplist_singles_table').show();
 }
 function showFightLog() {
 	openPJsWin('fightresult_content', 1);
