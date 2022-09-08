@@ -20,6 +20,9 @@
 			<tal:block tal:condition="SHIPS">
 				<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_singles" />
 			</tal:block>
+			<tal:block tal:condition="not:SHIPS">
+				<table class="tcal" id="shiplist_singles_table" style="display: none;"></table>
+			</tal:block>
 		</tal:block>
 	</metal:macro>
 </metal:macro>
