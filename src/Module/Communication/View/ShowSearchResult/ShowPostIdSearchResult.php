@@ -50,6 +50,7 @@ final class ShowPostIdSearchResult implements ViewControllerInterface
         $post = $this->knPostRepository->find($id);
 
         if ($post === null) {
+            $game->setTemplateVar('KN_POSTINGS', null);
             $game->addInformation(sprintf('Es existiert kein Beitrag mit der ID %d', $id));
 
             return;
