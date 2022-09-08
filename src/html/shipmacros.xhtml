@@ -59,7 +59,7 @@
               <td colspan="2">
                 <span tal:replace="data/getVisibleShipsCount">COUNT</span> Schiffe
                 <tal:block tal:condition="data/showManagement">
-                  <tal:block tal:condition="not:SHIP/getFleetId">
+                  <tal:block tal:condition="php:!SHIP.getFleetId() AND !SHIP.isBase()">
                     (<a href="?B_JOIN_FLEET_NBS=1&id=${SHIP/getId}&fleetid=${data/getId}"
                       title="Flotte beitreten">+</a>)
                   </tal:block>
@@ -124,7 +124,7 @@
               <td colspan="2">
                 <span tal:replace="data/getVisibleShipsCount">COUNT</span> Schiffe
                 <tal:block tal:condition="data/showManagement">
-                  <tal:block tal:condition="not:SHIP/getFleetId">
+                  <tal:block tal:condition="php:!SHIP.getFleetId() AND !SHIP.isBase()">
                     (<a href="?B_JOIN_FLEET_NBS=1&id=${SHIP/getId}&fleetid=${data/getId}"
                       title="Flotte beitreten">+</a>)
                   </tal:block>
