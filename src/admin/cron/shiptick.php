@@ -16,7 +16,7 @@ $entityManager = $container->get(EntityManagerInterface::class);
 $remainingtries = 5;
 while ($remainingtries > 0) {
     $remainingtries -= 1;
-    $exception = tryTick($container, $entityManager);
+    $exception = tryTick($container, $entityManager, $loggerUtil);
 
     if ($exception === null) {
         break;
@@ -45,17 +45,19 @@ while ($remainingtries > 0) {
     }
 }
 
-function tryTick($container, $entityManager): ?Exception
+function tryTick($container, $entityManager, $loggerUtil): ?Exception
 {
     try {
         $entityManager->beginTransaction();
 
         $container->get(ShipTickManagerInterface::class)->work();
+
         $entityManager->flush();
         $entityManager->commit();
 
         return null;
     } catch (Exception $e) {
+        $loggerUtil->log("  rollback");
         $entityManager->rollback();
 
         return $e;
