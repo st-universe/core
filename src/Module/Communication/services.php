@@ -61,6 +61,7 @@ use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequest;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequestInterface;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
+use Stu\Module\Communication\View\ShowSearchResult\ShowPostIdSearchResult;
 use Stu\Module\Communication\View\ShowSearchResult\ShowPostSearchResult;
 use Stu\Module\Communication\View\ShowSearchResult\ShowSearchResultRequest;
 use Stu\Module\Communication\View\ShowSearchResult\ShowSearchResultRequestInterface;
@@ -121,6 +122,7 @@ return [
         ShowKnRating::VIEW_IDENTIFIER => autowire(ShowKnRating::class),
         ShowSingleKn::VIEW_IDENTIFIER => autowire(ShowSingleKn::class),
         ShowPostSearchResult::VIEW_IDENTIFIER => autowire(ShowPostSearchResult::class),
-        ShowUserSearchResult::VIEW_IDENTIFIER => autowire(ShowUserSearchResult::class)
+        ShowUserSearchResult::VIEW_IDENTIFIER => autowire(ShowUserSearchResult::class),
+        ShowPostIdSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdSearchResult::class)
     ]
 ];
