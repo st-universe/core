@@ -44,9 +44,7 @@ final class BasicTradeBuy implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->init('trade', LoggerEnum::LEVEL_ERROR);
-        }
+        //$this->loggerUtil->init('trade', LoggerEnum::LEVEL_ERROR);
         $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -112,8 +110,6 @@ final class BasicTradeBuy implements ActionControllerInterface
         $this->basicTradeRepository->save($newBasicTrade);
 
         $amount = (int) ($basicTrade->getValue() / BasicTradeItem::BASIC_TRADE_VALUE_SCALE);
-
-        $this->loggerUtil->log(sprintf('value: %d, amount: %d', $basicTrade->getValue(), $amount));
 
         $storageManager->upperStorage($basicTrade->getCommodity()->getId(), $amount);
         $storageManager->lowerStorage(CommodityTypeEnum::GOOD_LATINUM, 1);
