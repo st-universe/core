@@ -45,7 +45,7 @@ final class BasicTradeBuy implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->log('trade', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init('trade', LoggerEnum::LEVEL_ERROR);
         }
         $game->setView(ShowBasicTrade::VIEW_IDENTIFIER);
 
