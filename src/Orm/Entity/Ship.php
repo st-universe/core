@@ -946,8 +946,16 @@ class Ship implements ShipInterface
 
     public function getMaxCrewCount(): int
     {
-        return $this->getRump()->getMaxCrewCount()
-            + ($this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) ? TroopQuartersShipSystem::QUARTER_COUNT : 0);
+        $result = $this->getRump()->getMaxCrewCount();
+
+        if ($this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
+            if ($this->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE) {
+                $result += TroopQuartersShipSystem::QUARTER_COUNT_BASE;
+            } else {
+                $result += TroopQuartersShipSystem::QUARTER_COUNT;
+            }
+        }
+        return $result;
     }
 
     public function hasEnoughCrew(?GameControllerInterface $game = null): bool

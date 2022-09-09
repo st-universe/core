@@ -29,7 +29,6 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        //$em->flush();
     }
 
     public function getAmountByUserAndShipRumpCategory(int $userId, int $shipRumpCategoryId): int

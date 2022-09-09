@@ -12,6 +12,7 @@ use Stu\Orm\Entity\ShipInterface;
 final class TroopQuartersShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
     public const QUARTER_COUNT = 100;
+    public const QUARTER_COUNT_BASE = 300;
 
     public function activate(ShipInterface $ship): void
     {
