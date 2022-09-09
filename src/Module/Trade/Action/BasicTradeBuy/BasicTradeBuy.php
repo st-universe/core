@@ -91,11 +91,11 @@ final class BasicTradeBuy implements ActionControllerInterface
         $newValue = null;
         $summand = 1;
 
-        foreach ($latestRates as $basicTrade) {
+        foreach ($latestRates as $rate) {
             if ($newValue === null) {
-                $newValue = $basicTrade->getValue();
+                $newValue = $rate->getValue();
             } else {
-                $summand += $basicTrade->getBuySell();
+                $summand += $rate->getBuySell();
             }
         }
         $newValue += (int)($summand * BasicTradeItem::BASIC_TRADE_VALUE_SCALE / (count($latestRates) + 1));
