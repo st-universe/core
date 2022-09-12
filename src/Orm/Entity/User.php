@@ -123,6 +123,9 @@ class User implements UserInterface
     /** @Column(type="string", length=7) */
     private $rgb_code = '';
 
+    /** @Column(type="integer", nullable=true) * */
+    private $prestige;
+
     /**
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
