@@ -28,6 +28,10 @@ class PrestigeLog implements PrestigeLogInterface
     /** @Column(type="text") */
     private $description = '';
 
+    /** @Column(type="integer", nullable=true) * */
+    private $date;
+
+
     public function getId(): int
     {
         return $this->id;
@@ -64,5 +68,17 @@ class PrestigeLog implements PrestigeLogInterface
     {
         $this->description = $description;
         return $this;
+    }
+
+    public function setDate(int $date): PrestigeLogInterface
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getDate(): int
+    {
+        return $this->date;
     }
 }

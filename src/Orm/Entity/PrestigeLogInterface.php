@@ -17,4 +17,8 @@ interface PrestigeLogInterface
     public function getDescription(): string;
 
     public function setDescription(string $description): PrestigeLogInterface;
+
+    public function setDate(int $date): PrestigeLogInterface;
+
+    public function getDate(): int;
 }
