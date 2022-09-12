@@ -221,12 +221,12 @@
 						<th>Eintrag</th>
 						<th>Datum</th>
 					</tr>
-					<tr tal:condition="HISTORY" tal:attributes="class string:row${repeat/entry/odd}"
-						tal:repeat="entry HISTORY">
-						<td tal:content="structure bbcode:entry/getText">ENTRY</td>
+					<tr tal:condition="LOGS" tal:attributes="class string:row${repeat/entry/odd}"
+						tal:repeat="entry LOGS">
+						<td tal:content="structure bbcode:entry/getDescription">ENTRY</td>
 						<td tal:content="datetime:entry/getDate">DATE</td>
 					</tr>
-					<tr tal:condition="not:HISTORY">
+					<tr tal:condition="not:LOGS">
 						<td colspan="2">Keine Einträge vorhanden</td>
 					</tr>
 				</table>
