@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Deletion;
 
 use Doctrine\ORM\EntityManagerInterface;
+use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -34,10 +35,13 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     private array $deletionHandler;
 
+    private Parser $bbCodeParser;
+
     /**
      * @param UserRepositoryInterface $userRepository
      * @param ConfigInterface $config
      * @param LoggerUtilFactoryInterface $loggerUtilFactory
+     * @param Parser $bbCodeParser
      * @param EntityManagerInterface $entityManager
      * @param PlayerDeletionHandlerInterface[] $deletionHandler
      */
@@ -45,12 +49,14 @@ final class PlayerDeletion implements PlayerDeletionInterface
         UserRepositoryInterface $userRepository,
         ConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory,
+        Parser $bbCodeParser,
         EntityManagerInterface $entityManager,
         array $deletionHandler
     ) {
         $this->userRepository = $userRepository;
         $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->bbCodeParser = $bbCodeParser;
         $this->entityManager = $entityManager;
         $this->deletionHandler = $deletionHandler;
     }
@@ -88,6 +94,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
     private function delete(UserInterface $user): void
     {
         $userId = $user->getId();
+        $name = $this->bbCodeParser->parse($user->getName())->getAsText();
         $this->loggerUtil->log(sprintf('deleting userId: %d', $userId));
 
         array_walk(
@@ -98,6 +105,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
         );
 
         $this->entityManager->flush();
-        $this->loggerUtil->log(sprintf('deleted userId: %d', $userId));
+        $this->loggerUtil->log(sprintf('deleted user with id: %d and name: %s', $userId, $name));
     }
 }
