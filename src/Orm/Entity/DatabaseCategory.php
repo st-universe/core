@@ -29,7 +29,7 @@ class DatabaseCategory implements DatabaseCategoryInterface
     /** @Column(type="integer") * */
     private $sort;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $prestige;
 
     /**
@@ -89,6 +89,11 @@ class DatabaseCategory implements DatabaseCategoryInterface
     public function getSort(): int
     {
         return $this->sort;
+    }
+
+    public function getPrestige(): int
+    {
+        return $this->prestige;
     }
 
     public function getEntries(): array

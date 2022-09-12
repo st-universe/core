@@ -22,6 +22,8 @@ interface DatabaseCategoryInterface
 
     public function getSort(): int;
 
+    public function getPrestige(): int;
+
     /**
      * Returns a list of associated database entries
      * @return DatabaseEntryInterface[]
