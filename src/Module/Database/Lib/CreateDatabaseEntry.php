@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Database\Lib;
 
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\PrestigeLogRepositoryInterface;
 use Stu\Orm\Repository\UserAwardRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 {
@@ -21,22 +20,18 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
     private UserAwardRepositoryInterface $userAwardRepository;
 
-    private PrestigeLogRepositoryInterface $prestigeLogRepository;
-
-    private UserRepositoryInterface $userRepository;
+    private CreatePrestigeLogInterface $createPrestigeLog;
 
     public function __construct(
         DatabaseEntryRepositoryInterface $databaseEntryRepository,
         DatabaseUserRepositoryInterface $databaseUserRepository,
         UserAwardRepositoryInterface $userAwardRepository,
-        PrestigeLogRepositoryInterface $prestigeLogRepository,
-        UserRepositoryInterface $userRepository
+        CreatePrestigeLogInterface $createPrestigeLog
     ) {
         $this->databaseEntryRepository = $databaseEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->userAwardRepository = $userAwardRepository;
-        $this->prestigeLogRepository = $prestigeLogRepository;
-        $this->userRepository = $userRepository;
+        $this->createPrestigeLog = $createPrestigeLog;
     }
 
     public function createDatabaseEntryForUser(UserInterface $user, int $databaseEntryId): ?DatabaseEntryInterface
@@ -63,34 +58,12 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         if ($user->getId() > 100) {
 
             //create prestige log
-            $newPrestige = $this->createPrestigeLog($databaseEntry, $user->getId(), $userEntry->getDate());
-
-            //update user prestige
-            $user->setPrestige($this->prestigeLogRepository->getSumByUser($user) + $newPrestige);
-            $this->userRepository->save($user);
+            $this->createPrestigeLog->createLogForDatabaseEntry($databaseEntry, $user, $userEntry->getDate());
 
             $this->checkForCompletion($user, $databaseEntry->getCategory()->getId());
         }
 
         return $databaseEntry;
-    }
-
-    private function createPrestigeLog(DatabaseEntryInterface $databaseEntry, int $userId, int $date): int
-    {
-        $prestigeLog = $this->prestigeLogRepository->prototype();
-        $prestigeLog->setUserId($userId);
-        $prestigeLog->setAmount($databaseEntry->getCategory()->getPrestige());
-        $prestigeLog->setDate($date);
-        $prestigeLog->setDescription(sprintf(
-            '%d Prestige erhalten für die Entdeckung von "%s" in der Kategorie "%s"',
-            $prestigeLog->getAmount(),
-            $databaseEntry->getDescription(),
-            $databaseEntry->getCategory()->getDescription()
-        ));
-
-        $this->prestigeLogRepository->save($prestigeLog);
-
-        return $prestigeLog->getAmount();
     }
 
     private function checkForCompletion(UserInterface $user, int $categoryId): void

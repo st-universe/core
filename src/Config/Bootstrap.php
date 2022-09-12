@@ -176,6 +176,9 @@ $builder->addDefinitions(
     require_once __DIR__ . '/../Module/PlayerProfile/services.php'
 );
 $builder->addDefinitions(
+    require_once __DIR__ . '/../Module/Prestige/services.php'
+);
+$builder->addDefinitions(
     require_once __DIR__ . '/../Module/Trade/services.php'
 );
 $builder->addDefinitions(

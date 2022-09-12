@@ -4,50 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
-use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
-use Stu\Orm\Repository\WeaponRepositoryInterface;
 
-final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
+final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeaponPhaseInterface
 {
-
     public const FIRINGMODE_RANDOM = 1;
     public const FIRINGMODE_FOCUS = 2;
-
-    private WeaponRepositoryInterface $weaponRepository;
-
-    private EntryCreatorInterface $entryCreator;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private ApplyDamageInterface $applyDamage;
-
-    private ModuleValueCalculatorInterface $moduleValueCalculator;
-
-    private BuildingManagerInterface $buildingManager;
-
-    public function __construct(
-        WeaponRepositoryInterface $weaponRepository,
-        EntryCreatorInterface $entryCreator,
-        ShipRemoverInterface $shipRemover,
-        ApplyDamageInterface $applyDamage,
-        ModuleValueCalculatorInterface $moduleValueCalculator,
-        BuildingManagerInterface $buildingManager
-    ) {
-        $this->weaponRepository = $weaponRepository;
-        $this->entryCreator = $entryCreator;
-        $this->shipRemover = $shipRemover;
-        $this->applyDamage = $applyDamage;
-        $this->moduleValueCalculator = $moduleValueCalculator;
-        $this->buildingManager = $buildingManager;
-    }
 
     public function fire(
         $attacker,
@@ -116,6 +82,8 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
                         );
                     }
                 }
+
+                $this->checkForNegativePrestige($attacker->getUser(), $target);
 
                 $targetId = $target->getId();
                 $destroyMsg = $this->shipRemover->destroy($target);

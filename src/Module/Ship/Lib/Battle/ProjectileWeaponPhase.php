@@ -4,47 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Ship\ShipRoleEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
-use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
+final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
 {
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private EntryCreatorInterface $entryCreator;
-
-    private ShipRemoverInterface $shipRemover;
-
-    private ApplyDamageInterface $applyDamage;
-
-    private ModuleValueCalculatorInterface $moduleValueCalculator;
-
-    private BuildingManagerInterface $buildingManager;
-
-    public function __construct(
-        ShipSystemManagerInterface $shipSystemManager,
-        EntryCreatorInterface $entryCreator,
-        ShipRemoverInterface $shipRemover,
-        ApplyDamageInterface $applyDamage,
-        ModuleValueCalculatorInterface $moduleValueCalculator,
-        BuildingManagerInterface $buildingManager
-    ) {
-        $this->shipSystemManager = $shipSystemManager;
-        $this->entryCreator = $entryCreator;
-        $this->shipRemover = $shipRemover;
-        $this->applyDamage = $applyDamage;
-        $this->moduleValueCalculator = $moduleValueCalculator;
-        $this->buildingManager = $buildingManager;
-    }
 
     public function fire(
         $attacker,
@@ -128,6 +95,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                         );
                     }
                 }
+                $this->checkForNegativePrestige($attacker->getUser(), $target);
                 $destroyMsg = $this->shipRemover->destroy($target);
                 if ($destroyMsg !== null) {
                     $msg[] = $destroyMsg;
