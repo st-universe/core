@@ -72,7 +72,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         $prestigeLog->setUserId($userId);
         $prestigeLog->setAmount($databaseEntry->getCategory()->getPrestige());
         $prestigeLog->setDescription(sprintf(
-            '%d Prestige erhalten für die Entdeckung von %s in der Kategorie %s',
+            '%d Prestige erhalten für die Entdeckung von "%s" in der Kategorie "%s"',
             $prestigeLog->getAmount(),
             $databaseEntry->getDescription(),
             $databaseEntry->getCategory()->getDescription()
