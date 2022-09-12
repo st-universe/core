@@ -123,8 +123,8 @@ class User implements UserInterface
     /** @Column(type="string", length=7) */
     private $rgb_code = '';
 
-    /** @Column(type="integer", nullable=true) * */
-    private $prestige;
+    /** @Column(type="integer") * */
+    private $prestige = 0;
 
     /**
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
