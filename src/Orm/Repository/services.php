@@ -68,6 +68,7 @@ use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\PlanetType;
 use Stu\Orm\Entity\PlanetTypeResearch;
+use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\RepairTask;
@@ -429,6 +430,11 @@ return [
         ContainerInterface $c
     ): PlanetTypeResearchRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(PlanetTypeResearch::class);
+    },
+    PrestigeLogRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PrestigeLogRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PrestigeLog::class);
     },
     PrivateMessageRepositoryInterface::class => function (
         ContainerInterface $c
