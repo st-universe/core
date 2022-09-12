@@ -63,10 +63,10 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         if ($user->getId() > 100) {
 
             //create prestige log
-            $this->createPrestigeLog($databaseEntry, $user->getId(), $userEntry->getDate());
+            $newPrestige = $this->createPrestigeLog($databaseEntry, $user->getId(), $userEntry->getDate());
 
             //update user prestige
-            $user->setPrestige($this->prestigeLogRepository->getSumByUser($user));
+            $user->setPrestige($this->prestigeLogRepository->getSumByUser($user) + $newPrestige);
             $this->userRepository->save($user);
 
             $this->checkForCompletion($user, $databaseEntry->getCategory()->getId());
@@ -75,7 +75,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         return $databaseEntry;
     }
 
-    private function createPrestigeLog(DatabaseEntryInterface $databaseEntry, int $userId, int $date): void
+    private function createPrestigeLog(DatabaseEntryInterface $databaseEntry, int $userId, int $date): int
     {
         $prestigeLog = $this->prestigeLogRepository->prototype();
         $prestigeLog->setUserId($userId);
@@ -89,6 +89,8 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         ));
 
         $this->prestigeLogRepository->save($prestigeLog);
+
+        return $prestigeLog->getAmount();
     }
 
     private function checkForCompletion(UserInterface $user, int $categoryId): void
