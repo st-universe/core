@@ -28,7 +28,7 @@ class PrestigeLog implements PrestigeLogInterface
     /** @Column(type="text") */
     private $description = '';
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $date;
 
 

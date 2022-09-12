@@ -11,6 +11,7 @@ use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\PrestigeLogRepositoryInterface;
 use Stu\Orm\Repository\UserAwardRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 {
@@ -22,16 +23,20 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
     private PrestigeLogRepositoryInterface $prestigeLogRepository;
 
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
         DatabaseEntryRepositoryInterface $databaseEntryRepository,
         DatabaseUserRepositoryInterface $databaseUserRepository,
         UserAwardRepositoryInterface $userAwardRepository,
-        PrestigeLogRepositoryInterface $prestigeLogRepository
+        PrestigeLogRepositoryInterface $prestigeLogRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->databaseEntryRepository = $databaseEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->userAwardRepository = $userAwardRepository;
         $this->prestigeLogRepository = $prestigeLogRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function createDatabaseEntryForUser(UserInterface $user, int $databaseEntryId): ?DatabaseEntryInterface
@@ -59,6 +64,10 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
             //create prestige log
             $this->createPrestigeLog($databaseEntry, $user->getId(), $userEntry->getDate());
+
+            //update user prestige
+            $user->setPrestige($this->prestigeLogRepository->getSumByUser($user));
+            $this->userRepository->save($user);
 
             $this->checkForCompletion($user, $databaseEntry->getCategory()->getId());
         }

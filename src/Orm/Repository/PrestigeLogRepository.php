@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrestigeLogInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class PrestigeLogRepository extends EntityRepository implements PrestigeLogRepositoryInterface
 {
@@ -28,5 +29,18 @@ final class PrestigeLogRepository extends EntityRepository implements PrestigeLo
     public function prototype(): PrestigeLogInterface
     {
         return new PrestigeLog();
+    }
+
+    public function getSumByUser(UserInterface $user): int
+    {
+        return (int) $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT SUM(pl.amount) FROM %s pl
+                WHERE pl.user_id = :userId',
+                PrestigeLog::class
+            )
+        )->setParameters([
+            'userId' => $user->getId()
+        ])->getSingleScalarResult();
     }
 }
