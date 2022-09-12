@@ -45,6 +45,7 @@
 		<div style="width: 300px; margin-left: 5px; float: left;">
 			<div class="divhead">Sonstiges</div>
 			<div class="divbody">
+				<a href="?SHOW_PRESTIGELOG=1">Prestigehistorie</a><br />
 				<a href="?SHOW_SETTLERLIST=1">Siedlerliste</a><br />
 				<a href="?SHOW_GOODS_OVERVIEW=1">Warenübersicht</a>
 			</div>
@@ -194,6 +195,42 @@
 					</td>
 				</tr>
 			</table>
+		</tal:block>
+	</tal:block>
+</metal:macro>
+<metal:macro metal:define-macro="prestige_log">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<metal:macro metal:use-macro="html/databasemacros.xhtml/initial_js" />
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<form method="post" action="database.php">
+				<table class="use">
+					<tr>
+						<th>Anzahl</th>
+					</tr>
+					<tr>
+						<td>
+							<input type="text" size="3" name="count" value="runtime" tal:attributes="value COUNT" />
+							<input type="submit" name="SHOW_PRESTIGELOG" class="button" value="Aktualisieren" />
+						</td>
+					</tr>
+				</table>
+				<br />
+				<table class="tcal">
+					<tr>
+						<th>Eintrag</th>
+						<th>Datum</th>
+					</tr>
+					<tr tal:condition="HISTORY" tal:attributes="class string:row${repeat/entry/odd}"
+						tal:repeat="entry HISTORY">
+						<td tal:content="structure bbcode:entry/getText">ENTRY</td>
+						<td tal:content="datetime:entry/getDate">DATE</td>
+					</tr>
+					<tr tal:condition="not:HISTORY">
+						<td colspan="2">Keine Einträge vorhanden</td>
+					</tr>
+				</table>
+			</form>
 		</tal:block>
 	</tal:block>
 </metal:macro>

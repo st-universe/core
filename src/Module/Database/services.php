@@ -28,6 +28,8 @@ use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequestInterfa
 use Stu\Module\Database\View\GoodsOverview\GoodsOverview;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\Overview\Overview;
+use Stu\Module\Database\View\ShowPrestigeLog\ShowPrestigeLog;
+
 use function DI\autowire;
 
 return [
@@ -50,5 +52,6 @@ return [
         UserList::VIEW_IDENTIFIER => autowire(UserList::class),
         DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
         GameController::DEFAULT_VIEW => autowire(Overview::class),
+        ShowPrestigeLog::VIEW_IDENTIFIER => autowire(ShowPrestigeLog::class)
     ]
 ];
