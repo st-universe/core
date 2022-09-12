@@ -73,7 +73,7 @@ abstract class AbstractWeaponPhase
             $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
             $this->sendSystemMessage($description, $destroyer->getId());
         } else if ($target->getRump()->isEscapePods()) {
-            $amount = -100;
+            $amount = $target->getCrewCount() === 0 ? -20 : -100;
             $description = sprintf('[b][color=red]%d[/color][/b] Prestige erhalten für die Zerstörung einer Rettungskapsel', $amount);
 
             $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
