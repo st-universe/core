@@ -519,6 +519,17 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getPrestige(): int
+    {
+        return $this->prestige;
+    }
+
+    public function setPrestige(int $prestige): UserInterface
+    {
+        $this->prestige = $prestige;
+        return $this;
+    }
+
     /**
      * @deprecated
      */
@@ -526,6 +537,7 @@ class User implements UserInterface
     {
         return $this->getUserName();
     }
+
 
     public function getFullAvatarPath(): string
     {

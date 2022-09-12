@@ -133,6 +133,10 @@ interface UserInterface
 
     public function setPasswordToken(string $password_token): UserInterface;
 
+    public function getPrestige(): int;
+
+    public function setPrestige(int $prestige): UserInterface;
+
     /**
      * @deprecated
      */

@@ -176,7 +176,8 @@
               </div>
               <div class="user_box_details">
                 <div class="userBoxDetailName" tal:content="structure bbcode:THIS/getUser/getName">NAME</div>
-                <span>ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
+                <span>ID:</span> <span tal:replace="THIS/getUser/getId" /><span>, Prestige:</span> <span
+                  tal:replace="THIS/getUser/getPrestige" /><span></span><br />
 
                 <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel öffnen"
                   onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
