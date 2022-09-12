@@ -7,7 +7,10 @@ namespace Stu\Orm\Entity;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PrestigeLogRepository")
  * @Table(
- *     name="stu_prestige_log"
+ *     name="stu_prestige_log",
+ *     indexes={
+ *         @Index(name="prestige_log_user_idx", columns={"user_id"})
+ *     }
  * )
  **/
 class PrestigeLog implements PrestigeLogInterface
