@@ -83,7 +83,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                     }
                 }
 
-                $this->checkForNegativePrestige($attacker->getUser(), $target);
+                $this->checkForPrestige($attacker->getUser(), $target);
 
                 $targetId = $target->getId();
                 $destroyMsg = $this->shipRemover->destroy($target);

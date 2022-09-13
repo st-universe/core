@@ -134,7 +134,7 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="integer") * */
     private $tractor_payload = 100;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $prestige;
 
     /**

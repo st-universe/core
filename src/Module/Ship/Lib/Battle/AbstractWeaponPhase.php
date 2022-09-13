@@ -64,31 +64,33 @@ abstract class AbstractWeaponPhase
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function checkForNegativePrestige(UserInterface $destroyer, ShipInterface $target): void
+    public function checkForPrestige(UserInterface $destroyer, ShipInterface $target): void
     {
-        if ($this->isWorkbee($target)) {
-            $amount = -10;
-            $description = sprintf('[b][color=red]%d[/color][/b] Prestige erhalten für die Zerstörung eines Workbees', $amount);
+        $amount = $target->getRump()->getPrestige();
 
-            $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
-            $this->sendSystemMessage($description, $destroyer->getId());
-        } else if ($target->getRump()->isEscapePods()) {
-            $amount = $target->getCrewCount() === 0 ? -20 : -100;
-            $description = sprintf('[b][color=red]%d[/color][/b] Prestige erhalten für die Zerstörung einer Rettungskapsel', $amount);
-
-            $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
-            $this->sendSystemMessage($description, $destroyer->getId());
-        }
-    }
-
-    private function isWorkbee(ShipInterface $ship): bool
-    {
-        $commodity = $ship->getRump()->getCommodity();
-        if ($commodity === null) {
-            return false;
+        // nothing to do
+        if ($amount === 0) {
+            return;
         }
 
-        return $commodity->isWorkbee();
+        // empty escape pods to five times negative prestige
+        if ($target->getRump()->isEscapePods() && $target->getCrewCount() === 0) {
+            $amount *= 5;
+        }
+
+        $description = sprintf(
+            '%s%d%s Prestige erhalten für die Zerstörung einer Rettungskapsel',
+            $amount < 0 ? '[b][color=red]' : '',
+            $amount,
+            $amount < 0 ? '[/color][/b]' : ''
+        );
+
+        $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
+
+        // system pm only for negative prestige
+        if ($amount < 0) {
+            $this->sendSystemMessage($description, $destroyer->getId());
+        }
     }
 
     private function sendSystemMessage(string $description, int $userId): void

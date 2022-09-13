@@ -95,7 +95,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                         );
                     }
                 }
-                $this->checkForNegativePrestige($attacker->getUser(), $target);
+                $this->checkForPrestige($attacker->getUser(), $target);
                 $destroyMsg = $this->shipRemover->destroy($target);
                 if ($destroyMsg !== null) {
                     $msg[] = $destroyMsg;

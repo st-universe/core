@@ -140,6 +140,8 @@ interface ShipRumpInterface
 
     public function setFlightEcost(int $flightEcost): ShipRumpInterface;
 
+    public function getPrestige(): int;
+
     public function getShipRumpRole(): ?ShipRumpRoleInterface;
 
     public function setShipRumpRole(?ShipRumpRoleInterface $shipRumpRole): ShipRumpInterface;
