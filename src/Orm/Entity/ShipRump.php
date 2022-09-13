@@ -134,6 +134,9 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="integer") * */
     private $tractor_payload = 100;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $prestige;
+
     /**
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="role_id", referencedColumnName="id")
@@ -589,6 +592,11 @@ class ShipRump implements ShipRumpInterface
     {
         $this->databaseEntry = $databaseEntry;
         return $this;
+    }
+
+    public function getPrestige(): int
+    {
+        return $this->prestige;
     }
 
     public function isTrumfield(): bool
