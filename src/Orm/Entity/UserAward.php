@@ -73,20 +73,4 @@ class UserAward implements UserAwardInterface
         $this->award = $award;
         return $this;
     }
-
-    public function getType(): int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): UserAwardInterface
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    public function getDescription(): string
-    {
-        return UserAwardEnum::getDescription($this->type);
-    }
 }

@@ -16,6 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -44,6 +45,8 @@ final class ResearchState implements ResearchStateInterface
 
     private EntityManagerInterface $entityManager;
 
+    private AwardRepositoryInterface $awardRepository;
+
     private UserAwardRepositoryInterface $userAwardRepository;
 
     public function __construct(
@@ -57,6 +60,7 @@ final class ResearchState implements ResearchStateInterface
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         EntityManagerInterface $entityManager,
+        AwardRepositoryInterface $awardRepository,
         UserAwardRepositoryInterface $userAwardRepository
     ) {
         $this->researchedRepository = $researchedRepository;
@@ -69,6 +73,7 @@ final class ResearchState implements ResearchStateInterface
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->entityManager = $entityManager;
+        $this->awardRepository = $awardRepository;
         $this->userAwardRepository = $userAwardRepository;
     }
 
@@ -174,11 +179,13 @@ final class ResearchState implements ResearchStateInterface
             $state->getResearch()->getId() ===
             (ResearchEnum::RESEARCH_OFFSET_CONSTRUCTION + $user->getFaction()->getId())
         ) {
-            $award = $this->userAwardRepository->prototype();
-            $award->setUser($user);
-            $award->setType(UserAwardEnum::RESEARCHED_STATIONS);
+            $award = $this->awardRepository->find(UserAwardEnum::RESEARCHED_STATIONS);
 
-            $this->userAwardRepository->save($award);
+            $userAward = $this->userAwardRepository->prototype();
+            $userAward->setUser($user);
+            $userAward->setAward($award);
+
+            $this->userAwardRepository->save($userAward);
         }
     }
 }
