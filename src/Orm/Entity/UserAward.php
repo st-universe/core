@@ -27,6 +27,9 @@ class UserAward implements UserAwardInterface
     /** @Column(type="integer") */
     private $type = 0;
 
+    /** @Column(type="integer", nullable=true) */
+    private $award_id = 0;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
