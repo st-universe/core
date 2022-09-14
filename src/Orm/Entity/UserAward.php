@@ -27,14 +27,20 @@ class UserAward implements UserAwardInterface
     /** @Column(type="integer") */
     private $type = 0;
 
-    /** @Column(type="integer", nullable=true) */
-    private $award_id = 0;
+    /** @Column(type="integer") */
+    private $award_id;
 
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
+
+    /**
+     * @ManyToOne(targetEntity="Award")
+     * @JoinColumn(name="award_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $award;
 
     public function getId(): int
     {
@@ -54,6 +60,17 @@ class UserAward implements UserAwardInterface
     public function setUser(UserInterface $user): UserAwardInterface
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getAward(): AwardInterface
+    {
+        return $this->award;
+    }
+
+    public function setAward(AwardInterface $award): UserAwardInterface
+    {
+        $this->award = $award;
         return $this;
     }
 
