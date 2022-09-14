@@ -25,6 +25,9 @@ class UserAward implements UserAwardInterface
     private $user_id = 0;
 
     /** @Column(type="integer") */
+    private $type = 0;
+
+    /** @Column(type="integer") */
     private $award_id;
 
     /**
