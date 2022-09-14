@@ -13,6 +13,7 @@ use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AstronomicalEntry;
+use Stu\Orm\Entity\Award;
 use Stu\Orm\Entity\BasicTrade;
 use Stu\Orm\Entity\BlockedUser;
 use Stu\Orm\Entity\Building;
@@ -150,6 +151,11 @@ return [
         ContainerInterface $c
     ): AllianceRelationRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class);
+    },
+    AwardRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): AwardRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Award::class);
     },
     BasicTradeRepositoryInterface::class => function (
         ContainerInterface $c
