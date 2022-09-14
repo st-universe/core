@@ -730,8 +730,12 @@ class User implements UserInterface
         if ($this->isNpc()) {
             return true;
         }
-
-        return $this->getAwards()->containsKey(UserAwardEnum::RESEARCHED_STATIONS);
+        foreach ($this->getAwards() as $userAward) {
+            if ($userAward->getAward()->getId() === UserAwardEnum::RESEARCHED_STATIONS) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function maySignup(int $allianceId): bool
