@@ -22,6 +22,7 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -64,6 +65,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private EntityManagerInterface $entityManager;
 
+    private AwardRepositoryInterface $awardRepository;
+
     private UserAwardRepositoryInterface $userAwardRepository;
 
     private array $commodityArray;
@@ -86,6 +89,7 @@ final class ColonyTick implements ColonyTickInterface
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         EntityManagerInterface $entityManager,
+        AwardRepositoryInterface $awardRepository,
         UserAwardRepositoryInterface $userAwardRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -104,6 +108,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->entityManager = $entityManager;
+        $this->awardRepository = $awardRepository;
         $this->userAwardRepository = $userAwardRepository;
     }
 
@@ -338,6 +343,7 @@ final class ColonyTick implements ColonyTickInterface
                     $this->shipRepository,
                     $this->shipSystemManager,
                     $this->entityManager,
+                    $this->awardRepository,
                     $this->userAwardRepository
                 ))->advance(
                     $current_research,
