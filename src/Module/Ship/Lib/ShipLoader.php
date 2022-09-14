@@ -68,7 +68,7 @@ final class ShipLoader implements ShipLoaderInterface
                     throw new UnallowedUplinkOperation(_('Owner is on vacation!'));
                 }
             } else {
-                throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
+                throw new AccessViolation(sprintf("Ship owned by another user (%d)! Fool: %d", $ship->getUser()->getId(), $userId));
             }
         }
     }

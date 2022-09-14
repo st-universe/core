@@ -25,7 +25,7 @@ final class ColonyLoader implements ColonyLoaderInterface
             throw new AccessViolation(sprintf("Colony not existent! Fool: %d", $userId));
         }
         if ($colony->getUserId() !== $userId) {
-            throw new AccessViolation(sprintf("Colony owned by another user! Fool: %d", $userId));
+            throw new AccessViolation(sprintf("Colony owned by another user (%d)! Fool: %d", $colony->getUserId(), $userId));
         }
         return $colony;
     }
