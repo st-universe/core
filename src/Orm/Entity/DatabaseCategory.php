@@ -32,6 +32,9 @@ class DatabaseCategory implements DatabaseCategoryInterface
     /** @Column(type="integer") * */
     private $prestige;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $award_id;
+
     /**
      * @OneToMany(targetEntity="Stu\Orm\Entity\DatabaseEntry", mappedBy="category")
      * @OrderBy({"sort" = "ASC"})
