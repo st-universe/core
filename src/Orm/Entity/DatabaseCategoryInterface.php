@@ -24,6 +24,8 @@ interface DatabaseCategoryInterface
 
     public function getPrestige(): int;
 
+    public function getAward(): ?AwardInterface;
+
     /**
      * Returns a list of associated database entries
      * @return DatabaseEntryInterface[]

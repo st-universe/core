@@ -41,6 +41,12 @@ class DatabaseCategory implements DatabaseCategoryInterface
      */
     private $entries;
 
+    /**
+     * @ManyToOne(targetEntity="Award")
+     * @JoinColumn(name="award_id", referencedColumnName="id")
+     */
+    private $award;
+
     public function getId(): int
     {
         return $this->id;
@@ -97,6 +103,11 @@ class DatabaseCategory implements DatabaseCategoryInterface
     public function getPrestige(): int
     {
         return $this->prestige;
+    }
+
+    public function getAward(): ?AwardInterface
+    {
+        return $this->award;
     }
 
     public function getEntries(): array

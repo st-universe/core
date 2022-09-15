@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
-use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
@@ -60,27 +60,26 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
             //create prestige log
             $this->createPrestigeLog->createLogForDatabaseEntry($databaseEntry, $user, $userEntry->getDate());
 
-            $this->checkForCompletion($user, $databaseEntry->getCategory()->getId());
+            $this->checkForCompletion($user, $databaseEntry->getCategory());
         }
 
         return $databaseEntry;
     }
 
-    private function checkForCompletion(UserInterface $user, int $categoryId): void
+    private function checkForCompletion(UserInterface $user, DatabaseCategoryInterface $category): void
     {
-        if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $categoryId)) {
+        //check if an award is configured for this category
+        if ($category->getAward() === null) {
+            return;
+        }
 
-            //check if an award is configured for this category
-            //TODO add award reference to database category
-            if (!array_key_exists($categoryId, DatabaseCategoryTypeEnum::CATEGORY_TO_AWARD)) {
-                return;
-            }
+        if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId())) {
 
-            $award = $this->userAwardRepository->prototype();
-            $award->setUser($user);
-            $award->setType(DatabaseCategoryTypeEnum::CATEGORY_TO_AWARD[$categoryId]);
+            $userAward = $this->userAwardRepository->prototype();
+            $userAward->setUser($user);
+            $userAward->setAward($category->getAward());
 
-            $this->userAwardRepository->save($award);
+            $this->userAwardRepository->save($userAward);
         }
     }
 }
