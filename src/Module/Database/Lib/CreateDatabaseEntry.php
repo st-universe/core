@@ -73,13 +73,20 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
             return;
         }
 
+        $award = $category->getAward();
+
         if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId())) {
 
+            //TODO new class "createUserAward" that delegates to prestige log
             $userAward = $this->userAwardRepository->prototype();
             $userAward->setUser($user);
-            $userAward->setAward($category->getAward());
+            $userAward->setAward($award);
 
             $this->userAwardRepository->save($userAward);
+
+            //create prestige log
+            $description = sprintf('%d Prestige erhalten für den Erhalt vom Award für "%s"', $award->getPrestige(), $award->getDescription());
+            $this->createPrestigeLog->createLog($award->getPrestige(), $description, $user, time());
         }
     }
 }
