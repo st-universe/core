@@ -66,7 +66,8 @@ abstract class AbstractWeaponPhase
 
     public function checkForPrestige(UserInterface $destroyer, ShipInterface $target): void
     {
-        $amount = $target->getRump()->getPrestige();
+        $rump = $target->getRump();
+        $amount = $rump->getPrestige();
 
         // nothing to do
         if ($amount === 0) {
@@ -74,15 +75,16 @@ abstract class AbstractWeaponPhase
         }
 
         // empty escape pods to five times negative prestige
-        if ($target->getRump()->isEscapePods() && $target->getCrewCount() === 0) {
+        if ($rump->isEscapePods() && $target->getCrewCount() === 0) {
             $amount *= 5;
         }
 
         $description = sprintf(
-            '%s%d%s Prestige erhalten für die Zerstörung einer Rettungskapsel',
+            '%s%d%s Prestige erhalten für die Zerstörung von: %s',
             $amount < 0 ? '[b][color=red]' : '',
             $amount,
-            $amount < 0 ? '[/color][/b]' : ''
+            $amount < 0 ? '[/color][/b]' : '',
+            $rump->getName()
         );
 
         $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
