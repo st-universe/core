@@ -155,6 +155,9 @@ $builder->addDefinitions([
 ]);
 
 $builder->addDefinitions(
+    require_once __DIR__ . '/../Module/Award/services.php'
+);
+$builder->addDefinitions(
     require_once __DIR__ . '/../Module/Database/services.php'
 );
 $builder->addDefinitions(

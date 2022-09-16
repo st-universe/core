@@ -10,6 +10,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -22,14 +23,12 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
-use Stu\Orm\Repository\UserAwardRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
@@ -61,13 +60,11 @@ final class ColonyTick implements ColonyTickInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private LoggerUtilInterface $loggerUtil;
+    private CreateUserAwardInterface $createUserAward;
 
     private EntityManagerInterface $entityManager;
 
-    private AwardRepositoryInterface $awardRepository;
-
-    private UserAwardRepositoryInterface $userAwardRepository;
+    private LoggerUtilInterface $loggerUtil;
 
     private array $commodityArray;
 
@@ -88,9 +85,8 @@ final class ColonyTick implements ColonyTickInterface
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
+        CreateUserAwardInterface $createUserAward,
         EntityManagerInterface $entityManager,
-        AwardRepositoryInterface $awardRepository,
-        UserAwardRepositoryInterface $userAwardRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->researchedRepository = $researchedRepository;
@@ -106,10 +102,9 @@ final class ColonyTick implements ColonyTickInterface
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->createUserAward = $createUserAward;
         $this->entityManager = $entityManager;
-        $this->awardRepository = $awardRepository;
-        $this->userAwardRepository = $userAwardRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(ColonyInterface $colony, array $commodityArray): void
@@ -342,9 +337,8 @@ final class ColonyTick implements ColonyTickInterface
                     $this->colonyRepository,
                     $this->shipRepository,
                     $this->shipSystemManager,
+                    $this->createUserAward,
                     $this->entityManager,
-                    $this->awardRepository,
-                    $this->userAwardRepository
                 ))->advance(
                     $current_research,
                     $production[$current_research->getResearch()->getGoodId()]->getProduction()

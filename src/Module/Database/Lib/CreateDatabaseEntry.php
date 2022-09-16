@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
+use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\UserAwardRepositoryInterface;
 
 final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 {
@@ -18,20 +18,20 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
     private DatabaseUserRepositoryInterface $databaseUserRepository;
 
-    private UserAwardRepositoryInterface $userAwardRepository;
-
     private CreatePrestigeLogInterface $createPrestigeLog;
+
+    private CreateUserAwardInterface $createUserAward;
 
     public function __construct(
         DatabaseEntryRepositoryInterface $databaseEntryRepository,
         DatabaseUserRepositoryInterface $databaseUserRepository,
-        UserAwardRepositoryInterface $userAwardRepository,
-        CreatePrestigeLogInterface $createPrestigeLog
+        CreatePrestigeLogInterface $createPrestigeLog,
+        CreateUserAwardInterface $createUserAward
     ) {
         $this->databaseEntryRepository = $databaseEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
-        $this->userAwardRepository = $userAwardRepository;
         $this->createPrestigeLog = $createPrestigeLog;
+        $this->createUserAward = $createUserAward;
     }
 
     public function createDatabaseEntryForUser(UserInterface $user, int $databaseEntryId): ?DatabaseEntryInterface
@@ -77,16 +77,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
         if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId())) {
 
-            //TODO new class "createUserAward" that delegates to prestige log
-            $userAward = $this->userAwardRepository->prototype();
-            $userAward->setUser($user);
-            $userAward->setAward($award);
-
-            $this->userAwardRepository->save($userAward);
-
-            //create prestige log
-            $description = sprintf('%d Prestige erhalten für den Erhalt des Awards "%s"', $award->getPrestige(), $award->getDescription());
-            $this->createPrestigeLog->createLog($award->getPrestige(), $description, $user, time());
+            $this->createUserAward->createAwardForUser($user, $award);
         }
     }
 }
