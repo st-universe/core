@@ -12,6 +12,8 @@ final class ShipBuildplanDeletionHandler implements PlayerDeletionHandlerInterfa
 {
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         EntityManagerInterface  $entityManager
@@ -23,5 +25,6 @@ final class ShipBuildplanDeletionHandler implements PlayerDeletionHandlerInterfa
     public function delete(UserInterface $user): void
     {
         $this->shipBuildplanRepository->truncateByUser($user->getId());
+        $this->entityManager->flush();
     }
 }
