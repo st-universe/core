@@ -37,6 +37,8 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
 
     public function delete(ShipBuildplanInterface $shipBuildplan): void;
 
+    public function truncateByUser(int $userId): void;
+
     /**
      * @return ShipBuildplanInterface[]
      */

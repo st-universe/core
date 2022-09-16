@@ -55,6 +55,7 @@ return [
             autowire(Handler\RpgPlotDeletionHandler::class),
             autowire(Handler\ShipDeletionHandler::class),
             autowire(Handler\FleetDeletionHandler::class),
+            autowire(Handler\ShipBuildplanDeletionHandler::class),
             autowire(Handler\UserDeletionHandler::class)
         ]
     ),
