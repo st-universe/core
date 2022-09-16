@@ -37,7 +37,6 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         $em = $this->getEntityManager();
 
         $em->remove($rpgPlot);
-        //$em->flush();
     }
 
     public function getActiveByUser(int $userId): array

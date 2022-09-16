@@ -20,7 +20,7 @@ final class ShipDeletionHandler implements PlayerDeletionHandlerInterface
     public function __construct(
         ShipRemoverInterface $shipRemover,
         ShipRepositoryInterface $shipRepository,
-        EntityManagerInterface  $entityManager
+        EntityManagerInterface $entityManager
     ) {
         $this->shipRemover = $shipRemover;
         $this->shipRepository = $shipRepository;

@@ -48,5 +48,7 @@ interface ResearchInterface
 
     public function getRewardBuildplan(): ?ShipBuildplanInterface;
 
+    public function getAward(): ?AwardInterface;
+
     public function getNeededAward(): ?int;
 }

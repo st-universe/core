@@ -47,6 +47,9 @@ class Research implements ResearchInterface
     /** @Column(type="integer", nullable=true) * */
     private $reward_buildplan_id;
 
+    /** @Column(type="integer", nullable=true) */
+    private $award_id;
+
     /** @Column(type="integer", nullable=true) * */
     private $needed_award;
 
@@ -61,6 +64,12 @@ class Research implements ResearchInterface
      * @JoinColumn(name="reward_buildplan_id", referencedColumnName="id")
      */
     private $rewardBuildplan;
+
+    /**
+     * @ManyToOne(targetEntity="Award")
+     * @JoinColumn(name="award_id", referencedColumnName="id")
+     */
+    private $award;
 
     public function getId(): int
     {
@@ -188,6 +197,11 @@ class Research implements ResearchInterface
     public function getRewardBuildplan(): ?ShipBuildplanInterface
     {
         return $this->rewardBuildplan;
+    }
+
+    public function getAward(): ?AwardInterface
+    {
+        return $this->award;
     }
 
     public function getNeededAward(): ?int
