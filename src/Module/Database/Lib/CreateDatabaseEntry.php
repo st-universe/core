@@ -85,7 +85,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
             $this->userAwardRepository->save($userAward);
 
             //create prestige log
-            $description = sprintf('%d Prestige erhalten für den Erhalt vom Award für "%s"', $award->getPrestige(), $award->getDescription());
+            $description = sprintf('%d Prestige erhalten für den Erhalt des Awards "%s"', $award->getPrestige(), $award->getDescription());
             $this->createPrestigeLog->createLog($award->getPrestige(), $description, $user, time());
         }
     }
