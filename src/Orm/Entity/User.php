@@ -725,17 +725,23 @@ class User implements UserInterface
         return $this->crew_in_training;
     }
 
+    public function hasAward(int $awardId): bool
+    {
+        foreach ($this->getAwards() as $userAward) {
+            if ($userAward->getAward()->getId() === $awardId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function hasStationsNavigation(): bool
     {
         if ($this->isNpc()) {
             return true;
         }
-        foreach ($this->getAwards() as $userAward) {
-            if ($userAward->getAward()->getId() === UserAwardEnum::RESEARCHED_STATIONS) {
-                return true;
-            }
-        }
-        return false;
+
+        return $this->hasAward(UserAwardEnum::RESEARCHED_STATIONS);
     }
 
     public function maySignup(int $allianceId): bool

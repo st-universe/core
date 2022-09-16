@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Research\ResearchEnum;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -62,7 +63,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
             // check for existent user award
             if ($obj->getNeededAward() !== null) {
-                if (!$user->getAwards()->containsKey($obj->getNeededAward())) {
+                if (!$user->hasAward(UserAwardEnum::RESEARCHED_STATIONS)) {
                     continue;
                 }
             }

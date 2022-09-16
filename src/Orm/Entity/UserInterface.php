@@ -174,6 +174,8 @@ interface UserInterface
 
     public function getInTrainingCrewCount(): int;
 
+    public function hasAward(int $awardId): bool;
+
     public function hasStationsNavigation(): bool;
 
     public function maySignup(int $allianceId): bool;
