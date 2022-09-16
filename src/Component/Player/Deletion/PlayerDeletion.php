@@ -95,6 +95,8 @@ final class PlayerDeletion implements PlayerDeletionInterface
     {
         $userId = $user->getId();
         $name = $this->bbCodeParser->parse($user->getName())->getAsText();
+        $delmark = $user->getDeletionMark();
+
         $this->loggerUtil->log(sprintf('deleting userId: %d', $userId));
 
         array_walk(
@@ -105,6 +107,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
         );
 
         $this->entityManager->flush();
-        $this->loggerUtil->log(sprintf('deleted user with id: %d and name: %s', $userId, $name));
+        $this->loggerUtil->log(sprintf('deleted user (id: %d, name: %s, delmark: %d)', $userId, $name, $delmark));
     }
 }
