@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Component\Player\UserAwardEnum;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserAwardRepository")
  * @Table(
@@ -23,9 +21,6 @@ class UserAward implements UserAwardInterface
 
     /** @Column(type="integer") */
     private $user_id = 0;
-
-    /** @Column(type="integer", nullable=true) */
-    private $type = 0;
 
     /** @Column(type="integer") */
     private $award_id;
