@@ -24,7 +24,7 @@ use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 
 final class BuyTradeLicense implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_PAY_TRADELICENCE';
+    public const ACTION_IDENTIFIER = 'B_PAY_TRADELICENSE';
 
     private const SECONDS_PER_DAY = 86400;
 
@@ -95,7 +95,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $targetId = (int) request::getIntFatal('target');
         $mode = request::getStringFatal('method');
 
-        if ($this->tradeLicenseRepository->getAmountByUser($userId) >= GameEnum::MAX_TRADELICENCE_COUNT) {
+        if ($this->tradeLicenseRepository->getAmountByUser($userId) >= GameEnum::MAX_TRADELICENSE_COUNT) {
             return;
         }
 
@@ -158,15 +158,15 @@ final class BuyTradeLicense implements ActionControllerInterface
                 return;
         }
 
-        $licence = $this->tradeLicenseRepository->prototype();
-        $licence->setTradePost($tradepost);
-        $licence->setUser($game->getUser());
-        $licence->setDate(time());
-        $licence->setExpired(time() + $licenseInfo->getDays() * self::SECONDS_PER_DAY);
+        $license = $this->tradeLicenseRepository->prototype();
+        $license->setTradePost($tradepost);
+        $license->setUser($game->getUser());
+        $license->setDate(time());
+        $license->setExpired(time() + $licenseInfo->getDays() * self::SECONDS_PER_DAY);
 
         $game->addInformation('Handelslizenz wurde erteilt');
 
-        $this->tradeLicenseRepository->save($licence);
+        $this->tradeLicenseRepository->save($license);
         $this->privateMessageSender->send(
             $userId,
             $tradepost->getUserId(),

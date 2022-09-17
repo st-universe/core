@@ -91,7 +91,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         );
     }
 
-    public function getLicencesCountbyUser(int $userId): array
+    public function getLicensesCountbyUser(int $userId): array
     {
         $time = time();
         return $this->getEntityManager()

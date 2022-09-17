@@ -201,13 +201,13 @@ final class StationUtility implements StationUtilityInterface
         $station->setTradePost($tradepost);
         $this->shipRepository->save($station);
 
-        $licence = $this->tradeLicenseRepository->prototype();
-        $licence->setTradePost($tradepost);
-        $licence->setUser($owner);
-        $licence->setDate(time());
-        $licence->setExpired(2147483647); // 2147483647 = maxInt in postgres:  19. January 2038
+        $license = $this->tradeLicenseRepository->prototype();
+        $license->setTradePost($tradepost);
+        $license->setUser($owner);
+        $license->setDate(time());
+        $license->setExpired(2147483647); // 2147483647 = maxInt in postgres:  19. January 2038
 
-        $this->tradeLicenseRepository->save($licence);
+        $this->tradeLicenseRepository->save($license);
     }
 
     public function finishScrapping(ShipInterface $station, ConstructionProgressInterface $progress): void

@@ -2,35 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\View\ShowLicenceMenu;
+namespace Stu\Module\Trade\View\ShowLicenseMenu;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
-final class ShowLicenceMenu implements ViewControllerInterface
+final class ShowLicenseMenu implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_LICENCE_MENU';
+    public const VIEW_IDENTIFIER = 'SHOW_LICENSE_MENU';
 
-    private ShowLicenceMenuRequestInterface $showLicenceMenuRequest;
+    private ShowLicenseMenuRequestInterface $showLicenseMenuRequest;
 
     private CommodityRepositoryInterface $commodityRepository;
 
     public function __construct(
-        ShowLicenceMenuRequestInterface $showLicenceMenuRequest,
+        ShowLicenseMenuRequestInterface $showLicenseMenuRequest,
         CommodityRepositoryInterface $commodityRepository
     ) {
-        $this->showLicenceMenuRequest = $showLicenceMenuRequest;
+        $this->showLicenseMenuRequest = $showLicenseMenuRequest;
         $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $trade_post = $this->showLicenceMenuRequest->getTradePostId();
+        $trade_post = $this->showLicenseMenuRequest->getTradePostId();
 
         $commodityList = $this->commodityRepository->getTradeable();
 
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicencemenu');
+        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicensemenu');
         $game->setPageTitle(sprintf(
             _('Lizenzmanagement')
         ));

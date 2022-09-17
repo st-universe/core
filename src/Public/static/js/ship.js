@@ -159,8 +159,8 @@ function openTradeMenu(postid) {
 function tradeMenuChoosePayment(postid) {
 	ajax_update('trademenucontent', 'ship.php?SHOW_TRADEMENU_CHOOSE_PAYMENT=1&id=' + shipid + "&postid=" + postid);
 }
-function payTradeLicence(postid, method, id) {
-	ajax_update('trademenucontent', 'ship.php?B_PAY_TRADELICENCE=1&id=' + shipid + "&method=" + method + "&target=" + id + "&postid=" + postid + "&sstr=" + $('sstrajax').value);
+function payTradeLicense(postid, method, id) {
+	ajax_update('trademenucontent', 'ship.php?B_PAY_TRADELICENSE=1&id=' + shipid + "&method=" + method + "&target=" + id + "&postid=" + postid + "&sstr=" + $('sstrajax').value);
 }
 function switchTransferFromAccount(postid) {
 	ajax_update('trademenutransfer', 'ship.php?SHOW_TRADEMENU_TRANSFER=1&id=' + shipid + "&mode=from&postid=" + postid);

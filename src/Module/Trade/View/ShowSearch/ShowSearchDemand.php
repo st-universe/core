@@ -76,7 +76,7 @@ final class ShowSearchDemand implements ViewControllerInterface
         $commodityList = $this->commodityRepository->getTradeable();
         $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
 
-        $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENCE_COUNT);
+        $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENSE_COUNT);
         $game->setTemplateVar(
             'OFFER_LIST',
             array_map(

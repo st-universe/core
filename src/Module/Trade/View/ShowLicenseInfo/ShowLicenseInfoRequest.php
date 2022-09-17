@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\View\ShowLicenceInfo;
+namespace Stu\Module\Trade\View\ShowLicenseInfo;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class ShowLicenceInfoRequest implements ShowLicenceInfoRequestInterface
+final class ShowLicenseInfoRequest implements ShowLicenseInfoRequestInterface
 {
     use CustomControllerHelperTrait;
 

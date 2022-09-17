@@ -92,7 +92,7 @@
 						<td class="darkbg">Ausgestellte Lizenzen</td>
 						<td>
 							<span tal:content="data/getLicenseCount">LIZENZEN</span>
-							(<a href="javascript:void(0)" onclick="showTradeLicenceList(this,${data/getId});">Liste
+							(<a href="javascript:void(0)" onclick="showTradeLicenseList(this,${data/getId});">Liste
 								anzeigen</a>)
 						</td>
 					</tr>
@@ -101,10 +101,10 @@
 						<td>
 							<span tal:condition="data/getTradePostbyUser">
 								<a href="javascript:void(0)"
-									onclick="showLicenceMenu(${data/getId});">Bearbeiten</a></span>
+									onclick="showLicenseMenu(${data/getId});">Bearbeiten</a></span>
 							<span tal:condition="not:data/getTradePostbyUser">
 								<a href="javascript:void(0)"
-									onclick="showLicenceInfo(${data/getId});">Anzeigen</a></span>
+									onclick="showLicenseInfo(${data/getId});">Anzeigen</a></span>
 						</td>
 					</tr>
 				</table>

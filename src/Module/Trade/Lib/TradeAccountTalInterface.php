@@ -46,8 +46,4 @@ interface TradeAccountTalInterface
     public function getLicenseCount(): int;
 
     public function getFreeStorage(): int;
-
-    public function getTradeLicenseCosts(): int;
-
-    public function getTradeLicenseCostsCommodity(): CommodityInterface;
 }

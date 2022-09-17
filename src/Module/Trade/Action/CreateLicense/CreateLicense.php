@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\Action\CreateLicence;
+namespace Stu\Module\Trade\Action\CreateLicense;
 
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,11 +14,11 @@ use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
-final class CreateLicence implements ActionControllerInterface
+final class CreateLicense implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CREATE_LICENCE';
+    public const ACTION_IDENTIFIER = 'B_CREATE_LICENSE';
 
-    private CreateLicenceRequestInterface $createLicenceRequest;
+    private CreateLicenseRequestInterface $createLicenseRequest;
 
     private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository;
 
@@ -27,12 +27,12 @@ final class CreateLicence implements ActionControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        CreateLicenceRequestInterface $createLicenceRequest,
+        CreateLicenseRequestInterface $createLicenseRequest,
         TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         TradePostRepositoryInterface $tradePostRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->createLicenceRequest = $createLicenceRequest;
+        $this->createLicenseRequest = $createLicenseRequest;
         $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->tradePostRepository = $tradePostRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -46,7 +46,7 @@ final class CreateLicence implements ActionControllerInterface
 
         $user = $game->getUser();
 
-        $posts_id = $this->createLicenceRequest->getTradePostId();
+        $posts_id = $this->createLicenseRequest->getTradePostId();
 
         $tradepost = $this->tradePostRepository->find($posts_id);
         if ($tradepost === null) {
@@ -57,9 +57,9 @@ final class CreateLicence implements ActionControllerInterface
             throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $user->getId()));
         }
 
-        $goods_id = $this->createLicenceRequest->getWantedLicenceGoodId();
-        $giveAmount = $this->createLicenceRequest->getWantedLicenceAmount();
-        $days = $this->createLicenceRequest->getLicenceDays();
+        $goods_id = $this->createLicenseRequest->getWantedLicenseGoodId();
+        $giveAmount = $this->createLicenseRequest->getWantedLicenseAmount();
+        $days = $this->createLicenseRequest->getLicenseDays();
 
         if ($days < 1 || $days > 365) {
             $game->addInformation("Die Lizenzdauer muss zwischen 1 und 365 Tagen liegen");
@@ -71,14 +71,14 @@ final class CreateLicence implements ActionControllerInterface
             return;
         }
 
-        $setLicence = $this->TradeLicenseInfoRepository->prototype();
-        $setLicence->setTradepost($tradepost);
-        $setLicence->setDate(time());
-        $setLicence->setGoodsId((int) $goods_id);
-        $setLicence->setAmount((int) $giveAmount);
-        $setLicence->setDays($days);
+        $setLicense = $this->TradeLicenseInfoRepository->prototype();
+        $setLicense->setTradepost($tradepost);
+        $setLicense->setDate(time());
+        $setLicense->setGoodsId((int) $goods_id);
+        $setLicense->setAmount((int) $giveAmount);
+        $setLicense->setDays($days);
 
-        $this->TradeLicenseInfoRepository->save($setLicence);
+        $this->TradeLicenseInfoRepository->save($setLicense);
 
 
         $game->addInformation('Handelslizenz geändert');

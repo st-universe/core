@@ -23,15 +23,15 @@ function showOfferMenuTransfer(storid) {
 	$('tradeoffermenutransfer').addClassName('selected');
 	$('tradeoffermenunewoffer').removeClassName('selected');
 }
-function showLicenceMenu(postId) {
-	var elt = 'tradelicencemenu';
+function showLicenseMenu(postId) {
+	var elt = 'tradelicensemenu';
 	openWindowPosition(elt, 1, 300, 90, 250, 400);
-	ajax_update(elt, 'trade.php?SHOW_LICENCE_MENU=1&postid=' + postId);
+	ajax_update(elt, 'trade.php?SHOW_LICENSE_MENU=1&postid=' + postId);
 }
-function showLicenceInfo(postId) {
-	var elt = 'tradelicenceinfo';
+function showLicenseInfo(postId) {
+	var elt = 'tradelicenseinfo';
 	openWindowPosition(elt, 1, 300, 90, 250);
-	ajax_update(elt, 'trade.php?SHOW_LICENCE_INFO=1&postid=' + postId);
+	ajax_update(elt, 'trade.php?SHOW_LICENSE_INFO=1&postid=' + postId);
 }
 function takeTradeOffer(offerid) {
 	var elt = 'tradeoffer';
@@ -44,8 +44,8 @@ function changeSearchCommodity(id) {
 function changeSearchTradepost(id) {
 	document.getElementById('tradepostSelect').value = id;
 }
-function showTradeLicenceList(obj, postId) {
-	var elt = 'licencelist';
+function showTradeLicenseList(obj, postId) {
+	var elt = 'licenselist';
 	openWindowPosition(elt, 1, 300, 300, 250);
 	ajax_update(elt, 'trade.php?SHOW_LICENSE_LIST=1&postid=' + postId);
 }

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\View\ShowLicenceMenu;
+namespace Stu\Module\Trade\View\ShowLicenseMenu;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class ShowLicenceMenuRequest implements ShowLicenceMenuRequestInterface
+final class ShowLicenseMenuRequest implements ShowLicenseMenuRequestInterface
 {
     use CustomControllerHelperTrait;
 

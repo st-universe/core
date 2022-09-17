@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\Action\CreateLicence;
+namespace Stu\Module\Trade\Action\CreateLicense;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class CreateLicenceRequest implements CreateLicenceRequestInterface
+final class CreateLicenseRequest implements CreateLicenseRequestInterface
 {
     use CustomControllerHelperTrait;
 
@@ -15,17 +15,17 @@ final class CreateLicenceRequest implements CreateLicenceRequestInterface
         return $this->bodyParameter('tradepost')->int()->required();
     }
 
-    public function getWantedLicenceGoodId(): int
+    public function getWantedLicenseGoodId(): int
     {
         return $this->bodyParameter('wlgid')->int()->defaultsTo(0);
     }
 
-    public function getWantedLicenceAmount(): int
+    public function getWantedLicenseAmount(): int
     {
         return $this->bodyParameter('wlcount')->int()->defaultsTo(0);
     }
 
-    public function getLicenceDays(): int
+    public function getLicenseDays(): int
     {
         return $this->bodyParameter('ldays')->int()->defaultsTo(0);
     }

@@ -143,14 +143,4 @@ final class TradeAccountTal implements TradeAccountTalInterface
     {
         return max(0, $this->tradePost->getStorage() - $this->getStorageSum());
     }
-
-    public function getTradeLicenseCosts(): int
-    {
-        return $this->tradePost->calculateLicenceCost();
-    }
-
-    public function getTradeLicenseCostsCommodity(): CommodityInterface
-    {
-        return $this->tradePost->getLicenceCostGood();
-    }
 }

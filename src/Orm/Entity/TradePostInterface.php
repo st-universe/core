@@ -41,8 +41,4 @@ interface TradePostInterface
     public function getShip(): ShipInterface;
 
     public function setShip(ShipInterface $ship): TradePostInterface;
-
-    public function calculateLicenceCost(): int;
-
-    public function getLicenceCostGood(): CommodityInterface;
 }

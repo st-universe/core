@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\View\ShowLicenceInfo;
+namespace Stu\Module\Trade\View\ShowLicenseInfo;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 
-final class ShowLicenceInfo implements ViewControllerInterface
+final class ShowLicenseInfo implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_LICENCE_INFO';
+    public const VIEW_IDENTIFIER = 'SHOW_LICENSE_INFO';
 
-    private ShowLicenceInfoRequestInterface $showLicenceInfoRequest;
+    private ShowLicenseInfoRequestInterface $showLicenseInfoRequest;
 
     private CommodityRepositoryInterface $commodityRepository;
 
@@ -21,11 +21,11 @@ final class ShowLicenceInfo implements ViewControllerInterface
 
 
     public function __construct(
-        ShowLicenceInfoRequestInterface $showLicenceInfoRequest,
+        ShowLicenseInfoRequestInterface $showLicenseInfoRequest,
         TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         CommodityRepositoryInterface $commodityRepository
     ) {
-        $this->showLicenceInfoRequest = $showLicenceInfoRequest;
+        $this->showLicenseInfoRequest = $showLicenseInfoRequest;
         $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->commodityRepository = $commodityRepository;
     }
@@ -33,14 +33,14 @@ final class ShowLicenceInfo implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
 
-        $tradePostId = $this->showLicenceInfoRequest->getTradePostId();
+        $tradePostId = $this->showLicenseInfoRequest->getTradePostId();
 
         //TODO sanity checks, postId not present? licenseInfo not present?
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradePostId);
         $commodityId = $licenseInfo->getGoodsId();
         $commodityName = $this->commodityRepository->find($commodityId)->getName();
 
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicenceinfo');
+        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicenseinfo');
         $game->setPageTitle(sprintf(
             _('Lizenzinformation')
         ));

@@ -16,9 +16,9 @@ use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequestInterface;
 use Stu\Module\Trade\Action\ChangeTradePostName\ChangeTradePostName;
 use Stu\Module\Trade\Action\ChangeTradePostName\ChangeTradePostNameRequest;
 use Stu\Module\Trade\Action\ChangeTradePostName\ChangeTradePostNameRequestInterface;
-use Stu\Module\Trade\Action\CreateLicence\CreateLicence;
-use Stu\Module\Trade\Action\CreateLicence\CreateLicenceRequest;
-use Stu\Module\Trade\Action\CreateLicence\CreateLicenceRequestInterface;
+use Stu\Module\Trade\Action\CreateLicense\CreateLicense;
+use Stu\Module\Trade\Action\CreateLicense\CreateLicenseRequest;
+use Stu\Module\Trade\Action\CreateLicense\CreateLicenseRequestInterface;
 use Stu\Module\Trade\Action\CreateOffer\CreateOffer;
 use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequest;
 use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequestInterface;
@@ -36,12 +36,12 @@ use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseList;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequest;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequestInterface;
-use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenu;
-use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenuRequest;
-use Stu\Module\Trade\View\ShowLicenceMenu\ShowLicenceMenuRequestInterface;
-use Stu\Module\Trade\View\ShowLicenceInfo\ShowLicenceInfo;
-use Stu\Module\Trade\View\ShowLicenceInfo\ShowLicenceInfoRequest;
-use Stu\Module\Trade\View\ShowLicenceInfo\ShowLicenceInfoRequestInterface;
+use Stu\Module\Trade\View\ShowLicenseMenu\ShowLicenseMenu;
+use Stu\Module\Trade\View\ShowLicenseMenu\ShowLicenseMenuRequest;
+use Stu\Module\Trade\View\ShowLicenseMenu\ShowLicenseMenuRequestInterface;
+use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfo;
+use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequest;
+use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequestInterface;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGood;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGoodRequest;
 use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGoodRequestInterface;
@@ -74,8 +74,8 @@ use function DI\autowire;
 
 return [
     TradeLibFactoryInterface::class => autowire(TradeLibFactory::class),
-    ShowLicenceMenuRequestInterface::class => autowire(ShowLicenceMenuRequest::class),
-    ShowLicenceInfoRequestInterface::class => autowire(ShowLicenceInfoRequest::class),
+    ShowLicenseMenuRequestInterface::class => autowire(ShowLicenseMenuRequest::class),
+    ShowLicenseInfoRequestInterface::class => autowire(ShowLicenseInfoRequest::class),
     ShowOfferMenuRequestInterface::class => autowire(ShowOfferMenuRequest::class),
     ShowTransferMenueRequestInterface::class => autowire(ShowTransferMenueRequest::class),
     ShowOfferMenuNewOfferRequestInterface::class => autowire(ShowOfferMenuNewOfferRequest::class),
@@ -85,7 +85,7 @@ return [
     ShowTradePostInfoRequestInterface::class => autowire(ShowTradePostInfoRequest::class),
     TakeOfferRequestInterface::class => autowire(TakeOfferRequest::class),
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
-    CreateLicenceRequestInterface::class => autowire(CreateLicenceRequest::class),
+    CreateLicenseRequestInterface::class => autowire(CreateLicenseRequest::class),
     ShowLicenseListRequestInterface::class => autowire(ShowLicenseListRequest::class),
     ShowOfferGoodRequestInterface::class => autowire(ShowOfferGoodRequest::class),
     ShowShoutBoxRequestInterface::class => autowire(ShowShoutBoxRequest::class),
@@ -93,28 +93,28 @@ return [
     AddShoutBoxEntryRequestInterface::class => autowire(AddShoutBoxEntryRequest::class),
     TransferGoodsRequestInterface::class => autowire(TransferGoodsRequest::class),
     'TRADE_ACTIONS' => [
-        CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
-        ChangeTradePostName::ACTION_IDENTIFIER => autowire(ChangeTradePostName::class),
-        TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
-        CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
         AddShoutBoxEntry::ACTION_IDENTIFIER => autowire(AddShoutBoxEntry::class),
-        CreateLicence::ACTION_IDENTIFIER => autowire(CreateLicence::class),
-        TransferGoods::ACTION_IDENTIFIER => autowire(TransferGoods::class),
         BasicTradeBuy::ACTION_IDENTIFIER => autowire(BasicTradeBuy::class),
-        BasicTradeSell::ACTION_IDENTIFIER => autowire(BasicTradeSell::class)
+        BasicTradeSell::ACTION_IDENTIFIER => autowire(BasicTradeSell::class),
+        CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
+        ChangeTradePostName::ACTION_IDENTIFIER => autowire(ChangeTradePostName::class),
+        CreateLicense::ACTION_IDENTIFIER => autowire(CreateLicense::class),
+        CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
+        TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
+        TransferGoods::ACTION_IDENTIFIER => autowire(TransferGoods::class)
     ],
     'TRADE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowAccounts::VIEW_IDENTIFIER => autowire(ShowAccounts::class),
-        ShowLicenceMenu::VIEW_IDENTIFIER => autowire(ShowLicenceMenu::class),
-        ShowLicenceInfo::VIEW_IDENTIFIER => autowire(ShowLicenceInfo::class),
+        ShowLicenseInfo::VIEW_IDENTIFIER => autowire(ShowLicenseInfo::class),
+        ShowLicenseList::VIEW_IDENTIFIER => autowire(ShowLicenseList::class),
+        ShowLicenseMenu::VIEW_IDENTIFIER => autowire(ShowLicenseMenu::class),
         ShowOfferMenu::VIEW_IDENTIFIER => autowire(ShowOfferMenu::class),
         ShowTransferMenu::VIEW_IDENTIFIER => autowire(ShowTransferMenu::class),
         ShowOfferMenuNewOffer::VIEW_IDENTIFIER => autowire(ShowOfferMenuNewOffer::class),
         ShowTakeOffer::VIEW_IDENTIFIER => autowire(ShowTakeOffer::class),
         ShowTradePostInfo::VIEW_IDENTIFIER => autowire(ShowTradePostInfo::class),
-        ShowLicenseList::VIEW_IDENTIFIER => autowire(ShowLicenseList::class),
         ShowOfferGood::VIEW_IDENTIFIER => autowire(ShowOfferGood::class),
         ShowShoutBox::VIEW_IDENTIFIER => autowire(ShowShoutBox::class),
         ShowShoutBoxList::VIEW_IDENTIFIER => autowire(ShowShoutBoxList::class),

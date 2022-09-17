@@ -167,19 +167,4 @@ class TradePost implements TradePostInterface
 
         return $this;
     }
-
-    public function calculateLicenceCost(): int
-    {
-        // @todo Kostenkalkukation
-        return 1;
-    }
-
-    public function getLicenceCostGood(): CommodityInterface
-    {
-        // @todo Kann auch was anderes als Dilithium sein
-        // @todo refactor
-        global $container;
-
-        return $container->get(CommodityRepositoryInterface::class)->find(CommodityTypeEnum::GOOD_DILITHIUM);
-    }
 }
