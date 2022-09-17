@@ -104,9 +104,8 @@ use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\TradeLicense;
-use Stu\Orm\Entity\TradeOffer;
-use Stu\Orm\Entity\TradeLicenceCreation;
 use Stu\Orm\Entity\TradeLicenseInfo;
+use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeStorage;
@@ -607,11 +606,6 @@ return [
         ContainerInterface $c
     ): TorpedoTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TorpedoType::class);
-    },
-    TradeCreateLicenceRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradeCreateLicenceRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeLicenceCreation::class);
     },
     TradeLicenseInfoRepositoryInterface::class => function (
         ContainerInterface $c
