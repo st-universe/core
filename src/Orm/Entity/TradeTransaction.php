@@ -3,11 +3,14 @@
 declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
-//TODO indizes
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradeTransactionRepository")
  * @Table(
- *     name="stu_trade_transaction"
+ *     name="stu_trade_transaction",
+ *     indexes={
+ *         @Index(name="trade_transaction_date_tradepost_idx", columns={"date", "tradepost_id"})
+ *     }
  * )
  **/
 class TradeTransaction implements TradeTransactionInterface
