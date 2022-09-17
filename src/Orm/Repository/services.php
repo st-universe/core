@@ -47,6 +47,7 @@ use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameTurn;
+use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\IgnoreList;
 use Stu\Orm\Entity\KnComment;
@@ -326,6 +327,11 @@ return [
         ContainerInterface $c
     ): GameTurnRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(GameTurn::class);
+    },
+    GameTurnStatsRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): GameTurnStatsRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(GameTurnStats::class);
     },
     HistoryRepositoryInterface::class => function (
         ContainerInterface $c
