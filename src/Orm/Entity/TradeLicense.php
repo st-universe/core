@@ -7,7 +7,7 @@ namespace Stu\Orm\Entity;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradeLicenseRepository")
  * @Table(
- *     name="stu_trade_licences",
+ *     name="stu_trade_license",
  *     indexes={
  *         @Index(name="user_trade_post_idx", columns={"user_id","posts_id"})
  *     }
