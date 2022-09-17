@@ -20,6 +20,9 @@ class GameTurnStats implements GameTurnStatsInterface
     private $id;
 
     /** @Column(type="integer") * */
+    private $turn_id;
+
+    /** @Column(type="integer") * */
     private $user_count;
 
     /** @Column(type="integer") * */
@@ -37,9 +40,26 @@ class GameTurnStats implements GameTurnStatsInterface
     /** @Column(type="integer") * */
     private $flight_sig_24h;
 
+    /**
+     * @OneToOne(targetEntity="GameTurn")
+     * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $turn;
+
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getTurn(): GameTurnInterface
+    {
+        return $this->turn;
+    }
+
+    public function setTurn(GameTurnInterface $turn): GameTurnStatsInterface
+    {
+        $this->turn = $turn;
+        return $this;
     }
 
     public function getUserCount(): int

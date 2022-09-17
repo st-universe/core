@@ -5,22 +5,39 @@ namespace Stu\Module\Tick;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
+use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TickManager implements TickManagerInterface
 {
     public const PROCESS_COUNT = 1;
 
+    private const ONE_DAY_IN_SECONDS = 86400;
+
     private GameTurnRepositoryInterface $gameTurnRepository;
 
     private UserLockRepositoryInterface $userLockRepository;
 
+    private GameTurnStatsRepositoryInterface $gameTurnStatsRepository;
+
+    private UserRepositoryInterface $userRepository;
+
+    private KnPostRepositoryInterface $knPostRepository;
+
     public function __construct(
         GameTurnRepositoryInterface $gameTurnRepository,
-        UserLockRepositoryInterface $userLockRepository
+        UserLockRepositoryInterface $userLockRepository,
+        GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
+        UserRepositoryInterface $userRepository,
+        KnPostRepositoryInterface $knPostRepository
     ) {
         $this->gameTurnRepository = $gameTurnRepository;
         $this->userLockRepository = $userLockRepository;
+        $this->gameTurnStatsRepository = $gameTurnStatsRepository;
+        $this->userRepository = $userRepository;
+        $this->knPostRepository = $knPostRepository;
     }
 
     public function work(): void
@@ -29,7 +46,8 @@ final class TickManager implements TickManagerInterface
         $this->endTurn($turn);
         $this->mainLoop();
         $this->reduceUserLocks();
-        $this->startTurn($turn);
+        $newTurn = $this->startTurn($turn);
+        $this->createGameTurnStats($newTurn);
     }
 
     private function endTurn(GameTurnInterface $turn): void
@@ -39,7 +57,7 @@ final class TickManager implements TickManagerInterface
         $this->gameTurnRepository->save($turn);
     }
 
-    private function startTurn(GameTurnInterface $turn): void
+    private function startTurn(GameTurnInterface $turn): GameTurnInterface
     {
         $obj = $this->gameTurnRepository->prototype();
         $obj->setStart(time());
@@ -47,6 +65,8 @@ final class TickManager implements TickManagerInterface
         $obj->setTurn($turn->getTurn() + 1);
 
         $this->gameTurnRepository->save($obj);
+
+        return $obj;
     }
 
     private function mainLoop(): void
@@ -79,6 +99,21 @@ final class TickManager implements TickManagerInterface
 
             $this->userLockRepository->save($lock);
         }
+    }
+
+    private function createGameTurnStats(GameTurnInterface $turn): void
+    {
+        $stats = $this->gameTurnStatsRepository->prototype();
+
+        $stats->setTurn($turn);
+        $stats->setUserCount($this->userRepository->getActiveAmount());
+        $stats->setLogins24h($this->userRepository->getActiveAmountRecentlyOnline(time() - self::ONE_DAY_IN_SECONDS));
+        $stats->setVacationCount($this->userRepository->getVacationAmount());
+        $stats->setShipCount($this->gameTurnStatsRepository->getShipCount());
+        $stats->setKnCount($this->knPostRepository->getAmount());
+        $stats->setFlightSig24h($this->gameTurnStatsRepository->getFlightSigs24h());
+
+        $this->gameTurnStatsRepository->save($stats);
     }
 
     private function hitLockFiles(): bool

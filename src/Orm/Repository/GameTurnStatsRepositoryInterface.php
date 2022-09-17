@@ -15,4 +15,8 @@ interface GameTurnStatsRepositoryInterface extends ObjectRepository
     public function save(GameTurnStatsInterface $turn): void;
 
     public function delete(GameTurnStatsInterface $turn): void;
+
+    public function getShipCount(): int;
+
+    public function getFlightSigs24h(): int;
 }

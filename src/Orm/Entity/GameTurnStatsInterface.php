@@ -6,6 +6,10 @@ interface GameTurnStatsInterface
 {
     public function getId(): int;
 
+    public function getTurn(): GameTurnInterface;
+
+    public function setTurn(GameTurnInterface $turn): GameTurnStatsInterface;
+
     public function getUserCount(): int;
 
     public function setUserCount(int $userCount): GameTurnStatsInterface;

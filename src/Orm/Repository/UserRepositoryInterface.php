@@ -80,6 +80,8 @@ interface UserRepositoryInterface extends ObjectRepository
 
     public function getActiveAmount(): int;
 
+    public function getVacationAmount(): int;
+
     public function getActiveAmountRecentlyOnline(int $threshold): int;
 
     /**

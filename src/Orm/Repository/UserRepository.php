@@ -216,6 +216,20 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->getSingleScalarResult();
     }
 
+    public function getVacationAmount(): int
+    {
+        return (int) $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(u.id) FROM %s u
+                WHERE u.id > 100
+                AND u.vac_active = true
+                AND u.vac_request_date < :vacThreshold',
+                User::class
+            )
+        )->setParameter('vacThreshold', time() - UserEnum::VACATION_DELAY_IN_SECONDS)
+            ->getSingleScalarResult();
+    }
+
     public function getActiveAmountRecentlyOnline(int $threshold): int
     {
         return (int) $this->getEntityManager()->createQuery(

@@ -31,6 +31,11 @@ class GameTurn implements GameTurnInterface
     /** @Column(type="integer") * */
     private $enddate;
 
+    /**
+     * @OneToOne(targetEntity="GameTurnStats", mappedBy="turn")
+     */
+    private $stats;
+
     public function getId(): int
     {
         return $this->id;
@@ -70,5 +75,10 @@ class GameTurn implements GameTurnInterface
         $this->enddate = $enddate;
 
         return $this;
+    }
+
+    public function getStats(): ?GameTurnStatsInterface
+    {
+        return $this->stats;
     }
 }

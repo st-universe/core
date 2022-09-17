@@ -17,4 +17,6 @@ interface GameTurnInterface
     public function getEnd(): int;
 
     public function setEnd(int $end): GameTurnInterface;
+
+    public function getStats(): ?GameTurnStatsInterface;
 }
