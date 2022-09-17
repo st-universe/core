@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_trade_license_info",
  *     indexes={
- *         @Index(name="trade_post_idx", columns={"posts_id"})
+ *         @Index(name="trade_license_info_post_idx", columns={"posts_id"})
  *     }
  * )
  **/
