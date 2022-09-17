@@ -109,8 +109,6 @@ final class TickManager implements TickManagerInterface
 
     private function createGameTurnStats(GameTurnInterface $turn): void
     {
-        $this->loggerUtil->init('STATS', LoggerEnum::LEVEL_ERROR);
-
         $stats = $this->gameTurnStatsRepository->prototype();
 
         $this->loggerUtil->log('setting stats values');
