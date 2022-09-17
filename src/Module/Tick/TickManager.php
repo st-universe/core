@@ -3,6 +3,9 @@
 namespace Stu\Module\Tick;
 
 use Stu\Component\Game\TimeConstants;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
@@ -25,18 +28,22 @@ final class TickManager implements TickManagerInterface
 
     private KnPostRepositoryInterface $knPostRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         GameTurnRepositoryInterface $gameTurnRepository,
         UserLockRepositoryInterface $userLockRepository,
         GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
         UserRepositoryInterface $userRepository,
-        KnPostRepositoryInterface $knPostRepository
+        KnPostRepositoryInterface $knPostRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->gameTurnRepository = $gameTurnRepository;
         $this->userLockRepository = $userLockRepository;
         $this->gameTurnStatsRepository = $gameTurnStatsRepository;
         $this->userRepository = $userRepository;
         $this->knPostRepository = $knPostRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(): void
@@ -102,7 +109,11 @@ final class TickManager implements TickManagerInterface
 
     private function createGameTurnStats(GameTurnInterface $turn): void
     {
+        $this->loggerUtil->init('STATS', LoggerEnum::LEVEL_ERROR);
+
         $stats = $this->gameTurnStatsRepository->prototype();
+
+        $this->loggerUtil->log('setting stats values');
 
         $stats->setTurn($turn);
         $stats->setUserCount($this->userRepository->getActiveAmount());
@@ -113,6 +124,7 @@ final class TickManager implements TickManagerInterface
         $stats->setFlightSig24h($this->gameTurnStatsRepository->getFlightSigs24h());
 
         $this->gameTurnStatsRepository->save($stats);
+        $this->loggerUtil->log('saved stats');
     }
 
     private function hitLockFiles(): bool
