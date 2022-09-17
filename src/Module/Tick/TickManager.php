@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick;
 
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
@@ -13,8 +14,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class TickManager implements TickManagerInterface
 {
     public const PROCESS_COUNT = 1;
-
-    private const ONE_DAY_IN_SECONDS = 86400;
 
     private GameTurnRepositoryInterface $gameTurnRepository;
 
@@ -107,7 +106,7 @@ final class TickManager implements TickManagerInterface
 
         $stats->setTurn($turn);
         $stats->setUserCount($this->userRepository->getActiveAmount());
-        $stats->setLogins24h($this->userRepository->getActiveAmountRecentlyOnline(time() - self::ONE_DAY_IN_SECONDS));
+        $stats->setLogins24h($this->userRepository->getActiveAmountRecentlyOnline(time() - TimeConstants::ONE_DAY_IN_SECONDS));
         $stats->setVacationCount($this->userRepository->getVacationAmount());
         $stats->setShipCount($this->gameTurnStatsRepository->getShipCount());
         $stats->setKnCount($this->knPostRepository->getAmount());

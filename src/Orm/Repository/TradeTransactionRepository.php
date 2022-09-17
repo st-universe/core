@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\TradeTransaction;
 use Stu\Orm\Entity\TradeTransactionInterface;
 
@@ -47,7 +48,7 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
             $rsm
         )
             ->setParameters([
-                'sevendays' => time() - 604800
+                'sevendays' => time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
             ])
             ->getArrayResult();
     }

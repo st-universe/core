@@ -6,13 +6,14 @@ namespace Stu\Module\Colony\Lib;
 
 use Cache\Adapter\Common\CacheItem;
 use Psr\Cache\CacheItemPoolInterface;
+use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Repository\PlanetFieldTypeRepositoryInterface;
 
 final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterface
 {
     private const CACHE_KEY = 'planet_field_type_list';
 
-    private const CACHE_TTL = 86400;
+    private const CACHE_TTL = TimeConstants::ONE_DAY_IN_SECONDS;
 
     private CacheItemPoolInterface $cache;
 

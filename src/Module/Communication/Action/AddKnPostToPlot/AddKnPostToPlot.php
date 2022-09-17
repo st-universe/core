@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\Action\AddKnPostToPlot;
 
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,8 +21,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ADD_POST_TO_PLOT';
 
-    // 172800 is 48h in seconds
-    public const MAXIMUM_APPLICATION_TIME = 172800;
+    public const MAXIMUM_APPLICATION_TIME = TimeConstants::TWO_DAYS_IN_SECONDS;
 
     private RpgPlotRepositoryInterface $rpgPlotRepository;
 

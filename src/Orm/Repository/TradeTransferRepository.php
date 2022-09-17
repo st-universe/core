@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\TradeTransferInterface;
 
@@ -34,7 +35,7 @@ final class TradeTransferRepository extends EntityRepository implements TradeTra
             ->setParameters([
                 'tradePostId' => $tradePostId,
                 'userId' => $userId,
-                'date' => time() - 86400
+                'date' => time() - TimeConstants::ONE_DAY_IN_SECONDS
             ])
             ->getSingleScalarResult();
     }

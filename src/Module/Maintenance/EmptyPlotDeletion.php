@@ -3,13 +3,13 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EmptyPlotDeletion implements MaintenanceHandlerInterface
 {
-    // 604800 = 7 days
-    public const MAX_AGE_IN_SECONDS = 604800;
+    public const MAX_AGE_IN_SECONDS = TimeConstants::SEVEN_DAYS_IN_SECONDS;
 
     private RpgPlotRepositoryInterface $rpgPlotRepository;
 

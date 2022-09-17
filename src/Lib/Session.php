@@ -3,6 +3,7 @@
 namespace Stu\Lib;
 
 use DateTimeImmutable;
+use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SessionInvalidException;
 use Stu\Component\Player\Validation\LoginValidationInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -152,7 +153,7 @@ final class Session implements SessionInterface
         $this->sessionStringRepository->truncate($result);
 
         if (!$result->isSaveLogin()) {
-            setcookie('sstr', $this->buildCookieString($result), (time() + 86400 * 2));
+            setcookie('sstr', $this->buildCookieString($result), (time() + TimeConstants::TWO_DAYS_IN_SECONDS));
         }
 
         // Login verzeichnen

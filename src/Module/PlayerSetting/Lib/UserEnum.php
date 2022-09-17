@@ -2,6 +2,8 @@
 
 namespace Stu\Module\PlayerSetting\Lib;
 
+use Stu\Component\Game\TimeConstants;
+
 final class UserEnum
 {
     // user state
@@ -16,8 +18,8 @@ final class UserEnum
     public const DELETION_FORBIDDEN = 3;
     public const DELETION_EXECUTED = 4;
 
-    //VACATION DELAY, 172800 = 48 hours in seconds
-    public const VACATION_DELAY_IN_SECONDS = 172800;
+    //VACATION DELAY
+    public const VACATION_DELAY_IN_SECONDS = TimeConstants::TWO_DAYS_IN_SECONDS;
 
     public static function getUserStateDescription(int $userState): string
     {

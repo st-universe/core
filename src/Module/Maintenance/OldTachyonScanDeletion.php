@@ -2,12 +2,12 @@
 
 namespace Stu\Module\Maintenance;
 
+use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
 final class OldTachyonScanDeletion implements MaintenanceHandlerInterface
 {
-    //two days
-    public const SCAN_MAX_AGE = 172800;
+    public const SCAN_MAX_AGE = TimeConstants::TWO_DAYS_IN_SECONDS;
 
     private TachyonScanRepositoryInterface $tachyonScanRepository;
 

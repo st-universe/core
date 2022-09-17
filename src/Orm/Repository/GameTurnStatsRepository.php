@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\GameTurnStatsInterface;
@@ -49,6 +50,6 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
                 WHERE fs.time > :threshold',
                 FlightSignature::class
             )
-        )->setParameter('threshold', time() - 86400)->getSingleScalarResult()) / 2;
+        )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult()) / 2;
     }
 }

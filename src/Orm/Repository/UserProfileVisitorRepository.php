@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserProfileVisitorInterface;
@@ -14,9 +15,9 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
     public function isVisitRegistered(int $profileUserId, int $userId): bool
     {
         return $this->count([
-                'user_id' => $userId,
-                'recipient' => $profileUserId,
-            ]) > 0;
+            'user_id' => $userId,
+            'recipient' => $profileUserId,
+        ]) > 0;
     }
 
     public function prototype(): UserProfileVisitorInterface
@@ -43,7 +44,7 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
             )
             ->setParameters([
                 'userId' => $userId,
-                'date' => time() - 86400
+                'date' => time() - TimeConstants::ONE_DAY_IN_SECONDS
             ])
             ->getResult();
     }

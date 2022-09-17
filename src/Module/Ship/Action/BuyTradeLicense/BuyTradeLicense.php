@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
@@ -25,8 +26,6 @@ use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 final class BuyTradeLicense implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_PAY_TRADELICENSE';
-
-    private const SECONDS_PER_DAY = 86400;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -162,7 +161,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $license->setTradePost($tradepost);
         $license->setUser($game->getUser());
         $license->setDate(time());
-        $license->setExpired(time() + $licenseInfo->getDays() * self::SECONDS_PER_DAY);
+        $license->setExpired(time() + $licenseInfo->getDays() * TimeConstants::ONE_DAY_IN_SECONDS);
 
         $game->addInformation('Handelslizenz wurde erteilt');
 
