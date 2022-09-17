@@ -6,11 +6,7 @@ interface FlightSignatureInterface
 {
     public function getId(): int;
 
-    public function getUserId(): int;
-
-    public function getUser(): UserInterface;
-
-    public function setUser(UserInterface $user): FlightSignatureInterface;
+    public function setUserId(int $userId): FlightSignatureInterface;
 
     public function getShipId(): int;
 

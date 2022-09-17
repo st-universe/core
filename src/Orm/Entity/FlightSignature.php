@@ -55,13 +55,6 @@ class FlightSignature implements FlightSignatureInterface
     /** @Column(type="boolean") */
     private $is_cloaked = false;
 
-    //TODO remove reference, should not be deleted if user is removed
-    /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $user;
-
     /**
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id")
@@ -85,19 +78,9 @@ class FlightSignature implements FlightSignatureInterface
         return $this->id;
     }
 
-    public function getUserId(): int
+    public function setUserId(int $userId): FlightSignatureInterface
     {
-        return $this->user_id;
-    }
-
-    public function getUser(): UserInterface
-    {
-        return $this->user;
-    }
-
-    public function setUser(UserInterface $user): FlightSignatureInterface
-    {
-        $this->user = $user;
+        $this->user_id = $userId;
         return $this;
     }
 
