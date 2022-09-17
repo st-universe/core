@@ -17,7 +17,7 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 
 final class ShowTradeMenuPayment implements ViewControllerInterface
 {
@@ -27,7 +27,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
+    private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository;
 
     private TradeLibFactoryInterface $tradeLibFactory;
 
@@ -44,7 +44,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
+        TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
@@ -54,7 +54,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
+        $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
@@ -84,7 +84,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         if (!$ship->canInteractWith($tradepost->getShip())) {
             return;
         }
-        $licenseInfo = $this->tradeCreateLicenceRepository->getLatestLicenseInfo($tradepost->getId());
+        $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
         $commodityId = $licenseInfo->getGoodsId();
         $commodity = $this->commodityRepository->find($commodityId);
         $commodityName = $commodity->getName();

@@ -11,7 +11,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
-use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class CreateLicence implements ActionControllerInterface
@@ -20,7 +20,7 @@ final class CreateLicence implements ActionControllerInterface
 
     private CreateLicenceRequestInterface $createLicenceRequest;
 
-    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
+    private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository;
 
     private TradePostRepositoryInterface $tradePostRepository;
 
@@ -28,12 +28,12 @@ final class CreateLicence implements ActionControllerInterface
 
     public function __construct(
         CreateLicenceRequestInterface $createLicenceRequest,
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
+        TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         TradePostRepositoryInterface $tradePostRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->createLicenceRequest = $createLicenceRequest;
-        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
+        $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->tradePostRepository = $tradePostRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -71,14 +71,14 @@ final class CreateLicence implements ActionControllerInterface
             return;
         }
 
-        $setLicence = $this->tradeCreateLicenceRepository->prototype();
+        $setLicence = $this->TradeLicenseInfoRepository->prototype();
         $setLicence->setTradepost($tradepost);
         $setLicence->setDate(time());
         $setLicence->setGoodsId((int) $goods_id);
         $setLicence->setAmount((int) $giveAmount);
         $setLicence->setDays($days);
 
-        $this->tradeCreateLicenceRepository->save($setLicence);
+        $this->TradeLicenseInfoRepository->save($setLicence);
 
 
         $game->addInformation('Handelslizenz geändert');

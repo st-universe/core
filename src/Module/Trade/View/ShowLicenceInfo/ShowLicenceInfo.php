@@ -7,7 +7,7 @@ namespace Stu\Module\Trade\View\ShowLicenceInfo;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 
 final class ShowLicenceInfo implements ViewControllerInterface
 {
@@ -17,16 +17,16 @@ final class ShowLicenceInfo implements ViewControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
+    private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository;
 
 
     public function __construct(
         ShowLicenceInfoRequestInterface $showLicenceInfoRequest,
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
+        TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         CommodityRepositoryInterface $commodityRepository
     ) {
         $this->showLicenceInfoRequest = $showLicenceInfoRequest;
-        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
+        $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->commodityRepository = $commodityRepository;
     }
 
@@ -36,7 +36,7 @@ final class ShowLicenceInfo implements ViewControllerInterface
         $tradePostId = $this->showLicenceInfoRequest->getTradePostId();
 
         //TODO sanity checks, postId not present? licenseInfo not present?
-        $licenseInfo = $this->tradeCreateLicenceRepository->getLatestLicenseInfo($tradePostId);
+        $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradePostId);
         $commodityId = $licenseInfo->getGoodsId();
         $commodityName = $this->commodityRepository->find($commodityId)->getName();
 

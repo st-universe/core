@@ -20,7 +20,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 
 final class BuyTradeLicense implements ActionControllerInterface
 {
@@ -32,7 +32,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenseRepository;
+    private TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository;
 
     private TradeLibFactoryInterface $tradeLibFactory;
 
@@ -51,7 +51,7 @@ final class BuyTradeLicense implements ActionControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenseRepository,
+        TradeLicenseInfoRepositoryInterface $tradeCreateLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         ShipStorageManagerInterface $shipStorageManager,

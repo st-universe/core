@@ -16,7 +16,7 @@ use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeCreateLicenceRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 
 final class ShowTradeMenu implements ViewControllerInterface
 {
@@ -26,7 +26,7 @@ final class ShowTradeMenu implements ViewControllerInterface
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository;
+    private TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository;
 
     private TradeLibFactoryInterface $tradeLibFactory;
 
@@ -39,7 +39,7 @@ final class ShowTradeMenu implements ViewControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeCreateLicenceRepositoryInterface $tradeCreateLicenceRepository,
+        TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         CommodityRepositoryInterface $commodityRepository,
@@ -47,7 +47,7 @@ final class ShowTradeMenu implements ViewControllerInterface
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeCreateLicenceRepository = $tradeCreateLicenceRepository;
+        $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->commodityRepository = $commodityRepository;
@@ -87,7 +87,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         if ($databaseEntryId > 0) {
             $game->checkDatabaseItem($databaseEntryId);
         }
-        $licenseInfo = $this->tradeCreateLicenceRepository->getLatestLicenseInfo($tradepost->getId());
+        $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
 
         if ($licenseInfo !== null) {
             $commodityId = $licenseInfo->getGoodsId();
