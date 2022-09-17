@@ -43,6 +43,4 @@ final class ConstructionProgressRepository extends EntityRepository implements C
         $em->remove($constructionProgress);
         $em->flush();
     }
-
-    //TODO ship tick should delete progress items for non existent ships
 }

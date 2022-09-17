@@ -36,6 +36,12 @@ class ConstructionProgress implements ConstructionProgressInterface
      */
     private $specialModules;
 
+    /**
+     * @OneToOne(targetEntity="Ship")
+     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $ship;
+
     public function __construct()
     {
         $this->specialModules = new ArrayCollection();
