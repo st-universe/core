@@ -126,7 +126,7 @@ final class PlayerCreator implements PlayerCreatorInterface
 
     private function isMobileFormatCorrect(string $mobile): bool
     {
-        return !preg_match('/[^0-9]/', $mobile);
+        return preg_match('/00..[1-9][0-9]/', $mobile);
     }
 
     public function createPlayer(
