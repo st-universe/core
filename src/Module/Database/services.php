@@ -29,6 +29,7 @@ use Stu\Module\Database\View\GoodsOverview\GoodsOverview;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\Overview\Overview;
 use Stu\Module\Database\View\ShowPrestigeLog\ShowPrestigeLog;
+use Stu\Module\Database\View\ShowStatistics\ShowStatistics;
 
 use function DI\autowire;
 
@@ -41,17 +42,18 @@ return [
     UserListRequestInterface::class => autowire(UserListRequest::class),
     'DATABASE_ACTIONS' => [],
     'DATABASE_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
         Category::VIEW_IDENTIFIER => autowire(Category::class),
+        CrewRanking::VIEW_IDENTIFIER => autowire(CrewRanking::class),
+        DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
         FlightRanking::VIEW_IDENTIFIER => autowire(FlightRanking::class),
-        TradePostActivity::VIEW_IDENTIFIER => autowire(TradePostActivity::class),
-        LatinumRanking::VIEW_IDENTIFIER => autowire(LatinumRanking::class),
-        CrewRanking::VIEW_IDENTIFIER => autowire(CrewRanking::class),
-        ShowGoodsLocations::VIEW_IDENTIFIER => autowire(ShowGoodsLocations::class),
         GoodsOverview::VIEW_IDENTIFIER => autowire(GoodsOverview::class),
-        UserList::VIEW_IDENTIFIER => autowire(UserList::class),
-        DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
-        GameController::DEFAULT_VIEW => autowire(Overview::class),
-        ShowPrestigeLog::VIEW_IDENTIFIER => autowire(ShowPrestigeLog::class)
+        LatinumRanking::VIEW_IDENTIFIER => autowire(LatinumRanking::class),
+        ShowGoodsLocations::VIEW_IDENTIFIER => autowire(ShowGoodsLocations::class),
+        ShowPrestigeLog::VIEW_IDENTIFIER => autowire(ShowPrestigeLog::class),
+        ShowStatistics::VIEW_IDENTIFIER => autowire(ShowStatistics::class),
+        TradePostActivity::VIEW_IDENTIFIER => autowire(TradePostActivity::class),
+        UserList::VIEW_IDENTIFIER => autowire(UserList::class)
     ]
 ];

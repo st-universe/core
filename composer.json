@@ -16,8 +16,6 @@
   },
   "require": {
     "php": "^7.4 || 8.0",
-    "enqueue/amqp-lib": "^0.9.14",
-    "enqueue/amqp-tools": "^0.9.12",
     "ext-dom": "*",
     "ext-gd": "*",
     "ext-gettext": "*",
@@ -28,11 +26,14 @@
     "ext-sockets": "*",
     "ext-sysvsem": "*",
     "ext-xsl": "*",
+    "amenadiel/jpgraph": "^4",
     "cache/array-adapter": "^1.0",
     "cache/psr-6-doctrine-bridge": "^3.0",
     "cache/redis-adapter": "^1.0",
     "devster/ubench": "^2",
     "doctrine/orm": "^2.6",
+    "enqueue/amqp-lib": "^0.9.14",
+    "enqueue/amqp-tools": "^0.9.12",
     "filp/whoops": "^2.5",
     "graphp/graphviz": "^0.2.1",
     "hackzilla/password-generator": "^1.4",
@@ -65,7 +66,10 @@
     "platform": {
       "php": "7.4"
     },
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "mnsami/composer-custom-directory-installer": false
+    }
   },
   "scripts": {
     "tests": "@php vendor/bin/phpunit tests"
