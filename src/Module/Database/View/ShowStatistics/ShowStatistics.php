@@ -93,6 +93,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set($title);
         $graph->SetAlphaBlending();
+        $graph->SetFrame(false);
 
         // Setup a manual x-scale (We leave the sentinels for the
         // Y-axis at 0 which will then autoscale the Y-axis.)
