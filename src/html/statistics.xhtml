@@ -3,7 +3,7 @@
   <tal:block metal:fill-slot="body">
     <tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
     <div>
-      <div tal:content="structure GRAPH">GRAPH</div>
+      <div tal:repeat="graph GRAPHS" tal:content="structure graph">GRAPH</div>
     </div>
   </tal:block>
 </tal:block>
