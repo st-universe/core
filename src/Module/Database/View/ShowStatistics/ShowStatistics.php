@@ -39,12 +39,12 @@ final class ShowStatistics implements ViewControllerInterface
         );
 
         $imageSources = [];
-        $imageSources[] = $this->createImageSrc($stats, 'getUserCount', 'Flugsignaturen 24h', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Flugsignaturen 24h', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getVacationCount', 'Flugsignaturen 24h', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getShipCount', 'Flugsignaturen 24h', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getKnCount', 'Flugsignaturen 24h', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Flugsignaturen 24h', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getUserCount', 'Spieleranzahl', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Logins letzte 24h', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getVacationCount', 'Spieler im Urlaub', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getShipCount', 'Schiffanzahl', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getKnCount', 'KN-Beiträge', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Flugsignaturen letzte 24h', $fmt);
 
         $game->appendNavigationPart(
             'database.php',
