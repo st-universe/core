@@ -121,7 +121,7 @@ final class Session implements SessionInterface
         }
 
         if ($result->getState() === UserEnum::USER_STATE_NEW) {
-            $result->setActive(UserEnum::USER_STATE_UNCOLONIZED);
+            $result->setState(UserEnum::USER_STATE_UNCOLONIZED);
 
             $this->userRepository->save($result);
         }
