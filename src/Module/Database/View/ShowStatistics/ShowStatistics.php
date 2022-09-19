@@ -50,7 +50,7 @@ final class ShowStatistics implements ViewControllerInterface
         $__width  = 500;
         $__height = 350;
         $graph    = new Graph($__width, $__height);
-        $graph->SetMargin(70, 30, 30, 70);
+        $graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set('Flugsignaturen 24h');
         $graph->SetAlphaBlending();
 
@@ -65,7 +65,7 @@ final class ShowStatistics implements ViewControllerInterface
         // Setup the x-axis with a format callback to convert the timestamp
         // to a user readable time
         $graph->xaxis->SetLabelFormatCallback($TimeCallback);
-        $graph->xaxis->SetLabelAngle(90);
+        $graph->xaxis->SetLabelAngle(45);
 
         // Create the line
         $p1 = new LinePlot($datay, $datax);
