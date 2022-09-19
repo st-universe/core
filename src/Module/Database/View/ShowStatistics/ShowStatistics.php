@@ -29,74 +29,17 @@ final class ShowStatistics implements ViewControllerInterface
     {
         $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT));
 
-        // The callback that converts timestamp to minutes and seconds
-        $TimeCallback = function ($aVal) {
-            $fmt = new IntlDateFormatter(
-                'de-DE',
-                IntlDateFormatter::FULL,
-                IntlDateFormatter::FULL,
-                'Europe/Berlin',
-                IntlDateFormatter::GREGORIAN,
-                'eee, d.MM. H\'h\''
-            );
+        $fmt = new IntlDateFormatter(
+            'de-DE',
+            IntlDateFormatter::FULL,
+            IntlDateFormatter::FULL,
+            'Europe/Berlin',
+            IntlDateFormatter::GREGORIAN,
+            'eee, d.MM. H\'h\''
+        );
 
-            return $fmt->format((int)$aVal);
-            // date('D, d.m. H\h', (int)$aVal);
-        };
-
-        $tickPositions = [];
-        $tickLabels = [];
-
-        $datax = [];
-        $datay = [];
-        $minY = PHP_INT_MAX;
-        $maxY = 0;
-        foreach ($stats as $stat) {
-            $x = $stat->getTurn()->getStart();
-            $datax[] = $x;
-            $y = $stat->getFlightSig24h();
-            $datay[] = $y;
-
-            $minY = min($minY, $y);
-            $maxY = max($maxY, $y);
-
-            $tickPositions[] = $x;
-            $tickLabels[] = $this->xaxislabel($x);
-        }
-
-        // Setup the basic graph
-        $__width  = 500;
-        $__height = 350;
-        $graph    = new Graph($__width, $__height);
-        $graph->SetMargin(70, 30, 30, 90);
-        $graph->title->Set('Flugsignaturen 24h');
-        $graph->SetAlphaBlending();
-
-        // Setup a manual x-scale (We leave the sentinels for the
-        // Y-axis at 0 which will then autoscale the Y-axis.)
-        // We could also use autoscaling for the x-axis but then it
-        // probably will start a little bit earlier than the first value
-        // to make the first value an even number as it sees the timestamp
-        // as an normal integer value.
-        $graph->SetScale('intlin', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
-
-        // Setup the x-axis with a format callback to convert the timestamp
-        // to a user readable time
-        //$graph->xaxis->SetLabelFormatCallback($TimeCallback);
-        $graph->xaxis->SetLabelAngle(45);
-        $graph->xaxis->SetPos('min');
-        $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
-
-        // Create the line
-        $p1 = new LinePlot($datay, $datax);
-        $p1->SetColor('blue');
-
-        // Set the fill color partly transparent
-        $p1->SetFillColor('blue@0.4');
-
-        // Add lineplot to the graph
-        $graph->Add($p1);
-
+        $imageSources = [];
+        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Flugsignaturen 24h', $fmt);
 
         $game->appendNavigationPart(
             'database.php',
@@ -112,22 +55,65 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setPageTitle(_('/ Statistiken'));
         $game->setTemplateFile('html/statistics.xhtml');
 
-        $game->setTemplateVar('GRAPH', $this->graphInSrc($graph));
+        $game->setTemplateVar('GRAPHS', $imageSources);
     }
 
-    private function xaxislabel($aVal)
+    private function createImageSrc(array $stats, string $method, string $title, IntlDateFormatter $fmt): string
     {
-        $fmt = new IntlDateFormatter(
-            'de-DE',
-            IntlDateFormatter::FULL,
-            IntlDateFormatter::FULL,
-            'Europe/Berlin',
-            IntlDateFormatter::GREGORIAN,
-            'eee, d.MM. H\'h\''
-        );
+        $tickPositions = [];
+        $tickLabels = [];
 
-        return $fmt->format((int)$aVal);
-        // date('D, d.m. H\h', (int)$aVal);
+        $datax = [];
+        $datay = [];
+        $minY = PHP_INT_MAX;
+        $maxY = 0;
+
+        foreach ($stats as $stat) {
+            $x = $stat->getTurn()->getStart();
+            $datax[] = $x;
+            $y = $stat->$method();
+            $datay[] = $y;
+
+            $minY = min($minY, $y);
+            $maxY = max($maxY, $y);
+
+            $tickPositions[] = $x;
+            $tickLabels[] = $fmt->format((int)$x);
+        }
+
+        // Setup the basic graph
+        $__width  = 500;
+        $__height = 350;
+        $graph    = new Graph($__width, $__height);
+        $graph->SetMargin(70, 30, 30, 90);
+        $graph->title->Set($title);
+        $graph->SetAlphaBlending();
+
+        // Setup a manual x-scale (We leave the sentinels for the
+        // Y-axis at 0 which will then autoscale the Y-axis.)
+        // We could also use autoscaling for the x-axis but then it
+        // probably will start a little bit earlier than the first value
+        // to make the first value an even number as it sees the timestamp
+        // as an normal integer value.
+        $graph->SetScale('intlin', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
+
+        // Setup the x-axis with a format callback to convert the timestamp
+        // to a user readable time
+        $graph->xaxis->SetLabelAngle(45);
+        $graph->xaxis->SetPos('min');
+        $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
+
+        // Create the line
+        $p1 = new LinePlot($datay, $datax);
+        $p1->SetColor('blue');
+
+        // Set the fill color partly transparent
+        $p1->SetFillColor('blue@0.4');
+
+        // Add lineplot to the graph
+        $graph->Add($p1);
+
+        return $this->graphInSrc($graph);
     }
 
     private function graphInSrc($graph): string
