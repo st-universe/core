@@ -88,11 +88,17 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setPageTitle(_('/ Statistiken'));
         $game->setTemplateFile('html/statistics.xhtml');
 
-        $_mapname = '__mapname' . rand(0, 1000000) . '__';
+        $game->setTemplateVar('GRAPH', $this->graphInSrc($graph));
+    }
 
-        $foo = $graph->StrokeCSIM();
+    private function graphInSrc($graph): string
+    {
+        $img = $graph->Stroke(_IMG_HANDLER);
+        ob_start();
+        imagepng($img);
+        $img_data = ob_get_contents();
+        ob_end_clean();
 
-        $game->setTemplateVar('MAP', $graph->GetHTMLImageMap($_mapname));
-        $game->setTemplateVar('GRAPH', $graph->GetCSIMImgHTML($_mapname));
+        return '<img src="data:image/png;base64,' . base64_encode($img_data) . '"/>';
     }
 }
