@@ -47,10 +47,10 @@ final class ShowStatistics implements ViewControllerInterface
         }
 
         // Setup the basic graph
-        $__width  = 324;
-        $__height = 250;
+        $__width  = 500;
+        $__height = 350;
         $graph    = new Graph($__width, $__height);
-        $graph->SetMargin(40, 40, 30, 70);
+        $graph->SetMargin(70, 30, 30, 70);
         $graph->title->Set('Flugsignaturen 24h');
         $graph->SetAlphaBlending();
 
