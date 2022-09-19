@@ -44,18 +44,24 @@ final class ShowStatistics implements ViewControllerInterface
             // date('D, d.m. H\h', (int)$aVal);
         };
 
+        $tickPositions = [];
+        $tickLabels = [];
 
         $datax = [];
         $datay = [];
         $minY = PHP_INT_MAX;
         $maxY = 0;
         foreach ($stats as $stat) {
-            $datax[] = $stat->getTurn()->getStart();
+            $x = $stat->getTurn()->getStart();
+            $datax[] = $x;
             $y = $stat->getFlightSig24h();
             $datay[] = $y;
 
             $minY = min($minY, $y);
             $maxY = max($maxY, $y);
+
+            $tickPositions[] = $x;
+            $tickLabels[] = $this->xaxislabel($x);
         }
 
         // Setup the basic graph
@@ -76,8 +82,10 @@ final class ShowStatistics implements ViewControllerInterface
 
         // Setup the x-axis with a format callback to convert the timestamp
         // to a user readable time
-        $graph->xaxis->SetLabelFormatCallback($TimeCallback);
+        //$graph->xaxis->SetLabelFormatCallback($TimeCallback);
         $graph->xaxis->SetLabelAngle(45);
+        $graph->xaxis->SetPos('min');
+        $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
 
         // Create the line
         $p1 = new LinePlot($datay, $datax);
@@ -105,6 +113,21 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setTemplateFile('html/statistics.xhtml');
 
         $game->setTemplateVar('GRAPH', $this->graphInSrc($graph));
+    }
+
+    private function xaxislabel($aVal)
+    {
+        $fmt = new IntlDateFormatter(
+            'de-DE',
+            IntlDateFormatter::FULL,
+            IntlDateFormatter::FULL,
+            'Europe/Berlin',
+            IntlDateFormatter::GREGORIAN,
+            'eee, d.MM. H\'h\''
+        );
+
+        return $fmt->format((int)$aVal);
+        // date('D, d.m. H\h', (int)$aVal);
     }
 
     private function graphInSrc($graph): string
