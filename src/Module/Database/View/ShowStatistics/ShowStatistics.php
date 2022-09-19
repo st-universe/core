@@ -6,6 +6,7 @@ namespace Stu\Module\Database\View\ShowStatistics;
 
 use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
+use IntlDateFormatter;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
@@ -30,8 +31,19 @@ final class ShowStatistics implements ViewControllerInterface
 
         // The callback that converts timestamp to minutes and seconds
         $TimeCallback = function ($aVal) {
-            return date('D, m.d. H\h', (int)$aVal);
+            $fmt = new IntlDateFormatter(
+                'de-DE',
+                IntlDateFormatter::FULL,
+                IntlDateFormatter::FULL,
+                'Europe/Berlin',
+                IntlDateFormatter::GREGORIAN,
+                'D, d.m. H\h'
+            );
+
+            return $fmt->format((int)$aVal);
+            // date('D, d.m. H\h', (int)$aVal);
         };
+
 
         $datax = [];
         $datay = [];
