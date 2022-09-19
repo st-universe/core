@@ -112,10 +112,10 @@ final class ShowStatistics implements ViewControllerInterface
 
         // Create the line
         $p1 = new LinePlot($datay, $datax);
-        $p1->SetColor('blue');
+        $p1->SetColor('purple');
 
         // Set the fill color partly transparent
-        $p1->SetFillColor('blue@0.4');
+        $p1->SetFillColor(array(170, 77, 236));
 
         // Add lineplot to the graph
         $graph->Add($p1);
