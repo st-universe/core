@@ -108,7 +108,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetPos('min');
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
 
-        $graph->yaxis->scale->SetGrace(10);
+        $graph->yaxis->scale->SetGrace(20, 20);
 
         // Create the line
         $p1 = new LinePlot($datay, $datax);
