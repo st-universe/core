@@ -19,4 +19,9 @@ interface GameTurnStatsRepositoryInterface extends ObjectRepository
     public function getShipCount(): int;
 
     public function getFlightSigs24h(): int;
+
+    /**
+     * @return GameTurnStatsInterface[]
+     */
+    public function getLatestStats(int $amount): array;
 }

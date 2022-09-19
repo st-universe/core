@@ -543,6 +543,7 @@ final class GameController implements GameControllerInterface
                     throw new RelocationGameStateException();
                 }
             }
+            //TODO log action & view and time they took
             $this->executeCallback($actions);
             $this->executeView($views);
         } catch (SessionInvalidException $e) {

@@ -8,38 +8,36 @@ use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
 
 final class ShowStatistics implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_STATISTICS';
 
-    private UserRepositoryInterface $userRepository;
+    private const ENTRY_COUNT = 10;
+
+    private GameTurnStatsRepositoryInterface $gameTurnStatsRepository;
 
     public function __construct(
-        UserRepositoryInterface $userRepository
+        GameTurnStatsRepositoryInterface $gameTurnStatsRepository
     ) {
-        $this->userRepository = $userRepository;
+        $this->gameTurnStatsRepository = $gameTurnStatsRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT));
+
         // The callback that converts timestamp to minutes and seconds
         $TimeCallback = function ($aVal) {
             return date('H:i:s', (int)$aVal);
         };
 
-        // Fake some suitable random data
-        $now   = time();
-        $datax = [$now];
-        for ($i = 0; $i < 360; $i += 10) {
-            $datax[] = $now + $i;
-        }
-        $n     = count($datax);
+        $datax = [];
         $datay = [];
-        for ($i = 0; $i < $n; ++$i) {
-            $datay[] = rand(30, 150);
+        foreach ($stats as $stat) {
+            $datax[] = $stat->getTurn()->getStart();
+            $datay[] = $stat->getFlightSig24h();
         }
 
         // Setup the basic graph
@@ -47,7 +45,7 @@ final class ShowStatistics implements ViewControllerInterface
         $__height = 250;
         $graph    = new Graph($__width, $__height);
         $graph->SetMargin(40, 40, 30, 70);
-        $graph->title->Set('Date: ' . date('Y-m-d', $now));
+        $graph->title->Set('Flugsignaturen 24h');
         $graph->SetAlphaBlending();
 
         // Setup a manual x-scale (We leave the sentinels for the
@@ -56,7 +54,7 @@ final class ShowStatistics implements ViewControllerInterface
         // probably will start a little bit earlier than the first value
         // to make the first value an even number as it sees the timestamp
         // as an normal integer value.
-        $graph->SetScale('intlin', 0, 200, $now, $datax[$n - 1]);
+        $graph->SetScale('intlin', 0, 200, $datax[0], $datax[count($datax) - 1]);
 
         // Setup the x-axis with a format callback to convert the timestamp
         // to a user readable time

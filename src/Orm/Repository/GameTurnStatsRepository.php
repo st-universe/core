@@ -53,4 +53,15 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             )
         )->setParameter('threshold', time() - TimeConstants::ONE_DAY_IN_SECONDS)->getSingleScalarResult()) / 2;
     }
+
+    public function getLatestStats(int $amount): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT gts FROM %s gts
+                ORDER BY gts.id DESC',
+                GameTurnStats::class
+            )
+        )->setMaxResults($amount)->getResult();
+    }
 }
