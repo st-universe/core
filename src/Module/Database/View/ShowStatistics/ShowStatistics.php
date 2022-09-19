@@ -37,7 +37,7 @@ final class ShowStatistics implements ViewControllerInterface
                 IntlDateFormatter::FULL,
                 'Europe/Berlin',
                 IntlDateFormatter::GREGORIAN,
-                'D, d.m. H\h'
+                'eee, d.MM. H\'h\''
             );
 
             return $fmt->format((int)$aVal);
