@@ -75,8 +75,8 @@ final class ShowStatistics implements ViewControllerInterface
 
         foreach ($stats as $stat) {
             $x = $stat->getTurn()->getStart();
-            $datax[] = $x;
             $y = $stat->$method();
+            $datax[] = $x;
             $datay[] = $y;
 
             $minY = min($minY, $y);
@@ -94,18 +94,12 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->title->Set($title);
         $graph->SetAlphaBlending();
         //$graph->SetFrame(false);
-        $graph->SetFrame(true, 'black', 0);
+        //$graph->SetFrame(true, 'black', 0);
+        $graph->SetColor('white@0.4');
+        //$graph->SetMarginColor();
 
-        // Setup a manual x-scale (We leave the sentinels for the
-        // Y-axis at 0 which will then autoscale the Y-axis.)
-        // We could also use autoscaling for the x-axis but then it
-        // probably will start a little bit earlier than the first value
-        // to make the first value an even number as it sees the timestamp
-        // as an normal integer value.
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
 
-        // Setup the x-axis with a format callback to convert the timestamp
-        // to a user readable time
         $graph->xaxis->SetLabelAngle(45);
         $graph->xaxis->SetPos('min');
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
