@@ -100,7 +100,7 @@ final class ShowStatistics implements ViewControllerInterface
         // probably will start a little bit earlier than the first value
         // to make the first value an even number as it sees the timestamp
         // as an normal integer value.
-        $graph->SetScale('intlin', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
+        $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
 
         // Setup the x-axis with a format callback to convert the timestamp
         // to a user readable time
