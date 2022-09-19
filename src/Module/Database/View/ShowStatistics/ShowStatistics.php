@@ -30,7 +30,7 @@ final class ShowStatistics implements ViewControllerInterface
 
         // The callback that converts timestamp to minutes and seconds
         $TimeCallback = function ($aVal) {
-            return date('H:i:s', (int)$aVal);
+            return date('D, m.d. H\h', (int)$aVal);
         };
 
         $datax = [];
