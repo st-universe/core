@@ -87,8 +87,8 @@ final class ShowStatistics implements ViewControllerInterface
         }
 
         // Setup the basic graph
-        $__width  = 500;
-        $__height = 350;
+        $__width  = 400;
+        $__height = 300;
         $graph    = new Graph($__width, $__height);
         $graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set($title);
