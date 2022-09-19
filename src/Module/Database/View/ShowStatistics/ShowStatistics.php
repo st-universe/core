@@ -35,9 +35,15 @@ final class ShowStatistics implements ViewControllerInterface
 
         $datax = [];
         $datay = [];
+        $minY = PHP_INT_MAX;
+        $maxY = 0;
         foreach ($stats as $stat) {
             $datax[] = $stat->getTurn()->getStart();
-            $datay[] = $stat->getFlightSig24h();
+            $y = $stat->getFlightSig24h();
+            $datay[] = $y;
+
+            $minY = min($minY, $y);
+            $maxY = max($maxY, $y);
         }
 
         // Setup the basic graph
@@ -54,7 +60,7 @@ final class ShowStatistics implements ViewControllerInterface
         // probably will start a little bit earlier than the first value
         // to make the first value an even number as it sees the timestamp
         // as an normal integer value.
-        $graph->SetScale('intlin', 0, 200, $datax[0], $datax[count($datax) - 1]);
+        $graph->SetScale('intlin', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
 
         // Setup the x-axis with a format callback to convert the timestamp
         // to a user readable time
