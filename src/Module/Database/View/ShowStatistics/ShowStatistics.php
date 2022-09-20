@@ -99,7 +99,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetFrame(true,'khaki:0.6',1);
         $graph->SetMargin(70, 30, 30, 90);
 	$graph->SetBox(false);
-
+	$graph->img->SetAntiAliasing();
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
 
         $graph->xaxis->SetLabelAngle(45);
