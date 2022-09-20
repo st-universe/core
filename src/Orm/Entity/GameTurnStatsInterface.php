@@ -26,7 +26,7 @@ interface GameTurnStatsInterface
 
     public function setShipCount(int $shipCount): GameTurnStatsInterface;
 
-    public function getShipCountManned(): ?int;
+    public function getShipCountManned(): int;
 
     public function setShipCountManned(int $shipCountManned): GameTurnStatsInterface;
 

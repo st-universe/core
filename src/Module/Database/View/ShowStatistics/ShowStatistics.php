@@ -36,7 +36,7 @@ final class ShowStatistics implements ViewControllerInterface
         $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getUserCount'], 'Spieleranzahl');
         $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getLogins24h'], 'Aktive Spieler letzte 24h');
         $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getVacationCount'], 'Spieler im Urlaub');
-        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getShipCount'], 'Schiffanzahl');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getShipCount', 'blue' => 'getShipCountManned'], 'Schiffanzahl');
         $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getKnCount'], 'KN-Beiträge');
         $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getFlightSig24h'], 'Geflogene Felder letzte 24h');
 
@@ -87,12 +87,9 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->img->SetAntiAliasing();
         $graph->SetScale('intint', $this->minY, $this->maxY, $datax[0], $datax[count($datax) - 1]);
 
-        // configure X-axis
+        // configure axis
         $this->configureXAxis($graph, $stats);
-
-        $graph->yaxis->scale->SetGrace(50, 50);
-        $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
-        $graph->yaxis->SetColor('white', 'white');
+        $this->configureYAxis($graph);
 
         $graph->ygrid->SetFill(true, '#121220@0.5', '#121220@0.6');
         $graph->ygrid->Show();
@@ -178,6 +175,13 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
         $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
         $graph->xaxis->SetColor('white', 'white');
+    }
+
+    private function configureYAxis($graph): void
+    {
+        $graph->yaxis->scale->SetGrace(50, 50);
+        $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
+        $graph->yaxis->SetColor('white', 'white');
     }
 
     private function graphInSrc($graph): string
