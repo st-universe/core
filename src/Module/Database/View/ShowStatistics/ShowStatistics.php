@@ -97,8 +97,6 @@ final class ShowStatistics implements ViewControllerInterface
 	//$graph->img->SetTransparent('white');
         $graph->SetColor('black');
         $graph->SetMarginColor('black');
-	$graph->SetBackgroundImage('Stu\Module\Database\View\ShowStatistics\bg.jpg',BGIMG_FILLFRAME);
-	$graph->SetBackgroundImageMix(100);
 
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
 
