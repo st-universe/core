@@ -10,6 +10,8 @@ use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\GameTurnStatsInterface;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipCrew;
+use Stu\Orm\Entity\ShipRump;
 
 final class GameTurnStatsRepository extends EntityRepository implements GameTurnStatsRepositoryInterface
 {
@@ -39,6 +41,20 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             sprintf(
                 'SELECT count(s) FROM %s s',
                 Ship::class
+            )
+        )->getSingleScalarResult();
+    }
+
+    public function getShipCountManned(): int
+    {
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT count(s) FROM %s s
+                JOIN %s r ON s.rumps_id = r.id
+                WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.ships_id = s.id)',
+                Ship::class,
+                ShipRump::class,
+                ShipCrew::class
             )
         )->getSingleScalarResult();
     }

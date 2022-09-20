@@ -18,6 +18,8 @@ interface GameTurnStatsRepositoryInterface extends ObjectRepository
 
     public function getShipCount(): int;
 
+    public function getShipCountManned(): int;
+
     public function getFlightSigs24h(): int;
 
     /**
