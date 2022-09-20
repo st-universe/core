@@ -30,12 +30,12 @@ final class ShowStatistics implements ViewControllerInterface
         $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT));
 
         $imageSources = [];
-        $imageSources[] = $this->createImageSrc($stats, 'getUserCount', 'Spieleranzahl');
-        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Aktive Spieler letzte 24h');
-        $imageSources[] = $this->createImageSrc($stats, 'getVacationCount', 'Spieler im Urlaub');
-        $imageSources[] = $this->createImageSrc($stats, 'getShipCount', 'Schiffanzahl');
-        $imageSources[] = $this->createImageSrc($stats, 'getKnCount', 'KN-Beiträge');
-        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Geflogene Felder letzte 24h');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getUserCount'], 'Spieleranzahl');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getLogins24h'], 'Aktive Spieler letzte 24h');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getVacationCount'], 'Spieler im Urlaub');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getShipCount'], 'Schiffanzahl');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getKnCount'], 'KN-Beiträge');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getFlightSig24h'], 'Geflogene Felder letzte 24h');
 
         $game->appendNavigationPart(
             'database.php',
@@ -54,12 +54,14 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setTemplateVar('GRAPHS', $imageSources);
     }
 
-    private function createImageSrc(array $stats, string $method, string $title): string
+    private function createImageSrc(array $stats, array $plotInfos, string $title): string
     {
         $datax = $this->fetchDataX($stats);
         $datay = [];
         $minY = PHP_INT_MAX;
         $maxY = 0;
+
+        $method = $plotInfos['purple'];
 
         foreach ($stats as $stat) {
             $y = $stat->$method();
