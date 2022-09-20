@@ -90,7 +90,7 @@ final class ShowStatistics implements ViewControllerInterface
         $__width  = 400;
         $__height = 300;
         $graph    = new Graph($__width, $__height);
-        $graph->SetMargin(70, 30, 30, 90);
+        $graph->SetMargin(70, 0, 30, 90);
         $graph->title->Set($title);
         //$graph->SetAlphaBlending(true);
 	$graph->img->SetAntiAliasing(false);
@@ -105,7 +105,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetPos('min');
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
 
-        //$graph->yaxis->scale->SetGrace(50, 50);
+        $graph->yaxis->scale->SetGrace(50, 50);
 
 	$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
         // Create the line
