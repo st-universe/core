@@ -39,12 +39,12 @@ final class ShowStatistics implements ViewControllerInterface
         );
 
         $imageSources = [];
-        $imageSources[] = $this->createImageSrc($stats, 'getUserCount', 'Spieleranzahl', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Aktive Spieler letzte 24h', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getVacationCount', 'Spieler im Urlaub', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getShipCount', 'Schiffanzahl', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getKnCount', 'KN-Beiträge', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Geflogene Felder letzte 24h', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getUserCount'], 'Spieleranzahl', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getLogins24h'], 'Aktive Spieler letzte 24h', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getVacationCount'], 'Spieler im Urlaub', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getShipCount', 'blue' => 'getShipCountManned'], 'Schiffanzahl', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getKnCount'], 'KN-Beiträge', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getFlightSig24h'], 'Geflogene Felder letzte 24h', $fmt);
 
         $game->appendNavigationPart(
             'database.php',
@@ -63,7 +63,7 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setTemplateVar('GRAPHS', $imageSources);
     }
 
-    private function createImageSrc(array $stats, string $method, string $title, IntlDateFormatter $fmt): string
+    private function createImageSrc(array $stats, array $plotData, string $title, IntlDateFormatter $fmt): string
     {
         $tickPositions = [];
         $tickLabels = [];
@@ -75,15 +75,23 @@ final class ShowStatistics implements ViewControllerInterface
 
         foreach ($stats as $stat) {
             $x = $stat->getTurn()->getStart();
-            $y = $stat->$method();
             $datax[] = $x;
-            $datay[] = $y;
-
-            $minY = min($minY, $y);
-            $maxY = max($maxY, $y);
-
             $tickPositions[] = $x;
             $tickLabels[] = $fmt->format((int)$x);
+
+            // collect data for multiple plot lines
+            foreach ($plotData as $key => $method) {
+                if (!array_key_exists($key, $datay)) {
+                    $datay[$key] = [];
+                }
+
+                $y = $stat->$method();
+                $dataArray = $datay[$key];
+                $dataArray[] = $y;
+
+                $minY = min($minY, $y);
+                $maxY = max($maxY, $y);
+            }
         }
 
         // Setup the basic graph
@@ -94,7 +102,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->title->Set($title);
         $graph->SetAlphaBlending(true);
         $graph->SetFrame(false);
-	//$graph->img->SetTransparent('green');
+        //$graph->img->SetTransparent('green');
         //$graph->ygrid->Show(false, false);
         $graph->SetColor('black@0.0');
         $graph->SetMarginColor('black@0.0');
@@ -107,16 +115,19 @@ final class ShowStatistics implements ViewControllerInterface
 
         $graph->yaxis->scale->SetGrace(50, 50);
 
-	$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
-        // Create the line
-        $p1 = new LinePlot($datay, $datax);
-        $p1->SetColor('purple');
+        $graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
 
-        // Set the fill color partly transparent
-        $p1->SetFillColor('#aa4dec@0.4');
+        // Create the lines
+        foreach ($datay as $color => $dataArray) {
+            $plot = new LinePlot($dataArray, $datax);
+            $plot->SetColor($color);
 
-        // Add lineplot to the graph
-        $graph->Add($p1);
+            // Set the fill color partly transparent
+            $plot->SetFillColor('#aa4dec@0.4');
+
+            // Add lineplot to the graph
+            $graph->Add($plot);
+        }
 
         return $this->graphInSrc($graph);
     }
