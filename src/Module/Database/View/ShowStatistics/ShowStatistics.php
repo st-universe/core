@@ -32,8 +32,7 @@ final class ShowStatistics implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $imageInfos = [
-            'Spieleranzahl' => [new PlotInfo('getUserCount')],
-            'Aktive Spieler letzte 24h' => [new PlotInfo('getLogins24h')],
+            'Spieleranzahl' => [new PlotInfo('getUserCount'), new PlotInfo('getLogins24h', 'blue', 'blue@0.5', 'aktiv letzte 24h')],
             'Spieler im Urlaub' => [new PlotInfo('getVacationCount')],
             'Schiffanzahl' => [new PlotInfo('getShipCount'), new PlotInfo('getShipCountManned', 'blue', 'blue@0.5', 'bemannt')],
             'KN-Beiträge' => [new PlotInfo('getKnCount')],
