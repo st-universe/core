@@ -68,7 +68,7 @@ final class ShowStatistics implements ViewControllerInterface
         $tickPositions = [];
         $tickLabels = [];
 
-        $datax = [];
+        $datax = $this->fetchDataX($stats);
         $datay = [];
         $minY = PHP_INT_MAX;
         $maxY = 0;
@@ -76,7 +76,6 @@ final class ShowStatistics implements ViewControllerInterface
         foreach ($stats as $stat) {
             $x = $stat->getTurn()->getStart();
             $y = $stat->$method();
-            $datax[] = $x;
             $datay[] = $y;
 
             $minY = min($minY, $y);
@@ -92,19 +91,19 @@ final class ShowStatistics implements ViewControllerInterface
         $graph    = new Graph($__width, $__height);
         $graph->SetMargin(70, 30, 30, 90);
         $graph->SetMarginColor('black');
-	$graph->tabtitle->Set($title);
+        $graph->tabtitle->Set($title);
         $graph->tabtitle->SetFont(FF_ARIAL, FS_BOLD, 10);
-	$graph->tabtitle->SetColor('white','black','white');
+        $graph->tabtitle->SetColor('white', 'black', 'white');
         //$graph->tabtitle->SetColor('white', 'black', 'black');
         //$graph->tabtitle->SetTabAlign('center');
         //$graph->tabtitle->SetCorner(0);
         //$graph->SetAlphaBlending(true);
         $graph->img->SetAntiAliasing(false);
         //$graph->img->SetTransparent('khaki');
-	$graph->SetColor('black');
-	$graph->SetBox(false);
+        $graph->SetColor('black');
+        $graph->SetBox(false);
         $graph->SetFrame(true);
-	$graph->FillMarginArea();
+        $graph->FillMarginArea();
         $graph->img->SetAntiAliasing();
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
 
@@ -133,6 +132,17 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->Add($p1);
 
         return $this->graphInSrc($graph);
+    }
+
+    private function fetchDataX(array $stats): array
+    {
+        $datax = [];
+
+        foreach ($stats as $stat) {
+            $datax[] = $stat->getTurn()->getStart();
+        }
+
+        return $datax;
     }
 
     private function graphInSrc($graph): string
