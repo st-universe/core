@@ -93,15 +93,16 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetBox(false);
         $graph->img->SetAntiAliasing();
 
-        $graph->yaxis->scale->SetGrace(50, 50);
+        // configure X-axis
+        $datax = $this->configureXAxis($stats, $graph);
+
+        //configure Y-axis
         $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
         $graph->yaxis->SetColor('white', 'white');
+        $graph->yaxis->scale->SetGrace(50, 50);
 
         $graph->ygrid->SetFill(true, 'black@0.95', 'black@0.7');
         $graph->ygrid->Show();
-
-        // configure X-axis
-        $datax = $this->configureXAxis($stats, $graph);
 
 
         $graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
