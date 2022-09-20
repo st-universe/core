@@ -42,6 +42,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -75,6 +76,8 @@ final class GameController implements GameControllerInterface
     private Ubench $benchmark;
 
     private CreateDatabaseEntryInterface $createDatabaseEntry;
+
+    private GameRequestRepositoryInterface $gameRequestRepository;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -117,6 +120,7 @@ final class GameController implements GameControllerInterface
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
+        GameRequestRepositoryInterface $gameRequestRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
@@ -133,6 +137,7 @@ final class GameController implements GameControllerInterface
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
+        $this->gameRequestRepository = $gameRequestRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -554,11 +559,22 @@ final class GameController implements GameControllerInterface
             // log action & view and time they took
             $startTime = microtime(true);
             $action = $this->executeCallback($actions);
-            $actionTime = microtime(true) - $startTime;
+            $actionMs = microtime(true) - $startTime;
 
             $startTime = microtime(true);
             $view = $this->executeView($views);
-            $viewTime = microtime(true) - $startTime;
+            $viewMs = microtime(true) - $startTime;
+
+            $gameRequest = $this->gameRequestRepository->prototype();
+            $gameRequest->setTurn($this->getCurrentRound());
+            $gameRequest->setTime($time);
+            $gameRequest->setModule($module);
+            $gameRequest->setAction($action);
+            $gameRequest->setActionMs($actionMs);
+            $gameRequest->setView($view);
+            $gameRequest->setViewMs($viewMs);
+
+            $this->gameRequestRepository->save($gameRequest);
         } catch (SessionInvalidException $e) {
             session_destroy();
 
