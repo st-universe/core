@@ -108,8 +108,8 @@ final class ShowStatistics implements ViewControllerInterface
 	$graph->xaxis->SetColor('white','white');
 
         $graph->yaxis->scale->SetGrace(50, 50);
-	$graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
-	$graph->xaxis->SetColor('white','white');
+	$graph->yaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
+	$graph->yaxis->SetColor('white','white');
 
 	$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
         // Create the line
