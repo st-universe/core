@@ -133,6 +133,8 @@ final class ShowStatistics implements ViewControllerInterface
         // Add lineplot to the graph
         $graph->Add($p1);
 
+	$graph->SetMarginColor('khaki:0.6'); 
+
         return $this->graphInSrc($graph);
     }
 
