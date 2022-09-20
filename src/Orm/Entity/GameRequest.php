@@ -43,6 +43,9 @@ class GameRequest implements GameRequestInterface
     /** @Column(type="integer") * */
     private $view_ms;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $render_ms;
+
     /**
      * @ManyToOne(targetEntity="GameTurn")
      * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
@@ -106,6 +109,12 @@ class GameRequest implements GameRequestInterface
     public function setViewMs(int $viewMs): GameRequestInterface
     {
         $this->view_ms = $viewMs;
+        return $this;
+    }
+
+    public function setRenderMs(int $renderMs): GameRequestInterface
+    {
+        $this->render_ms = $renderMs;
         return $this;
     }
 }

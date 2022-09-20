@@ -23,4 +23,6 @@ interface GameRequestInterface
     public function setView(?string $view): GameRequestInterface;
 
     public function setViewMs(int $viewMs): GameRequestInterface;
+
+    public function setRenderMs(int $renderMs): GameRequestInterface;
 }
