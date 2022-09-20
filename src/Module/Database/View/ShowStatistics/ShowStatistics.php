@@ -9,6 +9,7 @@ use Amenadiel\JpGraph\Plot\LinePlot;
 use IntlDateFormatter;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Database\Lib\PlotInfo;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
 
 final class ShowStatistics implements ViewControllerInterface
@@ -30,15 +31,16 @@ final class ShowStatistics implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT));
+        $imageInfos = [
+            'Spieleranzahl' => [new PlotInfo('getUserCount')],
+            'Aktive Spieler letzte 24h' => [new PlotInfo('getLogins24h')],
+            'Spieler im Urlaub' => [new PlotInfo('getVacationCount')],
+            'Schiffanzahl' => [new PlotInfo('getShipCount'), new PlotInfo('getShipCountManned', 'blue', 'blue@0.5', 'bemannt')],
+            'KN-Beiträge' => [new PlotInfo('getKnCount')],
+            'Geflogene Felder letzte 24h' => [new PlotInfo('getFlightSig24h')]
+        ];
 
-        $imageSources = [];
-        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getUserCount'], 'Spieleranzahl');
-        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getLogins24h'], 'Aktive Spieler letzte 24h');
-        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getVacationCount'], 'Spieler im Urlaub');
-        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getShipCount', 'blue' => 'getShipCountManned'], 'Schiffanzahl');
-        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getKnCount'], 'KN-Beiträge');
-        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getFlightSig24h'], 'Geflogene Felder letzte 24h');
+        $imageSources = $this->createImagesSources($imageInfos);
 
         $game->appendNavigationPart(
             'database.php',
@@ -55,6 +57,19 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setTemplateFile('html/statistics.xhtml');
 
         $game->setTemplateVar('GRAPHS', $imageSources);
+    }
+
+    private function createImagesSources(array $imageInfos): array
+    {
+        $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT));
+
+        $imageSources = [];
+
+        foreach ($imageInfos as $title => $plotInfos) {
+            $imageSources[] = $this->createImageSrc($stats, $plotInfos, $title);
+        }
+
+        return $imageSources;
     }
 
     private function createImageSrc(array $stats, array $plotInfos, string $title): string
@@ -134,15 +149,20 @@ final class ShowStatistics implements ViewControllerInterface
     {
         $plots = [];
 
-        foreach ($plotInfos as $color => $method) {
-            $datay = $this->createDataY($method, $stats);
+        foreach ($plotInfos as $plotInfo) {
+            $datay = $this->createDataY($plotInfo->method, $stats);
 
             // Create the line
             $plot = new LinePlot($datay, $datax);
-            $plot->SetColor($color);
+            $plot->SetColor($plotInfo->lineColor);
 
             // Set the fill color partly transparent
-            $plot->SetFillColor('#aa4dec@0.5');
+            $plot->SetFillColor($plotInfo->fillColor);
+
+            if ($plotInfo->legend !== null) {
+                $plot->SetLegend($plotInfo->legend);
+            }
+
             $plots[] = $plot;
         }
 
