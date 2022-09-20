@@ -59,8 +59,9 @@ final class ShowStatistics implements ViewControllerInterface
 
     private function createImageSrc(array $stats, array $plotInfos, string $title): string
     {
-        $datax = $this->fetchDataX($stats);
-        $datay = $this->fetchDataY($plotInfos, $stats);
+        $datax = $this->createDataX($stats);
+        $datay = $this->createDataY($plotInfos, $stats);
+        $plots = $this->createPlots($datax, $datay);
 
         // Setup the basic graph
         $__width  = 400;
@@ -95,20 +96,16 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->ygrid->Show();
 
         //$graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
-        // Create the line
-        $p1 = new LinePlot($datay, $datax);
-        $p1->SetColor('purple');
 
-        // Set the fill color partly transparent
-        $p1->SetFillColor('#aa4dec@0.5');
-
-        // Add lineplot to the graph
-        $graph->Add($p1);
+        // Add lineplots to the graph
+        foreach ($plots as $plot) {
+            $graph->Add($plot);
+        }
 
         return $this->graphInSrc($graph);
     }
 
-    private function fetchDataX(array $stats): array
+    private function createDataX(array $stats): array
     {
         $datax = [];
 
@@ -119,7 +116,7 @@ final class ShowStatistics implements ViewControllerInterface
         return $datax;
     }
 
-    private function fetchDataY(array $plotInfos, array $stats): array
+    private function createDataY(array $plotInfos, array $stats): array
     {
         $datay = [];
 
@@ -134,6 +131,22 @@ final class ShowStatistics implements ViewControllerInterface
         }
 
         return $datay;
+    }
+
+    private function createPlots(array $datax, array $datay): array
+    {
+        $plots = [];
+
+        // Create the line
+        $plot = new LinePlot($datay, $datax);
+        $plot->SetColor('purple');
+
+        // Set the fill color partly transparent
+        $plot->SetFillColor('#aa4dec@0.5');
+
+        $plots[] = $plot;
+
+        return $plots;
     }
 
     private function configureXAxis($graph, array $stats): void
