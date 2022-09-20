@@ -110,7 +110,6 @@ final class ShowStatistics implements ViewControllerInterface
         // Create the line
         $p1 = new LinePlot($datay, $datax);
         $p1->SetColor('purple');
-	$p1->ygrid->SetColor('yellow');
 
         // Set the fill color partly transparent
         $p1->SetFillColor('#aa4dec@0.4');
