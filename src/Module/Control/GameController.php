@@ -645,9 +645,9 @@ final class GameController implements GameControllerInterface
         }
 
         // RENDER!
-        $startTime = microtime(true);
+        $startTime = hrtime(true);
         $this->render();
-        $renderMs = microtime(true) - $startTime;
+        $renderMs = hrtime(true) - $startTime;
 
         // SAVE META DATA
         $gameRequest->setRenderMs((int)$renderMs);
