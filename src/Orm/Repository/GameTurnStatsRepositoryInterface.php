@@ -22,6 +22,8 @@ interface GameTurnStatsRepositoryInterface extends ObjectRepository
 
     public function getFlightSigs24h(): int;
 
+    public function getFlightSigsSystem24h(): int;
+
     /**
      * @return GameTurnStatsInterface[]
      */
