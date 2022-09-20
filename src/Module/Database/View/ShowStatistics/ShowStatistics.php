@@ -92,7 +92,8 @@ final class ShowStatistics implements ViewControllerInterface
         $graph    = new Graph($__width, $__height);
         $graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set($title);
-        $graph->SetAlphaBlending();
+        $graph->SetAlphaBlending(false);
+	$graph->img->SetAntiAliasing(false);
         //$graph->SetFrame(false);
         //$graph->SetFrame(true, 'black',);
 	$graph->img->SetTransparent('green');
