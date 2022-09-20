@@ -93,10 +93,10 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetMargin(70, 30, 30, 90);
         $graph->SetMarginColor('black');
         $graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
-        $graph->tabtitle->Set($title);
-        $graph->tabtitle->SetColor('white', 'black', 'black');
-        $graph->tabtitle->SetTabAlign('center');
-        $graph->tabtitle->SetCorner(0);
+        $graph->title->Set($title);
+        //$graph->tabtitle->SetColor('white', 'black', 'black');
+        //$graph->tabtitle->SetTabAlign('center');
+        //$graph->tabtitle->SetCorner(0);
         $graph->SetTitleBackground(
             $aBackColor = 'black',
             $aStyle = TITLEBKG_STYLE1,
