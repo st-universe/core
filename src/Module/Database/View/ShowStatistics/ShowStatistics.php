@@ -105,9 +105,9 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetPos('min');
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
 
-        $graph->yaxis->scale->SetGrace(50, 50);
+        //$graph->yaxis->scale->SetGrace(50, 50);
 
-	//$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
+	$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
         // Create the line
         $p1 = new LinePlot($datay, $datax);
         $p1->SetColor('purple');
