@@ -50,7 +50,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(s) FROM %s s
-                JOIN %s r ON s.rumps_id = r.id
+                JOIN %s r WITH s.rumps_id = r.id
                 WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.ships_id = s.id)',
                 Ship::class,
                 ShipRump::class,
