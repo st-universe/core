@@ -571,9 +571,9 @@ final class GameController implements GameControllerInterface
             $gameRequest->setTime($time);
             $gameRequest->setModule($module);
             $gameRequest->setAction($action);
-            $gameRequest->setActionMs($actionMs);
+            $gameRequest->setActionMs((int)$actionMs);
             $gameRequest->setView($view);
-            $gameRequest->setViewMs($viewMs);
+            $gameRequest->setViewMs((int)$viewMs);
 
             $this->gameRequestRepository->save($gameRequest);
         } catch (SessionInvalidException $e) {
