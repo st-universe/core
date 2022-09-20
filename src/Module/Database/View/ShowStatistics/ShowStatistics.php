@@ -90,7 +90,7 @@ final class ShowStatistics implements ViewControllerInterface
         $__width  = 400;
         $__height = 300;
         $graph    = new Graph($__width, $__height);
-        $graph->SetMargin(70, 30, 30, 90);
+        //$graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set($title);
         $graph->SetAlphaBlending(true);
 	$graph->img->SetAntiAliasing(false);
