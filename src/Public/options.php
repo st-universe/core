@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'options',
     $container->get('PLAYER_SETTING_ACTIONS'),
     $container->get('PLAYER_SETTING_VIEWS')
 );

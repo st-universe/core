@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'notes',
     $container->get('NOTES_ACTIONS'),
     $container->get('NOTES_VIEWS')
 );

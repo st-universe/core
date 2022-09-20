@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'userprofile',
     $container->get('PLAYER_PROFILE_ACTIONS'),
     $container->get('PLAYER_PROFILE_VIEWS')
 );

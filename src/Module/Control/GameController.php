@@ -502,8 +502,15 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    public function main(array $actions, array $views, bool $session_check = true, bool $admin_check = false): void
-    {
+    public function main(
+        string $module,
+        array $actions,
+        array $views,
+        bool $session_check = true,
+        bool $admin_check = false
+    ): void {
+        $time = time();
+
         try {
             $this->session->createSession($session_check);
 
@@ -543,9 +550,15 @@ final class GameController implements GameControllerInterface
                     throw new RelocationGameStateException();
                 }
             }
-            //TODO log action & view and time they took
-            $this->executeCallback($actions);
-            $this->executeView($views);
+
+            // log action & view and time they took
+            $startTime = microtime(true);
+            $action = $this->executeCallback($actions);
+            $actionTime = microtime(true) - $startTime;
+
+            $startTime = microtime(true);
+            $view = $this->executeView($views);
+            $viewTime = microtime(true) - $startTime;
         } catch (SessionInvalidException $e) {
             session_destroy();
 
@@ -657,7 +670,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    private function executeCallback(array $actions): void
+    private function executeCallback(array $actions): ?string
     {
         foreach ($actions as $request_key => $config) {
             if (request::indString($request_key)) {
@@ -666,25 +679,26 @@ final class GameController implements GameControllerInterface
                         (string)request::indString('sstr'),
                         $this->getUser()->getId()
                     )) {
-                        return;
+                        return null;
                     }
                 }
                 $config->handle($this);
                 $this->entityManager->flush();
 
-                return;
+                return $request_key;
             }
         }
     }
 
-    private function executeView(array $views): void
+    private function executeView(array $views): ?string
     {
         foreach ($views as $request_key => $config) {
 
             if (request::indString($request_key)) {
                 $config->handle($this);
                 $this->entityManager->flush();
-                return;
+
+                return $request_key;
             }
         }
 
@@ -693,7 +707,11 @@ final class GameController implements GameControllerInterface
         if ($view !== null) {
             $view->handle($this);
             $this->entityManager->flush();
+
+            return static::DEFAULT_VIEW;
         }
+
+        return null;
     }
 
     public function getGameStats(): array

@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'maindesk',
     $container->get('MAINDESK_ACTIONS'),
     $container->get('MAINDESK_VIEWS')
 );

@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'history',
     $container->get('HISTORY_ACTIONS'),
     $container->get('HISTORY_VIEWS')
 );

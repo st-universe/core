@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'research',
     $container->get('RESEARCH_ACTIONS'),
     $container->get('RESEARCH_VIEWS')
 );

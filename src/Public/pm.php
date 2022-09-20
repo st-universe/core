@@ -10,6 +10,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'pm',
     $container->get('MESSAGE_ACTIONS'),
     $container->get('MESSAGE_VIEWS')
 );

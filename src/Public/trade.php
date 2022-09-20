@@ -10,6 +10,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'trade',
     $container->get('TRADE_ACTIONS'),
     $container->get('TRADE_VIEWS')
 );

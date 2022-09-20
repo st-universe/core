@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'database',
     $container->get('DATABASE_ACTIONS'),
     $container->get('DATABASE_VIEWS')
 );

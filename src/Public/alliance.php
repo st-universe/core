@@ -10,6 +10,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'alliance',
     $container->get('ALLIANCE_ACTIONS'),
     $container->get('ALLIANCE_VIEWS')
 );

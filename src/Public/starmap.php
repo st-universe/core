@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'starmap',
     $container->get('STARMAP_ACTIONS'),
     $container->get('STARMAP_VIEWS')
 );

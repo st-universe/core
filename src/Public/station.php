@@ -11,6 +11,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'station',
     array_merge($container->get('SHIP_ACTIONS'), $container->get('STATION_ACTIONS')),
     $container->get('STATION_VIEWS')
 );

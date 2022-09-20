@@ -13,6 +13,7 @@ $em = $container->get(EntityManagerInterface::class);
 $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
+    'admin',
     $container->get('ADMIN_ACTIONS'),
     $container->get('ADMIN_VIEWS'),
     true,
