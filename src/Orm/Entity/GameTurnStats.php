@@ -43,7 +43,7 @@ class GameTurnStats implements GameTurnStatsInterface
     /** @Column(type="integer") * */
     private $flight_sig_24h;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $flight_sig_system_24h;
 
     /**
@@ -152,7 +152,7 @@ class GameTurnStats implements GameTurnStatsInterface
         return $this;
     }
 
-    public function getFlightSigSystem24h(): ?int
+    public function getFlightSigSystem24h(): int
     {
         return $this->flight_sig_system_24h;
     }

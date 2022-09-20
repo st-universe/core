@@ -36,7 +36,7 @@ final class ShowStatistics implements ViewControllerInterface
             'Spieler im Urlaub' => [new PlotInfo('getVacationCount')],
             'Schiffanzahl' => [new PlotInfo('getShipCount'), new PlotInfo('getShipCountManned', 'blue', 'blue@0.5', 'bemannt')],
             'KN-Beiträge' => [new PlotInfo('getKnCount')],
-            'Geflogene Felder letzte 24h' => [new PlotInfo('getFlightSig24h')]
+            'Geflogene Felder letzte 24h' => [new PlotInfo('getFlightSig24h'), new PlotInfo('getFlightSigSystem24h', 'blue', 'blue@0.5', 'System')]
         ];
 
         $imageSources = $this->createImagesSources($imageInfos);
