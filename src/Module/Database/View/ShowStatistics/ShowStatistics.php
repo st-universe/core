@@ -116,6 +116,10 @@ final class ShowStatistics implements ViewControllerInterface
             $graph->Add($plot);
         }
 
+        // Adjust the legend position
+        // $graph->legend->SetLayout(LEGEND_HOR);
+        $graph->legend->Pos(0.4, 0.95, "center", "bottom");
+
         return $this->graphInSrc($graph);
     }
 
