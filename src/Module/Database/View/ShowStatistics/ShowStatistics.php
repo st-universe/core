@@ -94,7 +94,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetMarginColor('black');
 	$graph->tabtitle->Set($title);
         $graph->tabtitle->SetFont(FF_ARIAL, FS_BOLD, 10);
-	$graph->tabtitle->SetColor('white','black','purple');
+	$graph->tabtitle->SetColor('white','black','white');
         //$graph->tabtitle->SetColor('white', 'black', 'black');
         //$graph->tabtitle->SetTabAlign('center');
         //$graph->tabtitle->SetCorner(0);
@@ -118,7 +118,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
         $graph->yaxis->SetColor('white', 'white');
 
-        $graph->ygrid->SetFill(true, 'black@0.95', 'black@0.7');
+        $graph->ygrid->SetFill(true, 'blue@0.1', 'blue@0.2');
         $graph->ygrid->Show();
 
         //$graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
