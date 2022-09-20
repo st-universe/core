@@ -42,7 +42,7 @@ class GameRequest implements GameRequestInterface
 
     /**
      * @ManyToOne(targetEntity="GameTurn")
-     * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $turn;
 
