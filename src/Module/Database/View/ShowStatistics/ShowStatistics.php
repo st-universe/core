@@ -93,6 +93,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetMargin(70, 30, 30, 90);
         $graph->SetMarginColor('black');
         $graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
+	$graph->title->SetColor('white');
         $graph->title->Set($title);
         //$graph->tabtitle->SetColor('white', 'black', 'black');
         //$graph->tabtitle->SetTabAlign('center');
@@ -115,6 +116,7 @@ final class ShowStatistics implements ViewControllerInterface
 	$graph->FillMarginArea();
         $graph->img->SetAntiAliasing();
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
+	$text->SetColor('white');
 
         $graph->xaxis->SetLabelAngle(45);
         $graph->xaxis->SetPos('min');
@@ -129,7 +131,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->ygrid->SetFill(true, 'black@0.95', 'black@0.7');
         $graph->ygrid->Show();
 
-        $graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
+        //$graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
         // Create the line
         $p1 = new LinePlot($datay, $datax);
         $p1->SetColor('purple');
