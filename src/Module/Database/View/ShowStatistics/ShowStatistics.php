@@ -63,8 +63,7 @@ final class ShowStatistics implements ViewControllerInterface
         $this->maxY = 0;
 
         $datax = $this->createDataX($stats);
-        $datay = $this->createDataY($plotInfos, $stats);
-        $plots = $this->createPlots($datax, $datay);
+        $plots = $this->createPlots($datax, $plotInfos, $stats);
 
         // Setup the basic graph
         $__width  = 400;
@@ -119,11 +118,9 @@ final class ShowStatistics implements ViewControllerInterface
         return $datax;
     }
 
-    private function createDataY(array $plotInfos, array $stats): array
+    private function createDataY(string $method, array $stats): array
     {
         $datay = [];
-
-        $method = $plotInfos['purple'];
 
         foreach ($stats as $stat) {
             $y = $stat->$method();
@@ -136,18 +133,21 @@ final class ShowStatistics implements ViewControllerInterface
         return $datay;
     }
 
-    private function createPlots(array $datax, array $datay): array
+    private function createPlots(array $datax, array $plotInfos, array $stats): array
     {
         $plots = [];
 
-        // Create the line
-        $plot = new LinePlot($datay, $datax);
-        $plot->SetColor('purple');
+        foreach ($plotInfos as $color => $method) {
+            $datay = $this->createDataY($method, $stats);
 
-        // Set the fill color partly transparent
-        $plot->SetFillColor('#aa4dec@0.5');
+            // Create the line
+            $plot = new LinePlot($datay, $datax);
+            $plot->SetColor($color);
 
-        $plots[] = $plot;
+            // Set the fill color partly transparent
+            $plot->SetFillColor('#aa4dec@0.5');
+            $plots[] = $plot;
+        }
 
         return $plots;
     }
