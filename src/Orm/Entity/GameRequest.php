@@ -34,13 +34,13 @@ class GameRequest implements GameRequestInterface
     /** @Column(type="string", nullable=true) * */
     private $action;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer", nullable=true) * */
     private $action_ms;
 
     /** @Column(type="string", nullable=true) * */
     private $view;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer", nullable=true) * */
     private $view_ms;
 
     /** @Column(type="integer", nullable=true) * */

@@ -514,7 +514,10 @@ final class GameController implements GameControllerInterface
         bool $session_check = true,
         bool $admin_check = false
     ): void {
-        $time = time();
+        $gameRequest = $this->gameRequestRepository->prototype();
+        $gameRequest->setModule($module);
+        $gameRequest->setTime(time());
+        $gameRequest->setTurn($this->getCurrentRound());
 
         try {
             $this->session->createSession($session_check);
@@ -530,6 +533,8 @@ final class GameController implements GameControllerInterface
             }
 
             if ($this->getUser() !== null) {
+                $gameRequest->setUserId($this->getUser());
+
                 if ($this->getUser()->isLocked()) {
                     $userLock = $this->getUser()->getUserLock();
                     $this->session->logout();
@@ -565,17 +570,10 @@ final class GameController implements GameControllerInterface
             $view = $this->executeView($views);
             $viewMs = microtime(true) - $startTime;
 
-            $gameRequest = $this->gameRequestRepository->prototype();
-            $gameRequest->setUserId($this->getUser());
-            $gameRequest->setTurn($this->getCurrentRound());
-            $gameRequest->setTime($time);
-            $gameRequest->setModule($module);
             $gameRequest->setAction($action);
             $gameRequest->setActionMs((int)$actionMs);
             $gameRequest->setView($view);
             $gameRequest->setViewMs((int)$viewMs);
-
-            $this->gameRequestRepository->save($gameRequest);
         } catch (SessionInvalidException $e) {
             session_destroy();
 
@@ -646,7 +644,15 @@ final class GameController implements GameControllerInterface
             $this->loggerUtil->log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
         }
 
+        // RENDER!
+        $startTime = microtime(true);
         $this->render();
+        $renderMs = microtime(true) - $startTime;
+
+        // SAVE META DATA
+        $gameRequest->setRenderMs((int)$renderMs);
+        $this->gameRequestRepository->save($gameRequest);
+        $this->entityManager->flush();
     }
 
     public function isSemaphoreAlreadyAcquired(int $key): bool
