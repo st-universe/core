@@ -92,7 +92,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph    = new Graph($__width, $__height);
         $graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set($title);
-        $graph->SetAlphaBlending(false);
+        $graph->SetAlphaBlending(true);
         $graph->SetFrame(false);
 	$graph->img->SetTransparent('white');
         $graph->SetColor('black');
@@ -102,9 +102,11 @@ final class ShowStatistics implements ViewControllerInterface
 
         $graph->xaxis->SetLabelAngle(45);
         $graph->xaxis->SetPos('min');
+	$graph->xaxis->SetColor('blue'); 
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
 
         $graph->yaxis->scale->SetGrace(50, 50);
+	$graph->yaxis->SetColor('blue'); 
 
 	//$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
         // Create the line
