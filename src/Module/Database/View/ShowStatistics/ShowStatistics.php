@@ -119,6 +119,9 @@ final class ShowStatistics implements ViewControllerInterface
 	$graph->yaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
 	$graph->yaxis->SetColor('white','white');
 
+	$graph->ygrid->SetFill(true,'#EFEFEF@0.5','#BBCCFF@0.5');
+	$graph->ygrid->Show(); 
+
 	$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
         // Create the line
         $p1 = new LinePlot($datay, $datax);
