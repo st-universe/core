@@ -92,11 +92,9 @@ final class ShowStatistics implements ViewControllerInterface
         $graph    = new Graph($__width, $__height);
         $graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set($title);
-        $graph->SetAlphaBlending(true);
+        $graph->SetAlphaBlending(false);
         $graph->SetFrame(false);
 	$graph->img->SetTransparent('white');
-	$graph->ygrid->SetFill(true,'#EFEFEF@0.5','#BBCCFF@0.5');
-	$graph->ygrid->Show(); 
         $graph->SetColor('black');
         $graph->SetMarginColor('black');
 
@@ -112,6 +110,7 @@ final class ShowStatistics implements ViewControllerInterface
         // Create the line
         $p1 = new LinePlot($datay, $datax);
         $p1->SetColor('purple');
+	$p1->ygrid->SetColor('yellow');
 
         // Set the fill color partly transparent
         $p1->SetFillColor('#aa4dec@0.4');
