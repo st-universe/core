@@ -688,6 +688,8 @@ final class GameController implements GameControllerInterface
                 return $request_key;
             }
         }
+
+        return null;
     }
 
     private function executeView(array $views): ?string
