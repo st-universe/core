@@ -6,6 +6,8 @@ interface GameRequestInterface
 {
     public function getId(): int;
 
+    public function setUserId(?UserInterface $user): GameRequestInterface;
+
     public function getTurn(): GameTurnInterface;
 
     public function setTurn(GameTurnInterface $turn): GameRequestInterface;

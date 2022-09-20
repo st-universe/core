@@ -19,6 +19,9 @@ class GameRequest implements GameRequestInterface
      */
     private $id;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $user_id;
+
     /** @Column(type="integer") * */
     private $turn_id;
 
@@ -49,6 +52,14 @@ class GameRequest implements GameRequestInterface
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function setUserId(?UserInterface $user): GameRequestInterface
+    {
+        if ($user !== null) {
+            $this->user_id = $user->getId();
+        }
+        return $this;
     }
 
     public function getTurn(): GameTurnInterface

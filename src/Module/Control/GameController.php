@@ -566,6 +566,7 @@ final class GameController implements GameControllerInterface
             $viewMs = microtime(true) - $startTime;
 
             $gameRequest = $this->gameRequestRepository->prototype();
+            $gameRequest->setUserId($this->getUser());
             $gameRequest->setTurn($this->getCurrentRound());
             $gameRequest->setTime($time);
             $gameRequest->setModule($module);
