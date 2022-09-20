@@ -119,7 +119,7 @@ final class ShowStatistics implements ViewControllerInterface
 	$graph->yaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
 	$graph->yaxis->SetColor('white','white');
 
-	$graph->ygrid->SetFill(true,'black@0.95','black@0.9');
+	$graph->ygrid->SetFill(true,'black@0.95','black@0.7');
 	$graph->ygrid->Show(); 
 
 	$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
