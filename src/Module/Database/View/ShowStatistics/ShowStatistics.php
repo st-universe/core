@@ -39,12 +39,12 @@ final class ShowStatistics implements ViewControllerInterface
         );
 
         $imageSources = [];
-        $imageSources[] = $this->createImageSrc($stats, 'getUserCount', 'Spieleranzahl', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Aktive Spieler letzte 24h', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getVacationCount', 'Spieler im Urlaub', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getShipCount', 'Schiffanzahl', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getKnCount', 'KN-Beiträge', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Geflogene Felder letzte 24h', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getUserCount'], 'Spieleranzahl');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getLogins24h'], 'Aktive Spieler letzte 24h');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getVacationCount'], 'Spieler im Urlaub');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getShipCount', 'blue' => 'getShipCountManned'], 'Schiffanzahl');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getKnCount'], 'KN-Beiträge');
+        $imageSources[] = $this->createImageSrc($stats, ['purple' => 'getFlightSig24h'], 'Geflogene Felder letzte 24h');
 
         $game->appendNavigationPart(
             'database.php',
@@ -63,78 +63,115 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setTemplateVar('GRAPHS', $imageSources);
     }
 
-    private function createImageSrc(array $stats, string $method, string $title, IntlDateFormatter $fmt): string
+    private function createImageSrc(array $stats, array $plotInfo, string $title): string
     {
-        $tickPositions = [];
-        $tickLabels = [];
-
-        $datax = [];
-        $datay = [];
-        $minY = PHP_INT_MAX;
-        $maxY = 0;
-
-        foreach ($stats as $stat) {
-            $x = $stat->getTurn()->getStart();
-            $y = $stat->$method();
-            $datax[] = $x;
-            $datay[] = $y;
-
-            $minY = min($minY, $y);
-            $maxY = max($maxY, $y);
-
-            $tickPositions[] = $x;
-            $tickLabels[] = $fmt->format((int)$x);
-        }
-
         // Setup the basic graph
         $__width  = 400;
         $__height = 300;
         $graph    = new Graph($__width, $__height);
         $graph->SetMargin(70, 0, 30, 90);
-	$graph->SetMarginColor($aColor='black');
-	$graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
-	$graph->tabtitle->Set($title);
-	$graph->tabtitle->SetColor('white','black','black');
-	$graph->tabtitle->SetTabAlign('center');
-	$graph->tabtitle->SetCorner(0);
-	$graph->SetTitleBackground($aBackColor='black',
-                                        $aStyle=TITLEBKG_STYLE1, $aFrameStyle=TITLEBKG_FRAME_NONE,
-                                        $aFrameColor='black', $aFrameWeight=0, $aBevelHeight=0,
-                                        $aEnable=true);
+        $graph->SetMarginColor('black');
+        $graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
+        $graph->tabtitle->Set($title);
+        $graph->tabtitle->SetColor('white', 'black', 'black');
+        $graph->tabtitle->SetTabAlign('center');
+        $graph->tabtitle->SetCorner(0);
+        $graph->SetTitleBackground(
+            'black',
+            TITLEBKG_STYLE1,
+            TITLEBKG_FRAME_NONE,
+            'black',
+            0,
+            0,
+            true
+        );
         //$graph->SetAlphaBlending(true);
-	$graph->img->SetAntiAliasing(false);
-	//$graph->img->SetTransparent('khaki');
+        $graph->img->SetAntiAliasing(false);
+        //$graph->img->SetTransparent('khaki');
         $graph->SetColor('black');
         $graph->SetFrame(false);
-	$graph->SetBox(false);
-	$graph->img->SetAntiAliasing();
-        $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
+        $graph->SetBox(false);
+        $graph->img->SetAntiAliasing();
+
+        $graph->yaxis->scale->SetGrace(50, 50);
+        $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
+        $graph->yaxis->SetColor('white', 'white');
+
+        $graph->ygrid->SetFill(true, 'black@0.95', 'black@0.7');
+        $graph->ygrid->Show();
+
+        // configure X-axis
+        $datax = $this->configureXAxis($stats, $graph);
+
+
+        $graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
+
+        // Create the lines
+        foreach ($plotInfo as $color => $method) {
+            $plot = $this->createPlot($stats, $datax, $color, $method);
+
+            // Add lineplot to the graph
+            $graph->Add($plot);
+        }
+
+        return $this->graphInSrc($graph);
+    }
+
+    private function configureXAxis(array $stats, $graph): array
+    {
+        $fmt = new IntlDateFormatter(
+            'de-DE',
+            IntlDateFormatter::FULL,
+            IntlDateFormatter::FULL,
+            'Europe/Berlin',
+            IntlDateFormatter::GREGORIAN,
+            'eee, d.MM. H\'h\''
+        );
+
+        $datax = [];
+        $tickPositions = [];
+        $tickLabels = [];
+
+        // collect data for X-Axis
+        foreach ($stats as $stat) {
+            $x = $stat->getTurn()->getStart();
+            $datax[] = $x;
+
+            $tickPositions[] = $x;
+            $tickLabels[] = $fmt->format((int)$x);
+        }
 
         $graph->xaxis->SetLabelAngle(45);
         $graph->xaxis->SetPos('min');
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
-	$graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
-	$graph->xaxis->SetColor('white','white');
+        $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
+        $graph->xaxis->SetColor('white', 'white');
 
-        $graph->yaxis->scale->SetGrace(50, 50);
-	$graph->yaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
-	$graph->yaxis->SetColor('white','white');
+        $graph->SetScale('intint', $this->minY, $this->maxY, $datax[0], $datax[count($datax) - 1]);
 
-	$graph->ygrid->SetFill(true,'black@0.95','black@0.7');
-	$graph->ygrid->Show(); 
+        return $datax;
+    }
 
-	$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
+    private function createPlot(array $stats, $datax, string $color, $method): LinePlot
+    {
+        $datay = [];
+
+        foreach ($stats as $stat) {
+            $y = $stat->$method();
+            $datay[] = $y;
+
+            $this->minY = min($this->minY, $y);
+            $this->maxY = max($this->maxY, $y);
+        }
+
         // Create the line
-        $p1 = new LinePlot($datay, $datax);
-        $p1->SetColor('purple');
+        $plot = new LinePlot($datay, $datax);
+        $plot->SetColor($color);
 
         // Set the fill color partly transparent
-        $p1->SetFillColor('#aa4dec@0.4');
+        $plot->SetFillColor('#aa4dec@0.4');
 
-        // Add lineplot to the graph
-        $graph->Add($p1); 
-
-        return $this->graphInSrc($graph);
+        return $plot;
     }
 
     private function graphInSrc($graph): string
