@@ -17,6 +17,9 @@ final class ShowStatistics implements ViewControllerInterface
 
     private const ENTRY_COUNT = 10;
 
+    private int $minY = PHP_INT_MAX;
+    private int $maxY = 0;
+
     private GameTurnStatsRepositoryInterface $gameTurnStatsRepository;
 
     public function __construct(
@@ -57,19 +60,7 @@ final class ShowStatistics implements ViewControllerInterface
     private function createImageSrc(array $stats, array $plotInfos, string $title): string
     {
         $datax = $this->fetchDataX($stats);
-        $datay = [];
-        $minY = PHP_INT_MAX;
-        $maxY = 0;
-
-        $method = $plotInfos['purple'];
-
-        foreach ($stats as $stat) {
-            $y = $stat->$method();
-            $datay[] = $y;
-
-            $minY = min($minY, $y);
-            $maxY = max($maxY, $y);
-        }
+        $datay = $this->fetchDataY($plotInfos, $stats);
 
         // Setup the basic graph
         $__width  = 400;
@@ -91,7 +82,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetFrame(true);
         $graph->FillMarginArea();
         $graph->img->SetAntiAliasing();
-        $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
+        $graph->SetScale('intint', $this->minY, $this->maxY, $datax[0], $datax[count($datax) - 1]);
 
         // configure X-axis
         $this->configureXAxis($graph, $stats);
@@ -126,6 +117,23 @@ final class ShowStatistics implements ViewControllerInterface
         }
 
         return $datax;
+    }
+
+    private function fetchDataY(array $plotInfos, array $stats): array
+    {
+        $datay = [];
+
+        $method = $plotInfos['purple'];
+
+        foreach ($stats as $stat) {
+            $y = $stat->$method();
+            $datay[] = $y;
+
+            $this->minY = min($this->minY, $y);
+            $this->maxY = max($this->maxY, $y);
+        }
+
+        return $datay;
     }
 
     private function configureXAxis($graph, array $stats): void
