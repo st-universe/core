@@ -88,12 +88,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->tabtitle->Set($title);
         $graph->tabtitle->SetFont(FF_ARIAL, FS_BOLD, 10);
         $graph->tabtitle->SetColor('white', 'black', 'white');
-        //$graph->tabtitle->SetColor('white', 'black', 'black');
-        //$graph->tabtitle->SetTabAlign('center');
-        //$graph->tabtitle->SetCorner(0);
-        //$graph->SetAlphaBlending(true);
         $graph->img->SetAntiAliasing(false);
-        //$graph->img->SetTransparent('khaki');
         $graph->SetColor('black');
         $graph->SetBox(false);
         $graph->SetFrame(true);
@@ -108,15 +103,12 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->ygrid->SetFill(true, '#121220@0.5', '#121220@0.6');
         $graph->ygrid->Show();
 
-        //$graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
-
         // Add lineplots to the graph
         foreach ($plots as $plot) {
             $graph->Add($plot);
         }
 
         // Adjust the legend position
-        // $graph->legend->SetLayout(LEGEND_HOR);
         $graph->legend->SetPos(0.05, 0.0, "top", "right");
 
         return $this->graphInSrc($graph);
