@@ -29,22 +29,13 @@ final class ShowStatistics implements ViewControllerInterface
     {
         $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT));
 
-        $fmt = new IntlDateFormatter(
-            'de-DE',
-            IntlDateFormatter::FULL,
-            IntlDateFormatter::FULL,
-            'Europe/Berlin',
-            IntlDateFormatter::GREGORIAN,
-            'eee, d.MM. H\'h\''
-        );
-
         $imageSources = [];
-        $imageSources[] = $this->createImageSrc($stats, 'getUserCount', 'Spieleranzahl', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Aktive Spieler letzte 24h', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getVacationCount', 'Spieler im Urlaub', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getShipCount', 'Schiffanzahl', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getKnCount', 'KN-Beiträge', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Geflogene Felder letzte 24h', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getUserCount', 'Spieleranzahl');
+        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Aktive Spieler letzte 24h');
+        $imageSources[] = $this->createImageSrc($stats, 'getVacationCount', 'Spieler im Urlaub');
+        $imageSources[] = $this->createImageSrc($stats, 'getShipCount', 'Schiffanzahl');
+        $imageSources[] = $this->createImageSrc($stats, 'getKnCount', 'KN-Beiträge');
+        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Geflogene Felder letzte 24h');
 
         $game->appendNavigationPart(
             'database.php',
@@ -63,26 +54,19 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setTemplateVar('GRAPHS', $imageSources);
     }
 
-    private function createImageSrc(array $stats, string $method, string $title, IntlDateFormatter $fmt): string
+    private function createImageSrc(array $stats, string $method, string $title): string
     {
-        $tickPositions = [];
-        $tickLabels = [];
-
         $datax = $this->fetchDataX($stats);
         $datay = [];
         $minY = PHP_INT_MAX;
         $maxY = 0;
 
         foreach ($stats as $stat) {
-            $x = $stat->getTurn()->getStart();
             $y = $stat->$method();
             $datay[] = $y;
 
             $minY = min($minY, $y);
             $maxY = max($maxY, $y);
-
-            $tickPositions[] = $x;
-            $tickLabels[] = $fmt->format((int)$x);
         }
 
         // Setup the basic graph
@@ -107,11 +91,8 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->img->SetAntiAliasing();
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
 
-        $graph->xaxis->SetLabelAngle(45);
-        $graph->xaxis->SetPos('min');
-        $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
-        $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
-        $graph->xaxis->SetColor('white', 'white');
+        // configure X-axis
+        $this->configureXAxis($graph, $stats);
 
         $graph->yaxis->scale->SetGrace(50, 50);
         $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
@@ -143,6 +124,34 @@ final class ShowStatistics implements ViewControllerInterface
         }
 
         return $datax;
+    }
+
+    private function configureXAxis($graph, array $stats): void
+    {
+        $fmt = new IntlDateFormatter(
+            'de-DE',
+            IntlDateFormatter::FULL,
+            IntlDateFormatter::FULL,
+            'Europe/Berlin',
+            IntlDateFormatter::GREGORIAN,
+            'eee, d.MM. H\'h\''
+        );
+
+        $tickPositions = [];
+        $tickLabels = [];
+
+        foreach ($stats as $stat) {
+            $x = $stat->getTurn()->getStart();
+
+            $tickPositions[] = $x;
+            $tickLabels[] = $fmt->format((int)$x);
+        }
+
+        $graph->xaxis->SetLabelAngle(45);
+        $graph->xaxis->SetPos('min');
+        $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
+        $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
+        $graph->xaxis->SetColor('white', 'white');
     }
 
     private function graphInSrc($graph): string
