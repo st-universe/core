@@ -92,9 +92,9 @@ final class ShowStatistics implements ViewControllerInterface
         $graph    = new Graph($__width, $__height);
         $graph->SetMargin(70, 30, 30, 90);
         $graph->SetMarginColor('black');
-        $graph->subtitle->SetFont(FF_ARIAL, FS_BOLD, 10);
-	$graph->subtitle->SetColor('white');
-        $graph->subtitle->Set($title);
+        $graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
+	$graph->title->SetColor('white');
+        $graph->title->Set($title);
         //$graph->tabtitle->SetColor('white', 'black', 'black');
         //$graph->tabtitle->SetTabAlign('center');
         //$graph->tabtitle->SetCorner(0);
@@ -116,7 +116,6 @@ final class ShowStatistics implements ViewControllerInterface
 	$graph->FillMarginArea();
         $graph->img->SetAntiAliasing();
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
-	$text->SetColor('white');
 
         $graph->xaxis->SetLabelAngle(45);
         $graph->xaxis->SetPos('min');
