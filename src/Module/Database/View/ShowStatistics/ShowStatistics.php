@@ -104,10 +104,12 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetLabelAngle(45);
         $graph->xaxis->SetPos('min');
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
-	$graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,9);
-	$graph->xaxis->SetColor('white','blue');
+	$graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
+	$graph->xaxis->SetColor('white','white');
 
         $graph->yaxis->scale->SetGrace(50, 50);
+	$graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,8);
+	$graph->xaxis->SetColor('white','white');
 
 	$graph->SetAxisLabelBackground(LABELBKG_XYFULL,'black@0.0','black@0.0','black@0.0','black@0.0');
         // Create the line
