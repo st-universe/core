@@ -90,7 +90,7 @@ final class ShowStatistics implements ViewControllerInterface
         $__width  = 400;
         $__height = 300;
         $graph    = new Graph($__width, $__height);
-        $graph->SetMargin(70, 30, 30, 90);
+        $graph->SetMargin(70, 30, 50, 90);
         $graph->SetMarginColor('black');
         $graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
         $graph->tabtitle->Set($title);
