@@ -115,6 +115,9 @@ final class ShowStatistics implements ViewControllerInterface
             $graph->Add($plot);
         }
 
+        //set the scale
+        $graph->SetScale('intint', $this->minY, $this->maxY, $datax[0], $datax[count($datax) - 1]);
+
         return $this->graphInSrc($graph);
     }
 
@@ -147,8 +150,6 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
         $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
         $graph->xaxis->SetColor('white', 'white');
-
-        $graph->SetScale('intint', $this->minY, $this->maxY, $datax[0], $datax[count($datax) - 1]);
 
         return $datax;
     }
