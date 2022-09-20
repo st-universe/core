@@ -562,18 +562,18 @@ final class GameController implements GameControllerInterface
             }
 
             // log action & view and time they took
-            $startTime = microtime(true);
+            $startTime = hrtime(true);
             $action = $this->executeCallback($actions);
-            $actionMs = microtime(true) - $startTime;
+            $actionMs = hrtime(true) - $startTime;
 
-            $startTime = microtime(true);
+            $startTime = hrtime(true);
             $view = $this->executeView($views);
-            $viewMs = microtime(true) - $startTime;
+            $viewMs = hrtime(true) - $startTime;
 
             $gameRequest->setAction($action);
-            $gameRequest->setActionMs((int)$actionMs);
+            $gameRequest->setActionMs((int)$actionMs / 1000000);
             $gameRequest->setView($view);
-            $gameRequest->setViewMs((int)$viewMs);
+            $gameRequest->setViewMs((int)$viewMs / 1000000);
         } catch (SessionInvalidException $e) {
             session_destroy();
 
