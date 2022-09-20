@@ -93,9 +93,9 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set($title);
         $graph->SetAlphaBlending();
-	$graph->img->SetTransparent('white');
         //$graph->SetFrame(false);
-        //$graph->SetFrame(true, 'black');
+        $graph->SetFrame(true, 'green', 0);
+	$graph->img->SetTransparent('green');
         //$graph->ygrid->Show(false, false);
         //$graph->SetColor('#121220');
         //$graph->SetMarginColor();
