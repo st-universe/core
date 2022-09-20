@@ -90,7 +90,9 @@ final class ShowStatistics implements ViewControllerInterface
         $__width  = 400;
         $__height = 300;
         $graph    = new Graph($__width, $__height);
-        $graph->SetMargin(70, 0, 30, 90);
+	$graph->graph_theme = null;
+	$graph->SetMarginColor('khaki:0.6');
+        $graph->SetMargin(70, 20, 30, 90);
 	$graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
 	$graph->tabtitle->Set($title);
 	$graph->tabtitle->SetColor('white','black','black');
@@ -131,9 +133,7 @@ final class ShowStatistics implements ViewControllerInterface
         $p1->SetFillColor('#aa4dec@0.4');
 
         // Add lineplot to the graph
-        $graph->Add($p1);
-
-	$graph->SetMarginColor('khaki:0.6'); 
+        $graph->Add($p1); 
 
         return $this->graphInSrc($graph);
     }
