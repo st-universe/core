@@ -650,7 +650,7 @@ final class GameController implements GameControllerInterface
         $renderMs = hrtime(true) - $startTime;
 
         // SAVE META DATA
-        $gameRequest->setRenderMs((int)$renderMs);
+        $gameRequest->setRenderMs((int)$renderMs / 1000000);
         $this->gameRequestRepository->save($gameRequest);
         $this->entityManager->flush();
     }
