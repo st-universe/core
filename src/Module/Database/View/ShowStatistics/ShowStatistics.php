@@ -40,11 +40,11 @@ final class ShowStatistics implements ViewControllerInterface
 
         $imageSources = [];
         $imageSources[] = $this->createImageSrc($stats, 'getUserCount', 'Spieleranzahl', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Logins letzte 24h', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getLogins24h', 'Aktive Spieler letzte 24h', $fmt);
         $imageSources[] = $this->createImageSrc($stats, 'getVacationCount', 'Spieler im Urlaub', $fmt);
         $imageSources[] = $this->createImageSrc($stats, 'getShipCount', 'Schiffanzahl', $fmt);
         $imageSources[] = $this->createImageSrc($stats, 'getKnCount', 'KN-Beiträge', $fmt);
-        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Flugsignaturen letzte 24h', $fmt);
+        $imageSources[] = $this->createImageSrc($stats, 'getFlightSig24h', 'Geflogene Felder letzte 24h', $fmt);
 
         $game->appendNavigationPart(
             'database.php',
