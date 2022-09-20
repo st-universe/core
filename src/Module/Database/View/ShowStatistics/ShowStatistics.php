@@ -93,19 +93,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetBox(false);
         $graph->img->SetAntiAliasing();
 
-        // configure X-axis
-        $datax = $this->configureXAxis($stats, $graph);
-
-        //configure Y-axis
-        $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
-        $graph->yaxis->SetColor('white', 'white');
-        $graph->yaxis->scale->SetGrace(50, 50);
-
-        $graph->ygrid->SetFill(true, 'black@0.95', 'black@0.7');
-        $graph->ygrid->Show();
-
-
-        $graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
+        $datax = $this->getDataX($stats);
 
         // Create the lines
         foreach ($plotInfo as $color => $method) {
@@ -118,10 +106,36 @@ final class ShowStatistics implements ViewControllerInterface
         //set the scale
         $graph->SetScale('intint', $this->minY, $this->maxY, $datax[0], $datax[count($datax) - 1]);
 
+        // configure X-axis
+        $this->configureXAxis($stats, $graph);
+
+        //configure Y-axis
+        $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
+        $graph->yaxis->SetColor('white', 'white');
+        $graph->yaxis->scale->SetGrace(50, 50);
+
+        $graph->ygrid->SetFill(true, 'black@0.95', 'black@0.7');
+        $graph->ygrid->Show();
+
+
+        $graph->SetAxisLabelBackground(LABELBKG_XYFULL, 'black@0.0', 'black@0.0', 'black@0.0', 'black@0.0');
+
         return $this->graphInSrc($graph);
     }
 
-    private function configureXAxis(array $stats, $graph): array
+    private function getDataX(array $stats): array
+    {
+        $datax = [];
+
+        // collect data for X-Axis
+        foreach ($stats as $stat) {
+            $datax[] =  $stat->getTurn()->getStart();
+        }
+
+        return $datax;
+    }
+
+    private function configureXAxis(array $stats, $graph): void
     {
         $fmt = new IntlDateFormatter(
             'de-DE',
@@ -132,14 +146,12 @@ final class ShowStatistics implements ViewControllerInterface
             'eee, d.MM. H\'h\''
         );
 
-        $datax = [];
         $tickPositions = [];
         $tickLabels = [];
 
         // collect data for X-Axis
         foreach ($stats as $stat) {
             $x = $stat->getTurn()->getStart();
-            $datax[] = $x;
 
             $tickPositions[] = $x;
             $tickLabels[] = $fmt->format((int)$x);
@@ -150,8 +162,6 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetMajTickPositions($tickPositions, $tickLabels);
         $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
         $graph->xaxis->SetColor('white', 'white');
-
-        return $datax;
     }
 
     private function createPlot(array $stats, $datax, string $color, $method): LinePlot
