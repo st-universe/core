@@ -98,9 +98,10 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->SetColor('black');
         $graph->SetFrame(false);
 	$graph->SetBox(false);
-	$graph->SetAxisStyle(AXSTYLE_BOXIN)
+	$graph->SetAxisStyle(AXSTYLE_BOXIN);
 	$graph->img->SetAntiAliasing();
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
+	$graph->tabtitle->SetFillColor('black');
 
         $graph->xaxis->SetLabelAngle(45);
         $graph->xaxis->SetPos('min');
