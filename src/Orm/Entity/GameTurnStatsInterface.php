@@ -37,4 +37,8 @@ interface GameTurnStatsInterface
     public function getFlightSig24h(): int;
 
     public function setFlightSig24h(int $flightSig24h): GameTurnStatsInterface;
+
+    public function getFlightSigSystem24h(): ?int;
+
+    public function setFlightSigSystem24h(int $flightSigSystem24h): GameTurnStatsInterface;
 }

@@ -43,6 +43,9 @@ class GameTurnStats implements GameTurnStatsInterface
     /** @Column(type="integer") * */
     private $flight_sig_24h;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $flight_sig_system_24h;
+
     /**
      * @OneToOne(targetEntity="GameTurn")
      * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
@@ -145,6 +148,18 @@ class GameTurnStats implements GameTurnStatsInterface
     public function setFlightSig24h(int $flightSig24h): GameTurnStatsInterface
     {
         $this->flight_sig_24h = $flightSig24h;
+
+        return $this;
+    }
+
+    public function getFlightSigSystem24h(): ?int
+    {
+        return $this->flight_sig_system_24h;
+    }
+
+    public function setFlightSigSystem24h(int $flightSigSystem24h): GameTurnStatsInterface
+    {
+        $this->flight_sig_system_24h = $flightSigSystem24h;
 
         return $this;
     }
