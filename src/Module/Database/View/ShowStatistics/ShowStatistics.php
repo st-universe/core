@@ -17,8 +17,8 @@ final class ShowStatistics implements ViewControllerInterface
 
     private const ENTRY_COUNT = 10;
 
-    private int $minY = PHP_INT_MAX;
-    private int $maxY = 0;
+    private int $minY;
+    private int $maxY;
 
     private GameTurnStatsRepositoryInterface $gameTurnStatsRepository;
 
@@ -59,6 +59,9 @@ final class ShowStatistics implements ViewControllerInterface
 
     private function createImageSrc(array $stats, array $plotInfos, string $title): string
     {
+        $this->minY = PHP_INT_MAX;
+        $this->maxY = 0;
+
         $datax = $this->createDataX($stats);
         $datay = $this->createDataY($plotInfos, $stats);
         $plots = $this->createPlots($datax, $datay);
