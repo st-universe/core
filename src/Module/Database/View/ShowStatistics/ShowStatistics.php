@@ -98,7 +98,7 @@ final class ShowStatistics implements ViewControllerInterface
         //$graph->tabtitle->SetColor('white', 'black', 'black');
         //$graph->tabtitle->SetTabAlign('center');
         //$graph->tabtitle->SetCorner(0);
-        $graph->SetTitleBackground(
+        //$graph->SetTitleBackground(
             $aBackColor = 'black',
             $aStyle = TITLEBKG_STYLE1,
             $aFrameStyle = TITLEBKG_FRAME_NONE,
