@@ -90,13 +90,13 @@ final class ShowStatistics implements ViewControllerInterface
         $__width  = 400;
         $__height = 300;
         $graph    = new Graph($__width, $__height);
+        $graph->SetMargin(70, 30, 30, 90);
         $graph->title->Set($title);
         //$graph->SetAlphaBlending(true);
 	$graph->img->SetAntiAliasing(false);
 	//$graph->img->SetTransparent('khaki');
         $graph->SetColor('black');
-        $graph->SetFrame(true, 'black', 0);
-        $graph->SetMargin(70, 30, 30, 90);
+        $graph->SetFrame(false);
 	$graph->SetBox(false);
 	$graph->img->SetAntiAliasing();
         $graph->SetScale('intint', $minY, $maxY, $datax[0], $datax[count($datax) - 1]);
