@@ -29,6 +29,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
 use Stu\Lib\StuBbCodeWithImageDefinitionSet;
+use Stu\Module\Control\EntityManagerCreator;
+use Stu\Module\Control\EntityManagerCreatorInterface;
 use Stu\Module\Control\EntityManagerLogging;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
@@ -115,9 +117,12 @@ $builder->addDefinitions([
         }
     },
     SessionInterface::class => autowire(Session::class),
+    EntityManagerCreatorInterface::class => autowire(EntityManagerCreator::class),
     EntityManagerInterface::class => $entityManagerCallback,
-    EntityManagerLoggingInterface::class => function ($entityManagerCallback): EntityManagerLogging {
-        $entityManager = $entityManagerCallback;
+    EntityManagerLoggingInterface::class => function (ContainerInterface $c): EntityManagerLogging {
+        $entityManagerCreator = $c->get(EntityManagerCreatorInterface::class);
+
+        $entityManager = $entityManagerCreator->create();
         $entityManagerLogging = new EntityManagerLogging($entityManager);
         return $entityManagerLogging;
     },
