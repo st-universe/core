@@ -663,7 +663,7 @@ final class GameController implements GameControllerInterface
     {
         $entityManagerLogging = $this->entityManagerLogging;
         $entityManagerLogging->beginTransaction();
-        $this->gameRequestRepository->save($entityManagerLogging, $request);
+        $entityManagerLogging->persist($request);
         $entityManagerLogging->flush();
         $entityManagerLogging->commit();
     }
