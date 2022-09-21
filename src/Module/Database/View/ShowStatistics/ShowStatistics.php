@@ -110,9 +110,9 @@ final class ShowStatistics implements ViewControllerInterface
 
         // Adjust the legend 
         $graph->legend->SetPos(0.05, 0.01, "top", "right");
-	$graph->legend->SetColor('white', 'white');
-	$graph->legend->SetFillColor('black');
-	$graph->legend->SetFont(FF_ARIAL,FS_BOLD, 8);
+        $graph->legend->SetColor('white', 'white');
+        $graph->legend->SetFillColor('black');
+        $graph->legend->SetFont(FF_ARIAL, FS_BOLD, 8);
 
         return $this->graphInSrc($graph);
     }
@@ -197,7 +197,13 @@ final class ShowStatistics implements ViewControllerInterface
 
     private function configureYAxis($graph): void
     {
-        $graph->yaxis->scale->SetGrace(50, 50);
+        if ($this->maxY - $this->minY < 10) {
+            $yGrace = 50;
+        } else {
+            $yGrace = 10;
+        }
+
+        $graph->yaxis->scale->SetGrace($yGrace, $yGrace);
         $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
         $graph->yaxis->SetColor('white', 'white');
     }
