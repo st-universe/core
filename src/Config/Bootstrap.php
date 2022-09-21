@@ -32,6 +32,7 @@ use Stu\Lib\StuBbCodeWithImageDefinitionSet;
 use Stu\Module\Control\EntityManagerCreator;
 use Stu\Module\Control\EntityManagerCreatorInterface;
 use Stu\Module\Control\EntityManagerLogging;
+use Stu\Module\Control\EntityManagerLoggingInterface;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use Ubench;
