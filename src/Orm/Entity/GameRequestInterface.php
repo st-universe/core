@@ -8,9 +8,7 @@ interface GameRequestInterface
 
     public function setUserId(?UserInterface $user): GameRequestInterface;
 
-    public function getTurn(): GameTurnInterface;
-
-    public function setTurn(GameTurnInterface $turn): GameRequestInterface;
+    public function setTurnId(GameTurnInterface $turn): GameRequestInterface;
 
     public function setTime(int $time): GameRequestInterface;
 

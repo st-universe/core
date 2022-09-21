@@ -522,7 +522,7 @@ final class GameController implements GameControllerInterface
         $gameRequest = $this->gameRequestRepository->prototype();
         $gameRequest->setModule($module);
         $gameRequest->setTime(time());
-        $gameRequest->setTurn($this->getCurrentRound());
+        $gameRequest->setTurnId($this->getCurrentRound());
 
         try {
             $this->session->createSession($session_check);

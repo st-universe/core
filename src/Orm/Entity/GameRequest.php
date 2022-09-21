@@ -46,12 +46,6 @@ class GameRequest implements GameRequestInterface
     /** @Column(type="integer", nullable=true) * */
     private $render_ms;
 
-    /**
-     * @ManyToOne(targetEntity="GameTurn")
-     * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $turn;
-
     public function getId(): int
     {
         return $this->id;
@@ -65,14 +59,9 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    public function getTurn(): GameTurnInterface
+    public function setTurnId(GameTurnInterface $turn): GameRequestInterface
     {
-        return $this->turn;
-    }
-
-    public function setTurn(GameTurnInterface $turn): GameRequestInterface
-    {
-        $this->turn = $turn;
+        $this->turn_id = $turn->getId();
         return $this;
     }
 
