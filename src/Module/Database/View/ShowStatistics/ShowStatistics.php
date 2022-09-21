@@ -109,7 +109,7 @@ final class ShowStatistics implements ViewControllerInterface
         }
 
         // Adjust the legend 
-        $graph->legend->SetPos(0.05, 0.05, "top", "right");
+        $graph->legend->SetPos(0.05, 0.01, "top", "right");
 	$graph->legend->SetColor('white', 'white');
 	$graph->legend->SetFillColor('black');
 	$graph->legend->SetFont(FF_FONT2,FS_NORMAL, 10);
