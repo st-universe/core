@@ -42,6 +42,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Ubench;
 
@@ -66,6 +67,8 @@ final class GameController implements GameControllerInterface
     private GameConfigRepositoryInterface $gameConfigRepository;
 
     private EntityManagerInterface $entityManager;
+
+    private EntityManagerLoggingInterface $entityManagerLogging;
 
     private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
@@ -115,6 +118,7 @@ final class GameController implements GameControllerInterface
         ResearchedRepositoryInterface $researchedRepository,
         GameConfigRepositoryInterface $gameConfigRepository,
         EntityManagerInterface $entityManager,
+        EntityManagerLoggingInterface $entityManagerLogging,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
@@ -132,6 +136,7 @@ final class GameController implements GameControllerInterface
         $this->researchedRepository = $researchedRepository;
         $this->gameConfigRepository = $gameConfigRepository;
         $this->entityManager = $entityManager;
+        $this->entityManagerLogging = $entityManagerLogging;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->userRepository = $userRepository;
@@ -651,8 +656,16 @@ final class GameController implements GameControllerInterface
 
         // SAVE META DATA
         $gameRequest->setRenderMs((int)$renderMs / 1000000);
-        $this->gameRequestRepository->save($gameRequest);
-        //$this->entityManager->flush();
+        $this->persistGameRequest($gameRequest);
+    }
+
+    private function persistGameRequest(GameRequestInterface $request): void
+    {
+        $entityManagerLogging = $this->entityManagerLogging;
+        $entityManagerLogging->beginTransaction();
+        $this->gameRequestRepository->save($entityManagerLogging, $request);
+        $entityManagerLogging->flush();
+        $entityManagerLogging->commit();
     }
 
     public function isSemaphoreAlreadyAcquired(int $key): bool

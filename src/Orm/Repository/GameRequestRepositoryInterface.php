@@ -2,17 +2,12 @@
 
 namespace Stu\Orm\Repository;
 
-use Doctrine\Persistence\ObjectRepository;
+use Stu\Module\Control\EntityManagerLoggingInterface;
 use Stu\Orm\Entity\GameRequestInterface;
 
-/**
- * @method GameRequestInterface[] findAll()
- */
-interface GameRequestRepositoryInterface extends ObjectRepository
+interface GameRequestRepositoryInterface
 {
     public function prototype(): GameRequestInterface;
 
-    public function save(GameRequestInterface $gameRequest): void;
-
-    public function delete(GameRequestInterface $gameRequest): void;
+    public function save(EntityManagerLoggingInterface $entityManager, GameRequestInterface $gameRequest): void;
 }
