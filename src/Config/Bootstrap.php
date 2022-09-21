@@ -42,39 +42,6 @@ use function DI\autowire;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$entityManagerCallback = function (ContainerInterface $c): EntityManagerInterface {
-    $config = $c->get(ConfigInterface::class);
-    $cacheDriver = new DoctrineCacheBridge($c->get(CacheItemPoolInterface::class));
-
-    $emConfig = new Configuration();
-    $emConfig->setAutoGenerateProxyClasses(0);
-    $emConfig->setMetadataCacheImpl($cacheDriver);
-    $emConfig->setQueryCacheImpl($cacheDriver);
-
-    $driverImpl = $emConfig->newDefaultAnnotationDriver(__DIR__ . '/../Orm/Entity/');
-    $emConfig->setMetadataDriverImpl($driverImpl);
-    $emConfig->setProxyDir(sprintf(
-        '%s/../OrmProxy/',
-        __DIR__
-    ));
-    $emConfig->setProxyNamespace($config->get('db.proxy_namespace'));
-
-    $manager = EntityManager::create(
-        [
-            'driver' => 'pdo_pgsql',
-            'user' => $config->get('db.user'),
-            'password' => $config->get('db.pass'),
-            'dbname' => $config->get('db.database'),
-            'host'  => $config->get('db.host'),
-            'charset' => 'utf8',
-        ],
-        $emConfig
-    );
-
-    $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
-    return $manager;
-};
-
 $builder = new ContainerBuilder();
 
 $builder->addDefinitions([
@@ -119,7 +86,11 @@ $builder->addDefinitions([
     },
     SessionInterface::class => autowire(Session::class),
     EntityManagerCreatorInterface::class => autowire(EntityManagerCreator::class),
-    EntityManagerInterface::class => $entityManagerCallback,
+    EntityManagerInterface::class => function (ContainerInterface $c): EntityManager {
+        $entityManagerCreator = $c->get(EntityManagerCreatorInterface::class);
+
+        return $entityManagerCreator->create();
+    },
     EntityManagerLoggingInterface::class => function (ContainerInterface $c): EntityManagerLogging {
         $entityManagerCreator = $c->get(EntityManagerCreatorInterface::class);
 
