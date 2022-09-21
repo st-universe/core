@@ -29,7 +29,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
 use Stu\Lib\StuBbCodeWithImageDefinitionSet;
-use Stu\Module\Control\FoobarInterface;
+use Stu\Module\Control\EntityManagerLogging;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use Ubench;
@@ -116,7 +116,11 @@ $builder->addDefinitions([
     },
     SessionInterface::class => autowire(Session::class),
     EntityManagerInterface::class => $entityManagerCallback,
-    FoobarInterface::class => $entityManagerCallback,
+    EntityManagerLoggingInterface::class => function ($entityManagerCallback): EntityManagerLogging {
+        $entityManager = $entityManagerCallback;
+        $entityManagerLogging = new EntityManagerLogging($entityManager);
+        return $entityManagerLogging;
+    },
     TalPageInterface::class => autowire(TalPage::class),
     GameControllerInterface::class => autowire(GameController::class),
     Parser::class => function (): Parser {

@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Control;
 
-
-interface FoobarInterface
+interface EntityManagerLoggingInterface
 {
 }
