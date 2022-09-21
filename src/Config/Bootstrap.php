@@ -87,36 +87,9 @@ $builder->addDefinitions([
     SessionInterface::class => autowire(Session::class),
     EntityManagerCreatorInterface::class => autowire(EntityManagerCreator::class),
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
-        $config = $c->get(ConfigInterface::class);
-        $cacheDriver = new DoctrineCacheBridge($c->get(CacheItemPoolInterface::class));
+        $entityManagerCreator = $c->get(EntityManagerCreatorInterface::class);
 
-        $emConfig = new Configuration();
-        $emConfig->setAutoGenerateProxyClasses(0);
-        $emConfig->setMetadataCacheImpl($cacheDriver);
-        $emConfig->setQueryCacheImpl($cacheDriver);
-
-        $driverImpl = $emConfig->newDefaultAnnotationDriver(__DIR__ . '/../Orm/Entity/');
-        $emConfig->setMetadataDriverImpl($driverImpl);
-        $emConfig->setProxyDir(sprintf(
-            '%s/../OrmProxy/',
-            __DIR__
-        ));
-        $emConfig->setProxyNamespace($config->get('db.proxy_namespace'));
-
-        $manager = EntityManager::create(
-            [
-                'driver' => 'pdo_pgsql',
-                'user' => $config->get('db.user'),
-                'password' => $config->get('db.pass'),
-                'dbname' => $config->get('db.database'),
-                'host'  => $config->get('db.host'),
-                'charset' => 'utf8',
-            ],
-            $emConfig
-        );
-
-        $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
-        return $manager;
+        return $entityManagerCreator->create();
     },
     EntityManagerLoggingInterface::class => function (ContainerInterface $c): EntityManagerLogging {
         $entityManagerCreator = $c->get(EntityManagerCreatorInterface::class);
