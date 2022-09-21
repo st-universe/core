@@ -652,7 +652,7 @@ final class GameController implements GameControllerInterface
         // SAVE META DATA
         $gameRequest->setRenderMs((int)$renderMs / 1000000);
         $this->gameRequestRepository->save($gameRequest);
-        $this->entityManager->flush();
+        //$this->entityManager->flush();
     }
 
     public function isSemaphoreAlreadyAcquired(int $key): bool
