@@ -8,6 +8,8 @@
 				<tr>
 					<th colspan="5">Typ</th>
 					<th>Anzahl</th>
+					<th>Suchbegriff</th>
+					<th></th>
 				</tr>
 				<tr>
 					<td style="width: 150px; vertical-align: middle; text-align: center;"
@@ -19,6 +21,12 @@
 					<td>
 						<input type="text" size="3" name="hcount" value="runtime"
 							tal:attributes="value HISTORY_COUNT" />
+					</td>
+					<td>
+						<input type="text" size="10" name="hsearch" value="runtime"
+							tal:attributes="value HISTORY_SEARCH" />
+					</td>
+					<td>
 						<input type="submit" class="button" value="Aktualisieren" />
 					</td>
 				</tr>

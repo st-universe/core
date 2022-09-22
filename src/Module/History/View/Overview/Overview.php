@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\History\View\Overview;
 
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\History\Lib\EntryCreator;
@@ -39,6 +40,7 @@ final class Overview implements ViewControllerInterface
     {
         $type = $this->overviewRequest->getTypeId(array_keys($this->possibleTypes), EntryCreator::HISTORY_SHIP);
         $count = $this->overviewRequest->getCount(self::LIMIT);
+        $search = request::postString('hsearch');
 
         if ($count < 1 || $count > self::MAX_LIMIT) {
             $count = self::MAX_LIMIT;
@@ -71,8 +73,12 @@ final class Overview implements ViewControllerInterface
             $count
         );
         $game->setTemplateVar(
+            'HISTORY_SEARCH',
+            $search
+        );
+        $game->setTemplateVar(
             'HISTORY',
-            $this->historyRepository->getByType($type, $count)
+            $this->historyRepository->getByTypeAndSearch($type, $count, $search)
         );
     }
 }

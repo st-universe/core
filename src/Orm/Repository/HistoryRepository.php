@@ -19,13 +19,26 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         );
     }
 
-    public function getByType(int $typeId, int $limit): array
+    public function getByTypeAndSearch(int $typeId, int $limit, string $search): array
     {
-        return $this->findBy(
-            ['type' => $typeId],
-            ['id' => 'desc'],
-            $limit
-        );
+        return $this->getEntityManager()->createQuery(
+            $search ? sprintf(
+                'SELECT h FROM %s h
+                WHERE h.type = :typeId
+                AND h.text like \'%:search%\'
+                ORDER BY id desc',
+                History::class
+            ) : sprintf(
+                'SELECT h FROM %s h
+                WHERE h.type = :typeId
+                ORDER BY id desc',
+                History::class
+            )
+        )->setParameters($search ? [
+            'typeId' => $typeId,
+            'search' => $search
+        ] : ['typeId' => $typeId])->setMaxResults($limit)
+            ->getResult();
     }
 
     public function getAmountByType(int $typeId): int
