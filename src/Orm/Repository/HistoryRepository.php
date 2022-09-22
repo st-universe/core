@@ -26,12 +26,12 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
                 'SELECT h FROM %s h
                 WHERE h.type = :typeId
                 AND h.text like \'%:search%\'
-                ORDER BY id desc',
+                ORDER BY h.id desc',
                 History::class
             ) : sprintf(
                 'SELECT h FROM %s h
                 WHERE h.type = :typeId
-                ORDER BY id desc',
+                ORDER BY h.id desc',
                 History::class
             )
         )->setParameters($search ? [
