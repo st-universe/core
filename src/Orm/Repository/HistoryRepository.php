@@ -25,7 +25,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             $search ? sprintf(
                 'SELECT h FROM %s h
                 WHERE h.type = :typeId
-                AND h.text like \'%:search%\'
+                AND UPPER(h.text) like UPPER(:search)
                 ORDER BY h.id desc',
                 History::class
             ) : sprintf(
@@ -36,7 +36,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             )
         )->setParameters($search ? [
             'typeId' => $typeId,
-            'search' => $search
+            'search' => sprintf('%%%s%%', $search)
         ] : ['typeId' => $typeId])->setMaxResults($limit)
             ->getResult();
     }
