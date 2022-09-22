@@ -107,7 +107,7 @@ final class ShowStatistics implements ViewControllerInterface
 
         // configure axis
         $this->configureXAxis($graph, $stats);
-        $this->configureYAxis($graph);
+        $this->configureYAxis($graph, $graphInfo->yAxisStartAtZero);
 
         $graph->ygrid->SetFill(true, '#121220@0.5', '#121220@0.6');
         $graph->ygrid->Show();
@@ -209,7 +209,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->xaxis->SetColor('white', 'white');
     }
 
-    private function configureYAxis($graph): void
+    private function configureYAxis($graph, bool $yAxisStartAtZero): void
     {
         if ($this->maxY - $this->minY < 10) {
             $yGrace = 50;
@@ -217,7 +217,7 @@ final class ShowStatistics implements ViewControllerInterface
             $yGrace = 10;
         }
 
-        $graph->yaxis->scale->SetGrace($yGrace, $yGrace);
+        $graph->yaxis->scale->SetGrace($yGrace, $yAxisStartAtZero ? 0 : $yGrace);
         $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
         $graph->yaxis->SetColor('white', 'white');
     }
