@@ -9,6 +9,7 @@ use Amenadiel\JpGraph\Plot\LinePlot;
 use IntlDateFormatter;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Database\Lib\GraphInfo;
 use Stu\Module\Database\Lib\PlotInfo;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
 
@@ -31,15 +32,15 @@ final class ShowStatistics implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $imageInfos = [
-            'Spieleranzahl' => [new PlotInfo('getUserCount'), new PlotInfo('getLogins24h', 'yellow', 'yellow@0.5', 'aktiv letzte 24h')],
-            'Spieler im Urlaub' => [new PlotInfo('getVacationCount')],
-            'Schiffanzahl' => [new PlotInfo('getShipCount'), new PlotInfo('getShipCountManned', 'yellow', 'yellow@0.5', 'bemannt')],
-            'KN-Beiträge' => [new PlotInfo('getKnCount')],
-            'Geflogene Felder letzte 24h' => [new PlotInfo('getFlightSig24h'), new PlotInfo('getFlightSigSystem24h', 'yellow', 'yellow@0.5', 'System')]
+        $graphInfos = [
+            new GraphInfo('Spieleranzahl', [new PlotInfo('getUserCount'), new PlotInfo('getLogins24h', 'yellow', 'yellow@0.5', 'aktiv letzte 24h')]),
+            new GraphInfo('Spieler im Urlaub', [new PlotInfo('getVacationCount')]),
+            new GraphInfo('Schiffanzahl', [new PlotInfo('getShipCount'), new PlotInfo('getShipCountManned', 'yellow', 'yellow@0.5', 'bemannt')]),
+            new GraphInfo('KN-Beiträge', [new PlotInfo('getKnCount')]),
+            new GraphInfo('Geflogene Felder letzte 24h', [new PlotInfo('getFlightSig24h'), new PlotInfo('getFlightSigSystem24h', 'yellow', 'yellow@0.5', 'System')])
         ];
 
-        $imageSources = $this->createImagesSources($imageInfos);
+        $imageSources = $this->createImagesSources($graphInfos);
 
         $game->appendNavigationPart(
             'database.php',
@@ -58,26 +59,34 @@ final class ShowStatistics implements ViewControllerInterface
         $game->setTemplateVar('GRAPHS', $imageSources);
     }
 
-    private function createImagesSources(array $imageInfos): array
+    /**
+     * @param GraphInfo[] $graphInfos
+     */
+    private function createImagesSources(array $graphInfos): array
     {
         $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT));
 
         $imageSources = [];
 
-        foreach ($imageInfos as $title => $plotInfos) {
-            $imageSources[] = $this->createImageSrc($stats, $plotInfos, $title);
+        foreach ($graphInfos as $graphInfo) {
+            $imageSources[] = $this->createImageSrc($stats, $graphInfo, $graphInfo->title);
         }
 
         return $imageSources;
     }
 
-    private function createImageSrc(array $stats, array $plotInfos, string $title): string
+    /**
+     * @param GameTurnStatsInterface[] $stats
+     * @param GraphInfo $graphInfo
+     * @param string $title
+     */
+    private function createImageSrc(array $stats, GraphInfo $graphInfo, string $title): string
     {
-        $this->minY = PHP_INT_MAX;
+        $this->minY = $graphInfo->yAxisStartAtZero ? 0 : PHP_INT_MAX;
         $this->maxY = 0;
 
         $datax = $this->createDataX($stats);
-        $plots = $this->createPlots($datax, $plotInfos, $stats);
+        $plots = $this->createPlots($datax, $graphInfo->getPlotInfos(), $stats);
 
         // Setup the basic graph
         $__width  = 400;
@@ -143,6 +152,11 @@ final class ShowStatistics implements ViewControllerInterface
         return $datay;
     }
 
+    /**
+     * @param array $datax
+     * @param PlotInfo[] $plotInfos
+     * @param GameTurnStatsInterface[] $stats
+     */
     private function createPlots(array $datax, array $plotInfos, array $stats): array
     {
         $plots = [];
