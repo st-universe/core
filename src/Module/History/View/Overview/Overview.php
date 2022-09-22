@@ -74,7 +74,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'HISTORY_SEARCH',
-            $search
+            $search ? $search : ''
         );
         $game->setTemplateVar(
             'HISTORY',
