@@ -190,7 +190,7 @@ final class BuildStation implements ActionControllerInterface
         if ($progress === null) {
             $progress = $this->constructionProgressRepository->prototype();
         }
-        $progress->setShipId($ship->getId());
+        $progress->setShip($ship);
         $progress->setRemainingTicks($rump->getBuildtime());
 
         $this->constructionProgressRepository->save($progress);

@@ -86,7 +86,7 @@ final class ShipCreator implements ShipCreatorInterface
         ?ColonyInterface $colony = null,
         ?ConstructionProgressInterface $progress = null
     ): ShipInterface {
-        $ship = $progress !== null ? $this->shipRepository->find($progress->getShipId()) : $this->shipRepository->prototype();
+        $ship = $progress !== null ? $progress->getShip() : $this->shipRepository->prototype();
         $ship->setUser($this->userRepository->find($userId));
         $ship->setBuildplan($this->shipBuildplanRepository->find($shipBuildplanId));
         $ship->setRump($this->shipRumpRepository->find($shipRumpId));

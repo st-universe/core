@@ -52,14 +52,19 @@ class ConstructionProgress implements ConstructionProgressInterface
         return $this->id;
     }
 
-    public function getShipId(): int
+    private function getShipId(): int
     {
         return $this->ship_id;
     }
 
-    public function setShipId(int $shipId): ConstructionProgressInterface
+    public function getShip(): ShipInterface
     {
-        $this->ship_id = $shipId;
+        return $this->ship;
+    }
+
+    public function setShip(ShipInterface $ship): ConstructionProgressInterface
+    {
+        $this->ship = $ship;
 
         return $this;
     }
