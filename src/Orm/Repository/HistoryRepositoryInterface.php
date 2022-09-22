@@ -19,7 +19,7 @@ interface HistoryRepositoryInterface extends ObjectRepository
     /**
      * @return HistoryInterface[]
      */
-    public function getByTypeAndSearch(int $typeId, int $limit, string $search): array;
+    public function getByTypeAndSearch(int $typeId, int $limit, $search): array;
 
     public function getAmountByType(int $typeId): int;
 

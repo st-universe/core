@@ -40,7 +40,7 @@ final class Overview implements ViewControllerInterface
     {
         $type = $this->overviewRequest->getTypeId(array_keys($this->possibleTypes), EntryCreator::HISTORY_SHIP);
         $count = $this->overviewRequest->getCount(self::LIMIT);
-        $search = request::postString('hsearch');
+        $search = request::indString('hsearch');
 
         if ($count < 1 || $count > self::MAX_LIMIT) {
             $count = self::MAX_LIMIT;
