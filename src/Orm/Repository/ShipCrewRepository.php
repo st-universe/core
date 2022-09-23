@@ -73,7 +73,10 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
                 FROM stu_user u
                 WHERE sc.user_id = u.id)
             FROM stu_ships_crew sc
+            JOIN stu_ships s
+            ON sc.ships_id = s.id
             WHERE sc.user_id > 100
+            AND sc.user_id = s.user_id
             GROUP BY sc.user_id
             ORDER BY 2 DESC
             LIMIT 10',
