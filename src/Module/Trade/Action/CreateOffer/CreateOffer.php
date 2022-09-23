@@ -57,7 +57,7 @@ final class CreateOffer implements ActionControllerInterface
             throw new AccessViolation(sprintf("Storage belongs to other user! Fool: %d", $userId));
         }
 
-        $trade_post = $storage->getTradePost();
+        $tradePost = $storage->getTradePost();
 
         $giveGoodId = $this->createOfferRequest->getGiveGoodId();
         $giveAmount = $this->createOfferRequest->getGiveAmount();
@@ -70,12 +70,12 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
         if ($giveAmount < 1) {
-            $game->addInformation("Es wurde keine Angebotene Menge angeben");
+            $game->addInformation("Es wurde keine angebotene Menge angeben");
             return;
         }
 
         if ($wantedAmount < 1) {
-            $game->addInformation("Es wurde keine Verlangte Menge");
+            $game->addInformation("Es wurde keine verlangte Menge");
             return;
         }
 
@@ -84,7 +84,13 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($trade_post, $userId);
+        // is there already an equal offer?
+        if (!empty($this->tradeOfferRepository->getByTradePostAndUserAndCommodities($tradePost->getId(), $userId, $giveGoodId, $wantedGoodId))) {
+            $game->addInformation("Du hast auf diesem Handelsposten bereits ein Angebot dieser Art");
+            return;
+        }
+
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
 
         if ($storageManager->getFreeStorage() <= 0) {
             $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - Angebot kann nicht erstellt werden");
@@ -114,7 +120,7 @@ final class CreateOffer implements ActionControllerInterface
         }
         $offer = $this->tradeOfferRepository->prototype();
         $offer->setUser($game->getUser());
-        $offer->setTradePost($trade_post);
+        $offer->setTradePost($tradePost);
         $offer->setDate(time());
         $offer->setOfferedCommodity($this->commodityRepository->find($giveGoodId));
         $offer->setOfferedGoodCount((int) $giveAmount);

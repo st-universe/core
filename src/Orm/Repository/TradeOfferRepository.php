@@ -60,6 +60,20 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         ]);
     }
 
+    public function getByTradePostAndUserAndCommodities(
+        int $tradePostId,
+        int $userId,
+        int $offeredCommodityId,
+        int $wantedCommodityId
+    ): array {
+        return $this->findBy([
+            'posts_id' => $tradePostId,
+            'user_id' => $userId,
+            'gg_id' => $offeredCommodityId,
+            'wg_id' => $wantedCommodityId
+        ]);
+    }
+
     public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, int $direction): array
     {
         if ($commodityId !== null && $commodityId !== 0) {
