@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\Commodity;
 
 final class CommodityRepository extends EntityRepository implements CommodityRepositoryInterface
@@ -46,7 +47,9 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
     public function getTradeable(): array
     {
         return $this->findBy([
-            'view' => true, 'npc_good' => false
+            'view' => true,
+            'npc_good' => false,
+            'type' => CommodityTypeEnum::GOOD_TYPE_STANDARD
         ], ['sort' => 'asc']);
     }
 

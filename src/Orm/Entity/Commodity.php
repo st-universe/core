@@ -88,21 +88,9 @@ class Commodity implements CommodityInterface
         return $this;
     }
 
-   public function getNPCgood(): bool
-    {
-        return $this->npc_good;
-    }
-
-    public function setNPCgood(bool $npc_good): CommodityInterface
-    {
-        $this->npc_good = $npc_good;
-
-        return $this;
-    }
-
     public function isTradeable(): bool
     {
-        return $this->getType() === CommodityTypeEnum::GOOD_TYPE_STANDARD && $this->getNPCgood() === false;
+        return $this->isBeamable() && $this->npc_good === false;
     }
 
     public function isBeamable(): bool

@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\CreateOffer;
 
 use Stu\Exception\AccessViolation;
-use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
@@ -84,9 +82,30 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
+        $offeredCommodity = $this->commodityRepository->find($giveGoodId);
+        if ($offeredCommodity === null) {
+            return;
+        }
+        $wantedCommodity = $this->commodityRepository->find($wantedGoodId);
+        if ($wantedCommodity === null) {
+            return;
+        }
+
+        // is tradeable?
+        if (!$offeredCommodity->isTradeable() || !$wantedCommodity->isTradeable()) {
+            return;
+        }
+
         // is there already an equal offer?
-        if (!empty($this->tradeOfferRepository->getByTradePostAndUserAndCommodities($tradePost->getId(), $userId, $giveGoodId, $wantedGoodId))) {
-            $game->addInformation("Du hast auf diesem Handelsposten bereits ein Angebot dieser Art");
+        if ($this->isEquivalentOfferExistent(
+            $userId,
+            $tradePost->getId(),
+            $giveGoodId,
+            $giveAmount,
+            $wantedGoodId,
+            $wantedAmount
+        )) {
+            $game->addInformation("Du hast auf diesem Handelsposten bereits ein vergleichbares Angebot");
             return;
         }
 
@@ -95,18 +114,6 @@ final class CreateOffer implements ActionControllerInterface
         if ($storageManager->getFreeStorage() <= 0) {
             $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - Angebot kann nicht erstellt werden");
             return;
-        }
-
-        if ($giveGoodId == CommodityTypeEnum::GOOD_LATINUM) {
-            $result = array_filter(
-                $this->commodityRepository->getViewable(),
-                function (CommodityInterface $commodity) use ($wantedGoodId): bool {
-                    return $commodity->getId() === $wantedGoodId;
-                }
-            );
-            if ($result === []) {
-                return;
-            }
         }
 
         if ($offerAmount < 1 || $offerAmount > 99) {
@@ -122,9 +129,9 @@ final class CreateOffer implements ActionControllerInterface
         $offer->setUser($game->getUser());
         $offer->setTradePost($tradePost);
         $offer->setDate(time());
-        $offer->setOfferedCommodity($this->commodityRepository->find($giveGoodId));
+        $offer->setOfferedCommodity($offeredCommodity);
         $offer->setOfferedGoodCount((int) $giveAmount);
-        $offer->setWantedCommodity($this->commodityRepository->find($wantedGoodId));
+        $offer->setWantedCommodity($wantedCommodity);
         $offer->setWantedGoodCount((int) $wantedAmount);
         $offer->setOfferCount((int) $offerAmount);
 
@@ -133,6 +140,25 @@ final class CreateOffer implements ActionControllerInterface
         $storageManager->lowerStorage($giveGoodId, (int) $offerAmount * $giveAmount);
 
         $game->addInformation('Das Angebot wurde erstellt');
+    }
+
+    private function isEquivalentOfferExistent(
+        int $userId,
+        int $tradePostId,
+        int $giveGoodId,
+        int $giveAmount,
+        int $wantedGoodId,
+        int $wantedAmount
+    ): bool {
+        $offers = $this->tradeOfferRepository->getByTradePostAndUserAndCommodities($tradePostId, $userId, $giveGoodId, $wantedGoodId);
+
+        foreach ($offers as $offer) {
+            if (round($giveAmount / $wantedAmount, 2) == round($offer->getOfferedGoodCount() / $offer->getWantedGoodCount(), 2)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function performSessionCheck(): bool
