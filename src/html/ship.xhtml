@@ -612,7 +612,7 @@
 						style="width: 15px; height: 15px;" title="Sternensystem" />
 					<span>${SHIP/getSystem/getName}
 						(${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
-				</tal:block>
+				</tal:block><br />
 				<a tal:condition="SHIP/hasWarpdrive"
 					href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 					<img src="assets/buttons/sysleave1.png" name="sysleave" title="System verlassen" /> verlassen
