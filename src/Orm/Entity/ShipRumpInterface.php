@@ -8,9 +8,9 @@ interface ShipRumpInterface
 {
     public function getId(): int;
 
-    public function setCategoryId(?int $categoryId): ShipRumpInterface;
+    public function setCategoryId(int $categoryId): ShipRumpInterface;
 
-    public function getCategoryId(): ?int;
+    public function getCategoryId(): int;
 
     public function getRoleId(): ?int;
 
@@ -146,9 +146,9 @@ interface ShipRumpInterface
 
     public function setShipRumpRole(?ShipRumpRoleInterface $shipRumpRole): ShipRumpInterface;
 
-    public function getShipRumpCategory(): ?ShipRumpCategoryInterface;
+    public function getShipRumpCategory(): ShipRumpCategoryInterface;
 
-    public function setShipRumpCategory(?ShipRumpCategoryInterface $shipRumpCategory): ShipRumpInterface;
+    public function setShipRumpCategory(ShipRumpCategoryInterface $shipRumpCategory): ShipRumpInterface;
 
     public function getCommodity(): ?CommodityInterface;
 

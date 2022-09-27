@@ -29,8 +29,8 @@ class ShipRump implements ShipRumpInterface
      */
     private $id;
 
-    /** @column(type="integer", nullable=true) * */
-    private $category_id = 0;
+    /** @column(type="integer") * */
+    private $category_id;
 
     /** @column(type="integer", nullable=true) * */
     private $role_id = 0;
@@ -182,14 +182,14 @@ class ShipRump implements ShipRumpInterface
         return $this->id;
     }
 
-    public function setCategoryId(?int $categoryId): ShipRumpInterface
+    public function setCategoryId(int $categoryId): ShipRumpInterface
     {
         $this->category_id = $categoryId;
 
         return $this;
     }
 
-    public function getCategoryId(): ?int
+    public function getCategoryId(): int
     {
         return $this->category_id;
     }
@@ -556,12 +556,12 @@ class ShipRump implements ShipRumpInterface
         return $this;
     }
 
-    public function getShipRumpCategory(): ?ShipRumpCategoryInterface
+    public function getShipRumpCategory(): ShipRumpCategoryInterface
     {
         return $this->shipRumpCategory;
     }
 
-    public function setShipRumpCategory(?ShipRumpCategoryInterface $shipRumpCategory): ShipRumpInterface
+    public function setShipRumpCategory(ShipRumpCategoryInterface $shipRumpCategory): ShipRumpInterface
     {
         $this->shipRumpCategory = $shipRumpCategory;
         return $this;
