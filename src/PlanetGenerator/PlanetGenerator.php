@@ -401,24 +401,24 @@ final class PlanetGenerator implements PlanetGeneratorInterface
 
                 //and now?
                 $bw = 1;
-                if ((($mode == "polar") || ($mode == "strict polar")) && ($h == 0 || $h == $height - 1)) {
+                if ((($mode == GeneratorModeEnum::POLAR) || ($mode == GeneratorModeEnum::STRICT_POLAR)) && ($h == 0 || $h == $height - 1)) {
                     $bw += 1;
                 }
                 if (($mode == GeneratorModeEnum::TOP_LEFT) && ($h == 0) && ($w == 0)) {
                     $bw += 2;
                 }
-                if (($mode == "polar seeding north") && ($h == 0)) {
+                if (($mode == GeneratorModeEnum::POLAR_SEEDING_NORTH) && ($h == 0)) {
                     $bw += 2;
                 }
-                if (($mode == "polar seeding south") && ($h == $height - 1)) {
+                if (($mode == GeneratorModeEnum::POLAR_SEEDING_SOUTH) && ($h == $height - 1)) {
                     $bw += 2;
                 }
 
-                if (($mode == "equatorial") && (($h == 2 && $height == 5) || (($h == 2 || $h == 3) && $height == 6))) {
+                if (($mode == GeneratorModeEnum::EQUATORIAL) && (($h == 2 && $height == 5) || (($h == 2 || $h == 3) && $height == 6))) {
                     $bw += 1;
                 }
 
-                if ($mode != "nocluster" && $mode != "forced adjacency" && $mode != "forced rim" && $mode != "polar seeding north" && $mode != "polar seeding south") {
+                if ($mode != "nocluster" && $mode != GeneratorModeEnum::FORCED_ADJACENCY && $mode != GeneratorModeEnum::FORCED_RIM && $mode != GeneratorModeEnum::POLAR_SEEDING_NORTH && $mode != GeneratorModeEnum::POLAR_SEEDING_SOUTH) {
                     for ($k = 0; $k < count($to); $k++) {
                         if ($fields[$w - 1][$h] == $to[$k]) {
                             $bw += 1;
@@ -447,7 +447,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
                     }
                 }
 
-                if ((($mode == "polar seeding north") && ($h == 0)) || (($mode == "polar seeding south") && ($h == $height - 1))) {
+                if ((($mode == GeneratorModeEnum::POLAR_SEEDING_NORTH) && ($h == 0)) || (($mode == GeneratorModeEnum::POLAR_SEEDING_SOUTH) && ($h == $height - 1))) {
                     for ($k = 0; $k < count($to); $k++) {
                         if ($fields[$w - 1][$h] == $to[$k]) {
                             $bw += 2;
@@ -521,53 +521,53 @@ final class PlanetGenerator implements PlanetGeneratorInterface
                     }
                 }
 
-                if (($mode == "forced adjacency") && ($bw < 2)) {
+                if (($mode == GeneratorModeEnum::FORCED_ADJACENCY) && ($bw < 2)) {
                     $bw = 0;
                 }
-                if (($mode == "forced rim") && ($bw < 1.5)) {
-                    $bw = 0;
-                }
-
-                if (($mode == "polar") && ($h > 1) && ($h < $height - 2)) {
-                    $bw = 0;
-                }
-                if (($mode == "strict polar") && ($h > 0) && ($h < $height - 1)) {
-                    $bw = 0;
-                }
-                if ($mode == "polar seeding north" && ($h > 1)) {
-                    $bw = 0;
-                }
-                if ($mode == "polar seeding south" && ($h < $height - 2)) {
-                    $bw = 0;
-                }
-                if (($mode == "equatorial") && (($h < 2) || ($h > 3)) && ($height == 6)) {
-                    $bw = 0;
-                }
-                if (($mode == "equatorial") && (($h < 2) || ($h > 3)) && ($height == 5)) {
+                if (($mode == GeneratorModeEnum::FORCED_RIM) && ($bw < 1.5)) {
                     $bw = 0;
                 }
 
-                if (($mode == "lower orbit") && ($h != 1)) {
+                if (($mode == GeneratorModeEnum::POLAR) && ($h > 1) && ($h < $height - 2)) {
                     $bw = 0;
                 }
-                if (($mode == "upper orbit") && ($h != 0)) {
+                if (($mode == GeneratorModeEnum::STRICT_POLAR) && ($h > 0) && ($h < $height - 1)) {
+                    $bw = 0;
+                }
+                if ($mode == GeneratorModeEnum::POLAR_SEEDING_NORTH && ($h > 1)) {
+                    $bw = 0;
+                }
+                if ($mode == GeneratorModeEnum::POLAR_SEEDING_SOUTH && ($h < $height - 2)) {
+                    $bw = 0;
+                }
+                if (($mode == GeneratorModeEnum::EQUATORIAL) && (($h < 2) || ($h > 3)) && ($height == 6)) {
+                    $bw = 0;
+                }
+                if (($mode == GeneratorModeEnum::EQUATORIAL) && (($h < 2) || ($h > 3)) && ($height == 5)) {
                     $bw = 0;
                 }
 
-                if (($mode == "tidal seeding") && ($w != 0)) {
+                if (($mode == GeneratorModeEnum::LOWER_ORBIT) && ($h != 1)) {
+                    $bw = 0;
+                }
+                if (($mode == GeneratorModeEnum::UPPER_ORBIT) && ($h != 0)) {
+                    $bw = 0;
+                }
+
+                if (($mode == GeneratorModeEnum::TIDAL_SEEDING) && ($w != 0)) {
                     $bw = 0;
                 }
 
                 if (($mode == GeneratorModeEnum::TOP_LEFT) && (($h != 0) || $w != 0)) {
                     $bw = 0;
                 }
-                if (($mode == "right") && ($fields[$w - 1][$h] != $adjacent[0])) {
+                if (($mode == GeneratorModeEnum::RIGHT) && ($fields[$w - 1][$h] != $adjacent[0])) {
                     $bw = 0;
                 }
-                if (($mode == "below") && ($fields[$w][$h - 1] != $adjacent[0])) {
+                if (($mode == GeneratorModeEnum::BELOW) && ($fields[$w][$h - 1] != $adjacent[0])) {
                     $bw = 0;
                 }
-                if (($mode == "crater seeding") && (($w == $width - 1) || ($h == $height - 1))) {
+                if (($mode == GeneratorModeEnum::CRATER_SEEDING) && (($w == $width - 1) || ($h == $height - 1))) {
                     $bw = 0;
                 }
 
