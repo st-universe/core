@@ -26,20 +26,16 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
     private ColonyLoaderInterface $colonyLoader;
 
-    private ShowModuleScreenBuildplanRequestInterface $showModuleScreenBuildplanRequest;
-
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowModuleScreenBuildplanRequestInterface $showModuleScreenBuildplanRequest,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->showModuleScreenBuildplanRequest = $showModuleScreenBuildplanRequest;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->shipRumpRepository = $shipRumpRepository;
     }
@@ -60,7 +56,12 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $rump = $plan->getRump();
 
         if (!array_key_exists($rump->getId(), $this->shipRumpRepository->getBuildableByUser($userId))) {
-            throw new AccessViolation();
+            throw new AccessViolation(sprintf(
+                'userId %d tried to use buildplanId %d, but has not researched the rump with name %s',
+                $userId,
+                $plan->getId(),
+                $rump->getName()
+            ));
         }
 
         $moduleScreenTabs = new ModuleScreenTabWrapper;

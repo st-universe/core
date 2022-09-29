@@ -139,8 +139,6 @@ use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreenRequest;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreenRequestInterface;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
-use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplanRequest;
-use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplanRequestInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequest;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequestInterface;
@@ -207,7 +205,6 @@ return [
     ShowModuleCancelRequestInterface::class => autowire(ShowModuleCancelRequest::class),
     ShowModuleFabRequestInterface::class => autowire(ShowModuleFabRequest::class),
     ShowModuleScreenRequestInterface::class => autowire(ShowModuleScreenRequest::class),
-    ShowModuleScreenBuildplanRequestInterface::class => autowire(ShowModuleScreenBuildplanRequest::class),
     ShowOrbitManagementRequestInterface::class => autowire(ShowOrbitManagementRequest::class),
     ShowOrbitShiplistRequestInterface::class => autowire(ShowOrbitShiplistRequest::class),
     ShowShipDisassemblyRequestInterface::class => autowire(ShowShipDisassemblyRequest::class),
