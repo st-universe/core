@@ -91,6 +91,9 @@ class Colony implements ColonyInterface
     /** @Column(type="integer", length=3, nullable=true) */
     private $torpedo_type;
 
+    /** @Column(type="integer", length=3, nullable=true) */
+    private $rotation_factor = 1;
+
     /**
      * @ManyToOne(targetEntity="PlanetType")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
@@ -386,6 +389,17 @@ class Colony implements ColonyInterface
     public function setTorpedo(?TorpedoTypeInterface $torpedoType): ColonyInterface
     {
         $this->torpedo = $torpedoType;
+        return $this;
+    }
+
+    public function getRotationFactor(): ?int
+    {
+        return $this->rotation_factor;
+    }
+
+    public function setRotationFactor(?int $rotationFactor): ColonyInterface
+    {
+        $this->rotation_factor = $rotationFactor;
         return $this;
     }
 

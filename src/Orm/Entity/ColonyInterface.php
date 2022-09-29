@@ -87,6 +87,10 @@ interface ColonyInterface
 
     public function setTorpedo(?TorpedoTypeInterface $torpedoType): ColonyInterface;
 
+    public function getRotationFactor(): ?int;
+
+    public function setRotationFactor(?int $rotationFactor): ColonyInterface;
+
     public function getPlanetType(): PlanetTypeInterface;
 
     public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface;
