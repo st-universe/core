@@ -241,8 +241,7 @@ final class ColonySurface implements ColonySurfaceInterface
         if ($this->colony->getMask() === null) {
 
             $surface = $this->planetGenerator->generateColony(
-                $this->colony->getColonyClass(),
-                $this->colony->getSystem()->getBonusFieldAmount()
+                $this->colony
             );
             $this->colony->setMask(base64_encode(serialize($surface)));
 

@@ -308,6 +308,17 @@ class PlanetField implements PlanetFieldInterface
         return $this;
     }
 
+    public function getNightPrefix(): string
+    {
+        $twilightZone = $this->getColony()->getTwilightZone();
+
+        if ($twilightZone >= 0) {
+            return $this->getFieldId() % $this->getColony()->getSurfaceWidth() >= $twilightZone ? 'n' : '';
+        }
+
+        return $this->getFieldId() % $this->getColony()->getSurfaceWidth() < $twilightZone ? 'n' : '';
+    }
+
     public function getTerraformingState(): ?ColonyTerraformingInterface
     {
         if ($this->terraformingState === null) {

@@ -159,6 +159,8 @@ class Colony implements ColonyInterface
 
     private $maxShields;
 
+    private $twilightZone;
+
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
@@ -360,6 +362,22 @@ class Colony implements ColonyInterface
                 ->getMaxShieldsOfColony($this->getId());
         }
         return $this->maxShields;
+    }
+
+    public function getTwilightZone(): int
+    {
+        if ($this->twilightZone === null) {
+            $width = $this->getSurfaceWidth();
+
+            $modulo = ((int)(time() * $this->getRotationFactor() / 100)) % ($width * 2);
+            if ($modulo > $width) {
+                $this->twilightZone = - ((2 * $width) - $modulo);
+            } else {
+                $this->twilightZone = $width - $modulo;
+            }
+        }
+
+        return $this->twilightZone;
     }
 
     public function hasShields(): bool

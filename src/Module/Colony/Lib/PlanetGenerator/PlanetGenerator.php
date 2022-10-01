@@ -6,6 +6,8 @@ use Exception;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class PlanetGenerator implements PlanetGeneratorInterface
 {
@@ -54,18 +56,25 @@ final class PlanetGenerator implements PlanetGeneratorInterface
     private const CONFIG_BASEFIELD_ORBIT = 2;
     private const CONFIG_BASEFIELD_UNDERGROUND = 3;
 
+    private ColonyRepositoryInterface $colonyRepository;
+
     private LoggerUtilInterface $loggerUtil;
 
-    public function __construct(LoggerUtilFactoryInterface $loggerUtilFactory)
-    {
+    public function __construct(
+        ColonyRepositoryInterface $colonyRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
+    ) {
+        $this->colonyRepository = $colonyRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function generateColony(int $id, int $bonusfields = 2): array
+    public function generateColony(ColonyInterface $colony): array
     {
         $bonusdata = [];
 
-        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadPlanetType($id);
+        $colonyClass = $colony->getColonyClass();
+        $bonusfields = $colony->getSystem()->getBonusFieldAmount();
+        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadPlanetType($colonyClass);
 
         //if ($id === 221) {
         //    $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
@@ -161,7 +170,13 @@ final class PlanetGenerator implements PlanetGeneratorInterface
 
         [$colonyFields, $orbitFields, $undergroundFields] = $this->doPhases($config, $phases, $hasground);
 
-        return $this->combine($colonyFields, $orbitFields, $undergroundFields);
+        $surface = $this->combine($colonyFields, $orbitFields, $undergroundFields);
+        $colony->setMask(base64_encode(serialize($surface)));
+        $colony->setSurfaceWidth($config[self::CONFIG_COLGEN_SIZEW]);
+
+        $this->colonyRepository->save($colony);
+
+        return $surface;
     }
 
     private function doPhases(array $config, array $phases, bool $hasground): array

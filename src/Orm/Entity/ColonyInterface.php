@@ -75,6 +75,8 @@ interface ColonyInterface
 
     public function getMaxShields(): int;
 
+    public function getTwilightZone(): int;
+
     public function hasShields(): bool;
 
     public function getShieldState(): bool;

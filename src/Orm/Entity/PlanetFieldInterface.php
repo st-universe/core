@@ -68,6 +68,8 @@ interface PlanetFieldInterface
 
     public function setTerraforming(?TerraformingInterface $terraforming): PlanetFieldInterface;
 
+    public function getNightPrefix(): string;
+
     public function getTerraformingState(): ?ColonyTerraformingInterface;
 
     public function getTerraformingOptions(): array;
