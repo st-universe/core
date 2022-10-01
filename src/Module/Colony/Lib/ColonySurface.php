@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
+use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorFileMissingException;
+use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -16,8 +18,6 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use Stu\PlanetGenerator\PlanetGenerator;
-use Stu\PlanetGenerator\PlanetGeneratorFileMissingException;
 
 final class ColonySurface implements ColonySurfaceInterface
 {
@@ -28,6 +28,8 @@ final class ColonySurface implements ColonySurfaceInterface
     private ColonyRepositoryInterface $colonyRepository;
 
     private ResearchedRepositoryInterface $researchedRepository;
+
+    private PlanetGeneratorInterface $planetGenerator;
 
     private EntityManagerInterface $entityManager;
 
@@ -44,6 +46,7 @@ final class ColonySurface implements ColonySurfaceInterface
         BuildingRepositoryInterface $buildingRepository,
         ColonyRepositoryInterface $colonyRepository,
         ResearchedRepositoryInterface $researchedRepository,
+        PlanetGeneratorInterface $planetGenerator,
         EntityManagerInterface $entityManager,
         LoggerUtilInterface $loggerUtil,
         ColonyInterface $colony,
@@ -129,6 +132,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurfaceTileCssClass(): string
     {
+        //TODO make it dynamic!
         if ($this->colony->getPlanetType()->getIsMoon()) {
             return 'moonSurfaceTiles';
         }
@@ -234,9 +238,8 @@ final class ColonySurface implements ColonySurfaceInterface
     public function updateSurface(): array
     {
         if ($this->colony->getMask() === null) {
-            $generator = new PlanetGenerator($this->loggerUtil);
 
-            $surface = $generator->generateColony(
+            $surface = $this->planetGenerator->generateColony(
                 $this->colony->getColonyClass(),
                 $this->colony->getSystem()->getBonusFieldAmount()
             );

@@ -81,6 +81,8 @@ use Stu\Module\Colony\Lib\ColonyGuiHelper;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoader;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGenerator;
+use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Colony\View\Overview\Overview;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequest;
@@ -173,20 +175,21 @@ use Stu\Module\Control\GameController;
 use function DI\autowire;
 
 return [
+    BuildingActionInterface::class => autowire(BuildingAction::class),
     BuildingMassActionConfigurationInterface::class => autowire(BuildingMassActionConfiguration::class),
-    PlanetFieldTypeRetrieverInterface::class => autowire(PlanetFieldTypeRetriever::class),
-    ChangeTorpedoTypeRequestInterface::class => autowire(ChangeTorpedoTypeRequest::class),
-    ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     CancelShipRepairRequestInterface::class => autowire(CancelShipRepairRequest::class),
+    ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
+    ChangeTorpedoTypeRequestInterface::class => autowire(ChangeTorpedoTypeRequest::class),
+    ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),
+    ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
+    ColonyLoaderInterface::class => autowire(ColonyLoader::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
     CommodityConsumptionInterface::class => autowire(CommodityConsumption::class),
-    PlanetColonizationInterface::class => autowire(PlanetColonization::class),
-    ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
-    BuildingActionInterface::class => autowire(BuildingAction::class),
-    ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),
-    ColonyLoaderInterface::class => autowire(ColonyLoader::class),
     GiveUpRequestInterface::class => autowire(GiveUpRequest::class),
     ModuleQueueLibInterface::class => autowire(ModuleQueueLib::class),
+    PlanetColonizationInterface::class => autowire(PlanetColonization::class),
+    PlanetFieldTypeRetrieverInterface::class => autowire(PlanetFieldTypeRetriever::class),
+    PlanetGeneratorInterface::class => autowire(PlanetGenerator::class),
     ShowAcademyRequestInterface::class => autowire(ShowAcademyRequest::class),
     ShowAirfieldRequestInterface::class => autowire(ShowAirfieldRequest::class),
     ShowBeamFromRequestInterface::class => autowire(ShowBeamFromRequest::class),
