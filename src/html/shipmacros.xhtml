@@ -1689,11 +1689,11 @@
           <div>
             <img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime"
               tal:attributes="title field/getTitleString"
-              src="assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png" />
+              src="assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png" />
             <a tal:condition="field/isColonizeAble"
               href="?id=${SHIP/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
               <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString"
-                src="assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png" />
+                src="assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png" />
             </a>
           </div>
         </div>
@@ -1724,20 +1724,20 @@
               <div>
                 <div>
                   <img style="width: 40px; height: 40px;" tal:attributes="title field/getTitleString"
-                    src="assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png" />
+                    src="assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png" />
                 </div>
               </div>
             </div>
           </div>
           <div tal:condition="field/getTerraforming" style="${style};" tal:attributes="class field/getCssClass">
             <div
-              style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
+              style="background-image: url(assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
               id="field${field/getFieldId}">
               <div>
                 <div>
                   <img class="action" style="width: 40px; height: 40px;" title="runtime"
                     tal:attributes="title field/getTitleString"
-                    src="assets/terraform/${field/getTerraforming/getId}/${COLONY_SURFACE/getDayNightState}.png" />
+                    src="assets/terraform/${field/getTerraforming/getId}/${field/getDayNightPrefix}.png" />
                 </div>
               </div>
             </div>
@@ -1746,14 +1746,14 @@
         <tal:block tal:condition="field/hasBuilding">
           <div tal:condition="not:field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
             <div
-              style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
+              style="background-image: url(assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
               id="field${field/getFieldId}">
               <div>
                 <div>
                   <a
                     href="?id=${SHIP/getId}&B_ATTACK_BUILDING=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
                     <img style="width: 40px; height: 40px;" title="Gebäude bombardieren: ${field/getTitleString}"
-                      src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${COLONY_SURFACE/getDayNightState}.png" />
+                      src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${field/getDayNightPrefix}.png" />
                   </a>
                 </div>
               </div>
@@ -1761,13 +1761,13 @@
           </div>
           <div tal:condition="field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
             <div
-              style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
+              style="background-image: url(assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
               id="field${field/getFieldId}">
               <div
-                style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${field/getPictureType}${COLONY_SURFACE/getDayNightState}.png)">
+                style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${field/getPictureType}${field/getDayNightPrefix}.png)">
                 <div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img
                     style="width: 40px; height: 40px;" tal:attributes="title field/getTitleString"
-                    src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${COLONY_SURFACE/getDayNightState}.png" />
+                    src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${field/getDayNightPrefix}.png" />
                 </div>
               </div>
             </div>

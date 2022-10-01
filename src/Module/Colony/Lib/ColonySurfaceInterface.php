@@ -29,6 +29,4 @@ interface ColonySurfaceInterface
     public function hasModuleFab(): bool;
 
     public function hasAirfield(): bool;
-
-    public function getDayNightState(): string;
 }

@@ -308,15 +308,15 @@ class PlanetField implements PlanetFieldInterface
         return $this;
     }
 
-    public function getNightPrefix(): string
+    public function getDayNightPrefix(): string
     {
         $twilightZone = $this->getColony()->getTwilightZone();
 
         if ($twilightZone >= 0) {
-            return $this->getFieldId() % $this->getColony()->getSurfaceWidth() >= $twilightZone ? 'n' : '';
+            return $this->getFieldId() % $this->getColony()->getSurfaceWidth() >= $twilightZone ? 'n' : 't';
         }
 
-        return $this->getFieldId() % $this->getColony()->getSurfaceWidth() < $twilightZone ? 'n' : '';
+        return $this->getFieldId() % $this->getColony()->getSurfaceWidth() < $twilightZone ? 'n' : 't';
     }
 
     public function getTerraformingState(): ?ColonyTerraformingInterface

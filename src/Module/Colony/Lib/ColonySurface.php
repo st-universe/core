@@ -309,15 +309,4 @@ final class ColonySurface implements ColonySurfaceInterface
             [0, 1]
         ) > 0;
     }
-
-    public function getDayNightState(): string
-    {
-        // @todo implement
-        $hour = date('G');
-
-        if ($hour > 7 && $hour < 19) {
-            return 't';
-        }
-        return 'n';
-    }
 }
