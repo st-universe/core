@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -39,6 +40,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
+    private PlanetGeneratorInterface $planetGenerator;
+
     private EntityManagerInterface $entityManager;
 
     private LoggerUtilFactoryInterface $loggerUtilFactory;
@@ -53,6 +56,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ResearchedRepositoryInterface $researchedRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
+        PlanetGeneratorInterface $planetGenerator,
         EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -65,6 +69,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->researchedRepository = $researchedRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
+        $this->planetGenerator = $planetGenerator;
         $this->entityManager = $entityManager;
         $this->loggerUtilFactory = $loggerUtilFactory;
     }
@@ -108,6 +113,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->buildingRepository,
             $this->colonyRepository,
             $this->researchedRepository,
+            $this->planetGenerator,
             $this->entityManager,
             $this->loggerUtilFactory->getLoggerUtil(),
             $colony,
