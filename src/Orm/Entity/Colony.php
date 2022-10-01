@@ -11,6 +11,7 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\TimeConstants;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Tick\Colony\ColonyTick;
@@ -369,11 +370,12 @@ class Colony implements ColonyInterface
         if ($this->twilightZone === null) {
             $width = $this->getSurfaceWidth();
 
-            $modulo = ((int)(time() * $this->getRotationFactor() / 100)) % ($width * 2);
-            if ($modulo > $width) {
-                $this->twilightZone = - ((2 * $width) - $modulo);
+            $modulo = ((int)(time() * $this->getRotationFactor() / 100)) % TimeConstants::ONE_DAY_IN_SECONDS;
+            $scaled = (int)ceil($modulo / (TimeConstants::ONE_DAY_IN_SECONDS / ($width * 2)));
+            if ($scaled > $width) {
+                $this->twilightZone = - ((2 * $width) - $scaled);
             } else {
-                $this->twilightZone = $width - $modulo;
+                $this->twilightZone = $width - $scaled;
             }
         }
 
