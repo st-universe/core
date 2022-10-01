@@ -91,6 +91,10 @@ interface ColonyInterface
 
     public function setRotationFactor(?int $rotationFactor): ColonyInterface;
 
+    public function getSurfaceWidth(): ?int;
+
+    public function setSurfaceWidth(int $surfaceWidth): ColonyInterface;
+
     public function getPlanetType(): PlanetTypeInterface;
 
     public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface;

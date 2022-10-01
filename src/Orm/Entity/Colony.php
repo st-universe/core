@@ -94,6 +94,9 @@ class Colony implements ColonyInterface
     /** @Column(type="integer", length=3, nullable=true) */
     private $rotation_factor = 1;
 
+    /** @Column(type="integer", length=2, nullable=true) */
+    private $surface_width = 1;
+
     /**
      * @ManyToOne(targetEntity="PlanetType")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
@@ -400,6 +403,17 @@ class Colony implements ColonyInterface
     public function setRotationFactor(?int $rotationFactor): ColonyInterface
     {
         $this->rotation_factor = $rotationFactor;
+        return $this;
+    }
+
+    public function getSurfaceWidth(): ?int
+    {
+        return $this->surface_width;
+    }
+
+    public function setSurfaceWidth(int $surfaceWidth): ColonyInterface
+    {
+        $this->surface_width = $surfaceWidth;
         return $this;
     }
 
