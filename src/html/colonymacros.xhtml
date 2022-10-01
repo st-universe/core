@@ -1240,7 +1240,7 @@
         </div>
         <div tal:condition="field/getTerraforming" style="${style};" tal:attributes="class field/getCssClass">
           <div
-            style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+            style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
             onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}">
             <div>
               <div><img class="action" style="width: 40px; height: 40px;" title="runtime"
@@ -1253,7 +1253,7 @@
       <tal:block tal:condition="field/hasBuilding">
         <div tal:condition="not:field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
           <div
-            style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+            style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
             onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}">
             <div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})"
               onmouseout="fieldMouseOut(this,${field/getFieldType})">
@@ -1265,7 +1265,7 @@
         </div>
         <div tal:condition="field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
           <div
-            style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+            style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
             onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}">
             <div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})"
               onmouseout="fieldMouseOut(this,${field/getFieldType})"

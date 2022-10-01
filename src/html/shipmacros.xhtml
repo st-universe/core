@@ -1688,11 +1688,12 @@
         <div>
           <div>
             <img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime"
-              tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.png" />
+              tal:attributes="title field/getTitleString"
+              src="assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png" />
             <a tal:condition="field/isColonizeAble"
               href="?id=${SHIP/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
               <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString"
-                src="assets/generated/fields/${field/getFieldType}.png" />
+                src="assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png" />
             </a>
           </div>
         </div>
@@ -1730,7 +1731,7 @@
           </div>
           <div tal:condition="field/getTerraforming" style="${style};" tal:attributes="class field/getCssClass">
             <div
-              style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+              style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
               id="field${field/getFieldId}">
               <div>
                 <div>
@@ -1745,7 +1746,7 @@
         <tal:block tal:condition="field/hasBuilding">
           <div tal:condition="not:field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
             <div
-              style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+              style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
               id="field${field/getFieldId}">
               <div>
                 <div>
@@ -1760,7 +1761,7 @@
           </div>
           <div tal:condition="field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
             <div
-              style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+              style="background-image: url(assets/generated/fields/${field/getNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
               id="field${field/getFieldId}">
               <div
                 style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${field/getPictureType}${COLONY_SURFACE/getDayNightState}.png)">
