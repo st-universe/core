@@ -316,7 +316,7 @@ class PlanetField implements PlanetFieldInterface
             return $this->getFieldId() % $this->getColony()->getSurfaceWidth() >= $twilightZone ? 'n' : 't';
         }
 
-        return $this->getFieldId() % $this->getColony()->getSurfaceWidth() < $twilightZone ? 'n' : 't';
+        return $this->getFieldId() % $this->getColony()->getSurfaceWidth() < -$twilightZone ? 'n' : 't';
     }
 
     public function getTerraformingState(): ?ColonyTerraformingInterface
