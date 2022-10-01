@@ -59,6 +59,7 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->buildingId = $buildingId;
         $this->colonyRepository = $colonyRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->planetGenerator = $planetGenerator;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtil;
         $this->showUnderground = $showUnderground;
