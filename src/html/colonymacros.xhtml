@@ -1289,10 +1289,10 @@
           <div
             style="background-image: url(assets/generated/fields/${FIELD/getFieldType}.png); width: 40px; height: 40px; display: table-cell;">
             <div
-              style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${FIELD/getPictureType}${field/getDayNightPrefix}.png)">
+              style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${FIELD/getPictureType}${FIELD/getDayNightPrefix}.png)">
               <div style="height: 40px; overflow: hidden; width: ${FIELD/getOverlayWidth}px;">
                 <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString"
-                  src="assets/generated/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}a${field/getDayNightPrefix}.png" />
+                  src="assets/generated/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}a${FIELD/getDayNightPrefix}.png" />
               </div>
             </div>
           </div>
