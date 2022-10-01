@@ -4,6 +4,7 @@ namespace Stu\Module\Colony\Lib\PlanetGenerator;
 
 use Exception;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 final class PlanetGenerator implements PlanetGeneratorInterface
@@ -55,9 +56,9 @@ final class PlanetGenerator implements PlanetGeneratorInterface
 
     private LoggerUtilInterface $loggerUtil;
 
-    public function __construct(LoggerUtilInterface $loggerUtil)
+    public function __construct(LoggerUtilFactoryInterface $loggerUtilFactory)
     {
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function generateColony(int $id, int $bonusfields = 2): array
