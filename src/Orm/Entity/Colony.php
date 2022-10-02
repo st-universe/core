@@ -464,6 +464,26 @@ class Colony implements ColonyInterface
         return $daytimeprefix;
     }
 
+    public function getDayTimeName(): ?string
+    {
+        if ($this->getDayTimePrefix() == 1) {
+            $daytimename = 'Morgen';
+        }
+
+        if ($this->getDayTimePrefix() == 2) {
+            $daytimename = 'Tag';
+        }
+
+        if ($this->getDayTimePrefix() == 3) {
+            $daytimename = 'Abend';
+        }
+
+        if ($this->getDayTimePrefix() == 4) {
+            $daytimename = 'Nacht';
+        }
+        return $daytimename;
+    }
+
     public function getSurfaceWidth(): ?int
     {
         return $this->surface_width;
