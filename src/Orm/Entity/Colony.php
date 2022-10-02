@@ -92,7 +92,7 @@ class Colony implements ColonyInterface
     /** @Column(type="integer", length=3, nullable=true) */
     private $torpedo_type;
 
-    /** @Column(type="integer", length=3, nullable=true) */
+    /** @Column(type="integer", length=3) */
     private $rotation_factor = 1;
 
     /** @Column(type="integer", length=2, nullable=true) */
@@ -415,25 +415,19 @@ class Colony implements ColonyInterface
         return $this;
     }
 
-    public function getRotationFactor(): ?int
+    public function getRotationFactor(): int
     {
         return $this->rotation_factor;
     }
 
-    public function setRotationFactor(?int $rotationFactor): ColonyInterface
+    public function getRotationTime(): int
     {
-        $this->rotation_factor = $rotationFactor;
-        return $this;
+        return (int) (TimeConstants::ONE_DAY_IN_SECONDS * $this->getRotationFactor() / 100);
     }
 
-    public function getRotationTime(): ?int
+    public function getColonyTimeSeconds(): int
     {
-        return 86400 * $this->getRotationFactor() / 100;
-    }
-
-    public function getColonyTimeSeconds(): ?float
-    {
-        return ((float)((time() + $this->getRotationTime()) % $this->getRotationTime()));
+        return time() % $this->getRotationTime();
     }
 
     public function getColonyTimeHour(): ?string

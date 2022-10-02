@@ -89,13 +89,11 @@ interface ColonyInterface
 
     public function setTorpedo(?TorpedoTypeInterface $torpedoType): ColonyInterface;
 
-    public function getRotationFactor(): ?int;
+    public function getRotationFactor(): int;
 
-    public function setRotationFactor(?int $rotationFactor): ColonyInterface;
+    public function getRotationTime(): int;
 
-    public function getRotationTime(): ?int;
-
-    public function getColonyTimeSeconds(): ?float;
+    public function getColonyTimeSeconds(): int;
 
     public function getColonyTimeHour(): ?string;
 
