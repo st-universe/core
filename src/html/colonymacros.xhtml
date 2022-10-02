@@ -532,28 +532,37 @@
       </div>
       <br />
       <div class="box">
-        <div class="box_title">Standort</div>
+        <div class="box_title">Informationen</div>
         <div class="box_body">
           <img src="/assets/planets/${COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" /> <span>Planet
             <span tal:replace="COLONY/getPlanetName" /></span> (${COLONY/getSX}|${COLONY/getSY})
           <span>in Sternensystem</span>
-          <td>
-            <tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
-              <a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}"
-                title="Karte des Systems öffnen">
-                <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png"
-                  style="width: 15px; height: 15px;" />
+          <tr>
+            <td>
+              <tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
+                <a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}"
+                  title="Karte des Systems öffnen">
+                  <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png"
+                    style="width: 15px; height: 15px;" />
+                  <span>${COLONY/getSystem/getName}
+                    (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
+                </a>
+              </tal:block>
+              <tal:block tal:condition="not:STARSYSTEM_ENTRY_TAL/wasDiscovered">
+                <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png" style="width: 15px; height: 15px;"
+                  title="Sternensystem" />
                 <span>${COLONY/getSystem/getName}
                   (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
-              </a>
-            </tal:block>
-            <tal:block tal:condition="not:STARSYSTEM_ENTRY_TAL/wasDiscovered">
-              <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png" style="width: 15px; height: 15px;"
-                title="Sternensystem" />
-              <span>${COLONY/getSystem/getName}
-                (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
-            </tal:block>
-          </td>
+              </tal:block>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="assets/buttons/time.png" title="Eigenrotationsdauer" /> <span
+                tal:content="formatSeconds:COLONY/getRotationTime">
+                ROTATIONTIME</span>
+            </td>
+          </tr>
         </div>
       </div>
       <br />

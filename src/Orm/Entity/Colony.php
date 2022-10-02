@@ -426,6 +426,11 @@ class Colony implements ColonyInterface
         return $this;
     }
 
+    public function getRotationTime(): ?int
+    {
+        return 86400 * $this->getRotationFactor;
+    }
+
     public function getSurfaceWidth(): ?int
     {
         return $this->surface_width;
