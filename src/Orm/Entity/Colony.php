@@ -446,6 +446,24 @@ class Colony implements ColonyInterface
         return sprintf("%02d", (int) floor(60 * (($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime()) - ((int) $this->getColonyTimeHour()))));
     }
 
+    public function getDayTimePrefix(): ?int
+    {
+        $daypercent = (int) $this->getColonyTimeSeconds * 100;
+        if ($daypercent > 25 && $daypercent <= 37.5) {
+            $daytimeprefix = 1; //Sonnenaufgang
+        }
+        if ($daypercent > 37.5 && $daypercent <= 75) {
+            $daytimeprefix = 2; //Tag
+        }
+        if ($daypercent > 75 && $daypercent <= 87.5) {
+            $daytimeprefix = 3; //Sonnenuntergang
+        }
+        if ($daypercent > 87.5 || $daypercent <= 25) {
+            $daytimeprefix = 4; //Nacht
+        }
+        return $daytimeprefix;
+    }
+
     public function getSurfaceWidth(): ?int
     {
         return $this->surface_width;

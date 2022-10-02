@@ -101,6 +101,8 @@ interface ColonyInterface
 
     public function getColonyTimeMinute(): ?string;
 
+    public function getDayTimePrefix(): ?int;
+
     public function getSurfaceWidth(): ?int;
 
     public function setSurfaceWidth(int $surfaceWidth): ColonyInterface;
