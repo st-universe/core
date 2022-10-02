@@ -381,14 +381,14 @@ class Colony implements ColonyInterface
                 }
             }
             if ($this->getDayTimePrefix() == 2) {
+                $this->twilightZone = $width;
+            }
+            if ($this->getDayTimePrefix() == 3) {
                 if ($scaled > $width) {
                     $this->twilightZone = - ((2 * $width) - $scaled);
                 } else {
                     $this->twilightZone = $width - $scaled;
                 }
-            }
-            if ($this->getDayTimePrefix() == 3) {
-                $this->twilightZone = ((2 * $width) - $scaled);
             }
             if ($this->getDayTimePrefix() == 4) {
                 $this->twilightZone = 0;
