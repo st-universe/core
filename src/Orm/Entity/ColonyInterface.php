@@ -95,7 +95,7 @@ interface ColonyInterface
 
     public function getRotationTime(): ?int;
 
-    public function getColonyTimeSeconds(): ?int;
+    public function getColonyTimeSeconds(): ?float;
 
     public function getColonyTimeHour(): ?string;
 
