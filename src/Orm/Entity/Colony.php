@@ -371,7 +371,7 @@ class Colony implements ColonyInterface
             $width = $this->getSurfaceWidth();
 
             $modulo = ((int)(time() * $this->getRotationFactor() / 100)) % $this->getRotationTime() * 0.125;
-            $scaled = (int)ceil($modulo / ($this->getRotationTime() * 0.125 / ($width * 2)));
+            $scaled = (int)ceil($modulo / ($this->getRotationTime() / ($width * 2)));
 
             if ($this->getDayTimePrefix() == 1) {
                 if ($scaled > $width) {
