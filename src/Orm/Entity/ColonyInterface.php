@@ -95,6 +95,12 @@ interface ColonyInterface
 
     public function getRotationTime(): ?int;
 
+    public function getColonyTimeSeconds(): ?int;
+
+    public function getColonyTimeHour(): ?int;
+
+    public function getColonyTimeMinute(): ?int;
+
     public function getSurfaceWidth(): ?int;
 
     public function setSurfaceWidth(int $surfaceWidth): ColonyInterface;

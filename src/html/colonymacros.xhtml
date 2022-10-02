@@ -559,7 +559,11 @@
           <br />
           <tr>
             <td>
-              <img src="assets/buttons/time.png" title="Eigenrotationsdauer" /> <span
+              <img src="assets/buttons/time.png" title="Koloniezeit" />
+              <span>${COLONY/getColonyTimeHour}:${COLONY/getColonyTimeMinute} Uhr</span>
+            </td>
+            <td>
+              <img src="assets/buttons/classm.png" title="Eigenrotationsdauer" /> <span
                 tal:content="formatSeconds:COLONY/getRotationTime">
                 ROTATIONTIME</span>
             </td>
