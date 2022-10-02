@@ -438,7 +438,7 @@ class Colony implements ColonyInterface
 
     public function getColonyTimeHour(): ?string
     {
-        return sprintf("%02d", abs((int) floor(($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime()))));
+        return sprintf("%02d", (int) floor(($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime())));
     }
 
     public function getColonyTimeMinute(): ?string
