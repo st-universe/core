@@ -374,8 +374,6 @@ class Colony implements ColonyInterface
             $scaled = (int)ceil($modulo / ($this->getRotationTime() / ($width * 2)));
 
             if ($this->getDayTimePrefix() == 1) {
-                $modulo = ((int)(time() * $this->getRotationFactor() / 100)) % $this->getRotationTime() * 0.25;
-                $scaled = (int)ceil($modulo / ($this->getRotationTime() * 0.375 / ($width * 2)));
                 if ($scaled > $width) {
                     $this->twilightZone = - ((2 * $width) - $scaled);
                 } else {
@@ -386,8 +384,6 @@ class Colony implements ColonyInterface
                 $this->twilightZone = $width;
             }
             if ($this->getDayTimePrefix() == 3) {
-                $modulo = ((int)(time() * $this->getRotationFactor() / 100)) % $this->getRotationTime() * 0.875;
-                $scaled = (int)ceil($modulo / ($this->getRotationTime() * 0.25 / ($width * 2)));
                 if ($scaled > $width) {
                     $this->twilightZone = - ((2 * $width) - $scaled);
                 } else {
