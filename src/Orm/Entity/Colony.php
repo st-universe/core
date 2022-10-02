@@ -436,14 +436,14 @@ class Colony implements ColonyInterface
         return abs((time() * ($this->getRotationFactor() / 100) - time()) % $this->getRotationTime());
     }
 
-    public function getColonyTimeHour(): ?int
+    public function getColonyTimeHour(): ?string
     {
-        return (int) floor(($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime()));
+        return sprintf("%02d", (int) floor(($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime())));
     }
 
-    public function getColonyTimeMinute(): ?int
+    public function getColonyTimeMinute(): ?string
     {
-        return (int) floor(60 * (($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime()) - $this->getColonyTimeHour()));
+        return sprintf("%02d", (int) floor(60 * (($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime()) - ((int) $this->getColonyTimeHour()))));
     }
 
     public function getSurfaceWidth(): ?int

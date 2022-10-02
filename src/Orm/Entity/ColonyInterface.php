@@ -97,9 +97,9 @@ interface ColonyInterface
 
     public function getColonyTimeSeconds(): ?int;
 
-    public function getColonyTimeHour(): ?int;
+    public function getColonyTimeHour(): ?string;
 
-    public function getColonyTimeMinute(): ?int;
+    public function getColonyTimeMinute(): ?string;
 
     public function getSurfaceWidth(): ?int;
 
