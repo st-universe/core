@@ -448,7 +448,7 @@ class Colony implements ColonyInterface
 
     public function getDayTimePrefix(): ?int
     {
-        $daypercent = (int) $this->getColonyTimeSeconds() * 100;
+        $daypercent = (int) (($this->getColonyTimeSeconds() / $this->getRotationTime()) * 100);
         if ($daypercent > 25 && $daypercent <= 37.5) {
             $daytimeprefix = 1; //Sonnenaufgang
         }
