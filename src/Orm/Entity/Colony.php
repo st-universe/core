@@ -433,7 +433,7 @@ class Colony implements ColonyInterface
 
     public function getColonyTimeSeconds(): ?float
     {
-        return ((float)((time() * ((float) $this->getRotationFactor() / 100))) % $this->getRotationTime());
+        return ((float)((time() + $this->getRotationTime()) % $this->getRotationTime()));
     }
 
     public function getColonyTimeHour(): ?string
