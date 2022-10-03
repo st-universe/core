@@ -370,18 +370,17 @@ class Colony implements ColonyInterface
         if ($this->twilightZone === null) {
             $width = $this->getSurfaceWidth();
 
-            $modulo = ((time() * $this->getRotationFactor() / 100)) % $this->getRotationTime();
-            $scaled = (int)ceil($modulo / ($this->getRotationTime() / ($width * 2)));
 
             if ($this->getDayTimePrefix() == 1) {
-
-                $this->twilightZone = (int)ceil((((100 / ($this->getRotationTime() * 0.375 - $this->getRotationTime() * 0.25)) * ($this->getColonyTimeSeconds() - $this->getRotationTime() * 0.25)) / 100) * $width);
+                $scaled = floor((((100 / ($this->getRotationTime() * 0.375 - $this->getRotationTime() * 0.25)) * ($this->getColonyTimeSeconds() - $this->getRotationTime() * 0.25)) / 100) * $width);
+                $this->twilightZone = (int) $width - $scaled;
             }
             if ($this->getDayTimePrefix() == 2) {
                 $this->twilightZone = $width;
             }
             if ($this->getDayTimePrefix() == 3) {
-                $this->twilightZone = (int)ceil((((100 / ($this->getRotationTime() * 0.875 - $this->getRotationTime() * 0.75)) * ($this->getColonyTimeSeconds() - $this->getRotationTime() * 0.75)) / 100) * $width);
+                $scaled = ceil((((100 / ($this->getRotationTime() * 0.875 - $this->getRotationTime() * 0.75)) * ($this->getColonyTimeSeconds() - $this->getRotationTime() * 0.75)) / 100) * $width);
+                $this->twilightZone = (int) $scaled;
             }
             if ($this->getDayTimePrefix() == 4) {
                 $this->twilightZone = 0;
