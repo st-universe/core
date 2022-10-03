@@ -203,7 +203,10 @@ final class ShipTickManager implements ShipTickManagerInterface
                         $msg,
                         PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
                     );
-                } else {
+
+                    $freeCrewCount = $freeCrewCount - $deleteAmount;
+                }
+                if (($crewOnShips + $freeCrewCount) > $crewLimit) {
                     $crewToQuit = $crewOnShips - $crewLimit;
 
                     while ($crewToQuit > 0) {
