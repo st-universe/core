@@ -375,18 +375,13 @@ class Colony implements ColonyInterface
 
             if ($this->getDayTimePrefix() == 1) {
 
-                $scaled = (int)ceil((100 / ($this->getRotationTime() * 0.375 - $this->getRotationTime() * 0.25)) * ($modulo - $this->getRotationTime() * 0.25) / ($width * 2));
-                if ($scaled > $width) {
-                    $this->twilightZone = - ((2 * $width) - $scaled);
-                } else {
-                    $this->twilightZone = $width - $scaled;
-                }
+                $this->twilightZone = (int)ceil(((100 / ($this->getRotationTime() * 0.375 - $this->getRotationTime() * 0.25)) * ($modulo - $this->getRotationTime() * 0.25) / 100) * $width);
             }
             if ($this->getDayTimePrefix() == 2) {
                 $this->twilightZone = $width;
             }
             if ($this->getDayTimePrefix() == 3) {
-                $this->twilightZone = (int)ceil((100 / ($this->getRotationTime() * 0.875 - $this->getRotationTime() * 0.75)) * ($modulo - $this->getRotationTime() * 0.75) / ($width));
+                $this->twilightZone = (int)ceil(((100 / ($this->getRotationTime() * 0.875 - $this->getRotationTime() * 0.75)) * ($modulo - $this->getRotationTime() * 0.75) / 100) * $width);
             }
             if ($this->getDayTimePrefix() == 4) {
                 $this->twilightZone = 0;
