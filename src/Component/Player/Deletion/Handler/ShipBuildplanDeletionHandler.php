@@ -31,12 +31,14 @@ final class ShipBuildplanDeletionHandler implements PlayerDeletionHandlerInterfa
 
     public function delete(UserInterface $user): void
     {
-        //$this->loggerUtil->init('delete', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init('delete', LoggerEnum::LEVEL_ERROR);
 
         $this->loggerUtil->log(sprintf('user has %d buildplans', count($this->shipBuildplanRepository->getByUser($user->getId()))));
 
-        $this->shipBuildplanRepository->truncateByUser($user->getId());
-        $this->entityManager->flush();
+        foreach ($this->shipBuildplanRepository->getByUser($user->getId()) as $obj) {
+            $this->shipBuildplanRepository->delete($obj);
+            $this->entityManager->flush();
+        }
 
         $this->loggerUtil->log(sprintf('user has %d buildplans', count($this->shipBuildplanRepository->getByUser($user->getId()))));
     }
