@@ -369,10 +369,11 @@ class Colony implements ColonyInterface
     {
         if ($this->twilightZone === null) {
             $width = $this->getSurfaceWidth();
-
+            $rotationTime = $this->getRotationTime();
+            $colonyTimeSeconds = $this->getColonyTimeSeconds();
 
             if ($this->getDayTimePrefix() == 1) {
-                $scaled = floor((((100 / ($this->getRotationTime() * 0.375 - $this->getRotationTime() * 0.25)) * ($this->getColonyTimeSeconds() - $this->getRotationTime() * 0.25)) / 100) * $width);
+                $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
                 if ($scaled == 0) {
                     $this->twilightZone = (int) - (($width) - 1);
                 } else {
@@ -387,12 +388,8 @@ class Colony implements ColonyInterface
                 $this->twilightZone = $width;
             }
             if ($this->getDayTimePrefix() == 3) {
-                $scaled = floor((((100 / ($this->getRotationTime() * 0.875 - $this->getRotationTime() * 0.75)) * ($this->getColonyTimeSeconds() - $this->getRotationTime() * 0.75)) / 100) * $width);
-                if ($scaled == 0) {
-                    $this->twilightZone = (int) ($width - $scaled);
-                } else {
-                    $this->twilightZone = (int) ($width - $scaled);
-                }
+                $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.75)) / 100) * $width);
+                $this->twilightZone = (int) ($width - $scaled);
             }
             if ($this->getDayTimePrefix() == 4) {
                 $this->twilightZone = 0;
@@ -452,12 +449,16 @@ class Colony implements ColonyInterface
 
     public function getColonyTimeHour(): ?string
     {
-        return sprintf("%02d", (int) floor(($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime())));
+        $rotationTime = $this->getRotationTime();
+
+        return sprintf("%02d", (int) floor(($rotationTime / 3600) * ($this->getColonyTimeSeconds() / $rotationTime)));
     }
 
     public function getColonyTimeMinute(): ?string
     {
-        return sprintf("%02d", (int) floor(60 * (($this->getRotationTime() / 3600) * ($this->getColonyTimeSeconds() / $this->getRotationTime()) - ((int) $this->getColonyTimeHour()))));
+        $rotationTime = $this->getRotationTime();
+
+        return sprintf("%02d", (int) floor(60 * (($rotationTime / 3600) * ($this->getColonyTimeSeconds() / $rotationTime) - ((int) $this->getColonyTimeHour()))));
     }
 
     public function getDayTimePrefix(): ?int
