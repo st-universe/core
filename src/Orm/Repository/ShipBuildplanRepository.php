@@ -140,18 +140,6 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em->flush();
     }
 
-    public function truncateByUser(int $userId): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s bp WHERE bp.user_id = :userId',
-                ShipBuildplan::class
-            )
-        )->setParameters([
-            'userId' => $userId,
-        ])->execute();
-    }
-
     public function getByUser(int $userId): array
     {
         return $this->findBy([
