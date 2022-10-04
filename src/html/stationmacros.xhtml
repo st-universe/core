@@ -384,7 +384,10 @@
           Siedler-ID: <input type="text" size="6" name="docktarget" id="docktarget_1" />
         </span>
         <span id="dock_opt2" style="display: none;">
-          Allianz-ID: <input type="text" size="6" id="docktarget_2" name="docktarget" />
+          Allianz: <select name="docktarget" id="docktarget_2">
+            <option tal:repeat="data ALLIANCE_LIST" tal:content="bbcode2txt:data/getName" value="runtime"
+              tal:attributes="value data/getId">NAME</option>
+          </select>
         </span>
         <span id="dock_opt3" style="display: none;">
           Rasse: <select name="docktarget" id="docktarget_3">

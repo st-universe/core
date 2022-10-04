@@ -95,6 +95,7 @@ final class AddDockPrivilege implements ActionControllerInterface
 
             $this->dockingPrivilegeRepository->save($dock);
         }
+        $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
     }
 
     public function performSessionCheck(): bool
