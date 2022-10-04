@@ -142,10 +142,11 @@ final class TorpedoTransfer implements ActionControllerInterface
                 $target->getName()
             )
         );
+
         $this->privateMessageSender->send(
             $userId,
             (int)$target->getUser()->getId(),
-            "Die " . $ship->getName() . " hat in Sektor " . $ship->getSectorString() . " " . $amount . " Torpedos " . $isUnload ? "zur" : "von der" . $target->getName() . "transferiert",
+            "Die " . $ship->getName() . " hat in Sektor " . $ship->getSectorString() . " " . $amount . " Torpedos " . $isUnload ? "zur" : "von der" . " " . $target->getName() . "transferiert",
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
     }
