@@ -143,18 +143,17 @@ final class TorpedoTransfer implements ActionControllerInterface
             )
         );
 
-        if ($isUnload) {
-            $fromto = 'zur';
-        }
-
-        if (!$isUnload) {
-            $fromto = 'von der';
-        }
-
         $this->privateMessageSender->send(
             $userId,
-            (int)$target->getUser()->getId(),
-            "Die " . $ship->getName() . " hat in Sektor " . $ship->getSectorString() . " " . $amount . " Torpedos " . $fromto . " " . $target->getName() . "transferiert",
+            $target->getUser()->getId(),
+            sprintf(
+                'Die %s hat in Sektor %s %d Torpedos %s %s transferiert',
+                $ship->getName(),
+                $ship->getSectorString(),
+                $amount,
+                $isUnload ? 'zur' : 'von der',
+                $target->getName()
+            ),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
     }
