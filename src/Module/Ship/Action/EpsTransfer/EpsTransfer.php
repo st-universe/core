@@ -99,7 +99,7 @@ final class EpsTransfer implements ActionControllerInterface
         $this->privateMessageSender->send(
             $userId,
             (int)$target->getUser()->getId(),
-            "Die " . $ship->getName() . " transferiert in SeKtor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName(),
+            "Die " . $ship->getName() . " transferiert in Sektor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
         $game->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));

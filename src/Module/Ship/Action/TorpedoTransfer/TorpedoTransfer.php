@@ -11,6 +11,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 
 final class TorpedoTransfer implements ActionControllerInterface
 {
@@ -18,10 +20,14 @@ final class TorpedoTransfer implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -135,6 +141,12 @@ final class TorpedoTransfer implements ActionControllerInterface
                 $isUnload ? 'zu' : 'von',
                 $target->getName()
             )
+        );
+        $this->privateMessageSender->send(
+            $userId,
+            (int)$target->getUser()->getId(),
+            "Die " . $ship->getName() . " hat in Sektor " . $ship->getSectorString() . " " . $amount . " Torpedos " . $isUnload ? 'zur' : 'von der' . $target->getName() . "transferiert",
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
     }
 
