@@ -65,6 +65,10 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
             return;
         }
 
+        if (!$target->getUser()->isFriend($ship->getUser())) {
+            return;
+        }
+
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_torpedo_transfer');
 
         $game->setTemplateVar('SHIP', $ship);
