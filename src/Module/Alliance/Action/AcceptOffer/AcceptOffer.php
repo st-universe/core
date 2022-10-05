@@ -69,7 +69,7 @@ final class AcceptOffer implements ActionControllerInterface
             $alliance->getName()
         );
 
-        if ($rel != AllianceEnum::ALLIANCE_RELATION_VASSAL)
+        if ($relation->getType() != AllianceEnum::ALLIANCE_RELATION_VASSAL)
             $this->entryCreator->addAllianceEntry(
                 sprintf(
                     _('Die Allianzen %s und %s sind ein %s eingegangen'),
@@ -79,7 +79,7 @@ final class AcceptOffer implements ActionControllerInterface
                 ),
                 $userId
             );
-        if ($rel == AllianceEnum::ALLIANCE_RELATION_VASSAL)
+        if ($relation->getType() == AllianceEnum::ALLIANCE_RELATION_VASSAL)
             $this->entryCreator->addAllianceEntry(
                 sprintf(
                     _('Die Allianz %s ist nun %s der Allianz %s'),
