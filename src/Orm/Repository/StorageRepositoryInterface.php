@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StorageInterface;
 
 interface StorageRepositoryInterface extends ObjectRepository
@@ -18,4 +19,11 @@ interface StorageRepositoryInterface extends ObjectRepository
     public function getColonyStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
 
     public function getShipStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
+
+    /**
+     * @return StorageInterface[]
+     */
+    public function getByTradePostAndUser(int $tradePostId, int $userId): array;
+
+    public function truncateByColony(ColonyInterface $colony): void;
 }

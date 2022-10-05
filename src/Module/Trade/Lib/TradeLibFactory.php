@@ -8,6 +8,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
@@ -24,6 +25,8 @@ final class TradeLibFactory implements TradeLibFactoryInterface
 
     private TradeStorageRepositoryInterface $tradeStorageRepository;
 
+    private StorageRepositoryInterface $storageRepository;
+
     private CommodityRepositoryInterface $commodityRepository;
 
     private UserRepositoryInterface $userRepository;
@@ -35,6 +38,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
+        StorageRepositoryInterface $storageRepository,
         CommodityRepositoryInterface $commodityRepository,
         UserRepositoryInterface $userRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -43,6 +47,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->storageRepository = $storageRepository;
         $this->commodityRepository = $commodityRepository;
         $this->userRepository = $userRepository;
         $this->loggerUtilFactory = $loggerUtilFactory;
@@ -90,6 +95,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     ): TradePostStorageManagerInterface {
         return new TradePostStorageManager(
             $this->tradeStorageRepository,
+            $this->storageRepository,
             $this->commodityRepository,
             $this->userRepository,
             $tradePost,

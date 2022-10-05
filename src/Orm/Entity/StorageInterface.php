@@ -10,8 +10,6 @@ interface StorageInterface
 
     public function getCommodityId(): int;
 
-    public function setCommodityId(int $commodityId): StorageInterface;
-
     public function getAmount(): int;
 
     public function setAmount(int $amount): StorageInterface;
@@ -27,4 +25,8 @@ interface StorageInterface
     public function getShip(): ?ShipInterface;
 
     public function setShip(ShipInterface $ship): StorageInterface;
+
+    public function getTradePost(): ?TradePostInterface;
+
+    public function setTradePost(TradePostInterface $tradePost): StorageInterface;
 }

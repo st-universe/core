@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
 
@@ -89,5 +90,34 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             'userId' => $userId,
             'commodityId' => $commodityId
         ])->getResult();
+    }
+
+    public function getByTradePostAndUser(int $tradePostId, int $userId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s INDEX BY s.commodity_id
+                    WHERE s.tradepost_id = :tradePostId
+                    AND s.user_id = :userId
+                    ORDER BY s.commodity_id ASC',
+                Storage::class
+            )
+        )->setParameters([
+            'tradePostId' => $tradePostId,
+            'userId' => $userId
+        ])->getResult();
+    }
+
+    public function truncateByColony(ColonyInterface $colony): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s s WHERE s.colony_id = :colony',
+                    Storage::class
+                )
+            )
+            ->setParameter('colony', $colony)
+            ->execute();
     }
 }

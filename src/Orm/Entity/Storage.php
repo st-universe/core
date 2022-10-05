@@ -25,6 +25,7 @@ class Storage implements StorageInterface
     /** @Column(type="integer") */
     private $commodity_id = 0;
 
+    //TODO rename to amount
     /** @Column(type="integer") */
     private $count = 0;
 
@@ -33,6 +34,9 @@ class Storage implements StorageInterface
 
     /** @Column(type="integer", nullable=true) * */
     private $ship_id;
+
+    /** @Column(type="integer", nullable=true) * */
+    private $tradepost_id;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
@@ -52,6 +56,12 @@ class Storage implements StorageInterface
      */
     private $ship;
 
+    /**
+     * @ManyToOne(targetEntity="TradePost")
+     * @JoinColumn(name="tradepost_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $tradePost;
+
     public function getId(): int
     {
         return $this->id;
@@ -67,13 +77,6 @@ class Storage implements StorageInterface
     public function getCommodityId(): int
     {
         return $this->commodity_id;
-    }
-
-    public function setCommodityId(int $commodityId): StorageInterface
-    {
-        $this->commodity_id = $commodityId;
-
-        return $this;
     }
 
     public function getAmount(): int
@@ -119,6 +122,17 @@ class Storage implements StorageInterface
     public function setShip(ShipInterface $ship): StorageInterface
     {
         $this->ship = $ship;
+        return $this;
+    }
+
+    public function getTradePost(): ?TradePostInterface
+    {
+        return $this->tradePost;
+    }
+
+    public function setTradePost(TradePostInterface $tradePost): StorageInterface
+    {
+        $this->tradePost = $tradePost;
         return $this;
     }
 }
