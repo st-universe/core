@@ -54,6 +54,8 @@ final class Overview implements ViewControllerInterface
             $userId = $user->getId();
 
             $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
+            $resulthasvassal = $this->allianceRelationRepository->getActiveHasVassal($allianceId);
+            $resultisvassal = $this->allianceRelationRepository->getActiveIsVassal($allianceId);
             $userIsFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
                 $allianceId,
                 AllianceEnum::ALLIANCE_JOBS_FOUNDER
@@ -62,6 +64,22 @@ final class Overview implements ViewControllerInterface
             $relations = [];
             foreach ($result as $key => $obj) {
                 $relations[$key] = [
+                    'relation' => $obj,
+                    'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
+                ];
+            }
+
+            $hasvassal = [];
+            foreach ($resulthasvassal as $key => $obj) {
+                $hasvassal[$key] = [
+                    'relation' => $obj,
+                    'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
+                ];
+            }
+
+            $isvassal = [];
+            foreach ($resultisvassal as $key => $obj) {
+                $isvassal[$key] = [
                     'relation' => $obj,
                     'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
                 ];
@@ -84,6 +102,8 @@ final class Overview implements ViewControllerInterface
 
             $game->setTemplateVar('ALLIANCE', $user->getAlliance());
             $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
+            $game->setTemplateVar('ALLIANCE_HASVASSAL', $hasvassal);
+            $game->setTemplateVar('ALLIANCE_ISVASSAL', $isvassal);
             $game->setTemplateVar('DESCRIPTION', $parsedDescription);
             $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
             $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);

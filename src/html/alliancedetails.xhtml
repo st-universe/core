@@ -73,6 +73,38 @@
 					</td>
 				</tr>
 			</table>
+
+			<table class="tcal">
+				<tr>
+					<th>Vasallenverbindung zu anderen Allianzen</th>
+				</tr>
+				<tr tal:condition="not:ALLIANCE_RELATIONS">
+					<td>Keine Beziehungen vorhanden</td>
+				</tr>
+				<tr tal:repeat="data ALLIANCE_RELATIONS" tal:attributes="class string:row${repeat/data/odd}">
+					<td>
+						<span tal:replace="data/relation/getTypeDescription">TYPE</span>
+						mit
+						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}"
+							tal:content="structure bbcode:data/opponent/getName">NAME</a>
+					</td>
+				</tr>
+				<tr tal:repeat="data ALLIANCE_HASVASSAL" tal:attributes="class string:row${repeat/data/odd}">
+					<td>
+						Hat
+						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}"
+							tal:content="structure bbcode:data/opponent/getName">NAME</a>
+						als Vasall
+					</td>
+				</tr>
+				<tr tal:repeat="data ALLIANCE_ISVASSAL" tal:attributes="class string:row${repeat/data/odd}">
+					<td>
+						Ist Vasall von
+						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}"
+							tal:content="structure bbcode:data/opponent/getName">NAME</a>
+					</td>
+				</tr>
+			</table>
 			<br />
 			<table class="tcal">
 				<tr>
