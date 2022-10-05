@@ -6,6 +6,8 @@ interface StorageInterface
 {
     public function getId(): int;
 
+    public function setUserId(int $userId): StorageInterface;
+
     public function getCommodityId(): int;
 
     public function setCommodityId(int $commodityId): StorageInterface;
