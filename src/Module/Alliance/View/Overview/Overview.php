@@ -72,7 +72,7 @@ final class Overview implements ViewControllerInterface
 
             $hasrelations = [];
             foreach ($hasresult as $key => $obj) {
-                $relations[$key] = [
+                $hasrelations[$key] = [
                     'relation' => $obj,
                     'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
                 ];
