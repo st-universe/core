@@ -34,24 +34,6 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
         //$em->flush();
     }
 
-    public function getByColony(int $colonyId, int $viewable = 1): array
-    {
-        /** @noinspection SyntaxError */
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT cs FROM %s cs INDEX BY cs.goods_id LEFT JOIN %s g WITH g.id = cs.goods_id
-                        WHERE cs.colonies_id = :colonyId ORDER BY g.sort',
-                    ColonyStorage::class,
-                    Commodity::class
-                )
-            )
-            ->setParameters([
-                'colonyId' => $colonyId,
-            ])
-            ->getResult();
-    }
-
     public function getByUserAccumulated(int $userId): iterable
     {
         $rsm = new ResultSetMapping();

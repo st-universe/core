@@ -14,11 +14,6 @@ interface ColonyStorageRepositoryInterface extends ObjectRepository
 
     public function delete(ColonyStorageInterface $post): void;
 
-    /**
-     * @return ColonyStorageInterface[]
-     */
-    public function getByColony(int $colonyId, int $viewable = 1): array;
-
     public function getByUserAccumulated(int $userId): iterable;
 
     public function getByUserAndCommodity(int $userId, int $commodityId): iterable;
