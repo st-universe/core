@@ -104,6 +104,11 @@ class AllianceRelation implements AllianceRelationInterface
         if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_ALLIED) {
             $ret[] = ["name" => "Bündnis", "value" => AllianceEnum::ALLIANCE_RELATION_ALLIED];
         }
+        if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_TRADE) {
+            $ret[] = ["name" => "Handelsabkommen", "value" => AllianceEnum::ALLIANCE_RELATION_TRADE];
+        if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_TRADE) {
+                $ret[] = ["name" => "Vasall", "value" => AllianceEnum::ALLIANCE_RELATION_VASSAL];
+        }
         return $ret;
     }
 
@@ -142,6 +147,10 @@ class AllianceRelation implements AllianceRelationInterface
                 return 'Freundschaftabkommen';
             case AllianceEnum::ALLIANCE_RELATION_ALLIED:
                 return 'Bündnis';
+            case AllianceEnum::ALLIANCE_RELATION_TRADE:
+                    return 'Handelsabkommen';
+            case AllianceEnum::ALLIANCE_RELATION_VASSAL:
+                    return 'Vasall';
         }
         return '';
     }

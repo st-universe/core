@@ -63,7 +63,9 @@ final class CreateRelation implements ActionControllerInterface
             AllianceEnum::ALLIANCE_RELATION_WAR => 1,
             AllianceEnum::ALLIANCE_RELATION_PEACE => 1,
             AllianceEnum::ALLIANCE_RELATION_FRIENDS => 1,
-            AllianceEnum::ALLIANCE_RELATION_ALLIED => 1
+            AllianceEnum::ALLIANCE_RELATION_ALLIED => 1,
+            AllianceEnum::ALLIANCE_RELATION_TRADE => 1,
+            AllianceEnum::ALLIANCE_RELATION_VASSAL => 1
         ];
 
         if (!array_key_exists($typeId, $types)) {

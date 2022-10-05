@@ -15,4 +15,6 @@ final class AllianceEnum
     public const ALLIANCE_RELATION_PEACE = 2;
     public const ALLIANCE_RELATION_FRIENDS = 3;
     public const ALLIANCE_RELATION_ALLIED = 4;
+    public const ALLIANCE_RELATION_TRADE = 5;
+    public const ALLIANCE_RELATION_VASSAL = 6;
 }

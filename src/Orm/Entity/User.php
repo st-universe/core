@@ -602,7 +602,7 @@ class User implements UserInterface
             }
 
             $result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
-                [AllianceEnum::ALLIANCE_RELATION_FRIENDS, AllianceEnum::ALLIANCE_RELATION_ALLIED],
+                [AllianceEnum::ALLIANCE_RELATION_FRIENDS, AllianceEnum::ALLIANCE_RELATION_ALLIED, AllianceEnum::ALLIANCE_RELATION_VASSAL],
                 (int) $user->getAllianceId(),
                 (int) $this->getAllianceId()
             );

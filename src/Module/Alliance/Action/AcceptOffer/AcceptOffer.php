@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AcceptOffer;
 
 use Stu\Exception\AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -68,15 +69,26 @@ final class AcceptOffer implements ActionControllerInterface
             $alliance->getName()
         );
 
-        $this->entryCreator->addAllianceEntry(
-            sprintf(
-                _('Die Allianzen %s und %s sind ein %s eingegangen'),
-                $relation->getAlliance()->getName(),
-                $relation->getOpponent()->getName(),
-                $relation->getTypeDescription()
-            ),
-            $userId
-        );
+        if ($relation != AllianceEnum::ALLIANCE_RELATION_VASSAL)
+            $this->entryCreator->addAllianceEntry(
+                sprintf(
+                    _('Die Allianzen %s und %s sind ein %s eingegangen'),
+                    $relation->getAlliance()->getName(),
+                    $relation->getOpponent()->getName(),
+                    $relation->getTypeDescription()
+                ),
+                $userId
+            );
+        if ($relation == AllianceEnum::ALLIANCE_RELATION_VASSAL)
+            $this->entryCreator->addAllianceEntry(
+                sprintf(
+                    _('Die Allianz %s ist nun %s der Allianz %s'),
+                    $relation->getOpponent()->getName(),
+                    $relation->getTypeDescription(),
+                    $relation->getAlliance()->getName()
+                ),
+                $userId
+            );
 
         if ($relation->getAllianceId() == $allianceId) {
             $this->allianceActionManager->sendMessage($relation->getOpponentId(), $text);

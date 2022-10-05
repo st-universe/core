@@ -54,6 +54,8 @@ final class Relations implements ViewControllerInterface
             AllianceEnum::ALLIANCE_RELATION_WAR => _('Krieg'),
             AllianceEnum::ALLIANCE_RELATION_FRIENDS => _('Freundschaft'),
             AllianceEnum::ALLIANCE_RELATION_ALLIED => _('Bündnis'),
+            AllianceEnum::ALLIANCE_RELATION_TRADE => _('Handelsabkommen'),
+            AllianceEnum::ALLIANCE_RELATION_VASSAL => _('Vasall')
         ];
 
         $game->setPageTitle(_('Diplomatie'));
