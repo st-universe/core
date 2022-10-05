@@ -50,14 +50,9 @@ final class ShipStorageManager implements ShipStorageManagerInterface
 
         if ($storedAmount === $amount) {
             $storage->removeElement($storageItem);
-
-            $this->shipStorageRepository->delete($storageItem);
-
-            return;
-        }
-        if ($storedAmountNew === $amount) {
             $storageNew->removeElement($storageItemNew);
 
+            $this->shipStorageRepository->delete($storageItem);
             $this->storageRepository->delete($storageItemNew);
 
             return;
