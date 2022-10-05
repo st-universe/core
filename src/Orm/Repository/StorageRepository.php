@@ -48,6 +48,27 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ])->getResult();
     }
 
+    public function getColonyStorageByUserAndCommodity(int $userId, int $commodityId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('colonies_id', 'colonies_id', 'integer');
+        $rsm->addScalarResult('amount', 'amount', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT s.commodity_id AS commodity_id, s.colony_id AS colonies_id, s.count AS amount
+            FROM stu_storage s
+            WHERE s.user_id = :userId
+            AND s.colony_id IS NOT NULL
+            AND s.commodity_id = :commodityId
+            ORDER BY s.count DESC',
+            $rsm
+        )->setParameters([
+            'userId' => $userId,
+            'commodityId' => $commodityId
+        ])->getResult();
+    }
+
     public function getShipStorageByUserAndCommodity(int $userId, int $commodityId): iterable
     {
         $rsm = new ResultSetMapping();
@@ -61,7 +82,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             LEFT JOIN stu_goods g ON g.id = s.commodity_id
             WHERE s.user_id = :userId
             AND s.ship_id IS NOT NULL
-            AND g.id = :commodityId
+            AND s.commodity_id = :commodityId
             ORDER BY s.count DESC',
             $rsm
         )->setParameters([

@@ -15,5 +15,7 @@ interface StorageRepositoryInterface extends ObjectRepository
 
     public function getByUserAccumulated(int $userId): iterable;
 
+    public function getColonyStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
+
     public function getShipStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
 }
