@@ -30,6 +30,11 @@ interface AllianceRelationRepositoryInterface extends ObjectRepository
     /**
      * @return AllianceRelationInterface[]
      */
+    public function getActiveByAllianceNoVassal(int $allianceId): array;
+
+    /**
+     * @return AllianceRelationInterface[]
+     */
     public function getActiveIsVassal(int $allianceId): array;
 
     /**

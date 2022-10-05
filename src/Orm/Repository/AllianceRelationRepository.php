@@ -87,6 +87,21 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
+                    'SELECT ar FROM %s ar WHERE ar.date > 0 AND (ar.alliance_id = :allianceId OR ar.recipient = :allianceId)',
+                    AllianceRelation::class
+                )
+            )
+            ->setParameters([
+                'allianceId' => $allianceId
+            ])
+            ->getResult();
+    }
+
+    public function getActiveByAllianceNoVassal(int $allianceId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
                     'SELECT ar FROM %s ar WHERE ar.date > 0 AND (ar.alliance_id = :allianceId OR ar.recipient = :allianceId) AND ar.type != 6',
                     AllianceRelation::class
                 )

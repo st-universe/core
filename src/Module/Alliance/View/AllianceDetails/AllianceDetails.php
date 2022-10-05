@@ -58,7 +58,8 @@ final class AllianceDetails implements ViewControllerInterface
         $allianceId = $alliance->getId();
         $userId = $game->getUser()->getId();
 
-        $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
+        $result = $this->allianceRelationRepository->getActiveByAllianceNoVassal($allianceId);
+        $hasresult = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
         $resulthasvassal = $this->allianceRelationRepository->getActiveHasVassal($allianceId);
         $resultisvassal = $this->allianceRelationRepository->getActiveIsVassal($allianceId);
         $userIsFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
@@ -68,6 +69,14 @@ final class AllianceDetails implements ViewControllerInterface
 
         $relations = [];
         foreach ($result as $key => $obj) {
+            $relations[$key] = [
+                'relation' => $obj,
+                'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
+            ];
+        }
+
+        $hasrelations = [];
+        foreach ($hasresult as $key => $obj) {
             $relations[$key] = [
                 'relation' => $obj,
                 'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
@@ -107,6 +116,7 @@ final class AllianceDetails implements ViewControllerInterface
 
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
+        $game->setTemplateVar('ALLIANCE_HASRELATIONS', $hasrelations);
         $game->setTemplateVar('ALLIANCE_HASVASSAL', $hasvassal);
         $game->setTemplateVar('ALLIANCE_ISVASSAL', $isvassal);
         $game->setTemplateVar('DESCRIPTION', $parsedDescription);
