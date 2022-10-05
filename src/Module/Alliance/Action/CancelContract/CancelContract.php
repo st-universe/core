@@ -72,15 +72,28 @@ final class CancelContract implements ActionControllerInterface
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }
 
-        $this->entryCreator->addAllianceEntry(
-            sprintf(
-                'Das %s zwischen den Allianzen %s und %s wurde aufgelöst',
-                $relation->getTypeDescription(),
-                $relation->getAlliance()->getName(),
-                $relation->getOpponent()->getName()
-            ),
-            $user->getId()
-        );
+        if ($relation->getType() != AllianceEnum::ALLIANCE_RELATION_VASSAL) {
+            $this->entryCreator->addAllianceEntry(
+                sprintf(
+                    'Das %s zwischen den Allianzen %s und %s wurde aufgelöst',
+                    $relation->getTypeDescription(),
+                    $relation->getAlliance()->getName(),
+                    $relation->getOpponent()->getName()
+                ),
+                $user->getId()
+            );
+        }
+        if ($relation->getType() == AllianceEnum::ALLIANCE_RELATION_VASSAL) {
+            $this->entryCreator->addAllianceEntry(
+                sprintf(
+                    'Die Allianz %s ist nicht mehr %s der Allianz %s',
+                    $relation->getOpponent()->getName(),
+                    $relation->getTypeDescription(),
+                    $relation->getAlliance()->getName()
+                ),
+                $user->getId()
+            );
+        }
         $game->addInformation(_('Das Abkommen wurde aufgelöst'));
     }
 
