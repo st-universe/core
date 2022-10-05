@@ -73,17 +73,4 @@ final class ShipStorageRepository extends EntityRepository implements ShipStorag
             'commodityId' => $commodityId
         ])->getResult();
     }
-
-    public function truncateForShip(int $shipId): void
-    {
-        $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'DELETE FROM %s s WHERE s.ships_id = :shipId',
-                    ShipStorage::class
-                )
-            )
-            ->setParameters(['shipId' => $shipId])
-            ->execute();
-    }
 }
