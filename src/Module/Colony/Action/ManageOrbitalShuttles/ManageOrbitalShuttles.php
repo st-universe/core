@@ -76,7 +76,11 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
         $isForeignShip = $userId !== $ship->getUser()->getId();
 
-        $commodities = request::postArrayFatal('shuttles');
+        $commodities = request::postArray('shuttles');
+        if (empty($commodities)) {
+            return;
+        }
+
         $shuttlecount = request::postArrayFatal('shuttlecount');
 
         if (array_sum($shuttlecount) > $ship->getRump()->getShuttleSlots()) {
