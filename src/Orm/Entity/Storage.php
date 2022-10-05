@@ -19,6 +19,9 @@ class Storage implements StorageInterface
      */
     private $id;
 
+    /** @Column(type="integer", nullable=true) */
+    private $user_id;
+
     /** @Column(type="integer") */
     private $commodity_id = 0;
 
