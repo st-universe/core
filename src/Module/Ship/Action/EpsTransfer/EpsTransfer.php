@@ -81,7 +81,7 @@ final class EpsTransfer implements ActionControllerInterface
             return;
         }
         if ($target->getEBatt() >= $target->getMaxEBatt()) {
-            $game->addInformation(sprintf(_('Der Energiespeicher der %s ist voll'), $target->getName()));
+            $game->addInformation(sprintf(_('Die Ersatzbatterie der %s ist bereits voll'), $target->getName()));
             return;
         }
         if ($load * 3 > $ship->getEps()) {
