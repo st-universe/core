@@ -12,21 +12,6 @@ use Stu\Orm\Entity\ShipStorageInterface;
 
 final class ShipStorageRepository extends EntityRepository implements ShipStorageRepositoryInterface
 {
-    public function getByShip(int $shipId): array
-    {
-        /** @noinspection SyntaxError */
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT s FROM %s s INDEX BY s.goods_id LEFT JOIN %s g WITH g.id = s.goods_id WHERE s.ships_id = :shipId ORDER BY g.sort',
-                    ShipStorage::class,
-                    Commodity::class
-                )
-            )
-            ->setParameters(['shipId' => $shipId])
-            ->getResult();
-    }
-
     public function prototype(): ShipStorageInterface
     {
         return new ShipStorage();
