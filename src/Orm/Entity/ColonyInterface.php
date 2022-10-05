@@ -137,6 +137,11 @@ interface ColonyInterface
      */
     public function getStorage(): Collection;
 
+    /**
+     * @return StorageInterface[]
+     */
+    public function getStorageNew(): Collection;
+
     public function isDefended(): bool;
 
     /**

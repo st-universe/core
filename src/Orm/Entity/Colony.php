@@ -129,6 +129,12 @@ class Colony implements ColonyInterface
     private $storage;
 
     /**
+     * @OneToMany(targetEntity="Storage", mappedBy="colony", indexBy="commodity_id")
+     * @OrderBy({"commodity_id" = "ASC"})
+     */
+    private $storageNew;
+
+    /**
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
      */
@@ -166,6 +172,7 @@ class Colony implements ColonyInterface
     {
         $this->planetFields = new ArrayCollection();
         $this->storage = new ArrayCollection();
+        $this->storageNew = new ArrayCollection();
         $this->defenders = new ArrayCollection();
         $this->blockers = new ArrayCollection();
     }
@@ -588,6 +595,11 @@ class Colony implements ColonyInterface
     public function getStorage(): Collection
     {
         return $this->storage;
+    }
+
+    public function getStorageNew(): Collection
+    {
+        return $this->storageNew;
     }
 
     public function isDefended(): bool

@@ -20,6 +20,10 @@ interface StorageInterface
 
     public function setCommodity(CommodityInterface $commodity): StorageInterface;
 
+    public function getColony(): ?ColonyInterface;
+
+    public function setColony(ColonyInterface $colony): StorageInterface;
+
     public function getShip(): ?ShipInterface;
 
     public function setShip(ShipInterface $ship): StorageInterface;

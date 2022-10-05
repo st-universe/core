@@ -12,4 +12,8 @@ interface StorageRepositoryInterface extends ObjectRepository
     public function save(StorageInterface $storage): void;
 
     public function delete(StorageInterface $storage): void;
+
+    public function getByUserAccumulated(int $userId): iterable;
+
+    public function getShipStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
 }

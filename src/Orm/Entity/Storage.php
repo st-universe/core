@@ -29,6 +29,9 @@ class Storage implements StorageInterface
     private $count = 0;
 
     /** @Column(type="integer", nullable=true) * */
+    private $colony_id;
+
+    /** @Column(type="integer", nullable=true) * */
     private $ship_id;
 
     /**
@@ -36,6 +39,12 @@ class Storage implements StorageInterface
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
+
+    /**
+     * @ManyToOne(targetEntity="Colony", inversedBy="storageNew")
+     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $colony;
 
     /**
      * @ManyToOne(targetEntity="Ship", inversedBy="storageNew")
@@ -88,6 +97,17 @@ class Storage implements StorageInterface
     {
         $this->commodity = $commodity;
 
+        return $this;
+    }
+
+    public function getColony(): ?ColonyInterface
+    {
+        return $this->colony;
+    }
+
+    public function setColony(ColonyInterface $colony): StorageInterface
+    {
+        $this->colony = $colony;
         return $this;
     }
 
