@@ -1196,6 +1196,11 @@ class Ship implements ShipInterface
         return $this->storage;
     }
 
+    public function getStorageNew(): Collection
+    {
+        return $this->storageNew;
+    }
+
     public function getStorageSum(): int
     {
         return array_reduce(

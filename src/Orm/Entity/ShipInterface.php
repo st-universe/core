@@ -273,6 +273,11 @@ interface ShipInterface
      */
     public function getStorage(): Collection;
 
+    /**
+     * @return StorageInterface[] Indexed by commodityId, ordered by commodityId
+     */
+    public function getStorageNew(): Collection;
+
     public function getStorageSum(): int;
 
     public function getMaxStorage(): int;
