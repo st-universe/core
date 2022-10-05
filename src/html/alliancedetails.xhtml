@@ -82,7 +82,7 @@
 				</tr>
 				<tr tal:repeat="data ALLIANCE_ISVASSAL" tal:attributes="class string:row${repeat/data/odd}">
 					<td>
-						Ist Vasall von der Allianz
+						Ist Vasall der Allianz
 						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}"
 							tal:content="structure bbcode:data/opponent/getName">NAME</a>
 					</td>
