@@ -263,6 +263,12 @@ class Ship implements ShipInterface
     private $storage;
 
     /**
+     * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
+     * @OrderBy({"commodity_id" = "ASC"})
+     */
+    private $storageNew;
+
+    /**
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
@@ -291,6 +297,7 @@ class Ship implements ShipInterface
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
         $this->storage = new ArrayCollection();
+        $this->storageNew = new ArrayCollection();
     }
 
     public function getId(): ?int

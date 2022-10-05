@@ -25,12 +25,20 @@ class Storage implements StorageInterface
     /** @Column(type="integer") */
     private $count = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $ship_id;
+
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
+    /**
+     * @ManyToOne(targetEntity="Ship", inversedBy="storageNew")
+     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $ship;
 
     public function getId(): int
     {
@@ -70,6 +78,17 @@ class Storage implements StorageInterface
     {
         $this->commodity = $commodity;
 
+        return $this;
+    }
+
+    public function getShip(): ?ShipInterface
+    {
+        return $this->ship;
+    }
+
+    public function setShip(ShipInterface $ship): StorageInterface
+    {
+        $this->ship = $ship;
         return $this;
     }
 }

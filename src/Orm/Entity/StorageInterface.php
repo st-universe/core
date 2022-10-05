@@ -17,4 +17,8 @@ interface StorageInterface
     public function getCommodity(): CommodityInterface;
 
     public function setCommodity(CommodityInterface $commodity): StorageInterface;
+
+    public function getShip(): ?ShipInterface;
+
+    public function setShip(ShipInterface $ship): StorageInterface;
 }
