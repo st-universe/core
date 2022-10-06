@@ -87,7 +87,9 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT ar FROM %s ar WHERE ar.date > 0 AND (ar.alliance_id = :allianceId OR ar.recipient = :allianceId)',
+                    'SELECT ar FROM %s ar
+                    WHERE ar.date > 0 AND (ar.alliance_id = :allianceId OR ar.recipient = :allianceId)
+                    ORDER BY ar.id ASC',
                     AllianceRelation::class
                 )
             )
