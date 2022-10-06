@@ -43,7 +43,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             JOIN stu_goods g
             ON s.commodity_id = g.id
             WHERE s.user_id = :userId
-            GROUP BY s.commodity_id
+            GROUP BY s.commodity_id, g.sort
             ORDER BY g.sort ASC',
             $rsm
         )->setParameters([
