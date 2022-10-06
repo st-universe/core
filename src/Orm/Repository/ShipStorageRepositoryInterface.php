@@ -13,7 +13,5 @@ interface ShipStorageRepositoryInterface extends ObjectRepository
 
     public function delete(ShipStorageInterface $shipStorage): void;
 
-    public function getByUserAccumulated(int $userId): iterable;
-
     public function getByUserAndCommodity(int $userId, int $commodityId): iterable;
 }

@@ -116,24 +116,6 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
         ])->getResult();
     }
 
-    public function getByUserAccumulated(int $userId): iterable
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
-        $rsm->addScalarResult('amount', 'amount', 'integer');
-
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT ts.goods_id AS commodity_id, SUM(ts.count) AS amount
-            FROM stu_trade_storage ts
-            WHERE ts.user_id = :userId
-            GROUP BY ts.goods_id
-            ORDER BY ts.goods_id ASC',
-            $rsm
-        )->setParameters([
-            'userId' => $userId
-        ])->getResult();
-    }
-
     public function getByUserAndCommodity(int $userId, int $commodityId): array
     {
         return $this->findBy([

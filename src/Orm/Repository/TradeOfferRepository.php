@@ -149,24 +149,6 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         return $result;
     }
 
-    public function getByUserAccumulated(int $userId): iterable
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
-        $rsm->addScalarResult('amount', 'amount', 'integer');
-
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT tro.gg_id AS commodity_id, SUM(tro.amount * tro.gg_count) AS amount
-            FROM stu_trade_offers tro
-            WHERE tro.user_id = :userId
-            GROUP BY tro.gg_id
-            ORDER BY tro.gg_id ASC',
-            $rsm
-        )->setParameters([
-            'userId' => $userId
-        ])->getResult();
-    }
-
     public function getByUserAndCommodity(int $userId, int $commodityId): iterable
     {
         $rsm = new ResultSetMapping();
