@@ -21,16 +21,22 @@ class AllianceRelationWrapper
     public function getDescription(): string
     {
         $typeDescription = $this->relation->getTypeDescription();
-        $opponentName = $this->relation->getOpponent()->getName();
+        $toName = $this->relation->getOpponent()->getName();
+        $fromName = $this->relation->getAlliance()->getName();
 
         if ($this->relation->getType() === AllianceEnum::ALLIANCE_RELATION_VASSAL) {
             if ($this->relation->getAlliance() === $this->alliance) {
-                return sprintf('Hat die Allianz %s als %s', $opponentName, $typeDescription);
+                return sprintf('Hat die Allianz %s als %s', $toName, $typeDescription);
             } else {
-                return sprintf('Ist %s der Allianz %s', $typeDescription, $this->relation->getAlliance()->getName());
+                return sprintf('Ist %s der Allianz %s', $typeDescription, $fromName);
             }
         }
-        return sprintf('%s mit %s', $typeDescription, $opponentName);
+
+        if ($this->relation->getAlliance() === $this->alliance) {
+            return sprintf('%s mit %s', $typeDescription, $toName);
+        } else {
+            return sprintf('%s mit %s', $typeDescription, $fromName);
+        }
     }
 
     public function getTargetId(): int
