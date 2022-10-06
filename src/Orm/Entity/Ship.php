@@ -1204,8 +1204,8 @@ class Ship implements ShipInterface
     public function getStorageSum(): int
     {
         return array_reduce(
-            $this->getStorage()->getValues(),
-            function (int $sum, ShipStorageInterface $storage): int {
+            $this->getStorageNew()->getValues(),
+            function (int $sum, StorageInterface $storage): int {
                 return $sum + $storage->getAmount();
             },
             0
@@ -1220,8 +1220,8 @@ class Ship implements ShipInterface
     public function getBeamableStorage(): array
     {
         return array_filter(
-            $this->getStorage()->getValues(),
-            function (ShipStorageInterface $storage): bool {
+            $this->getStorageNew()->getValues(),
+            function (StorageInterface $storage): bool {
                 return $storage->getCommodity()->isBeamable() === true;
             }
         );
@@ -1887,7 +1887,7 @@ class Ship implements ShipInterface
     {
         $shuttles = [];
 
-        foreach ($this->getStorage() as $stor) {
+        foreach ($this->getStorageNew() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 $shuttles[] = $stor->getCommodity();
             }
@@ -1900,7 +1900,7 @@ class Ship implements ShipInterface
     {
         $count = 0;
 
-        foreach ($this->getStorage() as $stor) {
+        foreach ($this->getStorageNew() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 $count += $stor->getAmount();
             }
