@@ -61,30 +61,14 @@
 				<tr>
 					<th>Beziehungen zu anderen Allianzen</th>
 				</tr>
-				<tr tal:condition="not:ALLIANCE_HASRELATIONS">
+				<tr tal:condition="not:exists:ALLIANCE_RELATIONS">
 					<td>Keine Beziehungen vorhanden</td>
 				</tr>
-				<tr tal:repeat="data ALLIANCE_RELATIONS" tal:attributes="class string:row${repeat/data/odd}">
+				<tr tal:condition="exists:ALLIANCE_RELATIONS" tal:repeat="wrapper ALLIANCE_RELATIONS"
+					tal:attributes="class string:row${repeat/wrapper/odd}">
 					<td>
-						<span tal:replace="data/relation/getTypeDescription">TYPE</span>
-						mit
-						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}"
-							tal:content="structure bbcode:data/opponent/getName">NAME</a>
-					</td>
-				</tr>
-				<tr tal:repeat="data ALLIANCE_HASVASSAL" tal:attributes="class string:row${repeat/data/odd}">
-					<td>
-						Hat die Allianz
-						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}"
-							tal:content="structure bbcode:data/opponent/getName">NAME</a>
-						als Vasall
-					</td>
-				</tr>
-				<tr tal:repeat="data ALLIANCE_ISVASSAL" tal:attributes="class string:row${repeat/data/odd}">
-					<td>
-						Ist Vasall der Allianz
-						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}"
-							tal:content="structure bbcode:data/opponent/getName">NAME</a>
+						<a href="?SHOW_ALLIANCE=1&id=${wrapper/getTargetId}"
+							tal:content="structure bbcode:wrapper/getDescription">DESCRIPTION</a>
 					</td>
 				</tr>
 			</table>

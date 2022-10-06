@@ -70,6 +70,11 @@ class TradeOffer implements TradeOfferInterface
      */
     private $user;
 
+    /**
+     * @OneToOne(targetEntity="Storage", mappedBy="tradeOffer")
+     */
+    private $storage;
+
     public function getId(): int
     {
         return $this->id;
@@ -209,5 +214,10 @@ class TradeOffer implements TradeOfferInterface
     {
         $this->user = $user;
         return $this;
+    }
+
+    public function getStorage(): StorageInterface
+    {
+        return $this->storage;
     }
 }

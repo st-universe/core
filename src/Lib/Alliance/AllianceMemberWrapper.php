@@ -1,6 +1,6 @@
 <?php
 
-namespace Lib;
+namespace Lib\Alliance;
 
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;

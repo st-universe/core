@@ -97,51 +97,6 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->getResult();
     }
 
-    public function getActiveByAllianceNoVassal(int $allianceId): array
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT ar FROM %s ar WHERE ar.date > 0 AND (ar.alliance_id = :allianceId OR ar.recipient = :allianceId) AND ar.type != 6',
-                    AllianceRelation::class
-                )
-            )
-            ->setParameters([
-                'allianceId' => $allianceId
-            ])
-            ->getResult();
-    }
-
-    public function getActiveIsVassal(int $allianceId): array
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT ar FROM %s ar WHERE ar.date > 0 AND ar.recipient = :allianceId AND ar.type = 6',
-                    AllianceRelation::class
-                )
-            )
-            ->setParameters([
-                'allianceId' => $allianceId
-            ])
-            ->getResult();
-    }
-
-    public function getActiveHasVassal(int $allianceId): array
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT ar FROM %s ar WHERE ar.date > 0 AND ar.alliance_id = :allianceId AND ar.type = 6',
-                    AllianceRelation::class
-                )
-            )
-            ->setParameters([
-                'allianceId' => $allianceId
-            ])
-            ->getResult();
-    }
-
     public function getByAlliance(int $allianceId): array
     {
         return $this->getEntityManager()

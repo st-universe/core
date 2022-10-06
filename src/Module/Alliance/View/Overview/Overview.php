@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Overview;
 
-use Lib\AllianceMemberWrapper;
+use Lib\Alliance\AllianceMemberWrapper;
+use Lib\Alliance\AllianceRelationWrapper;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -53,45 +54,15 @@ final class Overview implements ViewControllerInterface
             $allianceId = (int) $alliance->getId();
             $userId = $user->getId();
 
-            $result = $this->allianceRelationRepository->getActiveByAllianceNoVassal($allianceId);
-            $hasresult = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
-            $resulthasvassal = $this->allianceRelationRepository->getActiveHasVassal($allianceId);
-            $resultisvassal = $this->allianceRelationRepository->getActiveIsVassal($allianceId);
+            $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
             $userIsFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
                 $allianceId,
                 AllianceEnum::ALLIANCE_JOBS_FOUNDER
             )->getUserId() === $game->getUser()->getId();
 
             $relations = [];
-            foreach ($result as $key => $obj) {
-                $relations[$key] = [
-                    'relation' => $obj,
-                    'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
-                ];
-            }
-
-            $hasrelations = [];
-            foreach ($hasresult as $key => $obj) {
-                $hasrelations[$key] = [
-                    'relation' => $obj,
-                    'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
-                ];
-            }
-
-            $hasvassal = [];
-            foreach ($resulthasvassal as $key => $obj) {
-                $hasvassal[$key] = [
-                    'relation' => $obj,
-                    'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
-                ];
-            }
-
-            $isvassal = [];
-            foreach ($resultisvassal as $key => $obj) {
-                $isvassal[$key] = [
-                    'relation' => $obj,
-                    'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
-                ];
+            foreach ($result as $key => $relation) {
+                $relations[$key] = new AllianceRelationWrapper($alliance, $relation);
             }
 
             $replacementVars = $this->getReplacementVars($alliance);
@@ -111,9 +82,6 @@ final class Overview implements ViewControllerInterface
 
             $game->setTemplateVar('ALLIANCE', $user->getAlliance());
             $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
-            $game->setTemplateVar('ALLIANCE_HASRELATIONS', $hasrelations);
-            $game->setTemplateVar('ALLIANCE_HASVASSAL', $hasvassal);
-            $game->setTemplateVar('ALLIANCE_ISVASSAL', $isvassal);
             $game->setTemplateVar('DESCRIPTION', $parsedDescription);
             $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
             $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);

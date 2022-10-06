@@ -65,6 +65,12 @@ class Storage implements StorageInterface
      */
     private $tradePost;
 
+    /**
+     * @OneToOne(targetEntity="TradeOffer", inversedBy="storage")
+     * @JoinColumn(name="tradeoffer_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $tradeOffer;
+
     public function getId(): int
     {
         return $this->id;
@@ -136,6 +142,17 @@ class Storage implements StorageInterface
     public function setTradePost(TradePostInterface $tradePost): StorageInterface
     {
         $this->tradePost = $tradePost;
+        return $this;
+    }
+
+    public function getTradeOffer(): ?TradeOfferInterface
+    {
+        return $this->tradeOffer;
+    }
+
+    public function setTradeOffer(TradeOfferInterface $tradeOffer): StorageInterface
+    {
+        $this->tradeOffer = $tradeOffer;
         return $this;
     }
 }

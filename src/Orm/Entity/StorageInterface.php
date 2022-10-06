@@ -29,4 +29,8 @@ interface StorageInterface
     public function getTradePost(): ?TradePostInterface;
 
     public function setTradePost(TradePostInterface $tradePost): StorageInterface;
+
+    public function getTradeOffer(): ?TradeOfferInterface;
+
+    public function setTradeOffer(TradeOfferInterface $tradeOffer): StorageInterface;
 }

@@ -51,4 +51,6 @@ interface TradeOfferInterface
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): TradeOfferInterface;
+
+    public function getStorage(): StorageInterface;
 }
