@@ -12,6 +12,7 @@ use Stu\Orm\Entity\ColonyStorageInterface;
 final class ColonyStorageRepository extends EntityRepository implements ColonyStorageRepositoryInterface
 {
 
+
     public function prototype(): ColonyStorageInterface
     {
         return new ColonyStorage();
