@@ -3,16 +3,17 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 {
-    //two weeks
-    public const OFFER_MAX_AGE = 1209600;
+    public const OFFER_MAX_AGE = TimeConstants::TWO_WEEKS_IN_SECONDS;
 
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
@@ -22,16 +23,20 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
+    private StorageRepositoryInterface $storageRepository;
+
     public function __construct(
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         PrivateMessageSenderInterface $privateMessageSender,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        StorageRepositoryInterface $storageRepository
     ) {
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->privateMessageSender = $privateMessageSender;
         $this->tradePostRepository = $tradePostRepository;
+        $this->storageRepository = $storageRepository;
     }
 
     public function handle(): void
@@ -84,6 +89,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
                 (int) $offer->getOfferedGoodCount() * $offer->getOfferCount()
             );
 
+            $this->storageRepository->delete($offer->getStorage());
             $this->tradeOfferRepository->delete($offer);
         }
 

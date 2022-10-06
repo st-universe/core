@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Entity\TradeOfferInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class CancelOffer implements ActionControllerInterface
@@ -22,14 +23,18 @@ final class CancelOffer implements ActionControllerInterface
 
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
+    private StorageRepositoryInterface $storageRepository;
+
     public function __construct(
         CancelOfferRequestInterface $cancelOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradeOfferRepositoryInterface $tradeOfferRepository
+        TradeOfferRepositoryInterface $tradeOfferRepository,
+        StorageRepositoryInterface $storageRepository
     ) {
         $this->cancelOfferRequest = $cancelOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradeOfferRepository = $tradeOfferRepository;
+        $this->storageRepository = $storageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,6 +59,7 @@ final class CancelOffer implements ActionControllerInterface
             (int) $offer->getOfferedGoodCount() * $offer->getOfferCount()
         );
 
+        $this->storageRepository->delete($offer->getStorage());
         $this->tradeOfferRepository->delete($offer);
 
         $game->addInformation(_('Das Angebot wurde gelöscht'));

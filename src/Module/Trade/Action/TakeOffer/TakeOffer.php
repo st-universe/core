@@ -138,6 +138,7 @@ final class TakeOffer implements ActionControllerInterface
         if ($selectedOffer->getOfferCount() <= $amount) {
             $amount = $selectedOffer->getOfferCount();
 
+            $this->storageRepository->delete($selectedOffer->getStorage());
             $this->tradeOfferRepository->delete($selectedOffer);
         } else {
 
