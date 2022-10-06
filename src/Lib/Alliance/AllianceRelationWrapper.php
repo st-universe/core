@@ -41,6 +41,6 @@ class AllianceRelationWrapper
 
     public function getTargetId(): int
     {
-        return $this->relation->getAlliance() === $this->alliance ? $this->relation->getOpponent()->getId() : $this->alliance->getId();
+        return $this->relation->getAlliance() === $this->alliance ? $this->relation->getOpponent()->getId() : $this->relation->getAlliance()->getId();
     }
 }
