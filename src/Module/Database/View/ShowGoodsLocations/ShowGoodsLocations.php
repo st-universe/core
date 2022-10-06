@@ -56,7 +56,7 @@ final class ShowGoodsLocations implements ViewControllerInterface
         $tradeStorages = $this->storageRepository->getTradePostStorageByUserAndCommodity($userId, $commodityId);
         foreach ($tradeStorages as $storage) {
             $storageWrapper = new StorageWrapper($storage->getCommodityId(), $storage->getAmount());
-            $storageWrapper->setEntityId($data->getTradePostId());
+            $storageWrapper->setEntityId($storage->getTradePost()->getId());
             $tradeStorageLocations[] = $storageWrapper;
         }
 
