@@ -12,6 +12,4 @@ interface ShipStorageRepositoryInterface extends ObjectRepository
     public function save(ShipStorageInterface $shipStorage): void;
 
     public function delete(ShipStorageInterface $shipStorage): void;
-
-    public function getByUserAndCommodity(int $userId, int $commodityId): iterable;
 }

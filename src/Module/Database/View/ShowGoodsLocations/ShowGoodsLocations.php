@@ -8,7 +8,7 @@ use Stu\Lib\StorageWrapper\StorageWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
-use Stu\Orm\Repository\ShipStorageRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
@@ -19,25 +19,25 @@ final class ShowGoodsLocations implements ViewControllerInterface
 
     private ColonyStorageRepositoryInterface $colonyStorageRepository;
 
-    private ShipStorageRepositoryInterface $shipStorageRepository;
-
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
     private TradeStorageRepositoryInterface $tradeStorageRepository;
+
+    private StorageRepositoryInterface $storageRepository;
 
     private ShowGoodsLocationsRequestInterface $showGoodsLocationsRequest;
 
     public function __construct(
         ColonyStorageRepositoryInterface $colonyStorageRepository,
-        ShipStorageRepositoryInterface $shipStorageRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
+        StorageRepositoryInterface $storageRepository,
         ShowGoodsLocationsRequestInterface $showGoodsLocationsRequest
     ) {
         $this->colonyStorageRepository = $colonyStorageRepository;
-        $this->shipStorageRepository = $shipStorageRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->storageRepository = $storageRepository;
         $this->showGoodsLocationsRequest = $showGoodsLocationsRequest;
     }
 
@@ -60,7 +60,7 @@ final class ShowGoodsLocations implements ViewControllerInterface
 
         // set up ship locations array
         $shipLocations = [];
-        $shipIterator = $this->shipStorageRepository->getByUserAndCommodity($userId, $commodityId);
+        $shipIterator = $this->storageRepository->getShipStorageByUserAndCommodity($userId, $commodityId);
         foreach ($shipIterator as $data) {
             $storageWrapper = new StorageWrapper($data['commodity_id'], $data['amount']);
             $storageWrapper->setEntityId($data['ships_id']);
