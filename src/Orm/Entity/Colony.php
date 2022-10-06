@@ -531,8 +531,8 @@ class Colony implements ColonyInterface
     public function getStorageSum(): int
     {
         return array_reduce(
-            $this->getStorage()->getValues(),
-            function (int $sum, ColonyStorageInterface $storage): int {
+            $this->getStorageNew()->getValues(),
+            function (int $sum, StorageInterface $storage): int {
                 return $sum + $storage->getAmount();
             },
             0
@@ -578,13 +578,13 @@ class Colony implements ColonyInterface
     }
 
     /**
-     * @return ColonyStorageInterface[]
+     * @return StorageInterface[]
      */
     public function getBeamableStorage(): array
     {
         $filteredArray = array_filter(
-            $this->getStorage()->getValues(),
-            function (ColonyStorageInterface $storage): bool {
+            $this->getStorageNew()->getValues(),
+            function (StorageInterface $storage): bool {
                 return $storage->getCommodity()->isBeamable() === true;
             }
         );

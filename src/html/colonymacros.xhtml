@@ -1675,17 +1675,17 @@
       </tr>
       <tr>
         <td style="width: 100%;" tal:define="COLONY_STORAGE COLONY/getBeamableStorage">
-          <tal:block tal:condition="COLONY_STORAGE" tal:repeat="good COLONY_STORAGE">
-            <input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
-            <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
+          <tal:block tal:condition="COLONY_STORAGE" tal:repeat="stor COLONY_STORAGE">
+            <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodityId" />
+            <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
+                tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
             </div>
-            <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
+            <div tal:condition="repeat/stor/even" style="float: left; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
+                tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
             </div>
-            <br tal:condition="repeat/good/odd" style="clear: both;" />
+            <br tal:condition="repeat/stor/odd" style="clear: both;" />
           </tal:block>
           <tal:block tal:condition="not:COLONY_STORAGE">
             Keine Waren vorhanden
@@ -1740,17 +1740,17 @@
       </tr>
       <tr>
         <td style="width: 100%;">
-          <tal:block tal:condition="targetShip/getBeamableStorage" tal:repeat="good targetShip/getBeamableStorage">
-            <input type="hidden" name="goods[]" tal:attributes="value good/getCommodityId" />
-            <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
+          <tal:block tal:condition="targetShip/getBeamableStorage" tal:repeat="stor targetShip/getBeamableStorage">
+            <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodityId" />
+            <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount" />
+                tal:define="name stor/getCommodity/getName; commodityId stor/getCommodityId; amount stor/getAmount" />
             </div>
-            <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
+            <div tal:condition="repeat/stor/even" style="float: left; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount" />
+                tal:define="name stor/getCommodity/getName; commodityId stor/getCommodityId; amount stor/getAmount" />
             </div>
-            <br tal:condition="repeat/good/odd" style="clear: both;" />
+            <br tal:condition="repeat/stor/odd" style="clear: both;" />
           </tal:block>
           <tal:block tal:condition="not:targetShip/getBeamableStorage">
             Keine Waren vorhanden

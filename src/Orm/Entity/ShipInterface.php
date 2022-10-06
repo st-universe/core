@@ -283,7 +283,7 @@ interface ShipInterface
     public function getMaxStorage(): int;
 
     /**
-     * @return ShipStorageInterface[] Indexed by commodityId, ordered by commodityId
+     * @return StorageInterface[] Indexed by commodityId, ordered by commodityId
      */
     public function getBeamableStorage(): array;
 

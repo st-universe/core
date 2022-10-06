@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\ColonyStorageInterface;
-use Stu\Orm\Entity\Commodity;
 
 final class ColonyStorageRepository extends EntityRepository implements ColonyStorageRepositoryInterface
 {

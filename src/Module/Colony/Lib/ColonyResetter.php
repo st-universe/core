@@ -15,6 +15,7 @@ use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ColonyResetter implements ColonyResetterInterface
@@ -23,9 +24,9 @@ final class ColonyResetter implements ColonyResetterInterface
 
     private UserRepositoryInterface $userRepository;
 
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
     private ColonyStorageRepositoryInterface $colonyStorageRepository;
+
+    private StorageRepositoryInterface $storageRepository;
 
     private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
 
@@ -40,8 +41,8 @@ final class ColonyResetter implements ColonyResetterInterface
     public function __construct(
         ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository,
-        ColonyLibFactoryInterface $colonyLibFactory,
         ColonyStorageRepositoryInterface $colonyStorageRepository,
+        StorageRepositoryInterface $storageRepository,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -50,8 +51,8 @@ final class ColonyResetter implements ColonyResetterInterface
     ) {
         $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyStorageRepository = $colonyStorageRepository;
+        $this->storageRepository = $storageRepository;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->planetFieldRepository = $planetFieldRepository;
@@ -80,6 +81,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->colonyRepository->save($colony);
 
         $this->colonyStorageRepository->truncateByColony($colony);
+        $this->storageRepository->truncateByColony($colony);
 
         foreach ($this->colonyTerraformingRepository->getByColony([$colony]) as $fieldTerraforming) {
             $this->colonyTerraformingRepository->delete($fieldTerraforming);
