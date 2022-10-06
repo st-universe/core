@@ -38,6 +38,9 @@ class Storage implements StorageInterface
     /** @Column(type="integer", nullable=true) * */
     private $tradepost_id;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $tradeoffer_id;
+
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
