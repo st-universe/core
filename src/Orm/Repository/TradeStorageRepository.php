@@ -115,12 +115,4 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
             'userId' => $userId
         ])->getResult();
     }
-
-    public function getByUserAndCommodity(int $userId, int $commodityId): array
-    {
-        return $this->findBy([
-            'goods_id' => $commodityId,
-            'user_id' => $userId
-        ], ['count' => 'DESC']);
-    }
 }

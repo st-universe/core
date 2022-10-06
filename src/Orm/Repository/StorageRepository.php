@@ -10,6 +10,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\TradeOffer;
 
 final class StorageRepository extends EntityRepository implements StorageRepositoryInterface
 {
@@ -88,6 +89,49 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             AND s.ship_id IS NOT NULL
             AND s.commodity_id = :commodityId
             ORDER BY s.count DESC',
+            $rsm
+        )->setParameters([
+            'userId' => $userId,
+            'commodityId' => $commodityId
+        ])->getResult();
+    }
+
+    public function getTradePostStorageByUserAndCommodity(int $userId, int $commodityId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s
+                FROM %s s
+                WHERE s.commodity_id = :commodityId
+                AND s.user_id = :userId
+                AND s.tradepost_id IS NOT NULL
+                ORDER BY s.count DESC',
+                Storage::class
+            )
+        )->setParameters([
+            'commodityId' => $commodityId,
+            'userId' => $userId
+        ])->getResult();
+    }
+
+    public function getTradeOfferStorageByUserAndCommodity(int $userId, int $commodityId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('posts_id', 'posts_id', 'integer');
+        $rsm->addScalarResult('amount', 'amount', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT s.commodity_id AS commodity_id, tof.posts_id as posts_id,
+                SUM(s.count) AS amount
+                FROM stu_storage s
+                JOIN stu_trade_offers tof
+                ON s.tradeoffer_id = tof.id
+                WHERE s.user_id = :userId
+                AND s.commodity_id = :commodityId
+                AND s.tradeoffer_id IS NOT NULL
+                GROUP BY s.commodity_id, tof.posts_id
+                ORDER BY amount DESC',
             $rsm
         )->setParameters([
             'userId' => $userId,

@@ -14,7 +14,5 @@ interface ColonyStorageRepositoryInterface extends ObjectRepository
 
     public function delete(ColonyStorageInterface $post): void;
 
-    public function getByUserAndCommodity(int $userId, int $commodityId): iterable;
-
     public function truncateByColony(ColonyInterface $colony): void;
 }

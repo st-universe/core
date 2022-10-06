@@ -23,6 +23,13 @@ interface StorageRepositoryInterface extends ObjectRepository
     /**
      * @return StorageInterface[]
      */
+    public function getTradePostStorageByUserAndCommodity(int $userId, int $commodityId): array;
+
+    public function getTradeOfferStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
+
+    /**
+     * @return StorageInterface[]
+     */
     public function getByTradePostAndUser(int $tradePostId, int $userId): array;
 
     public function getLatinumTop10(): array;

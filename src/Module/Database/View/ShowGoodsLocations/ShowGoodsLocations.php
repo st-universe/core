@@ -7,36 +7,20 @@ namespace Stu\Module\Database\View\ShowGoodsLocations;
 use Stu\Lib\StorageWrapper\StorageWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
-use Stu\Orm\Repository\TradeOfferRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class ShowGoodsLocations implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_GOODS_LOCATIONS';
-
-    private ColonyStorageRepositoryInterface $colonyStorageRepository;
-
-    private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
     private StorageRepositoryInterface $storageRepository;
 
     private ShowGoodsLocationsRequestInterface $showGoodsLocationsRequest;
 
     public function __construct(
-        ColonyStorageRepositoryInterface $colonyStorageRepository,
-        TradeOfferRepositoryInterface $tradeOfferRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository,
         StorageRepositoryInterface $storageRepository,
         ShowGoodsLocationsRequestInterface $showGoodsLocationsRequest
     ) {
-        $this->colonyStorageRepository = $colonyStorageRepository;
-        $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->tradeStorageRepository = $tradeStorageRepository;
         $this->storageRepository = $storageRepository;
         $this->showGoodsLocationsRequest = $showGoodsLocationsRequest;
     }
@@ -51,7 +35,7 @@ final class ShowGoodsLocations implements ViewControllerInterface
 
         // set up colony locations array
         $colonyLocations = [];
-        $colonyIterator = $this->colonyStorageRepository->getByUserAndCommodity($userId, $commodityId);
+        $colonyIterator = $this->storageRepository->getColonyStorageByUserAndCommodity($userId, $commodityId);
         foreach ($colonyIterator as $data) {
             $storageWrapper = new StorageWrapper($data['commodity_id'], $data['amount']);
             $storageWrapper->setEntityId($data['colonies_id']);
@@ -69,16 +53,16 @@ final class ShowGoodsLocations implements ViewControllerInterface
 
         // set up trade post locations array
         $tradeStorageLocations = [];
-        $tradeStorageIterator = $this->tradeStorageRepository->getByUserAndCommodity($userId, $commodityId);
-        foreach ($tradeStorageIterator as $data) {
-            $storageWrapper = new StorageWrapper($data->getGoodId(), $data->getAmount());
+        $tradeStorages = $this->storageRepository->getTradePostStorageByUserAndCommodity($userId, $commodityId);
+        foreach ($tradeStorages as $storage) {
+            $storageWrapper = new StorageWrapper($storage->getCommodityId(), $storage->getAmount());
             $storageWrapper->setEntityId($data->getTradePostId());
             $tradeStorageLocations[] = $storageWrapper;
         }
 
         // set up trade offer locations array
         $tradeOfferLocations = [];
-        $tradeOfferIterator = $this->tradeOfferRepository->getByUserAndCommodity($userId, $commodityId);
+        $tradeOfferIterator = $this->storageRepository->getTradeOfferStorageByUserAndCommodity($userId, $commodityId);
         foreach ($tradeOfferIterator as $data) {
             $storageWrapper = new StorageWrapper($data['commodity_id'], $data['amount']);
             $storageWrapper->setEntityId($data['posts_id']);

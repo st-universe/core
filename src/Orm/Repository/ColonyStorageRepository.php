@@ -33,28 +33,6 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
         $em->remove($post);
     }
 
-    public function getByUserAndCommodity(int $userId, int $commodityId): iterable
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
-        $rsm->addScalarResult('colonies_id', 'colonies_id', 'integer');
-        $rsm->addScalarResult('amount', 'amount', 'integer');
-
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT cs.goods_id AS commodity_id, cs.colonies_id AS colonies_id, cs.count AS amount
-            FROM stu_colonies_storage cs
-            LEFT JOIN stu_goods g ON g.id = cs.goods_id
-            LEFT JOIN stu_colonies c ON cs.colonies_id = c.id
-            WHERE c.user_id = :userId
-            AND g.id = :commodityId
-            ORDER BY cs.count DESC',
-            $rsm
-        )->setParameters([
-            'userId' => $userId,
-            'commodityId' => $commodityId
-        ])->getResult();
-    }
-
     public function truncateByColony(ColonyInterface $colony): void
     {
         $this->getEntityManager()
