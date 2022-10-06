@@ -9,7 +9,12 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\TradeOfferInterface;
+use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
@@ -27,18 +32,22 @@ final class CreateOffer implements ActionControllerInterface
 
     private TradeStorageRepositoryInterface $tradeStorageRepository;
 
+    private StorageRepositoryInterface $storageRepository;
+
     public function __construct(
         CreateOfferRequestInterface $createOfferRequest,
         CommodityRepositoryInterface $commodityRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradeOfferRepositoryInterface $tradeOfferRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository
+        TradeStorageRepositoryInterface $tradeStorageRepository,
+        StorageRepositoryInterface $storageRepository
     ) {
         $this->createOfferRequest = $createOfferRequest;
         $this->commodityRepository = $commodityRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->storageRepository = $storageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -125,21 +134,58 @@ final class CreateOffer implements ActionControllerInterface
         if ($offerAmount < 1) {
             return;
         }
-        $offer = $this->tradeOfferRepository->prototype();
-        $offer->setUser($game->getUser());
-        $offer->setTradePost($tradePost);
-        $offer->setDate(time());
-        $offer->setOfferedCommodity($offeredCommodity);
-        $offer->setOfferedGoodCount((int) $giveAmount);
-        $offer->setWantedCommodity($wantedCommodity);
-        $offer->setWantedGoodCount((int) $wantedAmount);
-        $offer->setOfferCount((int) $offerAmount);
 
-        $this->tradeOfferRepository->save($offer);
+        $offer = $this->saveOffer(
+            $game->getUser(),
+            $tradePost,
+            $offeredCommodity,
+            $giveAmount,
+            $wantedCommodity,
+            $wantedAmount,
+            $offerAmount
+        );
+
+        $this->saveStorage($offer);
 
         $storageManager->lowerStorage($giveGoodId, (int) $offerAmount * $giveAmount);
 
+
         $game->addInformation('Das Angebot wurde erstellt');
+    }
+
+    private function saveOffer(
+        UserInterface $user,
+        TradePostInterface $tradePost,
+        CommodityInterface $offeredCommodity,
+        int $giveAmount,
+        CommodityInterface $wantedCommodity,
+        int $wantedAmount,
+        int $offerAmount
+    ): TradeOfferInterface {
+        $offer = $this->tradeOfferRepository->prototype();
+        $offer->setUser($user);
+        $offer->setTradePost($tradePost);
+        $offer->setDate(time());
+        $offer->setOfferedCommodity($offeredCommodity);
+        $offer->setOfferedGoodCount($giveAmount);
+        $offer->setWantedCommodity($wantedCommodity);
+        $offer->setWantedGoodCount($wantedAmount);
+        $offer->setOfferCount($offerAmount);
+
+        $this->tradeOfferRepository->save($offer);
+
+        return $offer;
+    }
+
+    private function saveStorage(TradeOfferInterface $tradeOffer): void
+    {
+        $storage = $this->storageRepository->prototype();
+        $storage->setUserId($tradeOffer->getUser()->getId());
+        $storage->setTradeOffer($tradeOffer);
+        $storage->setCommodity($tradeOffer->getOfferedCommodity());
+        $storage->setAmount($tradeOffer->getOfferedGoodCount() * $tradeOffer->getOfferCount());
+
+        $this->storageRepository->save($storage);
     }
 
     private function isEquivalentOfferExistent(

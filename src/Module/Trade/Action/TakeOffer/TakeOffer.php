@@ -11,8 +11,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
-use Stu\Orm\Entity\TradeOfferInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -39,6 +39,8 @@ final class TakeOffer implements ActionControllerInterface
 
     private TradeTransactionRepositoryInterface $tradeTransactionRepository;
 
+    private StorageRepositoryInterface $storageRepository;
+
     public function __construct(
         TakeOfferRequestInterface $takeOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
@@ -47,7 +49,8 @@ final class TakeOffer implements ActionControllerInterface
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        TradeTransactionRepositoryInterface $tradeTransactionRepository
+        TradeTransactionRepositoryInterface $tradeTransactionRepository,
+        StorageRepositoryInterface $storageRepository
     ) {
         $this->takeOfferRequest = $takeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
@@ -57,6 +60,7 @@ final class TakeOffer implements ActionControllerInterface
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->tradeTransactionRepository = $tradeTransactionRepository;
+        $this->storageRepository = $storageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -136,9 +140,15 @@ final class TakeOffer implements ActionControllerInterface
 
             $this->tradeOfferRepository->delete($selectedOffer);
         } else {
-            $selectedOffer->setOfferCount($selectedOffer->getOfferCount() - (int) $amount);
 
+            //modify offer
+            $selectedOffer->setOfferCount($selectedOffer->getOfferCount() - (int) $amount);
             $this->tradeOfferRepository->save($selectedOffer);
+
+            //modify storage of offer
+            $storage = $selectedOffer->getStorage();
+            $storage->setAmount($selectedOffer->getOfferedGoodCount() * $selectedOffer->getOfferCount());
+            $this->storageRepository->save($storage);
         }
 
         $storageManagerRemote->upperStorage(
