@@ -7,19 +7,18 @@ namespace Stu\Module\Database\View\LatinumRanking;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopLatinum;
-use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class LatinumRanking implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_TOP_LATINUM';
 
-    private UserRepositoryInterface $userRepository;
+    private StorageRepositoryInterface $storageRepository;
 
     public function __construct(
-        UserRepositoryInterface $userRepository
+        StorageRepositoryInterface $storageRepository
     ) {
-        $this->userRepository = $userRepository;
+        $this->storageRepository = $storageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -47,7 +46,7 @@ final class LatinumRanking implements ViewControllerInterface
             function (array $data): DatabaseTopLatinum {
                 return new DatabaseTopLatinum($data);
             },
-            $this->userRepository->getLatinumTop10()
+            $this->storageRepository->getLatinumTop10()
         );
     }
 }

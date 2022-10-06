@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
@@ -107,6 +108,25 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         )->setParameters([
             'tradePostId' => $tradePostId,
             'userId' => $userId
+        ])->getResult();
+    }
+
+    public function getLatinumTop10(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('amount', 'amount', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT s.user_id, sum(count) as amount
+            FROM stu_storage s
+            WHERE s.commodity_id = 50 AND s.user_id > 100
+            GROUP BY s.user_id
+            ORDER BY 2 DESC
+            LIMIT 10',
+            $rsm
+        )->setParameters([
+            'latId' => CommodityTypeEnum::GOOD_LATINUM
         ])->getResult();
     }
 

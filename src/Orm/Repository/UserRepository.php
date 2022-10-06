@@ -261,44 +261,4 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->getResult();
     }
-
-    public function getLatinumTop10(): array
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('user_id', 'user_id', 'integer');
-        $rsm->addScalarResult('amount', 'amount', 'integer');
-
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT user_id,
-            SUM(CASE WHEN ships is NULL THEN 0 ELSE ships END) +
-            SUM(CASE WHEN colos is NULL THEN 0 ELSE colos END) +
-            SUM(CASE WHEN posts is NULL THEN 0 ELSE posts END) +
-            SUM(CASE WHEN offers is NULL THEN 0 ELSE offers END) as amount
-            FROM (SELECT u.id as user_id,
-                    (select sum(ss.count) from stu_ships s
-                       LEFT JOIN stu_ships_storage ss
-                           ON s.id = ss.ships_id
-                           AND ss.goods_id = :latId
-                       where u.id = s.user_id) as ships,
-                    (select sum(cs.count) from stu_colonies c
-                       left join stu_colonies_storage cs
-                           ON c.id = cs.colonies_id
-                           AND cs.goods_id = :latId
-                       where u.id = c.user_id) as colos,
-                    (select sum(ts.count) from stu_trade_storage ts
-                           where ts.goods_id = :latId
-                       and u.id = ts.user_id) as posts,
-                    (select sum(tro.amount * tro.gg_count) from stu_trade_offers tro
-                           where u.id = tro.user_id
-                           AND tro.gg_id = :latId) as offers
-                    FROM stu_user u
-                    WHERE u.id > 100) as xyz
-            GROUP BY user_id
-            ORDER BY amount DESC
-            LIMIT 10',
-            $rsm
-        )->setParameters([
-            'latId' => CommodityTypeEnum::GOOD_LATINUM
-        ])->getResult();
-    }
 }
