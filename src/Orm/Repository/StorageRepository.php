@@ -40,9 +40,11 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         return $this->getEntityManager()->createNativeQuery(
             'SELECT s.commodity_id AS commodity_id, SUM(s.count) AS amount
             FROM stu_storage s
+            JOIN stu_goods g
+            ON s.commodity_id = g.id
             WHERE s.user_id = :userId
             GROUP BY s.commodity_id
-            ORDER BY s.commodity_id ASC',
+            ORDER BY g.sort ASC',
             $rsm
         )->setParameters([
             'userId' => $userId
