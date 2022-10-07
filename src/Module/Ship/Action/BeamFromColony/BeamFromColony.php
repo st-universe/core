@@ -120,8 +120,8 @@ final class BeamFromColony implements ActionControllerInterface
                 continue;
             }
             $count = $gcount[$key];
-            if (!$good->getGood()->isBeamable()) {
-                $game->addInformation(sprintf(_('%s ist nicht beambar'), $good->getGood()->getName()));
+            if (!$good->getCommodity()->isBeamable()) {
+                $game->addInformation(sprintf(_('%s ist nicht beambar'), $good->getCommodity()->getName()));
                 continue;
             }
             if ($count == "max") {
@@ -139,7 +139,7 @@ final class BeamFromColony implements ActionControllerInterface
                 $count = (int) $good->getAmount();
             }
 
-            $transferAmount = $good->getGood()->getTransferCount() * $ship->getBeamFactor();
+            $transferAmount = $good->getCommodity()->getTransferCount() * $ship->getBeamFactor();
 
             if (ceil($count / $transferAmount) > $ship->getEps()) {
                 $count = $ship->getEps() * $transferAmount;
@@ -153,14 +153,14 @@ final class BeamFromColony implements ActionControllerInterface
             $game->addInformationf(
                 _('%d %s (Energieverbrauch: %d)'),
                 $count,
-                $good->getGood()->getName(),
+                $good->getCommodity()->getName(),
                 ceil($count / $transferAmount)
             );
 
             $count = (int) $count;
 
-            $this->colonyStorageManager->lowerStorage($target, $good->getGood(), $count);
-            $this->shipStorageManager->upperStorage($ship, $good->getGood(), $count);
+            $this->colonyStorageManager->lowerStorage($target, $good->getCommodity(), $count);
+            $this->shipStorageManager->upperStorage($ship, $good->getCommodity(), $count);
 
             $ship->setEps($ship->getEps() - (int) ceil($count / $transferAmount));
         }
