@@ -25,7 +25,6 @@ use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
-use Stu\Orm\Entity\ShipStorage;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;

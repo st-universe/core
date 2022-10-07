@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
