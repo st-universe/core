@@ -115,6 +115,7 @@ class GameRequest implements GameRequestInterface
     public function setParams(): GameRequestInterface
     {
         if ($this->parameterArray !== null && !empty($this->parameterArray)) {
+            $this->unsetParameter('_');
             $this->params = print_r($this->parameterArray, true);
         }
         return $this;
