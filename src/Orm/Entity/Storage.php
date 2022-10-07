@@ -48,13 +48,13 @@ class Storage implements StorageInterface
     private $commodity;
 
     /**
-     * @ManyToOne(targetEntity="Colony", inversedBy="storageNew")
+     * @ManyToOne(targetEntity="Colony", inversedBy="storage")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $colony;
 
     /**
-     * @ManyToOne(targetEntity="Ship", inversedBy="storageNew")
+     * @ManyToOne(targetEntity="Ship", inversedBy="storage")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
