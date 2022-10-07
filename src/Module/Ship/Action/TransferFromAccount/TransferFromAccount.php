@@ -115,7 +115,7 @@ final class TransferFromAccount implements ActionControllerInterface
                 continue;
             }
 
-            $commodity = $curGoods[$value]->getGood();
+            $commodity = $curGoods[$value]->getCommodity();
 
             if (!$commodity->isBeamable()) {
                 $game->addInformation($commodity->getName() . " ist nicht beambar");
@@ -137,7 +137,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $storageManager->lowerStorage((int) $value, $count);
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);
 
-            $game->addInformation($count . " " . $curGoods[$value]->getGood()->getName());
+            $game->addInformation($count . " " . $curGoods[$value]->getCommodity()->getName());
         }
     }
 
