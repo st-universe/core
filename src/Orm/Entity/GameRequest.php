@@ -49,6 +49,8 @@ class GameRequest implements GameRequestInterface
     /** @Column(type="text", nullable=true) */
     private $params;
 
+    private $parameterArray;
+
     public function getId(): int
     {
         return $this->id;
@@ -110,9 +112,22 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    public function setParams(string $params): GameRequestInterface
+    public function setParams(): GameRequestInterface
     {
-        $this->params = $params;
+        if ($this->parameterArray !== null && !empty($this->parameterArray)) {
+            $this->params = print_r($this->parameterArray, true);
+        }
         return $this;
+    }
+
+    public function setParameterArray(array $array): GameRequestInterface
+    {
+        $this->parameterArray = $array;
+        return $this;
+    }
+
+    public function unsetParameter($key): void
+    {
+        unset($this->parameterArray[$key]);
     }
 }

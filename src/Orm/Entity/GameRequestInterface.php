@@ -24,5 +24,9 @@ interface GameRequestInterface
 
     public function setRenderMs(int $renderMs): GameRequestInterface;
 
-    public function setParams(string $params): GameRequestInterface;
+    public function setParams(): GameRequestInterface;
+
+    public function setParameterArray(array $array): GameRequestInterface;
+
+    public function unsetParameter($key): void;
 }

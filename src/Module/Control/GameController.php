@@ -523,10 +523,7 @@ final class GameController implements GameControllerInterface
         $gameRequest->setModule($module);
         $gameRequest->setTime(time());
         $gameRequest->setTurnId($this->getCurrentRound());
-        $requestArray = request::isPost() ? request::postvars() : request::getvars();
-        if (!empty($requestArray)) {
-            $gameRequest->setParams(print_r($requestArray, true));
-        }
+        $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
 
         try {
             $this->session->createSession($session_check);
@@ -573,10 +570,12 @@ final class GameController implements GameControllerInterface
             // log action & view and time they took
             $startTime = hrtime(true);
             $action = $this->executeCallback($actions);
+            $gameRequest->unsetParameter($action);
             $actionMs = hrtime(true) - $startTime;
 
             $startTime = hrtime(true);
             $view = $this->executeView($views);
+            $gameRequest->unsetParameter($view);
             $viewMs = hrtime(true) - $startTime;
 
             $gameRequest->setAction($action);
@@ -665,6 +664,8 @@ final class GameController implements GameControllerInterface
 
     private function persistGameRequest(GameRequestInterface $request): void
     {
+        $request->setParams();
+
         $entityManagerLogging = $this->entityManagerLogging;
         $entityManagerLogging->beginTransaction();
         $entityManagerLogging->persist($request);
