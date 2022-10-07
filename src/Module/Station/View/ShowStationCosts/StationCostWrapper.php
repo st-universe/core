@@ -3,7 +3,7 @@
 namespace Stu\Module\Station\View\ShowStationCosts;
 
 use Stu\Orm\Entity\BuildplanModuleInterface;
-use Stu\Orm\Entity\ShipStorageInterface;
+use Stu\Orm\Entity\StorageInterface;
 
 class StationCostWrapper
 {
@@ -11,7 +11,7 @@ class StationCostWrapper
     private $buildplanModule;
     private $shipStorage;
 
-    function __construct(BuildplanModuleInterface $buildplanModule, ?ShipStorageInterface $shipStorage)
+    function __construct(BuildplanModuleInterface $buildplanModule, ?StorageInterface $shipStorage)
     {
         $this->buildplanModule = $buildplanModule;
         $this->shipStorage = $shipStorage;

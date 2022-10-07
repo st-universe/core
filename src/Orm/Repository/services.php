@@ -565,11 +565,6 @@ return [
     ): ShipRumpUserRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpUser::class);
     },
-    ShipStorageRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipStorageRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipStorage::class);
-    },
     ShipSystemRepositoryInterface::class => function (
         ContainerInterface $c
     ): ShipSystemRepositoryInterface {
