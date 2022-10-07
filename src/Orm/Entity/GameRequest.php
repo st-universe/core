@@ -46,6 +46,9 @@ class GameRequest implements GameRequestInterface
     /** @Column(type="integer", nullable=true) * */
     private $render_ms;
 
+    /** @Column(type="text", nullable=true) */
+    private $params;
+
     public function getId(): int
     {
         return $this->id;
@@ -104,6 +107,12 @@ class GameRequest implements GameRequestInterface
     public function setRenderMs(int $renderMs): GameRequestInterface
     {
         $this->render_ms = $renderMs;
+        return $this;
+    }
+
+    public function setParams(string $params): GameRequestInterface
+    {
+        $this->params = $params;
         return $this;
     }
 }
