@@ -128,7 +128,7 @@ interface ColonyInterface
     public function getPlanetFields(): Collection;
 
     /**
-     * @return ColonyStorageInterface[]
+     * @return StorageInterface[]
      */
     public function getBeamableStorage(): array;
 

@@ -255,11 +255,6 @@ return [
     ): ColonyShipQueueRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipQueue::class);
     },
-    ColonyStorageRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyStorageRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyStorage::class);
-    },
     CrewRaceRepositoryInterface::class => function (
         ContainerInterface $c
     ): CrewRaceRepositoryInterface {

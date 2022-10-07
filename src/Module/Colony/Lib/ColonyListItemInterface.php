@@ -3,7 +3,6 @@
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\ColonyStorageInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
@@ -38,7 +37,7 @@ interface ColonyListItemInterface
     public function getMaxStorage(): int;
 
     /**
-     * @return ColonyStorageInterface[]
+     * @return StorageInterface[]
      */
     public function getStorage(): Collection;
 
