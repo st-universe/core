@@ -257,12 +257,6 @@ class Ship implements ShipInterface
     private $buildplan;
 
     /**
-     * @OneToMany(targetEntity="ShipStorage", mappedBy="ship", indexBy="goods_id")
-     * @OrderBy({"goods_id" = "ASC"})
-     */
-    private $storageOld;
-
-    /**
      * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
      * @OrderBy({"commodity_id" = "ASC"})
      */
@@ -296,7 +290,6 @@ class Ship implements ShipInterface
         $this->dockingPrivileges = new ArrayCollection();
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
-        $this->storageOld = new ArrayCollection();
         $this->storage = new ArrayCollection();
     }
 

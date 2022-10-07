@@ -123,12 +123,6 @@ class Colony implements ColonyInterface
     private $planetFields;
 
     /**
-     * @OneToMany(targetEntity="ColonyStorage", mappedBy="colony", indexBy="goods_id")
-     * @OrderBy({"goods_id" = "ASC"})
-     */
-    private $storageOld;
-
-    /**
      * @OneToMany(targetEntity="Storage", mappedBy="colony", indexBy="commodity_id")
      * @OrderBy({"commodity_id" = "ASC"})
      */
@@ -171,7 +165,6 @@ class Colony implements ColonyInterface
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
-        $this->storageOld = new ArrayCollection();
         $this->storage = new ArrayCollection();
         $this->defenders = new ArrayCollection();
         $this->blockers = new ArrayCollection();
