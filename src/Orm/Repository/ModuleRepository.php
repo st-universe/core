@@ -32,9 +32,9 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     THEN m.rumps_role_id IS NULL
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
-					AND (m.viewable = :state OR m.goods_id IN (SELECT goods_id
-                                                                FROM stu_colonies_storage
-                                                                WHERE colonies_id = :colonyId))
+					AND (m.viewable = :state OR m.goods_id IN (SELECT commodity_id
+                                                                FROM stu_storage
+                                                                WHERE colony_id = :colonyId))
                     AND m.id IN (SELECT module_id
                                 FROM stu_modules_specials
                                 WHERE special_id IN (SELECT module_special_id
@@ -74,9 +74,9 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     THEN m.rumps_role_id IS NULL
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
-					AND (m.viewable = :state OR m.goods_id IN (SELECT goods_id
-                                                                FROM stu_ships_storage
-                                                                WHERE ships_id = :shipId))
+					AND (m.viewable = :state OR m.goods_id IN (SELECT commodity_id
+                                                                FROM stu_storage
+                                                                WHERE ship_id = :shipId))
                     AND m.id IN (SELECT module_id
                                 FROM stu_modules_specials
                                 WHERE special_id IN (SELECT module_special_id
@@ -118,9 +118,9 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
 					AND level IN (:levelList)
-					AND (m.viewable = :state OR m.goods_id IN (SELECT goods_id
-                                                                FROM stu_colonies_storage
-                                                                WHERE colonies_id = :colonyId))
+					AND (m.viewable = :state OR m.goods_id IN (SELECT commodity_id
+                                                                FROM stu_storage
+                                                                WHERE colony_id = :colonyId))
                     ORDER BY m.level ASC
                 ',
                 $this->getResultSetMapping()
