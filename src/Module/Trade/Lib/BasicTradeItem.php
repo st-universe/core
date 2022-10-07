@@ -6,7 +6,7 @@ namespace Stu\Module\Trade\Lib;
 
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\TradeStorageInterface;
+use Stu\Orm\Entity\StorageInterface;
 
 final class BasicTradeItem implements BasicTradeItemInterface
 {
@@ -15,17 +15,17 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     private ?BasicTradeInterface $basicTrade;
 
-    private ?TradeStorageInterface $tradeStorage;
+    private ?StorageInterface $storage;
 
     private ?CommodityInterface $commodity;
 
     public function __construct(
         ?BasicTradeInterface $basicTrade,
-        ?TradeStorageInterface $tradeStorage,
+        ?StorageInterface $storage,
         ?CommodityInterface $commodity = null
     ) {
         $this->basicTrade = $basicTrade;
-        $this->tradeStorage = $tradeStorage;
+        $this->storage = $storage;
         $this->commodity = $commodity;
     }
 
@@ -42,7 +42,7 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     public function getStoredAmount(): int
     {
-        return $this->tradeStorage !== null ? $this->tradeStorage->getAmount() : 0;
+        return $this->storage !== null ? $this->storage->getAmount() : 0;
     }
 
     public function getBuyValue(): int

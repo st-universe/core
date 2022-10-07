@@ -8,8 +8,8 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\TradeStorageInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
@@ -96,7 +96,7 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
     {
         return array_reduce(
             $this->getStorage(),
-            function (int $value, TradeStorageInterface $storage): int {
+            function (int $value, StorageInterface $storage): int {
                 return $value + $storage->getAmount();
             },
             0

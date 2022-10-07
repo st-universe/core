@@ -6,8 +6,8 @@ declare(strict_types=0);
 namespace Stu\Module\Trade\Lib;
 
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\TradeStorageInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
@@ -90,7 +90,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
     {
         return array_reduce(
             $this->getStorage(),
-            function (int $value, TradeStorageInterface $storage): int {
+            function (int $value, StorageInterface $storage): int {
                 return $value + $storage->getAmount();
             },
             0

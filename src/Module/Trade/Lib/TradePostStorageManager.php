@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\TradeStorageInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
@@ -45,7 +45,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         if ($this->storageSum === null) {
             $this->storageSum = array_reduce(
                 $this->getStorage(),
-                function (int $value, TradeStorageInterface $storage): int {
+                function (int $value, StorageInterface $storage): int {
                     return $value + $storage->getAmount();
                 },
                 0

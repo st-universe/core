@@ -2,9 +2,8 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\TradeStorageInterface;
+use Stu\Orm\Entity\StorageInterface;
 
 interface TradeAccountTalInterface
 {
@@ -18,14 +17,14 @@ interface TradeAccountTalInterface
     public function getTradePostName(): string;
 
     /**
-     * @return TradeStorageInterface[]
+     * @return StorageInterface[]
      */
     public function getStorage(): array;
 
     public function getStorageSum(): int;
 
     /**
-     * @return TradeStorageInterface[]
+     * @return StorageInterface[]
      */
     public function getOfferStorage(): array;
 
