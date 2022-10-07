@@ -122,31 +122,31 @@ final class BeamTo implements ActionControllerInterface
             if (!array_key_exists($key, $gcount)) {
                 continue;
             }
-            $good = $storage[$value] ?? null;
-            if ($good === null) {
+            $storage = $storage[$value] ?? null;
+            if ($storage === null) {
                 continue;
             }
             $count = $gcount[$key];
             if ($count == "max") {
-                $count = $good->getAmount();
+                $count = $storage->getAmount();
             } else {
                 $count = (int)$count;
             }
             if ($count < 1) {
                 continue;
             }
-            if (!$good->getGood()->isBeamable()) {
-                $game->addInformationf(_('%s ist nicht beambar'), $good->getGood()->getName());
+            if (!$storage->getCommodity()->isBeamable()) {
+                $game->addInformationf(_('%s ist nicht beambar'), $storage->getCommodity()->getName());
                 continue;
             }
             if ($target->getStorageSum() >= $target->getMaxStorage()) {
                 break;
             }
-            if ($count > $good->getAmount()) {
-                $count = $good->getAmount();
+            if ($count > $storage->getAmount()) {
+                $count = $storage->getAmount();
             }
 
-            $transferAmount = $good->getCommodity()->getTransferCount() * $colony->getBeamFactor();
+            $transferAmount = $storage->getCommodity()->getTransferCount() * $colony->getBeamFactor();
 
             if (ceil($count / $transferAmount) > $colony->getEps()) {
                 $count = $colony->getEps() * $transferAmount;
@@ -159,13 +159,13 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformationf(
                 _('%d %s (Energieverbrauch: %d)'),
                 $count,
-                $good->getGood()->getName(),
+                $storage->getCommodity()->getName(),
                 $eps_usage
             );
             $colony->lowerEps((int)ceil($count / $transferAmount));
 
-            $this->shipStorageManager->upperStorage($target, $good->getGood(), $count);
-            $this->colonyStorageManager->lowerStorage($colony, $good->getGood(), $count);
+            $this->shipStorageManager->upperStorage($target, $storage->getCommodity(), $count);
+            $this->colonyStorageManager->lowerStorage($colony, $storage->getCommodity(), $count);
         }
         $game->sendInformation(
             $target->getUser()->getId(),
