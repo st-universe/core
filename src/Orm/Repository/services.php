@@ -640,11 +640,6 @@ return [
     ): TradeShoutboxRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TradeShoutbox::class);
     },
-    TradeStorageRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradeStorageRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeStorage::class);
-    },
     TradeTransactionRepositoryInterface::class => function (
         ContainerInterface $c
     ): TradeTransactionRepositoryInterface {
