@@ -29,6 +29,7 @@ use Stu\Orm\Entity\ShipStorage;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
@@ -300,10 +301,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s WHERE s.user_id = :userId AND s.dock = :tradePostShipId AND s.id IN (
-                    SELECT ss.ships_id FROM %s ss WHERE ss.goods_id = :commodityId AND ss.count >= :amount
+                    SELECT st.ship_id FROM %s st WHERE st.commodity_id = :commodityId AND st.count >= :amount
                 )',
                 Ship::class,
-                ShipStorage::class
+                Storage::class
             )
         )->setParameters([
             'userId' => $userId,

@@ -13,6 +13,7 @@ use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpUser;
+use Stu\Orm\Entity\Storage;
 
 final class ShipRumpRepository extends EntityRepository implements ShipRumpRepositoryInterface
 {
@@ -104,11 +105,11 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                     AND r.id IN (
                         SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
                     ) AND r.good_id IN (
-                        SELECT cs.goods_id FROM %s cs WHERE cs.colonies_id = :colonyId
+                        SELECT st.commodity_id FROM %s st WHERE st.colony_id = :colonyId
                     )',
                     ShipRump::class,
                     ShipRumpUser::class,
-                    ColonyStorage::class
+                    Storage::class
                 )
             )
             ->setParameters([
