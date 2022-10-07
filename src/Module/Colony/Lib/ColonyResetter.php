@@ -11,7 +11,6 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
-use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -23,8 +22,6 @@ final class ColonyResetter implements ColonyResetterInterface
     private ColonyRepositoryInterface $colonyRepository;
 
     private UserRepositoryInterface $userRepository;
-
-    private ColonyStorageRepositoryInterface $colonyStorageRepository;
 
     private StorageRepositoryInterface $storageRepository;
 
@@ -41,7 +38,6 @@ final class ColonyResetter implements ColonyResetterInterface
     public function __construct(
         ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository,
-        ColonyStorageRepositoryInterface $colonyStorageRepository,
         StorageRepositoryInterface $storageRepository,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
@@ -51,7 +47,6 @@ final class ColonyResetter implements ColonyResetterInterface
     ) {
         $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
-        $this->colonyStorageRepository = $colonyStorageRepository;
         $this->storageRepository = $storageRepository;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
@@ -80,7 +75,6 @@ final class ColonyResetter implements ColonyResetterInterface
 
         $this->colonyRepository->save($colony);
 
-        $this->colonyStorageRepository->truncateByColony($colony);
         $this->storageRepository->truncateByColony($colony);
 
         foreach ($this->colonyTerraformingRepository->getByColony([$colony]) as $fieldTerraforming) {

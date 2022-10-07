@@ -11,12 +11,9 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
-use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class TakeOffer implements ActionControllerInterface
@@ -27,13 +24,9 @@ final class TakeOffer implements ActionControllerInterface
 
     private TradeLibFactoryInterface $tradeLibFactory;
 
-    private TradePostRepositoryInterface $tradePostRepository;
-
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
@@ -44,20 +37,16 @@ final class TakeOffer implements ActionControllerInterface
     public function __construct(
         TakeOfferRequestInterface $takeOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         TradeTransactionRepositoryInterface $tradeTransactionRepository,
         StorageRepositoryInterface $storageRepository
     ) {
         $this->takeOfferRequest = $takeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->tradeStorageRepository = $tradeStorageRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->tradeTransactionRepository = $tradeTransactionRepository;
         $this->storageRepository = $storageRepository;
@@ -92,7 +81,7 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
-        $storage = $this->tradeStorageRepository->getByTradepostAndUserAndCommodity(
+        $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
             $selectedOffer->getTradePostId(),
             $userId,
             $selectedOffer->getWantedGoodId()
@@ -106,11 +95,7 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
-        /** @var TradePostInterface $tradePost */
-        $tradePost = $this->tradePostRepository->find((int) $storage->getTradePostId());
-        if ($tradePost === null) {
-            return;
-        }
+        $tradePost = $storage->getTradePost();
 
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
         $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradePost, (int) $selectedOffer->getUserId());

@@ -15,8 +15,8 @@ use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 
 final class ShowTradeMenuPayment implements ViewControllerInterface
@@ -33,7 +33,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
-    private TradeStorageRepositoryInterface $tradeStorageRepository;
+    private StorageRepositoryInterface $storageRepository;
 
     private ShipRepositoryInterface $shipRepository;
 
@@ -47,7 +47,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository,
+        StorageRepositoryInterface $storageRepository,
         ShipRepositoryInterface $shipRepository,
         CommodityRepositoryInterface $commodityRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -57,7 +57,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
-        $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->storageRepository = $storageRepository;
         $this->shipRepository = $shipRepository;
         $this->commodityRepository = $commodityRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -115,7 +115,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
             $game->setTemplateVar(
                 'ACCOUNTS_FOR_LICENSE',
-                $this->tradeStorageRepository->getByTradeNetworkAndUserAndCommodityAmount(
+                $this->storageRepository->getByTradeNetworkAndUserAndCommodityAmount(
                     $tradepost->getTradeNetwork(),
                     $userId,
                     $commodityId,

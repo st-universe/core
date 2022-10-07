@@ -260,13 +260,13 @@ class Ship implements ShipInterface
      * @OneToMany(targetEntity="ShipStorage", mappedBy="ship", indexBy="goods_id")
      * @OrderBy({"goods_id" = "ASC"})
      */
-    private $storage;
+    private $storageOld;
 
     /**
      * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
      * @OrderBy({"commodity_id" = "ASC"})
      */
-    private $storageNew;
+    private $storage;
 
     /**
      * @ManyToOne(targetEntity="Map")
@@ -296,8 +296,8 @@ class Ship implements ShipInterface
         $this->dockingPrivileges = new ArrayCollection();
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
+        $this->storageOld = new ArrayCollection();
         $this->storage = new ArrayCollection();
-        $this->storageNew = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1196,15 +1196,10 @@ class Ship implements ShipInterface
         return $this->storage;
     }
 
-    public function getStorageNew(): Collection
-    {
-        return $this->storageNew;
-    }
-
     public function getStorageSum(): int
     {
         return array_reduce(
-            $this->getStorageNew()->getValues(),
+            $this->getStorage()->getValues(),
             function (int $sum, StorageInterface $storage): int {
                 return $sum + $storage->getAmount();
             },
@@ -1220,7 +1215,7 @@ class Ship implements ShipInterface
     public function getBeamableStorage(): array
     {
         return array_filter(
-            $this->getStorageNew()->getValues(),
+            $this->getStorage()->getValues(),
             function (StorageInterface $storage): bool {
                 return $storage->getCommodity()->isBeamable() === true;
             }
@@ -1887,7 +1882,7 @@ class Ship implements ShipInterface
     {
         $shuttles = [];
 
-        foreach ($this->getStorageNew() as $stor) {
+        foreach ($this->getStorage() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 $shuttles[] = $stor->getCommodity();
             }
@@ -1900,7 +1895,7 @@ class Ship implements ShipInterface
     {
         $count = 0;
 
-        foreach ($this->getStorageNew() as $stor) {
+        foreach ($this->getStorage() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 $count += $stor->getAmount();
             }

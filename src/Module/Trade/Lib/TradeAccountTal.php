@@ -5,13 +5,12 @@ declare(strict_types=0);
 
 namespace Stu\Module\Trade\Lib;
 
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\TradeStorageInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 final class TradeAccountTal implements TradeAccountTalInterface
@@ -22,7 +21,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
 
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
-    private TradeStorageRepositoryInterface $tradeStorageRepository;
+    private StorageRepositoryInterface $storageRepository;
 
     private TradePostInterface $tradePost;
 
@@ -34,14 +33,14 @@ final class TradeAccountTal implements TradeAccountTalInterface
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository,
+        StorageRepositoryInterface $storageRepository,
         TradePostInterface $tradePost,
         int $userId
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->storageRepository = $storageRepository;
         $this->tradePost = $tradePost;
         $this->userId = $userId;
     }
@@ -79,7 +78,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
     public function getStorage(): array
     {
         if ($this->storage === null) {
-            $this->storage = $this->tradeStorageRepository->getByTradePostAndUser(
+            $this->storage = $this->storageRepository->getByTradePostAndUser(
                 $this->tradePost->getId(),
                 $this->userId
             );

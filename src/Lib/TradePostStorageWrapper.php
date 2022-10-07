@@ -6,7 +6,7 @@ namespace Stu\Lib;
 
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 
 class TradePostStorageWrapper
 {
@@ -58,7 +58,7 @@ class TradePostStorageWrapper
 
         if ($this->storageSum === null) {
             $sum = 0;
-            $sum += $container->get(TradeStorageRepositoryInterface::class)->getSumByTradePostAndUser(
+            $sum += $container->get(StorageRepositoryInterface::class)->getSumByTradePostAndUser(
                 (int) $this->getTradePostId(),
                 (int) $this->getUserId()
             );

@@ -31,17 +31,4 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
 
         $em->remove($post);
     }
-
-    public function truncateByColony(ColonyInterface $colony): void
-    {
-        $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'DELETE FROM %s cs WHERE cs.colonies_id = :colony',
-                    ColonyStorage::class
-                )
-            )
-            ->setParameter('colony', $colony)
-            ->execute();
-    }
 }

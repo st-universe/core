@@ -269,14 +269,9 @@ interface ShipInterface
     public function setTorpedo(?TorpedoTypeInterface $torpedoType): ShipInterface;
 
     /**
-     * @return ShipStorageInterface[] Indexed by commodityId, ordered by commodityId
-     */
-    public function getStorage(): Collection;
-
-    /**
      * @return StorageInterface[] Indexed by commodityId, ordered by commodityId
      */
-    public function getStorageNew(): Collection;
+    public function getStorage(): Collection;
 
     public function getStorageSum(): int;
 

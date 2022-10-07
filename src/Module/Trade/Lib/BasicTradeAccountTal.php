@@ -11,11 +11,11 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\TradeStorageInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
 {
-    private TradeStorageRepositoryInterface $tradeStorageRepository;
+    private StorageRepositoryInterface $storageRepository;
 
     private TradePostInterface $tradePost;
 
@@ -30,14 +30,14 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        TradeStorageRepositoryInterface $tradeStorageRepository,
+        StorageRepositoryInterface $storageRepository,
         TradePostInterface $tradePost,
         array $basicTrades,
         int $userId,
         CommodityRepositoryInterface $commodityRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->storageRepository = $storageRepository;
         $this->tradePost = $tradePost;
         $this->basicTrades = $basicTrades;
         $this->userId = $userId;
@@ -84,7 +84,7 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
     private function getStorage(): array
     {
         if ($this->storage === null) {
-            $this->storage = $this->tradeStorageRepository->getByTradePostAndUser(
+            $this->storage = $this->storageRepository->getByTradePostAndUser(
                 $this->tradePost->getId(),
                 $this->userId
             );

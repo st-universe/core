@@ -11,7 +11,6 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -22,8 +21,6 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     private TradeTransferRepositoryInterface $tradeTransferRepository;
 
     private TradeOfferRepositoryInterface $tradeOfferRepository;
-
-    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
     private StorageRepositoryInterface $storageRepository;
 
@@ -37,7 +34,6 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository,
         StorageRepositoryInterface $storageRepository,
         CommodityRepositoryInterface $commodityRepository,
         UserRepositoryInterface $userRepository,
@@ -46,7 +42,6 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->tradeStorageRepository = $tradeStorageRepository;
         $this->storageRepository = $storageRepository;
         $this->commodityRepository = $commodityRepository;
         $this->userRepository = $userRepository;
@@ -61,7 +56,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
             $this->tradeLicenseRepository,
             $this->tradeTransferRepository,
             $this->tradeOfferRepository,
-            $this->tradeStorageRepository,
+            $this->storageRepository,
             $tradePost,
             $userId
         );
@@ -80,7 +75,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         );
 
         return new BasicTradeAccountTal(
-            $this->tradeStorageRepository,
+            $this->storageRepository,
             $tradePost,
             $filteredBasicTrades,
             $userId,
@@ -94,7 +89,6 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         int $userId
     ): TradePostStorageManagerInterface {
         return new TradePostStorageManager(
-            $this->tradeStorageRepository,
             $this->storageRepository,
             $this->commodityRepository,
             $this->userRepository,

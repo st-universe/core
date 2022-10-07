@@ -13,6 +13,4 @@ interface ColonyStorageRepositoryInterface extends ObjectRepository
     public function save(ColonyStorageInterface $post): void;
 
     public function delete(ColonyStorageInterface $post): void;
-
-    public function truncateByColony(ColonyInterface $colony): void;
 }

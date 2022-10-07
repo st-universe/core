@@ -133,14 +133,9 @@ interface ColonyInterface
     public function getBeamableStorage(): array;
 
     /**
-     * @return ColonyStorageInterface[]
-     */
-    public function getStorage(): Collection;
-
-    /**
      * @return StorageInterface[]
      */
-    public function getStorageNew(): Collection;
+    public function getStorage(): Collection;
 
     public function isDefended(): bool;
 

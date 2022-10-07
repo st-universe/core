@@ -126,13 +126,13 @@ class Colony implements ColonyInterface
      * @OneToMany(targetEntity="ColonyStorage", mappedBy="colony", indexBy="goods_id")
      * @OrderBy({"goods_id" = "ASC"})
      */
-    private $storage;
+    private $storageOld;
 
     /**
      * @OneToMany(targetEntity="Storage", mappedBy="colony", indexBy="commodity_id")
      * @OrderBy({"commodity_id" = "ASC"})
      */
-    private $storageNew;
+    private $storage;
 
     /**
      * @ManyToOne(targetEntity="TorpedoType")
@@ -171,8 +171,8 @@ class Colony implements ColonyInterface
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
+        $this->storageOld = new ArrayCollection();
         $this->storage = new ArrayCollection();
-        $this->storageNew = new ArrayCollection();
         $this->defenders = new ArrayCollection();
         $this->blockers = new ArrayCollection();
     }
@@ -531,7 +531,7 @@ class Colony implements ColonyInterface
     public function getStorageSum(): int
     {
         return array_reduce(
-            $this->getStorageNew()->getValues(),
+            $this->getStorage()->getValues(),
             function (int $sum, StorageInterface $storage): int {
                 return $sum + $storage->getAmount();
             },
@@ -583,7 +583,7 @@ class Colony implements ColonyInterface
     public function getBeamableStorage(): array
     {
         $filteredArray = array_filter(
-            $this->getStorageNew()->getValues(),
+            $this->getStorage()->getValues(),
             function (StorageInterface $storage): bool {
                 return $storage->getCommodity()->isBeamable() === true;
             }
@@ -595,11 +595,6 @@ class Colony implements ColonyInterface
     public function getStorage(): Collection
     {
         return $this->storage;
-    }
-
-    public function getStorageNew(): Collection
-    {
-        return $this->storageNew;
     }
 
     public function isDefended(): bool

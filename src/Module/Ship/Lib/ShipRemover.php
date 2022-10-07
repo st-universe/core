@@ -17,7 +17,6 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
-use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -25,8 +24,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class ShipRemover implements ShipRemoverInterface
 {
     private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private ShipStorageRepositoryInterface $shipStorageRepository;
 
     private StorageRepositoryInterface $storageRepository;
 
@@ -54,7 +51,6 @@ final class ShipRemover implements ShipRemoverInterface
 
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipStorageRepositoryInterface $shipStorageRepository,
         StorageRepositoryInterface $storageRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
@@ -69,7 +65,6 @@ final class ShipRemover implements ShipRemoverInterface
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
-        $this->shipStorageRepository = $shipStorageRepository;
         $this->storageRepository = $storageRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
@@ -221,9 +216,6 @@ final class ShipRemover implements ShipRemoverInterface
         }
 
         foreach ($ship->getStorage() as $item) {
-            $this->shipStorageRepository->delete($item);
-        }
-        foreach ($ship->getStorageNew() as $item) {
             $this->storageRepository->delete($item);
         }
 

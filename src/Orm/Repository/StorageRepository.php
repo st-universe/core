@@ -155,6 +155,60 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ])->getResult();
     }
 
+    public function getSumByTradePostAndUser(int $tradePostId, int $userId): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT SUM(s.count) FROM %s s WHERE s.tradepost_id = :tradePostId AND s.user_id = :userId',
+                    Storage::class
+                )
+            )
+            ->setParameters([
+                'tradePostId' => $tradePostId,
+                'userId' => $userId
+            ])
+            ->getSingleScalarResult();
+    }
+
+    public function getByTradepostAndUserAndCommodity(
+        int $tradePostId,
+        int $userId,
+        int $commodityId
+    ): ?StorageInterface {
+        return $this->findOneBy([
+            'tradepost_id' => $tradePostId,
+            'user_id' => $userId,
+            'commodity_id' => $commodityId
+        ]);
+    }
+
+    public function getByTradeNetworkAndUserAndCommodityAmount(
+        int $tradeNetwork,
+        int $userId,
+        int $commodityId,
+        int $amount
+    ): array {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s WHERE
+                        s.tradepost_id IN (SELECT tp.id FROM %s tp WHERE tp.trade_network = :tradeNetwork) AND
+                        s.user_id = :userId AND s.commodity_id = :commodityId AND s.count >= :amount
+                    ',
+                    Storage::class,
+                    TradePost::class
+                )
+            )
+            ->setParameters([
+                'tradeNetwork' => $tradeNetwork,
+                'userId' => $userId,
+                'commodityId' => $commodityId,
+                'amount' => $amount
+            ])
+            ->getResult();
+    }
+
     public function getLatinumTop10(): array
     {
         $rsm = new ResultSetMapping();

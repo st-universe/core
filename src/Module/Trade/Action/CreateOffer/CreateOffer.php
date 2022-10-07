@@ -16,7 +16,6 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class CreateOffer implements ActionControllerInterface
 {
@@ -30,8 +29,6 @@ final class CreateOffer implements ActionControllerInterface
 
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
-    private TradeStorageRepositoryInterface $tradeStorageRepository;
-
     private StorageRepositoryInterface $storageRepository;
 
     public function __construct(
@@ -39,14 +36,12 @@ final class CreateOffer implements ActionControllerInterface
         CommodityRepositoryInterface $commodityRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradeOfferRepositoryInterface $tradeOfferRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository,
         StorageRepositoryInterface $storageRepository
     ) {
         $this->createOfferRequest = $createOfferRequest;
         $this->commodityRepository = $commodityRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradeOfferRepository = $tradeOfferRepository;
-        $this->tradeStorageRepository = $tradeStorageRepository;
         $this->storageRepository = $storageRepository;
     }
 
@@ -56,7 +51,7 @@ final class CreateOffer implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $storage = $this->tradeStorageRepository->find($this->createOfferRequest->getStorageId());
+        $storage = $this->storageRepository->find($this->createOfferRequest->getStorageId());
         if ($storage === null) {
             throw new AccessViolation(sprintf("Storage not existent! Fool: %d", $userId));
         }

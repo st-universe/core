@@ -6,6 +6,9 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StorageInterface;
 
+/**
+ * @method null|StorageInterface find(integer $id)
+ */
 interface StorageRepositoryInterface extends ObjectRepository
 {
     public function prototype(): StorageInterface;
@@ -31,6 +34,24 @@ interface StorageRepositoryInterface extends ObjectRepository
      * @return StorageInterface[]
      */
     public function getByTradePostAndUser(int $tradePostId, int $userId): array;
+
+    public function getSumByTradePostAndUser(int $tradePostId, int $userId): int;
+
+    public function getByTradepostAndUserAndCommodity(
+        int $tradePostId,
+        int $userId,
+        int $commodityId
+    ): ?StorageInterface;
+
+    /**
+     * @return StorageInterface[]
+     */
+    public function getByTradeNetworkAndUserAndCommodityAmount(
+        int $tradeNetwork,
+        int $userId,
+        int $commodityId,
+        int $amount
+    ): array;
 
     public function getLatinumTop10(): array;
 

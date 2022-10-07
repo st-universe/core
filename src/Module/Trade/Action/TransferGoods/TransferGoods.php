@@ -9,9 +9,9 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 final class TransferGoods implements ActionControllerInterface
@@ -28,7 +28,7 @@ final class TransferGoods implements ActionControllerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
-    private TradeStorageRepositoryInterface $tradeStorageRepository;
+    private StorageRepositoryInterface $storageRepository;
 
     public function __construct(
         TransferGoodsRequestInterface $transferGoodsRequest,
@@ -36,14 +36,14 @@ final class TransferGoods implements ActionControllerInterface
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository
+        StorageRepositoryInterface $storageRepository
     ) {
         $this->transferGoodsRequest = $transferGoodsRequest;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
-        $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->storageRepository = $storageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,7 +59,7 @@ final class TransferGoods implements ActionControllerInterface
         }
 
         $storageId = $this->transferGoodsRequest->getStorageId();
-        $selectedStorage = $this->tradeStorageRepository->find($storageId);
+        $selectedStorage = $this->storageRepository->find($storageId);
         if ($selectedStorage === null) {
             throw new AccessViolation(sprintf(_('userId %d tried to transfer non-existent storageId %d'), $userId, $storageId));
         }
@@ -108,8 +108,8 @@ final class TransferGoods implements ActionControllerInterface
         }
         $amount = (int) min(min($freeStorage, $amount), $freeTransferCapacity);
 
-        $storageManagerTarget->upperStorage((int) $selectedStorage->getGoodId(), $amount);
-        $storageManager->lowerStorage((int) $selectedStorage->getGoodId(), $amount);
+        $storageManagerTarget->upperStorage($selectedStorage->getCommodityId(), $amount);
+        $storageManager->lowerStorage($selectedStorage->getCommodityId(), $amount);
 
         $transfer = $this->tradeTransferRepository->prototype();
         $transfer->setTradePost($tradepost);
@@ -123,7 +123,7 @@ final class TransferGoods implements ActionControllerInterface
             sprintf(
                 _('Es wurde %d %s zum %s transferiert'),
                 $amount,
-                $selectedStorage->getGood()->getName(),
+                $selectedStorage->getCommodity()->getName(),
                 $targetpost->getName()
             )
         );
