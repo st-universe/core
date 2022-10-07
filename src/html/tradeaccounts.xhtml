@@ -36,8 +36,8 @@
 							<div style="float: left; width: 100px;" tal:repeat="stor data/getStorage">
 								<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})"
 									style="display: block; padding: 4px;" class="tradebutton">
-									<img src="assets/goods/${stor/getGood/getId}.png"
-										tal:attributes="title stor/getGood/getName" /> <span
+									<img src="assets/goods/${stor/getCommodity/getId}.png"
+										tal:attributes="title stor/getCommodity/getName" /> <span
 										tal:replace="stor/getAmount">COUNT</span>
 								</a>
 							</div>
