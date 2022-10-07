@@ -523,7 +523,10 @@ final class GameController implements GameControllerInterface
         $gameRequest->setModule($module);
         $gameRequest->setTime(time());
         $gameRequest->setTurnId($this->getCurrentRound());
-        $gameRequest->setParams(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
+        $requestArray = request::isPost() ? request::postvars() : request::getvars();
+        if (!empty($requestArray)) {
+            $gameRequest->setParams(print_r($requestArray, true));
+        }
 
         try {
             $this->session->createSession($session_check);
