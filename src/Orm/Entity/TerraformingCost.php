@@ -25,14 +25,14 @@ class TerraformingCost implements TerraformingCostInterface
     private $terraforming_id = 0;
 
     /** @Column(type="integer") * */
-    private $goods_id = 0;
+    private $commodity_id = 0;
 
     /** @Column(type="integer") * */
     private $count = 0;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
-     * @JoinColumn(name="goods_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
@@ -61,12 +61,12 @@ class TerraformingCost implements TerraformingCostInterface
 
     public function getCommodityId(): int
     {
-        return $this->goods_id;
+        return $this->commodity_id;
     }
 
     public function setCommodityId(int $commodityId): TerraformingCostInterface
     {
-        $this->goods_id = $commodityId;
+        $this->commodity_id = $commodityId;
 
         return $this;
     }

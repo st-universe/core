@@ -26,14 +26,14 @@ class ModuleCost implements ModuleCostInterface
     private $module_id = 0;
 
     /** @Column(type="integer") * */
-    private $good_id = 0;
+    private $commodity_id = 0;
 
     /** @Column(type="integer") * */
     private $count = 0;
 
     /**
      * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
@@ -62,12 +62,12 @@ class ModuleCost implements ModuleCostInterface
 
     public function getCommodityId(): int
     {
-        return $this->good_id;
+        return $this->commodity_id;
     }
 
     public function setCommodityId(int $commodityId): ModuleCostInterface
     {
-        $this->good_id = $commodityId;
+        $this->commodity_id = $commodityId;
 
         return $this;
     }
@@ -88,5 +88,4 @@ class ModuleCost implements ModuleCostInterface
     {
         return $this->commodity;
     }
-
 }

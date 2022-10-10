@@ -47,7 +47,7 @@ class TorpedoType implements TorpedoTypeInterface
     private $variance = 0;
 
     /** @Column(type="integer") * */
-    private $good_id = 0;
+    private $commodity_id = 0;
 
     /** @Column(type="integer") * */
     private $level = 0;
@@ -68,7 +68,7 @@ class TorpedoType implements TorpedoTypeInterface
 
     /**
      * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="good_id", referencedColumnName="id")
+     * @JoinColumn(name="commodity_id", referencedColumnName="id")
      */
     private $commodity;
 
@@ -168,12 +168,12 @@ class TorpedoType implements TorpedoTypeInterface
 
     public function getCommodityId(): int
     {
-        return $this->good_id;
+        return $this->commodity_id;
     }
 
     public function setCommodityId(int $commodityId): TorpedoTypeInterface
     {
-        $this->good_id = $commodityId;
+        $this->commodity_id = $commodityId;
 
         return $this;
     }

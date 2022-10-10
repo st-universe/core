@@ -42,7 +42,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         return $this->getEntityManager()->createNativeQuery(
             'SELECT s.commodity_id AS commodity_id, SUM(s.count) AS amount
             FROM stu_storage s
-            JOIN stu_goods g
+            JOIN stu_commodity g
             ON s.commodity_id = g.id
             WHERE s.user_id = :userId
             GROUP BY s.commodity_id, g.sort
@@ -84,7 +84,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         return $this->getEntityManager()->createNativeQuery(
             'SELECT s.commodity_id AS commodity_id, s.ship_id AS ships_id, s.count AS amount
             FROM stu_storage s
-            LEFT JOIN stu_goods g ON g.id = s.commodity_id
+            LEFT JOIN stu_commodity g ON g.id = s.commodity_id
             WHERE s.user_id = :userId
             AND s.ship_id IS NOT NULL
             AND s.commodity_id = :commodityId

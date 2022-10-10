@@ -26,7 +26,7 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
     private $posts_id = 0;
 
     /** @Column(type="integer") * */
-    private $goods_id = 0;
+    private $commodity_id = 0;
 
     /** @Column(type="integer") * */
     private $amount = 0;
@@ -69,12 +69,12 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
 
     public function getCommodityId(): int
     {
-        return $this->goods_id;
+        return $this->commodity_id;
     }
 
     public function setCommodityId(int $commodityId): TradeLicenseInfoInterface
     {
-        $this->goods_id = $commodityId;
+        $this->commodity_id = $commodityId;
 
         return $this;
     }

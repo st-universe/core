@@ -22,7 +22,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->createNativeQuery(
                 'SELECT
                         m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew,
-                        m.type, m.research_id, m.goods_id, m.viewable, m.rumps_role_id, m.ecost
+                        m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost
                     FROM stu_modules m
                     WHERE m.type = :typeId
                     AND (SELECT CASE WHEN (SELECT count(id)
@@ -32,7 +32,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     THEN m.rumps_role_id IS NULL
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
-					AND (m.viewable = :state OR m.goods_id IN (SELECT commodity_id
+					AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
                                                                 FROM stu_storage
                                                                 WHERE colony_id = :colonyId))
                     AND m.id IN (SELECT module_id
@@ -64,7 +64,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->createNativeQuery(
                 'SELECT
                         m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew,
-                        m.type, m.research_id, m.goods_id, m.viewable, m.rumps_role_id, m.ecost
+                        m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost
                     FROM stu_modules m
                     WHERE m.type = :typeId
                     AND (SELECT CASE WHEN (SELECT count(id)
@@ -74,7 +74,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     THEN m.rumps_role_id IS NULL
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
-					AND (m.viewable = :state OR m.goods_id IN (SELECT commodity_id
+					AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
                                                                 FROM stu_storage
                                                                 WHERE ship_id = :shipId))
                     AND m.id IN (SELECT module_id
@@ -107,7 +107,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->createNativeQuery(
                 'SELECT
                         m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew,
-                        m.type, m.research_id, m.goods_id, m.viewable, m.rumps_role_id, m.ecost
+                        m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost
                     FROM stu_modules m
                     WHERE m.type = :typeId
                     AND (SELECT CASE WHEN (SELECT count(id)
@@ -118,7 +118,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                                     ELSE m.rumps_role_id = :shipRumpRoleId
                                 END)
 					AND level IN (:levelList)
-					AND (m.viewable = :state OR m.goods_id IN (SELECT commodity_id
+					AND (m.viewable = :state OR m.commodity_id IN (SELECT commodity_id
                                                                 FROM stu_storage
                                                                 WHERE colony_id = :colonyId))
                     ORDER BY m.level ASC
@@ -145,7 +145,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT
-                        m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew, m.type, m.research_id, m.goods_id, m.viewable, m.rumps_role_id, m.ecost
+                        m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew, m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost
                     FROM stu_modules m WHERE m.type = :typeId AND (SELECT CASE WHEN (SELECT count(id) FROM stu_modules where type = :typeId AND rumps_role_id = :shipRumpRoleId) = 0 THEN m.rumps_role_id IS NULL ELSE m.rumps_role_id = :shipRumpRoleId END)
 					AND level IN (:levelList)
                 ',
@@ -187,7 +187,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         $rsm->addFieldResult('m', 'crew', 'crew');
         $rsm->addFieldResult('m', 'type', 'type');
         $rsm->addFieldResult('m', 'research_id', 'research_id');
-        $rsm->addFieldResult('m', 'goods_id', 'goods_id');
+        $rsm->addFieldResult('m', 'commodity_id', 'commodity_id');
         $rsm->addFieldResult('m', 'viewable', 'viewable');
         $rsm->addFieldResult('m', 'rumps_role_id', 'rumps_role_id');
         $rsm->addFieldResult('m', 'ecost', 'ecost');

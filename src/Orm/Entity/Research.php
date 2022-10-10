@@ -36,7 +36,7 @@ class Research implements ResearchInterface
     private $points;
 
     /** @Column(type="integer") * */
-    private $good_id;
+    private $commodity_id;
 
     /** @Column(type="smallint") * */
     private $upper_planetlimit;
@@ -55,7 +55,7 @@ class Research implements ResearchInterface
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
-     * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
@@ -150,12 +150,12 @@ class Research implements ResearchInterface
 
     public function getCommodityId(): int
     {
-        return $this->good_id;
+        return $this->commodity_id;
     }
 
     public function setCommodityId(int $commodityId): ResearchInterface
     {
-        $this->good_id = $commodityId;
+        $this->commodity_id = $commodityId;
 
         return $this;
     }

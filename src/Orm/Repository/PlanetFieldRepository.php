@@ -130,7 +130,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
-                    SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count < 0
+                    SELECT bg.buildings_id FROM %s bg WHERE bg.commodity_id = :commodityId AND bg.count < 0
                 ) AND f.aktiv IN (:state)',
                 PlanetField::class,
                 BuildingCommodity::class
@@ -149,7 +149,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
-                    SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count > 0
+                    SELECT bg.buildings_id FROM %s bg WHERE bg.commodity_id = :commodityId AND bg.count > 0
                 )',
                 PlanetField::class,
                 BuildingCommodity::class

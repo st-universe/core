@@ -7,10 +7,10 @@ namespace Stu\Orm\Entity;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingCommodityRepository")
  * @Table(
- *     name="stu_buildings_goods",
+ *     name="stu_buildings_commodity",
  *     indexes={
- *          @Index(name="building_good_building_idx", columns={"buildings_id"}),
- *          @Index(name="good_count_idx", columns={"goods_id","count"})
+ *          @Index(name="building_commodity_building_idx", columns={"buildings_id"}),
+ *          @Index(name="commodity_count_idx", columns={"commodity_id","count"})
  * })
  **/
 class BuildingCommodity implements BuildingCommodityInterface
@@ -26,14 +26,14 @@ class BuildingCommodity implements BuildingCommodityInterface
     private $buildings_id = 0;
 
     /** @Column(type="integer") * */
-    private $goods_id = 0;
+    private $commodity_id = 0;
 
     /** @Column(type="integer") * */
     private $count = 0;
 
     /**
      * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="goods_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
@@ -62,12 +62,12 @@ class BuildingCommodity implements BuildingCommodityInterface
 
     public function getCommodityId(): int
     {
-        return $this->goods_id;
+        return $this->commodity_id;
     }
 
     public function setCommodityId(int $commodityId): BuildingCommodityInterface
     {
-        $this->goods_id = $commodityId;
+        $this->commodity_id = $commodityId;
 
         return $this;
     }

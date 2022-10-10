@@ -19,8 +19,8 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         $rsm->addFieldResult('c', 'name', 'name');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT c.id,c.name,c.sort,c.view,c.type, c.npc_good FROM stu_goods c WHERE c.id IN (
-                        SELECT bg.goods_id FROM stu_buildings_goods bg WHERE bg.buildings_id IN (
+            'SELECT c.id,c.name,c.sort,c.view,c.type, c.npc_commodity FROM stu_commodity c WHERE c.id IN (
+                        SELECT bg.commodity_id FROM stu_buildings_commodity bg WHERE bg.buildings_id IN (
                             SELECT cfd.buildings_id FROM stu_colonies_fielddata cfd WHERE cfd.colonies_id = :colonyId
                 )
             ) ORDER BY c.name ASC',
@@ -48,7 +48,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
     {
         return $this->findBy([
             'view' => true,
-            'npc_good' => false,
+            'npc_commodity' => false,
             'type' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD
         ], ['sort' => 'asc']);
     }

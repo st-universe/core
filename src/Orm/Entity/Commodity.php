@@ -8,7 +8,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\CommodityRepository")
- * @Table(name="stu_goods",indexes={
+ * @Table(name="stu_commodity",indexes={
  * })
  **/
 class Commodity implements CommodityInterface
@@ -33,7 +33,7 @@ class Commodity implements CommodityInterface
     private $type = CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
 
     /** @Column(type="boolean") * */
-    private $npc_good = false;
+    private $npc_commodity = false;
 
     public function getId(): int
     {
@@ -90,7 +90,7 @@ class Commodity implements CommodityInterface
 
     public function isTradeable(): bool
     {
-        return $this->isBeamable() && $this->npc_good === false;
+        return $this->isBeamable() && $this->npc_commodity === false;
     }
 
     public function isBeamable(): bool
