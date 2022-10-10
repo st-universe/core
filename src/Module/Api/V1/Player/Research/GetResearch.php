@@ -59,8 +59,8 @@ final class GetResearch extends Action
             'description' => $tech->getDescription(),
             'points' => $tech->getPoints(),
             'commodity' => [
-                'commodityId' => $tech->getGood()->getId(),
-                'name' => $tech->getGood()->getName()
+                'commodityId' => $tech->getCommodity()->getId(),
+                'name' => $tech->getCommodity()->getName()
             ]
         ]);
     }

@@ -37,7 +37,7 @@ final class ShowLicenseInfo implements ViewControllerInterface
 
         //TODO sanity checks, postId not present? licenseInfo not present?
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradePostId);
-        $commodityId = $licenseInfo->getGoodsId();
+        $commodityId = $licenseInfo->getCommodityId();
         $commodityName = $this->commodityRepository->find($commodityId)->getName();
 
         $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradelicenseinfo');
@@ -45,8 +45,8 @@ final class ShowLicenseInfo implements ViewControllerInterface
             _('Lizenzinformation')
         ));
         $game->setTemplateVar('TRADEPOST', $tradePostId);
-        $game->setTemplateVar('LICENSEGOOD', $commodityId);
-        $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
+        $game->setTemplateVar('LICENSECOMMODITY', $commodityId);
+        $game->setTemplateVar('LICENSECOMMODITYNAME', $commodityName);
         $game->setTemplateVar('LICENSECOST', $licenseInfo->getAmount());
         $game->setTemplateVar('LICENSEDAYS', $licenseInfo->getDays());
         $game->setTemplateVar('LICENSEDATE', $licenseInfo->getDate());

@@ -23,7 +23,7 @@ class TradePostStorageWrapper
 
     public function addStorageEntry($stor)
     {
-        $this->storage[$stor->getGoodId()] = $stor;
+        $this->storage[$stor->getCommodityId()] = $stor;
     }
 
     public function getStorage()

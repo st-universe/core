@@ -36,8 +36,8 @@ final class BuildConstruction implements ActionControllerInterface
     public const NEEDED_WORKBEES = 5;
 
     public const NEEDED_RESOURCES = [
-        CommodityTypeEnum::GOOD_BUILDING_MATERIALS => 100,
-        CommodityTypeEnum::GOOD_DURANIUM => 50
+        CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS => 100,
+        CommodityTypeEnum::COMMODITY_DURANIUM => 50
     ];
 
     private ShipRepositoryInterface $shipRepository;

@@ -15,7 +15,7 @@ final class CreateOfferRequest implements CreateOfferRequestInterface
         return $this->bodyParameter('storid')->int()->required();
     }
 
-    public function getWantedGoodId(): int
+    public function getWantedCommodityId(): int
     {
         return $this->bodyParameter('wgid')->int()->required();
     }
@@ -25,7 +25,7 @@ final class CreateOfferRequest implements CreateOfferRequestInterface
         return $this->bodyParameter('wcount')->int()->defaultsTo(0);
     }
 
-    public function getGiveGoodId(): int
+    public function getGiveCommodityId(): int
     {
         return $this->bodyParameter('ggid')->int()->required();
     }

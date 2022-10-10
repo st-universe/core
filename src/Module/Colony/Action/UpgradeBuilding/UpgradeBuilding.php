@@ -104,21 +104,21 @@ final class UpgradeBuilding implements ActionControllerInterface
         $storage = $colony->getStorage();
 
         /** @var BuildingUpgradeCostInterface $obj */
-        foreach ($upgrade->getUpgradeCosts() as $key => $obj) {
-            if (!$storage->containsKey($obj->getGoodId())) {
+        foreach ($upgrade->getUpgradeCosts() as $obj) {
+            if (!$storage->containsKey($obj->getCommodityId())) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),
-                    $obj->getGood()->getName()
+                    $obj->getCommodity()->getName()
                 );
                 return;
             }
-            if ($obj->getAmount() > $storage[$obj->getGoodId()]->getAmount()) {
+            if ($obj->getAmount() > $storage[$obj->getCommodityId()]->getAmount()) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $obj->getAmount(),
-                    $obj->getGood()->getName(),
-                    $storage[$obj->getGoodId()]->getAmount()
+                    $obj->getCommodity()->getName(),
+                    $storage[$obj->getCommodityId()]->getAmount()
                 );
                 return;
             }
@@ -137,8 +137,8 @@ final class UpgradeBuilding implements ActionControllerInterface
 
         $this->buildingAction->remove($colony, $field, $game, true);
 
-        foreach ($upgrade->getUpgradeCosts() as $key => $obj) {
-            $this->colonyStorageManager->lowerStorage($colony, $obj->getGood(), $obj->getAmount());
+        foreach ($upgrade->getUpgradeCosts() as $obj) {
+            $this->colonyStorageManager->lowerStorage($colony, $obj->getCommodity(), $obj->getAmount());
         }
         // Check for alternative building
         $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\View\ShowOfferGood;
+namespace Stu\Module\Trade\View\ShowOfferCommodity;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class ShowOfferGoodRequest implements ShowOfferGoodRequestInterface
+final class ShowOfferCommodityRequest implements ShowOfferCommodityRequestInterface
 {
     use CustomControllerHelperTrait;
 
@@ -15,8 +15,8 @@ final class ShowOfferGoodRequest implements ShowOfferGoodRequestInterface
         return $this->queryParameter('postid')->int()->required();
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
-        return $this->queryParameter('goodid')->int()->required();
+        return $this->queryParameter('commodityid')->int()->required();
     }
 }

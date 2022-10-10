@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchedRepository")
@@ -114,7 +114,7 @@ class Researched implements ResearchedInterface
     {
         global $container;
 
-        $amount = $container->get(BuildingGoodRepositoryInterface::class)->getProductionByCommodityAndUser($this->getResearch()->getGoodId(), $this->getUserId());
+        $amount = $container->get(BuildingCommodityRepositoryInterface::class)->getProductionByCommodityAndUser($this->getResearch()->getCommodityId(), $this->getUserId());
 
         return max(0, $amount);
     }

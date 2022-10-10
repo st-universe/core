@@ -38,7 +38,7 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $good;
+    private $commodity;
 
     public function getId(): int
     {
@@ -62,14 +62,14 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
         return $this;
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
         return $this->good_id;
     }
 
-    public function setGoodId(int $goodId): TorpedoTypeCostInterface
+    public function setCommodityId(int $commodityId): TorpedoTypeCostInterface
     {
-        $this->good_id = $goodId;
+        $this->good_id = $commodityId;
 
         return $this;
     }
@@ -86,8 +86,8 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
         return $this;
     }
 
-    public function getGood(): CommodityInterface
+    public function getCommodity(): CommodityInterface
     {
-        return $this->good;
+        return $this->commodity;
     }
 }

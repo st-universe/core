@@ -27,7 +27,7 @@ final class CommodityConsumption implements CommodityConsumptionInterface
             if ($proc >= 0) {
                 continue;
             }
-            $ret[$commodityId]['good'] = $this->commodityRepository->find((int)$productionItem->getGoodId());
+            $ret[$commodityId]['commodity'] = $this->commodityRepository->find((int)$productionItem->getCommodityId());
             $ret[$commodityId]['production'] = $productionItem->getProduction();
             if (!$stor->containsKey($commodityId)) {
                 $ret[$commodityId]['storage'] = 0;

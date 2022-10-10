@@ -1,8 +1,8 @@
 <?php
 
-namespace Stu\Module\Trade\Action\TransferGoods;
+namespace Stu\Module\Trade\Action\TransferCommodities;
 
-interface TransferGoodsRequestInterface
+interface TransferCommoditiesRequestInterface
 {
     public function getStorageId(): int;
 

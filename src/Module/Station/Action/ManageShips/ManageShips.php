@@ -280,7 +280,7 @@ final class ManageShips implements ActionControllerInterface
                         $torp_obj = $possibleTorpedoTypes[$shipobj->getTorpedo()->getId()];
                         $load = $count - $shipobj->getTorpedoCount();
                         if ($load > 0) {
-                            if (!$storage->containsKey($torp_obj->getGoodId())) {
+                            if (!$storage->containsKey($torp_obj->getCommodityId())) {
                                 $msg[] = sprintf(
                                     _('%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden'),
                                     $shipobj->getName(),
@@ -288,8 +288,8 @@ final class ManageShips implements ActionControllerInterface
                                 );
                                 throw new Exception();
                             }
-                            if ($load > $storage[$torp_obj->getGoodId()]->getAmount()) {
-                                $load = $storage[$torp_obj->getGoodId()]->getAmount();
+                            if ($load > $storage[$torp_obj->getCommodityId()]->getAmount()) {
+                                $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                             }
                         }
                         $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
@@ -316,7 +316,7 @@ final class ManageShips implements ActionControllerInterface
                         } elseif ($load > 0) {
                             $this->shipStorageManager->lowerStorage(
                                 $station,
-                                $this->commodityRepository->find($torp_obj->getGoodId()),
+                                $this->commodityRepository->find($torp_obj->getCommodityId()),
                                 $load
                             );
 
@@ -330,11 +330,11 @@ final class ManageShips implements ActionControllerInterface
                     } else {
                         $type = (int) $torp_type[$shipobj->getId()];
                         $torp_obj = $this->torpedoTypeRepository->find($type);
-                        if (!$storage->containsKey($torp_obj->getGoodId())) {
+                        if (!$storage->containsKey($torp_obj->getCommodityId())) {
                             throw new Exception;
                         }
-                        if ($count > $storage[$torp_obj->getGoodId()]->getAmount()) {
-                            $count = $storage[$torp_obj->getGoodId()]->getAmount();
+                        if ($count > $storage[$torp_obj->getCommodityId()]->getAmount()) {
+                            $count = $storage[$torp_obj->getCommodityId()]->getAmount();
                         }
                         if ($count > $shipobj->getMaxTorpedos()) {
                             $count = $shipobj->getMaxTorpedos();
@@ -344,7 +344,7 @@ final class ManageShips implements ActionControllerInterface
 
                         $this->shipStorageManager->lowerStorage(
                             $station,
-                            $this->commodityRepository->find($torp_obj->getGoodId()),
+                            $this->commodityRepository->find($torp_obj->getCommodityId()),
                             $count
                         );
 

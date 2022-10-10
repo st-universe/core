@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Database\View\ShowGoodsLocations;
+namespace Stu\Module\Database\View\ShowCommoditiesLocations;
 
 use Stu\Lib\StorageWrapper\StorageWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
-final class ShowGoodsLocations implements ViewControllerInterface
+final class ShowCommoditiesLocations implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_GOODS_LOCATIONS';
+    public const VIEW_IDENTIFIER = 'SHOW_COMMODITIES_LOCATIONS';
 
     private StorageRepositoryInterface $storageRepository;
 
-    private ShowGoodsLocationsRequestInterface $showGoodsLocationsRequest;
+    private ShowCommoditiesLocationsRequestInterface $showCommoditiesLocationsRequest;
 
     public function __construct(
         StorageRepositoryInterface $storageRepository,
-        ShowGoodsLocationsRequestInterface $showGoodsLocationsRequest
+        ShowCommoditiesLocationsRequestInterface $showCommoditiesLocationsRequest
     ) {
         $this->storageRepository = $storageRepository;
-        $this->showGoodsLocationsRequest = $showGoodsLocationsRequest;
+        $this->showCommoditiesLocationsRequest = $showCommoditiesLocationsRequest;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-        $commodityId = $this->showGoodsLocationsRequest->getCommodityId();
+        $commodityId = $this->showCommoditiesLocationsRequest->getCommodityId();
 
         $game->setPageTitle(_('Lagerorte der Ware'));
         $game->setMacroInAjaxWindow('html/databasemacros.xhtml/commodityLocations');

@@ -94,7 +94,7 @@ final class BeamFrom implements ActionControllerInterface
             return;
         }
 
-        $goods = request::postArray('goods');
+        $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
 
         $targetStorage = $target->getStorage();
@@ -103,7 +103,7 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_("Keine Waren zum Beamen vorhanden"));
             return;
         }
-        if (count($goods) == 0 || count($gcount) == 0) {
+        if (count($commodities) == 0 || count($gcount) == 0) {
             $game->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
             return;
         }
@@ -114,7 +114,7 @@ final class BeamFrom implements ActionControllerInterface
                 $target->getName()
             )
         );
-        foreach ($goods as $key => $value) {
+        foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
             if (!$isDockTransfer && $ship->getEps() < 1) {
                 break;

@@ -89,14 +89,14 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             );
         }
 
-        $goods = $this->commodityRepository->getByType(CommodityTypeEnum::GOOD_TYPE_STANDARD);
+        $commodities = $this->commodityRepository->getByType(CommodityTypeEnum::COMMODITY_TYPE_STANDARD);
         $stor = $colony->getStorage();
         $prod = $colony->getProduction();
         $storage = [];
-        foreach ($goods as $value) {
+        foreach ($commodities as $value) {
             $commodityId = $value->getId();
             if (array_key_exists($commodityId, $prod)) {
-                $storage[$commodityId]['good'] = $value;
+                $storage[$commodityId]['commodity'] = $value;
                 $storage[$commodityId]['production'] = $prod[$commodityId];
                 if (!$stor->containsKey($commodityId)) {
                     $storage[$commodityId]['storage'] = false;
@@ -104,20 +104,20 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
                     $storage[$commodityId]['storage'] = $stor[$commodityId];
                 }
             } elseif ($stor->containsKey($commodityId)) {
-                $storage[$commodityId]['good'] = $value;
+                $storage[$commodityId]['commodity'] = $value;
                 $storage[$commodityId]['storage'] = $stor[$commodityId];
                 $storage[$commodityId]['production'] = false;
             }
         }
 
-        $goods = $this->commodityRepository->getByType(CommodityTypeEnum::GOOD_TYPE_EFFECT);
+        $commodities = $this->commodityRepository->getByType(CommodityTypeEnum::COMMODITY_TYPE_EFFECT);
         $effets = [];
-        foreach ($goods as $value) {
+        foreach ($commodities as $value) {
             $commodityId = $value->getId();
             if (!array_key_exists($commodityId, $prod) || $prod[$commodityId]->getProduction() == 0) {
                 continue;
             }
-            $effets[$commodityId]['good'] = $value;
+            $effets[$commodityId]['commodity'] = $value;
             $effets[$commodityId]['production'] = $prod[$commodityId];
         }
 

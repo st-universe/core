@@ -36,9 +36,9 @@ interface TorpedoTypeInterface
 
     public function setVariance(int $variance): TorpedoTypeInterface;
 
-    public function getGoodId(): int;
+    public function getCommodityId(): int;
 
-    public function setGoodId(int $goodId): TorpedoTypeInterface;
+    public function setCommodityId(int $commodityId): TorpedoTypeInterface;
 
     public function getLevel(): int;
 

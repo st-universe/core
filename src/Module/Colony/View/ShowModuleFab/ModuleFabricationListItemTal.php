@@ -37,9 +37,9 @@ final class ModuleFabricationListItemTal
         return (int)$this->module->getId();
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
-        return (int)$this->module->getGoodId();
+        return (int)$this->module->getCommodityId();
     }
 
     public function getName(): string
@@ -67,7 +67,7 @@ final class ModuleFabricationListItemTal
 
     public function getAmountInStock(): int
     {
-        $result = $this->colony->getStorage()[$this->getGoodId()] ?? null;
+        $result = $this->colony->getStorage()[$this->getCommodityId()] ?? null;
 
         if ($result === null) {
             return 0;

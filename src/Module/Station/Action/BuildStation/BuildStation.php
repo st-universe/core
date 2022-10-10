@@ -128,7 +128,7 @@ final class BuildStation implements ActionControllerInterface
             }
         }
 
-        // try to consume needed goods
+        // try to consume needed commodities
         if (!$this->consumeNeededModules($ship, $plan, $wantedSpecialModules)) {
             $game->addInformation('Nicht alle erforderlichen Module geladen');
             return;

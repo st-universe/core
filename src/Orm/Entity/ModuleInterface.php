@@ -36,9 +36,9 @@ interface ModuleInterface
 
     public function setResearchId(int $researchId): ModuleInterface;
 
-    public function getGoodId(): int;
+    public function getCommodityId(): int;
 
-    public function setGoodId(int $commodityId): ModuleInterface;
+    public function setCommodityId(int $commodityId): ModuleInterface;
 
     public function getViewable(): bool;
 

@@ -300,7 +300,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $this->loggerUtil->log(sprintf('shipTorpedoId: %d', $shipobj->getTorpedo()->getId()));
                                 $this->loggerUtil->log(sprintf('load: %d', $load));
                             }
-                            if (!$storage->containsKey($torp_obj->getGoodId())) {
+                            if (!$storage->containsKey($torp_obj->getCommodityId())) {
                                 $msg[] = sprintf(
                                     _('%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden'),
                                     $shipobj->getName(),
@@ -308,8 +308,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 );
                                 throw new Exception();
                             }
-                            if ($load > $storage[$torp_obj->getGoodId()]->getAmount()) {
-                                $load = $storage[$torp_obj->getGoodId()]->getAmount();
+                            if ($load > $storage[$torp_obj->getCommodityId()]->getAmount()) {
+                                $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                             }
                         }
                         $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
@@ -336,7 +336,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         } elseif ($load > 0) {
                             $this->colonyStorageManager->lowerStorage(
                                 $colony,
-                                $this->commodityRepository->find($torp_obj->getGoodId()),
+                                $this->commodityRepository->find($torp_obj->getCommodityId()),
                                 $load
                             );
 
@@ -350,11 +350,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     } else {
                         $type = (int) $torp_type[$shipobj->getId()];
                         $torp_obj = $this->torpedoTypeRepository->find($type);
-                        if (!$storage->containsKey($torp_obj->getGoodId())) {
+                        if (!$storage->containsKey($torp_obj->getCommodityId())) {
                             throw new Exception();
                         }
-                        if ($count > $storage[$torp_obj->getGoodId()]->getAmount()) {
-                            $count = $storage[$torp_obj->getGoodId()]->getAmount();
+                        if ($count > $storage[$torp_obj->getCommodityId()]->getAmount()) {
+                            $count = $storage[$torp_obj->getCommodityId()]->getAmount();
                         }
                         if ($count > $shipobj->getMaxTorpedos()) {
                             $count = $shipobj->getMaxTorpedos();
@@ -364,7 +364,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
                         $this->colonyStorageManager->lowerStorage(
                             $colony,
-                            $this->commodityRepository->find($torp_obj->getGoodId()),
+                            $this->commodityRepository->find($torp_obj->getCommodityId()),
                             $count
                         );
 

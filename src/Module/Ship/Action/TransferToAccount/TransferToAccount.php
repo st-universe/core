@@ -89,7 +89,7 @@ final class TransferToAccount implements ActionControllerInterface
             $game->addInformation(_('Dein Warenkonto an diesem Posten ist voll'));
             return;
         }
-        $goods = request::postArray('goods');
+        $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
 
         $shipStorage = $ship->getStorage();
@@ -98,13 +98,13 @@ final class TransferToAccount implements ActionControllerInterface
             $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
-        if (count($goods) == 0 || count($gcount) == 0) {
+        if (count($commodities) == 0 || count($gcount) == 0) {
             $game->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
             return;
         }
         $game->addInformation(_("Es wurden folgende Waren ins Warenkonto transferiert"));
 
-        foreach ($goods as $key => $value) {
+        foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
             if (!array_key_exists($key, $gcount)) {
                 continue;

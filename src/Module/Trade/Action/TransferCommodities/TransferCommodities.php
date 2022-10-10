@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\Action\TransferGoods;
+namespace Stu\Module\Trade\Action\TransferCommodities;
 
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,11 +14,11 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
-final class TransferGoods implements ActionControllerInterface
+final class TransferCommodities implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TRANSFER';
 
-    private TransferGoodsRequestInterface $transferGoodsRequest;
+    private TransferCommoditiesRequestInterface $transferCommoditiesRequest;
 
     private TradeTransferRepositoryInterface $tradeTransferRepository;
 
@@ -31,14 +31,14 @@ final class TransferGoods implements ActionControllerInterface
     private StorageRepositoryInterface $storageRepository;
 
     public function __construct(
-        TransferGoodsRequestInterface $transferGoodsRequest,
+        TransferCommoditiesRequestInterface $transferCommoditiesRequest,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         StorageRepositoryInterface $storageRepository
     ) {
-        $this->transferGoodsRequest = $transferGoodsRequest;
+        $this->transferCommoditiesRequest = $transferCommoditiesRequest;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
@@ -51,14 +51,14 @@ final class TransferGoods implements ActionControllerInterface
         $game->setView(ShowAccounts::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
-        $amount = $this->transferGoodsRequest->getAmount();
-        $destinationTradePostId = $this->transferGoodsRequest->getDestinationTradePostId();
+        $amount = $this->transferCommoditiesRequest->getAmount();
+        $destinationTradePostId = $this->transferCommoditiesRequest->getDestinationTradePostId();
 
         if ($destinationTradePostId == -1) {
             return;
         }
 
-        $storageId = $this->transferGoodsRequest->getStorageId();
+        $storageId = $this->transferCommoditiesRequest->getStorageId();
         $selectedStorage = $this->storageRepository->find($storageId);
         if ($selectedStorage === null) {
             throw new AccessViolation(sprintf(_('userId %d tried to transfer non-existent storageId %d'), $userId, $storageId));

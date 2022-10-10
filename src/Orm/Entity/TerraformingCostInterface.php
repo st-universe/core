@@ -10,15 +10,15 @@ interface TerraformingCostInterface
 
     public function setTerraformingId(int $terraformingId): TerraformingCostInterface;
 
-    public function getGoodId(): int;
+    public function getCommodityId(): int;
 
-    public function setGoodId(int $goodId): TerraformingCostInterface;
+    public function setCommodityId(int $commodityId): TerraformingCostInterface;
 
     public function getAmount(): int;
 
     public function setAmount(int $amount): TerraformingCostInterface;
 
-    public function getGood(): CommodityInterface;
+    public function getCommodity(): CommodityInterface;
 
     public function getTerraforming(): TerraformingInterface;
 }

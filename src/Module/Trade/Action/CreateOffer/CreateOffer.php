@@ -61,13 +61,13 @@ final class CreateOffer implements ActionControllerInterface
 
         $tradePost = $storage->getTradePost();
 
-        $giveGoodId = $this->createOfferRequest->getGiveGoodId();
+        $giveCommodityId = $this->createOfferRequest->getGiveCommodityId();
         $giveAmount = $this->createOfferRequest->getGiveAmount();
-        $wantedGoodId = $this->createOfferRequest->getWantedGoodId();
+        $wantedCommodityId = $this->createOfferRequest->getWantedCommodityId();
         $wantedAmount = $this->createOfferRequest->getWantedAmount();
         $offerAmount = $this->createOfferRequest->getOfferAmount();
 
-        if ($giveGoodId === $wantedGoodId) {
+        if ($giveCommodityId === $wantedCommodityId) {
             $game->addInformation("Es kann nicht die gleiche Ware eingetauscht werden");
             return;
         }
@@ -86,11 +86,11 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
-        $offeredCommodity = $this->commodityRepository->find($giveGoodId);
+        $offeredCommodity = $this->commodityRepository->find($giveCommodityId);
         if ($offeredCommodity === null) {
             return;
         }
-        $wantedCommodity = $this->commodityRepository->find($wantedGoodId);
+        $wantedCommodity = $this->commodityRepository->find($wantedCommodityId);
         if ($wantedCommodity === null) {
             return;
         }
@@ -104,9 +104,9 @@ final class CreateOffer implements ActionControllerInterface
         if ($this->isEquivalentOfferExistent(
             $userId,
             $tradePost->getId(),
-            $giveGoodId,
+            $giveCommodityId,
             $giveAmount,
-            $wantedGoodId,
+            $wantedCommodityId,
             $wantedAmount
         )) {
             $game->addInformation("Du hast auf diesem Handelsposten bereits ein vergleichbares Angebot");
@@ -142,7 +142,7 @@ final class CreateOffer implements ActionControllerInterface
 
         $this->saveStorage($offer);
 
-        $storageManager->lowerStorage($giveGoodId, (int) $offerAmount * $giveAmount);
+        $storageManager->lowerStorage($giveCommodityId, (int) $offerAmount * $giveAmount);
 
 
         $game->addInformation('Das Angebot wurde erstellt');
@@ -162,9 +162,9 @@ final class CreateOffer implements ActionControllerInterface
         $offer->setTradePost($tradePost);
         $offer->setDate(time());
         $offer->setOfferedCommodity($offeredCommodity);
-        $offer->setOfferedGoodCount($giveAmount);
+        $offer->setOfferedCommodityCount($giveAmount);
         $offer->setWantedCommodity($wantedCommodity);
-        $offer->setWantedGoodCount($wantedAmount);
+        $offer->setWantedCommodityCount($wantedAmount);
         $offer->setOfferCount($offerAmount);
 
         $this->tradeOfferRepository->save($offer);
@@ -178,7 +178,7 @@ final class CreateOffer implements ActionControllerInterface
         $storage->setUserId($tradeOffer->getUser()->getId());
         $storage->setTradeOffer($tradeOffer);
         $storage->setCommodity($tradeOffer->getOfferedCommodity());
-        $storage->setAmount($tradeOffer->getOfferedGoodCount() * $tradeOffer->getOfferCount());
+        $storage->setAmount($tradeOffer->getOfferedCommodityCount() * $tradeOffer->getOfferCount());
 
         $this->storageRepository->save($storage);
     }
@@ -186,15 +186,15 @@ final class CreateOffer implements ActionControllerInterface
     private function isEquivalentOfferExistent(
         int $userId,
         int $tradePostId,
-        int $giveGoodId,
+        int $giveCommodityId,
         int $giveAmount,
-        int $wantedGoodId,
+        int $wantedCommodityId,
         int $wantedAmount
     ): bool {
-        $offers = $this->tradeOfferRepository->getByTradePostAndUserAndCommodities($tradePostId, $userId, $giveGoodId, $wantedGoodId);
+        $offers = $this->tradeOfferRepository->getByTradePostAndUserAndCommodities($tradePostId, $userId, $giveCommodityId, $wantedCommodityId);
 
         foreach ($offers as $offer) {
-            if (round($giveAmount / $wantedAmount, 2) == round($offer->getOfferedGoodCount() / $offer->getWantedGoodCount(), 2)) {
+            if (round($giveAmount / $wantedAmount, 2) == round($offer->getOfferedCommodityCount() / $offer->getWantedCommodityCount(), 2)) {
                 return true;
             }
         }

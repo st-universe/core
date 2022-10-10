@@ -532,18 +532,18 @@ final class ShipTickManager implements ShipTickManagerInterface
         }
 
         return [
-            CommodityTypeEnum::GOOD_SPARE_PART => $neededSpareParts,
-            CommodityTypeEnum::GOOD_SYSTEM_COMPONENT => $neededSystemComponents
+            CommodityTypeEnum::COMMODITY_SPARE_PART => $neededSpareParts,
+            CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT => $neededSystemComponents
         ];
     }
 
     private function enoughSparePartsOnEntity(array $neededParts, $entity, bool $isColony, ShipInterface $ship): bool
     {
-        $neededSpareParts = $neededParts[CommodityTypeEnum::GOOD_SPARE_PART];
-        $neededSystemComponents = $neededParts[CommodityTypeEnum::GOOD_SYSTEM_COMPONENT];
+        $neededSpareParts = $neededParts[CommodityTypeEnum::COMMODITY_SPARE_PART];
+        $neededSystemComponents = $neededParts[CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT];
 
         if ($neededSpareParts > 0) {
-            $spareParts = $entity->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART);
+            $spareParts = $entity->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART);
 
             if ($spareParts === null || $spareParts->getAmount() < $neededSpareParts) {
                 $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $ship, $entity, $isColony);
@@ -552,7 +552,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         }
 
         if ($neededSystemComponents > 0) {
-            $systemComponents = $entity->getStorage()->get(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT);
+            $systemComponents = $entity->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT);
 
             if ($systemComponents === null || $systemComponents->getAmount() < $neededSystemComponents) {
                 $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $ship, $entity, $isColony);
@@ -598,11 +598,11 @@ final class ShipTickManager implements ShipTickManagerInterface
         $neededPartsString = sprintf(
             "%d %s%s",
             $neededSpareParts,
-            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SPARE_PART),
+            CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SPARE_PART),
             ($neededSystemComponents > 0 ? sprintf(
                 "\n%d %s",
                 $neededSystemComponents,
-                CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)
+                CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)
             ) : '')
         );
 

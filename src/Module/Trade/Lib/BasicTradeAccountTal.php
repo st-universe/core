@@ -76,8 +76,8 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
 
     public function getLatinumItem(): BasicTradeItem
     {
-        $latinumStorage = $this->getStorage()[CommodityTypeEnum::GOOD_LATINUM];
-        $latinumCommodity = $this->commodityRepository->find(CommodityTypeEnum::GOOD_LATINUM);
+        $latinumStorage = $this->getStorage()[CommodityTypeEnum::COMMODITY_LATINUM];
+        $latinumCommodity = $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_LATINUM);
         return new BasicTradeItem(null, $latinumStorage, $latinumCommodity);
     }
 

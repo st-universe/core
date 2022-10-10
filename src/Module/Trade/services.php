@@ -25,9 +25,9 @@ use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequestInterface;
 use Stu\Module\Trade\Action\TakeOffer\TakeOffer;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequest;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequestInterface;
-use Stu\Module\Trade\Action\TransferGoods\TransferGoods;
-use Stu\Module\Trade\Action\TransferGoods\TransferGoodsRequest;
-use Stu\Module\Trade\Action\TransferGoods\TransferGoodsRequestInterface;
+use Stu\Module\Trade\Action\TransferCommodities\TransferCommodities;
+use Stu\Module\Trade\Action\TransferCommodities\TransferCommoditiesRequest;
+use Stu\Module\Trade\Action\TransferCommodities\TransferCommoditiesRequestInterface;
 use Stu\Module\Trade\Lib\TradeLibFactory;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
@@ -42,9 +42,9 @@ use Stu\Module\Trade\View\ShowLicenseMenu\ShowLicenseMenuRequestInterface;
 use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfo;
 use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequest;
 use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequestInterface;
-use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGood;
-use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGoodRequest;
-use Stu\Module\Trade\View\ShowOfferGood\ShowOfferGoodRequestInterface;
+use Stu\Module\Trade\View\ShowOfferCommodity\ShowOfferCommodity;
+use Stu\Module\Trade\View\ShowOfferCommodity\ShowOfferCommodityRequest;
+use Stu\Module\Trade\View\ShowOfferCommodity\ShowOfferCommodityRequestInterface;
 use Stu\Module\Trade\View\ShowOfferMenu\ShowOfferMenu;
 use Stu\Module\Trade\View\ShowOfferMenu\ShowOfferMenuRequest;
 use Stu\Module\Trade\View\ShowOfferMenu\ShowOfferMenuRequestInterface;
@@ -87,11 +87,11 @@ return [
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
     CreateLicenseRequestInterface::class => autowire(CreateLicenseRequest::class),
     ShowLicenseListRequestInterface::class => autowire(ShowLicenseListRequest::class),
-    ShowOfferGoodRequestInterface::class => autowire(ShowOfferGoodRequest::class),
+    ShowOfferCommodityRequestInterface::class => autowire(ShowOfferCommodityRequest::class),
     ShowShoutBoxRequestInterface::class => autowire(ShowShoutBoxRequest::class),
     ShowShoutBoxListRequestInterface::class => autowire(ShowShoutBoxListRequest::class),
     AddShoutBoxEntryRequestInterface::class => autowire(AddShoutBoxEntryRequest::class),
-    TransferGoodsRequestInterface::class => autowire(TransferGoodsRequest::class),
+    TransferCommoditiesRequestInterface::class => autowire(TransferCommoditiesRequest::class),
     'TRADE_ACTIONS' => [
         AddShoutBoxEntry::ACTION_IDENTIFIER => autowire(AddShoutBoxEntry::class),
         BasicTradeBuy::ACTION_IDENTIFIER => autowire(BasicTradeBuy::class),
@@ -101,7 +101,7 @@ return [
         CreateLicense::ACTION_IDENTIFIER => autowire(CreateLicense::class),
         CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
-        TransferGoods::ACTION_IDENTIFIER => autowire(TransferGoods::class)
+        TransferCommodities::ACTION_IDENTIFIER => autowire(TransferCommodities::class)
     ],
     'TRADE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -115,7 +115,7 @@ return [
         ShowOfferMenuNewOffer::VIEW_IDENTIFIER => autowire(ShowOfferMenuNewOffer::class),
         ShowTakeOffer::VIEW_IDENTIFIER => autowire(ShowTakeOffer::class),
         ShowTradePostInfo::VIEW_IDENTIFIER => autowire(ShowTradePostInfo::class),
-        ShowOfferGood::VIEW_IDENTIFIER => autowire(ShowOfferGood::class),
+        ShowOfferCommodity::VIEW_IDENTIFIER => autowire(ShowOfferCommodity::class),
         ShowShoutBox::VIEW_IDENTIFIER => autowire(ShowShoutBox::class),
         ShowShoutBoxList::VIEW_IDENTIFIER => autowire(ShowShoutBoxList::class),
         ShowSearchDemand::VIEW_IDENTIFIER => autowire(ShowSearchDemand::class),

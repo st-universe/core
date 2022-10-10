@@ -88,7 +88,7 @@ class Building implements BuildingInterface
     private $functions;
 
     /**
-     * @OneToMany(targetEntity="BuildingGood", mappedBy="building")
+     * @OneToMany(targetEntity="BuildingCommodity", mappedBy="building")
      */
     private $commodities;
 
@@ -333,7 +333,7 @@ class Building implements BuildingInterface
         return $this->costs;
     }
 
-    public function getGoods(): Collection
+    public function getCommodities(): Collection
     {
         return $this->commodities;
     }

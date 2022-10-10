@@ -122,9 +122,9 @@ final class BuildingAction implements BuildingActionInterface
                 $game->addInformation(_('[b][color=FF2626]Keine weiteren Lagerkapazitäten vorhanden![/color][/b]'));
                 break;
             }
-            $this->colonyStorageManager->upperStorage($colony, $value->getGood(), $amount);
+            $this->colonyStorageManager->upperStorage($colony, $value->getCommodity(), $amount);
 
-            $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
+            $game->addInformationf('%d %s', $amount, $value->getCommodity()->getName());
         }
     }
 }

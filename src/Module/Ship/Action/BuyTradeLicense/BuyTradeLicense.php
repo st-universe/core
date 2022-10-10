@@ -103,7 +103,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         }
 
         $licenseInfo = $this->tradeCreateLicenseRepository->getLatestLicenseInfo($tradepost->getId());
-        $commodityId = $licenseInfo->getGoodsId();
+        $commodityId = $licenseInfo->getCommodityId();
         $commodity = $this->commodityRepository->find($commodityId);
         $costs = $licenseInfo->getAmount();
 

@@ -148,13 +148,13 @@ final class ColonyTick implements ColonyTickInterface
                 if ($pro->getProduction() >= 0) {
                     continue;
                 }
-                $storageItem = $storage[$pro->getGoodId()] ?? null;
+                $storageItem = $storage[$pro->getCommodityId()] ?? null;
                 if ($storageItem !== null && $storageItem->getAmount() + $pro->getProduction() >= 0) {
                     continue;
                 }
                 //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
-                $field = $this->getBuildingToDeactivateByGood($colony, $commodityId);
-                // echo $i." hit by good ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
+                $field = $this->getBuildingToDeactivateByCommodity($colony, $commodityId);
+                // echo $i." hit by commodity ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
                 $this->deactivateBuilding($colony, $field, $this->commodityArray[$commodityId]);
                 $rewind = 1;
             }
@@ -195,12 +195,12 @@ final class ColonyTick implements ColonyTickInterface
         $this->buildingManager->deactivate($field);
         $this->entityManager->flush();
 
-        $this->mergeProduction($colony, $building->getGoods());
+        $this->mergeProduction($colony, $building->getCommodities());
 
         $this->msg[] = $building->getName() . " auf Feld " . $field->getFieldId() . " deaktiviert (Mangel an " . $ext . ")";
     }
 
-    private function getBuildingToDeactivateByGood(ColonyInterface $colony, int $commodityId): PlanetFieldInterface
+    private function getBuildingToDeactivateByCommodity(ColonyInterface $colony, int $commodityId): PlanetFieldInterface
     {
         $fields = $this->planetFieldRepository->getCommodityConsumingByColonyAndCommodity(
             $colony->getId(),
@@ -241,8 +241,8 @@ final class ColonyTick implements ColonyTickInterface
 
             $amount = abs($amount);
 
-            if ($commodityId == CommodityTypeEnum::GOOD_FOOD) {
-                $storageItem = $storage[CommodityTypeEnum::GOOD_FOOD] ?? null;
+            if ($commodityId == CommodityTypeEnum::COMMODITY_FOOD) {
+                $storageItem = $storage[CommodityTypeEnum::COMMODITY_FOOD] ?? null;
                 if ($storageItem === null && $amount > 0) {
                     $this->proceedEmigration($colony, true);
                     $emigrated = 1;
@@ -326,7 +326,7 @@ final class ColonyTick implements ColonyTickInterface
         $current_research = $this->researchedRepository->getCurrentResearch($colony->getUserId());
 
         if ($current_research && $current_research->getActive()) {
-            if (isset($production[$current_research->getResearch()->getGoodId()])) {
+            if (isset($production[$current_research->getResearch()->getCommodityId()])) {
                 (new ResearchState(
                     $this->researchedRepository,
                     $this->shipRumpUserRepository,
@@ -341,7 +341,7 @@ final class ColonyTick implements ColonyTickInterface
                     $this->entityManager,
                 ))->advance(
                     $current_research,
-                    $production[$current_research->getResearch()->getGoodId()]->getProduction()
+                    $production[$current_research->getResearch()->getCommodityId()]->getProduction()
                 );
             }
         }
@@ -420,13 +420,13 @@ final class ColonyTick implements ColonyTickInterface
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\tgetProd, seconds: %F", $endTime - $startTime));
         }
-        if (!array_key_exists(CommodityTypeEnum::GOOD_FOOD, $prod)) {
+        if (!array_key_exists(CommodityTypeEnum::COMMODITY_FOOD, $prod)) {
             $obj = new ColonyProduction();
-            $obj->setGoodId(CommodityTypeEnum::GOOD_FOOD);
+            $obj->setCommodityId(CommodityTypeEnum::COMMODITY_FOOD);
             $obj->lowerProduction($foodvalue);
-            $prod[CommodityTypeEnum::GOOD_FOOD] = $obj;
+            $prod[CommodityTypeEnum::COMMODITY_FOOD] = $obj;
         } else {
-            $prod[CommodityTypeEnum::GOOD_FOOD]->lowerProduction($foodvalue);
+            $prod[CommodityTypeEnum::COMMODITY_FOOD]->lowerProduction($foodvalue);
         }
         return $prod;
     }
@@ -489,10 +489,10 @@ final class ColonyTick implements ColonyTickInterface
     {
         $prod = $colony->getProductionRaw();
         foreach ($commodityProduction as $obj) {
-            $commodityId = $obj->getGoodId();
+            $commodityId = $obj->getCommodityId();
             if (!array_key_exists($commodityId, $prod)) {
                 $data = new ColonyProduction;
-                $data->setGoodId($commodityId);
+                $data->setCommodityId($commodityId);
                 $data->setProduction($obj->getAmount() * -1);
 
                 $prod[$commodityId] = $data;

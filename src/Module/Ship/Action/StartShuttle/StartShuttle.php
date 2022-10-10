@@ -115,11 +115,11 @@ final class StartShuttle implements ActionControllerInterface
         // check if ship storage contains shuttle commodity
         $storage = $ship->getStorage();
 
-        if (!$storage->containsKey($rump->getGoodId())) {
+        if (!$storage->containsKey($rump->getCommodityId())) {
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
-                $this->commodityRepository->find((int) $rump->getGoodId())->getName()
+                $this->commodityRepository->find((int) $rump->getCommodityId())->getName()
             );
             return;
         }

@@ -30,7 +30,7 @@ class Commodity implements CommodityInterface
     private $view = true;
 
     /** @Column(type="smallint") * */
-    private $type = CommodityTypeEnum::GOOD_TYPE_STANDARD;
+    private $type = CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
 
     /** @Column(type="boolean") * */
     private $npc_good = false;
@@ -95,12 +95,12 @@ class Commodity implements CommodityInterface
 
     public function isBeamable(): bool
     {
-        return $this->getType() === CommodityTypeEnum::GOOD_TYPE_STANDARD && $this->getView() === true;
+        return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD && $this->getView() === true;
     }
 
     public function isSaveable(): bool
     {
-        return $this->getType() === CommodityTypeEnum::GOOD_TYPE_STANDARD;
+        return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
     }
 
     public function isShuttle(): bool

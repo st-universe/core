@@ -35,6 +35,6 @@ final class ShowLicenseMenu implements ViewControllerInterface
             _('Lizenzmanagement')
         ));
         $game->setTemplateVar('TRADEPOST', $trade_post);
-        $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
+        $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
     }
 }

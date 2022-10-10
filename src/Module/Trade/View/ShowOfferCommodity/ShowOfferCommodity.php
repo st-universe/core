@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\View\ShowOfferGood;
+namespace Stu\Module\Trade\View\ShowOfferCommodity;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -10,11 +10,11 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
-final class ShowOfferGood implements ViewControllerInterface
+final class ShowOfferCommodity implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_OFFER_GOOD';
+    public const VIEW_IDENTIFIER = 'SHOW_OFFER_COMMODITY';
 
-    private ShowOfferGoodRequestInterface $showOfferGoodRequest;
+    private ShowOfferCommodityRequestInterface $showOfferCommodityRequest;
 
     private TradePostRepositoryInterface $tradePostRepository;
 
@@ -23,12 +23,12 @@ final class ShowOfferGood implements ViewControllerInterface
     private CommodityRepositoryInterface $commodityRepository;
 
     public function __construct(
-        ShowOfferGoodRequestInterface $showOfferGoodRequest,
+        ShowOfferCommodityRequestInterface $showOfferCommodityRequest,
         TradePostRepositoryInterface $tradePostRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
         CommodityRepositoryInterface $commodityRepository
     ) {
-        $this->showOfferGoodRequest = $showOfferGoodRequest;
+        $this->showOfferCommodityRequest = $showOfferCommodityRequest;
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->commodityRepository = $commodityRepository;
@@ -36,14 +36,14 @@ final class ShowOfferGood implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $commodity = $this->commodityRepository->find($this->showOfferGoodRequest->getGoodId());
-        $tradepost = $this->tradePostRepository->find($this->showOfferGoodRequest->getTradePostId());
+        $commodity = $this->commodityRepository->find($this->showOfferCommodityRequest->getCommodityId());
+        $tradepost = $this->tradePostRepository->find($this->showOfferCommodityRequest->getTradePostId());
 
         if ($commodity === null || $tradepost === null) {
             return;
         }
 
-        $game->setMacroInAjaxWindow('html/trademacros.xhtml/offerbygood');
+        $game->setMacroInAjaxWindow('html/trademacros.xhtml/offerbycommodity');
         $game->setPageTitle(sprintf(_('Angebote mit %d'), $commodity->getName()));
 
         $game->setTemplateVar(

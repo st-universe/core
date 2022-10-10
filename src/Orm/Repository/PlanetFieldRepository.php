@@ -10,7 +10,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingFunction;
-use Stu\Orm\Entity\BuildingGood;
+use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetField;
@@ -133,7 +133,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count < 0
                 ) AND f.aktiv IN (:state)',
                 PlanetField::class,
-                BuildingGood::class
+                BuildingCommodity::class
             )
         )->setParameters([
             'colonyId' => $colonyId,
@@ -152,7 +152,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                     SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count > 0
                 )',
                 PlanetField::class,
-                BuildingGood::class
+                BuildingCommodity::class
             )
         )->setParameters([
             'colonyId' => $colonyId,

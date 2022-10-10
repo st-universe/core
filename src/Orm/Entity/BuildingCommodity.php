@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingGoodRepository")
+ * @Entity(repositoryClass="Stu\Orm\Repository\BuildingCommodityRepository")
  * @Table(
  *     name="stu_buildings_goods",
  *     indexes={
@@ -13,7 +13,7 @@ namespace Stu\Orm\Entity;
  *          @Index(name="good_count_idx", columns={"goods_id","count"})
  * })
  **/
-class BuildingGood implements BuildingGoodInterface
+class BuildingCommodity implements BuildingCommodityInterface
 {
     /** 
      * @Id
@@ -35,7 +35,7 @@ class BuildingGood implements BuildingGoodInterface
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="goods_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $good;
+    private $commodity;
 
     /**
      * @ManyToOne(targetEntity="Building", inversedBy="buildingCommodities")
@@ -53,21 +53,21 @@ class BuildingGood implements BuildingGoodInterface
         return $this->buildings_id;
     }
 
-    public function setBuildingId(int $buildingId): BuildingGoodInterface
+    public function setBuildingId(int $buildingId): BuildingCommodityInterface
     {
         $this->buildings_id = $buildingId;
 
         return $this;
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
         return $this->goods_id;
     }
 
-    public function setGoodId(int $goodId): BuildingGoodInterface
+    public function setCommodityId(int $commodityId): BuildingCommodityInterface
     {
-        $this->goods_id = $goodId;
+        $this->goods_id = $commodityId;
 
         return $this;
     }
@@ -77,15 +77,15 @@ class BuildingGood implements BuildingGoodInterface
         return $this->count;
     }
 
-    public function setAmount(int $amount): BuildingGoodInterface
+    public function setAmount(int $amount): BuildingCommodityInterface
     {
         $this->count = $amount;
 
         return $this;
     }
 
-    public function getGood(): CommodityInterface
+    public function getCommodity(): CommodityInterface
     {
-        return $this->good;
+        return $this->commodity;
     }
 }

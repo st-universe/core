@@ -6,11 +6,11 @@ interface CreateOfferRequestInterface
 {
     public function getStorageId(): int;
 
-    public function getWantedGoodId(): int;
+    public function getWantedCommodityId(): int;
 
     public function getWantedAmount(): int;
 
-    public function getGiveGoodId(): int;
+    public function getGiveCommodityId(): int;
 
     public function getGiveAmount(): int;
 

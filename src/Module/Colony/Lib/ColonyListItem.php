@@ -115,7 +115,7 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->colony->getProductionSum();
     }
 
-    public function getGoodUseView(): array
+    public function getCommodityUseView(): array
     {
         return $this->commodityConsumption->getConsumption($this->colony);
     }

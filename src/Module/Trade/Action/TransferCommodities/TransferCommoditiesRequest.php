@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\Action\TransferGoods;
+namespace Stu\Module\Trade\Action\TransferCommodities;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class TransferGoodsRequest implements TransferGoodsRequestInterface
+final class TransferCommoditiesRequest implements TransferCommoditiesRequestInterface
 {
     use CustomControllerHelperTrait;
 

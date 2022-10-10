@@ -12,13 +12,13 @@ interface TorpedoTypeCostInterface
 
     public function setTorpedoTypeId(int $torpedoTypeId): TorpedoTypeCostInterface;
 
-    public function getGoodId(): int;
+    public function getCommodityId(): int;
 
-    public function setGoodId(int $goodId): TorpedoTypeCostInterface;
+    public function setCommodityId(int $commodityId): TorpedoTypeCostInterface;
 
     public function getAmount(): int;
 
     public function setAmount(int $amount): TorpedoTypeCostInterface;
 
-    public function getGood(): CommodityInterface;
+    public function getCommodity(): CommodityInterface;
 }

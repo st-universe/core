@@ -1559,7 +1559,7 @@ class Ship implements ShipInterface
 
     public function canLandOnCurrentColony(): bool
     {
-        if (!$this->getRump()->getGoodId()) {
+        if (!$this->getRump()->getCommodityId()) {
             return false;
         }
         if ($this->isShuttle()) {
@@ -1653,8 +1653,8 @@ class Ship implements ShipInterface
         }
 
         return [
-            new ShipRepairCost($neededSpareParts, CommodityTypeEnum::GOOD_SPARE_PART, CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SPARE_PART)),
-            new ShipRepairCost($neededSystemComponents, CommodityTypeEnum::GOOD_SYSTEM_COMPONENT, CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT))
+            new ShipRepairCost($neededSpareParts, CommodityTypeEnum::COMMODITY_SPARE_PART, CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SPARE_PART)),
+            new ShipRepairCost($neededSystemComponents, CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT, CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT))
         ];
     }
 

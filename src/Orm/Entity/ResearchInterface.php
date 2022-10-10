@@ -30,9 +30,9 @@ interface ResearchInterface
 
     public function setPoints(int $points): ResearchInterface;
 
-    public function getGoodId(): int;
+    public function getCommodityId(): int;
 
-    public function setGoodId(int $good_id): ResearchInterface;
+    public function setCommodityId(int $commodityId): ResearchInterface;
 
     public function getUpperPlanetLimit(): int;
 
@@ -42,7 +42,7 @@ interface ResearchInterface
 
     public function setUpperMoonLimit(int $upperMoonLimit): ResearchInterface;
 
-    public function getGood(): CommodityInterface;
+    public function getCommodity(): CommodityInterface;
 
     public function getRewardBuildplanId(): ?int;
 

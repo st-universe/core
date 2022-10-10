@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
-final class BuildingGoodRepository extends EntityRepository implements BuildingGoodRepositoryInterface
+final class BuildingCommodityRepository extends EntityRepository implements BuildingCommodityRepositoryInterface
 {
     public function getByBuilding(int $buildingId): array
     {
@@ -19,12 +19,12 @@ final class BuildingGoodRepository extends EntityRepository implements BuildingG
     public function getProductionByColony(int $colonyId, int $planetTypeId): iterable
     {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('goods_id', 'goods_id', 'integer');
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
         $rsm->addScalarResult('gc', 'gc', 'integer');
         $rsm->addScalarResult('pc', 'pc', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT a.id as goods_id, a.id as global_goods_id, SUM(c.count) as gc, COALESCE(MAX(d.count),0) as pc
+            'SELECT a.id as commodity_id, SUM(c.count) as gc, COALESCE(MAX(d.count),0) as pc
             FROM stu_goods a
                 LEFT JOIN stu_colonies_fielddata b ON b.colonies_id = :colonyId AND b.aktiv = :state
                 LEFT JOIN stu_buildings_goods c ON c.goods_id = a.id AND c.buildings_id = b.buildings_id

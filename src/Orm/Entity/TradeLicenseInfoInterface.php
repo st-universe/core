@@ -12,9 +12,9 @@ interface TradeLicenseInfoInterface
 
     public function setTradePostId(int $posts_id): TradeLicenseInfoInterface;
 
-    public function getGoodsId(): int;
+    public function getCommodityId(): int;
 
-    public function setGoodsId(int $goods_id): TradeLicenseInfoInterface;
+    public function setCommodityId(int $commodityId): TradeLicenseInfoInterface;
 
     public function getAmount(): int;
 

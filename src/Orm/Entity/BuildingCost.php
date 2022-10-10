@@ -34,7 +34,7 @@ class BuildingCost implements BuildingCostInterface
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="goods_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $good;
+    private $commodity;
 
     /**
      * @ManyToOne(targetEntity="Building", inversedBy="buildingCosts")
@@ -59,14 +59,14 @@ class BuildingCost implements BuildingCostInterface
         return $this;
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
         return $this->goods_id;
     }
 
-    public function setGoodId(int $goodId): BuildingCostInterface
+    public function setCommodityId(int $commodityId): BuildingCostInterface
     {
-        $this->goods_id = $goodId;
+        $this->goods_id = $commodityId;
 
         return $this;
     }
@@ -83,9 +83,9 @@ class BuildingCost implements BuildingCostInterface
         return $this;
     }
 
-    public function getGood(): CommodityInterface
+    public function getCommodity(): CommodityInterface
     {
-        return $this->good;
+        return $this->commodity;
     }
 
     public function getHalfAmount(): int

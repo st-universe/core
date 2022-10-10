@@ -60,11 +60,11 @@ final class Overview implements ViewControllerInterface
         $productionOverview = [];
         foreach ($colonyList as $colony) {
             foreach ($colony->getProduction() as $prod) {
-                if (!$prod->getGood()->isTradeable()) {
+                if (!$prod->getCommodity()->isTradeable()) {
                     continue;
                 }
 
-                $commodityId = $prod->getGoodId();
+                $commodityId = $prod->getCommodityId();
 
                 if (array_key_exists($commodityId, $productionOverview)) {
                     $colonyProduction = $productionOverview[$commodityId];
@@ -74,7 +74,7 @@ final class Overview implements ViewControllerInterface
                     $data = [];
                     $data['gc'] = $prod->getProduction();
                     $data['pc'] = 0;
-                    $data['goods_id'] = $commodityId;
+                    $data['commodity_id'] = $commodityId;
 
                     $colonyProduction = new ColonyProduction($data);
                     $productionOverview[$commodityId] = $colonyProduction;
@@ -92,10 +92,10 @@ final class Overview implements ViewControllerInterface
         usort(
             $productionOverview,
             function (ColonyProduction $a, ColonyProduction $b): int {
-                if ($a->getGood()->getSort() == $b->getGood()->getSort()) {
+                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
                     return 0;
                 }
-                return ($a->getGood()->getSort() < $b->getGood()->getSort()) ? -1 : 1;
+                return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
             }
         );
 

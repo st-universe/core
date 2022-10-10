@@ -95,9 +95,9 @@ interface BuildingInterface
     public function getCosts(): Collection;
 
     /**
-     * @return BuildingGoodInterface[]
+     * @return BuildingCommodityInterface[]
      */
-    public function getGoods(): Collection;
+    public function getCommodities(): Collection;
 
     /**
      * @return BuildingFunctionInterface[]

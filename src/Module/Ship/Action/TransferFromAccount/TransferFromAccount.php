@@ -82,32 +82,32 @@ final class TransferFromAccount implements ActionControllerInterface
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
             return;
         }
-        $goods = request::postArray('goods');
+        $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
 
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $userId);
-        $curGoods = $storageManager->getStorage();
+        $curCommodities = $storageManager->getStorage();
 
-        if ($curGoods === []) {
+        if ($curCommodities === []) {
             $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
-        if (count($goods) == 0 || count($gcount) == 0) {
+        if (count($commodities) == 0 || count($gcount) == 0) {
             $game->addInformation(_("Es wurden keine Waren zum Transferieren ausgewählt"));
             return;
         }
 
         $game->addInformation(_("Es wurden folgende Waren vom Warenkonto transferiert"));
-        foreach ($goods as $key => $value) {
+        foreach ($commodities as $key => $value) {
             if (!array_key_exists($key, $gcount)) {
                 continue;
             }
-            if (!array_key_exists($value, $curGoods)) {
+            if (!array_key_exists($value, $curCommodities)) {
                 continue;
             }
             $count = $gcount[$key];
             if ($count == "max") {
-                $count = (int) $curGoods[$value]->getAmount();
+                $count = (int) $curCommodities[$value]->getAmount();
             } else {
                 $count = (int) $count;
             }
@@ -115,7 +115,7 @@ final class TransferFromAccount implements ActionControllerInterface
                 continue;
             }
 
-            $commodity = $curGoods[$value]->getCommodity();
+            $commodity = $curCommodities[$value]->getCommodity();
 
             if (!$commodity->isBeamable()) {
                 $game->addInformation($commodity->getName() . " ist nicht beambar");
@@ -125,8 +125,8 @@ final class TransferFromAccount implements ActionControllerInterface
                 $game->addInformation($commodity->getName() . ' ist in diesem Handelsnetzwerk illegal und kann nicht gehandelt werden');
                 continue;
             }
-            if ($count > $curGoods[$value]->getAmount()) {
-                $count = (int) $curGoods[$value]->getAmount();
+            if ($count > $curCommodities[$value]->getAmount()) {
+                $count = (int) $curCommodities[$value]->getAmount();
             }
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
@@ -137,7 +137,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $storageManager->lowerStorage((int) $value, $count);
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);
 
-            $game->addInformation($count . " " . $curGoods[$value]->getCommodity()->getName());
+            $game->addInformation($count . " " . $curCommodities[$value]->getCommodity()->getName());
         }
     }
 

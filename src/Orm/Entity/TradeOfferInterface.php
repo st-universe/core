@@ -16,21 +16,21 @@ interface TradeOfferInterface
 
     public function setOfferCount(int $offerCount): TradeOfferInterface;
 
-    public function getWantedGoodId(): int;
+    public function getWantedCommodityId(): int;
 
-    public function setWantedGoodId(int $wantedCommodityId): TradeOfferInterface;
+    public function setWantedCommodityId(int $wantedCommodityId): TradeOfferInterface;
 
-    public function getWantedGoodCount(): int;
+    public function getWantedCommodityCount(): int;
 
-    public function setWantedGoodCount(int $wantedGoodCount): TradeOfferInterface;
+    public function setWantedCommodityCount(int $wantedCommodityCount): TradeOfferInterface;
 
-    public function getOfferedGoodId(): int;
+    public function getOfferedCommodityId(): int;
 
-    public function setOfferedGoodId(int $offeredCommodityId): TradeOfferInterface;
+    public function setOfferedCommodityId(int $offeredCommodityId): TradeOfferInterface;
 
-    public function getOfferedGoodCount(): int;
+    public function getOfferedCommodityCount(): int;
 
-    public function setOfferedGoodCount(int $offeredGoodCount): TradeOfferInterface;
+    public function setOfferedCommodityCount(int $offeredCommodityCount): TradeOfferInterface;
 
     public function getDate(): int;
 

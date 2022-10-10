@@ -86,14 +86,14 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformationf(_('Der Lagerraum der %s ist voll'), $target->getName());
             return;
         }
-        $goods = request::postArray('goods');
+        $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
         $storages = $colony->getStorage();
         if ($storages->isEmpty()) {
             $game->addInformation(_('Keine Waren zum Beamen vorhanden'));
             return;
         }
-        if (count($goods) == 0 || count($gcount) == 0) {
+        if (count($commodities) == 0 || count($gcount) == 0) {
             $game->addInformation(_('Es wurden keine Waren zum Beamen ausgewählt'));
             return;
         }
@@ -114,7 +114,7 @@ final class BeamTo implements ActionControllerInterface
             );
         }
 
-        foreach ($goods as $key => $value) {
+        foreach ($commodities as $key => $value) {
             $value = (int) $value;
             if ($colony->getEps() < 1) {
                 break;

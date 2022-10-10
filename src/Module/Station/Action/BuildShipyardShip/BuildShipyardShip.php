@@ -90,7 +90,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         foreach ($modules as $moduleObj) {
             $module = $moduleObj->getModule();
 
-            if (!$storage->containsKey($module->getGoodId())) {
+            if (!$storage->containsKey($module->getCommodityId())) {
                 $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }

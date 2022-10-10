@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Database\View\ShowGoodsLocations;
+namespace Stu\Module\Database\View\ShowCommoditiesLocations;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class ShowGoodsLocationsRequest implements ShowGoodsLocationsRequestInterface
+final class ShowCommoditiesLocationsRequest implements ShowCommoditiesLocationsRequestInterface
 {
     use CustomControllerHelperTrait;
 
@@ -14,5 +14,4 @@ final class ShowGoodsLocationsRequest implements ShowGoodsLocationsRequestInterf
     {
         return $this->queryParameter('commodityId')->int()->required();
     }
-
 }

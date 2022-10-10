@@ -132,9 +132,9 @@ interface ShipRumpInterface
 
     public function setDatabaseId(?int $databaseId): ShipRumpInterface;
 
-    public function getGoodId(): ?int;
+    public function getCommodityId(): ?int;
 
-    public function setGoodId(?int $goodId): ShipRumpInterface;
+    public function setCommodityId(?int $commodityId): ShipRumpInterface;
 
     public function getFlightEcost(): int;
 

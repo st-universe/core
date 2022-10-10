@@ -173,7 +173,7 @@ final class BuildOnField implements ActionControllerInterface
         $colony = $this->colonyRepository->find(request::indInt('id'));
 
         foreach ($building->getCosts() as $cost) {
-            $this->colonyStorageManager->lowerStorage($colony, $cost->getGood(), $cost->getAmount());
+            $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
         }
 
         $colony->lowerEps($building->getEpsCost());
@@ -203,7 +203,7 @@ final class BuildOnField implements ActionControllerInterface
         $storage = $colony->getStorage();
 
         foreach ($building->getCosts() as $cost) {
-            $commodityId = $cost->getGoodId();
+            $commodityId = $cost->getCommodityId();
 
             $currentBuildingCost = [];
 
@@ -214,7 +214,7 @@ final class BuildOnField implements ActionControllerInterface
                 $result = array_filter(
                     $currentBuildingCost,
                     function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
-                        return $commodityId === $buildingCost->getGoodId();
+                        return $commodityId === $buildingCost->getCommodityId();
                     }
                 );
 
@@ -225,7 +225,7 @@ final class BuildOnField implements ActionControllerInterface
                     $game->addInformationf(
                         _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                         $cost->getAmount(),
-                        $cost->getGood()->getName()
+                        $cost->getCommodity()->getName()
                     );
                     $isEnoughAvailable = false;
                     continue;
@@ -235,7 +235,7 @@ final class BuildOnField implements ActionControllerInterface
                     $game->addInformationf(
                         _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                         $cost->getAmount(),
-                        $cost->getGood()->getName()
+                        $cost->getCommodity()->getName()
                     );
                     $isEnoughAvailable = false;
                     continue;
@@ -250,7 +250,7 @@ final class BuildOnField implements ActionControllerInterface
                 $result = array_filter(
                     $currentBuildingCost,
                     function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
-                        return $commodityId === $buildingCost->getGoodId();
+                        return $commodityId === $buildingCost->getCommodityId();
                     }
                 );
                 if ($result !== []) {
@@ -261,7 +261,7 @@ final class BuildOnField implements ActionControllerInterface
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $cost->getAmount(),
-                    $cost->getGood()->getName(),
+                    $cost->getCommodity()->getName(),
                     $amount
                 );
                 $isEnoughAvailable = false;

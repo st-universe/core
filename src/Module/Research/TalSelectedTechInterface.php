@@ -14,13 +14,13 @@ interface TalSelectedTechInterface
 
     public function getPoints(): int;
 
-    public function getGoodId(): int;
+    public function getCommodityId(): int;
 
     public function getUpperPlanetLimit(): int;
 
     public function getUpperMoonLimit(): int;
 
-    public function getGood(): CommodityInterface;
+    public function getCommodity(): CommodityInterface;
 
     public function getResearchState();
 

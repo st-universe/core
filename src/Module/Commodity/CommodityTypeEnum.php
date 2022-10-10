@@ -6,20 +6,20 @@ namespace Stu\Module\Commodity;
 
 final class CommodityTypeEnum
 {
-    public const GOOD_TYPE_STANDARD = 1;
-    public const GOOD_TYPE_EFFECT = 2;
+    public const COMMODITY_TYPE_STANDARD = 1;
+    public const COMMODITY_TYPE_EFFECT = 2;
 
     // commodity IDs
-    public const GOOD_FOOD = 1;
-    public const GOOD_BUILDING_MATERIALS = 2;
-    public const GOOD_TRANSPARENT_ALUMINIUM = 4;
-    public const GOOD_DEUTERIUM = 5;
-    public const GOOD_ANTIMATTER = 6;
-    public const GOOD_DILITHIUM = 8;
-    public const GOOD_DURANIUM = 21;
-    public const GOOD_LATINUM = 50;
-    public const GOOD_SPARE_PART = 10001;
-    public const GOOD_SYSTEM_COMPONENT = 10002;
+    public const COMMODITY_FOOD = 1;
+    public const COMMODITY_BUILDING_MATERIALS = 2;
+    public const COMMODITY_TRANSPARENT_ALUMINIUM = 4;
+    public const COMMODITY_DEUTERIUM = 5;
+    public const COMMODITY_ANTIMATTER = 6;
+    public const COMMODITY_DILITHIUM = 8;
+    public const COMMODITY_DURANIUM = 21;
+    public const COMMODITY_LATINUM = 50;
+    public const COMMODITY_SPARE_PART = 10001;
+    public const COMMODITY_SYSTEM_COMPONENT = 10002;
 
     //base value for e.g. shuttles
     public const BASE_ID_WORKBEE = 20060;
@@ -28,15 +28,15 @@ final class CommodityTypeEnum
     public static function getDescription(int $commodityId): string
     {
         switch ($commodityId) {
-            case CommodityTypeEnum::GOOD_DEUTERIUM:
+            case CommodityTypeEnum::COMMODITY_DEUTERIUM:
                 return _("Deuterium");
-            case CommodityTypeEnum::GOOD_ANTIMATTER:
+            case CommodityTypeEnum::COMMODITY_ANTIMATTER:
                 return _("Antimaterie");
-            case CommodityTypeEnum::GOOD_DILITHIUM:
+            case CommodityTypeEnum::COMMODITY_DILITHIUM:
                 return _("Dilithium");
-            case CommodityTypeEnum::GOOD_SPARE_PART:
+            case CommodityTypeEnum::COMMODITY_SPARE_PART:
                 return _("Ersatzteil");
-            case CommodityTypeEnum::GOOD_SYSTEM_COMPONENT:
+            case CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT:
                 return _("Systemkomponente");
         }
         return '';

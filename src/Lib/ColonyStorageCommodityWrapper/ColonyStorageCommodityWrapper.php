@@ -1,13 +1,13 @@
 <?php
 
-namespace Stu\Lib\ColonyStorageGoodWrapper;
+namespace Stu\Lib\ColonyStorageCommodityWrapper;
 
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
  * @version $Revision: 1.4 $
  * @access public
  */
-class ColonyStorageGoodWrapper
+class ColonyStorageCommodityWrapper
 { #{{{
 
 	private $storage = null;
@@ -21,9 +21,9 @@ class ColonyStorageGoodWrapper
 
 	/**
 	 */
-	public function __get($goodId)
+	public function __get($commodityId)
 	{ #{{{
-		return new ColonyStorageGoodCountWrapper($this->storage, $goodId);
+		return new ColonyStorageCommodityCountWrapper($this->storage, $commodityId);
 	} # }}}
 
 	/**

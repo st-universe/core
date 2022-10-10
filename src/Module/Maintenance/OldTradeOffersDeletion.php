@@ -77,16 +77,16 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             $pm[] = sprintf(
                 _('%d x angeboten: %d %s, verlangt: %d %s'),
                 $offer->getOfferCount(),
-                $offer->getOfferedGoodCount(),
+                $offer->getOfferedCommodityCount(),
                 $offer->getOfferedCommodity()->getName(),
-                $offer->getWantedGoodCount(),
+                $offer->getWantedCommodityCount(),
                 $offer->getWantedCommodity()->getName()
             );
 
             // update post storage
             $storageManager->upperStorage(
-                (int) $offer->getOfferedGoodId(),
-                (int) $offer->getOfferedGoodCount() * $offer->getOfferCount()
+                (int) $offer->getOfferedCommodityId(),
+                (int) $offer->getOfferedCommodityCount() * $offer->getOfferCount()
             );
 
             $this->storageRepository->delete($offer->getStorage());

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib;
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 class ColonyProductionPreviewWrapper
 {
@@ -27,16 +27,16 @@ class ColonyProductionPreviewWrapper
         // @todo refactor
         global $container;
 
-        $bgoods = $container->get(BuildingGoodRepositoryInterface::class)->getByBuilding((int)$buildingId);
+        $bcommodities = $container->get(BuildingCommodityRepositoryInterface::class)->getByBuilding((int)$buildingId);
         $ret = [];
-        foreach ($bgoods as $commodityId => $prod) {
-            $commodityId = $prod->getGoodId();
+        foreach ($bcommodities as $commodityId => $prod) {
+            $commodityId = $prod->getCommodityId();
             if (array_key_exists($commodityId, $this->production)) {
                 $ret[$commodityId] = clone $this->production[$commodityId];
                 $ret[$commodityId]->upperProduction($prod->getAmount());
             } else {
-                $obj = new ColonyProduction;
-                $obj->setGoodId($commodityId);
+                $obj = new ColonyProduction();
+                $obj->setCommodityId($commodityId);
                 $obj->setProduction($prod->getAmount());
                 $ret[$commodityId] = $obj;
             }
@@ -44,5 +44,4 @@ class ColonyProductionPreviewWrapper
         }
         return $ret;
     }
-
 }

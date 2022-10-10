@@ -70,8 +70,8 @@ final class ShowBuilding implements ViewControllerInterface
         $storage        = $colony->getStorage();
         $buildingcount  = $colony->getEps() / $building->getEpsCost();
         foreach ($building->getCosts() as $cost) {
-            if ($storage[$cost->getGoodId()] != null) {
-                $need = $storage[$cost->getGoodId()]->getAmount() / $cost->getAmount();
+            if ($storage[$cost->getCommodityId()] != null) {
+                $need = $storage[$cost->getCommodityId()]->getAmount() / $cost->getAmount();
                 $buildingcount = min($need, $buildingcount);
             } else {
                 $buildingcount = 0;

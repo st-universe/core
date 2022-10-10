@@ -3,10 +3,10 @@ function openTradepostInfo(postId) {
 	openPJsWin(elt, 1);
 	ajax_update(elt, 'trade.php?postid=' + postId + '&SHOW_TRADEPOST_INFO=1');
 }
-function showTradeOfferByGood(postId, goodId) {
-	var elt = 'tradegoodinfo';
+function showTradeOfferByCommodity(postId, commodityId) {
+	var elt = 'tradecommodityinfo';
 	openPJsWin(elt, 1);
-	ajax_update(elt, 'trade.php?postid=' + postId + '&SHOW_OFFER_GOOD=1&goodid=' + goodId);
+	ajax_update(elt, 'trade.php?postid=' + postId + '&SHOW_OFFER_COMMODITY=1&commodityid=' + commodityId);
 }
 function showTradeOfferMenu(storid) {
 	var elt = 'tradeoffermenu';

@@ -523,14 +523,14 @@ class ShipRump implements ShipRumpInterface
         return $this;
     }
 
-    public function getGoodId(): ?int
+    public function getCommodityId(): ?int
     {
         return $this->good_id;
     }
 
-    public function setGoodId(?int $goodId): ShipRumpInterface
+    public function setCommodityId(?int $commodityId): ShipRumpInterface
     {
-        $this->good_id = $goodId;
+        $this->good_id = $commodityId;
         return $this;
     }
 

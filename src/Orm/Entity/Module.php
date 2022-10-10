@@ -188,12 +188,12 @@ class Module implements ModuleInterface
         return $this;
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
         return $this->goods_id;
     }
 
-    public function setGoodId(int $commodityId): ModuleInterface
+    public function setCommodityId(int $commodityId): ModuleInterface
     {
         $this->goods_id = $commodityId;
 

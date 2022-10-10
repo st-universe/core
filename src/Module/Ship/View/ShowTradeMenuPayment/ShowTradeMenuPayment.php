@@ -85,7 +85,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
             return;
         }
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
-        $commodityId = $licenseInfo->getGoodsId();
+        $commodityId = $licenseInfo->getCommodityId();
         $commodity = $this->commodityRepository->find($commodityId);
         $commodityName = $commodity->getName();
         $licenseCost = $licenseInfo->getAmount();
@@ -94,8 +94,8 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
-        $game->setTemplateVar('LICENSEGOOD', $commodityId);
-        $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
+        $game->setTemplateVar('LICENSECOMMODITY', $commodityId);
+        $game->setTemplateVar('LICENSECOMMODITYNAME', $commodityName);
         $game->setTemplateVar('LICENSECOST', $licenseCost);
         $game->setTemplateVar('LICENSEDAYS', $licenseInfo->getDays());
 

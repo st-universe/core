@@ -19,14 +19,14 @@ class ColonyProduction
         }
     }
 
-    public function getGoodId()
+    public function getCommodityId()
     {
-        return $this->data['goods_id'];
+        return $this->data['commodity_id'];
     }
 
-    function setGoodId($value)
+    function setCommodityId($value)
     {
-        $this->data['goods_id'] = $value;
+        $this->data['commodity_id'] = $value;
     }
 
     function getProduction()
@@ -95,11 +95,11 @@ class ColonyProduction
         return 'positive';
     }
 
-    public function getGood(): CommodityInterface
+    public function getCommodity(): CommodityInterface
     {
         // @todo refactor
         global $container;
 
-        return $container->get(CommodityRepositoryInterface::class)->find((int) $this->getGoodId());
+        return $container->get(CommodityRepositoryInterface::class)->find((int) $this->getCommodityId());
     }
 }

@@ -3,12 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\BuildingGoodInterface;
+use Stu\Orm\Entity\BuildingCommodityInterface;
 
-interface BuildingGoodRepositoryInterface extends ObjectRepository
+interface BuildingCommodityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return BuildingGoodInterface[]
+     * @return BuildingCommodityInterface[]
      */
     public function getByBuilding(int $buildingId): array;
 

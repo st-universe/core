@@ -13,7 +13,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
-use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
+use Stu\Lib\ColonyStorageCommodityWrapper\ColonyStorageCommodityWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -306,7 +306,7 @@ final class ShowShip implements ViewControllerInterface
             }
 
             $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
-            $game->setTemplateVar('HAS_STORAGE', new ColonyStorageGoodWrapper($ship->getStorage()));
+            $game->setTemplateVar('HAS_STORAGE', new ColonyStorageCommodityWrapper($ship->getStorage()));
         }
     }
 

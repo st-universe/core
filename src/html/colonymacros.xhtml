@@ -462,7 +462,7 @@
           <strong>Warenbezogen</strong><br />
           Ware wählen:<br />
           <select name="commodity" style="height: 17px;" id="commodityselector">
-            <option class="commoditieselect_option" tal:repeat="data USEABLE_COMMODITY_LIST"
+            <option class="commodity_select_option" tal:repeat="data USEABLE_COMMODITY_LIST"
               tal:attributes="value data/getId" tal:content="data/getName"
               style=" background-image: url(assets/commodities/${data/getId}.png);">NAME</option>
           </select><br /><br />

@@ -17,9 +17,9 @@ class StationCostWrapper
         $this->shipStorage = $shipStorage;
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
-        return $this->buildplanModule->getModule()->getGoodId();
+        return $this->buildplanModule->getModule()->getCommodityId();
     }
 
     public function getName(): string

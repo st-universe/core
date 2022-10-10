@@ -57,7 +57,7 @@ final class CreateLicense implements ActionControllerInterface
             throw new AccessViolation(sprintf("Tradepost belongs to other user! Fool: %d", $user->getId()));
         }
 
-        $goods_id = $this->createLicenseRequest->getWantedLicenseGoodId();
+        $commodityId = $this->createLicenseRequest->getWantedLicensecommodityId();
         $giveAmount = $this->createLicenseRequest->getWantedLicenseAmount();
         $days = $this->createLicenseRequest->getLicenseDays();
 
@@ -66,7 +66,7 @@ final class CreateLicense implements ActionControllerInterface
             return;
         }
 
-        if ($giveAmount < 1 || $goods_id < 1 || $giveAmount === null || $goods_id === null) {
+        if ($giveAmount < 1 || $commodityId < 1 || $giveAmount === null || $commodityId === null) {
             $game->addInformation("Es wurde keine Ware oder keine Menge ausgewählt");
             return;
         }
@@ -74,7 +74,7 @@ final class CreateLicense implements ActionControllerInterface
         $setLicense = $this->TradeLicenseInfoRepository->prototype();
         $setLicense->setTradepost($tradepost);
         $setLicense->setDate(time());
-        $setLicense->setGoodsId((int) $goods_id);
+        $setLicense->setcommodityId((int) $commodityId);
         $setLicense->setAmount((int) $giveAmount);
         $setLicense->setDays($days);
 

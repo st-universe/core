@@ -15,7 +15,7 @@ final class CreateLicenseRequest implements CreateLicenseRequestInterface
         return $this->bodyParameter('tradepost')->int()->required();
     }
 
-    public function getWantedLicenseGoodId(): int
+    public function getWantedLicenseCommodityId(): int
     {
         return $this->bodyParameter('wlgid')->int()->defaultsTo(0);
     }

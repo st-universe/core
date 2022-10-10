@@ -22,10 +22,10 @@ use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\FlightRanking\FlightRanking;
 use Stu\Module\Database\View\LatinumRanking\LatinumRanking;
 use Stu\Module\Database\View\TradePostActivity\TradePostActivity;
-use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocations;
-use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequest;
-use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequestInterface;
-use Stu\Module\Database\View\GoodsOverview\GoodsOverview;
+use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocations;
+use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRequest;
+use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRequestInterface;
+use Stu\Module\Database\View\CommoditiesOverview\CommoditiesOverview;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\Overview\Overview;
 use Stu\Module\Database\View\ShowPrestigeLog\ShowPrestigeLog;
@@ -38,7 +38,7 @@ return [
     DatabaseCategoryTalFactoryInterface::class => autowire(DatabaseCategoryTalFactory::class),
     DatabaseEntryRequestInterface::class => autowire(DatabaseEntryRequest::class),
     CategoryRequestInterface::class => autowire(CategoryRequest::class),
-    ShowGoodsLocationsRequestInterface::class => autowire(ShowGoodsLocationsRequest::class),
+    ShowCommoditiesLocationsRequestInterface::class => autowire(ShowCommoditiesLocationsRequest::class),
     UserListRequestInterface::class => autowire(UserListRequest::class),
     'DATABASE_ACTIONS' => [],
     'DATABASE_VIEWS' => [
@@ -48,9 +48,9 @@ return [
         DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
         FlightRanking::VIEW_IDENTIFIER => autowire(FlightRanking::class),
-        GoodsOverview::VIEW_IDENTIFIER => autowire(GoodsOverview::class),
+        CommoditiesOverview::VIEW_IDENTIFIER => autowire(CommoditiesOverview::class),
         LatinumRanking::VIEW_IDENTIFIER => autowire(LatinumRanking::class),
-        ShowGoodsLocations::VIEW_IDENTIFIER => autowire(ShowGoodsLocations::class),
+        ShowCommoditiesLocations::VIEW_IDENTIFIER => autowire(ShowCommoditiesLocations::class),
         ShowPrestigeLog::VIEW_IDENTIFIER => autowire(ShowPrestigeLog::class),
         ShowStatistics::VIEW_IDENTIFIER => autowire(ShowStatistics::class),
         TradePostActivity::VIEW_IDENTIFIER => autowire(TradePostActivity::class),

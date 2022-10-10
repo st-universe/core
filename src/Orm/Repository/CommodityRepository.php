@@ -49,7 +49,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         return $this->findBy([
             'view' => true,
             'npc_good' => false,
-            'type' => CommodityTypeEnum::GOOD_TYPE_STANDARD
+            'type' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD
         ], ['sort' => 'asc']);
     }
 

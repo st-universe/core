@@ -57,7 +57,7 @@ class Research implements ResearchInterface
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $good;
+    private $commodity;
 
     /**
      * @ManyToOne(targetEntity="ShipBuildplan")
@@ -148,14 +148,14 @@ class Research implements ResearchInterface
         return $this;
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
         return $this->good_id;
     }
 
-    public function setGoodId(int $good_id): ResearchInterface
+    public function setCommodityId(int $commodityId): ResearchInterface
     {
-        $this->good_id = $good_id;
+        $this->good_id = $commodityId;
 
         return $this;
     }
@@ -189,9 +189,9 @@ class Research implements ResearchInterface
         return $this->reward_buildplan_id;
     }
 
-    public function getGood(): CommodityInterface
+    public function getCommodity(): CommodityInterface
     {
-        return $this->good;
+        return $this->commodity;
     }
 
     public function getRewardBuildplan(): ?ShipBuildplanInterface

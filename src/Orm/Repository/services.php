@@ -20,7 +20,7 @@ use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
 use Stu\Orm\Entity\BuildingFunction;
-use Stu\Orm\Entity\BuildingGood;
+use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\BuildplanHangar;
@@ -187,10 +187,10 @@ return [
     ): BuildingFunctionRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(BuildingFunction::class);
     },
-    BuildingGoodRepositoryInterface::class => function (
+    BuildingCommodityRepositoryInterface::class => function (
         ContainerInterface $c
-    ): BuildingGoodRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildingGood::class);
+    ): BuildingCommodityRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(BuildingCommodity::class);
     },
     BuildingUpgradeRepositoryInterface::class => function (
         ContainerInterface $c

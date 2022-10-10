@@ -55,8 +55,8 @@ final class CancelOffer implements ActionControllerInterface
             $offer->getTradePost(),
             $userId
         )->upperStorage(
-            (int) $offer->getOfferedGoodId(),
-            (int) $offer->getOfferedGoodCount() * $offer->getOfferCount()
+            (int) $offer->getOfferedCommodityId(),
+            (int) $offer->getOfferedCommodityCount() * $offer->getOfferCount()
         );
 
         $this->storageRepository->delete($offer->getStorage());

@@ -67,14 +67,14 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
         return $this;
     }
 
-    public function getGoodsId(): int
+    public function getCommodityId(): int
     {
         return $this->goods_id;
     }
 
-    public function setGoodsId(int $goods_id): TradeLicenseInfoInterface
+    public function setCommodityId(int $commodityId): TradeLicenseInfoInterface
     {
-        $this->goods_id = $goods_id;
+        $this->goods_id = $commodityId;
 
         return $this;
     }

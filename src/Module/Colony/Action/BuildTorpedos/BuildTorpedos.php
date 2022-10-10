@@ -64,12 +64,12 @@ final class BuildTorpedos implements ActionControllerInterface
                 continue;
             }
             foreach ($torp->getProductionCosts() as $id => $cost) {
-                if (!$storage->containsKey($cost->getGoodId())) {
+                if (!$storage->containsKey($cost->getCommodityId())) {
                     $count = 0;
                     break;
                 }
-                if ($count * $cost->getAmount() > $storage[$cost->getGoodId()]->getAmount()) {
-                    $count = floor($storage[$cost->getGoodId()]->getAmount() / $cost->getAmount());
+                if ($count * $cost->getAmount() > $storage[$cost->getCommodityId()]->getAmount()) {
+                    $count = floor($storage[$cost->getCommodityId()]->getAmount() / $cost->getAmount());
                 }
             }
             if ($count == 0) {
@@ -80,7 +80,7 @@ final class BuildTorpedos implements ActionControllerInterface
             $count = (int)$count;
 
             foreach ($torp->getProductionCosts() as $id => $cost) {
-                $this->colonyStorageManager->lowerStorage($colony, $cost->getGood(), $cost->getAmount() * $count);
+                $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
             }
 
             $this->colonyStorageManager->upperStorage($colony, $torp->getCommodity(), $count * $torp->getProductionAmount());

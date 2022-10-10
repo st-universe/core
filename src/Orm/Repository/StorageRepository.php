@@ -224,7 +224,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             LIMIT 10',
             $rsm
         )->setParameters([
-            'latId' => CommodityTypeEnum::GOOD_LATINUM
+            'latId' => CommodityTypeEnum::COMMODITY_LATINUM
         ])->getResult();
     }
 

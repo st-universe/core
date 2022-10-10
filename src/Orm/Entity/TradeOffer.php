@@ -109,50 +109,50 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
-    public function getWantedGoodId(): int
+    public function getWantedCommodityId(): int
     {
         return $this->wg_id;
     }
 
-    public function setWantedGoodId(int $wantedCommodityId): TradeOfferInterface
+    public function setWantedCommodityId(int $wantedCommodityId): TradeOfferInterface
     {
         $this->wg_id = $wantedCommodityId;
 
         return $this;
     }
 
-    public function getWantedGoodCount(): int
+    public function getWantedCommodityCount(): int
     {
         return $this->wg_count;
     }
 
-    public function setWantedGoodCount(int $wantedGoodCount): TradeOfferInterface
+    public function setWantedCommodityCount(int $wantedCommodityCount): TradeOfferInterface
     {
-        $this->wg_count = $wantedGoodCount;
+        $this->wg_count = $wantedCommodityCount;
 
         return $this;
     }
 
-    public function getOfferedGoodId(): int
+    public function getOfferedCommodityId(): int
     {
         return $this->gg_id;
     }
 
-    public function setOfferedGoodId(int $offeredCommodityId): TradeOfferInterface
+    public function setOfferedCommodityId(int $offeredCommodityId): TradeOfferInterface
     {
         $this->gg_id = $offeredCommodityId;
 
         return $this;
     }
 
-    public function getOfferedGoodCount(): int
+    public function getOfferedCommodityCount(): int
     {
         return $this->gg_count;
     }
 
-    public function setOfferedGoodCount(int $offeredGoodCount): TradeOfferInterface
+    public function setOfferedCommodityCount(int $offeredCommodityCount): TradeOfferInterface
     {
-        $this->gg_count = $offeredGoodCount;
+        $this->gg_count = $offeredCommodityCount;
 
         return $this;
     }

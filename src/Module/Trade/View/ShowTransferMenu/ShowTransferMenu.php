@@ -62,7 +62,7 @@ final class ShowTransferMenu implements ViewControllerInterface
             $storage->getCommodity()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_DILITHIUM', $storage->getCommodityId() === CommodityTypeEnum::GOOD_DILITHIUM);
+        $game->setTemplateVar('IS_DILITHIUM', $storage->getCommodityId() === CommodityTypeEnum::COMMODITY_DILITHIUM);
         $game->setTemplateVar(
             'TRADE_POST',
             $this->tradeLibFactory->createTradeAccountTal($tradePost, $userId)

@@ -84,10 +84,10 @@ final class TakeOffer implements ActionControllerInterface
         $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
             $selectedOffer->getTradePostId(),
             $userId,
-            $selectedOffer->getWantedGoodId()
+            $selectedOffer->getWantedCommodityId()
         );
 
-        if ($storage === null || $storage->getAmount() < $selectedOffer->getWantedGoodCount()) {
+        if ($storage === null || $storage->getAmount() < $selectedOffer->getWantedCommodityCount()) {
             $game->addInformation(sprintf(
                 _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
                 $selectedOffer->getWantedCommodity()->getName()
@@ -104,16 +104,16 @@ final class TakeOffer implements ActionControllerInterface
 
         if (
             $freeStorage <= 0 &&
-            $selectedOffer->getOfferedGoodCount() > $selectedOffer->getWantedGoodCount()
+            $selectedOffer->getOfferedCommodityCount() > $selectedOffer->getWantedCommodityCount()
         ) {
             $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
             return;
         }
-        if ($amount * $selectedOffer->getWantedGoodCount() > $storage->getAmount()) {
-            $amount = (int) floor($storage->getAmount() / $selectedOffer->getWantedGoodCount());
+        if ($amount * $selectedOffer->getWantedCommodityCount() > $storage->getAmount()) {
+            $amount = (int) floor($storage->getAmount() / $selectedOffer->getWantedCommodityCount());
         }
-        if ($amount * $selectedOffer->getOfferedGoodCount() - $amount * $selectedOffer->getWantedGoodCount() > $freeStorage) {
-            $amount = (int) floor($freeStorage / ($selectedOffer->getOfferedGoodCount() - $selectedOffer->getWantedGoodCount()));
+        if ($amount * $selectedOffer->getOfferedCommodityCount() - $amount * $selectedOffer->getWantedCommodityCount() > $freeStorage) {
+            $amount = (int) floor($freeStorage / ($selectedOffer->getOfferedCommodityCount() - $selectedOffer->getWantedCommodityCount()));
             if ($amount <= 0) {
                 $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
                 return;
@@ -133,31 +133,31 @@ final class TakeOffer implements ActionControllerInterface
 
             //modify storage of offer
             $storage = $selectedOffer->getStorage();
-            $storage->setAmount($selectedOffer->getOfferedGoodCount() * $selectedOffer->getOfferCount());
+            $storage->setAmount($selectedOffer->getOfferedCommodityCount() * $selectedOffer->getOfferCount());
             $this->storageRepository->save($storage);
         }
 
         $storageManagerRemote->upperStorage(
-            (int) $selectedOffer->getWantedGoodId(),
-            (int) $selectedOffer->getWantedGoodCount() * $amount
+            (int) $selectedOffer->getWantedCommodityId(),
+            (int) $selectedOffer->getWantedCommodityCount() * $amount
         );
 
         $storageManagerUser->upperStorage(
-            (int) $selectedOffer->getOfferedGoodId(),
-            (int) $selectedOffer->getOfferedGoodCount() * $amount
+            (int) $selectedOffer->getOfferedCommodityId(),
+            (int) $selectedOffer->getOfferedCommodityCount() * $amount
         );
 
         $storageManagerUser->lowerStorage(
-            (int) $selectedOffer->getWantedGoodId(),
-            (int) $selectedOffer->getWantedGoodCount() * $amount
+            (int) $selectedOffer->getWantedCommodityId(),
+            (int) $selectedOffer->getWantedCommodityCount() * $amount
         );
 
         $transaction = $this->tradeTransactionRepository->prototype();
         $transaction->setDate(time());
         $transaction->setWantedCommodity($selectedOffer->getWantedCommodity());
-        $transaction->setWantedGoodCount($selectedOffer->getWantedGoodCount() * $amount);
+        $transaction->setWantedCommodityCount($selectedOffer->getWantedCommodityCount() * $amount);
         $transaction->setOfferedCommodity($selectedOffer->getOfferedCommodity());
-        $transaction->setOfferedGoodCount($selectedOffer->getOfferedGoodCount() * $amount);
+        $transaction->setOfferedCommodityCount($selectedOffer->getOfferedCommodityCount() * $amount);
         $transaction->setTradePostId($selectedOffer->getTradePostId());
         $this->tradeTransactionRepository->save($transaction);
 
@@ -171,9 +171,9 @@ final class TakeOffer implements ActionControllerInterface
             sprintf(
                 'Am %s wurden insgesamt %d %s gegen %d %s getauscht',
                 $selectedOffer->getTradePost()->getName(),
-                $selectedOffer->getOfferedGoodCount() * $amount,
+                $selectedOffer->getOfferedCommodityCount() * $amount,
                 $selectedOffer->getOfferedCommodity()->getName(),
-                $selectedOffer->getWantedGoodCount() * $amount,
+                $selectedOffer->getWantedCommodityCount() * $amount,
                 $selectedOffer->getWantedCommodity()->getName()
             ),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE

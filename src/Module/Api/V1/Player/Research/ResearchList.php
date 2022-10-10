@@ -36,15 +36,15 @@ final class ResearchList extends Action
         return $response->withData([
             'available' => array_values(
                 array_map(
-                    function (ResearchInterface $tech): array{
+                    function (ResearchInterface $tech): array {
                         return [
                             'researchId' => $tech->getId(),
                             'name' => $tech->getName(),
                             'description' => $tech->getDescription(),
                             'points' => $tech->getPoints(),
                             'commodity' => [
-                                'commodityId' => $tech->getGood()->getId(),
-                                'name' => $tech->getGood()->getName()
+                                'commodityId' => $tech->getCommodity()->getId(),
+                                'name' => $tech->getCommodity()->getName()
                             ],
                         ];
                     },
@@ -53,7 +53,7 @@ final class ResearchList extends Action
             ),
             'finished' => array_map(
                 function (ResearchedInterface $researchedTech): array {
-                     return [
+                    return [
                         'researchId' => $researchedTech->getResearch()->getId(),
                         'name' => $researchedTech->getResearch()->getName(),
                         'finishDate' => $researchedTech->getFinished()

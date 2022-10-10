@@ -15,7 +15,7 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Tick\Colony\ColonyTick;
-use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -618,7 +618,7 @@ class Colony implements ColonyInterface
         if ($this->productionRaw === null) {
             // @todo refactor
             global $container;
-            $result = $container->get(BuildingGoodRepositoryInterface::class)->getProductionByColony(
+            $result = $container->get(BuildingCommodityRepositoryInterface::class)->getProductionByColony(
                 $this->getId(),
                 $this->getPlanetType()->getId()
             );
@@ -626,7 +626,7 @@ class Colony implements ColonyInterface
             $this->productionRaw = [];
             foreach ($result as $data) {
                 if (($data['gc'] + $data['pc']) != 0) {
-                    $this->productionRaw[$data['goods_id']] = new ColonyProduction($data);
+                    $this->productionRaw[$data['commodity_id']] = new ColonyProduction($data);
                 }
             }
         }
@@ -642,17 +642,17 @@ class Colony implements ColonyInterface
     {
         if ($this->production === null) {
             $this->production = $this->getProductionRaw();
-            if (array_key_exists(CommodityTypeEnum::GOOD_FOOD, $this->production)) {
-                if ($this->production[CommodityTypeEnum::GOOD_FOOD]->getProduction() - $this->getBevFood() == 0) {
-                    unset($this->production[CommodityTypeEnum::GOOD_FOOD]);
+            if (array_key_exists(CommodityTypeEnum::COMMODITY_FOOD, $this->production)) {
+                if ($this->production[CommodityTypeEnum::COMMODITY_FOOD]->getProduction() - $this->getBevFood() == 0) {
+                    unset($this->production[CommodityTypeEnum::COMMODITY_FOOD]);
                 } else {
-                    $this->production[CommodityTypeEnum::GOOD_FOOD]->lowerProduction($this->getBevFood());
+                    $this->production[CommodityTypeEnum::COMMODITY_FOOD]->lowerProduction($this->getBevFood());
                 }
             } else {
                 $obj = new ColonyProduction;
                 $obj->setProduction(-$this->getBevFood());
-                $obj->setGoodId(CommodityTypeEnum::GOOD_FOOD);
-                $this->production[CommodityTypeEnum::GOOD_FOOD] = $obj;
+                $obj->setCommodityId(CommodityTypeEnum::COMMODITY_FOOD);
+                $this->production[CommodityTypeEnum::COMMODITY_FOOD] = $obj;
             }
         }
         return $this->production;
@@ -663,7 +663,7 @@ class Colony implements ColonyInterface
         if ($this->productionsum === null) {
             $sum = 0;
             foreach ($this->getProduction() as $key => $value) {
-                if ($value->getGood()->getType() == CommodityTypeEnum::GOOD_TYPE_EFFECT) {
+                if ($value->getCommodity()->getType() == CommodityTypeEnum::COMMODITY_TYPE_EFFECT) {
                     continue;
                 }
                 $sum += $value->getProduction();
@@ -763,19 +763,19 @@ class Colony implements ColonyInterface
             // TODO we should use a faction-factory...
             switch ($this->getUser()->getFactionId()) {
                 case FactionEnum::FACTION_FEDERATION:
-                    $key = ColonyEnum::GOOD_SATISFACTION_FED_PRIMARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_FED_PRIMARY;
                     break;
                 case FactionEnum::FACTION_ROMULAN:
-                    $key = ColonyEnum::GOOD_SATISFACTION_ROMULAN_PRIMARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_ROMULAN_PRIMARY;
                     break;
                 case FactionEnum::FACTION_KLINGON:
-                    $key = ColonyEnum::GOOD_SATISFACTION_KLINGON_PRIMARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_KLINGON_PRIMARY;
                     break;
                 case FactionEnum::FACTION_CARDASSIAN:
-                    $key = ColonyEnum::GOOD_SATISFACTION_CARDASSIAN_PRIMARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_CARDASSIAN_PRIMARY;
                     break;
                 case FactionEnum::FACTION_FERENGI:
-                    $key = ColonyEnum::GOOD_SATISFACTION_FERENGI_PRIMARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_FERENGI_PRIMARY;
                     break;
             }
             $this->positive_effect_primary = 0;
@@ -795,19 +795,19 @@ class Colony implements ColonyInterface
             // XXX we should use a faction-factory...
             switch ($this->getUser()->getFactionId()) {
                 case FactionEnum::FACTION_FEDERATION:
-                    $key = ColonyEnum::GOOD_SATISFACTION_FED_SECONDARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_FED_SECONDARY;
                     break;
                 case FactionEnum::FACTION_ROMULAN:
-                    $key = ColonyEnum::GOOD_SATISFACTION_ROMULAN_SECONDARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_ROMULAN_SECONDARY;
                     break;
                 case FactionEnum::FACTION_KLINGON:
-                    $key = ColonyEnum::GOOD_SATISFACTION_KLINGON_SECONDARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_KLINGON_SECONDARY;
                     break;
                 case FactionEnum::FACTION_CARDASSIAN:
-                    $key = ColonyEnum::GOOD_SATISFACTION_CARDASSIAN_SECONDARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_CARDASSIAN_SECONDARY;
                     break;
                 case FactionEnum::FACTION_FERENGI:
-                    $key = ColonyEnum::GOOD_SATISFACTION_FERENGI_SECONDARY;
+                    $key = ColonyEnum::COMMODITY_SATISFACTION_FERENGI_SECONDARY;
                     break;
             }
             if (!isset($production[$key])) {

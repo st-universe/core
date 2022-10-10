@@ -79,9 +79,9 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->research->getPoints();
     }
 
-    public function getGoodId(): int
+    public function getCommodityId(): int
     {
-        return $this->research->getGoodId();
+        return $this->research->getCommodityId();
     }
 
     public function getUpperPlanetLimit(): int
@@ -94,9 +94,9 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->research->getUpperMoonLimit();
     }
 
-    public function getGood(): CommodityInterface
+    public function getCommodity(): CommodityInterface
     {
-        return $this->research->getGood();
+        return $this->research->getCommodity();
     }
 
     public function getResearchState()
@@ -121,7 +121,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
                     $name = $dependecy->getResearchDependOn()->getName();
 
                     if (!array_key_exists($name, $result) && $name !== $this->research->getName()) {
-                        $result[$name] = new TechDependency($name, $dependecy->getResearchDependOn()->getGood());
+                        $result[$name] = new TechDependency($name, $dependecy->getResearchDependOn()->getCommodity());
                     }
                 }
             );
@@ -149,7 +149,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
                     $name = $research->getName();
 
                     if (!array_key_exists($name, $result) && $name !== $this->research->getName()) {
-                        $result[$name] = new TechDependency($name, $research->getGood());
+                        $result[$name] = new TechDependency($name, $research->getCommodity());
                     }
                 }
             );

@@ -7,7 +7,7 @@ interface CreateLicenseRequestInterface
 
     public function getTradePostId(): int;
 
-    public function getWantedLicenseGoodId(): int;
+    public function getWantedLicenseCommodityId(): int;
 
     public function getWantedLicenseAmount(): int;
 

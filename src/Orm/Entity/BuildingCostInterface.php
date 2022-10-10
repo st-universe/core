@@ -10,15 +10,15 @@ interface BuildingCostInterface
 
     public function setBuildingId(int $buildingId): BuildingCostInterface;
 
-    public function getGoodId(): int;
+    public function getCommodityId(): int;
 
-    public function setGoodId(int $goodId): BuildingCostInterface;
+    public function setCommodityId(int $commodityId): BuildingCostInterface;
 
     public function getAmount(): int;
 
     public function setAmount(int $amount): BuildingCostInterface;
 
-    public function getGood(): CommodityInterface;
+    public function getCommodity(): CommodityInterface;
 
     public function getHalfAmount(): int;
 }

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Database\View\GoodsOverview;
+namespace Stu\Module\Database\View\CommoditiesOverview;
 
 use Stu\Lib\StorageWrapper\StorageWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
-final class GoodsOverview implements ViewControllerInterface
+final class CommoditiesOverview implements ViewControllerInterface
 {
 
-    public const VIEW_IDENTIFIER = 'SHOW_GOODS_OVERVIEW';
+    public const VIEW_IDENTIFIER = 'SHOW_COMMODITIES_OVERVIEW';
 
     private StorageRepositoryInterface $storageRepository;
 
@@ -36,15 +36,15 @@ final class GoodsOverview implements ViewControllerInterface
             _('Warenübersicht')
         );
         $game->setPageTitle(_('/ Datenbank / Warenübersicht'));
-        $game->showMacro('html/database.xhtml/goods_overview');
+        $game->showMacro('html/database.xhtml/commodities_overview');
 
-        $goodsOverview = [];
+        $commoditiesOverview = [];
 
         $storages = $this->storageRepository->getByUserAccumulated($game->getUser()->getId());
         foreach ($storages as $storage) {
-            $goodsOverview[$storage['commodity_id']] = new StorageWrapper($storage['commodity_id'], $storage['amount']);
+            $commoditiesOverview[$storage['commodity_id']] = new StorageWrapper($storage['commodity_id'], $storage['amount']);
         }
 
-        $game->setTemplateVar('GOODS_LIST', $goodsOverview);
+        $game->setTemplateVar('COMMODITIES_LIST', $commoditiesOverview);
     }
 }

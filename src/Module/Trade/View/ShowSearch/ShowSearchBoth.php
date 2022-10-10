@@ -73,7 +73,7 @@ final class ShowSearchBoth implements ViewControllerInterface
         $game->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
 
         $commodityList = $this->commodityRepository->getTradeable();
-        $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
+        $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
 
         $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENSE_COUNT);
         $game->setTemplateVar(

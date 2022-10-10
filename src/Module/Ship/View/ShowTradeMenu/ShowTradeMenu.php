@@ -90,7 +90,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());
 
         if ($licenseInfo !== null) {
-            $commodityId = $licenseInfo->getGoodsId();
+            $commodityId = $licenseInfo->getCommodityId();
             $commodityName = $this->commodityRepository->find($commodityId)->getName();
             $licensecost = $licenseInfo->getAmount();
             $licensedays = $licenseInfo->getDays();
@@ -111,8 +111,8 @@ final class ShowTradeMenu implements ViewControllerInterface
             'CAN_BUY_LICENSE',
             $licenseInfo !== null
         );
-        $game->setTemplateVar('LICENSEGOOD', $commodityId);
-        $game->setTemplateVar('LICENSEGOODNAME', $commodityName);
+        $game->setTemplateVar('LICENSECOMMODITY', $commodityId);
+        $game->setTemplateVar('LICENSECOMMODITYNAME', $commodityName);
         $game->setTemplateVar('LICENSECOST', $licensecost);
         $game->setTemplateVar('LICENSEDAYS', $licensedays);
     }

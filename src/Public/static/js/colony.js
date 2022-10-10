@@ -187,7 +187,7 @@ function triggerBeamFrom() {
 }
 
 function toggleMaxEmpty(elem, max) {
-	var input = elem.up('tr').down('.goodAmount');
+	var input = elem.up('tr').down('.commodityAmount');
 	var value = input.value;
 
 	if (value) {
@@ -231,14 +231,14 @@ function showModuleSelectTab(obj, tabId) {
 	$('module_select_tab_' + tabId).show();
 	currentTab = $('module_select_tab_' + tabId);
 }
-function replaceTabImage(type, moduleId, goodId, module_crew, module_lvl) {
+function replaceTabImage(type, moduleId, commodityId, module_crew, module_lvl) {
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
 		updateCrewCount(type, 0, 0);
 	} else {
 		Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
-		$('tab_image_mod_' + type).src = 'assets/goods/' + goodId + '.png';
+		$('tab_image_mod_' + type).src = 'assets/commodities/' + commodityId + '.png';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
 		updateCrewCount(type, module_crew, module_lvl);
@@ -350,10 +350,10 @@ function showGiveUpWindow(target) {
 function getCommodityLocations(commodityId) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	ajax_update('elt', 'database.php?commodityId=' + commodityId + '&SHOW_GOODS_LOCATIONS=1');
+	ajax_update('elt', 'database.php?commodityId=' + commodityId + '&SHOW_COMMODITIES_LOCATIONS=1');
 }
-function maximizeGoodAmounts() {
-	var list = document.getElementsByClassName('goodAmount');
+function maximizeCommodityAmounts() {
+	var list = document.getElementsByClassName('commodityAmount');
 	var n;
 	for (n = 0; n < list.length; ++n) {
 		list[n].value = 'max';

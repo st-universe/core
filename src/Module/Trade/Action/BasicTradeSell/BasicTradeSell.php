@@ -102,7 +102,7 @@ final class BasicTradeSell implements ActionControllerInterface
 
         $this->basicTradeRepository->save($newBasicTrade);
 
-        $storageManager->upperStorage(CommodityTypeEnum::GOOD_LATINUM, 1);
+        $storageManager->upperStorage(CommodityTypeEnum::COMMODITY_LATINUM, 1);
         $storageManager->lowerStorage($basicTrade->getCommodity()->getId(), $sellValue);
 
         $game->addInformation('Die Waren wurden verkauft');

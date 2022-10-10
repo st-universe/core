@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
+use Stu\Lib\ColonyStorageCommodityWrapper\ColonyStorageCommodityWrapper;
 use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
@@ -124,6 +124,6 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
         $game->setTemplateVar('MY_WRAPPER', $myWrapper);
         $game->setTemplateVar('MODULE_SLOTS', range(1, ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT));
-        $game->setTemplateVar('HAS_STORAGE', new ColonyStorageGoodWrapper($colony->getStorage()));
+        $game->setTemplateVar('HAS_STORAGE', new ColonyStorageCommodityWrapper($colony->getStorage()));
     }
 }

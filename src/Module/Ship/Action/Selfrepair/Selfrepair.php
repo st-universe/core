@@ -109,7 +109,7 @@ final class Selfrepair implements ActionControllerInterface
             $freeEngineerCount = $this->selfrepairUtil->determineFreeEngineerCount($ship);
             $duration = RepairTaskEnum::STANDARD_REPAIR_DURATION * (1 - $freeEngineerCount / 10);
 
-            $this->consumeGoods($ship, $repairType, $neededSparePartCount, $game);
+            $this->consumeCommodities($ship, $repairType, $neededSparePartCount, $game);
             $this->selfrepairUtil->createRepairTask($ship, $systemType, $repairType, time() + (int) $duration);
             $game->addInformationf(_('Das Schiffssystem %s wird repariert. Fertigstellung %s'), ShipSystemTypeEnum::getDescription($systemType), date("d.m.Y H:i", (time() + (int) $duration)));
         } else {
@@ -117,7 +117,7 @@ final class Selfrepair implements ActionControllerInterface
                 return;
             }
 
-            $this->consumeGoods($ship, $repairType, 3 * $neededSparePartCount, $game);
+            $this->consumeCommodities($ship, $repairType, 3 * $neededSparePartCount, $game);
             $healingPercentage = $this->selfrepairUtil->determineHealingPercentage($repairType);
             $isSuccess = $this->selfrepairUtil->instantSelfRepair($ship, $systemType, $healingPercentage);
 
@@ -145,8 +145,8 @@ final class Selfrepair implements ActionControllerInterface
 
         if (
             ($repairType === RepairTaskEnum::SPARE_PARTS_ONLY || $repairType === RepairTaskEnum::BOTH)
-            && (!$ship->getStorage()->containsKey(CommodityTypeEnum::GOOD_SPARE_PART)
-                || $ship->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART)->getAmount() < $neededSparePartCount)
+            && (!$ship->getStorage()->containsKey(CommodityTypeEnum::COMMODITY_SPARE_PART)
+                || $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART)->getAmount() < $neededSparePartCount)
         ) {
             $game->addInformationf(_('Für die Reparatur werden %d Ersatzteile benötigt'), $neededSparePartCount);
             $result = false;
@@ -154,8 +154,8 @@ final class Selfrepair implements ActionControllerInterface
 
         if (
             ($repairType === RepairTaskEnum::SYSTEM_COMPONENTS_ONLY || $repairType === RepairTaskEnum::BOTH)
-            && (!$ship->getStorage()->containsKey(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)
-                || $ship->getStorage()->get(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)->getAmount() < $neededSparePartCount)
+            && (!$ship->getStorage()->containsKey(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)
+                || $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)->getAmount() < $neededSparePartCount)
         ) {
             $game->addInformationf(_('Für die Reparatur werden %d Systemkomponenten benötigt'), $neededSparePartCount);
             $result = false;
@@ -164,13 +164,13 @@ final class Selfrepair implements ActionControllerInterface
         return $result;
     }
 
-    private function consumeGoods(ShipInterface $ship, int $repairType, $neededSparePartCount, GameControllerInterface $game): void
+    private function consumeCommodities(ShipInterface $ship, int $repairType, $neededSparePartCount, GameControllerInterface $game): void
     {
         if (
             $repairType === RepairTaskEnum::SPARE_PARTS_ONLY
             || $repairType === RepairTaskEnum::BOTH
         ) {
-            $commodity = $ship->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART)->getCommodity();
+            $commodity = $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SPARE_PART)->getCommodity();
             $this->shipStorageManager->lowerStorage($ship, $commodity, $neededSparePartCount);
             $game->addInformationf(_('Für die Reparatur werden %d Ersatzteile verwendet'), $neededSparePartCount);
         }
@@ -179,7 +179,7 @@ final class Selfrepair implements ActionControllerInterface
             $repairType === RepairTaskEnum::SYSTEM_COMPONENTS_ONLY
             || $repairType === RepairTaskEnum::BOTH
         ) {
-            $commodity = $ship->getStorage()->get(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)->getCommodity();
+            $commodity = $ship->getStorage()->get(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT)->getCommodity();
             $this->shipStorageManager->lowerStorage($ship, $commodity, $neededSparePartCount);
             $game->addInformationf(_('Für die Reparatur werden %d Systemkomponenten verwendet'), $neededSparePartCount);
         }

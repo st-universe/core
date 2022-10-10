@@ -91,7 +91,7 @@ final class BeamToColony implements ActionControllerInterface
             $game->addInformation(sprintf(_('Der Lagerraum der Kolonie %s ist voll'), $target->getName()));
             return;
         }
-        $goods = request::postArray('goods');
+        $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
 
         $shipStorage = $ship->getStorage();
@@ -100,7 +100,7 @@ final class BeamToColony implements ActionControllerInterface
             $game->addInformation(_("Keine Waren zum Beamen vorhanden"));
             return;
         }
-        if (count($goods) == 0 || count($gcount) == 0) {
+        if (count($commodities) == 0 || count($gcount) == 0) {
             $game->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
             return;
         }
@@ -109,7 +109,7 @@ final class BeamToColony implements ActionControllerInterface
             $ship->getName(),
             $target->getName()
         ));
-        foreach ($goods as $key => $value) {
+        foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
 
             if ($ship->getEps() < 1) {
