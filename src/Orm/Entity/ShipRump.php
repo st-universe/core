@@ -114,7 +114,7 @@ class ShipRump implements ShipRumpInterface
     private $database_id = 0;
 
     /** @column(type="integer", nullable=true) * */
-    private $good_id = 0;
+    private $commodity_id = 0;
 
     /** @column(type="smallint") * */
     private $flight_ecost = 0;
@@ -151,7 +151,7 @@ class ShipRump implements ShipRumpInterface
 
     /**
      * @ManyToOne(targetEntity="Commodity")
-     * @JoinColumn(name="good_id", referencedColumnName="id")
+     * @JoinColumn(name="commodity_id", referencedColumnName="id")
      */
     private $commodity;
 
@@ -525,12 +525,12 @@ class ShipRump implements ShipRumpInterface
 
     public function getCommodityId(): ?int
     {
-        return $this->good_id;
+        return $this->commodity_id;
     }
 
     public function setCommodityId(?int $commodityId): ShipRumpInterface
     {
-        $this->good_id = $commodityId;
+        $this->commodity_id = $commodityId;
         return $this;
     }
 

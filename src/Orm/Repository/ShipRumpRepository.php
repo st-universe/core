@@ -103,7 +103,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                     AND r.category_id != :ignoreCategory
                     AND r.id IN (
                         SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
-                    ) AND r.good_id IN (
+                    ) AND r.commodity_id IN (
                         SELECT st.commodity_id FROM %s st WHERE st.colony_id = :colonyId
                     )',
                     ShipRump::class,

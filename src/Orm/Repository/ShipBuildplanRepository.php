@@ -61,7 +61,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
                     'SELECT sb FROM %s sb
                     JOIN %s sr
                     WITH sb.rump_id = sr.id
-                    WHERE sr.good_id = :commodityId',
+                    WHERE sr.commodity_id = :commodityId',
                     ShipBuildplan::class,
                     ShipRump::class
                 )
