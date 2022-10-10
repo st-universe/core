@@ -27,7 +27,7 @@
 							<table class="tcal">
 								<tr tal:repeat="cost ship/getRepairCosts">
 									<td tal:content="cost/getAmount"></td>
-									<td><img src="assets/goods/${cost/getCommodityId}.png"
+									<td><img src="assets/commodities/${cost/getCommodityId}.png"
 											tal:attributes="title cost/getCommodityName" /></td>
 								</tr>
 							</table>

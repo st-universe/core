@@ -23,13 +23,14 @@
 					<table class="tcal">
 						<tr>
 							<td class="darkbg">Punkte</td>
-							<td tal:condition="SELECTED_RESEARCH/getGoodId" class="darkbg">Benötigte Ware / Effekt</td>
+							<td tal:condition="SELECTED_RESEARCH/getCommodityId" class="darkbg">Benötigte Ware / Effekt
+							</td>
 						</tr>
 						<tr>
 							<td tal:content="SELECTED_RESEARCH/getPoints">POINTS</td>
-							<td tal:condition="SELECTED_RESEARCH/getGoodId">
-								<img src="assets/goods/${SELECTED_RESEARCH/getGoodId}.png" /> <span
-									tal:replace="SELECTED_RESEARCH/getGood/getName"></span>
+							<td tal:condition="SELECTED_RESEARCH/getCommodityId">
+								<img src="assets/commodities/${SELECTED_RESEARCH/getCommodityId}.png" /> <span
+									tal:replace="SELECTED_RESEARCH/getCommodity/getName"></span>
 							</td>
 						</tr>
 					</table>
@@ -77,7 +78,7 @@
 							tal:repeat="data SELECTED_RESEARCH/getDistinctExcludeNames">
 							<div class="divbody" style="text-align: center;">
 								<span tal:content="data/getName" style="font-weight: bold;">NAME</span> <img
-									src="assets/goods/${data/getCommodity/getId}.png"
+									src="assets/commodities/${data/getCommodity/getId}.png"
 									tal:attributes="title data/getCommodity/getName" />
 							</div>
 						</div>
@@ -97,7 +98,7 @@
 							tal:repeat="data SELECTED_RESEARCH/getDistinctPositiveDependencyNames">
 							<div class="divbody" style="text-align: center;">
 								<span tal:content="data/getName" style="font-weight: bold;">NAME</span> <img
-									src="assets/goods/${data/getCommodity/getId}.png"
+									src="assets/commodities/${data/getCommodity/getId}.png"
 									tal:attributes="title data/getCommodity/getName" />
 							</div>
 						</div>

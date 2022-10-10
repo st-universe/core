@@ -18,8 +18,9 @@
           </div>
           <div class="researchListItemDescription" tal:content="data/getDescription">DESCRIPTION</div>
           <div class="researchListItemNeeds">
-            <img src="/assets/goods/${data/getGoodId}.png" tal:attributes="title data/getGood/getName" />
-            <span tal:content="data/getPoints">POINTS</span> <span tal:content="data/getGood/getName">NAME</span>
+            <img src="/assets/commodities/${data/getCommodityId}.png"
+              tal:attributes="title data/getCommodity/getName" />
+            <span tal:content="data/getPoints">POINTS</span> <span tal:content="data/getCommodity/getName">NAME</span>
           </div>
         </div>
       </div>

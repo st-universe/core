@@ -25,7 +25,7 @@
         <th style="width: 100px;">Anzahl</th>
       </tr>
       <tr style="text-align: center;" tal:repeat="mod MODS">
-        <td><img src="assets/goods/${mod/getGoodId}.png" title="${mod/getName}" /></td>
+        <td><img src="assets/commodities/${mod/getCommodityId}.png" title="${mod/getName}" /></td>
         <td><span tal:replace="mod/getLevel">LEVEL</span></td>
         <td style="color: ${mod/getColor}"><span tal:replace="mod/getStoredAmount">CURRENT</span>/<span
             tal:replace="mod/getNeededAmount">NEEDED</span>
@@ -304,7 +304,7 @@
         </tr>
         <tr tal:repeat="data AVAILABLE_SHUTTLES">
           <td>
-            <img src="assets/goods/${data/getCommodityId}.png" title="${data/getCommodityName}" />
+            <img src="assets/commodities/${data/getCommodityId}.png" title="${data/getCommodityName}" />
           </td>
           <td>
             <a tal:condition="SHIP/isOwnedByCurrentUser" href="javascript:void(0);"
@@ -512,8 +512,8 @@
             <tr>
               <td>Module</td>
               <td>
-                <img src="assets/goods/${module/getModule/getGoodId}.png" tal:attributes="name module/getModule/getName"
-                  tal:repeat="module data/getModules" />
+                <img src="assets/commodities/${module/getModule/getCommodityId}.png"
+                  tal:attributes="name module/getModule/getName" tal:repeat="module data/getModules" />
               </td>
             </tr>
             <tr>

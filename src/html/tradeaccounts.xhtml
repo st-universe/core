@@ -36,7 +36,7 @@
 							<div style="float: left; width: 100px;" tal:repeat="stor data/getStorage">
 								<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})"
 									style="display: block; padding: 4px;" class="tradebutton">
-									<img src="assets/goods/${stor/getCommodity/getId}.png"
+									<img src="assets/commodities/${stor/getCommodity/getId}.png"
 										tal:attributes="title stor/getCommodity/getName" /> <span
 										tal:replace="stor/getAmount">COUNT</span>
 								</a>
@@ -48,9 +48,9 @@
 							</div>
 							<div style="float: left; width: 100px;" tal:repeat="stor data/getOfferStorage">
 								<a href="javascript:void(0);"
-									onclick="showTradeOfferByGood(${data/getId},${stor/commodity_id})"
+									onclick="showTradeOfferByCommodity(${data/getId},${stor/commodity_id})"
 									style="display: block; padding: 4px;" class="tradebutton">
-									<img src="assets/goods/${stor/commodity_id}.png"
+									<img src="assets/commodities/${stor/commodity_id}.png"
 										tal:attributes="title stor/commodity_name" /> <span
 										tal:replace="stor/amount">COUNT</span>
 								</a>

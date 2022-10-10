@@ -74,7 +74,8 @@
           <img src="assets/buttons/e_trans2.png" title="Energie" /> ${RUMP/getEpsCost}
         </div>
         <div tal:repeat="data RUMP/getBuildingCosts">
-          <img src="assets/goods/${data/getCommodity/getId}.png" tal:attributes="title data/getCommodity/getName" />
+          <img src="assets/commodities/${data/getCommodity/getId}.png"
+            tal:attributes="title data/getCommodity/getName" />
           ${data/getAmount}
         </div>
       </td>

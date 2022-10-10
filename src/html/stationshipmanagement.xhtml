@@ -84,7 +84,7 @@
                   <img class="center" onclick="this.up('div').down('input').value=${ship/getTorpedoCapacity}"
                     tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.png" title="Torpedos" />
                   <img class="center" tal:condition="ship/getTorpedoCount"
-                    src="assets/goods/${ship/getTorpedoType/getGoodId}.png"
+                    src="assets/commodities/${ship/getTorpedoType/getCommodityId}.png"
                     tal:attributes="title ship/getTorpedoType/getName" />
                   <tal:block tal:condition="ship/ownedByUser">
                     <input type="text" size="3" name="torp[${ship/getId}]"
@@ -94,7 +94,7 @@
                   <input tal:condition="not:ship/ownedByUser" type="text" size="3" name="torp[${ship/getId}]" />
                   <tal:block tal:condition="not:ship/getTorpedoCount">
                     <tal:block tal:repeat="data ship/getPossibleTorpedoTypes">
-                      <img class="center" src="assets/goods/${data/getGoodId}.png"
+                      <img class="center" src="assets/commodities/${data/getCommodityId}.png"
                         tal:attributes="title data/getName" />
                       <input type="radio" name="torp_type[${ship/getId}]"
                         tal:attributes="checked repeat/data/start; value data/getId" />

@@ -199,7 +199,7 @@
 			</td>
 			<td>
 				<tal:block tal:condition="SHIP/getTorpedo">
-					<img src="assets/goods/${SHIP/getTorpedo/getGoodId}.png" />
+					<img src="assets/commodities/${SHIP/getTorpedo/getCommodityId}.png" />
 					<span tal:replace="SHIP/getTorpedo/getName">TORPEDOTYPE</span>:
 					${SHIP/getTorpedoCount}
 				</tal:block>
@@ -211,7 +211,7 @@
 		<tr tal:condition="SHIP/isTorpedoStorageHealthy">
 			<td>
 				<tal:block tal:condition="SHIP/getTorpedo">
-					<img src="assets/goods/${SHIP/getTorpedo/getGoodId}.png" />
+					<img src="assets/commodities/${SHIP/getTorpedo/getCommodityId}.png" />
 					<span tal:replace="SHIP/getTorpedo/getName">TORPEDOTYPE</span>:
 					${SHIP/getTorpedoCount}
 				</tal:block>
@@ -294,12 +294,12 @@
 		<tal:block tal:condition="php: SHIP.hasShuttleRamp() AND SHIP.getStoredShuttles() ">
 			<tr tal:define="defaultId php:current(SHIP.getStoredShuttles()).getId()">
 				<td>
-					<select name="shid" onchange="cp('shuttle','goods/' + this.value, 'png')">
+					<select name="shid" onchange="cp('shuttle','commodities/' + this.value, 'png')">
 						<option tal:repeat="data SHIP/getStoredShuttles" tal:content="data/getName" value="runtime"
 							tal:attributes="value data/getId">NAME
 						</option>
 					</select>
-					<img src="/assets/goods/${defaultId}.png" name="shuttle" />
+					<img src="/assets/commodities/${defaultId}.png" name="shuttle" />
 					<input type="submit" class="button" name="B_START_SHUTTLE" value="Shuttle starten" />
 				</td>
 				<td>
@@ -1235,7 +1235,7 @@
 						</td>
 						<td colspan="2">
 							<img tal:condition="SHIP/getBuildplan" tal:repeat="mod SHIP/getModules"
-								style="margin-right: 5px;" src="assets/goods/${mod/getGoodId}.png"
+								style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
 								title="${mod/getName}" />
 						</td>
 						<td colspan="4">

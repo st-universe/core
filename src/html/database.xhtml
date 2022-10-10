@@ -48,7 +48,7 @@
 				<a href="?SHOW_PRESTIGELOG=1">Prestigehistorie</a><br />
 				<a href="?SHOW_SETTLERLIST=1">Siedlerliste</a><br />
 				<a href="?SHOW_STATISTICS=1">Statistiken</a><br />
-				<a href="?SHOW_GOODS_OVERVIEW=1">Warenübersicht</a>
+				<a href="?SHOW_COMMODITIES_OVERVIEW=1">Warenübersicht</a>
 			</div>
 		</div>
 	</tal:block>
@@ -175,7 +175,7 @@
 		</tal:block>
 	</tal:block>
 </metal:macro>
-<metal:macro metal:define-macro="goods_overview">
+<metal:macro metal:define-macro="commodities_overview">
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<metal:macro metal:use-macro="html/databasemacros.xhtml/initial_js" />
@@ -185,11 +185,11 @@
 					<th>Anzahl</th>
 					<th>Ware</th>
 				</tr>
-				<tr tal:repeat="entry GOODS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
+				<tr tal:repeat="entry COMMODITIES_LIST" tal:attributes="class string:row${repeat/entry/odd}">
 					<td tal:content="entry/getAmount">AMOUNT</td>
 					<td>
 						<a href="javascript:void(0);" onclick="getCommodityLocations(${entry/getCommodityId})">
-							<img src="assets/goods/${entry/getCommodityId}.png"
+							<img src="assets/commodities/${entry/getCommodityId}.png"
 								tal:attributes="title entry/getCommodity/getName" /><span
 								tal:replace="entry/getCommodity/getName">NAME</span>
 						</a>

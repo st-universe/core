@@ -63,9 +63,9 @@
 						<span tal:content="structure colony/getStorageStatusBar">STORAGE</span>
 						${colony/getStorageSum}/${colony/getMaxStorage}
 						(${addPlusCharacter:colony/getProductionSum})<br />
-						<div tal:repeat="stor colony/getGoodUseView">
-							<img src="assets/goods/${stor/good/getId}.png" title="runtime"
-								tal:attributes="title stor/good/getName" />
+						<div tal:repeat="stor colony/getCommodityUseView">
+							<img src="assets/commodities/${stor/commodity/getId}.png" title="runtime"
+								tal:attributes="title stor/commodity/getName" />
 							<span style="color: #FF0000;" tal:content="stor/production">COUNT</span> (<span
 								tal:replace="stor/turnsleft">TURNS</span> Runden)
 						</div>
@@ -133,11 +133,11 @@
 						<tr tal:attributes="class string:row${repeat/prod/odd}" tal:repeat="prod PRODUCTION_LIST">
 							<td style="vertical-align: middle;">
 								<div style="display: table-cell; width: 55px;">
-									<img src="assets/goods/${prod/getGoodId}.png"
-										tal:attributes="title prod/getGood/getName" />
+									<img src="assets/commodities/${prod/getCommodityId}.png"
+										tal:attributes="title prod/getCommodity/getName" />
 								</div>
 								<div style="display: table-cell; vertical-align: middle"
-									tal:content="prod/getGood/getName">NAME</div>
+									tal:content="prod/getCommodity/getName">NAME</div>
 							</td>
 							<td style="vertical-align: middle; text-align: center;">
 								<span tal:content="prod/getProductionDisplay"
@@ -160,7 +160,7 @@
 						</tr>
 						<tr tal:attributes="class string:row${repeat/mod/odd}" tal:repeat="mod MODULE_LIST">
 							<td style="vertical-align: middle;">
-								<img src="assets/goods/${mod/getModule/getGoodId}.png"
+								<img src="assets/commodities/${mod/getModule/getCommodityId}.png"
 									tal:attributes="title mod/getModule/getCommodity/getName" />
 							</td>
 							<td style="vertical-align: middle;">

@@ -153,10 +153,10 @@
             <div class="box_title">Baukosten</div>
             <div class="box_body">
               <div>
-                <img src="assets/goods/0.png" /> ${RUMP/getEpsCost} <span>Energie</span>
+                <img src="assets/commodities/0.png" /> ${RUMP/getEpsCost} <span>Energie</span>
               </div>
               <div tal:repeat="cost RUMP/getBuildingCosts">
-                <img src="assets/goods/${cost/getCommodity/getId}.png"
+                <img src="assets/commodities/${cost/getCommodity/getId}.png"
                   tal:attributes="title cost/getCommodity/getName" /> ${cost/getAmount}
               </div>
               <div>
@@ -194,14 +194,14 @@
           <td style="width: 3px;" tal:attributes="class php:THIS.getModuleLevelClass(rump,module)"></td>
           <td style="width: 50px;">
             <input type="radio"
-              tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1"
+              tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getCommodityId}/1"
               name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}"
-              onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getCrew},${module/getModule/getLevel})" />
-            <img src="assets/goods/${module/getModule/getGoodId}.png" />
+              onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getCommodityId},${module/getModule/getCrew},${module/getModule/getLevel})" />
+            <img src="assets/commodities/${module/getModule/getCommodityId}.png" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
           <td style="width: 30px; text-align: center;"
-            tal:content="HAS_STORAGE/${module/getModule/getGoodId}/getAmount">STORED</td>
+            tal:content="HAS_STORAGE/${module/getModule/getCommodityId}/getAmount">STORED</td>
           <td id="${module/getModule/getId}_content" tal:define="modSel THIS">
             <metal:macro metal:use-macro="moduleselector_stats_type_${THIS/getModuleType}" />
           </td>
@@ -221,14 +221,14 @@
         <tr>
           <td style="width: 50px;">
             <input class="specialModuleRadio" type="checkbox"
-              tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1"
+              tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getCommodityId}/1"
               name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}"
               onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getCrew})" />
-            <img src="assets/goods/${module/getModule/getGoodId}.png" />
+            <img src="assets/commodities/${module/getModule/getCommodityId}.png" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
           <td style="width: 30px; text-align: center;"
-            tal:content="HAS_STORAGE/${module/getModule/getGoodId}/getAmount">STORED</td>
+            tal:content="HAS_STORAGE/${module/getModule/getCommodityId}/getAmount">STORED</td>
           <td id="${module/getModule/getId}_content" tal:define="modSel THIS">
             <metal:macro metal:use-macro="moduleselector_stats_type_${THIS/getModuleType}" />
           </td>

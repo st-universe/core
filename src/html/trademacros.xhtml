@@ -53,7 +53,7 @@
 		<img src="assets/buttons/info1.png" tal:attributes="name handle" title="Details" />
 	</a>
 </tal:block>
-<metal:macro metal:define-macro="offerbygood">
+<metal:macro metal:define-macro="offerbycommodity">
 	<div style="width: 250px;">
 		<table class="tcal">
 			<tr>
@@ -64,12 +64,12 @@
 			</tr>
 			<tr tal:repeat="data OFFER">
 				<td>
-					<img src="assets/goods/${data/getOfferedGoodId}.png" /> <span
-						tal:replace="data/getOfferedGoodCount">COUNT</span>
+					<img src="assets/commodities/${data/getOfferedCommodityId}.png" /> <span
+						tal:replace="data/getOfferedCommodityCount">COUNT</span>
 				</td>
 				<td>
-					<img src="assets/goods/${data/getWantedGoodId}.png" /> <span
-						tal:replace="data/getWantedGoodCount">COUNT</span>
+					<img src="assets/commodities/${data/getWantedCommodityId}.png" /> <span
+						tal:replace="data/getWantedCommodityCount">COUNT</span>
 				</td>
 				<td>
 					<span tal:replace="data/getOfferCount">AMOUNT</span>
@@ -128,7 +128,7 @@
 								<td>
 									<select name="wgid" tal:condition="IS_LATINUM">
 										<option value="0">----------------------</option>
-										<tal:block tal:repeat="data SELECTABLE_GOODS">
+										<tal:block tal:repeat="data SELECTABLE_COMMODITIES">
 											<option tal:condition="php:data.getId()!=STOR.getCommodityId()"
 												tal:content="data/getName" tal:attributes="value data/getId">NAME
 											</option>
@@ -136,7 +136,7 @@
 									</select>
 									<tal:block tal:condition="not:IS_LATINUM">
 										<input type="hidden" name="wgid" value="50" />
-										<img src="assets/goods/50.png" title="Latinum" />
+										<img src="assets/commodities/50.png" title="Latinum" />
 									</tal:block>
 								</td>
 							</tr>
@@ -168,7 +168,7 @@
 								<td>
 									<select name="wgid">
 										<option value="0">----------------------</option>
-										<tal:block tal:repeat="data SELECTABLE_GOODS">
+										<tal:block tal:repeat="data SELECTABLE_COMMODITIES">
 											<option tal:condition="php:data.getId()!=STOR.getCommodityId()"
 												tal:content="data/getName" tal:attributes="value data/getId">NAME
 											</option>
@@ -248,7 +248,7 @@
 				<td>
 					<select name="wlgid">
 						<option value="0">------------</option>
-						<tal:block tal:repeat="data SELECTABLE_GOODS">
+						<tal:block tal:repeat="data SELECTABLE_COMMODITIES">
 							<option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
 						</tal:block>
 					</select>
@@ -276,8 +276,8 @@
 	<table class="tcal">
 		<tr>
 			<td style="vertical-align: middle;">Verlangte Ware</td>
-			<td> <img src="assets/goods/${LICENSEGOOD}.png" tal:attributes="title LICENSEGOODNAME" /> <span
-					tal:replace="LICENSECOST">COST</span>
+			<td> <img src="assets/commodities/${LICENSECOMMODITY}.png" tal:attributes="title LICENSECOMMODITYNAME" />
+				<span tal:replace="LICENSECOST">COST</span>
 			</td>
 		</tr>
 		<tr>
@@ -301,11 +301,11 @@
 				<td>
 					Wie oft soll das Angebot angenommen werden?<br /><br />
 					<div style="width: 100%; text-align: center;">
-						<img src="assets/goods/${SELECTED_OFFER/getOfferedGoodId}.png" />
-						<span tal:replace="SELECTED_OFFER/getOfferedGoodCount">GCOUNT</span>
+						<img src="assets/commodities/${SELECTED_OFFER/getOfferedCommodityId}.png" />
+						<span tal:replace="SELECTED_OFFER/getOfferedCommodityCount">GCOUNT</span>
 						gegen
-						<img src="assets/goods/${SELECTED_OFFER/getWantedGoodId}.png" />
-						<span tal:replace="SELECTED_OFFER/getWantedGoodCount">WCOUNT</span>
+						<img src="assets/commodities/${SELECTED_OFFER/getWantedCommodityId}.png" />
+						<span tal:replace="SELECTED_OFFER/getWantedCommodityCount">WCOUNT</span>
 						<br />
 						<br />
 						x <input type="text" size="2" name="amount" value="1" /> <input type="submit" value="annehmen"
@@ -313,10 +313,10 @@
 					</div>
 					<br />
 					<div style="text-align: center;"
-						tal:condition="exists:SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedGoodId}">
+						tal:condition="exists:SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedCommodityId}">
 						Lagernd auf diesem Handelsposten: <img
-							src="assets/goods/${SELECTED_OFFER/getWantedGoodId}.png" /> <span
-							tal:replace="SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedGoodId}/getAmount">COUNT</span><br />
+							src="assets/commodities/${SELECTED_OFFER/getWantedCommodityId}.png" /> <span
+							tal:replace="SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedCommodityId}/getAmount">COUNT</span><br />
 					</div>
 				</td>
 			</tr>

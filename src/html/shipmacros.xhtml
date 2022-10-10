@@ -687,7 +687,7 @@
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="SHIP/getBeamableStorage" tal:repeat="stor SHIP/getBeamableStorage">
-            <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodity/getId" />
+            <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodity/getId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
                 tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
@@ -732,7 +732,7 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" />
+          <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" />
           <input type="submit" class="button" value="Beamen" name="B_BEAMTO" />
         </td>
       </tr>
@@ -755,7 +755,7 @@
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="targetShip/getBeamableStorage" tal:repeat="stor targetShip/getBeamableStorage">
-            <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodity/getId" />
+            <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodity/getId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
                 tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
@@ -800,7 +800,7 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+          <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" /> <input type="submit"
             class="button" value="Beamen" name="B_BEAMFROM" />
         </td>
       </tr>
@@ -827,7 +827,7 @@
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="SHIP/getBeamableStorage" tal:repeat="stor SHIP/getBeamableStorage">
-            <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodity/getId" />
+            <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodity/getId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
                 tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
@@ -873,7 +873,7 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+          <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" /> <input type="submit"
             class="button" value="Beamen" name="B_BEAMTO_COLONY" />
         </td>
       </tr>
@@ -900,7 +900,7 @@
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="targetColony/getBeamableStorage" tal:repeat="stor targetColony/getBeamableStorage">
-            <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodityId" />
+            <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodityId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
                 tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
@@ -946,7 +946,7 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+          <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" /> <input type="submit"
             class="button" value="Beamen" name="B_BEAMFROM_COLONY" />
         </td>
       </tr>
@@ -1120,7 +1120,7 @@
       <tr tal:condition="targetShip/getBuildplan">
         <td>Verbaute Module</td>
         <td><img tal:repeat="mod targetShip/getModules" style="margin-right: 5px;"
-            src="assets/goods/${mod/getGoodId}.png" title="${mod/getName}" /></td>
+            src="assets/commodities/${mod/getCommodityId}.png" title="${mod/getName}" /></td>
       </tr>
     </table>
     <br />
@@ -1177,20 +1177,22 @@
         ${SHIP/getStorageSum}/${SHIP/getMaxStorage}</th>
     <tr>
       <td>
-        <tal:block tal:repeat="good SHIP/getStorage">
-          <tal:block tal:condition="good/getAmount">
-            <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <img src="assets/goods/${good/getCommodity/getId}.png" tal:attributes="title good/getCommodity/getName" />
-              ${good/getAmount}
+        <tal:block tal:repeat="commodity SHIP/getStorage">
+          <tal:block tal:condition="commodity/getAmount">
+            <div tal:condition="repeat/commodity/odd" style="float: right; width: 50%;">
+              <img src="assets/commodities/${commodity/getCommodity/getId}.png"
+                tal:attributes="title commodity/getCommodity/getName" />
+              ${commodity/getAmount}
             </div>
-            <tal:block tal:condition="repeat/good/odd">
-              <div tal:condition="repeat/good/last" style="float: left; width: 50%;"> </div>
+            <tal:block tal:condition="repeat/commodity/odd">
+              <div tal:condition="repeat/commodity/last" style="float: left; width: 50%;"> </div>
             </tal:block>
-            <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <img src="assets/goods/${good/getCommodity/getId}.png" tal:attributes="title good/getCommodity/getName" />
-              ${good/getAmount}
+            <div tal:condition="repeat/commodity/even" style="float: left; width: 50%;">
+              <img src="assets/commodities/${commodity/getCommodity/getId}.png"
+                tal:attributes="title commodity/getCommodity/getName" />
+              ${commodity/getAmount}
             </div>
-            <br tal:condition="repeat/good/odd" style="clear: both;" />
+            <br tal:condition="repeat/commodity/odd" style="clear: both;" />
           </tal:block>
         </tal:block>
       </td>
@@ -1386,7 +1388,7 @@
               <tr>
                 <td>
                   <tal:block tal:condition="SHIP/getBeamableStorage" tal:repeat="stor SHIP/getBeamableStorage">
-                    <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodity/getId" />
+                    <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodity/getId" />
                     <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
                       <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
                         tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
@@ -1414,7 +1416,7 @@
               <tr>
                 <td tal:define="storage TRADEPOST/getStorage">
                   <tal:block tal:condition="storage" tal:repeat="stor storage">
-                    <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodity/getId" />
+                    <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodity/getId" />
                     <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
                       <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
                         tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
@@ -1436,7 +1438,7 @@
         </div>
         <br />
         <div style="width: 100%; text-align: center;">
-          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" />
+          <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" />
           <input type="submit" class="button" value="Transferieren" />
         </div>
       </form>
@@ -1456,7 +1458,8 @@
           <td>
             Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die Gebühr für eine
             <span tal:replace="LICENSEDAYS">DAYS</span> Tage gültige Lizenz beträgt:<br />
-            <span tal:replace="LICENSECOST">COST</span> <span tal:replace="LICENSEGOODNAME">GOOD</span><br /><br />
+            <span tal:replace="LICENSECOST">COST</span> <span
+              tal:replace="LICENSECOMMODITYNAME">COMMODITY</span><br /><br />
             Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem
             Frachtraum des Schiffes beglichen werden.<br /><br />
             <input class="button" type="button" value="Bezahlmethode wählen"
@@ -1485,7 +1488,7 @@
         <td>
           Es werden nur angedockte Schiffe/Konten aufgelistet auf denen genug Waren vorhanden sind um die Gebühr zu
           begleichen.<br /><br />
-          <img src="assets/goods/${LICENSEGOOD}.png" tal:attributes="title LICENSEGOODNAME" /> <span
+          <img src="assets/commodities/${LICENSECOMMODITY}.png" tal:attributes="title LICENSECOMMODITYNAME" /> <span
             tal:replace="LICENSECOST">COST</span> für <span tal:replace="LICENSEDAYS">DAYS</span> Tage.
         </td>
       </tr>

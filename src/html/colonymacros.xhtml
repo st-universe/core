@@ -260,7 +260,8 @@
             </div>
             <div style="display: inline-block; width: 55px;" tal:repeat="cost data/getBuildingCosts">
               <div style="display: inline-block; vertical-align: middle;"><img
-                  src="assets/goods/${cost/getCommodityId}.png" tal:attributes="title cost/getCommodity/getName" />
+                  src="assets/commodities/${cost/getCommodityId}.png"
+                  tal:attributes="title cost/getCommodity/getName" />
               </div>
               ${cost/getAmount}
             </div>
@@ -312,15 +313,15 @@
           <td>
             <input type="text" size="3" name="torp[${data/getId}]" /> x <span
               tal:replace="data/getProductionAmount">AMOUNT</span>
-            <img src="assets/goods/${data/getGoodId}.png" class="center" />
+            <img src="assets/commodities/${data/getCommodityId}.png" class="center" />
             <span tal:replace="data/getName">TORPEDOTYPE</span>
           </td>
           <td>
             <img src="assets/buttons/e_trans2.png" class="center" title="Energiekosten" />
             <span tal:replace="data/getEnergyCost">ECOST</span>
             <tal:block tal:repeat="cost data/getProductionCosts">
-              <img src="assets/goods/${cost/getGoodId}.png" class="center"
-                tal:attributes="title cost/getGood/getName" />
+              <img src="assets/commodities/${cost/getCommodityId}.png" class="center"
+                tal:attributes="title cost/getCommodity/getName" />
               <span tal:replace="cost/getAmount">COUNT</span>
             </tal:block>
           </td>
@@ -390,7 +391,8 @@
             </div>
             <div style="display: inline-block; width: 65px;" tal:repeat="cost data/getBuildingCosts">
               <div style="display: inline-block; vertical-align: middle;"><img
-                  src="assets/goods/${cost/getCommodityId}.png" tal:attributes="title cost/getCommodity/getName" />
+                  src="assets/commodities/${cost/getCommodityId}.png"
+                  tal:attributes="title cost/getCommodity/getName" />
               </div>
               ${cost/getAmount}
             </div>
@@ -459,9 +461,10 @@
           <img src="assets/buttons/lager.png" title="Warenbezogen" style="width: 10px; height: 10px;" />
           <strong>Warenbezogen</strong><br />
           Ware wählen:<br />
-          <select name="good" style="height: 17px;" id="commodityselector">
-            <option class="goodselect_option" tal:repeat="data USEABLE_GOOD_LIST" tal:attributes="value data/getId"
-              tal:content="data/getName" style=" background-image: url(assets/goods/${data/getId}.png);">NAME</option>
+          <select name="commodity" style="height: 17px;" id="commodityselector">
+            <option class="commoditieselect_option" tal:repeat="data USEABLE_COMMODITY_LIST"
+              tal:attributes="value data/getId" tal:content="data/getName"
+              style=" background-image: url(assets/commodities/${data/getId}.png);">NAME</option>
           </select><br /><br />
           <table class="tcal">
             <tr>
@@ -664,8 +667,8 @@
               <div style="display: grid; grid-template-columns: 41% 9% 41% 9%;">
                 <tal:block tal:repeat="data EFFECTS">
                   <div>
-                    <img src="assets/goods/${data/good/getId}.png" /> <span
-                      tal:content="data/good/getName">EFFECT</span>
+                    <img src="assets/commodities/${data/commodity/getId}.png" /> <span
+                      tal:content="data/commodity/getName">EFFECT</span>
                   </div>
                   <div tal:content="data/production/getProductionDisplay"
                     tal:attributes="class data/production/getCssClass">PROD</div>
@@ -945,7 +948,7 @@
         <tr tal:repeat="data MODULE_LIST" tal:attributes="class string:row${repeat/data/odd}">
           <td>
             <div style="margin-bottom: 5px;">
-              <img src="assets/goods/${data/getGoodId}.png" /> <span tal:content="data/getName">NAME</span>
+              <img src="assets/commodities/${data/getCommodityId}.png" /> <span tal:content="data/getName">NAME</span>
             </div>
             <div style="display: table-cell;">
               <img src="assets/buttons/e_trans2.png" title="Energie" /> <span
@@ -953,7 +956,7 @@
             </div>
             <tal:block tal:repeat="cost data/getConstructionCosts">
               <div style="display: table-cell; padding-left: 4px;">
-                <img src="assets/goods/${cost/getCommodity/getId}.png"
+                <img src="assets/commodities/${cost/getCommodity/getId}.png"
                   tal:attributes="title cost/getCommodity/getName" />
               </div>
               <div style="display: table-cell; vertical-align: middle;" tal:content="cost/getAmount">COST</div>
@@ -1092,7 +1095,7 @@
                 <tr>
                   <td>Module</td>
                   <td>
-                    <img src="assets/goods/${module/getModule/getGoodId}.png"
+                    <img src="assets/commodities/${module/getModule/getCommodityId}.png"
                       tal:attributes="name module/getModule/getName" tal:repeat="module data/getModules" />
                   </td>
                 </tr>
@@ -1118,7 +1121,8 @@
         <tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor COLONY/getStorage">
           <td style="vertical-align: middle;">
             <div style="display: table-cell; width: 55px;">
-              <img src="assets/goods/${stor/getCommodity/getId}.png" tal:attributes="title stor/getCommodity/getName" />
+              <img src="assets/commodities/${stor/getCommodity/getId}.png"
+                tal:attributes="title stor/getCommodity/getName" />
             </div>
             <div style="display: table-cell; width: 40px; vertical-align:middle;">
               <span tal:replace="stor/getAmount">AMOUNT</span>
@@ -1175,7 +1179,7 @@
           <strong>Baukosten</strong><br />
           <img src="assets/buttons/e_trans2.png" title="Energie" /> ${building/getEpsCost}
           <div tal:repeat="data building/getCosts">
-            <img src="assets/goods/${data/getGoodId}.png" tal:attributes="title data/getGood/getName" />
+            <img src="assets/commodities/${data/getCommodityId}.png" tal:attributes="title data/getCommodity/getName" />
             <span tal:replace="data/getAmount">CNT</span>
           </div>
           <br />
@@ -1189,8 +1193,9 @@
               <img src="assets/buttons/e_trans2.png" title="Energie" /> <span
                 tal:replace="addPlusCharacter:building/getEpsProduction">EPSDISPLAY</span>
             </div>
-            <div tal:repeat="data building/getGoods">
-              <img src="assets/goods/${data/getGoodId}.png" tal:attributes="title data/getGood/getName" />
+            <div tal:repeat="data building/getCommodities">
+              <img src="assets/commodities/${data/getCommodityId}.png"
+                tal:attributes="title data/getCommodity/getName" />
               <span tal:condition="isPositive:data/getAmount">+${data/getAmount}</span>
               <span tal:condition="isNegative:data/getAmount">${data/getAmount}</span>
             </div>
@@ -1206,7 +1211,7 @@
               tal:attributes="class building/getEpsProductionCss">EPSDISPLAY</span>)
           </div>
           <div tal:repeat="data COMMODITY_PRODUCTION_PREVIEW/${building/getId}">
-            <img src="assets/goods/${data/getGoodId}.png" tal:attributes="title data/getGood/getName" />
+            <img src="assets/commodities/${data/getCommodityId}.png" tal:attributes="title data/getCommodity/getName" />
             <span tal:attributes="class data/getCssClass" tal:content="data/getProductionDisplay">CNT</span>
             <tal:block tal:condition="data/getPreviewProduction">
               (<span tal:content="data/getPreviewProductionDisplay"
@@ -1397,7 +1402,7 @@
             </div>
             <tal:block tal:condition="BUILDING_FUNCTION/isWarehouse">
               <div class="fabutton">
-                <a href="javascript:void(0)" onclick="goToUrl('database.php?SHOW_GOODS_OVERVIEW=1')"
+                <a href="javascript:void(0)" onclick="goToUrl('database.php?SHOW_COMMODITIES_OVERVIEW=1')"
                   class="fabutton">Warenübersicht</a>
               </div>
               <div class="fabutton">
@@ -1451,8 +1456,8 @@
             <img src="assets/buttons/e_trans2.png" title="Energie" /> <span
               tal:replace="addPlusCharacter:FIELD/getBuilding/getEpsProduction">EPSDISPLAY</span>
           </div>
-          <div tal:repeat="data FIELD/getBuilding/getGoods">
-            <img src="assets/goods/${data/getGoodId}.png" tal:attributes="title data/getGood/getName" />
+          <div tal:repeat="data FIELD/getBuilding/getCommodities">
+            <img src="assets/commodities/${data/getCommodityId}.png" tal:attributes="title data/getCommodity/getName" />
             <span tal:condition="isPositive:data/getAmount">+${data/getAmount}</span>
             <span tal:condition="isNegative:data/getAmount">${data/getAmount}</span>
           </div>
@@ -1480,8 +1485,8 @@
                   <strong>Kosten</strong><br />
                   <img src="assets/buttons/e_trans2.png" title="Energie" /> ${data/getBuilding/getEpsCost}
                   <div tal:repeat="cost data/getUpgradeCosts">
-                    <img src="assets/goods/${cost/getGoodId}.png" tal:attributes="title cost/getGood/getName" /> <span
-                      tal:replace="cost/getAmount">CNT</span>
+                    <img src="assets/commodities/${cost/getCommodityId}.png"
+                      tal:attributes="title cost/getCommodity/getName" /> <span tal:replace="cost/getAmount">CNT</span>
                   </div>
                 </td>
               </tr>
@@ -1543,8 +1548,9 @@
                     <img src="assets/buttons/e_trans2.png" title="Energie" /> <span
                       tal:replace="data/getEnergyCosts">EPS</span>
                     <div tal:repeat="cost data/getCosts">
-                      <img src="assets/goods/${cost/getGoodId}.png" title="runtime"
-                        tal:attributes="title cost/getGood/getName" /> <span tal:replace="cost/getAmount">COUNT</span>
+                      <img src="assets/commodities/${cost/getCommodityId}.png" title="runtime"
+                        tal:attributes="title cost/getCommodity/getName" /> <span
+                        tal:replace="cost/getAmount">COUNT</span>
                     </div>
                   </td>
                 </tr>
@@ -1676,7 +1682,7 @@
       <tr>
         <td style="width: 100%;" tal:define="COLONY_STORAGE COLONY/getBeamableStorage">
           <tal:block tal:condition="COLONY_STORAGE" tal:repeat="stor COLONY_STORAGE">
-            <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodityId" />
+            <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodityId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
                 tal:define="name stor/getCommodity/getName; commodityId stor/getCommodity/getId; amount stor/getAmount" />
@@ -1718,7 +1724,7 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+          <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" /> <input type="submit"
             class="button" value="Beamen" name="B_BEAMTO" />
         </td>
       </tr>
@@ -1741,7 +1747,7 @@
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="targetShip/getBeamableStorage" tal:repeat="stor targetShip/getBeamableStorage">
-            <input type="hidden" name="goods[]" tal:attributes="value stor/getCommodityId" />
+            <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodityId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
                 tal:define="name stor/getCommodity/getName; commodityId stor/getCommodityId; amount stor/getAmount" />
@@ -1783,7 +1789,7 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          <input type="button" class="button" value="max" onclick="maximizeGoodAmounts();" /> <input type="submit"
+          <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" /> <input type="submit"
             value="Beamen" name="B_BEAMFROM" />
         </td>
       </tr>
@@ -1870,7 +1876,7 @@
         </tr>
         <tr tal:repeat="data AVAILABLE_SHUTTLES">
           <td>
-            <img src="assets/goods/${data/getCommodityId}.png" title="${data/getCommodityName}" />
+            <img src="assets/commodities/${data/getCommodityId}.png" title="${data/getCommodityName}" />
           </td>
           <td>
             <a tal:condition="SHIP/isOwnedByCurrentUser" href="javascript:void(0);"
@@ -1939,15 +1945,15 @@
     <tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor STORAGE">
       <td style="vertical-align: middle;">
         <div style="display: table-cell; width: 55px;">
-          <a href="javascript:void(0);" onclick="getCommodityLocations(${stor/good/getId})">
-            <img src="assets/goods/${stor/good/getId}.png" tal:attributes="title stor/good/getName" />
+          <a href="javascript:void(0);" onclick="getCommodityLocations(${stor/commodity/getId})">
+            <img src="assets/commodities/${stor/commodity/getId}.png" tal:attributes="title stor/commodity/getName" />
           </a>
         </div>
         <div style="display: table-cell; width: 40px; vertical-align:middle;">
           <span tal:condition="stor/storage" tal:replace="stor/storage/getAmount">.</span>
           <span tal:condition="not:stor/storage" tal:replace="string:0">.</span>
         </div>
-        <div style="display: table-cell; vertical-align: middle" tal:content="stor/good/getName">NAME</div>
+        <div style="display: table-cell; vertical-align: middle" tal:content="stor/commodity/getName">NAME</div>
       </td>
       <td style="vertical-align: middle;">
         <span tal:condition="not:stor/production">-</span>
@@ -1963,7 +1969,7 @@
     <img src="assets/buttons/modul_screen_${moduleType}.png" tal:condition="not:tab/hasSelectedModule"
       id="tab_image_mod_${moduleType}" />
     <tal:block tal:condition="tab/hasSelectedModule" tal:repeat="mod tab/getSelectedModule">
-      <img src="assets/goods/${mod/getModule/getGoodId}.png" id="tab_image_mod_${moduleType}" />
+      <img src="assets/commodities/${mod/getModule/getCommodityId}.png" id="tab_image_mod_${moduleType}" />
     </tal:block>
     <span tal:replace="tab/getTabTitle">DESCRIPTION</span>
     <span tal:condition="tab/isSpecial" id="module_tab_info_${moduleType}">0 von max. ${RUMP/getSpecialSlots}</span>
