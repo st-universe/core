@@ -152,7 +152,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 JOIN %s sm
                 WITH s.starsystem_map_id = sm.id
-                JOIN %s f
+                LEFT JOIN %s f
                 WITH s.fleets_id = f.id
                 JOIN %s r
                 WITH s.rumps_id = r.id
