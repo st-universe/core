@@ -11,7 +11,6 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -73,10 +72,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         );
         $game->showMacro('html/shipmacros.xhtml/entity_not_available');
 
-        /**
-         * @var TradePostInterface $tradepost
-         */
-        $tradepost = $this->tradePostRepository->find((int) request::getIntFatal('postid'));
+        $tradepost = $this->tradePostRepository->find(request::getIntFatal('postid'));
         if ($tradepost === null) {
             return;
         }

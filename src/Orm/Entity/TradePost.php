@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradePostRepository")

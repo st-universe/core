@@ -10,7 +10,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\TradeOffer;
+use Stu\Orm\Entity\TradePost;
 
 final class StorageRepository extends EntityRepository implements StorageRepositoryInterface
 {
