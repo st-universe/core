@@ -163,7 +163,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                     WHERE s.id = ss.ships_id
                                     AND ss.system_type = :systemId
                                     AND ss.mode > 1)
-                ORDER BY s.is_destroyed ASC, f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader THEN 0 ELSE 1 END),
+                ORDER BY s.is_destroyed ASC, f.sort DESC, f.id DESC, s.is_fleet_leader DESC,
                     r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
                 Ship::class,
                 StarSystemMap::class,
