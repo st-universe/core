@@ -32,6 +32,11 @@ final class OrbitManagementShipItem
         return $this->ship->getId();
     }
 
+    public function getShip(): ShipInterface
+    {
+        return $this->ship;
+    }
+
     public function getName(): string
     {
         return $this->ship->getName();

@@ -9,6 +9,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\OrbitFleetItemInterface;
+use Stu\Module\Colony\Lib\OrbitManagementShipItem;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -74,6 +75,35 @@ final class ShowShipManagement implements ViewControllerInterface
         $list = [];
 
         foreach ($groupedList as $fleetId => $shipList) {
+            usort(
+                $shipList,
+                function (OrbitManagementShipItem $itemA, OrbitManagementShipItem $itemB): int {
+                    $a = $itemA->getShip();
+                    $b = $itemB->getShip();
+
+                    if ($b->isFleetLeader() == $a->isFleetLeader()) {
+                        $catA = $a->getRump()->getCategoryId();
+                        $catB = $b->getRump()->getCategoryId();
+                        if ($catB == $catA) {
+                            $roleA = $a->getRump()->getRoleId();
+                            $roleB = $b->getRump()->getRoleId();
+                            if ($roleB == $roleA) {
+                                if ($b->getRumpId() == $a->getRumpId()) {
+
+                                    return $b->getName() <=> $a->getName();
+                                }
+
+                                return $b->getRumpId() <=> $a->getRumpId();
+                            }
+
+                            return $roleB <=> $roleA;
+                        }
+                        return $catB <=> $catA;
+                    }
+                    return $b->isFleetLeader() <=> $a->isFleetLeader();
+                }
+            );
+
             $list[] = $this->colonyLibFactory->createOrbitFleetItem(
                 (int) $fleetId,
                 $shipList,
