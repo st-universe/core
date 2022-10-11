@@ -17,6 +17,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Crew;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
@@ -151,6 +152,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 JOIN %s sm
                 WITH s.starsystem_map_id = sm.id
+                JOIN %s f
+                WITH s.fleets_id = f.id
+                JOIN %s r
+                WITH s.rumps_id = r.id
                 WHERE sm.systems_id = :starSystemId
                 AND sm.sx = :sx AND sm.sy = :sy
                 AND NOT EXISTS (SELECT ss.id
@@ -158,9 +163,12 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                     WHERE s.id = ss.ships_id
                                     AND ss.system_type = :systemId
                                     AND ss.mode > 1)
-                ORDER BY s.is_destroyed ASC, s.fleets_id DESC, s.id ASC',
+                ORDER BY s.is_destroyed ASC, f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader THEN 0 ELSE 1 END),
+                    r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
                 Ship::class,
                 StarSystemMap::class,
+                Fleet::class,
+                ShipRump::class,
                 ShipSystem::class
             )
         )->setParameters([
