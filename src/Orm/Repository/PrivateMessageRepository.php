@@ -39,7 +39,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT pm FROM %s pm JOIN %s pc ON pc.id = pm.cat_id WHERE (
+                'SELECT pm FROM %s pm JOIN %s pc WITH pc.id = pm.cat_id WHERE (
                     (pm.send_user = :sendUserId AND pm.recip_user = :recipUserId) OR
                     (pm.send_user = :recipUserId AND pm.recip_user = :sendUserId)) AND
                 (pc.special = %d OR pc.special = %d) ORDER BY pm.date DESC',
