@@ -11,6 +11,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -24,17 +25,21 @@ final class CreateLicense implements ActionControllerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
+    private CommodityRepositoryInterface $commodityRepository;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         CreateLicenseRequestInterface $createLicenseRequest,
         TradeLicenseInfoRepositoryInterface $TradeLicenseInfoRepository,
         TradePostRepositoryInterface $tradePostRepository,
+        CommodityRepositoryInterface $commodityRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->createLicenseRequest = $createLicenseRequest;
         $this->TradeLicenseInfoRepository = $TradeLicenseInfoRepository;
         $this->tradePostRepository = $tradePostRepository;
+        $this->commodityRepository = $commodityRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -71,10 +76,15 @@ final class CreateLicense implements ActionControllerInterface
             return;
         }
 
+        $commodity = $this->commodityRepository->find($commodityId);
+        if ($commodity === null) {
+            return;
+        }
+
         $setLicense = $this->TradeLicenseInfoRepository->prototype();
         $setLicense->setTradepost($tradepost);
         $setLicense->setDate(time());
-        $setLicense->setcommodityId((int) $commodityId);
+        $setLicense->setCommodity($commodity);
         $setLicense->setAmount((int) $giveAmount);
         $setLicense->setDays($days);
 

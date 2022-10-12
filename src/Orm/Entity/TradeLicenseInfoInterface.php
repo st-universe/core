@@ -14,7 +14,9 @@ interface TradeLicenseInfoInterface
 
     public function getCommodityId(): int;
 
-    public function setCommodityId(int $commodityId): TradeLicenseInfoInterface;
+    public function getCommodity(): CommodityInterface;
+
+    public function setCommodity(CommodityInterface $commodity): TradeLicenseInfoInterface;
 
     public function getAmount(): int;
 

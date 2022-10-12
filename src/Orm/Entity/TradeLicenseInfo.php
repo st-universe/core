@@ -43,6 +43,12 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
      */
     private $tradePost;
 
+    /**
+     * @ManyToOne(targetEntity="Commodity")
+     * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $commodity;
+
     public function getId(): int
     {
         return $this->id;
@@ -72,9 +78,14 @@ class TradeLicenseInfo implements TradeLicenseInfoInterface
         return $this->commodity_id;
     }
 
-    public function setCommodityId(int $commodityId): TradeLicenseInfoInterface
+    public function getCommodity(): CommodityInterface
     {
-        $this->commodity_id = $commodityId;
+        return $this->commodity;
+    }
+
+    public function setCommodity(CommodityInterface $commodity): TradeLicenseInfoInterface
+    {
+        $this->commodity = $commodity;
 
         return $this;
     }
