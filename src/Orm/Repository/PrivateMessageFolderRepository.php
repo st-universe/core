@@ -41,7 +41,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
 
     public function getByUserAndSpecial(int $userId, int $specialId): ?PrivateMessageFolderInterface
     {
-        return $this->findBy([
+        return $this->findOneBy([
             'user_id' => $userId,
             'special' => $specialId
         ]);
