@@ -47,19 +47,9 @@ final class ShowWritePm implements ViewControllerInterface
         } else {
             $reply = $pm;
 
-            $recipientFolder = $this->privateMessageFolderRepository->getByUserAndSpecial(
-                (int) $reply->getRecipientId(),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
-            );
-            $senderFolder = $this->privateMessageFolderRepository->getByUserAndSpecial(
-                (int) $reply->getSenderId(),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
-            );
-
             $correspondence = $this->privateMessageRepository->getOrderedCorrepondence(
                 $reply->getSenderId(),
                 $reply->getRecipientId(),
-                [$recipientFolder->getId(), $senderFolder->getId()],
                 10
             );
         }
