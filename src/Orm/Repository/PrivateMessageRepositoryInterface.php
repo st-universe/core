@@ -24,7 +24,7 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
     public function getOrderedCorrepondence(
         int $senderUserId,
         int $recipientUserId,
-        array $folderIds,
+        array $specialIds,
         int $limit
     ): iterable;
 

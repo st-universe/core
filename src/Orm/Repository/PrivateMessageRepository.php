@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\PrivateMessage;
+use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageInterface;
 
 final class PrivateMessageRepository extends EntityRepository implements PrivateMessageRepositoryInterface
@@ -33,21 +34,25 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     public function getOrderedCorrepondence(
         int $senderUserId,
         int $recipientUserId,
-        array $folderIds,
+        array $specialIds,
         int $limit
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT pm FROM %s pm WHERE (
-                    (pm.send_user = :sendUserId AND pm.recip_user = :recipUserId) OR
-                    (pm.send_user = :recipUserId AND pm.recip_user = :sendUserId)) AND
-                pm.cat_id IN (:folderIds) ORDER BY pm.date DESC',
-                PrivateMessage::class
+                'SELECT pm FROM %s pm
+                JOIN %s pmf
+                WITH pm.cat_id = pmf.id
+                WHERE ((pm.send_user = :sendUserId AND pm.recip_user = :recipUserId) OR
+                    (pm.send_user = :recipUserId AND pm.recip_user = :sendUserId))
+                AND pmf.special in (:specialIds)
+                ORDER BY pm.date DESC',
+                PrivateMessage::class,
+                PrivateMessageFolder::class
             )
         )->setParameters([
             'sendUserId' => $senderUserId,
             'recipUserId' => $recipientUserId,
-            'folderIds' => $folderIds
+            'specialIds' => $specialIds
         ])->setMaxResults($limit)
             ->getResult();
     }

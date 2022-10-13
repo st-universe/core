@@ -6,6 +6,10 @@ namespace Stu\Module\Message\Lib;
 
 final class PrivateMessageFolderSpecialEnum
 {
+    //default
+    public const PM_DEFAULT_OWN = 0;
+
+    //special categories
     public const PM_SPECIAL_MAIN = 1;
     public const PM_SPECIAL_SHIP = 2;
     public const PM_SPECIAL_COLONY = 3;

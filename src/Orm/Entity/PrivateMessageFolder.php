@@ -36,7 +36,7 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     private $sort = 0;
 
     /** @Column(type="smallint") */
-    private $special = 0;
+    private $special = PrivateMessageFolderSpecialEnum::PM_DEFAULT_OWN;
 
     /**
      * @ManyToOne(targetEntity="User")
