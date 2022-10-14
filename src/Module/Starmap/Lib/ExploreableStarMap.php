@@ -117,7 +117,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
             '%s%s%s',
             $tradepost !== null ? $this->getTradepostTitle($tradepost) : '',
             $tradepost !== null && $this->mapped ? ' über ' : '',
-            $this->mapped ? $this->system_name : ''
+            $this->mapped ? $this->system_name . '-System' : ''
         );
     }
 

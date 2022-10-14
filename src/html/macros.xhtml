@@ -102,14 +102,19 @@
               <th tal:content="yrow/getRow">y</th>
               <td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
                 tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
-                <div tal:condition="not:data/getIcon" class="starmapInner" style="cursor: auto ! important;">&nbsp;
-                </div>
                 <div tal:condition="data/getIcon" class="starmapInner" style="cursor: auto ! important;">
                   <a href="database.php?SHOW_ENTRY=1&cat=7&ent=${data/getMapped}">
                     <img src="/assets/map/${data/getIcon}.png" title="${data/getTitle}"
                       style="height: 28px; width: 28px;" />
                   </a>
                 </div>
+                <tal:block tal:condition="not:data/getIcon">
+                  <div tal:condition="data/getTitle" title="${data/getTitle}" class="starmapInner"
+                    style="cursor: auto ! important;">&nbsp;
+                  </div>
+                  <div tal:condition="not:data/getTitle" class="starmapInner" style="cursor: auto ! important;">&nbsp;
+                  </div>
+                </tal:block>
               </td>
             </tr>
           </table>
