@@ -68,8 +68,8 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
             $this->loggerUtil->log('clear');
             $this->clearTorpedoStorage($ship);
         } else {
-            $this->loggerUtil->log('change');
             $storage = $ship->getTorpedoStorage()->getStorage();
+            $this->loggerUtil->log(sprintf('change, current: %d, change: %d',  $storage->getAmount(), $changeAmount));
             $storage->setAmount($storage->getAmount() + $changeAmount);
             $this->storageRepository->save($storage);
         }
