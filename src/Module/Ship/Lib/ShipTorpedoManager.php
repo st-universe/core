@@ -95,6 +95,8 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $torpedoStorage = $ship->getTorpedoStorage();
         $storage = $torpedoStorage->getStorage();
 
+        $ship->setTorpedoStorage(null);
+
         $this->storageRepository->delete($storage);
         $this->torpedoStorageRepository->delete($torpedoStorage);
 
