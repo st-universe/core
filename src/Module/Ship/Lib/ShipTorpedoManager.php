@@ -6,6 +6,9 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -22,16 +25,20 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
 
     private StorageRepositoryInterface $storageRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         TorpedoStorageRepositoryInterface $torpedoStorageRepository,
-        StorageRepositoryInterface $storageRepository
+        StorageRepositoryInterface $storageRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->torpedoStorageRepository = $torpedoStorageRepository;
         $this->storageRepository = $storageRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function changeTorpedo(ShipInterface $ship, int $changeAmount, TorpedoTypeInterface $type = null)
@@ -50,12 +57,18 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
 
         $this->shipRepository->save($ship);
 
+        if ($ship->getUser()->getId() === 126) {
+            $this->loggerUtil->init('torp', LoggerEnum::LEVEL_ERROR);
+        }
+
         // NEW
         if ($ship->getTorpedoStorage() === null && $type !== null) {
             $this->createTorpedoStorage($ship, $changeAmount, $type);
         } else if ($changeAmount === $ship->getTorpedoStorage()->getStorage()->getAmount()) {
+            $this->loggerUtil->log('clear');
             $this->clearTorpedoStorage($ship);
         } else {
+            $this->loggerUtil->log('change');
             $storage = $ship->getTorpedoStorage()->getStorage();
             $storage->setAmount($storage->getAmount() + $changeAmount);
             $this->storageRepository->save($storage);
