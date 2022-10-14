@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use JBBCode\Parser;
 use Stu\Orm\Entity\MapBorderTypeInterface;
 use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\TradePostInterface;
 
 /**
  * @Entity
@@ -34,11 +36,19 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     /** @Column(type="integer", nullable=true) * */
     private ?int $mapped = 0;
 
+    /** @Column(type="string", nullable=true) * */
+    private ?string $system_name;
+
     /** @Column(type="integer", nullable=true) * */
     private ?int $influence_area_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
     private ?int $region_id = 0;
+
+    /** @Column(type="integer", nullable=true) * */
+    private ?int $tradepost_id;
+
+    private $tradepost;
 
     private bool $hide = false;
 
@@ -97,6 +107,76 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     {
         return $this->mapped;
     }
+
+    public function getTitle(): ?string
+    {
+        $tradepost = $this->getTradepost();
+
+        return sprintf(
+            '%s%s%s',
+            $tradepost !== null ? $this->getTradepostTitle($tradepost) : '',
+            $tradepost !== null && $this->mapped ? ' über ' : '',
+            $this->mapped ? $this->system_name : ''
+        );
+    }
+
+    private function getTradepostTitle(TradePostInterface $tradepost): string
+    {
+        $licenseInfo = $tradepost->getLatestLicenseInfo();
+
+        if ($licenseInfo === null) {
+            return $this->getStringWithoutBbCode($tradepost->getName());
+        }
+
+        return sprintf(
+            '%s (Lizenz: %d %s)',
+            $this->getStringWithoutBbCode($tradepost->getName()),
+            $licenseInfo->getAmount(),
+            $licenseInfo->getCommodity()->getName()
+        );
+    }
+
+    private function getStringWithoutBbCode(string $string): string
+    {
+        // @todo refactor
+        global $container;
+
+        $parser = $container->get(Parser::class);
+
+        return  $parser->parse($string)->getAsText();
+    }
+
+    public function getIcon(): ?string
+    {
+        $tradepost = $this->getTradepost();
+
+        if ($tradepost === null && $this->mapped === null) {
+            return null;
+        }
+
+        return sprintf(
+            '%s%s',
+            $tradepost !== null ? 'tradepost' : '',
+            $this->mapped ? 'mapped' : ''
+        );
+    }
+
+    public function getTradepost(): ?TradePostInterface
+    {
+        if ($this->tradepost_id === null) {
+            return null;
+        }
+
+        if ($this->tradepost === null) {
+            // @todo refactor
+            global $container;
+
+            $this->tradepost = $container->get(TradePostRepositoryInterface::class)->find($this->tradepost_id);
+        }
+
+        return $this->tradepost;
+    }
+
 
     public function setHide(bool $hide): ExploreableStarMapInterface
     {

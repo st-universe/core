@@ -39,22 +39,22 @@ final class ShowTradePostInfo implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $trade_post = $this->tradePostRepository->find($this->showTradePostInfoRequest->getTradePostId());
-        if ($trade_post === null) {
+        $tradePost = $this->tradePostRepository->find($this->showTradePostInfoRequest->getTradePostId());
+        if ($tradePost === null) {
             return;
         }
 
-        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $trade_post->getId())) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradePost->getId())) {
             throw new AccessViolation();
         }
 
         $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradepostinfo');
         $game->setPageTitle(_('Handelsposten Details'));
 
-        $game->setTemplateVar('IS_NPC_TRADEPOST', $trade_post->getUserId() < 100);
+        $game->setTemplateVar('IS_NPC_TRADEPOST', $tradePost->isNpcTradepost());
         $game->setTemplateVar(
             'TRADE_POST_INFO',
-            $this->talFactory->createTradeAccountTal($trade_post, $userId)
+            $this->talFactory->createTradeAccountTal($tradePost, $userId)
         );
     }
 }

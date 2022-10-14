@@ -118,12 +118,16 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $rsm->addFieldResult('m', 'bordertype_id', 'bordertype_id');
         $rsm->addFieldResult('m', 'user_id', 'user_id');
         $rsm->addFieldResult('m', 'mapped', 'mapped');
+        $rsm->addFieldResult('m', 'system_name', 'system_name');
         $rsm->addFieldResult('m', 'influence_area_id', 'influence_area_id');
         $rsm->addFieldResult('m', 'region_id', 'region_id');
+        $rsm->addFieldResult('m', 'tradepost_id', 'tradepost_id');
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id, dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id
+                'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id,
+                    dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
+                    tp.id as tradepost_id, sys.name as system_name
                 FROM stu_map m
                 LEFT JOIN stu_user_map um
                     ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId
@@ -132,6 +136,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 LEFT JOIN stu_database_user dbu
                     ON dbu.user_id = :userId
                     AND sys.database_id = dbu.database_id
+                LEFT JOIN stu_trade_posts tp
+                    ON tp.map_id = m.id
                 WHERE m.cx
                 BETWEEN :startX AND :endX AND m.cy = :cy
                 ORDER BY m.cx ASC',

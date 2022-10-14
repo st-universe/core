@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradePostRepository")
@@ -51,6 +53,12 @@ class TradePost implements TradePostInterface
     private $map_id;
 
     /**
+     * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost", cascade={"remove"})
+     * @OrderBy({"id" = "DESC"})
+     */
+    private $licenseInfos;
+
+    /**
      * @OneToOne(targetEntity="Ship", inversedBy="tradePost")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -61,6 +69,11 @@ class TradePost implements TradePostInterface
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
     private $map;
+
+    public function __construct()
+    {
+        $this->licenseInfos = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -163,6 +176,15 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
+    public function getLatestLicenseInfo(): ?TradeLicenseInfoInterface
+    {
+        if (empty($this->licenseInfos)) {
+            return null;
+        }
+
+        return current($this->licenseInfos);
+    }
+
     public function getShip(): ShipInterface
     {
         return $this->ship;
@@ -180,5 +202,10 @@ class TradePost implements TradePostInterface
         $this->map = $map;
 
         return $this;
+    }
+
+    public function isNpcTradepost(): bool
+    {
+        return $this->getUserId() < UserEnum::USER_FIRST_ID;
     }
 }

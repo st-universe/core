@@ -38,9 +38,13 @@ interface TradePostInterface
 
     public function setStorage(int $storage): TradePostInterface;
 
+    public function getLatestLicenseInfo(): ?TradeLicenseInfoInterface;
+
     public function getShip(): ShipInterface;
 
     public function setShip(ShipInterface $ship): TradePostInterface;
 
     public function setMap(MapInterface $map): TradePostInterface;
+
+    public function isNpcTradepost(): bool;
 }
