@@ -14,6 +14,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
@@ -36,6 +37,8 @@ abstract class AbstractWeaponPhase
 
     protected LoggerUtilInterface $loggerUtil;
 
+    protected ShipTorpedoManagerInterface $shipTorpedoManager;
+
     private CreatePrestigeLogInterface $createPrestigeLog;
 
     private PrivateMessageSenderInterface $privateMessageSender;
@@ -50,6 +53,7 @@ abstract class AbstractWeaponPhase
         BuildingManagerInterface $buildingManager,
         CreatePrestigeLogInterface $createPrestigeLog,
         PrivateMessageSenderInterface $privateMessageSender,
+        ShipTorpedoManagerInterface $shipTorpedoManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipSystemManager = $shipSystemManager;
@@ -61,6 +65,7 @@ abstract class AbstractWeaponPhase
         $this->buildingManager = $buildingManager;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->privateMessageSender = $privateMessageSender;
+        $this->shipTorpedoManager = $shipTorpedoManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 

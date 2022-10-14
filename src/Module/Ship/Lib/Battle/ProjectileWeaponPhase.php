@@ -32,12 +32,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             ) {
                 break;
             }
-            $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
 
-            if ($attacker->getTorpedoCount() === 0) {
-                if ($attacker instanceof ShipInterface) {
-                    $this->shipSystemManager->deactivate($attacker, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
-                }
+            if ($attacker instanceof ShipInterface) {
+                $this->shipTorpedoManager->changeTorpedo($attacker, -1);
+            } else {
+                $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
             }
 
             $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
@@ -118,11 +117,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             if (!$attacker->getTorpedos() || $attacker->getEps() < $this->getProjectileWeaponEnergyCosts()) {
                 break;
             }
-            $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
-
-            if ($attacker->getTorpedoCount() === 0) {
-                $this->shipSystemManager->deactivate($attacker, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
-            }
+            $this->shipTorpedoManager->changeTorpedo($attacker, -1);
 
             $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
 

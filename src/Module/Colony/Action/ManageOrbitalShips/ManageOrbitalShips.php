@@ -24,13 +24,11 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
-use Stu\Component\Ship\System\Exception\AlreadyOffException;
-use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
-use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
+use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -60,6 +58,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private ReactorUtilInterface $reactorUtil;
 
+    private ShipTorpedoManagerInterface $shipTorpedoManager;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -75,6 +75,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker,
         ReactorUtilInterface $reactorUtil,
+        ShipTorpedoManagerInterface $shipTorpedoManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -89,6 +90,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
         $this->reactorUtil = $reactorUtil;
+        $this->shipTorpedoManager = $shipTorpedoManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -312,21 +314,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                             }
                         }
-                        $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
+                        $this->shipTorpedoManager->changeTorpedo($shipobj, $load);
                         if ($load < 0) {
                             $this->colonyStorageManager->upperStorage($colony, $shipobj->getTorpedo()->getCommodity(), abs($load));
                             $torpName = $shipobj->getTorpedo()->getName();
 
-                            if ($shipobj->getTorpedoCount() == 0) {
-                                $shipobj->setTorpedo(null);
-
-                                try {
-                                    $this->shipSystemManager->deactivate($shipobj, ShipSystemTypeEnum::SYSTEM_TORPEDO);
-                                } catch (AlreadyOffException $e) {
-                                } catch (SystemNotDeactivableException $e) {
-                                } catch (SystemNotFoundException $e) {
-                                }
-                            }
                             $msg[] = sprintf(
                                 _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
                                 $shipobj->getName(),
@@ -359,8 +351,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         if ($count > $shipobj->getMaxTorpedos()) {
                             $count = $shipobj->getMaxTorpedos();
                         }
-                        $shipobj->setTorpedo($torp_obj);
-                        $shipobj->setTorpedoCount($count);
+                        $this->shipTorpedoManager->changeTorpedo($shipobj, $count, $torp_obj);
 
                         $this->colonyStorageManager->lowerStorage(
                             $colony,

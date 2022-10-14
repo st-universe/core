@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -29,6 +30,7 @@ $shipCreator = $container->get(ShipCreatorInterface::class);
 $shipRepo = $container->get(ShipRepositoryInterface::class);
 $crewCreator = $container->get(CrewCreatorInterface::class);
 $mapRepo = $container->get(MapRepositoryInterface::class);
+$torpedoManager = $container->get(ShipTorpedoManagerInterface::class);
 
 $userId = request::indInt('userId');
 $buildplanId = request::indInt('buildplanId');
@@ -53,8 +55,7 @@ if ($torptypeId > 0 || $noTorps) {
 
         if ($torptypeId > 0) {
             $torp_obj = $torpedoTypeRepo->find($torptypeId);
-            $ship->setTorpedo($torp_obj);
-            $ship->setTorpedoCount($ship->getMaxTorpedos());
+            $torpedoManager->changeTorpedo($ship, $ship->getMaxTorpedos(), $torp_obj);
         }
 
         $shipRepo->save($ship);

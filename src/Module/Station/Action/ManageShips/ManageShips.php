@@ -20,12 +20,10 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
-use Stu\Component\Ship\System\Exception\AlreadyOffException;
-use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
-use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
+use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -57,6 +55,8 @@ final class ManageShips implements ActionControllerInterface
 
     private StationUtilityInterface $stationUtility;
 
+    private ShipTorpedoManagerInterface $shipTorpedoManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
@@ -69,7 +69,8 @@ final class ManageShips implements ActionControllerInterface
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker,
         ReactorUtilInterface $reactorUtil,
-        StationUtilityInterface $stationUtility
+        StationUtilityInterface $stationUtility,
+        ShipTorpedoManagerInterface $shipTorpedoManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -83,6 +84,7 @@ final class ManageShips implements ActionControllerInterface
         $this->positionChecker = $positionChecker;
         $this->reactorUtil = $reactorUtil;
         $this->stationUtility = $stationUtility;
+        $this->shipTorpedoManager = $shipTorpedoManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -292,21 +294,11 @@ final class ManageShips implements ActionControllerInterface
                                 $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                             }
                         }
-                        $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
+                        $this->shipTorpedoManager->changeTorpedo($shipobj, $load);
                         if ($load < 0) {
                             $this->shipStorageManager->upperStorage($station, $shipobj->getTorpedo()->getCommodity(), abs($load));
                             $torpName = $shipobj->getTorpedo()->getName();
 
-                            if ($shipobj->getTorpedoCount() == 0) {
-                                $shipobj->setTorpedo(null);
-
-                                try {
-                                    $this->shipSystemManager->deactivate($shipobj, ShipSystemTypeEnum::SYSTEM_TORPEDO);
-                                } catch (AlreadyOffException $e) {
-                                } catch (SystemNotDeactivableException $e) {
-                                } catch (SystemNotFoundException $e) {
-                                }
-                            }
                             $msg[] = sprintf(
                                 _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
                                 $shipobj->getName(),
@@ -339,8 +331,7 @@ final class ManageShips implements ActionControllerInterface
                         if ($count > $shipobj->getMaxTorpedos()) {
                             $count = $shipobj->getMaxTorpedos();
                         }
-                        $shipobj->setTorpedo($torp_obj);
-                        $shipobj->setTorpedoCount($count);
+                        $this->shipTorpedoManager->changeTorpedo($shipobj, $count, $torp_obj);
 
                         $this->shipStorageManager->lowerStorage(
                             $station,

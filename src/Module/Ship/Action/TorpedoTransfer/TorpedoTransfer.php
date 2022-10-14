@@ -13,6 +13,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 
 final class TorpedoTransfer implements ActionControllerInterface
 {
@@ -20,13 +21,17 @@ final class TorpedoTransfer implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private ShipTorpedoManagerInterface $shipTorpedoManager;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        ShipTorpedoManagerInterface $shipTorpedoManager,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipTorpedoManager = $shipTorpedoManager;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -105,9 +110,8 @@ final class TorpedoTransfer implements ActionControllerInterface
                     return;
                 }
 
-                $ship->setTorpedoCount($ship->getTorpedoCount() - $amount);
-                $target->setTorpedoCount($target->getTorpedoCount() + $amount);
-                $target->setTorpedo($ship->getTorpedo());
+                $this->shipTorpedoManager->changeTorpedo($ship, -$amount);
+                $this->shipTorpedoManager->changeTorpedo($target, $amount, $ship->getTorpedo());
             }
         } else {
             $amount = min(
@@ -117,21 +121,10 @@ final class TorpedoTransfer implements ActionControllerInterface
             );
 
             if ($amount > 0) {
-                $ship->setTorpedoCount($ship->getTorpedoCount() + $amount);
-                $ship->setTorpedo($target->getTorpedo());
-                $target->setTorpedoCount($target->getTorpedoCount() - $amount);
+                $this->shipTorpedoManager->changeTorpedo($ship, $amount, $target->getTorpedo());
+                $this->shipTorpedoManager->changeTorpedo($target, -$amount);
             }
         }
-
-        if ($ship->getTorpedoCount() === 0) {
-            $ship->setTorpedo(null);
-        }
-        if ($target->getTorpedoCount() === 0) {
-            $target->setTorpedo(null);
-        }
-
-        $this->shipLoader->save($ship);
-        $this->shipLoader->save($target);
 
         $game->addInformation(
             sprintf(

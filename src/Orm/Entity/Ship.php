@@ -1189,6 +1189,17 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    public function getTorpedoStorage(): ?TorpedoStorageInterface
+    {
+        return $this->torpedoStorage;
+    }
+
+    public function setTorpedoStorage(?TorpedoStorageInterface $torpedoStorage): ShipInterface
+    {
+        $this->torpedoStorage = $torpedoStorage;
+        return $this;
+    }
+
     public function getStorage(): Collection
     {
         return $this->storage;

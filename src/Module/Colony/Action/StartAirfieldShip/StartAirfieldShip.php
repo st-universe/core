@@ -15,6 +15,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -46,6 +47,8 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private ShipTorpedoManagerInterface $shipTorpedoManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CommodityRepositoryInterface $commodityRepository,
@@ -56,7 +59,8 @@ final class StartAirfieldShip implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        ShipTorpedoManagerInterface $shipTorpedoManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
@@ -68,6 +72,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->shipTorpedoManager = $shipTorpedoManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -147,8 +152,7 @@ final class StartAirfieldShip implements ActionControllerInterface
                 if ($count > $storage[$defaultTorpedoType->getCommodityId()]->getAmount()) {
                     $count = $storage[$defaultTorpedoType->getCommodityId()]->getAmount();
                 }
-                $ship->setTorpedo($defaultTorpedoType);
-                $ship->setTorpedoCount($count);
+                $this->shipTorpedoManager->changeTorpedo($ship, $count, $defaultTorpedoType);
 
                 $this->shipRepository->save($ship);
 
