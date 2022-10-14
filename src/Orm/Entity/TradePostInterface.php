@@ -41,4 +41,6 @@ interface TradePostInterface
     public function getShip(): ShipInterface;
 
     public function setShip(ShipInterface $ship): TradePostInterface;
+
+    public function setMap(MapInterface $map): TradePostInterface;
 }
