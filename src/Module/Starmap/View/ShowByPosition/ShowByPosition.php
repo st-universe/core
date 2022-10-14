@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowByPosition;
 
-use request;
 use Stu\Component\Map\MapEnum;
-use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use UserYRow;
 
 final class ShowByPosition implements ViewControllerInterface
@@ -19,36 +16,16 @@ final class ShowByPosition implements ViewControllerInterface
 
     private ShowByPositionRequestInterface $showByPositionRequest;
 
-    private ShipLoaderInterface $shipLoader;
-
     public function __construct(
-        ShowByPositionRequestInterface $showByPositionRequest,
-        ShipLoaderInterface $shipLoader
+        ShowByPositionRequestInterface $showByPositionRequest
     ) {
         $this->showByPositionRequest = $showByPositionRequest;
-        $this->shipLoader = $shipLoader;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
-
-        $ship = $this->shipLoader->getByIdAndUser(request::getIntFatal('id'), $userId, true);
-
         $xCoordinate = $this->showByPositionRequest->getXCoordinate();
         $yCoordinate = $this->showByPositionRequest->getYCoordinate();
-
-        if ($ship->getMapCX() !== $xCoordinate || $ship->getMapCY() !== $yCoordinate) {
-            throw new AccessViolation(sprintf(
-                'userId %d tried to show starMap on invalid position with mapCX: %d, mapCY: %d, but shipId %d is on mapCX: %d, mapCY: %d',
-                $userId,
-                $xCoordinate,
-                $yCoordinate,
-                $ship->getId(),
-                $ship->getMapCX(),
-                $ship->getMapCY()
-            ));
-        }
 
         $maxx = $xCoordinate * self::FIELDS_PER_SECTION;
         $minx = $maxx - self::FIELDS_PER_SECTION + 1;
