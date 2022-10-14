@@ -196,6 +196,7 @@ final class StationUtility implements StationUtilityInterface
         $tradepost->setLevel((int) 1);
         $tradepost->setTransferCapacity((int) 0);
         $tradepost->setStorage((int) 10000);
+        $tradepost->setMap($station->getMap());
         $this->tradePostRepository->save($tradepost);
 
         $station->setTradePost($tradepost);

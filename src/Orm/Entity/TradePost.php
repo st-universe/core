@@ -47,7 +47,7 @@ class TradePost implements TradePostInterface
     /** @Column(type="integer") * */
     private $storage = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $map_id;
 
     /**
