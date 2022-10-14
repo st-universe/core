@@ -103,6 +103,7 @@ use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
+use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInfo;
@@ -611,6 +612,11 @@ return [
         ContainerInterface $c
     ): TorpedoTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TorpedoType::class);
+    },
+    TorpedoStorageRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TorpedoStorageRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TorpedoStorage::class);
     },
     TradeLicenseInfoRepositoryInterface::class => function (
         ContainerInterface $c

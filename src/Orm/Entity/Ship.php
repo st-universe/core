@@ -239,6 +239,11 @@ class Ship implements ShipInterface
     private $torpedo;
 
     /**
+     * @OneToOne(targetEntity="TorpedoStorage", mappedBy="ship")
+     */
+    private $torpedoStorage;
+
+    /**
      * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"remove"})
      * @OrderBy({"system_type" = "ASC"})
      */
