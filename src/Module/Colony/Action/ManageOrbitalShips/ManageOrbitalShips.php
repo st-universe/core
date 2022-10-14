@@ -314,11 +314,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                             }
                         }
-                        $torpedoCommodity = $shipobj->getTorpedo()->getCommodity();
                         $this->shipTorpedoManager->changeTorpedo($shipobj, $load);
                         if ($load < 0) {
-                            $this->colonyStorageManager->upperStorage($colony, $torpedoCommodity, abs($load));
-                            $torpName = $shipobj->getTorpedo()->getName();
+                            $this->colonyStorageManager->upperStorage($colony, $torp_obj->getCommodity(), abs($load));
+                            $torpName = $torp_obj->getName();
 
                             $msg[] = sprintf(
                                 _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
