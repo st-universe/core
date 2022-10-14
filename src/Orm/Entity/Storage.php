@@ -36,9 +36,6 @@ class Storage implements StorageInterface
     private $ship_id;
 
     /** @Column(type="integer", nullable=true) * */
-    private $torpedo_storage_id;
-
-    /** @Column(type="integer", nullable=true) * */
     private $tradepost_id;
 
     /** @Column(type="integer", nullable=true) * */
@@ -61,12 +58,6 @@ class Storage implements StorageInterface
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
-
-    /**
-     * @OneToOne(targetEntity="TorpedoStorage", inversedBy="storage")
-     * @JoinColumn(name="torpedo_storage_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $torpedoStorage;
 
     /**
      * @ManyToOne(targetEntity="TradePost")
@@ -145,17 +136,6 @@ class Storage implements StorageInterface
     public function setShip(ShipInterface $ship): StorageInterface
     {
         $this->ship = $ship;
-        return $this;
-    }
-
-    public function getTorpedoStorage(): ?TorpedoStorageInterface
-    {
-        return $this->torpedoStorage;
-    }
-
-    public function setTorpedoStorage(TorpedoStorageInterface $torpedoStorage): StorageInterface
-    {
-        $this->torpedoStorage = $torpedoStorage;
         return $this;
     }
 
