@@ -28,6 +28,10 @@ interface StorageInterface
 
     public function setShip(ShipInterface $ship): StorageInterface;
 
+    public function getTorpedoStorage(): ?TorpedoStorageInterface;
+
+    public function setTorpedoStorage(TorpedoStorageInterface $torpedoStorage): StorageInterface;
+
     public function getTradePost(): ?TradePostInterface;
 
     public function setTradePost(TradePostInterface $tradePost): StorageInterface;
