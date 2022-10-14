@@ -157,7 +157,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
 
         return sprintf(
             '%s%s',
-            $tradepost !== null ? 'tradepost' : '',
+            $tradepost !== null && !$tradepost->isNpcTradepost() ? 'tradepost' : '',
             $this->mapped ? 'mapped' : ''
         );
     }
