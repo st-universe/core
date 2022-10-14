@@ -102,7 +102,7 @@
               <th tal:content="yrow/getRow">y</th>
               <td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
                 tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
-                <div tal:condition="data/getIcon" title="${data/getTitle} class=" starmapInner"
+                <div tal:condition="data/getIcon" title="${data/getTitle}" class="starmapInner"
                   style="cursor: auto ! important;">
                   <a tal:condition="data/getHref" href="${data/getHref}">
                     <img src="/assets/map/${data/getIcon}.png" "
