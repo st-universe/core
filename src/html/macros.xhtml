@@ -105,8 +105,7 @@
                 <div tal:condition="data/getIcon" title="${data/getTitle}" class="starmapInner"
                   style="cursor: auto ! important;">
                   <a tal:condition="data/getHref" href="${data/getHref}">
-                    <img src="/assets/map/${data/getIcon}.png" "
-                      style=" height: 28px; width: 28px;" />
+                    <img src="/assets/map/${data/getIcon}.png" style=" height: 28px; width: 28px;" />
                   </a>
                   <img tal:condition="not:data/getHref" src="/assets/map/${data/getIcon}.png"
                     style="height: 28px; width: 28px;" />
