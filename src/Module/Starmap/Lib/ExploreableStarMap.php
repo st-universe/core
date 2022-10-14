@@ -104,7 +104,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         return $this->user_id;
     }
 
-    public function getMapped(): ?int
+    private function getMapped(): ?int
     {
         return $this->mapped;
     }
@@ -160,6 +160,11 @@ class ExploreableStarMap implements ExploreableStarMapInterface
             $tradepost !== null && !$tradepost->isNpcTradepost() ? 'tradepost' : '',
             $this->mapped ? 'mapped' : ''
         );
+    }
+
+    public function getHref(): ?string
+    {
+        return $this->mapped ? sprintf('database.php?SHOW_ENTRY=1&cat=7&ent=%d', $this->getMapped()) : null;
     }
 
     public function getTradepost(): ?TradePostInterface

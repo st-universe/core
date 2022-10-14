@@ -18,11 +18,11 @@ interface ExploreableStarMapInterface
 
     public function getUserId(): ?int;
 
-    public function getMapped(): ?int;
-
     public function getTitle(): ?string;
 
     public function getIcon(): ?string;
+
+    public function getHref(): ?string;
 
     public function getTradepost(): ?TradePostInterface;
 
