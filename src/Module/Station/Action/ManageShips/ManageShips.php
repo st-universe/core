@@ -294,9 +294,10 @@ final class ManageShips implements ActionControllerInterface
                                 $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                             }
                         }
+                        $torpedoCommodity = $shipobj->getTorpedo()->getCommodity();
                         $this->shipTorpedoManager->changeTorpedo($shipobj, $load);
                         if ($load < 0) {
-                            $this->shipStorageManager->upperStorage($station, $shipobj->getTorpedo()->getCommodity(), abs($load));
+                            $this->shipStorageManager->upperStorage($station, $torpedoCommodity, abs($load));
                             $torpName = $shipobj->getTorpedo()->getName();
 
                             $msg[] = sprintf(

@@ -314,9 +314,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                             }
                         }
+                        $torpedoCommodity = $shipobj->getTorpedo()->getCommodity();
                         $this->shipTorpedoManager->changeTorpedo($shipobj, $load);
                         if ($load < 0) {
-                            $this->colonyStorageManager->upperStorage($colony, $shipobj->getTorpedo()->getCommodity(), abs($load));
+                            $this->colonyStorageManager->upperStorage($colony, $torpedoCommodity, abs($load));
                             $torpName = $shipobj->getTorpedo()->getName();
 
                             $msg[] = sprintf(
