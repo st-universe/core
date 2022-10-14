@@ -182,7 +182,7 @@ class TradePost implements TradePostInterface
             return null;
         }
 
-        return current($this->licenseInfos);
+        return current($this->licenseInfos->getValues());
     }
 
     public function getShip(): ShipInterface
