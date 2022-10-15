@@ -127,8 +127,6 @@ interface ShipInterface
 
     public function getTorpedoCount(): int;
 
-    public function setTorpedoCount(int $torpedoAmount): ShipInterface;
-
     public function getEBattWaitingTime(): int;
 
     public function setEBattWaitingTime(int $batteryCooldown): ShipInterface;
@@ -265,8 +263,6 @@ interface ShipInterface
     public function isWarpPossible(): bool;
 
     public function getTorpedo(): ?TorpedoTypeInterface;
-
-    public function setTorpedo(?TorpedoTypeInterface $torpedoType): ShipInterface;
 
     public function getTorpedoStorage(): ?TorpedoStorageInterface;
 

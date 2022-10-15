@@ -43,24 +43,6 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
 
     public function changeTorpedo(ShipInterface $ship, int $changeAmount, TorpedoTypeInterface $type = null)
     {
-        // OLD
-        $ship->setTorpedoCount($ship->getTorpedoCount() + $changeAmount);
-        if ($type !== null) {
-            $ship->setTorpedo($type);
-        }
-
-        if ($ship->getTorpedoCount() == 0) {
-            $ship->setTorpedo(null);
-
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
-        }
-
-        $this->shipRepository->save($ship);
-
-        if ($ship->getUser()->getId() === 126) {
-            $this->loggerUtil->init('torp', LoggerEnum::LEVEL_ERROR);
-        }
-
         // NEW
         if ($ship->getTorpedoStorage() === null && $type !== null) {
             $this->createTorpedoStorage($ship, $changeAmount, $type);

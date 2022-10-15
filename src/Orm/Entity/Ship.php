@@ -125,7 +125,7 @@ class Ship implements ShipInterface
     /** @Column(type="integer", length=3, nullable=true) */
     private $torpedo_type;
 
-    /** @Column(type="smallint", length=4) */
+    /** @Column(type="smallint", length=4, nullable=true) */
     private $torpedo_count = 0;
 
     /** @Column(type="integer") */
@@ -231,12 +231,6 @@ class Ship implements ShipInterface
      * @OrderBy({"id" = "ASC"})
      */
     private $crew;
-
-    /**
-     * @ManyToOne(targetEntity="TorpedoType")
-     * @JoinColumn(name="torpedo_type", referencedColumnName="id")
-     */
-    private $torpedo;
 
     /**
      * @OneToOne(targetEntity="TorpedoStorage", mappedBy="ship")
@@ -668,13 +662,11 @@ class Ship implements ShipInterface
 
     public function getTorpedoCount(): int
     {
-        return $this->torpedo_count;
-    }
+        if ($this->getTorpedoStorage() === null) {
+            return 0;
+        }
 
-    public function setTorpedoCount(int $torpedoAmount): ShipInterface
-    {
-        $this->torpedo_count = $torpedoAmount;
-        return $this;
+        return $this->getTorpedoStorage()->getStorage()->getAmount();
     }
 
     public function getEBattWaitingTime(): int
@@ -1180,13 +1172,11 @@ class Ship implements ShipInterface
 
     public function getTorpedo(): ?TorpedoTypeInterface
     {
-        return $this->torpedo;
-    }
+        if ($this->getTorpedoStorage() === null) {
+            return null;
+        }
 
-    public function setTorpedo(?TorpedoTypeInterface $torpedoType): ShipInterface
-    {
-        $this->torpedo = $torpedoType;
-        return $this;
+        return $this->getTorpedoStorage()->getTorpedo();
     }
 
     public function getTorpedoStorage(): ?TorpedoStorageInterface
