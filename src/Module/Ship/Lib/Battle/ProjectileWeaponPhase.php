@@ -22,9 +22,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
 
-            $torpedo = $attacker->getTorpedo();
-            $torpedoName =  $torpedo->getName();
-
             if (count($targetPool) === 0) {
                 break;
             }
@@ -36,6 +33,9 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             ) {
                 break;
             }
+
+            $torpedo = $attacker->getTorpedo();
+            $torpedoName =  $torpedo->getName();
 
             if ($attacker instanceof ShipInterface) {
                 $this->shipTorpedoManager->changeTorpedo($attacker, -1);
@@ -119,11 +119,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
 
-            $torpedo = $attacker->getTorpedo();
-
             if (!$attacker->getTorpedos() || $attacker->getEps() < $this->getProjectileWeaponEnergyCosts()) {
                 break;
             }
+
+            $torpedo = $attacker->getTorpedo();
             $this->shipTorpedoManager->changeTorpedo($attacker, -1);
 
             $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
