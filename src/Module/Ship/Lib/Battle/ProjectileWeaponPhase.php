@@ -60,7 +60,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             }
             $isCritical = $this->isCritical($torpedo, $target->getCloakState());
             $damage_wrapper = new DamageWrapper(
-                $this->getProjectileWeaponDamage($attacker, $isCritical),
+                $this->getProjectileWeaponDamage($attacker, $torpedo, $isCritical),
                 $attacker
             );
             $damage_wrapper->setCrit($isCritical);
