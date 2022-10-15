@@ -122,12 +122,6 @@ class Ship implements ShipInterface
     /** @Column(type="integer") */
     private $former_rumps_id = 0;
 
-    /** @Column(type="integer", length=3, nullable=true) */
-    private $torpedo_type;
-
-    /** @Column(type="smallint", length=4, nullable=true) */
-    private $torpedo_count = 0;
-
     /** @Column(type="integer") */
     private $batt_wait = 0;
 
