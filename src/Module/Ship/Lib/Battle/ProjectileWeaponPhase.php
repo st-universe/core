@@ -21,6 +21,10 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         $msg = [];
 
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
+
+            $torpedo = $attacker->getTorpedo();
+            $torpedoName =  $torpedo->getName();
+
             if (count($targetPool) === 0) {
                 break;
             }
@@ -41,7 +45,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
 
-            $msg[] = "Die " . $attacker->getName() . " feuert einen " . $attacker->getTorpedo()->getName() . " auf die " . $target->getName();
+            $msg[] = "Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName();
 
             // higher evade chance for pulseships against torpedo ships
 
@@ -60,8 +64,8 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 $attacker
             );
             $damage_wrapper->setCrit($isCritical);
-            $damage_wrapper->setShieldDamageFactor($attacker->getTorpedo()->getShieldDamageFactor());
-            $damage_wrapper->setHullDamageFactor($attacker->getTorpedo()->getHullDamageFactor());
+            $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
+            $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
 
             $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $target));
