@@ -58,7 +58,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 $msg[] = "Die " . $target->getName() . " wurde verfehlt";
                 continue;
             }
-            $isCritical = $this->isCritical($attacker, $target->getCloakState());
+            $isCritical = $this->isCritical($torpedo, $target->getCloakState());
             $damage_wrapper = new DamageWrapper(
                 $this->getProjectileWeaponDamage($attacker, $isCritical),
                 $attacker
@@ -118,6 +118,9 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         $msg = [];
 
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
+
+            $torpedo = $attacker->getTorpedo();
+
             if (!$attacker->getTorpedos() || $attacker->getEps() < $this->getProjectileWeaponEnergyCosts()) {
                 break;
             }
@@ -125,7 +128,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
 
-            $msg[] = sprintf(_("Die %s feuert einen %s auf das Gebäude %s auf Feld %d"), $attacker->getName(), $attacker->getTorpedo()->getName(), $target->getBuilding()->getName(), $target->getFieldId());
+            $msg[] = sprintf(_("Die %s feuert einen %s auf das Gebäude %s auf Feld %d"), $attacker->getName(), $torpedo->getName(), $target->getBuilding()->getName(), $target->getFieldId());
 
             if ($antiParticleCount > 0) {
                 $antiParticleCount--;
@@ -136,14 +139,14 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 $msg[] = "Das Gebäude wurde verfehlt";
                 continue;
             }
-            $isCritical = rand(1, 100) <= $attacker->getTorpedo()->getCriticalChance();
+            $isCritical = rand(1, 100) <= $torpedo->getCriticalChance();
             $damage_wrapper = new DamageWrapper(
-                $this->getProjectileWeaponDamage($attacker, $isCritical),
+                $this->getProjectileWeaponDamage($attacker, $torpedo, $isCritical),
                 $attacker
             );
             $damage_wrapper->setCrit($isCritical);
-            $damage_wrapper->setShieldDamageFactor($attacker->getTorpedo()->getShieldDamageFactor());
-            $damage_wrapper->setHullDamageFactor($attacker->getTorpedo()->getHullDamageFactor());
+            $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
+            $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
 
             $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
@@ -179,23 +182,23 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         return 1;
     }
 
-    private function isCritical($ship, bool $isTargetCloaked): bool
+    private function isCritical($torpedo, bool $isTargetCloaked): bool
     {
-        $critChance = $isTargetCloaked ? $ship->getTorpedo()->getCriticalChance() * 2 : $ship->getTorpedo()->getCriticalChance();
+        $critChance = $isTargetCloaked ? $torpedo->getCriticalChance() * 2 : $torpedo->getCriticalChance();
         if (rand(1, 100) <= $critChance) {
             return true;
         }
         return false;
     }
 
-    private function getProjectileWeaponDamage($ship, bool $isCritical): float
+    private function getProjectileWeaponDamage($ship, $torpedo, bool $isCritical): float
     {
-        $variance = (int) round($ship->getTorpedo()->getBaseDamage() / 100 * $ship->getTorpedo()->getVariance());
+        $variance = (int) round($torpedo->getBaseDamage() / 100 * $torpedo->getVariance());
         $basedamage = $this->moduleValueCalculator->calculateModuleValue(
             $ship->getRump(),
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->getModule(),
             false,
-            $ship->getTorpedo()->getBaseDamage()
+            $torpedo->getBaseDamage()
         );
         $damage = rand($basedamage - $variance, $basedamage + $variance);
 
