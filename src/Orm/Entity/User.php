@@ -126,6 +126,9 @@ class User implements UserInterface
     /** @Column(type="integer") * */
     private $prestige = 0;
 
+    /** @Column(type="string", length=100, nullable=true) */
+    private $start_page;
+
     /**
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
@@ -527,6 +530,17 @@ class User implements UserInterface
     public function setPrestige(int $prestige): UserInterface
     {
         $this->prestige = $prestige;
+        return $this;
+    }
+
+    public function getStartPage(): ?string
+    {
+        return $this->start_page;
+    }
+
+    public function setStartPage(string $startPage): UserInterface
+    {
+        $this->start_page = $startPage;
         return $this;
     }
 

@@ -137,6 +137,10 @@ interface UserInterface
 
     public function setPrestige(int $prestige): UserInterface;
 
+    public function getStartPage(): ?string;
+
+    public function setStartPage(string $startPage): UserInterface;
+
     /**
      * @deprecated
      */
