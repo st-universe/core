@@ -27,6 +27,18 @@ final class BuildingEnum
     public const BUILDING_FUNCTION_DESTROYER_SHIPYARD = 21;
     public const BUILDING_FUNCTION_REPAIR_SHIPYARD = 22;
     public const BUILDING_FUNCTION_WAREHOUSE = 23;
+    public const BUILDING_FUNCTION_SUBSPACE_TELESCOPE = 31;
+
+    // planetary defense 
+    public const BUILDING_FUNCTION_SHIELD_GENERATOR = 24;
+    public const BUILDING_FUNCTION_SHIELD_BATTERY = 25;
+    public const BUILDING_FUNCTION_ENERGY_PHALANX = 26;
+    public const BUILDING_FUNCTION_PARTICLE_PHALANX = 27;
+    public const BUILDING_FUNCTION_ANTI_PARTICLE = 28;
+
+    // spare parts
+    public const BUILDING_FUNCTION_FABRICATION_HALL = 29;
+    public const BUILDING_FUNCTION_TECH_CENTER = 30;
 
     public const BUILDING_FUNCTION_MODULEFABS = [
         self::BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL1,
@@ -40,19 +52,8 @@ final class BuildingEnum
         self::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL3
     ];
 
-    // planetary defense 
-    public const BUILDING_FUNCTION_SHIELD_GENERATOR = 24;
-    public const BUILDING_FUNCTION_SHIELD_BATTERY = 25;
-    public const BUILDING_FUNCTION_ENERGY_PHALANX = 26;
-    public const BUILDING_FUNCTION_PARTICLE_PHALANX = 27;
-    public const BUILDING_FUNCTION_ANTI_PARTICLE = 28;
-
     public const SHIELD_GENERATOR_CAPACITY = 4000;
     public const SHIELD_BATTERY_CAPACITY = 10000;
-
-    // spare parts
-    public const BUILDING_FUNCTION_FABRICATION_HALL = 29;
-    public const BUILDING_FUNCTION_TECH_CENTER = 30;
 
     // other
     public const BUILDMENU_SOCIAL = 1;
