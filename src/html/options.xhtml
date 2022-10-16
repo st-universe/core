@@ -225,7 +225,7 @@
                                                         <option value="0">----------------------</option>
                                                         <tal:block tal:repeat="value STARTPAGE_VALUES">
                                                                 <option tal:content="value/title"
-                                                                        tal:attributes="value value/view; selected php:STARTPAGE==data['view']">
+                                                                        tal:attributes="value value/view; selected php:STARTPAGE==value['view']">
                                                                         STARTPAGE</option>
                                                         </tal:block>
                                                 </select>
