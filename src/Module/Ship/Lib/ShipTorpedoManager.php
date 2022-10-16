@@ -11,14 +11,11 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TorpedoStorageRepositoryInterface;
 
 final class ShipTorpedoManager implements ShipTorpedoManagerInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
     private ShipSystemManagerInterface $shipSystemManager;
 
     private TorpedoStorageRepositoryInterface $torpedoStorageRepository;
@@ -28,13 +25,11 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         TorpedoStorageRepositoryInterface $torpedoStorageRepository,
         StorageRepositoryInterface $storageRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->torpedoStorageRepository = $torpedoStorageRepository;
         $this->storageRepository = $storageRepository;
@@ -43,7 +38,6 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
 
     public function changeTorpedo(ShipInterface $ship, int $changeAmount, TorpedoTypeInterface $type = null)
     {
-        // NEW
         if ($ship->getTorpedoStorage() === null && $type !== null) {
             $this->createTorpedoStorage($ship, $changeAmount, $type);
         } else if ($ship->getTorpedoStorage()->getStorage()->getAmount() + $changeAmount === 0) {
