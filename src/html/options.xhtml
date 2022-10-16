@@ -220,6 +220,21 @@
                                         </td>
                                 </tr>
                                 <tr>
+                                        <td>
+                                                <select name="startpage" id="startpageSelect">
+                                                        <option value="0">----------------------</option>
+                                                        <tal:block tal:repeat="value STARTPAGE_VALUES">
+                                                                <option tal:content="value/title"
+                                                                        tal:attributes="value value/view; selected php:STARTPAGE==data['view']">
+                                                                        STARTPAGE</option>
+                                                        </tal:block>
+                                                </select>
+                                        </td>
+                                        <td>
+                                                Auswahl der Startseite, welche nach dem Login angezeigt werden soll.
+                                        </td>
+                                </tr>
+                                <tr>
                                         <td colspan="4">
                                                 <input type="submit" class="button" value="Einstellungen ändern"
                                                         name="B_CHANGE_SETTINGS" />

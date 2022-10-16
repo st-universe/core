@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\View\Overview;
 
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -75,6 +76,8 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar('USER', $user);
         $game->setTemplateVar('WIKI', $this->config->get('wiki.base_url'));
+        $game->setTemplateVar('STARTPAGE', $user->getStartPage());
+        $game->setTemplateVar('STARTPAGE_VALUES', ModuleViewEnum::MODULE_VIEW_ARRAY);
 
         $invitations = $this->userInvitationRepository->getInvitationsByUser($user);
 
