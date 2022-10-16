@@ -39,4 +39,9 @@ final class ChangeSettingsRequest implements ChangeSettingsRequestInterface
     {
         return $this->queryParameter('fleets_fixed')->int()->defaultsTo(0);
     }
+
+    public function getStartpage(): string
+    {
+        return $this->queryParameter('startpage')->string()->defaultsTo('');
+    }
 }

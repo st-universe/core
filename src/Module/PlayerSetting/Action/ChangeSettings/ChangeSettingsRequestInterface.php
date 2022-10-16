@@ -15,4 +15,6 @@ interface ChangeSettingsRequestInterface
     public function getPmReadReceipt(): int;
 
     public function getFleetsFixedDefault(): int;
+
+    public function getStartpage(): string;
 }

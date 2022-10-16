@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeSettings;
 
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -59,6 +60,13 @@ final class ChangeSettings implements ActionControllerInterface
                 $user->setFleetFixedDefault(
                     $this->changeSettingsRequest->getFleetsFixedDefault() === 1 ? true : false
                 );
+            },
+            function (UserInterface $user): void {
+                $value = $this->changeSettingsRequest->getStartpage();
+
+                if (array_key_exists($value, ModuleViewEnum::MODULE_VIEW_ARRAY)) {
+                    $user->setStartPage($value);
+                }
             },
         ];
         foreach ($settings as $callable) {
