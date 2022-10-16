@@ -81,7 +81,7 @@ final class Session implements SessionInterface
         return $this->user;
     }
 
-    public function login(string $login, string $password): void
+    public function login(string $login, string $password): bool
     {
         $this->destroyLoginCookies();
 
@@ -165,6 +165,8 @@ final class Session implements SessionInterface
         $ipTableEntry->setStartDate(new DateTimeImmutable());
 
         $this->userIpTableRepository->save($ipTableEntry);
+
+        return true;
     }
 
     private function buildCookieString(UserInterface $user): string

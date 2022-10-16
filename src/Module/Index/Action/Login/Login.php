@@ -31,10 +31,14 @@ final class Login implements ActionControllerInterface
      */
     public function handle(GameControllerInterface $game): void
     {
-        $this->session->login(
+        $success = $this->session->login(
             $this->loginRequest->getLoginName(),
             $this->loginRequest->getPassword()
         );
+
+        if ($success && $game->getUser()->getStartPage() !== null) {
+            $game->redirectTo(sprintf('/%s.php', $game->getUser()->getStartPage()));
+        }
     }
 
     public function performSessionCheck(): bool
