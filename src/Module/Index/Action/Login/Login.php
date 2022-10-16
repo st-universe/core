@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Login;
 
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Lib\LoginException;
@@ -36,8 +37,13 @@ final class Login implements ActionControllerInterface
             $this->loginRequest->getPassword()
         );
 
-        if ($success && $game->getUser()->getStartPage() !== null) {
-            $game->redirectTo(sprintf('/%s.php', $game->getUser()->getStartPage()));
+        $startpage = $game->getUser()->getStartPage();
+        if (
+            $success
+            && $startpage  !== null
+            && $startpage !== ModuleViewEnum::MODULE_VIEW_INDEX
+        ) {
+            $game->redirectTo(sprintf('/%s.php',  $startpage));
         }
     }
 
