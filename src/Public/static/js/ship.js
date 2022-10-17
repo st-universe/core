@@ -143,9 +143,6 @@ function openStorage(id) {
 function closeStorage() {
 	closeAjaxWindow();
 }
-function showMapBy(cx, cy) {
-	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy);
-}
 function showShipDetails(id) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);

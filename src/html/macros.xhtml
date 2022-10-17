@@ -75,8 +75,8 @@
         <td>&nbsp;</td>
         <td>
           <div onmouseover="cp('aup','buttons/b_up2')" onmouseout="cp('aup','buttons/b_up1')"
-            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_UP"
-            onclick="showMapBy('${NAV_UP/x}','${NAV_UP/y}');">
+            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="exists:NAV_UP"
+            onclick="showMapBy('${NAV_UP}');">
             <img src="assets/buttons/b_up1.png" name="aup" />
           </div>
         </td>
@@ -86,8 +86,8 @@
       <tr>
         <td>
           <div onmouseover="cp('aleft','buttons/b_from2')" onmouseout="cp('aleft','buttons/b_from1')"
-            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_LEFT"
-            onclick="showMapBy('${NAV_LEFT/x}','${NAV_LEFT/y}');">
+            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="exists:NAV_LEFT"
+            onclick="showMapBy('${NAV_LEFT}');">
             <img src="assets/buttons/b_from1.png" name="aleft" />
           </div>
         </td>
@@ -124,8 +124,8 @@
         <td style="width: 30px;">&nbsp;</td>
         <td>
           <div onmouseover="cp('aright','buttons/b_to2')" onmouseout="cp('aright','buttons/b_to1')"
-            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_RIGHT"
-            onclick="showMapBy('${NAV_RIGHT/x}','${NAV_RIGHT/y}');">
+            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="exists:NAV_RIGHT"
+            onclick="showMapBy('${NAV_RIGHT}');">
             <img src="assets/buttons/b_to1.png" name="aright" />
           </div>
         </td>
@@ -135,8 +135,8 @@
         <td>&nbsp;</td>
         <td>
           <div onmouseover="cp('adown','buttons/b_down2')" onmouseout="cp('adown','buttons/b_down1')"
-            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_DOWN"
-            onclick="showMapBy('${NAV_DOWN/x}','${NAV_DOWN/y}');">
+            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="exists:NAV_DOWN"
+            onclick="showMapBy('${NAV_DOWN}');">
             <img src="assets/buttons/b_down1.png" name="adown" />
           </div>
         </td>

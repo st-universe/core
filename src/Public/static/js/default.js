@@ -171,6 +171,9 @@ var tmpfield = 0;
 function ajax_update(elt, url) {
         new Ajax.Updater(elt, url, { method: 'get', evalScripts: true });
 }
+function showMapBy(path) {
+        ajax_update('elt', path);
+}
 function selectMapFieldType(type) {
         $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.png" />';
         selectedFieldType = type;

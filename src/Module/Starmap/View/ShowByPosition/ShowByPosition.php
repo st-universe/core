@@ -41,38 +41,40 @@ final class ShowByPosition implements ViewControllerInterface
 
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
         $game->setTemplateVar('MAP_FIELDS', $fields);
-        $game->setTemplateVar('HAS_NAV_LEFT', $xCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_RIGHT', $xCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_X);
-        $game->setTemplateVar('HAS_NAV_UP', $yCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_DOWN', $yCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_Y);
 
-        $game->setTemplateVar(
-            'NAV_UP',
-            [
-                'x' => $xCoordinate,
-                'y' => $yCoordinate - 1
-            ]
-        );
-        $game->setTemplateVar(
-            'NAV_DOWN',
-            [
-                'x' => $xCoordinate,
-                'y' => $yCoordinate + 1
-            ]
-        );
-        $game->setTemplateVar(
-            'NAV_LEFT',
-            [
-                'x' => $xCoordinate - 1,
-                'y' => $yCoordinate
-            ]
-        );
-        $game->setTemplateVar(
-            'NAV_RIGHT',
-            [
-                'x' => $xCoordinate + 1,
-                'y' => $yCoordinate
-            ]
+        if ($yCoordinate > 1) {
+            $game->setTemplateVar(
+                'NAV_UP',
+                $this->constructPath($xCoordinate, $yCoordinate - 1)
+            );
+        }
+        if ($yCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_Y) {
+            $game->setTemplateVar(
+                'NAV_DOWN',
+                $this->constructPath($xCoordinate, $yCoordinate + 1)
+            );
+        }
+        if ($xCoordinate > 1) {
+            $game->setTemplateVar(
+                'NAV_LEFT',
+                $this->constructPath($xCoordinate - 1, $yCoordinate)
+            );
+        }
+        if ($xCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_X) {
+            $game->setTemplateVar(
+                'NAV_RIGHT',
+                $this->constructPath($xCoordinate + 1, $yCoordinate)
+            );
+        }
+    }
+
+    private function constructPath(int $x, int $y): string
+    {
+        return sprintf(
+            'starmap.php?%s=1&x=%d&y=%d',
+            self::VIEW_IDENTIFIER,
+            $x,
+            $y
         );
     }
 }
