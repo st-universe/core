@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Colony\View\ShowSubspaceTelescope;
+namespace Stu\Module\Colony\View\RefreshSubspaceSection;
 
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
