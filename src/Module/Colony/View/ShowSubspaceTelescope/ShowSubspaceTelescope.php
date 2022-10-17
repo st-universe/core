@@ -63,7 +63,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             $game,
             $mapX,
             $mapY,
-            $mapX + $mapY * ((int) ceil(MapEnum::MAP_MAX_X / Overview::FIELDS_PER_SECTION)),
+            $mapX + $mapY * ((int) floor(MapEnum::MAP_MAX_X / Overview::FIELDS_PER_SECTION)),
             ModuleViewEnum::MODULE_VIEW_COLONY,
             RefreshSubspaceSection::VIEW_IDENTIFIER
         );
