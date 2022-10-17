@@ -1148,6 +1148,10 @@
 <metal:block metal:define-macro="cm_telescope">
   <metal:macro metal:use-macro="colonymenu_sub_container">
     <div metal:fill-slot="containment">
+      <script language="Javascript">
+        var cx = ${ COLONY/getSystem/getCx};
+        var cy = ${ COLONY/getSystem/getCy};
+      </script>
       <table class="tcal">
         <tr>
           <td style="width: 50%;" class="colonymenu">
@@ -1185,7 +1189,7 @@
                   <div tal:condition="data/getIcon" title="${data/getTitle}" class="starmapInner"
                     style="cursor: auto ! important;">
                     <a tal:condition="data/getHref" href="javascript:void(0)"
-                      onmouseover="updateTelescopeEnergy(${COLONY/getSystem/getCx}, ${COLONY/getSystem/getCy}, ${data/getCx}, ${data/getCy});">
+                      onmouseover="updateTelescopeEnergy(${cx}, ${cy}, ${data/getCx}, ${data/getCy});">
                       <img src="/assets/map/${data/getIcon}.png" style=" height: 28px; width: 28px;" />
                     </a>
                   </div>
