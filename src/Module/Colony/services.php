@@ -163,13 +163,13 @@ use Stu\Module\Colony\View\ShowSocial\ShowSocialRequestInterface;
 use Stu\Module\Colony\View\ShowStorage\ShowStorage;
 use Stu\Module\Colony\View\ShowStorage\ShowStorageRequest;
 use Stu\Module\Colony\View\ShowStorage\ShowStorageRequestInterface;
+use Stu\Module\Colony\View\ShowSubspaceTelescope\ShowSubspaceTelescope;
 use Stu\Module\Colony\View\ShowSurface\ShowSurface;
 use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequest;
 use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequestInterface;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequest;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
-use Stu\Module\Colony\View\ShowWaste\ShowSubspaceTelescope;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Module\Control\GameController;
 
