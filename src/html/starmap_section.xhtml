@@ -50,19 +50,19 @@
 				<tr>
 					<td style="text-align: center" colspan="3">
 						<a href="runtime" tal:attributes="href NAV_UP" style="display: block;"
-							tal:condition="HAS_NAV_UP">/\</a>
+							tal:condition="exists:NAV_UP">/\</a>
 					</td>
 				</tr>
 				<tr>
-					<td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="HAS_NAV_LEFT"
+					<td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="exists:NAV_LEFT"
 							style="display: block;">&lt;</a></td>
 					<td style="text-align: center;" tal:content="SECTION_ID">SEC</td>
 					<td style="text-align: right;"><a href="runtime" tal:attributes="href NAV_RIGHT"
-							tal:condition="HAS_NAV_RIGHT" style="display: block;">&gt;</a></td>
+							tal:condition="exists:NAV_RIGHT" style="display: block;">&gt;</a></td>
 				</tr>
 				<tr>
 					<td style="text-align: center" colspan="3">
-						<a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="HAS_NAV_DOWN"
+						<a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="exists:NAV_DOWN"
 							style="display: block;">\/</a>
 					</td>
 				</tr>
