@@ -24,8 +24,6 @@ interface ExploreableStarMapInterface
 
     public function getHref(): ?string;
 
-    public function getTradepost(): ?TradePostInterface;
-
     public function setHide(bool $hide): ExploreableStarMapInterface;
 
     public function getFieldStyle(): string;

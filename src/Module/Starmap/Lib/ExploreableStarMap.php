@@ -111,6 +111,10 @@ class ExploreableStarMap implements ExploreableStarMapInterface
 
     public function getTitle(): ?string
     {
+        if ($this->hide === true) {
+            return null;
+        }
+
         $tradepost = $this->getTradepost();
 
         return sprintf(
@@ -149,6 +153,10 @@ class ExploreableStarMap implements ExploreableStarMapInterface
 
     public function getIcon(): ?string
     {
+        if ($this->hide === true) {
+            return null;
+        }
+
         $tradepost = $this->getTradepost();
 
         if ($tradepost === null && $this->mapped === null) {
@@ -167,7 +175,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         return $this->mapped ? sprintf('database.php?SHOW_ENTRY=1&cat=7&ent=%d', $this->getMapped()) : null;
     }
 
-    public function getTradepost(): ?TradePostInterface
+    private function getTradepost(): ?TradePostInterface
     {
         if ($this->tradepost_id === null) {
             return null;
