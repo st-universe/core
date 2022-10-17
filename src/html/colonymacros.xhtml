@@ -1148,10 +1148,11 @@
 <metal:block metal:define-macro="cm_telescope">
   <metal:macro metal:use-macro="colonymenu_sub_container">
     <div metal:fill-slot="containment">
-      <script language="Javascript">
-        var cx = ${ COLONY/getSystem/getCx};
-        var cy = ${ COLONY/getSystem/getCy};
-      </script>
+      <tal:block tal:define="cx COLONY/getSystem/getCx; cy COLONY/getSystem/getCy;">
+        <script type="text/javascript">
+          setColonyMapCoords(${ cx }, ${ cy });
+        </script>
+      </tal:block>
       <table class="tcal">
         <tr>
           <td style="width: 50%;" class="colonymenu">
