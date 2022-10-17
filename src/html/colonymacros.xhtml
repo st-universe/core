@@ -1145,6 +1145,87 @@
     </div>
   </metal:macro>
 </metal:block>
+<metal:block metal:define-macro="cm_telescope">
+  <metal:macro metal:use-macro="colonymenu_sub_container">
+    <div metal:fill-slot="containment">
+      <table class="tcal">
+        <tr>
+          <td style="width: 50%;" class="colonymenu">
+            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(2);">
+              &lt;&lt; Zurück zum Koloniemenü
+            </a>
+          </td>
+          <td style="width: 50%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/16}">
+            <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(12);">
+              <span>Subraumteleskop</span>
+            </a>
+          </td>
+        </tr>
+      </table>
+      <metal:macro metal:use-macro="cm_telescope_nav" />
+    </div>
+  </metal:macro>
+</metal:block>
+<metal:block metal:define-macro="cm_telescope_nav">
+  <div id="telescope_nav">
+    <div style="float: left">
+      <table cellpadding="0" cellspacing="0">
+        <tr>
+          <td>
+            <table class="use">
+              <tr>
+                <th>x|y</th>
+                <th tal:repeat="head HEAD_ROW" tal:content="head">..</th>
+              </tr>
+              <tr tal:repeat="yrow MAP_FIELDS">
+                <th tal:content="yrow/getRow">y</th>
+                <td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
+                  tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+                  <div tal:condition="data/getIcon" title="${data/getTitle}" class="starmapInner"
+                    style="cursor: auto ! important;">
+                    <a tal:condition="data/getHref" href="${data/getHref}">
+                      <img src="/assets/map/${data/getIcon}.png" style=" height: 28px; width: 28px;" />
+                    </a>
+                    <img tal:condition="not:data/getHref" src="/assets/map/${data/getIcon}.png"
+                      style="height: 28px; width: 28px;" />
+                  </div>
+                  <tal:block tal:condition="not:data/getIcon">
+                    <div tal:condition="data/getTitle" title="${data/getTitle}" class="starmapInner"
+                      style="cursor: auto ! important;">&nbsp;
+                    </div>
+                    <div tal:condition="not:data/getTitle" class="starmapInner" style="cursor: auto ! important;">&nbsp;
+                    </div>
+                  </tal:block>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div style="margin-left: 10px; width: 100px; float: left">
+      <table class="tcal">
+        <tr>
+          <td style="text-align: center" colspan="3">
+            <a href="runtime" tal:attributes="href NAV_UP" style="display: block;" tal:condition="HAS_NAV_UP">/\</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="HAS_NAV_LEFT"
+              style="display: block;">&lt;</a></td>
+          <td style="text-align: center;" tal:content="SECTION_ID">SEC</td>
+          <td style="text-align: right;"><a href="runtime" tal:attributes="href NAV_RIGHT" tal:condition="HAS_NAV_RIGHT"
+              style="display: block;">&gt;</a></td>
+        </tr>
+        <tr>
+          <td style="text-align: center" colspan="3">
+            <a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="HAS_NAV_DOWN" style="display: block;">\/</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</metal:block>
 <metal:block metal:define-macro="entity_not_available">
   <div class="box">
     <div class="box_body">Das Ziel wurde nicht gefunden</div>
@@ -1419,6 +1500,11 @@
               <a href="javascript:void(0)"
                 onclick="switchColonyMenu(15, ${BUILDING_FUNCTION/getTechCenterBuildingFunctionId});cClick();"
                 class="fabutton">Systemkomponentenherstellung</a>
+            </div>
+            <div class="fabutton" tal:condition="BUILDING_FUNCTION/isSubspaceTelescope">
+              <a href="javascript:void(0)"
+                onclick="switchColonyMenu(16, ${BUILDING_FUNCTION/getSubspaceTelescopeBuildingFunctionId});cClick();"
+                class="fabutton">Subraumteleskop</a>
             </div>
             <br />
           </div>
