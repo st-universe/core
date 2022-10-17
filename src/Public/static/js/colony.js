@@ -359,3 +359,6 @@ function maximizeCommodityAmounts() {
 		list[n].value = 'max';
 	}
 }
+function updateTelescopeEnergy(mapx, mapy) {
+	console.log(cx + ' - ' + cy);
+}
