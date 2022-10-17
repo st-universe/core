@@ -1148,7 +1148,7 @@
 <metal:block metal:define-macro="cm_telescope">
   <metal:macro metal:use-macro="colonymenu_sub_container">
     <div metal:fill-slot="containment">
-      <table class="tcal">
+      <table class="tcal" tal:define="cx COLONY/getSystem/getCx; cy COLONY/getSystem/getCy">
         <tr>
           <td style="width: 50%;" class="colonymenu">
             <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(2);">
@@ -1183,11 +1183,10 @@
                   tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
                   <div tal:condition="data/getIcon" title="${data/getTitle}" class="starmapInner"
                     style="cursor: auto ! important;">
-                    <a tal:condition="data/getHref" href="${data/getHref}">
+                    <a tal:condition="data/getHref" href="javascript:void(0)"
+                      onmouseover="updateTelescopeEnergy(${cx}, ${cy}, ${data/getCx}, ${data/getCy});">
                       <img src="/assets/map/${data/getIcon}.png" style=" height: 28px; width: 28px;" />
                     </a>
-                    <img tal:condition="not:data/getHref" src="/assets/map/${data/getIcon}.png"
-                      style="height: 28px; width: 28px;" />
                   </div>
                   <tal:block tal:condition="not:data/getIcon">
                     <div tal:condition="data/getTitle" title="${data/getTitle}" class="starmapInner"
@@ -1226,6 +1225,18 @@
         </tr>
       </table>
     </div>
+  </div>
+  <div style="margin-left: 10px; width: 100px; float: left">
+    <table class="tcal">
+      <tr>
+        <td>Verfügbare Energie:</td>
+        <td>${COLONY/getEps}</td>
+      </tr>
+      <tr>
+        <td>Benötigte Energie:</td>
+        <td id="needed_energy">?</td>
+      </tr>
+    </table>
   </div>
 </metal:block>
 <metal:block metal:define-macro="entity_not_available">
