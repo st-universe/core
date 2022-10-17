@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\View\RefreshSubspaceSection\RefreshSubspaceSection;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
 use Stu\Module\Starmap\View\Overview\Overview;
 
