@@ -1166,6 +1166,18 @@
       </table>
       <br />
       <metal:macro metal:use-macro="telescope_nav" />
+      <div style="margin-left: 10px; width: 100px; float: left">
+        <table class="tcal">
+          <tr>
+            <td>Verfügbare Energie:</td>
+            <td>${COLONY/getEps}</td>
+          </tr>
+          <tr>
+            <td>Benötigte Energie:</td>
+            <td id="needed_energy">?</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </metal:macro>
 </metal:block>
@@ -1228,18 +1240,6 @@
         </tr>
       </table>
     </div>
-  </div>
-  <div style="margin-left: 10px; width: 100px; float: left">
-    <table class="tcal">
-      <tr>
-        <td>Verfügbare Energie:</td>
-        <td>${COLONY/getEps}</td>
-      </tr>
-      <tr>
-        <td>Benötigte Energie:</td>
-        <td id="needed_energy">?</td>
-      </tr>
-    </table>
   </div>
 </metal:block>
 <metal:block metal:define-macro="entity_not_available">
