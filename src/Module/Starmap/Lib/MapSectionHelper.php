@@ -21,6 +21,7 @@ final class MapSectionHelper
         int $xCoordinate,
         int $yCoordinate,
         int $sectionId,
+        string $module,
         string $viewIdentifier
     ): void {
         $maxx = $xCoordinate * self::FIELDS_PER_SECTION;
@@ -36,49 +37,67 @@ final class MapSectionHelper
         $game->setTemplateVar('SECTION_ID', $sectionId);
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
         $game->setTemplateVar('MAP_FIELDS', $fields);
-        $game->setTemplateVar('HAS_NAV_LEFT', $xCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_RIGHT', $xCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_X);
-        $game->setTemplateVar('HAS_NAV_UP', $yCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_DOWN', $yCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_Y);
-        $game->setTemplateVar(
-            'NAV_UP',
-            sprintf(
-                '?%s=1&x=%d&y=%d&sec=%d',
-                $viewIdentifier,
-                $xCoordinate,
-                $yCoordinate > 1 ? $yCoordinate - 1 : 1,
-                $sectionId - 6
-            )
-        );
-        $game->setTemplateVar(
-            'NAV_DOWN',
-            sprintf(
-                "?%s=1&x=%d&y=%d&sec=%d",
-                $viewIdentifier,
-                $xCoordinate,
-                $yCoordinate + 1 > MapEnum::MAP_MAX_Y / self::FIELDS_PER_SECTION ? $yCoordinate : $yCoordinate + 1,
-                $sectionId + 6
-            )
-        );
-        $game->setTemplateVar(
-            'NAV_LEFT',
-            sprintf(
-                "?%s=1&x=%d&y=%d&sec=%d",
-                $viewIdentifier,
-                $xCoordinate > 1 ? $xCoordinate - 1 : 1,
-                $yCoordinate,
-                $sectionId - 1
-            )
-        );
-        $game->setTemplateVar(
-            'NAV_RIGHT',
-            sprintf(
-                '?%s=1&x=%d&y=%d&sec=%d',
-                $viewIdentifier,
-                $xCoordinate + 1 > MapEnum::MAP_MAX_X / self::FIELDS_PER_SECTION ? $xCoordinate : $xCoordinate + 1,
-                $yCoordinate,
-                $sectionId + 1
-            )
+
+        if ($yCoordinate > 1) {
+            $game->setTemplateVar(
+                'NAV_UP',
+                $this->constructPath(
+                    $module,
+                    $viewIdentifier,
+                    $xCoordinate,
+                    $yCoordinate > 1 ? $yCoordinate - 1 : 1,
+                    $sectionId - 6
+                )
+            );
+        }
+        if ($yCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_Y) {
+            $game->setTemplateVar(
+                'NAV_DOWN',
+                $this->constructPath(
+                    $module,
+                    $viewIdentifier,
+                    $xCoordinate,
+                    $yCoordinate + 1 > MapEnum::MAP_MAX_Y / self::FIELDS_PER_SECTION ? $yCoordinate : $yCoordinate + 1,
+                    $sectionId + 6
+                )
+            );
+        }
+        if ($xCoordinate > 1) {
+            $game->setTemplateVar(
+                'NAV_LEFT',
+                $this->constructPath(
+                    $module,
+                    $viewIdentifier,
+                    $xCoordinate > 1 ? $xCoordinate - 1 : 1,
+                    $yCoordinate,
+                    $sectionId - 1
+                )
+            );
+        }
+        if ($xCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_X) {
+            $game->setTemplateVar(
+                'NAV_RIGHT',
+
+                $this->constructPath(
+                    $module,
+                    $viewIdentifier,
+                    $xCoordinate + 1 > MapEnum::MAP_MAX_X / self::FIELDS_PER_SECTION ? $xCoordinate : $xCoordinate + 1,
+                    $yCoordinate,
+                    $sectionId + 1
+                )
+            );
+        }
+    }
+
+    private function constructPath(string $module, string $viewIdentifier, int $x, int $y, int $sectionId): string
+    {
+        return sprintf(
+            '%s.php?%s=1&x=%d&y=%d&sec=%d',
+            $module,
+            $viewIdentifier,
+            $x,
+            $y,
+            $sectionId
         );
     }
 }

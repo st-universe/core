@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowSection;
 
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
@@ -40,6 +41,13 @@ final class ShowSection implements ViewControllerInterface
         $game->setPageTitle(_('Sektion anzeigen'));
 
         $helper = new MapSectionHelper();
-        $helper->setTemplateVars($game, $xCoordinate, $yCoordinate, $sectionId, self::VIEW_IDENTIFIER);
+        $helper->setTemplateVars(
+            $game,
+            $xCoordinate,
+            $yCoordinate,
+            $sectionId,
+            ModuleViewEnum::MODULE_VIEW_STARMAP,
+            self::VIEW_IDENTIFIER
+        );
     }
 }
