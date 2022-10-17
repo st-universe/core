@@ -416,6 +416,9 @@ final class ShipTickManager implements ShipTickManagerInterface
         $repairFinished = false;
 
         $ship->setHuell($ship->getHuell() + $ship->getRepairRate());
+        if ($ship->getHuell() > $ship->getMaxHuell()) {
+            $ship->setHuell($ship->getMaxHuell());
+        }
 
         //repair ship systems
         $damagedSystems = $ship->getDamagedSystems();

@@ -1615,11 +1615,8 @@ class Ship implements ShipInterface
         if (!empty($this->getDamagedSystems())) {
             return true;
         }
-        // @todo
-        if ($this->getHuell() >= $this->getMaxHuell()) {
-            return false;
-        }
-        return true;
+
+        return $this->getHuell() < $this->getMaxHuell();
     }
 
     public function getRepairDuration(): int
