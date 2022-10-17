@@ -1162,11 +1162,11 @@
           </td>
         </tr>
       </table>
-      <metal:macro metal:use-macro="cm_telescope_nav" />
+      <metal:macro metal:use-macro="telescope_nav" />
     </div>
   </metal:macro>
 </metal:block>
-<metal:block metal:define-macro="cm_telescope_nav">
+<metal:block metal:define-macro="telescope_nav">
   <div id="map_section_nav">
     <div style="float: left">
       <table cellpadding="0" cellspacing="0">
@@ -1207,19 +1207,21 @@
       <table class="tcal">
         <tr>
           <td style="text-align: center" colspan="3">
-            <a href="runtime" tal:attributes="href NAV_UP" style="display: block;" tal:condition="HAS_NAV_UP">/\</a>
+            <a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_UP}');" style="display: block;"
+              tal:condition="exists:NAV_UP">/\</a>
           </td>
         </tr>
         <tr>
-          <td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="HAS_NAV_LEFT"
-              style="display: block;">&lt;</a></td>
+          <td><a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_LEFT}');"
+              tal:condition="exists:NAV_LEFT" style="display: block;">&lt;</a></td>
           <td style="text-align: center;" tal:content="SECTION_ID">SEC</td>
-          <td style="text-align: right;"><a href="runtime" tal:attributes="href NAV_RIGHT" tal:condition="HAS_NAV_RIGHT"
-              style="display: block;">&gt;</a></td>
+          <td style="text-align: right;"><a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_RIGHT}');"
+              tal:condition="exists:NAV_RIGHT" style="display: block;">&gt;</a></td>
         </tr>
         <tr>
           <td style="text-align: center" colspan="3">
-            <a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="HAS_NAV_DOWN" style="display: block;">\/</a>
+            <a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_DOWN}');" tal:condition="exists:NAV_DOWN"
+              style="display: block;">\/</a>
           </td>
         </tr>
       </table>
