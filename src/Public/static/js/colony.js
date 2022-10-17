@@ -362,8 +362,8 @@ function maximizeCommodityAmounts() {
 function updateTelescopeEnergy(mapx, mapy) {
 	var difX = Math.abs(mapx - colonyMapX);
 	var difY = Math.abs(mapy - colonyMapY);
-	var diagonal = Math.sqrt(difX * difX + difY * difY);
+	var diagonal = Math.ceil(Math.sqrt(difX * difX + difY * difY));
 
 	var neededEnergy = 5 + (diagonal / 168) * 195;
-	$('needed_energy').innerHTML = neededEnergy;
+	$('needed_energy').innerHTML = Math.round(neededEnergy);
 }

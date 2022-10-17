@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowSubspaceTelescope;
 
 use ColonyMenu;
 use request;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -40,6 +41,10 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             request::indInt('id'),
             $userId
         );
+
+        if (!$colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+            return;
+        }
 
         $this->colonyGuiHelper->register($colony, $game);
 
