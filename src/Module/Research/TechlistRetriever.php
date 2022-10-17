@@ -62,8 +62,8 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         foreach ($result as $obj) {
 
             // check for existent user award
-            if ($obj->getNeededAward() !== null) {
-                if (!$user->hasAward(UserAwardEnum::RESEARCHED_STATIONS)) {
+            if ($obj->getNeededAwardId() !== null) {
+                if (!$user->hasAward($obj->getNeededAwardId())) {
                     continue;
                 }
             }

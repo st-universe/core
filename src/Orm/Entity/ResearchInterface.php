@@ -50,5 +50,5 @@ interface ResearchInterface
 
     public function getAward(): ?AwardInterface;
 
-    public function getNeededAward(): ?int;
+    public function getNeededAwardId(): ?int;
 }

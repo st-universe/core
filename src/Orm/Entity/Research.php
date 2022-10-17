@@ -204,7 +204,7 @@ class Research implements ResearchInterface
         return $this->award;
     }
 
-    public function getNeededAward(): ?int
+    public function getNeededAwardId(): ?int
     {
         return $this->needed_award;
     }
