@@ -366,5 +366,5 @@ function setColonyMapCoords(x, y) {
 	colonyMapY = y;
 }
 function updateTelescopeEnergy(mapx, mapy) {
-	$('needed_energy').value = colonyMapX;
+	$('needed_energy').innerHTML = colonyMapX;
 }
