@@ -86,6 +86,11 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
         return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_WAREHOUSE);
     }
 
+    public function isSubspaceTelescope(): bool
+    {
+        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE);
+    }
+
     public function getModuleFabBuildingFunctionId(): ?int
     {
         foreach ($this->buildingfunctionIds as $func) {
@@ -110,6 +115,16 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     {
         foreach ($this->buildingfunctionIds as $func) {
             if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_TECH_CENTER) {
+                return $func->getId();
+            }
+        }
+        return null;
+    }
+
+    public function getSubspaceTelescopeBuildingFunctionId(): ?int
+    {
+        foreach ($this->buildingfunctionIds as $func) {
+            if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE) {
                 return $func->getId();
             }
         }

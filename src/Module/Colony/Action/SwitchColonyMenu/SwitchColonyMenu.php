@@ -13,9 +13,16 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
+use Stu\Module\Colony\View\ShowAirfield\ShowAirfield;
+use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagement;
+use Stu\Module\Colony\View\ShowBuildMenu\ShowBuildMenu;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
+use Stu\Module\Colony\View\ShowMisc\ShowMisc;
 use Stu\Module\Colony\View\ShowModuleFab\ShowModuleFab;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
+use Stu\Module\Colony\View\ShowSocial\ShowSocial;
+use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
+use Stu\Module\Colony\View\ShowWaste\ShowSubspaceTelescope;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
@@ -59,16 +66,16 @@ final class SwitchColonyMenu implements ActionControllerInterface
 
         switch ($menu) {
             case ColonyEnum::MENU_BUILD:
-                $game->setView("SHOW_BUILDMENU");
+                $game->setView(ShowBuildMenu::VIEW_IDENTIFIER);
                 return;
             case ColonyEnum::MENU_OPTION:
-                $game->setView("SHOW_MISC");
+                $game->setView(ShowMisc::VIEW_IDENTIFIER);
                 return;
             case ColonyEnum::MENU_SOCIAL:
-                $game->setView("SHOW_SOCIAL");
+                $game->setView(ShowSocial::VIEW_IDENTIFIER);
                 return;
             case ColonyEnum::MENU_BUILDINGS:
-                $game->setView("SHOW_BUILDING_MGMT");
+                $game->setView(ShowBuildingManagement::VIEW_IDENTIFIER);
                 return;
             case ColonyEnum::MENU_SHIPYARD:
                 if ($colonySurface->hasShipyard()) {
@@ -86,7 +93,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
                 }
             case ColonyEnum::MENU_AIRFIELD:
                 if ($colonySurface->hasAirfield()) {
-                    $game->setView("SHOW_AIRFIELD");
+                    $game->setView(ShowAirfield::VIEW_IDENTIFIER);
                     return;
                 }
             case ColonyEnum::MENU_MODULEFAB:
@@ -101,7 +108,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
                 }
             case ColonyEnum::MENU_TORPEDOFAB:
                 if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_TORPEDO_FAB)) {
-                    $game->setView("SHOW_TORPEDO_FAB");
+                    $game->setView(ShowTorpedoFab::VIEW_IDENTIFIER);
                     return;
                 }
             case ColonyEnum::MENU_ACADEMY:
@@ -116,14 +123,17 @@ final class SwitchColonyMenu implements ActionControllerInterface
                 }
             case ColonyEnum::MENU_FAB_HALL:
                 if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL)) {
-                    //$game->setView(ShowFabricationHall::VIEW_IDENTIFIER);
                     $game->setView(ShowModuleFab::VIEW_IDENTIFIER);
                     return;
                 }
             case ColonyEnum::MENU_TECH_CENTER:
                 if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_TECH_CENTER)) {
-                    //$game->setView(ShowTechCenter::VIEW_IDENTIFIER);
                     $game->setView(ShowModuleFab::VIEW_IDENTIFIER);
+                    return;
+                }
+            case ColonyEnum::MENU_SUBSPACE_TELESCOPE:
+                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+                    $game->setView(ShowSubspaceTelescope::VIEW_IDENTIFIER);
                     return;
                 }
             case ColonyEnum::MENU_INFO:

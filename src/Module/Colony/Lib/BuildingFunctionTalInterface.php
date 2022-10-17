@@ -14,8 +14,6 @@ interface BuildingFunctionTalInterface
 
     public function isShipyard(): bool;
 
-    public function getShipyardBuildingFunctionId(): ?int;
-
     public function isModuleFab(): bool;
 
     public function isWarehouse(): bool;
@@ -24,9 +22,15 @@ interface BuildingFunctionTalInterface
 
     public function isTechCenter(): bool;
 
+    public function isSubspaceTelescope(): bool;
+
+    public function getShipyardBuildingFunctionId(): ?int;
+
     public function getModuleFabBuildingFunctionId(): ?int;
 
     public function getFabHallBuildingFunctionId(): ?int;
 
     public function getTechCenterBuildingFunctionId(): ?int;
+
+    public function getSubspaceTelescopeBuildingFunctionId(): ?int;
 }

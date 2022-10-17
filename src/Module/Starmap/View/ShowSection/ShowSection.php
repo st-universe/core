@@ -34,7 +34,7 @@ final class ShowSection implements ViewControllerInterface
         $miny = $maxy - self::FIELDS_PER_SECTION + 1;
 
         $fields = [];
-        foreach (range($miny, $maxy) as $key => $value) {
+        foreach (range($miny, $maxy) as $value) {
             $fields[] = new UserYRow($game->getUser(), $value, $minx, $maxx);
         }
 
