@@ -366,4 +366,10 @@ function updateTelescopeEnergy(mapx, mapy) {
 
 	var neededEnergy = 5 + (diagonal / 168) * 195;
 	$('needed_energy').innerHTML = Math.round(neededEnergy);
+
+	if ($('needed_energy').innerHTML > $('current_energy').innerHTML) {
+		$('needed_energy').style.color = 'red';
+	} else {
+		$('needed_energy').style.color = '#dddddd';
+	}
 }
