@@ -8,6 +8,7 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
+use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 
 final class ShowSection implements ViewControllerInterface
 {
@@ -47,7 +48,7 @@ final class ShowSection implements ViewControllerInterface
             $yCoordinate,
             $sectionId,
             ModuleViewEnum::MODULE_VIEW_STARMAP,
-            self::VIEW_IDENTIFIER
+            RefreshSection::VIEW_IDENTIFIER
         );
     }
 }

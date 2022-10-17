@@ -6,6 +6,7 @@ namespace Stu\Module\Starmap;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Starmap\View\Overview\Overview;
+use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 use Stu\Module\Starmap\View\ShowByPosition\ShowByPosition;
 use Stu\Module\Starmap\View\ShowSection\ShowSection;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequest;
@@ -19,5 +20,6 @@ return [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowSection::VIEW_IDENTIFIER => autowire(ShowSection::class),
         ShowByPosition::VIEW_IDENTIFIER => autowire(ShowByPosition::class),
+        RefreshSection::VIEW_IDENTIFIER => autowire(RefreshSection::class)
     ],
 ];

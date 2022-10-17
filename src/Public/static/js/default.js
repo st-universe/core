@@ -174,6 +174,9 @@ function ajax_update(elt, url) {
 function showMapBy(path) {
         ajax_update('elt', path);
 }
+function refreshMapSectionNav(path) {
+        ajax_update('map_section_nav', path);
+}
 function selectMapFieldType(type) {
         $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.png" />';
         selectedFieldType = type;

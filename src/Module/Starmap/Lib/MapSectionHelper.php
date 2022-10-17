@@ -12,10 +12,6 @@ final class MapSectionHelper
 {
     private const FIELDS_PER_SECTION = 20;
 
-    public function __construct()
-    {
-    }
-
     public function setTemplateVars(
         GameControllerInterface $game,
         int $xCoordinate,
