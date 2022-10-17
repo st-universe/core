@@ -2,6 +2,12 @@
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<metal:macro metal:use-macro="starmap_section_nav" />
+	</metal:macro>
+</metal:macro>
+
+<metal:block metal:define-macro="starmap_section_nav">
+	<div id="starmap_section_nav">
 		<div style="float: left">
 			<table cellpadding="0" cellspacing="0">
 				<tr>
@@ -62,7 +68,7 @@
 				</tr>
 			</table>
 		</div>
-	</metal:macro>
-</metal:macro>
+	</div>
+</metal:block>
 
 </html>
