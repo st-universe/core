@@ -359,12 +359,6 @@ function maximizeCommodityAmounts() {
 		list[n].value = 'max';
 	}
 }
-var colonyMapX;
-var colonyMapY;
-function setColonyMapCoords(x, y) {
-	colonyMapX = x;
-	colonyMapY = y;
-}
 function updateTelescopeEnergy(mapx, mapy) {
 	$('needed_energy').innerHTML = colonyMapX;
 }
