@@ -360,5 +360,10 @@ function maximizeCommodityAmounts() {
 	}
 }
 function updateTelescopeEnergy(mapx, mapy) {
-	$('needed_energy').innerHTML = colonyMapX;
+	var difX = Math.abs(mapx - colonyMapX);
+	var difY = Math.abs(mapy - colonyMapY);
+	var diagonal = Math.sqrt(difX * difX + difY * difY);
+
+	var neededEnergy = 5 + (diagonal / 168) * 195;
+	$('needed_energy').innerHTML = neededEnergy;
 }
