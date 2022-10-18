@@ -1166,27 +1166,25 @@
       </table>
     </div>
   </metal:macro>
-  <metal:macro metal:use-macro="colonymenu_container">
-    <div metal:fill-slot="containment">
-      <br />
-      <metal:macro metal:use-macro="telescope_nav" />
-      <div style="margin-left: 10px; width: 100px; float: left">
-        <table class="tcal">
-          <tr>
-            <th colspan="2">Energie</th>
-          </tr>
-          <tr>
-            <td>verfügbar:</td>
-            <td id="current_energy">${COLONY/getEps}</td>
-          </tr>
-          <tr>
-            <td>benötigt:</td>
-            <td id="needed_energy">?</td>
-          </tr>
-        </table>
-      </div>
+  <div>
+    <br />
+    <metal:macro metal:use-macro="telescope_nav" />
+    <div style="margin-left: 10px; width: 100px; float: left">
+      <table class="tcal">
+        <tr>
+          <th colspan="2">Energie</th>
+        </tr>
+        <tr>
+          <td>verfügbar:</td>
+          <td id="current_energy">${COLONY/getEps}</td>
+        </tr>
+        <tr>
+          <td>benötigt:</td>
+          <td id="needed_energy">?</td>
+        </tr>
+      </table>
     </div>
-  </metal:macro>
+  </div>
 </metal:block>
 <metal:block metal:define-macro="telescope_nav">
   <div id="map_section_nav">
