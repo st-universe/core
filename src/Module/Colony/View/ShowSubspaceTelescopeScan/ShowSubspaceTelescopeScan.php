@@ -10,6 +10,9 @@ use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -27,18 +30,24 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init('scan', LoggerEnum::LEVEL_ERROR);
+
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
@@ -77,6 +86,16 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
         $maxDiagonal = (int)ceil(sqrt((MapEnum::MAP_MAX_X - 1) * (MapEnum::MAP_MAX_X - 1) + (MapEnum::MAP_MAX_Y - 1) * (MapEnum::MAP_MAX_Y - 1)));
 
         $neededEnergy = self::SCAN_BASE_COST + $diagonal / $maxDiagonal * self::SCAN_VARIABEL_COST;
+
+        $this->loggerUtil->log(sprintf(
+            'difX: %d, difY: %d, diagonal: %d, maxDiagonal: %d, neededEnergy: %d',
+            $difX,
+            $difY,
+            $diagonal,
+            $maxDiagonal,
+            $neededEnergy
+        ));
+
         return (int)round($neededEnergy);
     }
 }
