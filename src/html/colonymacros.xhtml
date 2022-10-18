@@ -1234,21 +1234,22 @@
         </tr>
         <tr>
           <td style="text-align: center" colspan="3">
-            <a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_UP}');" style="display: block;"
-              tal:condition="exists:NAV_UP">/\</a>
+            <a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_UP}'); closeAjaxWindow();"
+              style="display: block;" tal:condition="exists:NAV_UP">/\</a>
           </td>
         </tr>
         <tr>
-          <td><a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_LEFT}');"
+          <td><a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_LEFT}'); closeAjaxWindow();"
               tal:condition="exists:NAV_LEFT" style="display: block;">&lt;</a></td>
           <td style="text-align: center;" tal:content="SECTION_ID">SEC</td>
-          <td style="text-align: right;"><a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_RIGHT}');"
-              tal:condition="exists:NAV_RIGHT" style="display: block;">&gt;</a></td>
+          <td style="text-align: right;"><a href="javascript:void(0)"
+              onclick="refreshMapSectionNav('${NAV_RIGHT}'); closeAjaxWindow();" tal:condition="exists:NAV_RIGHT"
+              style="display: block;">&gt;</a></td>
         </tr>
         <tr>
           <td style="text-align: center" colspan="3">
-            <a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_DOWN}');" tal:condition="exists:NAV_DOWN"
-              style="display: block;">\/</a>
+            <a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_DOWN}'); closeAjaxWindow();"
+              tal:condition="exists:NAV_DOWN" style="display: block;">\/</a>
           </td>
         </tr>
       </table>

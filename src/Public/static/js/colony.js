@@ -364,7 +364,7 @@ function calculateScanCost(cx, cy) {
 	var difY = Math.abs(cy - colonyMapY);
 	var diagonal = Math.ceil(Math.sqrt(difX * difX + difY * difY));
 
-	var neededEnergy = 20 + (diagonal / 168) * 180;
+	var neededEnergy = 20 + (diagonal / 169) * 180;
 	return Math.round(neededEnergy);
 }
 function updateTelescopeEnergy(cx, cy) {
