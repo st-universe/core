@@ -364,7 +364,7 @@ function updateTelescopeEnergy(mapx, mapy) {
 	var difY = Math.abs(mapy - colonyMapY);
 	var diagonal = Math.ceil(Math.sqrt(difX * difX + difY * difY));
 
-	var neededEnergy = 5 + (diagonal / 168) * 195;
+	var neededEnergy = 20 + (diagonal / 168) * 180;
 	$('needed_energy').innerHTML = Math.round(neededEnergy);
 
 	if (parseInt($('needed_energy').innerHTML) > parseInt($('current_energy').innerHTML)) {
