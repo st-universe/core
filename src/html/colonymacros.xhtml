@@ -1212,11 +1212,13 @@
                   </div>
                   <tal:block tal:condition="not:data/getIcon">
                     <div tal:condition="data/getTitle"
-                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});" title="${data/getTitle}"
+                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});"
+                      onclick="showTelescopeScan(${data/getCx}, ${data/getCy});" title="${data/getTitle}"
                       class="starmapInner" style="cursor: auto ! important;">&nbsp;
                     </div>
                     <div tal:condition="not:data/getTitle"
-                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});" class="starmapInner"
+                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});"
+                      onclick="showTelescopeScan(${data/getCx}, ${data/getCy});" class="starmapInner"
                       style="cursor: auto ! important;">&nbsp;
                     </div>
                   </tal:block>
