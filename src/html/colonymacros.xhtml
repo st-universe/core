@@ -1148,7 +1148,7 @@
   </metal:macro>
 </metal:block>
 <metal:block metal:define-macro="cm_telescope">
-  <metal:macro metal:use-macro="colonymenu_sub_container">
+  <metal:macro metal:use-macro="colonymenu_container">
     <div metal:fill-slot="containment">
       <table class="tcal">
         <tr>
@@ -1164,7 +1164,11 @@
           </td>
         </tr>
       </table>
-      <br />
+    </div>
+  </metal:macro>
+  <br />
+  <metal:macro metal:use-macro="colonymenu_container">
+    <div metal:fill-slot="containment">
       <metal:macro metal:use-macro="telescope_nav" />
       <div style="margin-left: 10px; width: 100px; float: left">
         <table class="tcal">
