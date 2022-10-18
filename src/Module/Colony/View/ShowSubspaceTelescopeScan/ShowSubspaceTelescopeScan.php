@@ -46,8 +46,6 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init('scan', LoggerEnum::LEVEL_ERROR);
-
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
