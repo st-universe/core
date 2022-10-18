@@ -359,17 +359,28 @@ function maximizeCommodityAmounts() {
 		list[n].value = 'max';
 	}
 }
-function updateTelescopeEnergy(mapx, mapy) {
-	var difX = Math.abs(mapx - colonyMapX);
-	var difY = Math.abs(mapy - colonyMapY);
+function calculateScanCost(cx, cy) {
+	var difX = Math.abs(cx - colonyMapX);
+	var difY = Math.abs(cy - colonyMapY);
 	var diagonal = Math.ceil(Math.sqrt(difX * difX + difY * difY));
 
 	var neededEnergy = 20 + (diagonal / 168) * 180;
-	$('needed_energy').innerHTML = Math.round(neededEnergy);
+	return Math.round(neededEnergy);
+}
+function updateTelescopeEnergy(cx, cy) {
+	$('needed_energy').innerHTML = calculateScanCost(cx, cy);
 
 	if (parseInt($('needed_energy').innerHTML) > parseInt($('current_energy').innerHTML)) {
 		$('needed_energy').style.color = 'red';
 	} else {
 		$('needed_energy').style.color = '#dddddd';
+	}
+}
+function showTelescopeScan(cx, cy) {
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+
+	if (calculateScanCost(cx, cy) <= parseInt($('current_energy').innerHTML)) {
+		ajax_update('elt', 'colony.php?SHOW_TELESCOPE_SCAN=1&id=' + colonyid + '&cx=' + cx + '&cy=' + cy);
 	}
 }

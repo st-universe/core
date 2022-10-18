@@ -144,6 +144,33 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         return $result;
     }
 
+    public function getRumpCategoryInfo(int $cx, int $cy): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('category_name', 'category_name', 'string');
+        $rsm->addScalarResult('amount', 'amount', 'integer');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT rc.name as category_name, count(*) as amount
+                FROM stu_ships s
+                JOIN stu_rumps r
+                ON s.rumps_id = r.id
+                JOIN stu_rumps_categories rc
+                ON r.category_id = rc.id
+                WHERE s.cx = :cx
+                AND s.cy = :cy
+                GROUP BY rc.name
+                ORDER BY 2 desc',
+                $rsm
+            )
+            ->setParameters([
+                'cx' => $cx,
+                'cy' => $cy
+            ])
+            ->getResult();
+    }
+
     public function save(StarSystemMapInterface $starSystemMap): void
     {
         $em = $this->getEntityManager();

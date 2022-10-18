@@ -165,6 +165,7 @@ use Stu\Module\Colony\View\ShowStorage\ShowStorage;
 use Stu\Module\Colony\View\ShowStorage\ShowStorageRequest;
 use Stu\Module\Colony\View\ShowStorage\ShowStorageRequestInterface;
 use Stu\Module\Colony\View\ShowSubspaceTelescope\ShowSubspaceTelescope;
+use Stu\Module\Colony\View\ShowSubspaceTelescopeScan\ShowSubspaceTelescopeScan;
 use Stu\Module\Colony\View\ShowSurface\ShowSurface;
 use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequest;
 use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequestInterface;
@@ -303,6 +304,7 @@ return [
         ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
         ShowWaste::VIEW_IDENTIFIER => autowire(ShowWaste::class),
         ShowSubspaceTelescope::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescope::class),
-        RefreshSubspaceSection::VIEW_IDENTIFIER => autowire(RefreshSubspaceSection::class)
+        RefreshSubspaceSection::VIEW_IDENTIFIER => autowire(RefreshSubspaceSection::class),
+        ShowSubspaceTelescopeScan::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescopeScan::class)
     ]
 ];

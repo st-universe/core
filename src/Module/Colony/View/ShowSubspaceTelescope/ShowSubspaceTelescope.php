@@ -17,7 +17,6 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\RefreshSubspaceSection\RefreshSubspaceSection;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
 use Stu\Module\Starmap\View\Overview\Overview;
-use Stu\Orm\Entity\ColonyInterface;
 
 final class ShowSubspaceTelescope implements ViewControllerInterface
 {

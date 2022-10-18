@@ -1205,7 +1205,8 @@
                   <div tal:condition="data/getIcon" title="${data/getTitle}" class="starmapInner"
                     style="cursor: auto ! important;">
                     <a tal:condition="data/getHref" href="javascript:void(0)"
-                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});">
+                      onmouseover="updateTelescopeEnergy(${data/getCx}, ${data/getCy});"
+                      onclick="showTelescopeScan(${data/getCx}, ${data/getCy});">
                       <img src="/assets/map/${data/getIcon}.png" style=" height: 28px; width: 28px;" />
                     </a>
                   </div>
@@ -1254,6 +1255,18 @@
     </div>
   </div>
 </metal:block>
+<metal:macro metal:define-macro="telescopescan">
+  <table class="tcal">
+    <tr>
+      <th style="width: 60%;">Rumpfkategorie</th>
+      <th style="width: 40%;">Anzahl</th>
+    </tr>
+    <tr tal:repeat="data INFOS">
+      <td>${data/category_name}</td>
+      <td>${data/amount}</td>
+    </tr>
+  </table>
+</metal:macro>
 <metal:block metal:define-macro="entity_not_available">
   <div class="box">
     <div class="box_body">Das Ziel wurde nicht gefunden</div>
