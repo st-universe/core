@@ -64,7 +64,8 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
         $colony->setEps($colony->getEps() - $scanCost);
         $this->colonyRepository->save($colony);
 
-        $game->showMacro('html/colonymacros.xhtml/telescopescan');
+        $game->setPageTitle(sprintf(_('Subraum Teleskop Scan %d|%d'), $cx, $cy));
+        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/telescopescan');
     }
 
     private function calculateScanCost(ColonyInterface $colony, int $cx, int $cy): int
