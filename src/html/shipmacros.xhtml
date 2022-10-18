@@ -1512,7 +1512,7 @@
             <strong>Warenkonten</strong>
             <div tal:repeat="acc ACCOUNTS_FOR_LICENSE">
               - <a href="javascript:void(0);"
-                onclick="payTradeLicense(${TRADEPOST/getId},'account',${acc/getTradePostId})"
+                onclick="payTradeLicense(${TRADEPOST/getId},'account',${acc/getTradePost/getId})"
                 tal:content="structure bbcode:acc/getTradePost/getName">NAME</a>
             </div>
           </div>
