@@ -383,4 +383,7 @@ function showTelescopeScan(cx, cy) {
 	if (calculateScanCost(cx, cy) <= parseInt($('current_energy').innerHTML)) {
 		ajax_update('elt', 'colony.php?SHOW_TELESCOPE_SCAN=1&id=' + colonyid + '&cx=' + cx + '&cy=' + cy);
 	}
+
+	//refresh current colony eps
+	ajax_update('current_energy', 'colony.php?REFRESH_COLONY_EPS=1&id=' + colonyid);
 }
