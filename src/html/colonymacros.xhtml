@@ -1188,7 +1188,8 @@
 </metal:block>
 <metal:block metal:define-macro="telescope_nav">
   <div id="map_section_nav">
-    <div style="float: left">
+    <div style="float: left"
+      onmouseout="$('needed_energy').innerHTML = '?'; $('needed_energy').style.color = '#dddddd';">
       <table cellpadding="0" cellspacing="0">
         <tr>
           <td>
