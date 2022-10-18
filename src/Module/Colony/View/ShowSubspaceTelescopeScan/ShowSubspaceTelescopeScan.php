@@ -79,8 +79,8 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 
     private function calculateScanCost(ColonyInterface $colony, int $cx, int $cy): int
     {
-        $difX = abs($cx - $colony->getSystem()->getMaxX());
-        $difY = abs($cy - $colony->getSystem()->getMaxY());
+        $difX = abs($cx - $colony->getSystem()->getCx());
+        $difY = abs($cy - $colony->getSystem()->getCy());
         $diagonal = (int)ceil(sqrt($difX * $difX + $difY * $difY));
 
         $maxDiagonal = (int)ceil(sqrt((MapEnum::MAP_MAX_X - 1) * (MapEnum::MAP_MAX_X - 1) + (MapEnum::MAP_MAX_Y - 1) * (MapEnum::MAP_MAX_Y - 1)));
