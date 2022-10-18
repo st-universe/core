@@ -1239,10 +1239,11 @@
           </td>
         </tr>
         <tr>
-          <td><a href="javascript:void(0)" onclick="refreshMapSectionNav('${NAV_LEFT}'); closeAjaxWindow();"
-              tal:condition="exists:NAV_LEFT" style="display: block;">&lt;</a></td>
-          <td style="text-align: center;" tal:content="SECTION_ID">SEC</td>
-          <td style="text-align: right;"><a href="javascript:void(0)"
+          <td style="width: 33%;"><a href="javascript:void(0)"
+              onclick="refreshMapSectionNav('${NAV_LEFT}'); closeAjaxWindow();" tal:condition="exists:NAV_LEFT"
+              style="display: block;">&lt;</a></td>
+          <td style="width: 33%; text-align: center;" tal:content="SECTION_ID">SEC</td>
+          <td style="width: 33%; text-align: right;"><a href="javascript:void(0)"
               onclick="refreshMapSectionNav('${NAV_RIGHT}'); closeAjaxWindow();" tal:condition="exists:NAV_RIGHT"
               style="display: block;">&gt;</a></td>
         </tr>
@@ -1257,7 +1258,7 @@
   </div>
 </metal:block>
 <metal:macro metal:define-macro="telescopescan">
-  <table class="tcal">
+  <table class="tcal" style="width: 300px;">
     <tr>
       <th style="width: 60%;">Rumpfkategorie</th>
       <th style="width: 40%;">Anzahl</th>
