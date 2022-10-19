@@ -692,6 +692,7 @@ final class GameController implements GameControllerInterface
         }
 
         $userId = $this->getUser()->getId();
+        $this->loggerUtil->init('semaphore', LoggerEnum::LEVEL_ERROR);
         $this->loggerUtil->log(sprintf(
             '    start releasing (%d), userId: %d',
             count($this->semaphores),
@@ -701,7 +702,6 @@ final class GameController implements GameControllerInterface
             $userId = $this->getUser()->getId();
 
             foreach ($this->semaphores as $key => $sema) {
-                $this->loggerUtil->init('semaphore', LoggerEnum::LEVEL_ERROR);
                 $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
                 if (!sem_release($sema)) {
                     $this->loggerUtil->log("Error releasing Semaphore!");
