@@ -23,8 +23,9 @@ while ($remainingtries > 0) {
     } else {
         // logging problem
         $loggerUtil->log(sprintf(
-            "Shiptick caused an exception. Remaing tries: %d",
-            $remainingtries
+            "Shiptick caused an exception. Remaing tries: %d\nException:%s",
+            $remainingtries,
+            $exception->getTraceAsString()
         ));
 
         // sending email if no remaining tries left
