@@ -11,6 +11,9 @@ use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\SemaphoreUtilInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -20,26 +23,42 @@ final class ShipLoader implements ShipLoaderInterface
 
     private SemaphoreUtilInterface $semaphoreUtil;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
-        SemaphoreUtilInterface $semaphoreUtil
+        SemaphoreUtilInterface $semaphoreUtil,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
         $this->semaphoreUtil = $semaphoreUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface
     {
-        $shipArray = $this->acquireSemaphores($shipId, null);
-
-        $this->checkviolations($shipArray[$shipId], $userId, $allowUplink);
-
-        return $shipArray[$shipId];
+        return $this->getByIdAndUserAndTargetIntern($shipId, $userId, null, $allowUplink)[$shipId];
     }
 
     public function getByIdAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): array
     {
-        $shipArray = $this->acquireSemaphores($shipId, $targetId);
+        return $this->getByIdAndUserAndTargetIntern($shipId, $userId, $targetId, $allowUplink);
+    }
+
+    private function getByIdAndUserAndTargetIntern(int $shipId, int $userId, ?int $targetId, bool $allowUplink): array
+    {
+        if ($userId === 101 || $userId === 102) {
+            $this->loggerUtil->init('LOAD', LoggerEnum::LEVEL_ERROR);
+        }
+
+        $this->loggerUtil->log(sprintf(
+            'userId: %d, shipId: %d, targetId: %d',
+            $userId,
+            $shipId,
+            $targetId !== null ? $targetId : 0
+        ));
+
+        $shipArray = $this->acquireSemaphores($shipId, $targetId, $userId);
 
         $this->checkviolations($shipArray[$shipId], $userId, $allowUplink);
 
@@ -83,22 +102,61 @@ final class ShipLoader implements ShipLoaderInterface
         $this->shipRepository->save($ship);
     }
 
-    private function acquireSemaphores(int $shipId, ?int $targetId): array
+    private function acquireSemaphores(int $shipId, ?int $targetId, ?int $userId = null): array
     {
         $result = [];
 
         //main ship sema on
         $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
+        if ($userId !== null) {
+            $this->loggerUtil->log(sprintf('userId %d waiting for main semaphore', $userId));
+        }
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
+        if ($userId !== null) {
+            $this->loggerUtil->log(sprintf('userId %d acquired main semaphore', $userId));
+        }
 
+        if ($userId !== null) {
+            $this->loggerUtil->log(sprintf(
+                'userId %d waiting for shipId %d',
+                $userId,
+                $shipId
+            ));
+        }
         $result[$shipId] = $this->acquireSemaphoresWithoutMain($shipId);
+        if ($userId !== null) {
+            $this->loggerUtil->log(sprintf(
+                'userId %d acquired semaphore %d (shipId: %d)',
+                $userId,
+                $result[$shipId]->getUser()->getId(),
+                $shipId
+            ));
+        }
 
         if ($targetId !== null) {
+            if ($userId !== null) {
+                $this->loggerUtil->log(sprintf(
+                    'userId %d waiting for targetId %d',
+                    $userId,
+                    $targetId
+                ));
+            }
             $result[$targetId] = $this->acquireSemaphoresWithoutMain($targetId);
+            if ($userId !== null) {
+                $this->loggerUtil->log(sprintf(
+                    'userId %d acquired semaphore %d (targetId: %d)',
+                    $userId,
+                    $result[$targetId]->getUser()->getId(),
+                    $targetId
+                ));
+            }
         }
 
         //main ship sema off
         $this->semaphoreUtil->releaseSemaphore($mainSema);
+        if ($userId !== null) {
+            $this->loggerUtil->log(sprintf('userId %d released main semaphore', $userId));
+        }
 
         return $result;
     }
