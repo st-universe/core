@@ -686,7 +686,8 @@ final class GameController implements GameControllerInterface
     private function releaseAndRemoveSemaphores(): void
     {
         $isHux = $this->getUser() !== null && ($this->getUser()->getId() === 102 || $this->getUser()->getId() === 101);
-        if (!SemaphoreConstants::AUTO_RELEASE_SEMAPHORES && !$isHux) {
+        //if (!SemaphoreConstants::AUTO_RELEASE_SEMAPHORES && !$isHux) {
+        if (!$isHux) {
             return; //nothing to do
         }
 
