@@ -685,7 +685,7 @@ final class GameController implements GameControllerInterface
 
     private function releaseAndRemoveSemaphores(): void
     {
-        if (!SemaphoreConstants::AUTO_RELEASE_SEMAPHORES) {
+        if (SemaphoreConstants::AUTO_RELEASE_SEMAPHORES !== 1) {
             return; //nothing to do
         }
 
