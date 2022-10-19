@@ -691,6 +691,12 @@ final class GameController implements GameControllerInterface
             return; //nothing to do
         }
 
+        $userId = $this->getUser()->getId();
+        $this->loggerUtil->log(sprintf(
+            '    start releasing (%d), userId: %d',
+            count($this->semaphores),
+            $userId
+        ));
         if (!empty($this->semaphores)) {
             $userId = $this->getUser()->getId();
 
