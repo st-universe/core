@@ -52,9 +52,7 @@ final class ShipLoader implements ShipLoaderInterface
 
     private function getByIdAndUserAndTargetIntern(int $shipId, int $userId, ?int $targetId, bool $allowUplink): array
     {
-        if ($userId === 101 || $userId === 102) {
-            $this->loggerUtil->init('LOAD', LoggerEnum::LEVEL_ERROR);
-        }
+        //$this->loggerUtil->init('LOAD', LoggerEnum::LEVEL_ERROR);
 
         $this->loggerUtil->log(sprintf(
             'userId: %d, shipId: %d, targetId: %d',
