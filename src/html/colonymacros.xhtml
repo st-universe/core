@@ -313,7 +313,8 @@
         </tr>
         <tr tal:repeat="data BUILDABLE_TORPEDO_TYPES" tal:attributes="class string:row${repeat/data/odd}">
           <td>
-            <input type="text" size="3" name="torp[${data/getId}]" /> x <span
+            <input type="text" size="3" name="torp[${data/getId}]"
+              onkeydown="event.key == 'Enter' && $('producebutton').click()" /> x <span
               tal:replace="data/getProductionAmount">AMOUNT</span>
             <img src="assets/commodities/${data/getCommodityId}.png" class="center" />
             <span tal:replace="data/getName">TORPEDOTYPE</span>
@@ -331,7 +332,8 @@
       </table>
       <div tal:condition="BUILDABLE_TORPEDO_TYPES" style="width: 100%; text-align: center">
         <br />
-        <input type="submit" style="cursor: pointer;" name="B_BUILD_TORPEDOS" value="Torpedos herstellen" />
+        <input type="submit" style="cursor: pointer;" name="B_BUILD_TORPEDOS" id="producebutton"
+          value="Torpedos herstellen" />
       </div>
     </div>
   </metal:macro>
