@@ -10,6 +10,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -23,15 +24,19 @@ final class ShipLoader implements ShipLoaderInterface
 
     private SemaphoreUtilInterface $semaphoreUtil;
 
+    private GameControllerInterface $game;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         SemaphoreUtilInterface $semaphoreUtil,
+        GameControllerInterface $game,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
         $this->semaphoreUtil = $semaphoreUtil;
+        $this->game = $game;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -106,6 +111,15 @@ final class ShipLoader implements ShipLoaderInterface
     {
         $result = [];
 
+        $ship = $this->shipRepository->find($shipId);
+        if ($targetId === null && $ship !== null) {
+            if ($this->game->isSemaphoreAlreadyAcquired($ship->getUser()->getId())) {
+                $result[$shipId] = $ship;
+
+                return $result;
+            }
+        }
+
         //main ship sema on
         $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
         if ($userId !== null) {
@@ -171,7 +185,7 @@ final class ShipLoader implements ShipLoaderInterface
 
         $key = $ship->getUser()->getId();
         $semaphore = $this->semaphoreUtil->getSemaphore($key);
-        $this->semaphoreUtil->acquireSemaphore($key, $semaphore);
+        $this->semaphoreUtil->acquireSemaphore($key, $semaphore); //prüft ob schon genommen
 
         return $ship;
     }
