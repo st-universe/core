@@ -685,26 +685,27 @@ final class GameController implements GameControllerInterface
 
     private function releaseAndRemoveSemaphores(): void
     {
-        if (!SemaphoreConstants::AUTO_RELEASE_SEMAPHORES) {
+        $isHux = $this->getUser() !== null && ($this->getUser()->getId() === 102 || $this->getUser()->getId() === 101);
+        if (!SemaphoreConstants::AUTO_RELEASE_SEMAPHORES && !$isHux) {
             return; //nothing to do
         }
 
         if (!empty($this->semaphores)) {
             $userId = $this->getUser()->getId();
 
-
             foreach ($this->semaphores as $key => $sema) {
-                //$this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
                 $this->loggerUtil->init('semaphore', LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
                 if (!sem_release($sema)) {
                     $this->loggerUtil->log("Error releasing Semaphore!");
                     continue;
                     //throw new SemaphoreException("Error releasing Semaphore!");
                 }
-                if (!sem_remove($sema)) {
-                    $this->loggerUtil->log("Error removing Semaphore!");
-                    //throw new SemaphoreException("Error removing Semaphore!");
-                }
+
+                //if (!sem_remove($sema)) {
+                //    $this->loggerUtil->log("Error removing Semaphore!");
+                //throw new SemaphoreException("Error removing Semaphore!");
+                //}
             }
 
             $this->loggerUtil->init('stu');
