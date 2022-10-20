@@ -312,9 +312,9 @@
   </tr>
 </metal:macro>
 <metal:macro metal:define-macro="shiplist_fleetform">
-  <form action="ship.php" method="post" id="shiplist_fleet_form_${fleet/getId}">
+  <form action="ship.php" method="post" id="shiplist_fleet_form_${fleet/getId}" tal:define="fleetid fleet/getId">
     <input type="hidden" name="fleetid" value="runtime" tal:attributes="value fleet/getId" />
-    <table class="tcal" tal:define="fleetid fleet/getId">
+    <table class="tcal">
       <tr>
         <td colspan="11">
           <table style="width: 100%;">
