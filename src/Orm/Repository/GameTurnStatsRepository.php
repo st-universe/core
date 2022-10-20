@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameTurnStats;
@@ -39,10 +40,12 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT count(s) FROM %s s',
+                'SELECT count(s) FROM %s s
+                WHERE s.user_id != :noOne',
                 Ship::class
             )
-        )->getSingleScalarResult();
+        )->setParameter('noOne', GameEnum::USER_NOONE)
+            ->getSingleScalarResult();
     }
 
     public function getShipCountManned(): int
@@ -51,12 +54,14 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             sprintf(
                 'SELECT count(s) FROM %s s
                 JOIN %s r WITH s.rumps_id = r.id
-                WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.ships_id = s.id)',
+                WHERE r.base_crew <= (SELECT count(sc) FROM %s sc WHERE sc.ships_id = s.id)
+                AND s.user_id != :noOne',
                 Ship::class,
                 ShipRump::class,
                 ShipCrew::class
             )
-        )->getSingleScalarResult();
+        )->setParameter('noOne', GameEnum::USER_NOONE)
+            ->getSingleScalarResult();
     }
 
     public function getFlightSigs24h(): int
