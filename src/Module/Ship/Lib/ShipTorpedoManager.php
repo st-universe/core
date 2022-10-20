@@ -86,6 +86,8 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $this->storageRepository->delete($storage);
         $this->torpedoStorageRepository->delete($torpedoStorage);
 
-        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
+        if ($ship->getTorpedos()) {
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
+        }
     }
 }
