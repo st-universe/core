@@ -1738,11 +1738,6 @@ class Ship implements ShipInterface
         return true;
     }
 
-    public function hasActiveWeapons(): bool
-    {
-        return $this->getPhaser() || $this->getTorpedoState();
-    }
-
     public function getRump(): ShipRumpInterface
     {
         return $this->rump;

@@ -409,8 +409,6 @@ interface ShipInterface
 
     public function canInteractWith($target, bool $colony = false, bool $doCloakCheck = false): bool;
 
-    public function hasActiveWeapons(): bool;
-
     public function getRump(): ShipRumpInterface;
 
     public function setRump(ShipRumpInterface $shipRump): ShipInterface;
