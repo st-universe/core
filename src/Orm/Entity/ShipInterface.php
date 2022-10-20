@@ -119,7 +119,7 @@ interface ShipInterface
 
     public function isAlertGreen(): bool;
 
-    public function getTorpedos(): bool;
+    public function getTorpedoState(): bool;
 
     public function getFormerRumpId(): int;
 

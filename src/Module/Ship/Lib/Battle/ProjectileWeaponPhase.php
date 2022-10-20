@@ -27,7 +27,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             }
             $target = $targetPool[array_rand($targetPool)];
             if (
-                !$attacker->getTorpedos() ||
+                !$attacker->getTorpedoState() ||
                 $attacker->getEps() < $this->getProjectileWeaponEnergyCosts() ||
                 $attacker->getTorpedoCount() === 0
             ) {
@@ -119,7 +119,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
 
-            if (!$attacker->getTorpedos() || $attacker->getEps() < $this->getProjectileWeaponEnergyCosts()) {
+            if (!$attacker->getTorpedoState() || $attacker->getEps() < $this->getProjectileWeaponEnergyCosts()) {
                 break;
             }
 

@@ -48,7 +48,7 @@ final class ProjectilePhalanx
         return 'Orbitale Torpedophalanx';
     }
 
-    public function getTorpedos(): bool
+    public function getTorpedoState(): bool
     {
         return $this->getTorpedoCount() > 0;
     }

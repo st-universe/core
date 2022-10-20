@@ -183,12 +183,12 @@
 		<tr tal:condition="SHIP/hasTorpedo">
 			<td tal:condition="not:SHIP/isAlertGreen">
 				<a href="?B_DEACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-					tal:condition="SHIP/getTorpedos" onmouseover="cp('acttorp','buttons/act_torp2');"
+					tal:condition="SHIP/getTorpedoState" onmouseover="cp('acttorp','buttons/act_torp2');"
 					onmouseout="cp('acttorp','buttons/act_torp1');">
 					<img src="assets/buttons/act_torp1.png" name="acttorp" /> Torpedobänke
 					deaktivieren</a>
 				<a href="?B_ACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-					tal:condition="not:SHIP/getTorpedos" onmouseover="cp('acttorp','buttons/act_torp1');"
+					tal:condition="not:SHIP/getTorpedoState" onmouseover="cp('acttorp','buttons/act_torp1');"
 					onmouseout="cp('acttorp','buttons/act_torp2');">
 					<img src="assets/buttons/act_torp2.png" name="acttorp" /> Torpedobänke
 					aktivieren</a>

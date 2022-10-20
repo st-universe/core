@@ -23,7 +23,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getTorpedos')
+        $ship->shouldReceive('getTorpedoState')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -37,7 +37,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getTorpedos')
+        $ship->shouldReceive('getTorpedoState')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -55,7 +55,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getTorpedos')
+        $ship->shouldReceive('getTorpedoState')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -77,7 +77,7 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getTorpedos')
+        $ship->shouldReceive('getTorpedoState')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();

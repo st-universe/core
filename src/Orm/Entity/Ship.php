@@ -638,7 +638,7 @@ class Ship implements ShipInterface
         return $this->getAlertState() === ShipAlertStateEnum::ALERT_GREEN;
     }
 
-    public function getTorpedos(): bool
+    public function getTorpedoState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_TORPEDO);
     }
@@ -1590,7 +1590,7 @@ class Ship implements ShipInterface
 
     public function canAttack(): bool
     {
-        return $this->getPhaser() || $this->getTorpedos();
+        return $this->getPhaser() || $this->getTorpedoState();
     }
 
     public function hasEscapePods(): bool
@@ -1740,7 +1740,7 @@ class Ship implements ShipInterface
 
     public function hasActiveWeapons(): bool
     {
-        return $this->getPhaser() || $this->getTorpedos();
+        return $this->getPhaser() || $this->getTorpedoState();
     }
 
     public function getRump(): ShipRumpInterface
