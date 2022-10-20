@@ -47,6 +47,8 @@ class Fleet implements FleetInterface
     /** @Column(type="boolean") */
     private $is_fixed = false;
 
+    private $hiddenStyle;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
@@ -193,9 +195,12 @@ class Fleet implements FleetInterface
 
     public function getHiddenStyle(): string
     {
-        // @todo refactor
-        global $container;
+        return $this->hiddenStyle;
+    }
 
-        return $container->get(SessionInterface::class)->hasSessionValue('hiddenshiplistfleets', $this->getId()) ? 'display: none' : '';
+    public function setHiddenStyle(string $hiddenStyle): FleetInterface
+    {
+        $this->hiddenStyle = $hiddenStyle;
+        return $this;
     }
 }

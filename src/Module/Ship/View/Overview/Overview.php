@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\Overview;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -21,15 +22,19 @@ final class Overview implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private SessionInterface $session;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
+        SessionInterface $session,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
+        $this->session = $session;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -44,6 +49,10 @@ final class Overview implements ViewControllerInterface
 
         $fleets = $this->fleetRepository->getByUser($userId);
         $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
+
+        foreach ($fleets as $fleet) {
+            $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleet->getId()) ? 'display: none' : '');
+        }
 
         $game->appendNavigationPart(
             'ship.php',

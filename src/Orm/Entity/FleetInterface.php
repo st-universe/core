@@ -48,4 +48,6 @@ interface FleetInterface
     public function getCrewSum(): int;
 
     public function getHiddenStyle(): string;
+
+    public function setHiddenStyle(string $hiddenStyle): FleetInterface;
 }

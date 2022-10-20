@@ -314,14 +314,14 @@
 <metal:macro metal:define-macro="shiplist_fleetform">
   <form action="ship.php" method="post" id="shiplist_fleet_form_${fleet/getId}">
     <input type="hidden" name="fleetid" value="runtime" tal:attributes="value fleet/getId" />
-    <table class="tcal">
+    <table class="tcal" tal:define="fleetid fleet/getId">
       <tr>
         <td colspan="11">
           <table style="width: 100%;">
             <tr>
               <td style="width: 35%;">
                 <div style="display: table-cell;">
-                  <a href="javascript:void(0);" onclick="toggleFleet(${fleet/getId});" title="zuklappen/aufklappen">
+                  <a href="javascript:void(0);" onclick="toggleFleet(${fleetid});" title="zuklappen/aufklappen">
                     <img src="assets/buttons/fleet.png" />
                   </a>
                 </div>
@@ -349,9 +349,9 @@
                 </button>
               </td>
               <td style="width: 20%; text-align: right;">
-                <a href="javascript:void(0);" onclick="showAvailableShips(${fleet/getId});"
-                  title="Schiff hinzufügen"><img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" /></a>
-                <a href="?B_FLEET_UP=1&id=${fleet/getId}">
+                <a href="javascript:void(0);" onclick="showAvailableShips(${fleetid});" title="Schiff hinzufügen"><img
+                    src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" /></a>
+                <a href="?B_FLEET_UP=1&id=${fleetid}">
                   <img src="assets/buttons/bt_up1.png" title="Flotte nach oben schieben" />
                 </a>
               </td>
@@ -360,7 +360,7 @@
         </td>
       </tr>
     </table>
-    <table tal:attributes="style string:${fleet/getHiddenStyle};" class="tcal" id="fleetbody_${fleet/getId}">
+    <table tal:attributes="style string:${fleet/getHiddenStyle};" class="tcal" id="fleetbody_${fleetid}">
       <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
       <tal:block tal:repeat="ship fleet/getShips">
         <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />

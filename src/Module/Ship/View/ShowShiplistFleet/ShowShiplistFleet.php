@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\View\ShowShiplistFleet;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -17,10 +18,14 @@ final class ShowShiplistFleet implements ViewControllerInterface
 
     private FleetRepositoryInterface $fleetRepository;
 
+    private SessionInterface $session;
+
     public function __construct(
-        FleetRepositoryInterface $fleetRepository
+        FleetRepositoryInterface $fleetRepository,
+        SessionInterface $session
     ) {
         $this->fleetRepository = $fleetRepository;
+        $this->session = $session;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,9 +42,11 @@ final class ShowShiplistFleet implements ViewControllerInterface
         if ($fleet->getUser() !== $game->getUser()) {
             throw new AccessViolation(sprintf('tried to refresh foreign fleet, idiot: %d', $userId));
         }
+        $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleetId) ? 'display: none' : '');
+
+        $game->showMacro('html/shipmacros.xhtml/shiplist_fleetform');
 
         $game->setTemplateVar('fleet', $fleet);
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
-        $game->showMacro('html/shipmacros.xhtml/shiplist_fleetform');
     }
 }
