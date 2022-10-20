@@ -153,7 +153,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             if ($target->getIntegrity() === 0) {
 
-
                 $this->entryCreator->addColonyEntry(
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),

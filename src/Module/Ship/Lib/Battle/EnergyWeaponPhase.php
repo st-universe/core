@@ -137,8 +137,16 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             if ($target->getIntegrity() === 0) {
 
-                $this->buildingManager->remove($target);
+                $this->entryCreator->addColonyEntry(
+                    sprintf(
+                        _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
+                        $target->getBuilding()->getName(),
+                        $target->getColony()->getName(),
+                        $attacker->getName()
+                    )
+                );
 
+                $this->buildingManager->remove($target);
                 break;
             }
             //deactivate if high damage
