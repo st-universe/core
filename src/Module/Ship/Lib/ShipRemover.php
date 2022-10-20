@@ -47,6 +47,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private AstroEntryLibInterface $astroEntryLib;
 
+    private ShipTorpedoManagerInterface $shipTorpedoManager;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -62,6 +64,7 @@ final class ShipRemover implements ShipRemoverInterface
         ShipLeaverInterface $shipLeaver,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         AstroEntryLibInterface $astroEntryLib,
+        ShipTorpedoManagerInterface $shipTorpedoManager,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
@@ -76,6 +79,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipLeaver = $shipLeaver;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->astroEntryLib = $astroEntryLib;
+        $this->shipTorpedoManager = $shipTorpedoManager;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -135,16 +139,22 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setIsDestroyed(true);
         $ship->cancelRepair();
 
+        // delete ship systems
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
         $ship->getSystems()->clear();
 
+        // delete torpedo storage
+        $this->shipTorpedoManager->removeTorpedo($ship);
+
         $this->shipRepository->save($ship);
 
+        // undock docked ships
         foreach ($ship->getDockedShips() as $dockedShip) {
             $dockedShip->setDockedTo(null);
             $this->shipRepository->save($dockedShip);
         }
 
+        // clear tractor status
         if ($ship->isTractored()) {
             $tractoringShip = $ship->getTractoringShip();
             $tractoringShip->deactivateTractorBeam();

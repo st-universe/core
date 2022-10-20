@@ -51,6 +51,11 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         }
     }
 
+    public function removeTorpedo(ShipInterface $ship)
+    {
+        $this->clearTorpedoStorage($ship);
+    }
+
     private function createTorpedoStorage(ShipInterface $ship, int $amount, TorpedoTypeInterface $type): void
     {
         $torpedoStorage = $this->torpedoStorageRepository->prototype();
@@ -69,6 +74,11 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
     private function clearTorpedoStorage(ShipInterface $ship): void
     {
         $torpedoStorage = $ship->getTorpedoStorage();
+
+        if ($torpedoStorage === null) {
+            return;
+        }
+
         $storage = $torpedoStorage->getStorage();
 
         $ship->setTorpedoStorage(null);
