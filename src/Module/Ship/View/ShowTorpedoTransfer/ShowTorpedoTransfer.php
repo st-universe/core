@@ -65,7 +65,10 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
             return;
         }
 
-        if (!$target->getUser()->isFriend($ship->getUser())) {
+        if (
+            $target->getUser() != $ship->getUser()
+            && !$target->getUser()->isFriend($ship->getUser())
+        ) {
             return;
         }
 
