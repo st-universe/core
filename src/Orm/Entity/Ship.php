@@ -628,7 +628,7 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_LSS);
     }
 
-    public function getPhaser(): bool
+    public function getPhaserState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_PHASER);
     }
@@ -1590,7 +1590,7 @@ class Ship implements ShipInterface
 
     public function canAttack(): bool
     {
-        return $this->getPhaser() || $this->getTorpedoState();
+        return $this->getPhaserState() || $this->getTorpedoState();
     }
 
     public function hasEscapePods(): bool

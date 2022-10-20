@@ -165,12 +165,12 @@
 		<tr tal:condition="SHIP/hasPhaser">
 			<td tal:condition="not:SHIP/isAlertGreen" colspan="2">
 				<a href="?B_DEACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-					tal:condition="SHIP/getPhaser" onmouseover="cp('actphaser','buttons/act_phaser2');"
+					tal:condition="SHIP/getPhaserState" onmouseover="cp('actphaser','buttons/act_phaser2');"
 					onmouseout="cp('actphaser','buttons/act_phaser1');">
 					<img src="assets/buttons/act_phaser1.png" name="actphaser" /> Strahlenwaffe
 					deaktivieren</a>
 				<a href="?B_ACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-					tal:condition="not:SHIP/getPhaser" onmouseover="cp('actphaser','buttons/act_phaser1');"
+					tal:condition="not:SHIP/getPhaserState" onmouseover="cp('actphaser','buttons/act_phaser1');"
 					onmouseout="cp('actphaser','buttons/act_phaser2');">
 					<img src="assets/buttons/act_phaser2.png" name="actphaser" /> Strahlenwaffe
 					aktivieren</a>

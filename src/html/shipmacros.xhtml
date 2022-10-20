@@ -273,13 +273,14 @@
       <img src="assets/buttons/lss1.png" tal:condition="ship/getLss" title="Langstreckensensoren aktiviert" />
       <img src="assets/buttons/lss2.png" tal:condition="not:ship/getLss" title="Langstreckensensoren deaktiviert" />
       <tal:block tal:condition="ship/hasPhaser">
-        <img src="assets/buttons/act_phaser1.png" tal:condition="ship/getPhaser" title="Strahlenwaffe aktiviert" />
-        <img src="assets/buttons/act_phaser2.png" tal:condition="not:ship/getPhaser"
+        <img src="assets/buttons/act_phaser1.png" tal:condition="ship/getPhaserState" title="Strahlenwaffe aktiviert" />
+        <img src="assets/buttons/act_phaser2.png" tal:condition="not:ship/getPhaserState"
           title="Strahlenwaffe deaktiviert" />
       </tal:block>
       <tal:block tal:condition="ship/hasTorpedo">
         <img src="assets/buttons/act_torp1.png" tal:condition="ship/getTorpedoState" title="Torpedobänke aktiviert" />
-        <img src="assets/buttons/act_torp2.png" tal:condition="not:ship/getTorpedoState" title="Torpedobände deaktiviert" />
+        <img src="assets/buttons/act_torp2.png" tal:condition="not:ship/getTorpedoState"
+          title="Torpedobände deaktiviert" />
       </tal:block>
       <tal:block tal:condition="ship/hasCloak">
         <img src="assets/buttons/tarn1.png" tal:condition="ship/getCloakState" title="Tarnung aktiviert" />

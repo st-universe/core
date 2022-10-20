@@ -24,7 +24,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getPhaser')
+        $ship->shouldReceive('getPhaserState')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -38,7 +38,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getPhaser')
+        $ship->shouldReceive('getPhaserState')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -56,7 +56,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getPhaser')
+        $ship->shouldReceive('getPhaserState')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();

@@ -115,7 +115,7 @@ interface ShipInterface
 
     public function getLss(): bool;
 
-    public function getPhaser(): bool;
+    public function getPhaserState(): bool;
 
     public function isAlertGreen(): bool;
 

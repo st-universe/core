@@ -46,7 +46,7 @@ final class EnergyPhalanx
         return $this->isDisruptor ? 'Orbitale Disruptorphalanx' : 'Orbitale Phaserphalanx';
     }
 
-    public function getPhaser(): bool
+    public function getPhaserState(): bool
     {
         return true;
     }

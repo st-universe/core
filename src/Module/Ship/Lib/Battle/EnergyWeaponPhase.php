@@ -28,7 +28,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             if (count($targetPool) === 0) {
                 break;
             }
-            if (!$attacker->getPhaser() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
+            if (!$attacker->getPhaserState() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
                 break;
             }
             $attacker->setEps($attacker->getEps() - $this->getEnergyWeaponEnergyCosts());
@@ -110,7 +110,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         $msg = [];
 
         for ($i = 1; $i <= $attacker->getRump()->getPhaserVolleys(); $i++) {
-            if (!$attacker->getPhaser() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
+            if (!$attacker->getPhaserState() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
                 break;
             }
             $attacker->setEps($attacker->getEps() - $this->getEnergyWeaponEnergyCosts());
