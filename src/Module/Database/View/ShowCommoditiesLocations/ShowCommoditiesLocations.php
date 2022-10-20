@@ -69,9 +69,19 @@ final class ShowCommoditiesLocations implements ViewControllerInterface
             $tradeOfferLocations[] = $storageWrapper;
         }
 
+        // set up torpedo storage locations array
+        $torpedoStorageLocations = [];
+        $torpedoStorageIterator = $this->storageRepository->getTorpdeoStorageByUserAndCommodity($userId, $commodityId);
+        foreach ($torpedoStorageIterator as $data) {
+            $storageWrapper = new StorageWrapper($data['commodity_id'], $data['amount']);
+            $storageWrapper->setEntityId($data['ship_id']);
+            $torpedoStorageLocations[] = $storageWrapper;
+        }
+
         $game->setTemplateVar('SHIP_LOCATIONS', $shipLocations);
         $game->setTemplateVar('COLONY_LOCATIONS', $colonyLocations);
         $game->setTemplateVar('POST_LOCATIONS', $tradeStorageLocations);
         $game->setTemplateVar('OFFER_LOCATIONS', $tradeOfferLocations);
+        $game->setTemplateVar('TORPEDO_LOCATIONS', $torpedoStorageLocations);
     }
 }

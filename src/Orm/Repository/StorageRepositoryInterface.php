@@ -30,6 +30,8 @@ interface StorageRepositoryInterface extends ObjectRepository
 
     public function getTradeOfferStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
 
+    public function getTorpdeoStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
+
     /**
      * @return StorageInterface[]
      */

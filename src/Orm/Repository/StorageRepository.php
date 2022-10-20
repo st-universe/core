@@ -139,6 +139,31 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         ])->getResult();
     }
 
+    public function getTorpdeoStorageByUserAndCommodity(int $userId, int $commodityId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('ship_id', 'ship_id', 'integer');
+        $rsm->addScalarResult('amount', 'amount', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT s.commodity_id AS commodity_id, ts.ship_id as ship_id,
+                SUM(s.count) AS amount
+                FROM stu_storage s
+                JOIN stu_torpedo_storage ts
+                ON s.torpedo_storage_id = ts.id
+                WHERE s.user_id = :userId
+                AND s.commodity_id = :commodityId
+                AND s.torpedo_storage_id IS NOT NULL
+                GROUP BY s.commodity_id, ts.ship_id
+                ORDER BY amount DESC',
+            $rsm
+        )->setParameters([
+            'userId' => $userId,
+            'commodityId' => $commodityId
+        ])->getResult();
+    }
+
     public function getByTradePostAndUser(int $tradePostId, int $userId): array
     {
         return $this->getEntityManager()->createQuery(
