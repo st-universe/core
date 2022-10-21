@@ -49,7 +49,7 @@ class StarSystem implements StarSystemInterface
     /** @Column(type="integer", nullable=true) * */
     private $database_id = 0;
 
-    /** @Column(type="boolean", nullable=true) * */
+    /** @Column(type="boolean") * */
     private $is_wormhole;
 
     /**

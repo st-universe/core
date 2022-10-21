@@ -27,6 +27,11 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
             return false;
         }
 
+        if ($ship->getSystem() != null) {
+            $reason = _('es sich in einem Sternensystem befindet');
+            return false;
+        }
+
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
             $reason = _('der Warpkern zerstört ist');
             return false;

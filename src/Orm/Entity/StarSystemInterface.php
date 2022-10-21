@@ -48,4 +48,6 @@ interface StarSystemInterface
      * @return StarSystemMapInterface[]
      */
     public function getFields(): array;
+
+    public function isWormhole(): bool;
 }
