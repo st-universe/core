@@ -644,10 +644,10 @@
 					</a>
 				</td>
 				<td tal:condition="SHIP/getMap/getWormholeEntry">
-					<tal:block tal:define="wormhole SHIP/getMap/getWormholeEntry/getSystem">
-						<img src="assets/map/${wormhole/getMapField/getFieldId}.png" style="width: 15px; height: 15px;"
+					<tal:block tal:define="wormholeEntry SHIP/getMap/getWormholeEntry">
+						<img src="assets/map/${wormholeEntry/getMap/getFieldId}.png" style="width: 15px; height: 15px;"
 							title="Wurmloch" />
-						${wormhole/getName}<br />
+						${wormholeEntry/getSystem/getName}<br />
 						<a tal:condition="not:SHIP/getWarpState"
 							href="ship.php?B_ENTER_WORMHOLE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 							<img src="assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
