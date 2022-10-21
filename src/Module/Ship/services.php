@@ -81,6 +81,7 @@ use Stu\Module\Ship\Action\DockShip\DockShip;
 use Stu\Module\Ship\Action\DoTachyonScan\DoTachyonScan;
 use Stu\Module\Ship\Action\DumpForeignCrewman\DumpForeignCrewman;
 use Stu\Module\Ship\Action\EnterStarSystem\EnterStarSystem;
+use Stu\Module\Ship\Action\EnterWormhole\EnterWormhole;
 use Stu\Module\Ship\Action\EpsTransfer\EpsTransfer;
 use Stu\Module\Ship\Action\EscapeTractorBeam\EscapeTractorBeam;
 use Stu\Module\Ship\Action\FleetActivateCloak\FleetActivateCloak;
@@ -255,6 +256,7 @@ return [
         ChangeName::ACTION_IDENTIFIER => autowire(ChangeName::class),
         LeaveStarSystem::ACTION_IDENTIFIER => autowire(LeaveStarSystem::class),
         EnterStarSystem::ACTION_IDENTIFIER => autowire(EnterStarSystem::class),
+        EnterWormhole::ACTION_IDENTIFIER => autowire(EnterWormhole::class),
         MoveShip::ACTION_IDENTIFIER => autowire(MoveShip::class),
         MoveShipUp::ACTION_IDENTIFIER => autowire(MoveShipUp::class),
         MoveShipDown::ACTION_IDENTIFIER => autowire(MoveShipDown::class),
