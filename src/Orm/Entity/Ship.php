@@ -1161,7 +1161,7 @@ class Ship implements ShipInterface
 
     public function isOverWormhole(): bool
     {
-        return $this->getMap() !== null && !$this->getMap()->getWormholeEntries()->isEmpty();
+        return $this->getMap() !== null && $this->getMap()->getRandomWormholeEntry() !== null;
     }
 
     public function isWarpPossible(): bool

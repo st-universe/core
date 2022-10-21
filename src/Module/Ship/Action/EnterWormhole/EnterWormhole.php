@@ -59,7 +59,7 @@ final class EnterWormhole implements ActionControllerInterface
             return;
         }
 
-        $wormholeEntry = $map->getCurrentWormholeEntry();
+        $wormholeEntry = $map->getRandomWormholeEntry();
         if ($wormholeEntry === null) {
             return;
         }

@@ -255,14 +255,15 @@ class Map implements MapInterface
         return $this->signatures;
     }
 
-    public function getWormholeEntries(): Collection
+    public function getRandomWormholeEntry(): ?WormholeEntryInterface
     {
-        return $this->wormholeEntries;
-    }
+        if ($this->wormholeEntries->isEmpty()) {
+            return null;
+        }
+        $array = $this->wormholeEntries->toArray();
+        shuffle($array);
 
-    public function getCurrentWormholeEntry(): ?WormholeEntryInterface
-    {
-        return $this->getWormholeEntries()->isEmpty() ? null : $this->getWormholeEntries()->current();
+        return  current($array);
     }
 
     public function getSectorString(): string
