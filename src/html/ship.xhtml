@@ -461,6 +461,7 @@
 			</tal:block>
 			<tal:block tal:condition="not:SHIP/getSystem">
 				<th tal:condition="SHIP/isOverSystem">Sternensystem</th>
+				<th tal:condition="SHIP/isOverWormhole">Wurmloch</th>
 			</tal:block>
 		</tr>
 		<tr>
@@ -649,7 +650,7 @@
 						${wormhole/getName}<br />
 						<a tal:condition="not:SHIP/getWarpState"
 							href="ship.php?B_ENTER_WORMHOLE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-							<img src="assets/buttons/sysenter1.png" title="Ins Wurmloch einfliegen" />
+							<img src="assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
 							einfliegen
 						</a>
 					</tal:block>

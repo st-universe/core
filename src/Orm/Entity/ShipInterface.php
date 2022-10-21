@@ -260,6 +260,8 @@ interface ShipInterface
 
     public function isOverSystem(): ?StarSystemInterface;
 
+    public function isOverWormhole(): bool;
+
     public function isWarpPossible(): bool;
 
     public function getTorpedo(): ?TorpedoTypeInterface;

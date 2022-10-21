@@ -1159,6 +1159,11 @@ class Ship implements ShipInterface
         return $this->getMap()->getSystem();
     }
 
+    public function isOverWormhole(): bool
+    {
+        return $this->getMap() !== null && $this->getMap()->getWormholeEntry() !== null;
+    }
+
     public function isWarpPossible(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE) && $this->getSystem() === null;
