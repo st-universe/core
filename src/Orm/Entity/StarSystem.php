@@ -203,6 +203,6 @@ class StarSystem implements StarSystemInterface
 
     public function isWormhole(): bool
     {
-        return $this->isWormhole();
+        return $this->is_wormhole;
     }
 }
