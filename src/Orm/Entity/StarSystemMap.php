@@ -63,6 +63,11 @@ class StarSystemMap implements StarSystemMapInterface
      */
     private $signatures;
 
+    /**
+     * @OneToOne(targetEntity="WormholeEntry", mappedBy="systemMap")
+     */
+    private $wormholeEntry;
+
     public function __construct()
     {
         $this->ships = new ArrayCollection();
@@ -165,6 +170,11 @@ class StarSystemMap implements StarSystemMapInterface
     public function getSignatures(): Collection
     {
         return $this->signatures;
+    }
+
+    public function getWormholeEntry(): ?WormholeEntryInterface
+    {
+        return $this->wormholeEntry;
     }
 
     public function getSectorString(): string

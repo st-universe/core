@@ -98,6 +98,11 @@ class Map implements MapInterface
      */
     private $signatures;
 
+    /**
+     * @OneToOne(targetEntity="WormholeEntry", mappedBy="map")
+     */
+    private $wormholeEntry;
+
     public function __construct()
     {
         $this->ships = new ArrayCollection();
@@ -247,6 +252,11 @@ class Map implements MapInterface
     public function getSignatures(): Collection
     {
         return $this->signatures;
+    }
+
+    public function getWormholeEntry(): ?WormholeEntryInterface
+    {
+        return $this->wormholeEntry;
     }
 
     public function getSectorString(): string

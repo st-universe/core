@@ -121,6 +121,7 @@ use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\Weapon;
+use Stu\Orm\Entity\WormholeEntry;
 
 return [
     AllianceRepositoryInterface::class => function (
@@ -697,5 +698,10 @@ return [
         ContainerInterface $c
     ): WeaponRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Weapon::class);
+    },
+    WormholeEntryRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): WormholeEntryRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(WormholeEntry::class);
     },
 ];
