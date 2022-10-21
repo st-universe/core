@@ -49,6 +49,9 @@ class StarSystem implements StarSystemInterface
     /** @Column(type="integer", nullable=true) * */
     private $database_id = 0;
 
+    /** @Column(type="boolean", nullable=true) * */
+    private $is_wormhole;
+
     /**
      * @ManyToOne(targetEntity="StarSystemType")
      * @JoinColumn(name="type", referencedColumnName="id", onDelete="CASCADE")
@@ -197,4 +200,6 @@ class StarSystem implements StarSystemInterface
         }
         return $this->fields;
     }
+
+    public function isWormhole(): bool
 }
