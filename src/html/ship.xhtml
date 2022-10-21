@@ -620,7 +620,8 @@
 					</a>
 				</tal:block>
 				<tal:block tal:condition="SHIP/getSystem/isWormhole">
-					<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.png"
+					<img tal:condition="SHIP/getStarsystemMap/getWormholeEntry"
+						src="assets/map/${SHIP/getStarsystemMap/getWormholeEntry/getMap/getFieldId}.png"
 						style="width: 15px; height: 15px;" title="Wurmloch" />
 					<span>${SHIP/getSystem/getName}</span>
 					<br />
