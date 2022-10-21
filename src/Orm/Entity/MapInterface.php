@@ -54,7 +54,9 @@ interface MapInterface
 
     public function getSignatures(): Collection;
 
-    public function getWormholeEntry(): ?WormholeEntryInterface;
+    public function getWormholeEntries(): Collection;
+
+    public function getCurrentWormholeEntry(): ?WormholeEntryInterface;
 
     public function getSectorString(): string;
 }

@@ -99,14 +99,15 @@ class Map implements MapInterface
     private $signatures;
 
     /**
-     * @OneToOne(targetEntity="WormholeEntry", mappedBy="map")
+     * @OneToMany(targetEntity="WormholeEntry", mappedBy="map")
      */
-    private $wormholeEntry;
+    private $wormholeEntries;
 
     public function __construct()
     {
         $this->ships = new ArrayCollection();
         $this->signatures = new ArrayCollection();
+        $this->wormholeEntries = new ArrayCollection();
     }
 
     public function getId(): int
@@ -254,9 +255,14 @@ class Map implements MapInterface
         return $this->signatures;
     }
 
-    public function getWormholeEntry(): ?WormholeEntryInterface
+    public function getWormholeEntries(): Collection
     {
-        return $this->wormholeEntry;
+        return $this->wormholeEntries;
+    }
+
+    public function getCurrentWormholeEntry(): ?WormholeEntryInterface
+    {
+        return $this->getWormholeEntries()->isEmpty() ? null : $this->getWormholeEntries()->current();
     }
 
     public function getSectorString(): string

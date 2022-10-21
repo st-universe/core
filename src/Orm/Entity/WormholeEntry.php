@@ -29,7 +29,7 @@ class WormholeEntry implements WormholeEntryInterface
     private $system_map_id;
 
     /**
-     * @OneToOne(targetEntity="Map", inversedBy="wormholeEntry")
+     * @ManyToOne(targetEntity="Map", inversedBy="wormholeEntries")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
     private $map;

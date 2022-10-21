@@ -643,8 +643,8 @@
 						einfliegen
 					</a>
 				</td>
-				<td tal:condition="SHIP/getMap/getWormholeEntry">
-					<tal:block tal:define="wormholeEntry SHIP/getMap/getWormholeEntry">
+				<td tal:condition="SHIP/getMap/getCurrentWormholeEntry">
+					<tal:block tal:define="wormholeEntry SHIP/getMap/getCurrentWormholeEntry">
 						<img src="assets/map/${wormholeEntry/getMap/getFieldId}.png" style="width: 15px; height: 15px;"
 							title="Wurmloch" />
 						${wormholeEntry/getSystem/getName}<br />
