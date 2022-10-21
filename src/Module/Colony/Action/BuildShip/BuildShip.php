@@ -110,7 +110,7 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
 
-        if (!$colony->getBlockers()->isEmpty()) {
+        if ($colony->isBlocked()) {
             $game->addInformation(_('Schiffbau ist nicht möglich während die Kolonie blockiert wird'));
             return;
         }

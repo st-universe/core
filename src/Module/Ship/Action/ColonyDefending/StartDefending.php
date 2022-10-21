@@ -76,7 +76,7 @@ final class StartDefending implements ActionControllerInterface
             return;
         }
 
-        if (!$currentColony->getBlockers()->isEmpty()) {
+        if ($currentColony->isBlocked()) {
             $game->addInformation(_('Aktion nicht möglich, die Kolonie wird blockiert!'));
             return;
         }
