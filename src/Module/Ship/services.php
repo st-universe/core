@@ -108,6 +108,7 @@ use Stu\Module\Ship\Action\LeaveFleet\LeaveFleet;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequest;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
 use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
+use Stu\Module\Ship\Action\LeaveWormhole\LeaveWormhole;
 use Stu\Module\Ship\Action\TroopTransfer\TroopTransfer;
 use Stu\Module\Ship\Action\LoadReactor\LoadReactor;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
@@ -257,6 +258,7 @@ return [
         LeaveStarSystem::ACTION_IDENTIFIER => autowire(LeaveStarSystem::class),
         EnterStarSystem::ACTION_IDENTIFIER => autowire(EnterStarSystem::class),
         EnterWormhole::ACTION_IDENTIFIER => autowire(EnterWormhole::class),
+        LeaveWormhole::ACTION_IDENTIFIER => autowire(LeaveWormhole::class),
         MoveShip::ACTION_IDENTIFIER => autowire(MoveShip::class),
         MoveShipUp::ACTION_IDENTIFIER => autowire(MoveShipUp::class),
         MoveShipDown::ACTION_IDENTIFIER => autowire(MoveShipDown::class),

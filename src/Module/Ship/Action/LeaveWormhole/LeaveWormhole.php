@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\LeaveStarSystem;
+namespace Stu\Module\Ship\Action\LeaveWormhole;
 
 use request;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -19,27 +18,18 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Repository\MapRepositoryInterface;
 
-final class LeaveStarSystem implements ActionControllerInterface
+final class LeaveWormhole implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_LEAVE_STARSYSTEM';
+    public const ACTION_IDENTIFIER = 'B_LEAVE_WORMHOLE';
 
     private ShipLoaderInterface $shipLoader;
 
     private ShipRepositoryInterface $shipRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
-
-    private MapRepositoryInterface $mapRepository;
-
-    private ActivatorDeactivatorHelperInterface $helper;
-
-    private AstroEntryLibInterface $astroEntryLib;
 
     private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
 
@@ -51,9 +41,6 @@ final class LeaveStarSystem implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        MapRepositoryInterface $mapRepository,
-        ActivatorDeactivatorHelperInterface $helper,
-        AstroEntryLibInterface $astroEntryLib,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -61,9 +48,6 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->mapRepository = $mapRepository;
-        $this->helper = $helper;
-        $this->astroEntryLib = $astroEntryLib;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -84,7 +68,12 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getSystem()->isWormhole()) {
+        if (!$ship->getSystem()->isWormhole()) {
+            return;
+        }
+
+        $wormholeEntry = $ship->getStarsystemMap()->getWormholeEntry();
+        if ($wormholeEntry === null) {
             return;
         }
 
@@ -97,20 +86,6 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
 
-        if ($ship->isFleetLeader() && $ship->getFleet()->getDefendedColony() !== null) {
-            $game->addInformation(_('Verlassen des Systems während Kolonie-Verteidigung nicht möglich'));
-            return;
-        }
-
-        if ($ship->isFleetLeader() && $ship->getFleet()->getBlockedColony() !== null) {
-            $game->addInformation(_('Verlassen des Systems während Kolonie-Blockierung nicht möglich'));
-            return;
-        }
-
-        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game)) {
-            return;
-        }
-
         //reload ship because it got saved in helper class
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -118,11 +93,11 @@ final class LeaveStarSystem implements ActionControllerInterface
         );
 
         //the destination map field
-        $outerMap = $this->mapRepository->getByCoordinates($ship->getSystem()->getCx(), $ship->getSystem()->getCy());
+        $outerMap = $wormholeEntry->getMap();
 
-        $this->leaveStarSystem($ship, $outerMap, $game);
+        $this->leaveWormhole($ship, $outerMap);
         if ($ship->isTractoring()) {
-            $this->leaveStarSystemTraktor($ship, $outerMap, $game);
+            $this->leaveWormholeTraktor($ship, $outerMap, $game);
         }
         if ($ship->isFleetLeader()) {
             $msg = [];
@@ -135,38 +110,26 @@ final class LeaveStarSystem implements ActionControllerInterface
                 }
             );
             foreach ($result as $fleetShip) {
-                if (!$this->helper->activate($fleetShip->getId(), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game)) {
-                    $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: Warpantrieb kann nicht aktiviert werden";
-                    $fleetShip->leaveFleet();
-                    $this->shipRepository->save($fleetShip);
-                } else {
-                    //reload ship because it got saved in helper class
-                    $reloadedShip = $this->shipLoader->getByIdAndUser(
-                        $fleetShip->getId(),
-                        $userId
-                    );
-
-                    $this->leaveStarSystem($reloadedShip, $outerMap, $game);
-                    if ($reloadedShip->isTractoring()) {
-                        $this->leaveStarSystemTraktor($reloadedShip, $outerMap, $game);
-                    }
-                    $this->shipRepository->save($reloadedShip);
+                $this->leaveWormhole($fleetShip, $outerMap);
+                if ($fleetShip->isTractoring()) {
+                    $this->leaveWormholeTraktor($fleetShip, $outerMap, $game);
                 }
+                $this->shipRepository->save($fleetShip);
             }
-            $game->addInformation("Die Flotte hat das Sternsystem verlassen");
+            $game->addInformation("Die Flotte hat das Wurmloch verlassen");
             $game->addInformationMerge($msg);
         } else {
             if ($ship->getFleetId()) {
                 $ship->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
-            $game->addInformation("Das Sternsystem wurde verlassen");
+            $game->addInformation("Das Wurmloch wurde verlassen");
         }
 
         $this->shipRepository->save($ship);
     }
 
-    private function leaveStarSystemTraktor(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
+    private function leaveWormholeTraktor(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
     {
         $tractoredShip = $ship->getTractoredShip();
 
@@ -178,7 +141,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $ship->deactivateTractorBeam(); //active deactivation
 
             $game->addInformation(sprintf(
-                _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Verlassen des Systems deaktiviert'),
+                _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Verlassen des Wurmlochs deaktiviert'),
                 $name
             ));
             return;
@@ -193,14 +156,14 @@ final class LeaveStarSystem implements ActionControllerInterface
         if ($ship->getEps() < 1) {
             $name = $tractoredShip->getName();
             $ship->deactivateTractorBeam(); //active deactivation
-            $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
+            $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Wurmlochs aufgrund Energiemangels deaktiviert");
             return;
         }
         $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship, true));
-        $this->leaveStarSystem($tractoredShip, $map, $game);
+        $this->leaveWormhole($tractoredShip, $map);
         $ship->setEps($ship->getEps() - 1);
 
-        $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit aus dem System gezogen");
+        $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit aus dem Wurmloch gezogen");
 
         //check for tractor system health
         $msg = [];
@@ -211,19 +174,12 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function leaveStarSystem(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
+    private function leaveWormhole(ShipInterface $ship, MapInterface $map): void
     {
-        $ship->setFlightDirection($this->getNewDirection($ship));
-
         $this->loggerUtil->log(sprintf('newDirection: %d', $ship->getFlightDirection()));
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
-        }
-
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
-            $game->addInformation(sprintf(_('Die %s hat die Kartographierungs-Finalisierung abgebrochen'), $ship->getName()));
         }
 
         $ship->setDockedTo(null);
@@ -231,37 +187,6 @@ final class LeaveStarSystem implements ActionControllerInterface
 
         $ship->updateLocation($map, null);
     }
-
-    private function getNewDirection(ShipInterface $ship): int
-    {
-        $starsystemMap = $ship->getStarsystemMap();
-        $system = $starsystemMap->getSystem();
-
-        $shipX = $starsystemMap->getSx();
-        $shipY = $starsystemMap->getSy();
-
-        $this->loggerUtil->log(sprintf('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX()));
-
-        $rad12or34 = atan($shipY / $shipX);
-        $rad14or23 = atan(($system->getMaxX() - $shipX) / $shipY);
-
-        $this->loggerUtil->log(sprintf('rad12or34: %F, rad14or23: %F', $rad12or34, $rad14or23));
-
-        if ($rad12or34 < M_PI_4) {
-            if ($rad14or23 < M_PI_4) {
-                return ShipEnum::DIRECTION_LEFT;
-            } else {
-                return ShipEnum::DIRECTION_BOTTOM;
-            }
-        } else {
-            if ($rad14or23 < M_PI_4) {
-                return ShipEnum::DIRECTION_TOP;
-            } else {
-                return ShipEnum::DIRECTION_RIGHT;
-            }
-        }
-    }
-
 
     public function performSessionCheck(): bool
     {

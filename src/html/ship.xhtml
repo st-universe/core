@@ -598,26 +598,37 @@
 				</tal:block>
 			</td>
 			<td tal:condition="SHIP/getSystem">
-				<tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
-					<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}" target="_blank"
-						title="Karte des Systems öffnen">
+				<tal:block tal:condition="not:SHIP/getSystem/isWormhole">
+					<tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
+						<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}" target="_blank"
+							title="Karte des Systems öffnen">
+							<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.png"
+								style="width: 15px; height: 15px;" />
+							<span>${SHIP/getSystem/getName}
+								(${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
+						</a>
+					</tal:block>
+					<tal:block tal:condition="not:STARSYSTEM_ENTRY_TAL/wasDiscovered">
 						<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.png"
-							style="width: 15px; height: 15px;" />
+							style="width: 15px; height: 15px;" title="Sternensystem" />
 						<span>${SHIP/getSystem/getName}
 							(${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
+					</tal:block><br />
+					<a tal:condition="SHIP/hasWarpdrive"
+						href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
+						<img src="assets/buttons/sysleave1.png" name="sysleave" title="System verlassen" /> verlassen
 					</a>
 				</tal:block>
-				<tal:block tal:condition="not:STARSYSTEM_ENTRY_TAL/wasDiscovered">
+				<tal:block tal:condition="SHIP/getSystem/isWormhole">
 					<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.png"
-						style="width: 15px; height: 15px;" title="Sternensystem" />
-					<span>${SHIP/getSystem/getName}
-						(${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
-				</tal:block><br />
-				<a tal:condition="SHIP/hasWarpdrive"
-					href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-					<img src="assets/buttons/sysleave1.png" name="sysleave" title="System verlassen" /> verlassen
-				</a>
-
+						style="width: 15px; height: 15px;" title="Wurmloch" />
+					<span>${SHIP/getSystem/getName}</span>
+					<br />
+					<a tal:condition="SHIP/getStarsystemMap/getWormholeEntry"
+						href="ship.php?B_LEAVE_WORMHOLE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
+						<img src="assets/buttons/sysleave1.png" title="Wurmloch verlassen" /> verlassen
+					</a>
+				</tal:block>
 			</td>
 			<tal:block tal:condition="not:SHIP/getSystem">
 				<td tal:condition="SHIP/isOverSystem">
