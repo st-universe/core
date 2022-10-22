@@ -28,7 +28,7 @@ class GameTurnStats implements GameTurnStatsInterface
     /** @Column(type="integer") * */
     private $logins_24h;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $inactive_count;
 
     /** @Column(type="integer") * */
@@ -91,6 +91,18 @@ class GameTurnStats implements GameTurnStatsInterface
     public function setLogins24h(int $logins24h): GameTurnStatsInterface
     {
         $this->logins_24h = $logins24h;
+
+        return $this;
+    }
+
+    public function getInactiveCount(): int
+    {
+        return $this->inactive_count;
+    }
+
+    public function setInactiveCount(int $inactiveCount): GameTurnStatsInterface
+    {
+        $this->inactive_count = $inactiveCount;
 
         return $this;
     }

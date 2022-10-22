@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
-use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Contact;
@@ -214,6 +213,19 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 User::class
             )
         )->getSingleScalarResult();
+    }
+
+    public function getInactiveAmount(int $days): int
+    {
+        return (int) $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(u.id) FROM %s u
+                WHERE u.id > 100
+                AND lastaction < :threshold',
+                User::class
+            )
+        )->setParameter('threshold', time() - $days * TimeConstants::ONE_DAY_IN_SECONDS)
+            ->getSingleScalarResult();
     }
 
     public function getVacationAmount(): int

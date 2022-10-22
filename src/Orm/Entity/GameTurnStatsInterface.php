@@ -18,6 +18,10 @@ interface GameTurnStatsInterface
 
     public function setLogins24h(int $logins24h): GameTurnStatsInterface;
 
+    public function getInactiveCount(): int;
+
+    public function setInactiveCount(int $inactiveCount): GameTurnStatsInterface;
+
     public function getVacationCount(): int;
 
     public function setVacationCount(int $vacationCount): GameTurnStatsInterface;
