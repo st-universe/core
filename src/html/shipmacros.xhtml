@@ -231,7 +231,10 @@
     </td>
     <td align="center" tal:condition="ship/getSystem">
       ${ship/getPosX}|${ship/getPosY}<br />
-      (${ship/getCx}|${ship/getCy})
+      <tal:block tal:condition="not:ship/getSystem/isWormhole">(${ship/getCx}|${ship/getCy})</tal:block>
+      <tal:block tal:condition="ship/getSystem/isWormhole"><img src="assets/buttons/wormh2.png"
+          title="befindet sich im Wurmloch '${ship/getSystem/getName}'" />
+      </tal:block>
     </td>
     <td align="center" tal:condition="not:ship/getSystem">
       (${ship/getCx}|${ship/getCy})
