@@ -34,7 +34,7 @@ final class ShowStatistics implements ViewControllerInterface
     {
         $graphInfos = [
             new GraphInfo('Spieleranzahl', [new PlotInfo('getUserCount'), new PlotInfo('getLogins24h', 'yellow', 'yellow@0.5', 'aktiv letzte 24h')], true),
-            new GraphInfo('Spieler im Urlaub', [new PlotInfo('getVacationCount')]),
+            new GraphInfo('Inaktive Spieler', [new PlotInfo('getInactiveCount'), new PlotInfo('getVacationCount', 'yellow', 'yellow@0.5', 'im Urlaub')]),
             new GraphInfo('Schiffanzahl', [new PlotInfo('getShipCount'), new PlotInfo('getShipCountManned', 'yellow', 'yellow@0.5', 'bemannt')], true),
             new GraphInfo('KN-Beiträge', [new PlotInfo('getKnCount')]),
             new GraphInfo('Geflogene Felder letzte 24h', [new PlotInfo('getFlightSig24h'), new PlotInfo('getFlightSigSystem24h', 'yellow', 'yellow@0.5', 'System')], true)
