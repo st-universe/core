@@ -146,6 +146,9 @@ final class ShipRemover implements ShipRemoverInterface
         // delete torpedo storage
         $this->shipTorpedoManager->removeTorpedo($ship);
 
+        // change storage owner
+        $this->orphanizeStorage($ship);
+
         $this->shipRepository->save($ship);
 
         // undock docked ships
@@ -205,6 +208,14 @@ final class ShipRemover implements ShipRemoverInterface
                 $module->getCommodity(),
                 1
             );
+        }
+    }
+
+    private function orphanizeStorage(ShipInterface $ship): void
+    {
+        foreach ($ship->getStorage() as $storage) {
+            $storage->setUserId(GameEnum::USER_NOONE);
+            $this->storageRepository->save($storage);
         }
     }
 
