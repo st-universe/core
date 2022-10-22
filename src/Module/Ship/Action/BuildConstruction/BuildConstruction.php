@@ -112,6 +112,12 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
+        // check if ship in wormhole
+        if ($ship->getSystem() !== null && $ship->getSystem()->isWormhole()) {
+            $game->addInformation(_("In Wurmlöchern können keine Stationen errichtet werden"));
+            return;
+        }
+
         // check if there already is a base
         if ($this->shipRepository->isBaseOnLocation($ship)) {
             $game->addInformation(_("Hier ist bereits eine Station errichtet"));
