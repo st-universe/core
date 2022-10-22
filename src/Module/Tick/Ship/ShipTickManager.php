@@ -368,6 +368,10 @@ final class ShipTickManager implements ShipTickManagerInterface
             $ship = $obj->getShip();
             $colony = $obj->getColony();
 
+            if ($colony->isBlocked()) {
+                continue;
+            }
+
             if (!$obj->getField()->isActive()) {
                 continue;
             }
