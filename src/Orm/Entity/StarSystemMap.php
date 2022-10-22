@@ -180,10 +180,11 @@ class StarSystemMap implements StarSystemMapInterface
     public function getSectorString(): string
     {
         return sprintf(
-            '%d|%d (%s-System)',
+            '%d|%d (%s-%s)',
             $this->getSx(),
             $this->getSy(),
-            $this->getSystem()->getName()
+            $this->getSystem()->getName(),
+            $this->getSystem()->isWormhole() ? 'Wurmloch' : 'System'
         );
     }
 }
