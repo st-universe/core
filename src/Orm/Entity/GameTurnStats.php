@@ -28,6 +28,9 @@ class GameTurnStats implements GameTurnStatsInterface
     /** @Column(type="integer") * */
     private $logins_24h;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $inactive_count;
+
     /** @Column(type="integer") * */
     private $vacation_count;
 
