@@ -641,18 +641,18 @@
 						einfliegen
 					</a>
 				</td>
-				<td tal:condition="SHIP/getMap/getRandomWormholeEntry">
-					<tal:block tal:define="wormholeEntry SHIP/getMap/getRandomWormholeEntry">
-						<img src="assets/map/${wormholeEntry/getMap/getFieldId}.png" style="width: 15px; height: 15px;"
-							title="Wurmloch" />
-						${wormholeEntry/getSystem/getName}<br />
-						<a tal:condition="not:SHIP/getWarpState"
-							href="ship.php?B_ENTER_WORMHOLE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-							<img src="assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
-							einfliegen
-						</a>
-					</tal:block>
-				</td>
+				<tal:block tal:define="wormholeEntry SHIP/getMap/getRandomWormholeEntry">
+					<td tal:condition="wormholeEntry">
+						<tal:block>
+							${wormholeEntry/getSystem/getName}<br />
+							<a tal:condition="not:SHIP/getWarpState"
+								href="ship.php?B_ENTER_WORMHOLE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
+								<img src="assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
+								einfliegen
+							</a>
+						</tal:block>
+					</td>
+				</tal:block>
 			</tal:block>
 		</tr>
 	</table>
