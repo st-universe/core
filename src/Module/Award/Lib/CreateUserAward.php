@@ -25,6 +25,11 @@ final class CreateUserAward implements CreateUserAwardInterface
 
     public function createAwardForUser(UserInterface $user, AwardInterface $award): void
     {
+        //check if user already has award in case of category updates
+        if ($user->hasAward($award->getId())) {
+            return;
+        }
+
         $userAward = $this->userAwardRepository->prototype();
         $userAward->setUser($user);
         $userAward->setAward($award);
