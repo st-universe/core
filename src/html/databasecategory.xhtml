@@ -36,14 +36,15 @@
 			<th>Entdeckung</th>
 		</tr>
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
-			<tal:block tal:condition="data/wasDiscovered">
+			<tal:block tal:condition="data/wasDiscovered" tal:define="system data/getObject">
 				<td>
 					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
 						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td>
-					<span tal:replace="data/getObject/getCX">CX</span>|<span
-						tal:replace="data/getObject/getCY">CY</span>
+					<tal:block tal:condition="not:system/isWormhole">
+						<span tal:replace="system/getCX">CX</span>|<span tal:replace="system/getCY">CY</span>
+					</tal:block>
 				</td>
 				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 			</tal:block>
