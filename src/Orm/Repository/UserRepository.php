@@ -221,7 +221,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             sprintf(
                 'SELECT COUNT(u.id) FROM %s u
                 WHERE u.id > 100
-                AND lastaction < :threshold',
+                AND u.lastaction < :threshold',
                 User::class
             )
         )->setParameter('threshold', time() - $days * TimeConstants::ONE_DAY_IN_SECONDS)
