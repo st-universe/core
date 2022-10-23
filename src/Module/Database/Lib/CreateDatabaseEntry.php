@@ -75,6 +75,11 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
         $award = $category->getAward();
 
+        //check if user already has award in case of category updates
+        if ($user->hasAward($award->getId())) {
+            return;
+        }
+
         if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId())) {
 
             $this->createUserAward->createAwardForUser($user, $award);
