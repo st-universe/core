@@ -190,7 +190,7 @@ class StarSystemMap implements StarSystemMapInterface
             }
         );
 
-        return  $usableEntries[array_rand($usableEntries)];
+        return empty($usableEntries) ? null : $usableEntries[array_rand($usableEntries)];
     }
 
     public function getSectorString(): string
