@@ -261,7 +261,7 @@ class Map implements MapInterface
             return null;
         }
 
-        return  $this->wormholeEntries->get(rand(0, $this->wormholeEntries->count()));
+        return  $this->wormholeEntries->get(array_rand($this->wormholeEntries->toArray()));
     }
 
     public function getSectorString(): string
