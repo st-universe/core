@@ -64,14 +64,15 @@ class StarSystemMap implements StarSystemMapInterface
     private $signatures;
 
     /**
-     * @OneToOne(targetEntity="WormholeEntry", mappedBy="systemMap")
+     * @OneToMany(targetEntity="WormholeEntry", mappedBy="systemMap")
      */
-    private $wormholeEntry;
+    private $wormholeEntries;
 
     public function __construct()
     {
         $this->ships = new ArrayCollection();
         $this->signatures = new ArrayCollection();
+        $this->wormholeEntries = new ArrayCollection();
     }
 
     public function getId(): int
@@ -172,9 +173,13 @@ class StarSystemMap implements StarSystemMapInterface
         return $this->signatures;
     }
 
-    public function getWormholeEntry(): ?WormholeEntryInterface
+    public function getRandomWormholeEntry(): ?WormholeEntryInterface
     {
-        return $this->wormholeEntry;
+        if ($this->wormholeEntries->isEmpty()) {
+            return null;
+        }
+
+        return  $this->wormholeEntries->get(rand($this->wormholeEntries->count()));
     }
 
     public function getSectorString(): string

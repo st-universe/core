@@ -41,7 +41,7 @@ class WormholeEntry implements WormholeEntryInterface
     private $starSystem;
 
     /**
-     * @OneToOne(targetEntity="StarSystemMap", inversedBy="wormholeEntry")
+     * @ManyToOne(targetEntity="StarSystemMap", inversedBy="wormholeEntries")
      * @JoinColumn(name="system_map_id", referencedColumnName="id")
      */
     private $systemMap;

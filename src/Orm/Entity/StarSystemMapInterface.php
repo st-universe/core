@@ -42,7 +42,7 @@ interface StarSystemMapInterface
 
     public function getSignatures(): Collection;
 
-    public function getWormholeEntry(): ?WormholeEntryInterface;
+    public function getRandomWormholeEntry(): ?WormholeEntryInterface;
 
     public function getSectorString(): string;
 }

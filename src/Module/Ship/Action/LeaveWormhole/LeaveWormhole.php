@@ -72,7 +72,7 @@ final class LeaveWormhole implements ActionControllerInterface
             return;
         }
 
-        $wormholeEntry = $ship->getStarsystemMap()->getWormholeEntry();
+        $wormholeEntry = $ship->getStarsystemMap()->getRandomWormholeEntry();
         if ($wormholeEntry === null) {
             return;
         }

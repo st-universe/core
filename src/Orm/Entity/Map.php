@@ -260,10 +260,8 @@ class Map implements MapInterface
         if ($this->wormholeEntries->isEmpty()) {
             return null;
         }
-        $array = $this->wormholeEntries->toArray();
-        shuffle($array);
 
-        return  current($array);
+        return  $this->wormholeEntries->get(rand($this->wormholeEntries->count()));
     }
 
     public function getSectorString(): string
