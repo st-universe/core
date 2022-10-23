@@ -3,7 +3,6 @@
 	<metal:macro metal:fill-slot="body">
 		<form action="/index.php" method="post" onsubmit="checkSubmit(${IS_SMS_REGISTRATION}); return false;"
 			id="registerform">
-			<input type="hidden" name="B_SEND_REGISTRATION" value="1" />
 			<input type="hidden" name="factionid" id="factionid" value="0" />
 			<div style="display: inline-block; width: 300px; padding-right: 5px;">
 				<div class="divhead">Loginname</div>
@@ -68,8 +67,8 @@
 						wurde(n) nicht akzeptiert</div>
 				</div>
 				<br />
-				<input tal:condition="REGISTRATION_POSSIBLE" type="submit" name="B_REGISTER" value="Registrieren"
-					class="button" />
+				<input tal:condition="REGISTRATION_POSSIBLE" type="submit" name="B_SEND_REGISTRATION"
+					value="Registrieren" class="button" />
 				<tal:block tal:condition="not:REGISTRATION_POSSIBLE">
 					<div class="divhead">Hinweis</div>
 					<div class="divbody">Im Moment sind leider keine weiteren Anmeldungen möglich</div>
