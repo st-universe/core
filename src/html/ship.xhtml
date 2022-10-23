@@ -1240,6 +1240,7 @@
 									name="actlss" />
 							</a>
 							<a href="javascript:void(0);"
+								tal:condition="php: !SHIP.getSystem() OR !SHIP.getSystem().isWormhole()"
 								onclick="openStarMap(this,'${SHIP/getMapCX}','${SHIP/getMapCY}');"
 								onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
 								<img src="assets/buttons/map1.png" title="Karte anzeigen" name="shimap" />
