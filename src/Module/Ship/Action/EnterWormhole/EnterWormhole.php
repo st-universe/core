@@ -12,6 +12,7 @@ use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -33,24 +34,26 @@ final class EnterWormhole implements ActionControllerInterface
 
     private WormholeEntryRepositoryInterface $wormholeEntryRepository;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
-        WormholeEntryRepositoryInterface $wormholeEntryRepository
+        WormholeEntryRepositoryInterface $wormholeEntryRepository,
+        AlertRedHelperInterface $alertRedHelper
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->wormholeEntryRepository = $wormholeEntryRepository;
+        $this->alertRedHelper = $alertRedHelper;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -145,7 +148,14 @@ final class EnterWormhole implements ActionControllerInterface
         $wormholeEntry->setLastUsed(time());
         $this->wormholeEntryRepository->save($wormholeEntry);
 
-        //TODO alert red?
+        // alert red check
+        $this->alertRedHelper->doItAll($ship, $game);
+
+        if ($ship->getIsDestroyed()) {
+            return;
+        }
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $this->shipRepository->save($ship);
     }

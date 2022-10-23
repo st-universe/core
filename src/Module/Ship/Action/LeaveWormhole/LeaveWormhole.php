@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -38,6 +39,8 @@ final class LeaveWormhole implements ActionControllerInterface
 
     private WormholeEntryRepositoryInterface $wormholeEntryRepository;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -47,6 +50,7 @@ final class LeaveWormhole implements ActionControllerInterface
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
         WormholeEntryRepositoryInterface $wormholeEntryRepository,
+        AlertRedHelperInterface $alertRedHelper,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -55,13 +59,12 @@ final class LeaveWormhole implements ActionControllerInterface
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->wormholeEntryRepository = $wormholeEntryRepository;
+        $this->alertRedHelper = $alertRedHelper;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -133,6 +136,15 @@ final class LeaveWormhole implements ActionControllerInterface
 
         $wormholeEntry->setLastUsed(time());
         $this->wormholeEntryRepository->save($wormholeEntry);
+
+        // alert red check
+        $this->alertRedHelper->doItAll($ship, $game);
+
+        if ($ship->getIsDestroyed()) {
+            return;
+        }
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $this->shipRepository->save($ship);
     }
