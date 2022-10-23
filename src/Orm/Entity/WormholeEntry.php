@@ -30,7 +30,7 @@ class WormholeEntry implements WormholeEntryInterface
     /** @Column(type="integer") * */
     private $system_map_id;
 
-    /** @Column(type="smallint", length=1, nullable=true) */
+    /** @Column(type="smallint", length=1) */
     private $type = MapEnum::WORMHOLE_ENTRY_TYPE_BOTH;
 
     /** @Column(type="integer", nullable=true) * */
@@ -75,5 +75,23 @@ class WormholeEntry implements WormholeEntryInterface
     public function getSystemMap(): StarSystemMapInterface
     {
         return $this->systemMap;
+    }
+
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    public function setLastUsed(int $lastUsed): WormholeEntryInterface
+    {
+        $this->last_used = $lastUsed;
+
+        return $this;
+    }
+
+    public function isUsable(): bool
+    {
+        return $this->last_used === null || $this->cooldown === null
+            || $this->last_used < time() - $this->cooldown * 60;
     }
 }

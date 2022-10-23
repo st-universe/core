@@ -17,6 +17,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
 
 final class EnterWormhole implements ActionControllerInterface
 {
@@ -30,16 +31,20 @@ final class EnterWormhole implements ActionControllerInterface
 
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
+    private WormholeEntryRepositoryInterface $wormholeEntryRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        TractorMassPayloadUtilInterface $tractorMassPayloadUtil
+        TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
+        WormholeEntryRepositoryInterface $wormholeEntryRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
+        $this->wormholeEntryRepository = $wormholeEntryRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -136,6 +141,9 @@ final class EnterWormhole implements ActionControllerInterface
             }
             $game->addInformation("Das Schiff fliegt in das " . $wormhole->getName() . " ein");
         }
+
+        $wormholeEntry->setLastUsed(time());
+        $this->wormholeEntryRepository->save($wormholeEntry);
 
         //TODO alert red?
 

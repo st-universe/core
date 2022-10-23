@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Map\MapEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\MapRepository")
@@ -261,7 +262,17 @@ class Map implements MapInterface
             return null;
         }
 
-        return  $this->wormholeEntries->get(array_rand($this->wormholeEntries->toArray()));
+        $usableEntries =  array_filter(
+            $this->wormholeEntries->toArray(),
+            function (WormholeEntryInterface $entry): bool {
+                $type = $entry->getType();
+
+                return $entry->isUsable() && ($type === MapEnum::WORMHOLE_ENTRY_TYPE_BOTH ||
+                    $type === MapEnum::WORMHOLE_ENTRY_TYPE_IN);
+            }
+        );
+
+        return  $usableEntries[array_rand($usableEntries)];
     }
 
     public function getSectorString(): string

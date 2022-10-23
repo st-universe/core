@@ -11,4 +11,10 @@ interface WormholeEntryInterface
     public function getSystem(): StarSystemInterface;
 
     public function getSystemMap(): StarSystemMapInterface;
+
+    public function getType(): int;
+
+    public function setLastUsed(int $lastUsed): WormholeEntryInterface;
+
+    public function isUsable(): bool;
 }

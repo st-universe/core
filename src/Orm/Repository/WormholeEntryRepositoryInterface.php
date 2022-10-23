@@ -10,4 +10,5 @@ use Stu\Orm\Entity\WormholeEntryInterface;
  */
 interface WormholeEntryRepositoryInterface extends ObjectRepository
 {
+    public function save(WormholeEntryInterface $entry): void;
 }

@@ -14,12 +14,13 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Repository\WormholeEntryRepositoryInterface;
 
 final class LeaveWormhole implements ActionControllerInterface
 {
@@ -35,6 +36,8 @@ final class LeaveWormhole implements ActionControllerInterface
 
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
+    private WormholeEntryRepositoryInterface $wormholeEntryRepository;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -43,6 +46,7 @@ final class LeaveWormhole implements ActionControllerInterface
         ShipSystemManagerInterface $shipSystemManager,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
+        WormholeEntryRepositoryInterface $wormholeEntryRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -50,6 +54,7 @@ final class LeaveWormhole implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
+        $this->wormholeEntryRepository = $wormholeEntryRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -125,6 +130,9 @@ final class LeaveWormhole implements ActionControllerInterface
             }
             $game->addInformation("Das Wurmloch wurde verlassen");
         }
+
+        $wormholeEntry->setLastUsed(time());
+        $this->wormholeEntryRepository->save($wormholeEntry);
 
         $this->shipRepository->save($ship);
     }
