@@ -11,4 +11,9 @@ final class MapEnum
     public const MAP_MAX_Y = 120;
     public const MAPTYPE_INSERT = 1;
     public const MAPTYPE_DELETE = 2;
+
+    // wormhole entry types
+    public const WORMHOLE_ENTRY_TYPE_IN = 0;
+    public const WORMHOLE_ENTRY_TYPE_OUT = 1;
+    public const WORMHOLE_ENTRY_TYPE_BOTH = 2;
 }
