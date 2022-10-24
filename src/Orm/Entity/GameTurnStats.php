@@ -40,6 +40,9 @@ class GameTurnStats implements GameTurnStatsInterface
     /** @Column(type="integer") * */
     private $ship_count_manned;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $ship_count_npc;
+
     /** @Column(type="integer") * */
     private $kn_count;
 
