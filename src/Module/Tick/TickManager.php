@@ -120,6 +120,7 @@ final class TickManager implements TickManagerInterface
         $stats->setVacationCount($this->userRepository->getVacationAmount());
         $stats->setShipCount($this->gameTurnStatsRepository->getShipCount());
         $stats->setShipCountManned($this->gameTurnStatsRepository->getShipCountManned());
+        $stats->setShipCountNpc($this->gameTurnStatsRepository->getShipCountNpc());
         $stats->setKnCount($this->knPostRepository->getAmount());
         $stats->setFlightSig24h($this->gameTurnStatsRepository->getFlightSigs24h());
         $stats->setFlightSigSystem24h($this->gameTurnStatsRepository->getFlightSigsSystem24h());

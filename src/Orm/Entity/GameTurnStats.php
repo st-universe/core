@@ -40,7 +40,7 @@ class GameTurnStats implements GameTurnStatsInterface
     /** @Column(type="integer") * */
     private $ship_count_manned;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $ship_count_npc;
 
     /** @Column(type="integer") * */
@@ -142,6 +142,18 @@ class GameTurnStats implements GameTurnStatsInterface
     public function setShipCountManned(int $shipCountManned): GameTurnStatsInterface
     {
         $this->ship_count_manned = $shipCountManned;
+
+        return $this;
+    }
+
+    public function getShipCountNpc(): int
+    {
+        return $this->ship_count_npc;
+    }
+
+    public function setShipCountNpc(int $shipCountNpc): GameTurnStatsInterface
+    {
+        $this->ship_count_npc = $shipCountNpc;
 
         return $this;
     }

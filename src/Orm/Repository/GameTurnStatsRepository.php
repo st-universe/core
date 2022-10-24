@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\GameTurnStatsInterface;
@@ -61,6 +62,22 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
                 ShipCrew::class
             )
         )->setParameter('noOne', GameEnum::USER_NOONE)
+            ->getSingleScalarResult();
+    }
+
+    public function getShipCountNpc(): int
+    {
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT count(s) FROM %s s
+                WHERE s.user_id != :noOne
+                AND s.user_id < :firstUserId',
+                Ship::class
+            )
+        )->setParameters([
+            'noOne' => GameEnum::USER_NOONE,
+            'firstUserId' => UserEnum::USER_FIRST_ID
+        ])
             ->getSingleScalarResult();
     }
 
