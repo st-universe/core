@@ -73,4 +73,11 @@ class TorpedoStorage implements TorpedoStorageInterface
     {
         return $this->storage;
     }
+
+    public function setStorage(StorageInterface $storage): TorpedoStorageInterface
+    {
+        $this->storage = $storage;
+
+        return $this;
+    }
 }

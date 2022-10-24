@@ -69,6 +69,8 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $storage->setAmount($amount);
         $storage->setTorpedoStorage($torpedoStorage);
         $this->storageRepository->save($storage);
+
+        $torpedoStorage->setStorage($storage);
     }
 
     private function clearTorpedoStorage(ShipInterface $ship): void

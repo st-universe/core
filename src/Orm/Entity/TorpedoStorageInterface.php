@@ -15,4 +15,6 @@ interface TorpedoStorageInterface
     public function setTorpedo(TorpedoTypeInterface $torpedoType): TorpedoStorageInterface;
 
     public function getStorage(): StorageInterface;
+
+    public function setStorage(StorageInterface $storage): TorpedoStorageInterface;
 }
