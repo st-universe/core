@@ -72,6 +72,9 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)) {
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
+        }
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_OFF);
         }
