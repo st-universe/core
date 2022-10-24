@@ -42,7 +42,7 @@ final class ShowStatistics implements ViewControllerInterface
                 new PlotInfo('getVacationCount', 'yellow', 'yellow@0.5', 'im Urlaub')
             ]),
             new GraphInfo('Schiffanzahl', [
-                new PlotInfo('getShipCount'), new PlotInfo('getShipCountManned', 'yellow', 'yellow@0.5', 'bemannt'),
+                new PlotInfo('getShipCount'),
                 new PlotInfo('getShipCountManned', 'yellow', 'yellow@0.5', 'bemannt'),
                 new PlotInfo('getShipCountNpc', 'green', 'green@0.5', 'NPC')
             ], true),
