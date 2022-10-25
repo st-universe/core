@@ -14,8 +14,8 @@ use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
-use Stu\Component\Ship\System\Exception\SystemNotActivableException;
-use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
+use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
+use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -98,13 +98,14 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new SystemDamagedException();
         }
 
-        if (!$shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_OFF) {
-            throw new SystemNotActivableException();
+        $mode = $shipSystem->getMode();
+        if ($mode === ShipSystemModeEnum::MODE_ALWAYS_OFF) {
+            throw new SystemNotActivatableException();
         }
 
         if (
-            $shipSystem->getMode() === ShipSystemModeEnum::MODE_ON
-            || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON
+            $mode === ShipSystemModeEnum::MODE_ON
+            ||  $mode === ShipSystemModeEnum::MODE_ALWAYS_ON
         ) {
             throw new AlreadyActiveException();
         }
@@ -133,13 +134,14 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new SystemNotFoundException();
         }
 
-        if (!$shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON) {
-            throw new SystemNotDeactivableException();
+        $mode = $shipSystem->getMode();
+        if ($mode === ShipSystemModeEnum::MODE_ALWAYS_ON) {
+            throw new SystemNotDeactivatableException();
         }
 
         if (
-            $shipSystem->getMode() === ShipSystemModeEnum::MODE_OFF
-            || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_OFF
+            $mode === ShipSystemModeEnum::MODE_OFF
+            ||  $mode === ShipSystemModeEnum::MODE_ALWAYS_OFF
         ) {
             throw new AlreadyOffException();
         }

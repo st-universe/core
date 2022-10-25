@@ -128,14 +128,6 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
-    /**
-     * @deprecated
-     */
-    public function isActivateable(): bool
-    {
-        return true;
-    }
-
     public function isDisabled(): bool
     {
         return $this->getStatus() === 0

@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
+use Stu\Component\Ship\System\Exception\AlreadyActiveException;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
+use Stu\Component\Ship\System\Exception\DeactivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
+use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -20,9 +26,19 @@ class ShipSystemManagerTest extends StuTestCase
 {
 
     /**
+     * @var MockInterface|ShipInterface
+     */
+    private  $ship;
+
+    /**
+     * @var MockInterface|ShipSystemInterface
+     */
+    private  $shipSystem;
+
+    /**
      * @var null|MockInterface|ShipSystemTypeInterface
      */
-    private $system;
+    private $systemType;
 
     private $system_id = 666;
 
@@ -33,10 +49,12 @@ class ShipSystemManagerTest extends StuTestCase
 
     public function setUp(): void
     {
-        $this->system = $this->mock(ShipSystemTypeInterface::class);
+        $this->ship = $this->mock(ShipInterface::class);
+        $this->shipSystem = $this->mock(ShipSystemInterface::class);
+        $this->systemType = $this->mock(ShipSystemTypeInterface::class);
 
         $this->manager = new ShipSystemManager([
-            $this->system_id => $this->system
+            $this->system_id => $this->systemType
         ]);
     }
 
@@ -44,264 +62,352 @@ class ShipSystemManagerTest extends StuTestCase
     {
         $this->expectException(SystemNotFoundException::class);
 
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection());
 
-        $this->manager->activate($ship, $this->system_id);
+        $this->manager->activate($this->ship, $this->system_id);
     }
 
-    public function testActivateFailsIfSystemNotActivateble(): void
+    public function testActivateFailsIfSystemDestroyed(): void
     {
         $this->expectException(SystemDamagedException::class);
 
-        $ship = $this->mock(ShipInterface::class);
-        $shipSystem = $this->mock(ShipSystemInterface::class);
-
-        $ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id => $shipSystem]));
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
 
-        $shipSystem->shouldReceive('isActivateable')
+        $this->shipSystem->shouldReceive('getStatus')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
+            ->andReturn(0);
 
-        $this->manager->activate($ship, $this->system_id);
+        $this->manager->activate($this->ship, $this->system_id);
     }
 
-    public function testActivateFailsOnInsufficientEnergy(): void
+    public function testActivateFailsIfSystemNotActivatable(): void
     {
-        $this->expectException(InsufficientEnergyException::class);
+        $this->expectException(SystemNotActivatableException::class);
 
-        $ship = $this->mock(ShipInterface::class);
-        $shipSystem = $this->mock(ShipSystemInterface::class);
-
-        $energyCosts = 666;
-
-        $ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id => $shipSystem]));
-        $ship->shouldReceive('getEps')
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+
+        $this->shipSystem->shouldReceive('getStatus')
             ->withNoArgs()
             ->once()
-            ->andReturn(1);
+            ->andReturn(100);
 
-        $this->system->shouldReceive('getEnergyUsageForActivation')
+        $this->shipSystem->shouldReceive('getMode')
             ->withNoArgs()
             ->once()
-            ->andReturn($energyCosts);
+            ->andReturn(ShipSystemModeEnum::MODE_ALWAYS_OFF);
 
-        $shipSystem->shouldReceive('isActivateable')
+
+        $this->manager->activate($this->ship, $this->system_id);
+    }
+
+    public function testActivateFailsIfSystemAlreadyOn(): void
+    {
+        $this->expectException(AlreadyActiveException::class);
+
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
 
-        $this->manager->activate($ship, $this->system_id);
+        $this->shipSystem->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_ON);
+
+
+        $this->manager->activate($this->ship, $this->system_id);
     }
 
     public function testActivateFailsOnInsufficientCrew(): void
     {
         $this->expectException(InsufficientCrewException::class);
 
-        $ship = $this->mock(ShipInterface::class);
-        $shipSystem = $this->mock(ShipSystemInterface::class);
-
-        $energyCosts = 1;
-
-        $ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id => $shipSystem]));
-        $ship->shouldReceive('getEps')
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->ship->shouldReceive('hasEnoughCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+
+        $this->shipSystem->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->manager->activate($this->ship, $this->system_id);
+    }
+
+    public function testActivateFailsOnInsufficientEnergy(): void
+    {
+        $this->expectException(InsufficientEnergyException::class);
+
+        $energyCosts = 2;
+
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->ship->shouldReceive('getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
-        $ship->shouldReceive('getBuildplan->getCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-        $ship->shouldReceive('getCrewCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(0);
-
-        $this->system->shouldReceive('getEnergyUsageForActivation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($energyCosts);
-
-        $shipSystem->shouldReceive('isActivateable')
+        $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
 
-        $this->manager->activate($ship, $this->system_id);
+        $this->systemType->shouldReceive('getEnergyUsageForActivation')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($energyCosts);
+
+        $this->shipSystem->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->manager->activate($this->ship, $this->system_id);
     }
 
     public function testActivateFailsIfSystemPreConditionsFail(): void
     {
         $this->expectException(ActivationConditionsNotMetException::class);
 
-        $ship = $this->mock(ShipInterface::class);
-        $shipSystem = $this->mock(ShipSystemInterface::class);
-
         $energyCosts = 1;
 
-        $ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id => $shipSystem]));
-        $ship->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-        $ship->shouldReceive('getBuildplan->getCrew')
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->ship->shouldReceive('getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
-        $ship->shouldReceive('getCrewCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-
-        $this->system->shouldReceive('getEnergyUsageForActivation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($energyCosts);
-        $this->system->shouldReceive('checkActivationConditions')
-            ->with($ship)
-            ->once()
-            ->andReturnFalse();
-
-        $shipSystem->shouldReceive('isActivateable')
+        $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
 
-        $this->manager->activate($ship, $this->system_id);
+        $this->systemType->shouldReceive('getEnergyUsageForActivation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($energyCosts);
+        $this->systemType->shouldReceive('checkActivationConditions')->with(
+            $this->ship,
+            Mockery::on(function (&$reason) {
+                $reason = 'reason';
+                return true;
+            })
+        )->once()
+            ->andReturnFalse();
+
+        $this->shipSystem->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->manager->activate($this->ship, $this->system_id);
     }
 
     public function testActivateActivatesSystem(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $shipSystem = $this->mock(ShipSystemInterface::class);
-
         $energyCosts = 1;
 
-        $ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$this->system_id => $shipSystem]));
-        $ship->shouldReceive('getEps')
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->ship->shouldReceive('getEps')
             ->withNoArgs()
             ->twice()
             ->andReturn(1);
-        $ship->shouldReceive('getBuildplan->getCrew')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-        $ship->shouldReceive('getCrewCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(1);
-        $ship->shouldReceive('setEps')
+        $this->ship->shouldReceive('setEps')
             ->with(0)
             ->once();
+        $this->ship->shouldReceive('hasEnoughCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
 
-        $this->system->shouldReceive('getEnergyUsageForActivation')
+        $this->systemType->shouldReceive('getEnergyUsageForActivation')
             ->withNoArgs()
             ->twice()
             ->andReturn($energyCosts);
-        $this->system->shouldReceive('checkActivationConditions')
-            ->with($ship)
+        $this->systemType->shouldReceive('checkActivationConditions')
+            ->with($this->ship, Mockery::any())
             ->once()
             ->andReturnTrue();
-        $this->system->shouldReceive('activate')
-            ->with($ship)
+        $this->systemType->shouldReceive('activate')
+            ->with($this->ship)
             ->once();
 
-        $shipSystem->shouldReceive('isActivateable')
+        $this->shipSystem->shouldReceive('getStatus')
             ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturn(100);
 
-        $this->manager->activate($ship, $this->system_id);
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->manager->activate($this->ship, $this->system_id);
     }
 
     public function testDeactivateErrorsOnUnKnownSystem(): void
     {
         $this->expectException(InvalidSystemException::class);
 
-        $ship = $this->mock(ShipInterface::class);
+        $this->manager->deactivate($this->ship, 42);
+    }
 
-        $this->manager->deactivate($ship, 42);
+    public function testDeactivateErrorsOnNotDeactivatable(): void
+    {
+        $this->expectException(SystemNotDeactivatableException::class);
+
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_ALWAYS_ON);
+
+        $this->manager->deactivate($this->ship, $this->system_id);
+    }
+
+    public function testDeactivateErrorsOnAlreadyOff(): void
+    {
+        $this->expectException(AlreadyOffException::class);
+
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->manager->deactivate($this->ship, $this->system_id);
+    }
+
+    public function testDeactivateErrorsIfSystemPreConditionsFail(): void
+    {
+        $this->expectException(DeactivationConditionsNotMetException::class);
+
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_ON);
+
+        $this->systemType->shouldReceive('checkDeactivationConditions')->with(
+            $this->ship,
+            Mockery::on(function (&$reason) {
+                $reason = 'reason';
+                return true;
+            })
+        )->once()
+            ->andReturnFalse();
+
+        $this->manager->deactivate($this->ship, $this->system_id);
     }
 
     public function testDeactivateDeactivates(): void
     {
-        $ship = $this->mock(ShipInterface::class);
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->systemType->shouldReceive('checkDeactivationConditions')
+            ->with($this->ship, Mockery::any())
+            ->once()
+            ->andReturnTrue();
 
-        $this->system->shouldReceive('deactivate')
-            ->with($ship)
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_ON);
+
+        $this->systemType->shouldReceive('deactivate')
+            ->with($this->ship)
             ->once();
 
-        $this->manager->deactivate($ship, $this->system_id);
+        $this->manager->deactivate($this->ship, $this->system_id);
     }
 
     public function testDeactivateAllIgnoresDeactivationErrors(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $shipSystem = $this->mock(ShipSystemInterface::class);
-
-        $shipSystem->shouldReceive('getSystemType')
+        $this->shipSystem->shouldReceive('getSystemType')
             ->withNoArgs()
             ->once()
             ->andReturn($this->system_id);
 
-        $ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$shipSystem]));
-        $ship->shouldReceive('deactivateTractorBeam')
-            ->withNoArgs()
-            ->once();
+            ->andReturn(new ArrayCollection([$this->shipSystem]));
 
-        $this->system->shouldReceive('deactivate')
-            ->with($ship)
+        $this->systemType->shouldReceive('deactivate')
+            ->with($this->ship)
             ->once()
             ->andThrow(new InvalidSystemException());
 
-        $this->manager->deactivateAll($ship);
+        $this->manager->deactivateAll($this->ship);
     }
 
     public function testDeactivateAllDeactivatesAllSystems(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-        $shipSystem = $this->mock(ShipSystemInterface::class);
-
-        $shipSystem->shouldReceive('getSystemType')
+        $this->shipSystem->shouldReceive('getSystemType')
             ->withNoArgs()
             ->once()
             ->andReturn($this->system_id);
 
-        $ship->shouldReceive('getSystems')
+        $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->once()
-            ->andReturn(new ArrayCollection([$shipSystem]));
-        $ship->shouldReceive('deactivateTractorBeam')
-            ->withNoArgs()
+            ->andReturn(new ArrayCollection([$this->shipSystem]));
+        $this->systemType->shouldReceive('deactivate')
+            ->with($this->ship)
             ->once();
 
-        $this->system->shouldReceive('deactivate')
-            ->with($ship)
-            ->once();
-
-        $this->manager->deactivateAll($ship);
+        $this->manager->deactivateAll($this->ship);
     }
 }

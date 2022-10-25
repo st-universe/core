@@ -8,7 +8,7 @@ use request;
 
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
-use Stu\Component\Ship\System\Exception\SystemNotActivableException;
+use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -239,7 +239,7 @@ final class TroopTransfer implements ActionControllerInterface
 
         if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
             if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
-                throw new SystemNotActivableException();
+                throw new SystemNotActivatableException();
             }
         }
 
@@ -325,7 +325,7 @@ final class TroopTransfer implements ActionControllerInterface
 
         if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
             if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
-                throw new SystemNotActivableException();
+                throw new SystemNotActivatableException();
             }
         }
 

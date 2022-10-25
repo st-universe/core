@@ -16,8 +16,8 @@ use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
-use Stu\Component\Ship\System\Exception\SystemNotActivableException;
-use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
+use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
+use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -77,7 +77,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             return true;
         } catch (AlreadyActiveException $e) {
             $game->addInformation(sprintf(_('%s: System %s ist bereits aktiviert'), $ship->getName(), $systemName));
-        } catch (SystemNotActivableException $e) {
+        } catch (SystemNotActivatableException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s besitzt keinen Aktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
         } catch (InsufficientEnergyException $e) {
             $game->addInformation(sprintf(
@@ -161,7 +161,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             return true;
         } catch (AlreadyOffException $e) {
             $game->addInformation(sprintf(_('%s: System %s ist bereits deaktiviert'), $ship->getName(), $systemName));
-        } catch (SystemNotDeactivableException $e) {
+        } catch (SystemNotDeactivatableException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s besitzt keinen Deaktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
         } catch (DeactivationConditionsNotMetException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht deaktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));

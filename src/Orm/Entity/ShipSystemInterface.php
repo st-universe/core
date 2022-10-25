@@ -26,8 +26,6 @@ interface ShipSystemInterface
 
     public function setMode(int $mode): ShipSystemInterface;
 
-    public function isActivateable(): bool;
-
     public function isDisabled(): bool;
 
     public function getModule(): ?ModuleInterface;
