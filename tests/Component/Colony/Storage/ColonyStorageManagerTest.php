@@ -8,73 +8,98 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Colony\Storage\Exception\CommodityMissingException;
 use Stu\Component\Colony\Storage\Exception\QuantityTooSmallException;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ColonyStorageInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
 class ColonyStorageManagerTest extends StuTestCase
 {
     /**
-     * @var ColonyStorageRepositoryInterface|MockInterface|null
+     * @var StorageRepositoryInterface|MockInterface|null
      */
-    private ?MockInterface $colonyStorageRepository;
+    private ?MockInterface $storageRepository;
 
     /**
      * @var ColonyStorageManager
      */
     private ?ColonyStorageManager $manager;
 
+    private ColonyInterface $colony;
+
+    private CommodityInterface $commodity;
+
+    private LoggerUtilInterface $loggerUtil;
+
     public function setUp(): void
     {
-        $this->colonyStorageRepository = $this->mock(ColonyStorageRepositoryInterface::class);
+        $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
+        $this->colony = $this->mock(ColonyInterface::class);
+        $this->commodity = $this->mock(CommodityInterface::class);
+
+        $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
+        $this->loggerUtil = $this->mock(LoggerUtilInterface::class);
+
+        $loggerUtilFactory->shouldReceive('getLoggerUtil')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->loggerUtil);
 
         $this->manager = new ColonyStorageManager(
-            $this->colonyStorageRepository
+            $this->storageRepository,
+            $loggerUtilFactory
         );
     }
 
-    public function testLowerStorageThrowExceptionOnMissingCommodity(): void {
+    public function testLowerStorageThrowExceptionOnMissingCommodity(): void
+    {
         $this->expectException(CommodityMissingException::class);
 
-        $colony = $this->mock(ColonyInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-
-        $commodity->shouldReceive('getId')
+        $this->commodity->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
 
-        $colony->shouldReceive('getStorage')
+        $this->colony->shouldReceive('getStorage')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection());
 
-        $this->manager->lowerStorage($colony, $commodity, 666);
+        $this->manager->lowerStorage($this->colony, $this->commodity, 666);
     }
 
-    public function testLowerStorageThrowExceptionIfQuantitityIsTooSmall(): void {
+    public function testLowerStorageThrowExceptionIfQuantitityIsTooSmall(): void
+    {
         $this->expectException(QuantityTooSmallException::class);
 
-        $colony = $this->mock(ColonyInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ColonyStorageInterface::class);
+        $storageItem = $this->mock(StorageInterface::class);
 
         $amount = 666;
         $storedAmount = 33;
-        $commodityId = 42;
+        $this->commodityId = 42;
 
-        $commodity->shouldReceive('getId')
+        $this->commodity->shouldReceive('getId')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($this->commodityId);
+
+        $this->commodity->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn($commodityId);
+            ->andReturn('Latinum');
 
-        $colony->shouldReceive('getStorage')
+        $this->colony->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+        $this->colony->shouldReceive('getStorage')
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([
-                $commodityId => $storageItem
+                $this->commodityId => $storageItem
             ]));
 
         $storageItem->shouldReceive('getAmount')
@@ -82,31 +107,30 @@ class ColonyStorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($storedAmount);
 
-        $this->manager->lowerStorage($colony, $commodity, $amount);
+        $this->manager->lowerStorage($this->colony, $this->commodity, $amount);
     }
 
-    public function testLowerStorageRemovesCommodityFromStorageIfQuantityIsSame(): void {
-        $colony = $this->mock(ColonyInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ColonyStorageInterface::class);
+    public function testLowerStorageRemovesCommodityFromStorageIfQuantityIsSame(): void
+    {
+        $storageItem = $this->mock(StorageInterface::class);
 
         $amount = 666;
-        $commodityId = 42;
+        $this->commodityId = 42;
 
         $storage = new ArrayCollection([
-            $commodityId => $storageItem
+            $this->commodityId => $storageItem
         ]);
 
-        $commodity->shouldReceive('getId')
+        $this->commodity->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($commodityId);
+            ->andReturn($this->commodityId);
 
-        $colony->shouldReceive('getStorage')
+        $this->colony->shouldReceive('getStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $colony->shouldReceive('clearCache')
+        $this->colony->shouldReceive('clearCache')
             ->withNoArgs()
             ->once();
 
@@ -115,40 +139,39 @@ class ColonyStorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($amount);
 
-        $this->colonyStorageRepository->shouldReceive('delete')
+        $this->storageRepository->shouldReceive('delete')
             ->with($storageItem)
             ->once();
 
-        $this->manager->lowerStorage($colony, $commodity, $amount);
+        $this->manager->lowerStorage($this->colony, $this->commodity, $amount);
 
         $this->assertFalse(
-            $storage->offsetExists($commodityId)
+            $storage->offsetExists($this->commodityId)
         );
     }
 
-    public function testLowerStorageUpdatesStorageItem(): void {
-        $colony = $this->mock(ColonyInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ColonyStorageInterface::class);
+    public function testLowerStorageUpdatesStorageItem(): void
+    {
+        $storageItem = $this->mock(StorageInterface::class);
 
         $amount = 666;
         $storedAmount = 777;
-        $commodityId = 42;
+        $this->commodityId = 42;
 
         $storage = new ArrayCollection([
-            $commodityId => $storageItem
+            $this->commodityId => $storageItem
         ]);
 
-        $commodity->shouldReceive('getId')
+        $this->commodity->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($commodityId);
+            ->andReturn($this->commodityId);
 
-        $colony->shouldReceive('getStorage')
+        $this->colony->shouldReceive('getStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $colony->shouldReceive('clearCache')
+        $this->colony->shouldReceive('clearCache')
             ->withNoArgs()
             ->once();
 
@@ -160,54 +183,66 @@ class ColonyStorageManagerTest extends StuTestCase
             ->with($storedAmount - $amount)
             ->once();
 
-        $this->colonyStorageRepository->shouldReceive('save')
+        $this->storageRepository->shouldReceive('save')
             ->with($storageItem)
             ->once();
 
-        $this->manager->lowerStorage($colony, $commodity, $amount);
+        $this->manager->lowerStorage($this->colony, $this->commodity, $amount);
 
         $this->assertTrue(
-            $storage->offsetExists($commodityId)
+            $storage->offsetExists($this->commodityId)
         );
     }
 
-    public function testUpperStorageCreatesNewStorageItem(): void {
-        $colony = $this->mock(ColonyInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ColonyStorageInterface::class);
+    public function testUpperStorageCreatesNewStorageItem(): void
+    {
+        $storageItem = $this->mock(StorageInterface::class);
         $storage = new ArrayCollection();
 
         $amount = 666;
-        $commodityId = 42;
+        $this->commodityId = 42;
         $storedAmount = 0;
 
-        $colony->shouldReceive('getStorage')
+        $this->loggerUtil->shouldReceive('doLog')
+            ->withNoArgs()
+            ->times(6)
+            ->andReturnFalse();
+
+        $this->colony->shouldReceive('getStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $colony->shouldReceive('clearCache')
+        $this->colony->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+        $this->colony->shouldReceive('clearCache')
             ->withNoArgs()
             ->once();
 
-        $commodity->shouldReceive('getId')
+        $this->commodity->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($commodityId);
+            ->andReturn($this->commodityId);
 
-        $this->colonyStorageRepository->shouldReceive('prototype')
+        $this->storageRepository->shouldReceive('prototype')
             ->withNoArgs()
             ->once()
             ->andReturn($storageItem);
-        $this->colonyStorageRepository->shouldReceive('save')
+        $this->storageRepository->shouldReceive('save')
             ->with($storageItem)
             ->once();
 
-        $storageItem->shouldReceive('setColony')
-            ->with($colony)
+        $storageItem->shouldReceive('setUserId')
+            ->with(42)
             ->once()
             ->andReturnSelf();
-        $storageItem->shouldReceive('setGood')
-            ->with($commodity)
+        $storageItem->shouldReceive('setColony')
+            ->with($this->colony)
+            ->once()
+            ->andReturnSelf();
+        $storageItem->shouldReceive('setCommodity')
+            ->with($this->commodity)
             ->once()
             ->andReturnSelf();
         $storageItem->shouldReceive('getAmount')
@@ -218,39 +253,43 @@ class ColonyStorageManagerTest extends StuTestCase
             ->with($amount + $storedAmount)
             ->once();
 
-        $this->manager->upperStorage($colony, $commodity, $amount);
+        $this->manager->upperStorage($this->colony, $this->commodity, $amount);
 
         $this->assertTrue(
-            $storage->offsetExists($commodityId)
+            $storage->offsetExists($this->commodityId)
         );
     }
 
-    public function testUpperStorageUpdateExistingStorageItem(): void {
-        $colony = $this->mock(ColonyInterface::class);
-        $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ColonyStorageInterface::class);
+    public function testUpperStorageUpdateExistingStorageItem(): void
+    {
+        $storageItem = $this->mock(StorageInterface::class);
 
         $amount = 666;
-        $commodityId = 42;
+        $this->commodityId = 42;
         $storedAmount = 0;
         $storage = new ArrayCollection([
-            $commodityId => $storageItem
+            $this->commodityId => $storageItem
         ]);
 
-        $colony->shouldReceive('getStorage')
+        $this->loggerUtil->shouldReceive('doLog')
+            ->withNoArgs()
+            ->times(6)
+            ->andReturnFalse();
+
+        $this->colony->shouldReceive('getStorage')
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $colony->shouldReceive('clearCache')
+        $this->colony->shouldReceive('clearCache')
             ->withNoArgs()
             ->once();
 
-        $commodity->shouldReceive('getId')
+        $this->commodity->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($commodityId);
+            ->andReturn($this->commodityId);
 
-        $this->colonyStorageRepository->shouldReceive('save')
+        $this->storageRepository->shouldReceive('save')
             ->with($storageItem)
             ->once();
 
@@ -262,10 +301,10 @@ class ColonyStorageManagerTest extends StuTestCase
             ->with($amount + $storedAmount)
             ->once();
 
-        $this->manager->upperStorage($colony, $commodity, $amount);
+        $this->manager->upperStorage($this->colony, $this->commodity, $amount);
 
         $this->assertTrue(
-            $storage->offsetExists($commodityId)
+            $storage->offsetExists($this->commodityId)
         );
     }
 }
