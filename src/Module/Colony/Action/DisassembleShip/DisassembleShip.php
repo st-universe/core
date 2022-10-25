@@ -76,6 +76,7 @@ final class DisassembleShip implements ActionControllerInterface
         $ship = $this->shipLoader->getByIdAndUser((int) $ship_id, $userId);
         $this->retrieveSomeIntactModules($ship, $colony, $game);
         $this->retrieveWarpcoreLoad($ship, $colony, $game);
+        $this->retrieveLoadedTorpedos($ship, $colony, $game);
 
         $this->shipRemover->remove($ship);
 
@@ -155,6 +156,36 @@ final class DisassembleShip implements ActionControllerInterface
 
             $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
         }
+    }
+
+    private function retrieveLoadedTorpedos(ShipInterface $ship, $colony, $game): void
+    {
+        $torpedoStorage = $ship->getTorpedoStorage();
+
+        if ($torpedoStorage === null) {
+            return;
+        }
+
+        $maxStorage = $colony->getMaxStorage();
+
+        if ($colony->getStorageSum() >= $maxStorage) {
+            $game->addInformationf(_('Kein Lagerraum frei um geladene Torpedos zu sichern!'));
+            return;
+        }
+
+        $amount = $torpedoStorage->getStorage()->getAmount();
+        if ($maxStorage - $colony->getStorageSum() < $amount) {
+            $amount = $maxStorage - $colony->getStorageSum();
+        }
+
+        $commodity = $torpedoStorage->getStorage()->getCommodity();
+        $this->colonyStorageManager->upperStorage(
+            $colony,
+            $commodity,
+            $amount
+        );
+
+        $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }
 
     public function performSessionCheck(): bool
