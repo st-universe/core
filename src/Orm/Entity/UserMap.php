@@ -17,16 +17,22 @@ namespace Stu\Orm\Entity;
  **/
 class UserMap implements UserMapInterface
 {
-    /** @Id @Column(type="guid", unique=true) @GeneratedValue(strategy="UUID") * */
-    private $id;
-
-    /** @Column(type="integer") * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     */
     private $user_id = 0;
 
-    /** @Column(type="integer") * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     */
     private $cx = 0;
 
-    /** @Column(type="integer") * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     */
     private $cy = 0;
 
     /** @Column(type="integer") * */
@@ -42,5 +48,4 @@ class UserMap implements UserMapInterface
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
-
 }
