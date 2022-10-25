@@ -7,12 +7,7 @@ namespace Stu\Orm\Entity;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserMapRepository")
  * @Table(
- *     name="stu_user_map",
- *     indexes={
- *     },
- *     uniqueConstraints={
- *         @UniqueConstraint(name="user_coordinates_idx", columns={"user_id", "cx", "cy"})
- *     }
+ *     name="stu_user_map"
  * )
  **/
 class UserMap implements UserMapInterface
