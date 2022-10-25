@@ -23,7 +23,6 @@ class UserMap implements UserMapInterface
      */
     private $user_id = 0;
 
-
     /** 
      * @Id
      * @Column(type="integer")
