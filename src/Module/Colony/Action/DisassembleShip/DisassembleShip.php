@@ -15,6 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -35,13 +36,16 @@ final class DisassembleShip implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
+    private ShipTorpedoManagerInterface $shipTorpedoManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShipLoaderInterface $shipLoader,
         ColonyRepositoryInterface $colonyRepository,
         ShipRemoverInterface $shipRemover,
         ColonyStorageManagerInterface $colonyStorageManager,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        ShipTorpedoManagerInterface $shipTorpedoManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipLoader = $shipLoader;
@@ -49,6 +53,7 @@ final class DisassembleShip implements ActionControllerInterface
         $this->shipRemover = $shipRemover;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->commodityRepository = $commodityRepository;
+        $this->shipTorpedoManager = $shipTorpedoManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -184,6 +189,8 @@ final class DisassembleShip implements ActionControllerInterface
             $commodity,
             $amount
         );
+
+        $this->shipTorpedoManager->removeTorpedo($ship);
 
         $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }
