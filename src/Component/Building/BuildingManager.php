@@ -96,11 +96,13 @@ final class BuildingManager implements BuildingManagerInterface
 
         $colony = $field->getColony();
 
-        $this->deactivate($field);
-
-        $colony
-            ->setMaxStorage($colony->getMaxStorage() - $building->getStorage())
-            ->setMaxEps($colony->getMaxEps() - $building->getEpsStorage());
+        $isUnderconstruction = $field->getActive() > 1;
+        if (!$isUnderconstruction) {
+            $this->deactivate($field);
+            $colony
+                ->setMaxStorage($colony->getMaxStorage() - $building->getStorage())
+                ->setMaxEps($colony->getMaxEps() - $building->getEpsStorage());
+        }
 
         $field->clearBuilding();
 
