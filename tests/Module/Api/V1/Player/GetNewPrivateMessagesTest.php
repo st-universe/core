@@ -51,15 +51,17 @@ class GetNewPrivateMessagesTest extends StuApiV1TestCase
         $pmFolder = [
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
         ];
 
         $folders = [];
 
         $folder->shouldReceive('getCategoryCountNew')
             ->withNoArgs()
-            ->times(4)
+            ->times(6)
             ->andReturn(0);
 
         foreach ($pmFolder as $folderSpecialId) {

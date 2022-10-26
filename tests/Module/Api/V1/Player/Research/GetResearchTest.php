@@ -177,11 +177,11 @@ class GetResearchTest extends StuApiV1TestCase
             ->withNoArgs()
             ->once()
             ->andReturn($techPoints);
-        $tech->shouldReceive('getGood->getId')
+        $tech->shouldReceive('getCommodity->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($techCommodityId);
-        $tech->shouldReceive('getGood->getName')
+        $tech->shouldReceive('getCommodity->getName')
             ->withNoArgs()
             ->once()
             ->andReturn($techCommodityName);

@@ -188,7 +188,7 @@ class RegisterTest extends StuApiV1TestCase
             ->once()
             ->andReturn([$faction]);
 
-        $this->playerCreator->shouldReceive('create')
+        $this->playerCreator->shouldReceive('createViaToken')
             ->with($loginName, $emailAddress, $faction, $token)
             ->once()
             ->andThrow(new LoginNameInvalidException());
@@ -242,7 +242,7 @@ class RegisterTest extends StuApiV1TestCase
             ->once()
             ->andReturn([$faction]);
 
-        $this->playerCreator->shouldReceive('create')
+        $this->playerCreator->shouldReceive('createViaToken')
             ->with($loginName, $emailAddress, $faction, $token)
             ->once();
 
@@ -253,4 +253,6 @@ class RegisterTest extends StuApiV1TestCase
 
         $this->performAssertion();
     }
+
+    //TOTEST with createWithMobileNumber
 }

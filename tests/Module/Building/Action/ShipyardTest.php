@@ -6,6 +6,7 @@ namespace Stu\Module\Building\Action;
 
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 class ShipyardTest extends Mockery\Adapter\Phpunit\MockeryTestCase
@@ -43,25 +44,35 @@ class ShipyardTest extends Mockery\Adapter\Phpunit\MockeryTestCase
 
     public function testDeactivateStopsBuildProcesses(): void
     {
-        $colonyId = 666;
+        $colony = Mockery::mock(ColonyInterface::class);
         $buildingFunctionId = 42;
 
+        $colony->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(666);
+
         $this->colonyShipQueueRepository->shouldReceive('stopQueueByColonyAndBuildingFunction')
-            ->with($colonyId, $buildingFunctionId)
+            ->with(666, $buildingFunctionId)
             ->once();
 
-        $this->shipyard->deactivate($buildingFunctionId, $colonyId);
+        $this->shipyard->deactivate($buildingFunctionId, $colony);
     }
 
     public function testActivateRestartsBuildProcesses(): void
     {
-        $colonyId = 666;
+        $colony = Mockery::mock(ColonyInterface::class);
         $buildingFunctionId = 42;
 
+        $colony->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(666);
+
         $this->colonyShipQueueRepository->shouldReceive('restartQueueByColonyAndBuildingFunction')
-            ->with($colonyId, $buildingFunctionId)
+            ->with(666, $buildingFunctionId)
             ->once();
 
-        $this->shipyard->activate($buildingFunctionId, $colonyId);
+        $this->shipyard->activate($buildingFunctionId, $colony);
     }
 }

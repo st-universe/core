@@ -66,11 +66,11 @@ class ResearchListTest extends StuApiV1TestCase
             ->withNoArgs()
             ->once()
             ->andReturn($availableResearchPoints);
-        $availableResearch->shouldReceive('getGood->getId')
+        $availableResearch->shouldReceive('getCommodity->getId')
             ->withNoArgs()
             ->once()
             ->andReturn($availableResearchCommodityId);
-        $availableResearch->shouldReceive('getGood->getName')
+        $availableResearch->shouldReceive('getCommodity->getName')
             ->withNoArgs()
             ->once()
             ->andReturn($availableResearchCommodityName);
