@@ -1726,14 +1726,14 @@
               </div>
             </td>
             <td style="width: 100px;">
-              <div class="fabutton_red" tal:condition="FIELD/getBuilding/isRemoveAble">
+              <div class="fabutton_red" tal:condition="FIELD/getBuilding/isRemovable">
                 <a href="javascript:void(0);" onclick="toggleVisible('confirm_remove')"
                   class="fabutton fabutton_red">Demontieren</a>
               </div>
             </td>
             <td style="width: 100px;">
               <div id="confirm_remove" style="display:none;" class="fabutton_red"
-                tal:condition="FIELD/getBuilding/isRemoveAble">
+                tal:condition="FIELD/getBuilding/isRemovable">
                 <a href="?id=${COLONY/getId}&B_REMOVE_BUILDING=1&fid=${FIELD/getFieldId}&sstr=${THIS/getSessionString}"
                   class="fabutton fabutton_red">bestätigen</a>
               </div>

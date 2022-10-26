@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
@@ -12,11 +13,13 @@ use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\HistoryInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -54,9 +57,19 @@ class ResetManagerTest extends StuTestCase
     private $rpgPlotRepository;
 
     /**
+     * @var null|MockInterface|RpgPlotMemberRepositoryInterface
+     */
+    private $rpgPlotMemberRepository;
+
+    /**
      * @var null|MockInterface|PlanetFieldRepositoryInterface
      */
     private $planetFieldRepository;
+
+    /**
+     * @var null|MockInterface|EntityManagerInterface
+     */
+    private $entityManager;
 
     /**
      * @var null|MockInterface|ResetManagerInterface
@@ -71,7 +84,9 @@ class ResetManagerTest extends StuTestCase
         $this->historyRepository = $this->mock(HistoryRepositoryInterface::class);
         $this->gameTurnRepository = $this->mock(GameTurnRepositoryInterface::class);
         $this->rpgPlotRepository = $this->mock(RpgPlotRepositoryInterface::class);
+        $this->rpgPlotMemberRepository = $this->mock(RpgPlotMemberRepositoryInterface::class);
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->manager = new ResetManager(
             $this->playerDeletion,
@@ -79,8 +94,10 @@ class ResetManagerTest extends StuTestCase
             $this->knPostRepository,
             $this->historyRepository,
             $this->gameTurnRepository,
+            $this->rpgPlotMemberRepository,
             $this->rpgPlotRepository,
-            $this->planetFieldRepository
+            $this->planetFieldRepository,
+            $this->entityManager
         );
     }
 
@@ -91,6 +108,10 @@ class ResetManagerTest extends StuTestCase
             ->once();
 
         $colony = $this->mock(ColonyInterface::class);
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs($colony)
+            ->once();
 
         $this->colonyRepository->shouldReceive('findAll')
             ->withNoArgs()
@@ -136,6 +157,16 @@ class ResetManagerTest extends StuTestCase
             ->andReturn([$plot]);
         $this->rpgPlotRepository->shouldReceive('delete')
             ->with($plot)
+            ->once();
+
+        $plotMember = $this->mock(RpgPlotMemberInterface::class);
+
+        $this->rpgPlotMemberRepository->shouldReceive('findAll')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([$plotMember]);
+        $this->rpgPlotMemberRepository->shouldReceive('delete')
+            ->with($plotMember)
             ->once();
 
         $existingTurn = $this->mock(GameTurnInterface::class);

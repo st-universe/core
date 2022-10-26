@@ -108,5 +108,5 @@ interface BuildingInterface
 
     public function postActivation(ColonyInterface $colony): void;
 
-    public function isRemoveAble(): bool;
+    public function isRemovable(): bool;
 }

@@ -125,12 +125,14 @@ final class ResetManager implements ResetManagerInterface
     private function deleteKnPlots(): void
     {
         foreach ($this->rpgPlotRepository->findAll() as $plot) {
-            echo "plot:" . $plot->getId() . ", memberCount:" . $plot->getMemberCount() . "\n";
-            if ($plot->getMemberCount() > 0) {
+            //echo "plot:" . $plot->getId() . ", memberCount:" . $plot->getMemberCount() . "\n";
+            /**
+             if ($plot->getMemberCount() > 0) {
                 foreach ($plot->getMembers() as $member) {
-                    echo "\tmember:" . $member->getUser()->getId() . "\n";
+                    //echo "\tmember:" . $member->getUser()->getId() . "\n";
                 }
             }
+             */
             $this->rpgPlotRepository->delete($plot);
         }
     }

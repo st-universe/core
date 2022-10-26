@@ -52,7 +52,7 @@ final class RemoveBuilding implements ActionControllerInterface
         if (!$field->hasBuilding()) {
             return;
         }
-        if (!$field->getBuilding()->isRemoveAble()) {
+        if (!$field->getBuilding()->isRemovable()) {
             return;
         }
 

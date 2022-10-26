@@ -380,7 +380,7 @@ class Building implements BuildingInterface
         }
     }
 
-    public function isRemoveAble(): bool
+    public function isRemovable(): bool
     {
         return $this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_CENTRAL) === false;
     }

@@ -97,7 +97,7 @@ final class BuildingAction implements BuildingActionInterface
 
         $building = $field->getBuilding();
 
-        if (!$building->isRemoveAble() && $upgrade === false) {
+        if (!$building->isRemovable() && $upgrade === false) {
             return;
         }
 
