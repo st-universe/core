@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ColonyCorrector implements ColonyCorrectorInterface
@@ -13,16 +17,22 @@ final class ColonyCorrector implements ColonyCorrectorInterface
 
     private EntityManagerInterface $entityManager;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ColonyRepositoryInterface $colonyRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyRepository = $colonyRepository;
         $this->entityManager = $entityManager;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function correct(bool $doDump = true): void
     {
+        $this->loggerUtil->init('CoCo', LoggerEnum::LEVEL_ERROR);
+
         $database = $this->entityManager->getConnection();
 
         foreach ($this->colonyRepository->getColonized() as $colony) {
@@ -56,32 +66,55 @@ final class ColonyCorrector implements ColonyCorrectorInterface
             $max_free = max(0, $housing - $worker);
 
             if (
-                $worker !== $colony->getWorkers() ||
-                $housing !== $colony->getMaxBev() ||
-                $storage !== $colony->getMaxStorage() ||
-                $eps !== $colony->getMaxEps() ||
-                $max_free < $colony->getWorkless()
+                $this->check($worker, $colony->getWorkers(), $colony, 'setWorkers', 'worker')
+                || $this->check($housing, $colony->getMaxBev(), $colony, 'setMaxBev', 'housing')
+                || $this->check($storage, $colony->getMaxStorage(), $colony, 'setMaxStorage', 'storage')
+                || $this->check($eps, $colony->getMaxEps(), $colony, 'setMaxEps', 'eps')
+                || $this->checkWorkless($max_free, $colony)
             ) {
-                if ($doDump) {
-                    var_dump([
-                        ['worker' => $worker, 'actual' => $colony->getWorkers()],
-                        ['housing' => $housing, 'actual' => $colony->getMaxBev()],
-                        ['storage' => $storage, 'actual' => $colony->getMaxStorage()],
-                        ['eps' => $eps, 'actual' => $colony->getMaxEps()],
-                        ['max_free' => $max_free, 'actual' => $colony->getWorkless()],
-                    ]);
-                }
-
-                $colony->setWorkers($worker);
-                $colony->setMaxBev($housing);
-                $colony->setMaxStorage($storage);
-                $colony->setMaxEps($eps);
-                $colony->setWorkless(min($max_free, $colony->getWorkless()));
-
                 $this->colonyRepository->save($colony);
             }
         }
 
         $this->entityManager->flush();
+    }
+
+    private function check(int $expected, int $actual, ColonyInterface $colony, string $method, string $description): bool
+    {
+        if ($expected !== $actual) {
+            $colony->$method($expected);
+
+            $this->loggerUtil->log(sprintf(
+                '%s of colonyId %d: expected: %d, actual: %d',
+                $description,
+                $colony->getId(),
+                $expected,
+                $actual
+            ));
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function checkWorkless(int $maxFree,  ColonyInterface $colony): bool
+    {
+        $actual = $colony->getWorkless();
+
+        if ($maxFree < $actual) {
+            $colony->setWorkless(min($maxFree, $actual));
+
+            $this->loggerUtil->log(sprintf(
+                'maxFreeWorkless of colonyId %d: expected: %d, actual: %d',
+                $colony->getId(),
+                $maxFree,
+                $actual
+            ));
+
+            return false;
+        }
+
+        return true;
     }
 }
