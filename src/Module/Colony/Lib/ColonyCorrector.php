@@ -53,13 +53,13 @@ final class ColonyCorrector implements ColonyCorrectorInterface
             $storage = (int) $database->fetchOne(
                 'SELECT SUM(a.lager) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.colonies_id = :colonyId',
+                    WHERE scf.aktiv <= 1 AND scf.colonies_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
             $eps = (int) $database->fetchOne(
                 'SELECT SUM(a.eps) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.colonies_id = :colonyId',
+                    WHERE scf.aktiv <= 1 AND scf.colonies_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
 
