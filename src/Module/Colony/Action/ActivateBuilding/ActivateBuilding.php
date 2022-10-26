@@ -54,7 +54,7 @@ final class ActivateBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($field->isInConstruction()) {
+        if ($field->isUnderConstruction()) {
             $field->setActivateAfterBuild(true);
             $game->addInformation("Gebäude wird nach Bau aktiviert");
         } else {

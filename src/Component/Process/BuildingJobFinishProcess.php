@@ -38,7 +38,7 @@ final class BuildingJobFinishProcess implements BuildingJobFinishProcessInterfac
     {
         $field = $this->planetFieldRepository->find($message->getPlanetFieldId());
 
-        if ($field->isInConstruction() === false) {
+        if ($field->isUnderConstruction() === false) {
             return;
         }
 

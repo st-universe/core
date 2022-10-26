@@ -44,7 +44,7 @@ interface PlanetFieldInterface
 
     public function hasHighDamage(): bool;
 
-    public function isInConstruction(): bool;
+    public function isUnderConstruction(): bool;
 
     public function hasBuilding(): bool;
 

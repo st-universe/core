@@ -60,7 +60,7 @@ final class RepairBuilding implements ActionControllerInterface
         if (!$field->isDamaged()) {
             return;
         }
-        if ($field->isInConstruction()) {
+        if ($field->isUnderConstruction()) {
             return;
         }
 

@@ -1398,7 +1398,7 @@
         </div>
       </tal:block>
       <tal:block tal:condition="field/hasBuilding">
-        <div tal:condition="not:field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
+        <div tal:condition="not:field/isUnderConstruction" style="${style}" tal:attributes="class field/getCssClass">
           <div
             style="background-image: url(assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
             onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}">
@@ -1410,7 +1410,7 @@
             </div>
           </div>
         </div>
-        <div tal:condition="field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
+        <div tal:condition="field/isUnderConstruction" style="${style}" tal:attributes="class field/getCssClass">
           <div
             style="background-image: url(assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
             onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}">
@@ -1432,7 +1432,7 @@
   <table class="use" style="width: 600px;">
     <tr>
       <td>
-        <div style="width: 100%;" tal:condition="FIELD/isInConstruction">
+        <div style="width: 100%;" tal:condition="FIELD/isUnderConstruction">
           <div
             style="background-image: url(assets/generated/fields/${FIELD/getFieldType}.png); width: 40px; height: 40px; display: table-cell;">
             <div
@@ -1466,7 +1466,7 @@
             <br />
           </tal:block>
         </div>
-        <div tal:condition="not:FIELD/isInConstruction">
+        <div tal:condition="not:FIELD/isUnderConstruction">
           <div tal:condition="not: FIELD/hasBuilding">
             <div style="display: table-cell;">
               <img src="assets/generated/fields/${FIELD/getFieldType}.png" /><br />

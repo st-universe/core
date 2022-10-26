@@ -186,7 +186,7 @@ class PlanetField implements PlanetFieldInterface
         if ($this->hasBuilding() === false) {
             return false;
         }
-        if ($this->isInConstruction()) {
+        if ($this->isUnderConstruction()) {
             return false;
         }
         return $this->getBuilding()->isActivateable();
@@ -203,7 +203,7 @@ class PlanetField implements PlanetFieldInterface
         return false;
     }
 
-    public function isInConstruction(): bool
+    public function isUnderConstruction(): bool
     {
         return $this->getActive() > 1;
     }
@@ -236,7 +236,7 @@ class PlanetField implements PlanetFieldInterface
 
     public function getBuildingState(): string
     {
-        if ($this->isInConstruction()) {
+        if ($this->isUnderConstruction()) {
             return 'b';
         }
         return 'a';
@@ -259,7 +259,7 @@ class PlanetField implements PlanetFieldInterface
         if (!$this->hasBuilding()) {
             return false;
         }
-        if ($this->isInConstruction()) {
+        if ($this->isUnderConstruction()) {
             return false;
         }
         return $this->getIntegrity() != $this->getBuilding()->getIntegrity();
@@ -361,7 +361,7 @@ class PlanetField implements PlanetFieldInterface
             }
             return $this->getFieldTypeName();
         }
-        if ($this->isinConstruction()) {
+        if ($this->isUnderConstruction()) {
             return sprintf(
                 _('In Bau: %s auf %s - Fertigstellung: %s'),
                 $this->getBuilding()->getName(),
@@ -407,7 +407,7 @@ class PlanetField implements PlanetFieldInterface
 
     public function getPossibleUpgrades(): array
     {
-        if ($this->isInConstruction() || $this->getBuildingId() == 0) {
+        if ($this->isUnderConstruction() || $this->getBuildingId() == 0) {
             return [];
         }
         if ($this->upgrades === null) {
@@ -432,7 +432,7 @@ class PlanetField implements PlanetFieldInterface
 
     public function hasUpgradeOrTerraformingOption(): bool
     {
-        return (!$this->isInConstruction() && count($this->getPossibleUpgrades()) > 0) || (count($this->getTerraformingOptions()) > 0 && !$this->hasBuilding());
+        return (!$this->isUnderConstruction() && count($this->getPossibleUpgrades()) > 0) || (count($this->getTerraformingOptions()) > 0 && !$this->hasBuilding());
     }
 
     /**

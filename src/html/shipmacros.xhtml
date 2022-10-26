@@ -1751,7 +1751,7 @@
           </div>
         </tal:block>
         <tal:block tal:condition="field/hasBuilding">
-          <div tal:condition="not:field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
+          <div tal:condition="not:field/isUnderConstruction" style="${style}" tal:attributes="class field/getCssClass">
             <div
               style="background-image: url(assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
               id="field${field/getFieldId}">
@@ -1766,7 +1766,7 @@
               </div>
             </div>
           </div>
-          <div tal:condition="field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
+          <div tal:condition="field/isUnderConstruction" style="${style}" tal:attributes="class field/getCssClass">
             <div
               style="background-image: url(assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png); width: 40px; height: 40px;"
               id="field${field/getFieldId}">

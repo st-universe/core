@@ -49,7 +49,7 @@ final class DeactivateBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($field->isInConstruction()) {
+        if ($field->isUnderConstruction()) {
             $field->setActivateAfterBuild(false);
             $game->addInformation("Gebäude wird nach Bau deaktiviert");
         } else {

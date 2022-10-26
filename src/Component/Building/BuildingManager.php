@@ -96,8 +96,7 @@ final class BuildingManager implements BuildingManagerInterface
 
         $colony = $field->getColony();
 
-        $isUnderconstruction = $field->getActive() > 1;
-        if (!$isUnderconstruction) {
+        if (!$field->isUnderConstruction()) {
             $this->deactivate($field);
             $colony
                 ->setMaxStorage($colony->getMaxStorage() - $building->getStorage())

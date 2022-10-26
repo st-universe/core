@@ -97,7 +97,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         ) {
             return;
         }
-        if ($field->isInConstruction()) {
+        if ($field->isUnderConstruction()) {
             $game->addInformation(_('Das Gebäude auf diesem Feld ist noch nicht fertig'));
             return;
         }
