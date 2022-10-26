@@ -645,7 +645,7 @@
 					<td tal:condition="wormholeEntry">
 						<tal:block>
 							${wormholeEntry/getSystem/getName}<br />
-							<a tal:condition="not:SHIP/getWarpState"
+							<a tal:condition="php: !SHIP.getWarpState() AND !SHIP.isBase()"
 								href="ship.php?B_ENTER_WORMHOLE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 								<img src="assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
 								einfliegen

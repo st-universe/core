@@ -76,6 +76,10 @@ final class EnterWormhole implements ActionControllerInterface
             return;
         }
 
+        if ($ship->isBase()) {
+            return;
+        }
+
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
