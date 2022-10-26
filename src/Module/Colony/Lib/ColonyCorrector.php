@@ -92,10 +92,10 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 $actual
             ));
 
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private function checkWorkless(int $maxFree,  ColonyInterface $colony): bool
@@ -112,9 +112,9 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 $actual
             ));
 
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
