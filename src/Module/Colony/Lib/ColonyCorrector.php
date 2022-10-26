@@ -28,33 +28,29 @@ final class ColonyCorrector implements ColonyCorrectorInterface
         foreach ($this->colonyRepository->getColonized() as $colony) {
             $colonyId = $colony->getId();
 
-            $worker = (int) $database->fetchColumn(
+            $worker = (int) $database->fetchOne(
                 'SELECT SUM(a.bev_use) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
                     WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
-                ['colonyId' => $colonyId],
-                0
+                ['colonyId' => $colonyId]
             );
-            $housing = (int) $database->fetchColumn(
+            $housing = (int) $database->fetchOne(
                 'SELECT SUM(a.bev_pro) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
                     WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
-                ['colonyId' => $colonyId],
-                0
+                ['colonyId' => $colonyId]
             );
-            $storage = (int) $database->fetchColumn(
+            $storage = (int) $database->fetchOne(
                 'SELECT SUM(a.lager) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
                     WHERE scf.colonies_id = :colonyId',
-                ['colonyId' => $colonyId],
-                0
+                ['colonyId' => $colonyId]
             );
-            $eps = (int) $database->fetchColumn(
+            $eps = (int) $database->fetchOne(
                 'SELECT SUM(a.eps) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
                     WHERE scf.colonies_id = :colonyId',
-                ['colonyId' => $colonyId],
-                0
+                ['colonyId' => $colonyId]
             );
 
             $max_free = max(0, $housing - $worker);
