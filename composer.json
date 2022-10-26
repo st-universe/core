@@ -48,7 +48,7 @@
     "php-di/php-di": "^6",
     "scn/phptal": "^3",
     "seld/signal-handler": "^1.2",
-    "slim/http": "^0.8",
+    "slim/http": "^1.2",
     "slim/psr7": "^0.6",
     "slim/slim": "^4.2",
     "st-universe/starsystem-generator": "dev-master",
