@@ -188,5 +188,5 @@ interface UserInterface
 
     public function isAdmin(): bool;
 
-    public function getUserLock(): ?UserLock;
+    public function getUserLock(): ?UserLockInterface;
 }

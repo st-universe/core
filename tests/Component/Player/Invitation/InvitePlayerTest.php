@@ -6,13 +6,13 @@ namespace Stu\Component\Player\Invitation;
 
 use DateTime;
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserInvitationInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
+use Stu\StuTestCase;
 
-class InvitePlayerTest extends MockeryTestCase
+class InvitePlayerTest extends StuTestCase
 {
 
     /**
@@ -36,11 +36,15 @@ class InvitePlayerTest extends MockeryTestCase
 
     public function testInviteCreatesInvitation(): void
     {
-        $user = Mockery::mock(UserInterface::class);
-        $invitation = Mockery::mock(UserInvitationInterface::class);
+        $user = $this->mock(UserInterface::class);
+        $invitation = $this->mock(UserInvitationInterface::class);
 
-        $this->userInvitationRepository->shouldReceive('prototype->setUser')
-            ->with($user)
+        $user->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(42);
+
+        $this->userInvitationRepository->shouldReceive('prototype->setUserId')
+            ->with(42)
             ->once()
             ->andReturn($invitation);
 

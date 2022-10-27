@@ -789,7 +789,7 @@ class User implements UserInterface
         return in_array($this->getId(),  $container->get(ConfigInterface::class)->get('game.admins'));
     }
 
-    public function getUserLock(): ?UserLock
+    public function getUserLock(): ?UserLockInterface
     {
         return $this->userLock;
     }

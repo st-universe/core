@@ -11,8 +11,9 @@ use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\StuTestCase;
 
-class ColonyDeletionHandlerTest extends MockeryTestCase
+class ColonyDeletionHandlerTest extends StuTestCase
 {
 
     /**
@@ -32,8 +33,8 @@ class ColonyDeletionHandlerTest extends MockeryTestCase
 
     public function setUp(): void
     {
-        $this->colonyResetter = Mockery::mock(ColonyResetterInterface::class);
-        $this->colonyRepository = Mockery::mock(ColonyRepositoryInterface::class);
+        $this->colonyResetter = $this->mock(ColonyResetterInterface::class);
+        $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
 
         $this->handler = new ColonyDeletionHandler(
             $this->colonyResetter,
@@ -52,7 +53,7 @@ class ColonyDeletionHandlerTest extends MockeryTestCase
             ->andReturn([$colony]);
 
         $this->colonyResetter->shouldReceive('reset')
-            ->with($colony)
+            ->with($colony, false)
             ->once();
 
         $this->handler->delete($user);

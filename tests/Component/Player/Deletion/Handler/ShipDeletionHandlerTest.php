@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -11,8 +12,9 @@ use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\StuTestCase;
 
-class ShipDeletionHandlerTest extends MockeryTestCase
+class ShipDeletionHandlerTest extends StuTestCase
 {
     /**
      * @var null|MockInterface|ShipRemoverInterface
@@ -25,18 +27,25 @@ class ShipDeletionHandlerTest extends MockeryTestCase
     private $shipRepository;
 
     /**
+     * @var null|MockInterface|EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * @var null|ShipDeletionHandler
      */
     private $handler;
 
     public function setUp(): void
     {
-        $this->shipRemover = Mockery::mock(ShipRemoverInterface::class);
-        $this->shipRepository = Mockery::mock(ShipRepositoryInterface::class);
+        $this->shipRemover = $this->mock(ShipRemoverInterface::class);
+        $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->handler = new ShipDeletionHandler(
             $this->shipRemover,
-            $this->shipRepository
+            $this->shipRepository,
+            $this->entityManager
         );
     }
 
@@ -52,6 +61,10 @@ class ShipDeletionHandlerTest extends MockeryTestCase
 
         $this->shipRemover->shouldReceive('remove')
             ->with($ship)
+            ->once();
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
             ->once();
 
         $this->handler->delete($user);
