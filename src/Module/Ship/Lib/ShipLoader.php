@@ -158,7 +158,7 @@ final class ShipLoader implements ShipLoaderInterface
                 $this->loggerUtil->log(sprintf(
                     'userId %d acquired semaphore %d (targetId: %d)',
                     $userId,
-                    $result[$targetId]->getUser()->getId(),
+                    $result[$targetId] !== null ? $result[$targetId]->getUser()->getId() : 0,
                     $targetId
                 ));
             }
@@ -184,7 +184,6 @@ final class ShipLoader implements ShipLoaderInterface
         $key = $ship->getUser()->getId();
         $semaphore = $this->semaphoreUtil->getSemaphore($key);
         $this->semaphoreUtil->acquireSemaphore($key, $semaphore); //prüft ob schon genommen
-
         return $ship;
     }
 
