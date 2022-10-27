@@ -21,6 +21,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 class PlayerCreatorTest extends MockeryTestCase
 {
+    //TOTEST createWithMobileNumber
     /**
      * @var null|MockInterface|UserRepositoryInterface
      */
@@ -35,6 +36,11 @@ class PlayerCreatorTest extends MockeryTestCase
      * @var null|MockInterface|RegistrationEmailSenderInterface
      */
     private $registrationEmailSender;
+
+    /**
+     * @var null|MockInterface|SmsVerificationCodeSenderInterface
+     */
+    private $smsVerificationCodeSender;
 
     /**
      * @var null|MockInterface|UserInvitationRepositoryInterface
@@ -61,6 +67,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
         $this->playerDefaultsCreator = Mockery::mock(PlayerDefaultsCreatorInterface::class);
         $this->registrationEmailSender = Mockery::mock(RegistrationEmailSenderInterface::class);
+        $this->smsVerificationCodeSender = Mockery::mock(SmsVerificationCodeSenderInterface::class);
         $this->userInvitationRepository = Mockery::mock(UserInvitationRepositoryInterface::class);
         $this->config = Mockery::mock(ConfigInterface::class);
         $this->passwordGenerator = Mockery::mock(PasswordGeneratorInterface::class);
@@ -69,6 +76,7 @@ class PlayerCreatorTest extends MockeryTestCase
             $this->userRepository,
             $this->playerDefaultsCreator,
             $this->registrationEmailSender,
+            $this->smsVerificationCodeSender,
             $this->userInvitationRepository,
             $this->config,
             $this->passwordGenerator
@@ -294,7 +302,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->andReturnSelf();
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn($user_id);
 
         $this->passwordGenerator->shouldReceive('generatePassword')
@@ -302,8 +310,8 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturn($generated_password);
 
-        $invitation->shouldReceive('setInvitedUser')
-            ->with($user)
+        $invitation->shouldReceive('setInvitedUserId')
+            ->with($user_id)
             ->once();
 
         $this->playerDefaultsCreator->shouldReceive('createDefault')

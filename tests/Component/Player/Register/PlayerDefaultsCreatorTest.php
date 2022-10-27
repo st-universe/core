@@ -51,17 +51,19 @@ class PlayerDefaultsCreatorTest extends MockeryTestCase
         $startResearch = Mockery::mock(ResearchInterface::class);
         $researchEntry = Mockery::mock(ResearchedInterface::class);
 
+        $defaultCategoryCount = count(PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES);
+
         $this->privateMessageFolderRepository->shouldReceive('prototype')
             ->withNoArgs()
-            ->times(5)
+            ->times($defaultCategoryCount)
             ->andReturn($pmFolder);
         $this->privateMessageFolderRepository->shouldReceive('save')
             ->with($pmFolder)
-            ->times(5);
+            ->times($defaultCategoryCount);
 
         $pmFolder->shouldReceive('setUser')
             ->with($user)
-            ->times(5)
+            ->times($defaultCategoryCount)
             ->andReturnSelf();
 
         foreach (PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES as $specialFolderTypeId => $label) {

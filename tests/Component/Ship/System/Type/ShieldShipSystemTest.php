@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
 
 class ShieldShipSystemTest extends StuTestCase
@@ -28,12 +31,14 @@ class ShieldShipSystemTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
+        $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship)
+            $this->system->checkActivationConditions($ship, $reason)
         );
+        $this->assertEquals('die Tarnung aktiviert ist', $reason);
     }
 
-    public function testCheckActivationConditionsReturnsFalsIfShielsAreActive(): void
+    public function testCheckActivationConditionsReturnsFalseIfTractoring(): void
     {
         $ship = $this->mock(ShipInterface::class);
 
@@ -41,17 +46,19 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getShieldState')
+        $ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturn(true);
 
+        $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship)
+            $this->system->checkActivationConditions($ship, $reason)
         );
+        $this->assertEquals('der Traktorstrahl aktiviert ist', $reason);
     }
 
-    public function testCheckActivationConditionsReturnsFalseIfTraktorBeamIsActive(): void
+    public function testCheckActivationConditionsReturnsFalseIfTractored(): void
     {
         $ship = $this->mock(ShipInterface::class);
 
@@ -59,18 +66,20 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getShieldState')
+        $ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
-        $ship->shouldReceive('getTractoredShip')
+            ->andReturn(false);
+        $ship->shouldReceive('isTractored')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->mock(ShipInterface::class));
+            ->andReturn(true);
 
+        $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship)
+            $this->system->checkActivationConditions($ship, $reason)
         );
+        $this->assertEquals('das Schiff von einem Traktorstrahl gehalten wird', $reason);
     }
 
     public function testCheckActivationConditionsReturnsFalseIfShieldsAreDepleted(): void
@@ -81,22 +90,24 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getShieldState')
+        $ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
-        $ship->shouldReceive('getTractoredShip')
+            ->andReturn(false);
+        $ship->shouldReceive('isTractored')
             ->withNoArgs()
             ->once()
-            ->andReturn(null);
+            ->andReturn(false);
         $ship->shouldReceive('getShield')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
 
+        $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship)
+            $this->system->checkActivationConditions($ship, $reason)
         );
+        $this->assertEquals('die Schildemitter erschöpft sind', $reason);
     }
 
     public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
@@ -107,22 +118,24 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getShieldState')
+        $ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
-        $ship->shouldReceive('getTractoredShip')
+            ->andReturn(false);
+        $ship->shouldReceive('isTractored')
             ->withNoArgs()
             ->once()
-            ->andReturn(null);
+            ->andReturn(false);
         $ship->shouldReceive('getShield')
             ->withNoArgs()
             ->once()
-            ->andReturn(666);
+            ->andReturn(1);
 
+        $reason = null;
         $this->assertTrue(
-            $this->system->checkActivationConditions($ship)
+            $this->system->checkActivationConditions($ship, $reason)
         );
+        $this->assertNull($reason);
     }
 
     public function testGetEnergyUsageForActivationReturnsValus(): void
@@ -136,6 +149,7 @@ class ShieldShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
+        $system = $this->mock(ShipSystemInterface::class);
 
         $ship->shouldReceive('cancelRepair')
             ->withNoArgs()
@@ -143,8 +157,12 @@ class ShieldShipSystemTest extends StuTestCase
         $ship->shouldReceive('setDockedTo')
             ->with(null)
             ->once();
-        $ship->shouldReceive('setShieldState')
-            ->with(true)
+        $ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_SHIELDS)
+            ->once()
+            ->andReturn($system);
+        $system->shouldReceive('setMode')
+            ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
 
         $this->system->activate($ship);
@@ -153,9 +171,14 @@ class ShieldShipSystemTest extends StuTestCase
     public function testDeactivateDeactivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
+        $system = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('setShieldState')
-            ->with(false)
+        $ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_SHIELDS)
+            ->once()
+            ->andReturn($system);
+        $system->shouldReceive('setMode')
+            ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
 
         $this->system->deactivate($ship);

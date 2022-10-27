@@ -109,7 +109,10 @@ final class PlayerCreator implements PlayerCreatorInterface
         if (!filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
             throw new EmailAddressInvalidException();
         }
-        if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress) || $this->userRepository->getByMobile($mobile)) {
+        if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress)) {
+            throw new PlayerDuplicateException();
+        }
+        if ($mobile !== null && $this->userRepository->getByMobile($mobile)) {
             throw new PlayerDuplicateException();
         }
         if ($mobile !== null) {

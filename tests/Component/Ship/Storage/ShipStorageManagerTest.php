@@ -9,17 +9,17 @@ use Mockery\MockInterface;
 use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
 use Stu\Component\Ship\Storage\Exception\QuantityTooSmallException;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipStorageInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Repository\ShipStorageRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipStorageManagerTest extends StuTestCase
 {
     /**
-     * @var ShipStorageRepositoryInterface|MockInterface|null
+     * @var StorageRepositoryInterface|MockInterface|null
      */
-    private ?MockInterface $shipStorageRepository;
+    private $storageRepository;
 
     /**
      * @var ShipStorageManager
@@ -28,14 +28,15 @@ class ShipStorageManagerTest extends StuTestCase
 
     public function setUp(): void
     {
-        $this->shipStorageRepository = $this->mock(ShipStorageRepositoryInterface::class);
+        $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
 
         $this->manager = new ShipStorageManager(
-            $this->shipStorageRepository,
+            $this->storageRepository,
         );
     }
 
-    public function testLowerStorageThrowExceptionOnMissingCommodity(): void {
+    public function testLowerStorageThrowExceptionOnMissingCommodity(): void
+    {
         $this->expectException(CommodityMissingException::class);
 
         $ship = $this->mock(ShipInterface::class);
@@ -54,12 +55,13 @@ class ShipStorageManagerTest extends StuTestCase
         $this->manager->lowerStorage($ship, $commodity, 666);
     }
 
-    public function testLowerStorageThrowExceptionIfQuantitityIsTooSmall(): void {
+    public function testLowerStorageThrowExceptionIfQuantitityIsTooSmall(): void
+    {
         $this->expectException(QuantityTooSmallException::class);
 
         $ship = $this->mock(ShipInterface::class);
         $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ShipStorageInterface::class);
+        $storageItem = $this->mock(StorageInterface::class);
 
         $amount = 666;
         $storedAmount = 33;
@@ -85,10 +87,11 @@ class ShipStorageManagerTest extends StuTestCase
         $this->manager->lowerStorage($ship, $commodity, $amount);
     }
 
-    public function testLowerStorageRemovesCommodityFromStorageIfQuantityIsSame(): void {
+    public function testLowerStorageRemovesCommodityFromStorageIfQuantityIsSame(): void
+    {
         $ship = $this->mock(ShipInterface::class);
         $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ShipStorageInterface::class);
+        $storageItem = $this->mock(StorageInterface::class);
 
         $amount = 666;
         $commodityId = 42;
@@ -112,7 +115,7 @@ class ShipStorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($amount);
 
-        $this->shipStorageRepository->shouldReceive('delete')
+        $this->storageRepository->shouldReceive('delete')
             ->with($storageItem)
             ->once();
 
@@ -123,10 +126,11 @@ class ShipStorageManagerTest extends StuTestCase
         );
     }
 
-    public function testLowerStorageUpdatesStorageItem(): void {
+    public function testLowerStorageUpdatesStorageItem(): void
+    {
         $ship = $this->mock(ShipInterface::class);
         $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ShipStorageInterface::class);
+        $storageItem = $this->mock(StorageInterface::class);
 
         $amount = 666;
         $storedAmount = 777;
@@ -154,7 +158,7 @@ class ShipStorageManagerTest extends StuTestCase
             ->with($storedAmount - $amount)
             ->once();
 
-        $this->shipStorageRepository->shouldReceive('save')
+        $this->storageRepository->shouldReceive('save')
             ->with($storageItem)
             ->once();
 
@@ -165,10 +169,11 @@ class ShipStorageManagerTest extends StuTestCase
         );
     }
 
-    public function testUpperStorageCreatesNewStorageItem(): void {
+    public function testUpperStorageCreatesNewStorageItem(): void
+    {
         $ship = $this->mock(ShipInterface::class);
         $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ShipStorageInterface::class);
+        $storageItem = $this->mock(StorageInterface::class);
         $storage = new ArrayCollection();
 
         $amount = 666;
@@ -179,20 +184,28 @@ class ShipStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
+        $ship->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $commodity->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($commodityId);
 
-        $this->shipStorageRepository->shouldReceive('prototype')
+        $this->storageRepository->shouldReceive('prototype')
             ->withNoArgs()
             ->once()
             ->andReturn($storageItem);
-        $this->shipStorageRepository->shouldReceive('save')
+        $this->storageRepository->shouldReceive('save')
             ->with($storageItem)
             ->once();
 
+        $storageItem->shouldReceive('setUserId')
+            ->with(42)
+            ->once()
+            ->andReturnSelf();
         $storageItem->shouldReceive('setShip')
             ->with($ship)
             ->once()
@@ -216,10 +229,11 @@ class ShipStorageManagerTest extends StuTestCase
         );
     }
 
-    public function testUpperStorageUpdateExistingStorageItem(): void {
+    public function testUpperStorageUpdateExistingStorageItem(): void
+    {
         $ship = $this->mock(ShipInterface::class);
         $commodity = $this->mock(CommodityInterface::class);
-        $storageItem = $this->mock(ShipStorageInterface::class);
+        $storageItem = $this->mock(StorageInterface::class);
 
         $amount = 666;
         $commodityId = 42;
@@ -238,7 +252,7 @@ class ShipStorageManagerTest extends StuTestCase
             ->once()
             ->andReturn($commodityId);
 
-        $this->shipStorageRepository->shouldReceive('save')
+        $this->storageRepository->shouldReceive('save')
             ->with($storageItem)
             ->once();
 

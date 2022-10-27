@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Mockery;
+use Mockery\MockInterface;
+use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
 
 class NearFieldScannerShipSystemTest extends StuTestCase
@@ -15,37 +23,48 @@ class NearFieldScannerShipSystemTest extends StuTestCase
      */
     private $system;
 
+    /**
+     * @var null|AstroEntryLibInterface|MockInterface
+     */
+    private $astroEntryLib;
+
     public function setUp(): void
     {
-        $this->system = new NearFieldScannerShipSystem();
+        $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
+
+        $this->system = new NearFieldScannerShipSystem($this->astroEntryLib);
     }
 
-    public function testCheckActivationConditionsReturnsFalseIfAlreadyActive(): void
+    public function testCheckDeactivationConditionsReturnsFalseIfAlertRed(): void
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getNbs')
+        $ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturn(ShipAlertStateEnum::ALERT_RED);
 
+        $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship)
+            $this->system->checkDeactivationConditions($ship, $reason)
         );
+        $this->assertEquals('die Alarmstufe Rot ist', $reason);
     }
 
-    public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
+    public function testCheckDeactivationConditionsReturnsTrueIfDeactivatable(): void
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('getNbs')
+        $ship->shouldReceive('getAlertState')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
+            ->andReturn(ShipAlertStateEnum::ALERT_YELLOW);
 
+        $reason = null;
         $this->assertTrue(
-            $this->system->checkActivationConditions($ship)
+            $this->system->checkDeactivationConditions($ship, $reason)
         );
+        $this->assertNull($reason);
     }
 
     public function testGetEnergyUsageForActivationReturnsValue(): void
@@ -59,9 +78,14 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
+        $system = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('setNbs')
-            ->with(true)
+        $ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_NBS)
+            ->once()
+            ->andReturn($system);
+        $system->shouldReceive('setMode')
+            ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
 
         $this->system->activate($ship);
@@ -70,11 +94,65 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     public function testDeactivateDeactivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
+        $systemNbs = $this->mock(ShipSystemInterface::class);
+        $systemAstro = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('setNbs')
-            ->with(false)
+        $ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_NBS)
+            ->once()
+            ->andReturn($systemNbs);
+        $systemNbs->shouldReceive('setMode')
+            ->with(ShipSystemModeEnum::MODE_OFF)
+            ->once();
+
+        //ASTRO STUFF
+        $ship->shouldReceive('hasShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
+            ->once()
+            ->andReturn($systemAstro);
+        $systemAstro->shouldReceive('setMode')
+            ->with(ShipSystemModeEnum::MODE_OFF)
+            ->once();
+        $ship->shouldReceive('getState')
+            ->with()
+            ->once()
+            ->andReturn(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
+        $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
+            ->with($ship)
             ->once();
 
         $this->system->deactivate($ship);
+    }
+
+    public function testHandleDestruction(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $systemAstro = $this->mock(ShipSystemInterface::class);
+
+        //ASTRO STUFF
+        $ship->shouldReceive('hasShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
+            ->once()
+            ->andReturn($systemAstro);
+        $systemAstro->shouldReceive('setMode')
+            ->with(ShipSystemModeEnum::MODE_OFF)
+            ->once();
+        $ship->shouldReceive('getState')
+            ->with()
+            ->once()
+            ->andReturn(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
+        $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
+            ->with($ship)
+            ->once();
+
+        $this->system->handleDestruction($ship);
     }
 }
