@@ -101,11 +101,7 @@ final class LeaveWormhole implements ActionControllerInterface
         );
 
         //the destination map field
-        if ($wormholeEntry->getMap() == NULL) {
-            $outerMap = $this->wormholeEntryRepository->getRandomOuterMap();
-        } else {
-            $outerMap = $wormholeEntry->getMap();
-        }
+        $outerMap = $wormholeEntry->getMap();
 
         $this->leaveWormhole($ship, $outerMap);
         if ($ship->isTractoring()) {
