@@ -12,6 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
@@ -30,18 +31,22 @@ final class LandShip implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private ShipTorpedoManagerInterface $shipTorpedoManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipRemoverInterface $shipRemover,
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipTorpedoManagerInterface $shipTorpedoManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipRemover = $shipRemover;
         $this->shipLoader = $shipLoader;
+        $this->shipTorpedoManager = $shipTorpedoManager;
     }
 
     public function handle(GameControllerInterface $game): void
