@@ -12,6 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class LandShip implements ActionControllerInterface
@@ -72,9 +73,43 @@ final class LandShip implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
+        $this->retrieveLoadedTorpedos($ship, $colony, $game);
+
         $this->shipRemover->remove($ship);
 
         $game->addInformationf(_('Die %s ist gelandet'), $ship->getName());
+    }
+
+    private function retrieveLoadedTorpedos(ShipInterface $ship, $colony, $game): void
+    {
+        $torpedoStorage = $ship->getTorpedoStorage();
+
+        if ($torpedoStorage === null) {
+            return;
+        }
+
+        $maxStorage = $colony->getMaxStorage();
+
+        if ($colony->getStorageSum() >= $maxStorage) {
+            $game->addInformationf(_('Kein Lagerraum frei um geladene Torpedos zu sichern!'));
+            return;
+        }
+
+        $amount = $torpedoStorage->getStorage()->getAmount();
+        if ($maxStorage - $colony->getStorageSum() < $amount) {
+            $amount = $maxStorage - $colony->getStorageSum();
+        }
+
+        $commodity = $torpedoStorage->getStorage()->getCommodity();
+        $this->colonyStorageManager->upperStorage(
+            $colony,
+            $commodity,
+            $amount
+        );
+
+        $this->shipTorpedoManager->removeTorpedo($ship);
+
+        $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }
 
     public function performSessionCheck(): bool
