@@ -21,7 +21,7 @@ class WormholeEntry implements WormholeEntryInterface
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer", nullable=true) * */
     private $map_id;
 
     /** @Column(type="integer") * */
