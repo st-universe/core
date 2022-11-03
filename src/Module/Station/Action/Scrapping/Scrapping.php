@@ -167,8 +167,11 @@ final class Scrapping implements ActionControllerInterface
                             $module->getName()
                         ));
                     }
-
-                    $count = $buildplanModule->getModuleCount();
+                    if ($buildplanModule->getModuleCount() == null) {
+                        $count = 1;
+                    } else {
+                        $count = $buildplanModule->getModuleCount();
+                    }
 
                     $intactModules[$module->getId()] = [$module, $count];
                 }
