@@ -227,7 +227,7 @@ class Ship implements ShipInterface
     private $crew;
 
     /**
-     * @OneToOne(targetEntity="TorpedoStorage", mappedBy="ship")
+     * @OneToOne(targetEntity="TorpedoStorage", mappedBy="ship", onDelete="CASCADE")
      */
     private $torpedoStorage;
 
