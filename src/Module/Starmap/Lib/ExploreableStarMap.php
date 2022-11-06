@@ -9,7 +9,6 @@ use Stu\Orm\Entity\MapBorderTypeInterface;
 use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Entity\TradeLicenseInfoInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 /**

@@ -6,7 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\TradeLicenseInfoInterface;
+
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradePostRepository")
@@ -182,8 +182,11 @@ class TradePost implements TradePostInterface
         if (empty($this->licenseInfos)) {
             return null;
         }
-
-        return current($this->licenseInfos->getValues());
+        if (current($this->licenseInfos->getValues()) === false) {
+            return null;
+        } else {
+            return current($this->licenseInfos->getValues());
+        }
     }
 
     public function getShip(): ShipInterface
