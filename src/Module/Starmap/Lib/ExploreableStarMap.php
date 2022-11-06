@@ -129,7 +129,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     {
         $licenseInfo = $tradepost->getLatestLicenseInfo();
 
-        if ($licenseInfo === null) {
+        if ($licenseInfo === false) {
             return $this->getStringWithoutBbCode($tradepost->getName());
         }
 
