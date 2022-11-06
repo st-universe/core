@@ -9,6 +9,7 @@ use Stu\Orm\Entity\MapBorderTypeInterface;
 use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\TradeLicenseInfoInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 /**
@@ -127,19 +128,18 @@ class ExploreableStarMap implements ExploreableStarMapInterface
 
     private function getTradepostTitle(TradePostInterface $tradepost): string
     {
+        $licenseInfo = $tradepost->getLatestLicenseInfo();
 
-
-        if ($tradepost->getLatestLicenseInfo() === false) {
+        if ($licenseInfo === null) {
             return $this->getStringWithoutBbCode($tradepost->getName());
-        } else {
-            $licenseInfo = $tradepost->getLatestLicenseInfo();
-            return sprintf(
-                '%s (Lizenz: %d %s)',
-                $this->getStringWithoutBbCode($tradepost->getName()),
-                $licenseInfo->getAmount(),
-                $licenseInfo->getCommodity()->getName()
-            );
         }
+
+        return sprintf(
+            '%s (Lizenz: %d %s)',
+            $this->getStringWithoutBbCode($tradepost->getName()),
+            $licenseInfo->getAmount(),
+            $licenseInfo->getCommodity()->getName()
+        );
     }
 
     private function getStringWithoutBbCode(string $string): string
