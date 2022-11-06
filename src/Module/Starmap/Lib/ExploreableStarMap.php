@@ -127,18 +127,19 @@ class ExploreableStarMap implements ExploreableStarMapInterface
 
     private function getTradepostTitle(TradePostInterface $tradepost): string
     {
-        $licenseInfo = $tradepost->getLatestLicenseInfo();
 
-        if ($licenseInfo === false) {
+
+        if ($tradepost->getLatestLicenseInfo() === false) {
             return $this->getStringWithoutBbCode($tradepost->getName());
+        } else {
+            $licenseInfo = $tradepost->getLatestLicenseInfo();
+            return sprintf(
+                '%s (Lizenz: %d %s)',
+                $this->getStringWithoutBbCode($tradepost->getName()),
+                $licenseInfo->getAmount(),
+                $licenseInfo->getCommodity()->getName()
+            );
         }
-
-        return sprintf(
-            '%s (Lizenz: %d %s)',
-            $this->getStringWithoutBbCode($tradepost->getName()),
-            $licenseInfo->getAmount(),
-            $licenseInfo->getCommodity()->getName()
-        );
     }
 
     private function getStringWithoutBbCode(string $string): string
