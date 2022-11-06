@@ -6,7 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\TradePostLicenseInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradePostRepository")
