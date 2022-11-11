@@ -43,7 +43,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             $userId
         );
 
-        if (!$colony->hasBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
+        if (!$colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
             return;
         }
 

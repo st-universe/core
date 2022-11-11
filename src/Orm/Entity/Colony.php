@@ -848,7 +848,7 @@ class Colony implements ColonyInterface
         return $this->has_active_building_by_function[$function_id];
     }
 
-    public function hasBuildingWithFunction(int $function_id, array $states = [1]): bool
+    private function hasBuildingWithFunction(int $function_id, array $states = [1]): bool
     {
         return $this->getBuildingWithFunctionCount($function_id, $states) > 0;
     }
