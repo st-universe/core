@@ -1548,7 +1548,7 @@
                 onclick="switchColonyMenu(15, ${BUILDING_FUNCTION/getTechCenterBuildingFunctionId});cClick();"
                 class="fabutton">Systemkomponentenherstellung</a>
             </div>
-            <div class="fabutton" tal:condition="php:BUILDING_FUNCTION.isSubspaceTelescope()">
+            <div class="fabutton" tal:condition="php:BUILDING_FUNCTION.isSubspaceTelescope() AND FIELD.getActive()">
               <a href="javascript:void(0)"
                 onclick="switchColonyMenu(16, ${BUILDING_FUNCTION/getSubspaceTelescopeBuildingFunctionId});cClick();"
                 class="fabutton">Subraumteleskop</a>
