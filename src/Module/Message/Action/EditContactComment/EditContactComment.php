@@ -11,6 +11,7 @@ use Stu\Orm\Repository\ContactRepositoryInterface;
 final class EditContactComment implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_EDIT_CONTACT_COMMENT';
+    public const CHARACTER_LIMIT = 50;
 
     private EditContactCommentRequestInterface $editContactCommentRequest;
 
@@ -30,7 +31,15 @@ final class EditContactComment implements ActionControllerInterface
         if ($contact == null || $contact->getUserId() != $game->getUser()->getId()) {
             return;
         }
-        $contact->setComment($this->editContactCommentRequest->getText());
+
+        $text = $this->editContactCommentRequest->getText();
+
+        if (mb_strlen($text) > static::CHARACTER_LIMIT) {
+            $game->addInformation(sprintf(_('Es sind maximal %d Zeichen erlaubt'), static::CHARACTER_LIMIT));
+            return;
+        }
+
+        $contact->setComment($text);
 
         $this->contactRepository->save($contact);
 
