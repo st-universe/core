@@ -152,7 +152,7 @@ final class Scrapping implements ActionControllerInterface
         foreach ($station->getSystems() as $system) {
             if (
                 $system->getModule() !== null
-                && $system->getStatus() == 100
+                && $system->getStatus() === 100
             ) {
                 $module = $system->getModule();
 
@@ -167,7 +167,7 @@ final class Scrapping implements ActionControllerInterface
                             $module->getName()
                         ));
                     }
-                    if ($buildplanModule->getModuleCount() == null) {
+                    if ($buildplanModule === null) {
                         $count = 1;
                     } else {
                         $count = $buildplanModule->getModuleCount();
