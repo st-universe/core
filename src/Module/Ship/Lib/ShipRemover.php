@@ -245,7 +245,10 @@ final class ShipRemover implements ShipRemoverInterface
             $this->shipRepository->save($dockedShip);
         }
 
-        $this->shipCrewRepository->truncateByShip((int) $ship->getId());
+        // delete torpedo storage
+        $this->shipTorpedoManager->removeTorpedo($ship);
+
+        $this->shipCrewRepository->truncateByShip($ship->getId());
 
         $this->shipRepository->delete($ship);
     }
