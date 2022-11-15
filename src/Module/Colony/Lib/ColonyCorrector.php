@@ -47,7 +47,7 @@ final class ColonyCorrector implements ColonyCorrectorInterface
             $housing = (int) $database->fetchOne(
                 'SELECT SUM(a.bev_pro) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
+                    WHERE scf.aktiv > 0 AND scf.colonies_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
             $storage = (int) $database->fetchOne(
