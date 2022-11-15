@@ -110,8 +110,8 @@ final class TorpedoTransfer implements ActionControllerInterface
                     return;
                 }
 
-                $this->shipTorpedoManager->changeTorpedo($ship, -$amount);
                 $this->shipTorpedoManager->changeTorpedo($target, $amount, $ship->getTorpedo());
+                $this->shipTorpedoManager->changeTorpedo($ship, -$amount);
             }
         } else {
             $amount = min(
