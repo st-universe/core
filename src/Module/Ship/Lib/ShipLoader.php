@@ -61,7 +61,7 @@ final class ShipLoader implements ShipLoaderInterface
             $targetId !== null ? $targetId : 0
         ));
 
-        $shipArray = $this->acquireSemaphores($shipId, $targetId, $userId);
+        $shipArray = $this->acquireSemaphores($shipId, $targetId);
 
         $this->checkviolations($shipArray[$shipId], $userId, $allowUplink);
 
