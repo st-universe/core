@@ -60,7 +60,7 @@ final class Scrapping implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
         $userId = $game->getUser()->getId();
 
@@ -159,14 +159,6 @@ final class Scrapping implements ActionControllerInterface
                 if (!array_key_exists($module->getId(), $intactModules)) {
                     $buildplanModule = $modules->get($module->getId());
 
-                    if ($buildplanModule === null) {
-                        $this->loggerUtil->log(sprintf(
-                            'systemName: %s, moduleId: %d, moduleName: %s',
-                            $system->getName(),
-                            $module->getId(),
-                            $module->getName()
-                        ));
-                    }
                     if ($buildplanModule === null) {
                         $count = 1;
                     } else {
