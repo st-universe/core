@@ -44,10 +44,16 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                     WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
-            $housing = (int) $database->fetchOne(
+            $activeHousing = (int) $database->fetchOne(
                 'SELECT SUM(a.bev_pro) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv > 0 AND scf.colonies_id = :colonyId',
+                    WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
+                ['colonyId' => $colonyId]
+            );
+            $plannedHousing = (int) $database->fetchOne(
+                'SELECT SUM(a.bev_pro) FROM stu_buildings a LEFT
+                    JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
+                    WHERE scf.aktiv > 1 AND scf.colonies_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
             $storage = (int) $database->fetchOne(
@@ -63,11 +69,11 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 ['colonyId' => $colonyId]
             );
 
-            $max_free = max(0, $housing - $worker);
+            $max_free = max(0, $activeHousing + $plannedHousing - $worker);
 
             if (
                 $this->check($worker, $colony->getWorkers(), $colony, 'setWorkers', 'worker')
-                || $this->check($housing, $colony->getMaxBev(), $colony, 'setMaxBev', 'housing')
+                || $this->check($activeHousing, $colony->getMaxBev(), $colony, 'setMaxBev', 'housing')
                 || $this->check($storage, $colony->getMaxStorage(), $colony, 'setMaxStorage', 'storage')
                 || $this->check($eps, $colony->getMaxEps(), $colony, 'setMaxEps', 'eps')
                 || $this->checkWorkless($max_free, $colony)
