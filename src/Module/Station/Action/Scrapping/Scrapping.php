@@ -21,6 +21,7 @@ use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class Scrapping implements ActionControllerInterface
 {
@@ -38,6 +39,8 @@ final class Scrapping implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
+    private TradePostRepositoryInterface $tradePostRepository;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -47,6 +50,7 @@ final class Scrapping implements ActionControllerInterface
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
         ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
         ShipRemoverInterface $shipRemover,
+        TradePostRepositoryInterface $tradePostRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -55,6 +59,7 @@ final class Scrapping implements ActionControllerInterface
         $this->constructionProgressRepository = $constructionProgressRepository;
         $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
         $this->shipRemover = $shipRemover;
+        $this->tradePostRepository = $tradePostRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -138,6 +143,11 @@ final class Scrapping implements ActionControllerInterface
         $station->setEps(0);
         $station->setMaxEBatt(0);
         $station->setMaxShield(0);
+
+        //delete trade post stuff
+        if ($station->getTradePost() !== null) {
+            $this->tradePostRepository->delete($station->getTradePost());
+        }
 
         $this->shipRepository->save($station);
     }
