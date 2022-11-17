@@ -239,6 +239,7 @@ final class ShipRemover implements ShipRemoverInterface
 
             //only 50% off all storages
             if (rand(0, 1) === 0) {
+                $this->storageRepository->delete($storage);
                 continue;
             }
 
@@ -246,6 +247,7 @@ final class ShipRemover implements ShipRemoverInterface
             $amount = (int)ceil($storage->getAmount() / 100 * rand(0, 50));
 
             if ($amount === 0) {
+                $this->storageRepository->delete($storage);
                 continue;
             }
 
