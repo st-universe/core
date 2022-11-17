@@ -10,11 +10,7 @@ use Stu\Component\Crew\CrewEnum;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
  * @Table(
- *     name="stu_ships_crew",
- *     indexes={
- *         @Index(name="crew_assign_ship_idx", columns={"ship_id"}),
- *         @Index(name="crew_assign_user_idx", columns={"user_id"})
- *     }
+ *     name="stu_ships_crew"
  * )
  **/
 class ShipCrew implements ShipCrewInterface
