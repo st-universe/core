@@ -255,6 +255,8 @@ final class ShipRemover implements ShipRemoverInterface
                 $storage->getCommodity(),
                 $amount
             );
+
+            $this->storageRepository->delete($storage);
         }
 
         //remove tradepost and cascading stuff
