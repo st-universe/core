@@ -29,6 +29,12 @@ class ShipCrew implements ShipCrewInterface
     /** @Column(type="integer", nullable=true) * */
     private $ship_id = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $colony_id;
+
+    /** @Column(type="integer", nullable=true) * */
+    private $tradepost_id;
+
     /** @Column(type="integer") * */
     private $crew_id = 0;
 
