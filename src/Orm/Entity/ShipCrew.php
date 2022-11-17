@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Stu\Component\Crew\CrewEnum;
-// uniqueConstraints={@UniqueConstraint(name="ship_crew_crew_idx", columns={"crew_id"})}
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
  * @Table(
  *     name="stu_ships_crew",
- *     indexes={
- *         @Index(name="ship_crew_ship_idx", columns={"ship_id"}),
- *         @Index(name="ship_crew_user_idx", columns={"user_id"})
- *     }
+ *     uniqueConstraints={@UniqueConstraint(name="ship_crew_crew_idx", columns={"crew_id"})}
  * )
  **/
 class ShipCrew implements ShipCrewInterface
