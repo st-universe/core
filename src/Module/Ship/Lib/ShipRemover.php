@@ -19,6 +19,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipRemover implements ShipRemoverInterface
@@ -49,6 +50,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private ShipTorpedoManagerInterface $shipTorpedoManager;
 
+    private TradePostRepositoryInterface $tradePostRepository;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -65,6 +68,7 @@ final class ShipRemover implements ShipRemoverInterface
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         AstroEntryLibInterface $astroEntryLib,
         ShipTorpedoManagerInterface $shipTorpedoManager,
+        TradePostRepositoryInterface $tradePostRepository,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
@@ -80,6 +84,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->astroEntryLib = $astroEntryLib;
         $this->shipTorpedoManager = $shipTorpedoManager;
+        $this->tradePostRepository = $tradePostRepository;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -145,6 +150,12 @@ final class ShipRemover implements ShipRemoverInterface
 
         // delete torpedo storage
         $this->shipTorpedoManager->removeTorpedo($ship);
+
+        //delete trade post stuff
+        if ($ship->getTradePost() !== null) {
+            $this->tradePostRepository->delete($ship->getTradePost());
+            $ship->setTradePost(null);
+        }
 
         // change storage owner
         $this->orphanizeStorage($ship);
