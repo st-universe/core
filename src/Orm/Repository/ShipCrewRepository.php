@@ -33,7 +33,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
     public function getByShip(int $shipId): array
     {
         return $this->findBy(
-            ['ships_id' => $shipId],
+            ['ship_id' => $shipId],
             ['slot' => 'asc']
         );
     }
@@ -41,7 +41,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
     public function getByShipAndSlot(int $shipId, int $slotId): array
     {
         return $this->findBy([
-            'ships_id' => $shipId,
+            'ship_id' => $shipId,
             'slot' => $slotId
         ]);
     }
@@ -49,7 +49,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
     public function getAmountByShip(int $shipId): int
     {
         return $this->count([
-            'ships_id' => $shipId
+            'ship_id' => $shipId
         ]);
     }
 
@@ -74,7 +74,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
                 WHERE sc.user_id = u.id)
             FROM stu_ships_crew sc
             JOIN stu_ships s
-            ON sc.ships_id = s.id
+            ON sc.ship_id = s.id
             WHERE sc.user_id > 100
             AND sc.user_id = s.user_id
             GROUP BY sc.user_id
@@ -90,7 +90,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s sc WHERE sc.ships_id = :shipId',
+                    'DELETE FROM %s sc WHERE sc.ship_id = :shipId',
                     ShipCrew::class
                 )
             )

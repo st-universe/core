@@ -10,10 +10,12 @@ use Stu\Component\Crew\CrewEnum;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
  * @Table(
- *     name="stu_ships_crew",
+ *     name="stu_crew_assign",
  *     indexes={
- *         @Index(name="ship_crew_ship_idx", columns={"ships_id"}),
- *         @Index(name="ship_crew_user_idx", columns={"user_id"})
+ *         @Index(name="crew_assign_colony_idx", columns={"colony_id"}),
+ *         @Index(name="crew_assign_ship_idx", columns={"ship_id"}),
+ *         @Index(name="crew_assign_tradepost_idx", columns={"tradepost_id"}),
+ *         @Index(name="crew_assign_user_idx", columns={"user_id"})
  *     }
  * )
  **/
@@ -26,12 +28,19 @@ class ShipCrew implements ShipCrewInterface
      */
     private $id;
 
-    /** @Column(type="integer") * */
-    private $ships_id = 0;
+    /** @Column(type="integer", nullable=true) * */
+    private $ship_id = 0;
+
+    /** @Column(type="integer", nullable=true) * */
+    private $colony_id;
+
+    /** @Column(type="integer", nullable=true) * */
+    private $tradepost_id;
 
     /** @Column(type="integer") * */
     private $crew_id = 0;
 
+    //TODO make slot nullable for excess crew?
     /** @Column(type="smallint") * */
     private $slot = 0;
 
@@ -49,7 +58,7 @@ class ShipCrew implements ShipCrewInterface
 
     /**
      * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
 
@@ -84,12 +93,12 @@ class ShipCrew implements ShipCrewInterface
 
     public function getShipId(): int
     {
-        return $this->ships_id;
+        return $this->ship_id;
     }
 
     public function setShipId(int $shipId): ShipCrewInterface
     {
-        $this->ships_id = $shipId;
+        $this->ship_id = $shipId;
 
         return $this;
     }

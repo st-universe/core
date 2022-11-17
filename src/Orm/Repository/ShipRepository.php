@@ -272,7 +272,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT s FROM %s s
                 JOIN %s sc
-                WITH s.id = sc.ships_id
+                WITH s.id = sc.ship_id
                 JOIN %s c
                 WITH sc.crew_id = c.id
                 JOIN %s ss
@@ -335,7 +335,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.is_destroyed = :destroyedState
                 AND s.schilde<s.max_schilde
                 AND s.shield_regeneration_timer <= :regenerationThreshold
-                AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.ships_id) >= bp.crew',
+                AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.ship_id) >= bp.crew',
                 Ship::class,
                 ShipSystem::class,
                 ShipBuildplan::class,
@@ -373,7 +373,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN %s sr
                 WITH s.rumps_id = sr.id
                 LEFT JOIN %s sc
-                WITH sc.ships_id = s.id
+                WITH sc.ship_id = s.id
                 WHERE sr.category_id = :categoryId
                 AND sc.user_id = :userId',
                 Ship::class,
@@ -422,7 +422,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.user_id > 100
                 AND (   ((SELECT count(sc.id)
                         FROM %s sc
-                        WHERE sc.ships_id = s.id) > 0)
+                        WHERE sc.ship_id = s.id) > 0)
                     OR
                         (s.state IN (:scrapping, :underConstruction))
                     OR
@@ -965,7 +965,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.user_id = :userId
                 AND EXISTS (SELECT sc.id
                             FROM stu_ships_crew sc
-                            WHERE s.id = sc.ships_id) 
+                            WHERE s.id = sc.ship_id) 
                 ORDER BY RANDOM()
                 LIMIT 1',
                 $rsm
