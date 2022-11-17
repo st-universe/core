@@ -12,7 +12,9 @@ use Stu\Component\Crew\CrewEnum;
  *     name="stu_ships_crew",
  *     uniqueConstraints={@UniqueConstraint(name="ship_crew_crew_idx", columns={"crew_id"})},
  *     indexes={
+ *         @Index(name="ship_crew_colony_idx", columns={"colony_id"}),
  *         @Index(name="ship_crew_ship_idx", columns={"ship_id"}),
+ *         @Index(name="ship_crew_tradepost_idx", columns={"tradepost_id"}),
  *         @Index(name="ship_crew_user_idx", columns={"user_id"})
  *     }
  * )
