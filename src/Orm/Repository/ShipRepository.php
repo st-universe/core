@@ -964,7 +964,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s.id as id FROM stu_ships s
                 WHERE s.user_id = :userId
                 AND EXISTS (SELECT sc.id
-                            FROM stu_crew_assign sc
+                            FROM stu_ships_crew sc
                             WHERE s.id = sc.ship_id) 
                 ORDER BY RANDOM()
                 LIMIT 1',
