@@ -152,6 +152,13 @@ interface ColonyInterface
     public function getBlockers(): Collection;
 
     /**
+     * @return ShipCrewInterface[]
+     */
+    public function getCrewAssignments(): Collection;
+
+    public function getCrewAssignmentAmount(): int;
+
+    /**
      * @return ColonyProduction[]
      */
     public function getProductionRaw(): array;
