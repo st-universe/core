@@ -9,7 +9,7 @@ use Stu\Component\Crew\CrewEnum;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
  * @Table(
- *     name="stu_ships_crew",
+ *     name="stu_crew_assign",
  *     uniqueConstraints={@UniqueConstraint(name="ship_crew_crew_idx", columns={"crew_id"})},
  *     indexes={
  *         @Index(name="ship_crew_colony_idx", columns={"colony_id"}),
