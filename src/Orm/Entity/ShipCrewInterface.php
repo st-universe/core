@@ -34,9 +34,17 @@ interface ShipCrewInterface
 
     public function setCrew(CrewInterface $crew): ShipCrewInterface;
 
-    public function getShip(): ShipInterface;
+    public function getShip(): ?ShipInterface;
 
-    public function setShip(ShipInterface $ship): ShipCrewInterface;
+    public function setShip(?ShipInterface $ship): ShipCrewInterface;
+
+    public function getColony(): ?ColonyInterface;
+
+    public function setColony(?ColonyInterface $colony): ShipCrewInterface;
+
+    public function getTradepost(): ?TradePostInterface;
+
+    public function setTradepost(?TradePostInterface $tradepost): ShipCrewInterface;
 
     public function isForeigner(): bool;
 }

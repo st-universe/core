@@ -949,6 +949,11 @@ class Ship implements ShipInterface
         return $result;
     }
 
+    public function getExcessCrewCount(): int
+    {
+        return $this->getCrewCount() - $this->getBuildplan()->getCrew();
+    }
+
     public function hasEnoughCrew(?GameControllerInterface $game = null): bool
     {
         if ($this->getBuildplan() === null) {

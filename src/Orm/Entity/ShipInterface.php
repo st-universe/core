@@ -210,6 +210,8 @@ interface ShipInterface
 
     public function getMaxCrewCount(): int;
 
+    public function getExcessCrewCount(): int;
+
     public function hasEnoughCrew(?GameControllerInterface $game = null): bool;
 
     public function leaveFleet(): void;

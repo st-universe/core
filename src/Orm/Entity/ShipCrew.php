@@ -19,6 +19,7 @@ use Stu\Component\Crew\CrewEnum;
  *     }
  * )
  **/
+//TODO RENAME to CrewAssignment, indices, repo and stuff
 class ShipCrew implements ShipCrewInterface
 {
     /** 
@@ -61,6 +62,18 @@ class ShipCrew implements ShipCrewInterface
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
+
+    /**
+     * @ManyToOne(targetEntity="Colony")
+     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $colony;
+
+    /**
+     * @ManyToOne(targetEntity="TradePost")
+     * @JoinColumn(name="tradepost_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $tradepost;
 
     /**
      * @ManyToOne(targetEntity="User")
@@ -159,14 +172,38 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
-    public function getShip(): ShipInterface
+    public function getShip(): ?ShipInterface
     {
         return $this->ship;
     }
 
-    public function setShip(ShipInterface $ship): ShipCrewInterface
+    public function setShip(?ShipInterface $ship): ShipCrewInterface
     {
         $this->ship = $ship;
+        return $this;
+    }
+
+    public function getColony(): ?ColonyInterface
+    {
+        return $this->colony;
+    }
+
+    public function setColony(?ColonyInterface $colony): ShipCrewInterface
+    {
+        $this->colony = $colony;
+
+        return $this;
+    }
+
+    public function getTradepost(): ?TradePostInterface
+    {
+        return $this->tradepost;
+    }
+
+    public function setTradepost(?TradePostInterface $tradepost): ShipCrewInterface
+    {
+        $this->tradepost = $tradepost;
+
         return $this;
     }
 
