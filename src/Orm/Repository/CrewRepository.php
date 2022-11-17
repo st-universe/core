@@ -39,7 +39,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
         return (int) $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT COUNT(c.id) as amount FROM stu_crew c WHERE c.user_id = :userId AND c.id IN (
-                    SELECT crew_id FROM stu_ships_crew WHERE ship_id IN (
+                    SELECT crew_id FROM stu_crew_assign WHERE ship_id IN (
                         SELECT id FROM stu_ships WHERE rumps_id IN (
                             SELECT id FROM stu_rumps WHERE category_id = :categoryId
                         )

@@ -72,7 +72,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
                 (SELECT race
                 FROM stu_user u
                 WHERE sc.user_id = u.id)
-            FROM stu_ships_crew sc
+            FROM stu_crew_assign sc
             JOIN stu_ships s
             ON sc.ship_id = s.id
             WHERE sc.user_id > 100
