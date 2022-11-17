@@ -16,18 +16,18 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         return new TradePost();
     }
 
-    public function save(TradePostInterface $setTradePost): void
+    public function save(TradePostInterface $tradePost): void
     {
         $em = $this->getEntityManager();
 
-        $em->persist($setTradePost);
+        $em->persist($tradePost);
     }
 
-    public function delete(TradePostInterface $setTradePost): void
+    public function delete(TradePostInterface $tradePost): void
     {
         $em = $this->getEntityManager();
 
-        $em->remove($setTradePost);
+        $em->remove($tradePost);
         $em->flush();
     }
 

@@ -12,9 +12,9 @@ interface TradePostRepositoryInterface extends ObjectRepository
 {
     public function prototype(): TradePostInterface;
 
-    public function save(TradePostInterface $setTradePost): void;
+    public function save(TradePostInterface $tradePost): void;
 
-    public function delete(TradePostInterface $setTradePost): void;
+    public function delete(TradePostInterface $tradePost): void;
 
     /**
      * @return TradePostInterface[]

@@ -146,6 +146,7 @@ final class Scrapping implements ActionControllerInterface
 
         //delete trade post stuff
         if ($station->getTradePost() !== null) {
+            $station->setTradePost(null);
             $this->tradePostRepository->delete($station->getTradePost());
         }
 
