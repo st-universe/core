@@ -12,8 +12,8 @@ use Stu\Component\Crew\CrewEnum;
  * @Table(
  *     name="stu_ships_crew",
  *     indexes={
- *         @Index(name="crew_assign_ship_idx", columns={"ship_id"}),
- *         @Index(name="crew_assign_user_idx", columns={"user_id"})
+ *         @Index(name="ship_crew_ship_idx", columns={"ships_id"}),
+ *         @Index(name="ship_crew_user_idx", columns={"user_id"})
  *     }
  * )
  **/
