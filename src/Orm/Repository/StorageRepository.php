@@ -10,6 +10,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
 
 final class StorageRepository extends EntityRepository implements StorageRepositoryInterface
@@ -230,6 +231,24 @@ final class StorageRepository extends EntityRepository implements StorageReposit
                 'userId' => $userId,
                 'commodityId' => $commodityId,
                 'amount' => $amount
+            ])
+            ->getResult();
+    }
+
+    public function getByTradePost(int $tradePostId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
+                    WHERE s.tradepost_id = :tradePostId
+                        OR s.tradeoffer_id IN (SELECT o.id FROM %s o WHERE o.posts_id = :tradePostId)',
+                    Storage::class,
+                    TradeOffer::class
+                )
+            )
+            ->setParameters([
+                'tradePostId' => $tradePostId
             ])
             ->getResult();
     }

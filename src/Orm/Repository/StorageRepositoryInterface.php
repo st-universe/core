@@ -55,6 +55,11 @@ interface StorageRepositoryInterface extends ObjectRepository
         int $amount
     ): array;
 
+    /**
+     * @return StorageInterface[]
+     */
+    public function getByTradePost(int $tradePostId): array;
+
     public function getLatinumTop10(): array;
 
     public function truncateByColony(ColonyInterface $colony): void;

@@ -13,6 +13,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -153,7 +154,7 @@ final class ShipRemover implements ShipRemoverInterface
 
         //delete trade post stuff
         if ($ship->getTradePost() !== null) {
-            $this->tradePostRepository->delete($ship->getTradePost());
+            $this->destroyTradepost($ship->getTradePost());
             $ship->setTradePost(null);
         }
 
@@ -228,6 +229,36 @@ final class ShipRemover implements ShipRemoverInterface
             $storage->setUserId(GameEnum::USER_NOONE);
             $this->storageRepository->save($storage);
         }
+    }
+
+    private function destroyTradepost(TradePostInterface $tradePost)
+    {
+        //salvage offers and storage
+        $storages = $this->storageRepository->getByTradePost($tradePost->getId());
+        foreach ($storages as $storage) {
+
+            //only 50% off all storages
+            if (rand(0, 1) === 0) {
+                continue;
+            }
+
+            //only 0 to 50% of the specific amount
+            $amount = (int)ceil($storage->getAmount() / 100 * rand(0, 50));
+
+            if ($amount === 0) {
+                continue;
+            }
+
+            //add to trumfield storage
+            $this->shipStorageManager->upperStorage(
+                $tradePost->getShip(),
+                $storage->getCommodity(),
+                $amount
+            );
+        }
+
+        //remove tradepost and cascading stuff
+        $this->tradePostRepository->delete($tradePost);
     }
 
     public function remove(ShipInterface $ship): void
