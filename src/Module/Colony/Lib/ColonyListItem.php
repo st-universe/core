@@ -130,6 +130,11 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->colony->isBlocked();
     }
 
+    public function getCrewAssignmentAmount(): int
+    {
+        return $this->colony->getCrewAssignmentAmount();
+    }
+
     public function getStorageStatusBar(): string
     {
         return (new TalStatusBar())

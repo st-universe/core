@@ -51,6 +51,8 @@ interface ColonyListItemInterface
 
     public function isBlocked(): bool;
 
+    public function getCrewAssignmentAmount(): int;
+
     public function getStorageStatusBar(): string;
 
     public function getEpsStatusBar(): string;
