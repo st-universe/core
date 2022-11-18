@@ -265,7 +265,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->tradePostRepository->delete($tradePost);
     }
 
-    public function remove(ShipInterface $ship): void
+    public function remove(ShipInterface $ship, ?bool $truncateCrew = false): void
     {
         if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $this->changeFleetLeader($ship);
@@ -294,7 +294,9 @@ final class ShipRemover implements ShipRemoverInterface
         // delete torpedo storage
         $this->shipTorpedoManager->removeTorpedo($ship);
 
-        $this->shipCrewRepository->truncateByShip($ship->getId());
+        if ($truncateCrew) {
+            $this->shipCrewRepository->truncateByShip($ship->getId());
+        }
 
         $this->shipRepository->delete($ship);
     }

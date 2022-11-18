@@ -16,6 +16,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -83,9 +84,24 @@ final class DisassembleShip implements ActionControllerInterface
         $this->retrieveWarpcoreLoad($ship, $colony, $game);
         $this->retrieveLoadedTorpedos($ship, $colony, $game);
 
+        $this->transferCrewToColony($ship, $colony);
+
         $this->shipRemover->remove($ship);
 
         $game->addInformationf(_('Das Schiff wurde demontiert'));
+    }
+
+    private function transferCrewToColony(ShipInterface $ship, ColonyInterface $colony): void
+    {
+        foreach ($ship->getCrewlist() as $crewAssignment) {
+            $crewAssignment->setColony($colony);
+            $crewAssignment->setShip(null);
+            $crewAssignment->setSlot(null);
+            $colony->getCrewAssignments()->add($crewAssignment);
+            $this->shipCrewRepository->save($crewAssignment);
+        }
+
+        $ship->getCrewlist()->clear();
     }
 
     private function retrieveSomeIntactModules($ship, $colony, $game): void

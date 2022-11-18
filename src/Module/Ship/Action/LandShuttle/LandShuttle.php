@@ -140,10 +140,11 @@ final class LandShuttle implements ActionControllerInterface
 
     private function landShuttle(ShipInterface $ship, ShipInterface $target): void
     {
-        foreach ($ship->getCrewlist() as $shipCrew) {
-            $shipCrew->setShip($target);
-            $target->getCrewlist()->add($shipCrew);
-            $this->shipCrewRepository->save($shipCrew);
+        foreach ($ship->getCrewlist() as $crewAssignment) {
+            $crewAssignment->setShip($target);
+            $crewAssignment->setSlot(null);
+            $target->getCrewlist()->add($crewAssignment);
+            $this->shipCrewRepository->save($crewAssignment);
         }
         $ship->getCrewlist()->clear();
         $this->entityManager->flush();

@@ -15,6 +15,8 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -112,6 +114,8 @@ final class Colonize implements ActionControllerInterface
             $field
         );
 
+        $this->transferCrewToColony($ship, $colony);
+
         $this->shipRemover->remove($ship);
 
         $game->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());
@@ -121,6 +125,19 @@ final class Colonize implements ActionControllerInterface
             ShowColony::VIEW_IDENTIFIER,
             $colony->getId()
         ));
+    }
+
+    private function transferCrewToColony(ShipInterface $ship, ColonyInterface $colony): void
+    {
+        foreach ($ship->getCrewlist() as $crewAssignment) {
+            $crewAssignment->setColony($colony);
+            $crewAssignment->setShip(null);
+            $crewAssignment->setSlot(null);
+            $colony->getCrewAssignments()->add($crewAssignment);
+            $this->shipCrewRepository->save($crewAssignment);
+        }
+
+        $ship->getCrewlist()->clear();
     }
 
     public function performSessionCheck(): bool
