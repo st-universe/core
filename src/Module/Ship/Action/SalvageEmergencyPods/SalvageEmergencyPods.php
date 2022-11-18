@@ -216,9 +216,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $closestTradepost->getShip()->getCy()
         );
 
-        $this->loggerUtil->log(sprintf('distance: %d, closestColony: %s', $colonyDistance, $colony->getName()));
-        $this->loggerUtil->log(sprintf('distance: %d, closestStation: %s', $stationDistance, $station->getName()));
-        $this->loggerUtil->log(sprintf('distance: %d, closestTradepost: %s', $tradepostDistance, $closestTradepost->getName()));
+        //$this->loggerUtil->log(sprintf('distance: %d, closestColony: %s', $colonyDistance, $colony->getName()));
+        //$this->loggerUtil->log(sprintf('distance: %d, closestStation: %s', $stationDistance, $station->getName()));
+        //$this->loggerUtil->log(sprintf('distance: %d, closestTradepost: %s', $tradepostDistance, $closestTradepost->getName()));
 
         //transfer to closest colony
         if ($colony !== null && $colonyDistance <= $stationDistance && $colonyDistance <= $tradepostDistance) {
