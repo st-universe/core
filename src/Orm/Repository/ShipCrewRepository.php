@@ -75,6 +75,13 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         ]);
     }
 
+    public function getAmountByUser(int $userId): int
+    {
+        return $this->count([
+            'user_id' => $userId
+        ]);
+    }
+
     public function getAmountByUserOnShips(int $userId): int
     {
         return $this->getEntityManager()->createQuery(

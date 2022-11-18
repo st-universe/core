@@ -134,7 +134,7 @@
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="USER/getUsedCrewCount">USED</span>
+            <span tal:replace="USER/getCrewAssignedToShipsCount">USED</span>
             (<a href="javascript:void(0);" onclick="showPodLocationWindow();"><span
                 tal:content="USER/getCrewCountDebris" title="In Rettungskapseln">DEBRIS</span></a>)
           </td>

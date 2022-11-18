@@ -156,7 +156,7 @@ class User implements UserInterface
      */
     private $userLock;
 
-    private $used_crew_count;
+    private $crew_on_ships_count;
 
     private $crew_in_training;
 
@@ -704,22 +704,30 @@ class User implements UserInterface
         return $this->global_crew_limit;
     }
 
-    public function getUsedCrewCount(): int
+    public function getCrewAssignedToShipsCount(): int
     {
-        if ($this->used_crew_count === null) {
+        if ($this->crew_on_ships_count === null) {
             // @todo refactor
             global $container;
 
-            $this->used_crew_count = $container->get(ShipCrewRepositoryInterface::class)->getAmountByUserOnShips((int) $this->getId());
+            $this->crew_on_ships_count = $container->get(ShipCrewRepositoryInterface::class)->getAmountByUserOnShips((int) $this->getId());
         }
-        return $this->used_crew_count;
+        return $this->crew_on_ships_count;
+    }
+
+    private function getAssignedCrewCount(): int
+    {
+        // @todo refactor
+        global $container;
+
+        return $container->get(ShipCrewRepositoryInterface::class)->getAmountByUser((int) $this->getId());
     }
 
     public function getCrewLeftCount(): int
     {
         return max(
             0,
-            $this->getGlobalCrewLimit() - $this->getUsedCrewCount() - $this->getFreeCrewCount() - $this->getInTrainingCrewCount()
+            $this->getGlobalCrewLimit() - $this->getAssignedCrewCount() - $this->getInTrainingCrewCount()
         );
     }
 

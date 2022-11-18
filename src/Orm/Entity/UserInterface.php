@@ -170,7 +170,7 @@ interface UserInterface
 
     public function getGlobalCrewLimit(): int;
 
-    public function getUsedCrewCount(): int;
+    public function getCrewAssignedToShipsCount(): int;
 
     public function getCrewLeftCount(): int;
 
