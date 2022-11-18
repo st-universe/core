@@ -185,7 +185,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             }
 
             $crewLimit = $user->getGlobalCrewLimit();
-            $crewOnShips = $this->shipCrewRepository->getAmountByUser($user->getId());
+            $crewOnShips = $this->shipCrewRepository->getAmountByUserOnShips($user->getId());
             $freeCrewCount = $this->crewRepository->getFreeAmountByUser($user->getId());
 
             if (($crewOnShips + $freeCrewCount) > $crewLimit) {

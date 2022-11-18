@@ -710,7 +710,7 @@ class User implements UserInterface
             // @todo refactor
             global $container;
 
-            $this->used_crew_count = $container->get(ShipCrewRepositoryInterface::class)->getAmountByUser((int) $this->getId());
+            $this->used_crew_count = $container->get(ShipCrewRepositoryInterface::class)->getAmountByUserOnShips((int) $this->getId());
         }
         return $this->used_crew_count;
     }
