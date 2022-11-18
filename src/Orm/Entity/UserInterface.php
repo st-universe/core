@@ -162,8 +162,6 @@ interface UserInterface
 
     public function isContactable(): bool;
 
-    public function getFreeCrewCount(): int;
-
     public function getCrewCountDebris(): int;
 
     public function getTrainableCrewCountMax(): int;

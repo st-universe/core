@@ -648,17 +648,6 @@ class User implements UserInterface
         return !in_array($this->getId(), [GameEnum::USER_NOONE]);
     }
 
-    public function getFreeCrewCount(): int
-    {
-        if ($this->free_crew_count === null) {
-            // @todo refactor
-            global $container;
-
-            $this->free_crew_count = $container->get(CrewRepositoryInterface::class)->getFreeAmountByUser((int) $this->getId());
-        }
-        return $this->free_crew_count;
-    }
-
     public function getCrewCountDebris(): int
     {
         if ($this->crew_count_debris === null) {
