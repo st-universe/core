@@ -55,7 +55,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT tp.id as id, tp.name as name, concat(m.cx, :separator, m.cy) as sector, count(*) as amount
+            'SELECT tp.id as id, tp.name as name, concat(m.cx, \'|\', m.cy) as sector, count(*) as amount
             FROM stu_crew_assign ca
             JOIN stu_trade_posts tp
             ON ca.tradepost_id = tp.id
@@ -64,7 +64,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             WHERE ca.user_id = :userId
             GROUP BY tp.id, tp.name, m.cx, m.cy',
             $rsm
-        )->setParameters(['userId' => $userId, 'separator' => '|'])
+        )->setParameter('userId', $userId)
             ->getResult();
     }
 
