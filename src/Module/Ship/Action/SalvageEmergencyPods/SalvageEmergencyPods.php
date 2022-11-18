@@ -11,6 +11,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -36,13 +39,16 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private TroopTransferUtilityInterface $troopTransferUtility;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         TradePostRepositoryInterface $tradePostRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        TroopTransferUtilityInterface  $troopTransferUtility
+        TroopTransferUtilityInterface  $troopTransferUtility,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -50,6 +56,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $this->tradePostRepository = $tradePostRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->troopTransferUtility = $troopTransferUtility;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,6 +64,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
+
+        if ($userId === 102) {
+            $this->loggerUtil->init('CREW', LoggerEnum::LEVEL_ERROR);
+        }
 
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
@@ -204,6 +215,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $ship->getCy(),
             $closestTradepost->getShip()->getCy()
         );
+
+        $this->loggerUtil->log(sprintf('distance: %d, closestColony: %s', $colonyDistance, $colony->getName()));
+        $this->loggerUtil->log(sprintf('distance: %d, closestStation: %s', $stationDistance, $station->getName()));
+        $this->loggerUtil->log(sprintf('distance: %d, closestTradepost: %s', $tradepostDistance, $closestTradepost->getName()));
 
         //transfer to closest colony
         if ($colony !== null && $colonyDistance <= $stationDistance && $colonyDistance <= $tradepostDistance) {
