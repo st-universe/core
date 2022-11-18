@@ -274,7 +274,16 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $freeQuarters = $this->troopTransferUtility->getFreeQuarters($station);
 
             if ($station->hasEnoughCrew() && $freeQuarters >= $count) {
-                $distance = $this->calculateDistance($ship->getCx(), $station->getCx(), $ship->getCy(), $station->getCy());
+                $distance = $this->calculateDistance(
+                    $ship->getCx(),
+                    $station->getCx(),
+                    $ship->getCy(),
+                    $station->getCy(),
+                    $ship->getSystem() !== null ? $ship->getSx() : 0,
+                    $station->getSystem() !== null ? $station->getSx() : 0,
+                    $ship->getSystem() !== null ? $ship->getSy() : 0,
+                    $station->getSystem() !== null ? $station->getSy() : 0,
+                );
 
                 if ($result === null || $distance < $result[0]) {
                     $result = [$distance, $station];
@@ -297,8 +306,17 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     $ship->getCx(),
                     $colony->getSystem()->getCx(),
                     $ship->getCy(),
-                    $colony->getSystem()->getCy()
+                    $colony->getSystem()->getCy(),
+                    $ship->getSystem() !== null ? $ship->getSx() : 0,
+                    $colony->getSx(),
+                    $ship->getSystem() !== null ? $ship->getSy() : 0,
+                    $colony->getSy()
                 );
+
+                //add one distance if outside of system
+                if ($ship->getSystem() === null) {
+                    $distance += 1;
+                }
 
                 if ($result === null || $distance < $result[0]) {
                     $result = [$distance, $colony];
@@ -309,9 +327,23 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         return $result;
     }
 
-    private function calculateDistance(int $cx1, int $cx2, int $cy1, int $cy2): int
-    {
-        return abs($cx1 - $cx2) + abs($cy1 - $cy2);
+    private function calculateDistance(
+        int $cx1,
+        int $cx2,
+        int $cy1,
+        int $cy2,
+        int $sx1 = 0,
+        int $sx2 = 0,
+        int $sy1 = 0,
+        int $sy2 = 0
+    ): int {
+        $distance = (abs($cx1 - $cx2) + abs($cy1 - $cy2)) * 10000;
+
+        if ($distance !== 0) {
+            return $distance;
+        }
+
+        return abs($sx1 - $sx2) + abs($sy1 - $sy2);
     }
 
     public function performSessionCheck(): bool
