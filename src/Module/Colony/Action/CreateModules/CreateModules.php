@@ -67,10 +67,10 @@ final class CreateModules implements ActionControllerInterface
         $func = request::postIntFatal('func');
 
         if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-                $colonyId,
-                [$func],
-                [0,1]
-            ) === 0) {
+            $colonyId,
+            [$func],
+            [0, 1]
+        ) === 0) {
             return;
         }
         $prod = array();
@@ -94,37 +94,32 @@ final class CreateModules implements ActionControllerInterface
             if ($count == 0) {
                 continue;
             }
-            /** @var ModuleCostInterface[] $costs */
+
             $costs = $module->getCost();
 
-            try {
-                foreach ($costs as $cost) {
-                    $commodity = $cost->getCommodity();
-                    $commodityId = $commodity->getId();
+            $isEnoughAvailable = true;
+            foreach ($costs as $cost) {
+                $commodity = $cost->getCommodity();
+                $commodityId = $commodity->getId();
 
-                    $stor = $storage[$commodityId] ?? null;
-                    if ($stor === null) {
-                        $prod[] = sprintf(
-                            _('Zur Herstellung von %s wird %s benötigt'),
-                            $module->getName(),
-                            $cost->getCommodity()->getName()
-                        );
-                        throw new Exception();
-                    }
-                    if ($stor->getAmount() < $cost->getAmount()) {
-                        $prod[] = sprintf(
-                            _('Zur Herstellung von %s wird %d %s benötigt'),
-                            $module->getName(),
-                            $cost->getAmount(),
-                            $commodity->getName()
-                        );
-                        throw new Exception();
-                    }
-                    if ($stor->getAmount() < $cost->getAmount() * $count) {
-                        $count = (int) floor($stor->getAmount() / $cost->getAmount());
-                    }
+                $stor = $storage[$commodityId] ?? null;
+                if ($stor === null || $stor->getAmount() < $cost->getAmount()) {
+                    $prod[] = sprintf(
+                        _('Zur Herstellung von %s wird %d %s benötigt - Vorhanden sind nur %d'),
+                        $module->getName(),
+                        $cost->getAmount(),
+                        $commodity->getName(),
+                        $stor === null ? 0 : $stor->getAmount()
+                    );
+                    $isEnoughAvailable = false;
+                    continue;
                 }
-            } catch (Exception $e) {
+                if ($stor->getAmount() < $cost->getAmount() * $count) {
+                    $count = (int) floor($stor->getAmount() / $cost->getAmount());
+                }
+            }
+
+            if (!$isEnoughAvailable) {
                 continue;
             }
             foreach ($costs as $cost) {
@@ -135,7 +130,7 @@ final class CreateModules implements ActionControllerInterface
             $this->colonyRepository->save($colony);
 
             if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding((int) $colonyId, (int) $module_id, (int) $func)) !== null) {
-                $queue->setAmount($queue->getAmount()+$count);
+                $queue->setAmount($queue->getAmount() + $count);
 
                 $this->moduleQueueRepository->save($queue);
             } else {
