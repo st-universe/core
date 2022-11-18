@@ -15,7 +15,9 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class SalvageEmergencyPods implements ActionControllerInterface
@@ -23,6 +25,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_SALVAGE_EPODS';
 
     private ShipLoaderInterface $shipLoader;
+
+    private ShipRepositoryInterface $shipRepository;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
@@ -34,12 +38,14 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         TradePostRepositoryInterface $tradePostRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         TroopTransferUtilityInterface  $troopTransferUtility
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->tradePostRepository = $tradePostRepository;
         $this->privateMessageSender = $privateMessageSender;
@@ -171,28 +177,127 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     }
                     $game->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
                 } else {
-                    foreach ($target->getCrewlist() as $crewAssignment) {
-                        if ($crewAssignment->getCrew()->getUser() === $game->getUser()) {
-                            $crewAssignment->setShip(null);
-                            $crewAssignment->setTradepost($closestTradepost);
-                            $this->shipCrewRepository->save($crewAssignment);
-                        }
-                    }
-                    $game->addInformationf(
-                        _('Deine Crew wurde geborgen und an den Handelsposten "%s" (%s) überstellt'),
-                        $closestTradepost->getName(),
-                        $closestTradepost->getShip()->getSectorString()
-                    );
+                    $game->addInformation($this->transferToClosestLocation(
+                        $ship,
+                        $target,
+                        $count,
+                        $closestTradepost
+                    ));
                 }
             }
         }
     }
 
-
     private function gotEnoughFreeTroopQuarters(ShipInterface $ship, int $count): bool
     {
         return $ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $this->troopTransferUtility->getFreeQuarters($ship) >= $count;
+    }
+
+    private function transferToClosestLocation(ShipInterface $ship, ShipInterface $target, int $count, TradePostInterface $closestTradepost): string
+    {
+        [$colonyDistance, $colony] = $this->searchClosestUsableColony($ship, $count);
+        [$stationDistance, $station] = $this->searchClosestUsableStation($ship, $count);
+        $tradepostDistance = $this->calculateDistance(
+            $ship->getCx(),
+            $closestTradepost->getShip()->getCx(),
+            $ship->getCy(),
+            $closestTradepost->getShip()->getCy()
+        );
+
+        //transfer to closest colony
+        if ($colony !== null && $colonyDistance <= $stationDistance && $colonyDistance <= $tradepostDistance) {
+            foreach ($target->getCrewlist() as $crewAssignment) {
+                if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
+                    $crewAssignment->setColony($colony);
+                    $crewAssignment->setShip(null);
+                    $crewAssignment->setSlot(null);
+                    $this->shipCrewRepository->save($crewAssignment);
+                }
+            }
+            return sprintf(
+                _('Deine Crew wurde geborgen und an die Kolonie "%s" (%s) überstellt'),
+                $colony->getName(),
+                $colony->getSectorString()
+            );
+        }
+
+        //transfer to closest station
+        if ($station !== null && $stationDistance <= $tradepostDistance) {
+            foreach ($target->getCrewlist() as $crewAssignment) {
+                if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
+                    $crewAssignment->setShip($station);
+                    $this->shipCrewRepository->save($crewAssignment);
+                }
+            }
+            return sprintf(
+                _('Deine Crew wurde geborgen und an die Station "%s" (%s) überstellt'),
+                $station->getName(),
+                $station->getSectorString()
+            );
+        }
+
+        //transfer to closest tradepost
+        foreach ($target->getCrewlist() as $crewAssignment) {
+            if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
+                $crewAssignment->setShip(null);
+                $crewAssignment->setTradepost($closestTradepost);
+                $this->shipCrewRepository->save($crewAssignment);
+            }
+        }
+        return sprintf(
+            _('Deine Crew wurde geborgen und an den Handelsposten "%s" (%s) überstellt'),
+            $closestTradepost->getName(),
+            $closestTradepost->getShip()->getSectorString()
+        );
+    }
+
+    private function searchClosestUsableStation(ShipInterface $ship, int $count): ?array
+    {
+        $result = [424242, null];
+        $stations = $this->shipRepository->getStationsByUser($ship->getUser()->getId());
+        foreach ($stations as $station) {
+            $freeQuarters = $this->troopTransferUtility->getFreeQuarters($station);
+
+            if ($station->hasEnoughCrew() && $freeQuarters >= $count) {
+                $distance = $this->calculateDistance($ship->getCx(), $station->getCx(), $ship->getCy(), $station->getCy());
+
+                if ($result === null || $distance < $result[0]) {
+                    $result = [$distance, $station];
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    private function searchClosestUsableColony(ShipInterface $ship, int $count): ?array
+    {
+        $result = [424242, null];
+        $colonies = $ship->getUser()->getColonies();
+        foreach ($colonies as $colony) {
+            $freeQuarters = $colony->getCrewLimit() - $colony->getCrewAssignmentAmount();
+
+            if ($freeQuarters >= $count) {
+                $distance = $this->calculateDistance(
+                    $ship->getCx(),
+                    $colony->getSystem()->getCx(),
+                    $ship->getCy(),
+                    $colony->getSystem()->getCy()
+                );
+
+                if ($result === null || $distance < $result[0]) {
+                    $result = [$distance, $colony];
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    private function calculateDistance(int $cx1, int $cx2, int $cy1, int $cy2): int
+    {
+        return abs($cx1 - $cx2) + abs($cy1 - $cy2);
     }
 
     public function performSessionCheck(): bool

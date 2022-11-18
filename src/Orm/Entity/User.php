@@ -164,8 +164,6 @@ class User implements UserInterface
 
     private $crew_count_debris;
 
-    private $free_crew_count;
-
     private $sessiondataUnserialized;
 
     private $friends;

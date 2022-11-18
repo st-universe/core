@@ -183,4 +183,9 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getRandomShipIdWithCrewByUser(int $userId): ?int;
 
     public function isBaseOnLocation(ShipInterface $ship): bool;
+
+    /**
+     * @return ShipInterface[]
+     */
+    public function getStationsByUser(int $userId): array;
 }

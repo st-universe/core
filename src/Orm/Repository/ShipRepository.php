@@ -996,4 +996,23 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $query->getSingleScalarResult() > 0;
     }
+
+    public function getStationsByUser(int $userId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s
+                FROM %s s
+                JOIN %s r
+                WITH s.rumps_id = r.id
+                WHERE s.user_id = :userId
+                AND r.category_id = :categoryId',
+                Ship::class,
+                ShipRump::class
+            )
+        )->setParameters([
+            'userId' => $userId,
+            'categoryId' => ShipRumpEnum::SHIP_CATEGORY_STATION
+        ])->getResult();
+    }
 }
