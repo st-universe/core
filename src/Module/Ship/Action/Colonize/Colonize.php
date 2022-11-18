@@ -20,6 +20,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 
 final class Colonize implements ActionControllerInterface
@@ -44,6 +45,8 @@ final class Colonize implements ActionControllerInterface
 
     private ColonizationCheckerInterface $colonizationChecker;
 
+    private ShipCrewRepositoryInterface $shipCrewRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
@@ -53,7 +56,8 @@ final class Colonize implements ActionControllerInterface
         ColonyRepositoryInterface $colonyRepository,
         ShipRemoverInterface $shipRemover,
         PositionCheckerInterface $positionChecker,
-        ColonizationCheckerInterface $colonizationChecker
+        ColonizationCheckerInterface $colonizationChecker,
+        ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
@@ -64,6 +68,7 @@ final class Colonize implements ActionControllerInterface
         $this->shipRemover = $shipRemover;
         $this->positionChecker = $positionChecker;
         $this->colonizationChecker = $colonizationChecker;
+        $this->shipCrewRepository = $shipCrewRepository;
     }
 
     public function handle(GameControllerInterface $game): void

@@ -20,6 +20,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class DisassembleShip implements ActionControllerInterface
 {
@@ -39,6 +40,8 @@ final class DisassembleShip implements ActionControllerInterface
 
     private ShipTorpedoManagerInterface $shipTorpedoManager;
 
+    private ShipCrewRepositoryInterface $shipCrewRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShipLoaderInterface $shipLoader,
@@ -46,7 +49,8 @@ final class DisassembleShip implements ActionControllerInterface
         ShipRemoverInterface $shipRemover,
         ColonyStorageManagerInterface $colonyStorageManager,
         CommodityRepositoryInterface $commodityRepository,
-        ShipTorpedoManagerInterface $shipTorpedoManager
+        ShipTorpedoManagerInterface $shipTorpedoManager,
+        ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipLoader = $shipLoader;
@@ -55,6 +59,7 @@ final class DisassembleShip implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->commodityRepository = $commodityRepository;
         $this->shipTorpedoManager = $shipTorpedoManager;
+        $this->shipCrewRepository = $shipCrewRepository;
     }
 
     public function handle(GameControllerInterface $game): void
