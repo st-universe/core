@@ -85,7 +85,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             if (!$obj->getColony()->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
                 continue;
             }
-            $this->crewCreator->create((int) $obj->getUserId());
+            $this->crewCreator->create($obj->getUserId(), $obj->getColony());
 
             $this->crewTrainingRepository->delete($obj);
             $user[$obj->getUserId()]++;

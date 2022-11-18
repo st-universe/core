@@ -105,7 +105,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         }
         $hangar = $this->buildplanHangarRepository->getByRump((int) $rump->getId());
 
-        if ($hangar->getBuildplan()->getCrew() > $user->getFreeCrewCount()) {
+        if ($hangar->getBuildplan()->getCrew() > $colony->getCrewAssignmentAmount()) {
             $game->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
             return;
         }
@@ -143,7 +143,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $colony
         );
 
-        $this->crewCreator->createShipCrew($ship);
+        $this->crewCreator->createShipCrew($ship, $colony);
 
         $defaultTorpedoType = $hangar->getDefaultTorpedoType();
         if ($defaultTorpedoType !== null) {

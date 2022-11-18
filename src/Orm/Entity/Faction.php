@@ -42,6 +42,8 @@ class Faction implements FactionInterface
     /** @Column(type="integer", nullable=true) * */
     private $start_research_id;
 
+    //TODO survivor_rate to escape pods
+
     /**
      * @ManyToOne(targetEntity="Research")
      * @JoinColumn(name="start_research_id", referencedColumnName="id")

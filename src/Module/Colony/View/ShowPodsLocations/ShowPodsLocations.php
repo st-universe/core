@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowPodsLocations;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowPodsLocations implements ViewControllerInterface
@@ -14,10 +15,14 @@ final class ShowPodsLocations implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipCrewRepositoryInterface $shipCrewRepository;
+
     public function __construct(
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->shipRepository = $shipRepository;
+        $this->shipCrewRepository = $shipCrewRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -25,11 +30,13 @@ final class ShowPodsLocations implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $pods = $this->shipRepository->getEscapePodsByCrewOwner($userId);
+        $crewAssignmentsAtTradeposts = $this->shipCrewRepository->getByUserAtTradeposts($userId);
 
-        $game->setPageTitle("Rettungskapsel Scan");
-        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/podlocations');
+        $game->setPageTitle("Rettungskapsel/Tradeposts Scan");
+        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/orphanedcrewlocations');
 
         $game->setTemplateVar('PODS', $pods);
+        $game->setTemplateVar('TRADEPOSTS', $crewAssignmentsAtTradeposts);
         $game->setTemplateVar('ERROR', false);
     }
 }

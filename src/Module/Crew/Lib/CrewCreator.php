@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Crew\Lib;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Crew\CrewOriginException;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CrewInterface;
-use Stu\Orm\Entity\CrewRaceInterface;
+use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -27,25 +28,21 @@ final class CrewCreator implements CrewCreatorInterface
 
     private UserRepositoryInterface $userRepository;
 
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
         CrewRaceRepositoryInterface $crewRaceRepository,
         ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         CrewRepositoryInterface $crewRepository,
-        UserRepositoryInterface $userRepository,
-        EntityManagerInterface $entityManager
+        UserRepositoryInterface $userRepository
     ) {
         $this->crewRaceRepository = $crewRaceRepository;
         $this->shipRumpCategoryRoleCrewRepository = $shipRumpCategoryRoleCrewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->crewRepository = $crewRepository;
         $this->userRepository = $userRepository;
-        $this->entityManager = $entityManager;
     }
 
-    public function create(int $userId): CrewInterface
+    public function create(int $userId, ?ColonyInterface $colony = null): CrewInterface
     {
         $user = $this->userRepository->find($userId);
 
@@ -62,7 +59,6 @@ final class CrewCreator implements CrewCreatorInterface
             );
             $arr = array_merge($arr, $amount);
         }
-        /** @var CrewRaceInterface $race */
         $race = $this->crewRaceRepository->find((int)$arr[array_rand($arr)]);
 
         $gender = rand(1, 100) > $race->getMaleRatio() ? CrewEnum::CREW_GENDER_FEMALE : CrewEnum::CREW_GENDER_MALE;
@@ -74,50 +70,127 @@ final class CrewCreator implements CrewCreatorInterface
         $crew->setRace($race);
         $crew->setGender($gender);
         $crew->setType(CrewEnum::CREW_TYPE_CREWMAN);
-
         $this->crewRepository->save($crew);
+
+        $crewAssignment = $this->shipCrewRepository->prototype();
+        $crewAssignment->setUser($user);
+        $crewAssignment->setCrew($crew);
+        $crewAssignment->setColony($colony);
+        $this->shipCrewRepository->save($crewAssignment);
 
         return $crew;
     }
 
-    public function createShipCrew(ShipInterface $ship): void
+    public function createShipCrew(ShipInterface $ship, ?ColonyInterface $colony = null, ?ShipInterface $station = null): void
     {
         $userId = $ship->getUser()->getId();
 
         $crewToSetup = $ship->getBuildPlan()->getCrew();
 
-        foreach (CrewEnum::CREW_ORDER as $crewtype) {
+        foreach (CrewEnum::CREW_ORDER as $crewType) {
             $createdcount = 1;
-            if ($crewtype == CrewEnum::CREW_TYPE_CREWMAN) {
+            if ($crewType == CrewEnum::CREW_TYPE_CREWMAN) {
                 $slot = 'getJob6Crew';
             } else {
-                $slot = 'getJob' . $crewtype . 'Crew';
+                $slot = 'getJob' . $crewType . 'Crew';
             }
             $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
                 $ship->getRump()->getShipRumpCategory()->getId(),
                 $ship->getRump()->getShipRumpRole()->getId()
             );
 
-            while ($crewToSetup > 0 && ($crewtype == CrewEnum::CREW_TYPE_CREWMAN || $createdcount <= $config->$slot())) {
+            while ($crewToSetup > 0 && ($crewType == CrewEnum::CREW_TYPE_CREWMAN || $createdcount <= $config->$slot())) {
                 $createdcount++;
                 $crewToSetup--;
 
-                $crew = current($this->crewRepository->getFreeByUserAndType($userId, $crewtype, 1));
-                if (!$crew) {
-                    $crew = current($this->crewRepository->getFreeByUser($userId, 1));
+                $crewAssignment = $this->getCrewByType($userId, $crewType, $colony, $station);
+                if ($crewAssignment === null) {
+                    $crewAssignment = $this->getCrew($userId, $colony, $station);
                 }
-                $sc = $this->shipCrewRepository->prototype();
-                $sc->setCrew($crew);
-                $sc->setShip($ship);
+                $crewAssignment->setShip($ship);
+                $crewAssignment->setColony(null);
+                $crewAssignment->setTradepost(null);
                 //TODO set both ship and crew user
-                $sc->setUser($ship->getUser());
-                $sc->setSlot($crewtype);
+                $crewAssignment->setUser($ship->getUser());
+                $crewAssignment->setSlot($crewType);
 
-                $ship->getCrewlist()->add($sc);
+                $ship->getCrewlist()->add($crewAssignment);
 
-                $this->shipCrewRepository->save($sc);
-                $this->entityManager->flush();
+                $this->shipCrewRepository->save($crewAssignment);
             }
+        }
+    }
+
+    private function getCrewByType(int $crewType, int $userId, ?ColonyInterface $colony, ?ShipInterface $station): ?ShipCrewInterface
+    {
+        if ($colony === null && $station === null) {
+            throw new CrewOriginException('no origin available');
+        }
+
+        if ($colony !== null) {
+            foreach ($colony->getCrewAssignments() as $crewAssignment) {
+                $crew = $crewAssignment->getCrew();
+                if ($crew->getType() === $crewType) {
+                    $colony->getCrewAssignments()->removeElement($crewAssignment);
+
+                    return $crewAssignment;
+                }
+            }
+
+            return null;
+        } else if ($station !== null) {
+            foreach ($station->getCrewlist() as $crewAssignment) {
+                $crew = $crewAssignment->getCrew();
+                if ($crew->getType() === $crewType) {
+                    $station->getCrewlist()->removeElement($crewAssignment);
+
+                    return $crewAssignment;
+                }
+            }
+
+            return null;
+        } else {
+            $crew = current($this->crewRepository->getFreeByUserAndType($userId, $crewType, 1));
+
+            if (!$crew) {
+                return null;
+            }
+
+            $crewAssignment = $this->shipCrewRepository->prototype();
+            $crewAssignment->setCrew($crew);
+
+            return $crewAssignment;
+        }
+    }
+
+    private function getCrew(int $userId, ?ColonyInterface $colony, ?ShipInterface $station): ShipCrewInterface
+    {
+        if ($colony === null && $station === null) {
+            throw new CrewOriginException('no origin available');
+        }
+
+        if ($colony !== null) {
+            $crewAssignments = $colony->getCrewAssignments();
+            $random = $crewAssignments->get(array_rand($crewAssignments->toArray()));
+
+            //remove from colony
+            $crewAssignments->removeElement($random);
+
+            return $random;
+        } else if ($station !== null) {
+            $crewList = $station->getCrewlist();
+            $random = $crewList->get(array_rand($crewList->toArray()));
+
+            $crewList->removeElement($random);
+
+            return $random;
+        } else {
+            $crew = current($this->crewRepository->getFreeByUser($userId, 1));
+
+            $crewAssignment = $this->shipCrewRepository->prototype();
+            $crewAssignment->setCrew($crew);
+
+            return $crewAssignment;
         }
     }
 }

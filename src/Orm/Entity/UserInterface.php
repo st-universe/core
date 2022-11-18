@@ -164,8 +164,6 @@ interface UserInterface
 
     public function getFreeCrewCount(): int;
 
-    public function lowerFreeCrewCount(int $amount): void;
-
     public function getCrewCountDebris(): int;
 
     public function getTrainableCrewCountMax(): int;

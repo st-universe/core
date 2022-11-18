@@ -14,9 +14,9 @@ interface ShipCrewInterface
 
     public function setShipId(int $shipId): ShipCrewInterface;
 
-    public function getSlot(): int;
+    public function getSlot(): ?int;
 
-    public function setSlot(int $slot): ShipCrewInterface;
+    public function setSlot(?int $slot): ShipCrewInterface;
 
     public function getPosition(): string;
 

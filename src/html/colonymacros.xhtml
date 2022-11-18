@@ -123,9 +123,9 @@
           <th colspan="5">Globale Crewübersicht</th>
         </tr>
         <tr>
-          <td style="width: 20%" class="darkbg">Crewlimit</td>
+          <td style="width: 20%" class="darkbg">globales Crewlimit</td>
           <td style="width: 20%" class="darkbg">Crew auf Schiffen</td>
-          <td style="width: 20%" class="darkbg">Verfügbare Crew</td>
+          <td style="width: 20%" class="darkbg">Verfügbare Crew auf Kolonie</td>
         </tr>
         <tr>
           <td>
@@ -140,7 +140,7 @@
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="USER/getFreeCrewCount">FREE</span>
+            <span tal:replace="COLONY/getCrewAssignmentAmount">FREE</span>
           </td>
         </tr>
         <tr>
@@ -1978,7 +1978,7 @@
     </table>
   </tal:block>
 </metal:macro>
-<metal:macro metal:define-macro="podlocations">
+<metal:macro metal:define-macro="orphanedcrewlocations">
   <tal:block tal:condition="not:ERROR">
     <table class="tcal" tal:condition="PODS">
       <tr>
@@ -1991,6 +1991,23 @@
         </td>
         <td>
           <span tal:content="pod/getSectorString">COORDS</span>
+        </td>
+      </tr>
+    </table>
+    <table class="tcal" tal:condition="TRADEPOSTS">
+      <tr>
+        <th>Crew-Anzahl</th>
+        <th>Koordinaten</th>
+        <th>Handelsposten</th>
+      </tr>
+      <tr tal:repeat="post TRADEPOSTS">
+        <td>
+          <span tal:content="post/amount">CREWCOUNT</span>
+        </td>
+        <td>(<span tal:content="post/getSectorString">COORDS</span>)
+        </td>
+        <td>
+          <span tal:content="post/name">NAME</span>
         </td>
       </tr>
     </table>

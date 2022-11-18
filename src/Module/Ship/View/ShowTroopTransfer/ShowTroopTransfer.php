@@ -64,7 +64,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
                 $max = $this->transferUtility->getBeamableTroopCount($ship);
             } else {
                 $max = min(
-                    $ship->getUser()->getFreeCrewCount(),
+                    $target->getCrewAssignmentAmount(),
                     $this->transferUtility->getFreeQuarters($ship)
                 );
                 $game->setPageTitle(_('Truppen von Kolonie beamen'));

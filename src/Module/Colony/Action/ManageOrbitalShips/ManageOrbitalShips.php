@@ -188,15 +188,14 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 && $shipobj->getBuildplan()->getCrew() > 0
                 && $shipobj->getUser()->getId() == $userId
             ) {
-                if ($shipobj->getBuildplan()->getCrew() > $shipobj->getUser()->getFreeCrewCount()) {
+                if ($shipobj->getBuildplan()->getCrew() > $colony->getCrewAssignmentAmount()) {
                     $msg[] = sprintf(
-                        _('%s: Nicht genügend Crew vorhanden (%d benötigt)'),
+                        _('%s: Nicht genügend Crew auf der Kolonie vorhanden (%d benötigt)'),
                         $shipobj->getName(),
                         $shipobj->getBuildplan()->getCrew()
                     );
                 } else {
-                    $this->crewCreator->createShipCrew($shipobj);
-                    $shipobj->getUser()->lowerFreeCrewCount($shipobj->getBuildplan()->getCrew());
+                    $this->crewCreator->createShipCrew($shipobj, $colony);
                     $msg[] = sprintf(
                         _('%s: Die Crew wurde hochgebeamt'),
                         $shipobj->getName()
@@ -210,7 +209,13 @@ final class ManageOrbitalShips implements ActionControllerInterface
             if (
                 isset($unman[$shipobj->getId()]) && $shipobj->getUser()->getId() == $userId && $shipobj->getCrewCount() > 0
             ) {
-                $this->shipCrewRepository->truncateByShip((int) $shipobj->getId());
+                //assign to colony
+                foreach ($shipobj->getCrewlist() as $crewAssignment) {
+                    $crewAssignment->setColony($colony);
+                    $crewAssignment->setShip(null);
+                    $crewAssignment->setSlot(null);
+                    $this->shipCrewRepository->save($crewAssignment);
+                }
                 $shipobj->getCrewlist()->clear();
                 $msg[] = sprintf(
                     _('%s: Die Crew wurde runtergebeamt'),

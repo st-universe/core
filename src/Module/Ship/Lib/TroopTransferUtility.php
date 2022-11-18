@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 

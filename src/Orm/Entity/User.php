@@ -659,11 +659,6 @@ class User implements UserInterface
         return $this->free_crew_count;
     }
 
-    public function lowerFreeCrewCount(int $amount): void
-    {
-        $this->free_crew_count -= $amount;
-    }
-
     public function getCrewCountDebris(): int
     {
         if ($this->crew_count_debris === null) {

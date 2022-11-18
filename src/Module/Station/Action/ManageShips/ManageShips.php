@@ -183,15 +183,14 @@ final class ManageShips implements ActionControllerInterface
                 && $shipobj->getBuildplan()->getCrew() > 0
                 && $shipobj->getUser()->getId() == $userId
             ) {
-                if ($shipobj->getBuildplan()->getCrew() > $shipobj->getUser()->getFreeCrewCount()) {
+                if ($shipobj->getBuildplan()->getCrew() > $station->getExcessCrewCount()) {
                     $msg[] = sprintf(
-                        _('%s: Nicht genügend Crew vorhanden (%d benötigt)'),
+                        _('%s: Nicht genügend überschüssige Crew auf Station vorhanden (%d benötigt)'),
                         $shipobj->getName(),
                         $shipobj->getBuildplan()->getCrew()
                     );
                 } else {
-                    $this->crewCreator->createShipCrew($shipobj);
-                    $shipobj->getUser()->lowerFreeCrewCount($shipobj->getBuildplan()->getCrew());
+                    $this->crewCreator->createShipCrew($shipobj, null, $station);
                     $msg[] = sprintf(
                         _('%s: Die Crew wurde hochgebeamt'),
                         $shipobj->getName()
@@ -203,21 +202,36 @@ final class ManageShips implements ActionControllerInterface
             if (
                 isset($unman[$shipobj->getId()]) && $shipobj->getUser()->getId() == $userId && $shipobj->getCrewCount() > 0
             ) {
-                $this->shipCrewRepository->truncateByShip((int) $shipobj->getId());
-                $shipobj->getCrewlist()->clear();
-                $msg[] = sprintf(
-                    _('%s: Die Crew wurde runtergebeamt'),
-                    $shipobj->getName()
-                );
+                if ($shipobj->getCrewCount() > $station->getMaxCrewCount() - $station->getCrewCount()) {
+                    $msg[] = sprintf(
+                        _('%s: Nicht genügend freie Quartiere auf Station vorhanden (%d benötigt)'),
+                        $shipobj->getName(),
+                        $shipobj->getCrewCount()
+                    );
+                } else {
+                    //assign to station
+                    foreach ($shipobj->getCrewlist() as $shipCrew) {
+                        $shipCrew->setShip($station);
+                        $shipCrew->setSlot(null);
+                        $station->getCrewlist()->add($shipCrew);
+                        //TODO set role to null
+                        $this->shipCrewRepository->save($shipCrew);
+                    }
+                    $shipobj->getCrewlist()->clear();
+                    $msg[] = sprintf(
+                        _('%s: Die Crew wurde runtergebeamt'),
+                        $shipobj->getName()
+                    );
 
-                foreach ($shipobj->getDockedShips() as $dockedShip) {
-                    $dockedShip->setDockedTo(null);
-                    $this->shipRepository->save($dockedShip);
+                    foreach ($shipobj->getDockedShips() as $dockedShip) {
+                        $dockedShip->setDockedTo(null);
+                        $this->shipRepository->save($dockedShip);
+                    }
+                    $shipobj->getDockedShips()->clear();
+
+                    $this->shipSystemManager->deactivateAll($shipobj);
+                    $shipobj->setAlertStateGreen();
                 }
-                $shipobj->getDockedShips()->clear();
-
-                $this->shipSystemManager->deactivateAll($shipobj);
-                $shipobj->setAlertStateGreen();
             }
             if (isset($reactor[$shipobj->getId()]) && $reactor[$shipobj->getId()] > 0) {
                 $hasWarpcore = $shipobj->hasWarpcore();

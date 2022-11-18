@@ -111,9 +111,11 @@ final class ShipLeaver implements ShipLeaverInterface
         }
 
         //transfer crew into pods
+        //TODO not all...! depends on race config
         $crewList = $ship->getCrewlist();
         foreach ($crewList as $shipCrew) {
             $shipCrew->setShip($pods);
+            $shipCrew->setSlot(null);
             $this->shipCrewRepository->save($shipCrew);
         }
 

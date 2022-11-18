@@ -41,9 +41,8 @@ class ShipCrew implements ShipCrewInterface
     /** @Column(type="integer") * */
     private $crew_id = 0;
 
-    //TODO make slot nullable for excess crew?
-    /** @Column(type="smallint") * */
-    private $slot = 0;
+    /** @Column(type="smallint", nullable=true) * */
+    private $slot;
 
     /** @Column(type="integer") * */
     private $user_id = 0;
@@ -116,12 +115,12 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
-    public function getSlot(): int
+    public function getSlot(): ?int
     {
         return $this->slot;
     }
 
-    public function setSlot(int $slot): ShipCrewInterface
+    public function setSlot(?int $slot): ShipCrewInterface
     {
         $this->slot = $slot;
 

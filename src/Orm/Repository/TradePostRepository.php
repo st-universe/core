@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradePostInterface;
@@ -82,5 +83,27 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                 'shipid' => $ship_id,
             ])
             ->getResult();
+    }
+
+    public function getClosestTradePost(int $cx, int $cy): TradePostInterface
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tp
+                    FROM %s tp 
+                    JOIN %s m 
+                    WITH tp.map_id = m.id
+                    ORDER BY abs(m.cx - :cx) + abs(m.cy - :cy) ASC',
+                    TradePost::class,
+                    Map::class
+                )
+            )
+            ->setMaxResults(1)
+            ->setParameters([
+                'cx' => $cx,
+                'cy' => $cy
+            ])
+            ->getSingleResult();
     }
 }

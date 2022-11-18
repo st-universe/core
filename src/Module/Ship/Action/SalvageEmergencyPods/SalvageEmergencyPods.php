@@ -16,6 +16,7 @@ use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class SalvageEmergencyPods implements ActionControllerInterface
 {
@@ -25,6 +26,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
+    private TradePostRepositoryInterface $tradePostRepository;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private TroopTransferUtilityInterface $troopTransferUtility;
@@ -32,11 +35,13 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipCrewRepositoryInterface $shipCrewRepository,
+        TradePostRepositoryInterface $tradePostRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         TroopTransferUtilityInterface  $troopTransferUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->tradePostRepository = $tradePostRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->troopTransferUtility = $troopTransferUtility;
     }
@@ -125,6 +130,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         GameControllerInterface $game
     ): void {
         $userId = $game->getUser()->getId();
+        $closestTradepost = $this->tradePostRepository->getClosestTradePost($ship->getCx(), $ship->getCy());
 
         $sentGameInfoForForeignCrew = false;
 
@@ -135,38 +141,48 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     GameEnum::USER_NOONE,
                     $ownerId,
                     sprintf(
-                        _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an deine Kolonien überstellt.'),
+                        _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an den Handelsposten "%s" (%s) überstellt.'),
                         $game->getUser()->getName(),
-                        $count
+                        $count,
+                        $closestTradepost->getName(),
+                        $closestTradepost->getShip()->getSectorString()
                     ),
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
                 );
-                foreach ($target->getCrewlist() as $shipCrew) {
-                    if ($shipCrew->getCrew()->getUser()->getId() === $ownerId) {
-                        $this->shipCrewRepository->delete($shipCrew);
+                foreach ($target->getCrewlist() as $crewAssignment) {
+                    if ($crewAssignment->getCrew()->getUser()->getId() === $ownerId) {
+                        $crewAssignment->setShip(null);
+                        $crewAssignment->setTradepost($closestTradepost);
+                        $this->shipCrewRepository->save($crewAssignment);
                     }
                 }
                 if (!$sentGameInfoForForeignCrew) {
-                    $game->addInformation(_('Die fremden Crewman wurde geborgen und an ihre(n) Besitzer überstellt'));
+                    $game->addInformation(_('Die fremden Crewman wurde geborgen und an den dichtesten Handelsposten überstellt'));
                     $sentGameInfoForForeignCrew = true;
                 }
             } else {
                 if ($this->gotEnoughFreeTroopQuarters($ship, $count)) {
-                    foreach ($target->getCrewlist() as $shipCrew) {
-                        if ($shipCrew->getCrew()->getUser() === $game->getUser()) {
-                            $shipCrew->setShip($ship);
-                            $ship->getCrewlist()->add($shipCrew);
-                            $this->shipCrewRepository->save($shipCrew);
+                    foreach ($target->getCrewlist() as $crewAssignment) {
+                        if ($crewAssignment->getCrew()->getUser() === $game->getUser()) {
+                            $crewAssignment->setShip($ship);
+                            $ship->getCrewlist()->add($crewAssignment);
+                            $this->shipCrewRepository->save($crewAssignment);
                         }
                     }
                     $game->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
                 } else {
-                    foreach ($target->getCrewlist() as $shipCrew) {
-                        if ($shipCrew->getCrew()->getUser() === $game->getUser()) {
-                            $this->shipCrewRepository->delete($shipCrew);
+                    foreach ($target->getCrewlist() as $crewAssignment) {
+                        if ($crewAssignment->getCrew()->getUser() === $game->getUser()) {
+                            $crewAssignment->setShip(null);
+                            $crewAssignment->setTradepost($closestTradepost);
+                            $this->shipCrewRepository->save($crewAssignment);
                         }
                     }
-                    $game->addInformation(_('Deine Crew wurde geborgen und an deine Kolonien überstellt'));
+                    $game->addInformationf(
+                        _('Deine Crew wurde geborgen und an den Handelsposten "%s" (%s) überstellt'),
+                        $closestTradepost->getName(),
+                        $closestTradepost->getShip()->getSectorString()
+                    );
                 }
             }
         }

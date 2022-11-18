@@ -26,6 +26,8 @@ use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -148,9 +150,9 @@ final class TroopTransfer implements ActionControllerInterface
         try {
             if ($isColony) {
                 if ($isUnload) {
-                    $amount = $this->transferToColony($requestedTransferCount, $ship);
+                    $amount = $this->transferToColony($requestedTransferCount, $ship, $target);
                 } else {
-                    $amount = $this->transferFromColony($requestedTransferCount, $ship, $game);
+                    $amount = $this->transferFromColony($requestedTransferCount, $ship, $target, $game);
                 }
             } else {
 
@@ -214,26 +216,34 @@ final class TroopTransfer implements ActionControllerInterface
         }
     }
 
-    private function transferToColony(int $requestedTransferCount, ShipInterface $ship): int
+    private function transferToColony(int $requestedTransferCount, ShipInterface $ship, ColonyInterface $colony): int
     {
         $amount = min($requestedTransferCount, $this->transferUtility->getBeamableTroopCount($ship));
 
+        /** @var ShipCrewInterface[] */
         $array = $ship->getCrewlist()->getValues();
 
         for ($i = 0; $i < $amount; $i++) {
-            $sc = $array[$i];
-            $ship->getCrewlist()->removeElement($sc);
-            $this->shipCrewRepository->delete($sc);
+            $crewAssignment = $array[$i];
+
+            //remove from ship
+            $ship->getCrewlist()->removeElement($crewAssignment);
+
+            //assign crew to colony
+            $crewAssignment->setColony($colony);
+            $crewAssignment->setShip(null);
+            $crewAssignment->setSlot(null);
+            $this->shipCrewRepository->save($crewAssignment);
         }
 
         return $amount;
     }
 
-    private function transferFromColony(int $requestedTransferCount, ShipInterface $ship, GameControllerInterface $game): int
+    private function transferFromColony(int $requestedTransferCount, ShipInterface $ship, ColonyInterface $colony, GameControllerInterface $game): int
     {
         $amount = min(
             $requestedTransferCount,
-            $ship->getUser()->getFreeCrewCount(),
+            $colony->getCrewAssignmentAmount(),
             $this->transferUtility->getFreeQuarters($ship)
         );
 
@@ -243,17 +253,21 @@ final class TroopTransfer implements ActionControllerInterface
             }
         }
 
-        foreach ($this->crewRepository->getFreeByUser($game->getUser()->getId(), $amount) as $crew) {
-            $sc = $this->shipCrewRepository->prototype();
-            $sc->setCrew($crew);
-            $sc->setShip($ship);
+        $crewAssignments = $colony->getCrewAssignments();
+
+        for ($i = 0; $i < $amount; $i++) {
+            $crewAssignment = $crewAssignments->get(array_rand($crewAssignments->toArray()));
+            $crewAssignment->setShip($ship);
+            $crewAssignment->setColony(null);
             //TODO set both ship and crew user
-            $sc->setUser($ship->getUser());
-            $sc->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
+            $crewAssignment->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
 
-            $ship->getCrewlist()->add($sc);
+            //remove from colony
+            $crewAssignments->removeElement($crewAssignment);
 
-            $this->shipCrewRepository->save($sc);
+            $ship->getCrewlist()->add($crewAssignment);
+
+            $this->shipCrewRepository->save($crewAssignment);
         }
 
         return $amount;
@@ -287,6 +301,7 @@ final class TroopTransfer implements ActionControllerInterface
         for ($i = 0; $i < $amount; $i++) {
             $sc = $array[$i];
             $sc->setShip($target);
+            $sc->setSlot(null);
             $this->shipCrewRepository->save($sc);
 
             $ship->getCrewlist()->removeElement($sc);

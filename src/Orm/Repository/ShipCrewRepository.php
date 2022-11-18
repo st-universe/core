@@ -46,6 +46,28 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         ]);
     }
 
+    public function getByUserAtTradeposts(int $userId): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('name', 'name', 'string');
+        $rsm->addScalarResult('sector', 'sector', 'string');
+        $rsm->addScalarResult('amount', 'amount', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT tp.id as id, tp.name as name, concat(m.cx, :separator, m.cy) as sector, count(*) as amount
+            FROM stu_crew_assign ca
+            JOIN stu_trade_posts tp
+            ON ca.tradepost_id = tp.id
+            JOIN stu_map m
+            ON tp.map_id = m.id
+            WHERE ca.user_id = :userId
+            GROUP BY tp.id, tp.name, m.cx, m.cy',
+            $rsm
+        )->setParameters(['userId' => $userId, 'separator' => '|'])
+            ->getResult();
+    }
+
     public function getAmountByShip(int $shipId): int
     {
         return $this->count([
