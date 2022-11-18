@@ -198,6 +198,8 @@ interface ColonyInterface
 
     public function getCrewLimit(): int;
 
+    public function getFreeAssignmentCount(): int;
+
     public function clearCache(): void;
 
     public function hasActiveBuildingWithFunction(int $function_id): bool;

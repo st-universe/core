@@ -78,13 +78,17 @@ final class DisassembleShip implements ActionControllerInterface
             return;
         }
 
+        $ship_id = request::getIntFatal('ship_id');
+        $ship = $this->shipLoader->getByIdAndUser((int) $ship_id, $userId);
+        if ($ship->getCrewCount() > $colony->getFreeAssignmentCount()) {
+            $game->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
+            return;
+        }
+
         $colony->lowerEps(20);
 
         $this->colonyRepository->save($colony);
 
-        $ship_id = request::getIntFatal('ship_id');
-
-        $ship = $this->shipLoader->getByIdAndUser((int) $ship_id, $userId);
         $this->retrieveSomeIntactModules($ship, $colony, $game);
         $this->retrieveWarpcoreLoad($ship, $colony, $game);
         $this->retrieveLoadedTorpedos($ship, $colony, $game);

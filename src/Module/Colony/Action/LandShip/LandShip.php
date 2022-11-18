@@ -72,6 +72,10 @@ final class LandShip implements ActionControllerInterface
             $game->addInformation(_('Kein Lagerraum verfügbar'));
             return;
         }
+        if ($ship->getCrewCount() > $colony->getFreeAssignmentCount()) {
+            $game->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
+            return;
+        }
 
         $this->colonyStorageManager->upperStorage($colony, $ship->getRump()->getCommodity(), 1);
 

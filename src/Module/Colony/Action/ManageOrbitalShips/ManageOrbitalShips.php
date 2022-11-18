@@ -209,6 +209,15 @@ final class ManageOrbitalShips implements ActionControllerInterface
             if (
                 isset($unman[$shipobj->getId()]) && $shipobj->getUser()->getId() == $userId && $shipobj->getCrewCount() > 0
             ) {
+                //check if there is enough space for crew on colony
+                if ($shipobj->getCrewCount() > $colony->getFreeAssignmentCount()) {
+                    $msg[] = sprintf(
+                        _('%s: Nicht genügend Platz für die Crew auf der Kolonie'),
+                        $shipobj->getName()
+                    );
+                    throw new Exception();
+                }
+
                 //assign to colony
                 foreach ($shipobj->getCrewlist() as $crewAssignment) {
                     $crewAssignment->setColony($colony);

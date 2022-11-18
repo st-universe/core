@@ -218,7 +218,11 @@ final class TroopTransfer implements ActionControllerInterface
 
     private function transferToColony(int $requestedTransferCount, ShipInterface $ship, ColonyInterface $colony): int
     {
-        $amount = min($requestedTransferCount, $this->transferUtility->getBeamableTroopCount($ship));
+        $amount = min(
+            $requestedTransferCount,
+            $this->transferUtility->getBeamableTroopCount($ship),
+            $colony->getFreeAssignmentCount()
+        );
 
         /** @var ShipCrewInterface[] */
         $array = $ship->getCrewlist()->getValues();

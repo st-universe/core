@@ -861,6 +861,11 @@ class Colony implements ColonyInterface
         );
     }
 
+    public function getFreeAssignmentCount(): int
+    {
+        return $this->getCrewLimit() - $this->getCrewAssignmentAmount();
+    }
+
     public function clearCache(): void
     {
         $this->productionRaw = null;
