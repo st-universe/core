@@ -102,6 +102,8 @@ final class LandShip implements ActionControllerInterface
             $colony->getCrewAssignments()->add($crewAssignment);
             $this->shipCrewRepository->save($crewAssignment);
         }
+
+        $ship->getCrewlist()->clear();
     }
 
     private function retrieveLoadedTorpedos(ShipInterface $ship, $colony, $game): void
