@@ -13,8 +13,10 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class LandShip implements ActionControllerInterface
 {
@@ -33,13 +35,16 @@ final class LandShip implements ActionControllerInterface
 
     private ShipTorpedoManagerInterface $shipTorpedoManager;
 
+    private ShipCrewRepositoryInterface $shipCrewRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipRemoverInterface $shipRemover,
         ShipLoaderInterface $shipLoader,
-        ShipTorpedoManagerInterface $shipTorpedoManager
+        ShipTorpedoManagerInterface $shipTorpedoManager,
+        ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
@@ -47,6 +52,7 @@ final class LandShip implements ActionControllerInterface
         $this->shipRemover = $shipRemover;
         $this->shipLoader = $shipLoader;
         $this->shipTorpedoManager = $shipTorpedoManager;
+        $this->shipCrewRepository = $shipCrewRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -80,9 +86,22 @@ final class LandShip implements ActionControllerInterface
 
         $this->retrieveLoadedTorpedos($ship, $colony, $game);
 
+        $this->transferCrewToColony($ship, $colony);
+
         $this->shipRemover->remove($ship);
 
         $game->addInformationf(_('Die %s ist gelandet'), $ship->getName());
+    }
+
+    private function transferCrewToColony(ShipInterface $ship, ColonyInterface $colony): void
+    {
+        foreach ($ship->getCrewlist() as $crewAssignment) {
+            $crewAssignment->setColony($colony);
+            $crewAssignment->setShip(null);
+            $crewAssignment->setSlot(null);
+            $colony->getCrewAssignments()->add($crewAssignment);
+            $this->shipCrewRepository->save($crewAssignment);
+        }
     }
 
     private function retrieveLoadedTorpedos(ShipInterface $ship, $colony, $game): void
