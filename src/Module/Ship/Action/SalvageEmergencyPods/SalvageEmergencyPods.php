@@ -147,7 +147,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         GameControllerInterface $game
     ): void {
         $userId = $game->getUser()->getId();
-        $closestTradepost = $this->tradePostRepository->getClosestTradePost($ship->getCx(), $ship->getCy());
+        $closestTradepost = $this->tradePostRepository->getClosestNpcTradePost($ship->getCx(), $ship->getCy());
 
         $sentGameInfoForForeignCrew = false;
 

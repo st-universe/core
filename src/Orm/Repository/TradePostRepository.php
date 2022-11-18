@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradePost;
@@ -85,7 +86,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->getResult();
     }
 
-    public function getClosestTradePost(int $cx, int $cy): TradePostInterface
+    public function getClosestNpcTradePost(int $cx, int $cy): TradePostInterface
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -94,6 +95,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                     FROM %s tp 
                     JOIN %s m 
                     WITH tp.map_id = m.id
+                    WHERE tp.user_id < :firstUserId
                     ORDER BY abs(m.cx - :cx) + abs(m.cy - :cy) ASC',
                     TradePost::class,
                     Map::class
@@ -102,7 +104,8 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->setMaxResults(1)
             ->setParameters([
                 'cx' => $cx,
-                'cy' => $cy
+                'cy' => $cy,
+                'firstUserId' => UserEnum::USER_FIRST_ID
             ])
             ->getSingleResult();
     }
