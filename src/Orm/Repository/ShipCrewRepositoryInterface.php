@@ -33,6 +33,8 @@ interface ShipCrewRepositoryInterface extends ObjectRepository
 
     public function getAmountByUser(int $userId): int;
 
+    public function getAmountByUserAtTradeposts(int $userId): int;
+
     public function getAmountByUserOnShips(int $userId): int;
 
     public function getCrewsTop10(): array;

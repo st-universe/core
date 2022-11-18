@@ -95,6 +95,19 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         )->setParameter('userId', $userId)->getSingleScalarResult();
     }
 
+    public function getAmountByUserAtTradeposts(int $userId): int
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT count(ca.id)
+                FROM %s ca
+                WHERE ca.user_id = :userId
+                AND ca.tradepost_id IS NOT NULL',
+                ShipCrew::class
+            )
+        )->setParameter('userId', $userId)->getSingleScalarResult();
+    }
+
     public function getCrewsTop10(): array
     {
         $rsm = new ResultSetMapping();

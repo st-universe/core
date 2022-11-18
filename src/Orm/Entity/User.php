@@ -162,7 +162,7 @@ class User implements UserInterface
 
     private $global_crew_limit;
 
-    private $crew_count_debris;
+    private $crew_count_debris_and_tradeposts;
 
     private $sessiondataUnserialized;
 
@@ -646,25 +646,30 @@ class User implements UserInterface
         return !in_array($this->getId(), [GameEnum::USER_NOONE]);
     }
 
-    public function getCrewCountDebris(): int
+    public function getCrewCountDebrisAndTradeposts(): int
     {
-        if ($this->crew_count_debris === null) {
+        if ($this->crew_count_debris_and_tradeposts === null) {
             // @todo refactor
             global $container;
 
-            $this->crew_count_debris = $container->get(CrewRepositoryInterface::class)
+            $this->crew_count_debris_and_tradeposts = $container->get(CrewRepositoryInterface::class)
                 ->getAmountByUserAndShipRumpCategory(
                     (int) $this->getId(),
                     ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD
                 );
 
-            $this->crew_count_debris += $container->get(CrewRepositoryInterface::class)
+            $this->crew_count_debris_and_tradeposts += $container->get(CrewRepositoryInterface::class)
                 ->getAmountByUserAndShipRumpCategory(
                     (int) $this->getId(),
                     ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
                 );
+
+            $this->crew_count_debris_and_tradeposts += $container->get(ShipCrewRepositoryInterface::class)
+                ->getAmountByUserAtTradeposts(
+                    (int) $this->getId()
+                );
         }
-        return $this->crew_count_debris;
+        return $this->crew_count_debris_and_tradeposts;
     }
 
     public function getTrainableCrewCountMax(): int
