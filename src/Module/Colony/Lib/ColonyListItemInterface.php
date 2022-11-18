@@ -53,6 +53,10 @@ interface ColonyListItemInterface
 
     public function getCrewAssignmentAmount(): int;
 
+    public function getCrewTrainingAmount(): int;
+
+    public function getCrewLimit(): int;
+
     public function getStorageStatusBar(): string;
 
     public function getEpsStatusBar(): string;

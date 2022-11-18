@@ -149,6 +149,11 @@ class Colony implements ColonyInterface
      */
     private $crewAssignments;
 
+    /**
+     * @OneToMany(targetEntity="CrewTraining", mappedBy="colony")
+     */
+    private $crewTrainings;
+
     private $has_active_building_by_function = [];
 
     private $positive_effect_secondary;
@@ -174,6 +179,7 @@ class Colony implements ColonyInterface
         $this->defenders = new ArrayCollection();
         $this->blockers = new ArrayCollection();
         $this->crewAssignments = new ArrayCollection();
+        $this->crewTrainings = new ArrayCollection();
     }
 
     public function getId(): int
@@ -624,6 +630,11 @@ class Colony implements ColonyInterface
     public function getCrewAssignmentAmount(): int
     {
         return $this->crewAssignments->count();
+    }
+
+    public function getCrewTrainingAmount(): int
+    {
+        return $this->crewTrainings->count();
     }
 
     /**

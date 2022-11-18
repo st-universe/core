@@ -158,6 +158,8 @@ interface ColonyInterface
 
     public function getCrewAssignmentAmount(): int;
 
+    public function getCrewTrainingAmount(): int;
+
     /**
      * @return ColonyProduction[]
      */

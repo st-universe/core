@@ -135,6 +135,16 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->colony->getCrewAssignmentAmount();
     }
 
+    public function getCrewTrainingAmount(): int
+    {
+        return $this->colony->getCrewTrainingAmount();
+    }
+
+    public function getCrewLimit(): int
+    {
+        return $this->colony->getCrewLimit();
+    }
+
     public function getStorageStatusBar(): string
     {
         return (new TalStatusBar())

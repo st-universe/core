@@ -226,7 +226,6 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
                     $crewAssignment->setColony($colony);
                     $crewAssignment->setShip(null);
-                    $crewAssignment->setSlot(null);
                     $this->shipCrewRepository->save($crewAssignment);
                 }
             }
