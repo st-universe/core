@@ -715,7 +715,7 @@ class User implements UserInterface
         return $this->crew_on_ships_count;
     }
 
-    private function getAssignedCrewCount(): int
+    public function getAssignedCrewCount(): int
     {
         // @todo refactor
         global $container;

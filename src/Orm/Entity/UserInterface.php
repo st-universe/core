@@ -172,6 +172,8 @@ interface UserInterface
 
     public function getCrewAssignedToShipsCount(): int;
 
+    public function getAssignedCrewCount(): int;
+
     public function getCrewLeftCount(): int;
 
     public function getInTrainingCrewCount(): int;

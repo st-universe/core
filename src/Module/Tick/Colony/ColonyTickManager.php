@@ -78,7 +78,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             if ($user[$obj->getUserId()] >= $obj->getUser()->getTrainableCrewCountMax()) {
                 continue;
             }
-            if ($obj->getUser()->getGlobalCrewLimit() - $obj->getUser()->getUsedCrewCount() - $obj->getUser()->getFreeCrewCount() <= 0) {
+            if ($obj->getUser()->getGlobalCrewLimit() - $obj->getUser()->getAssignedCrewCount() <= 0) {
                 $this->crewTrainingRepository->delete($obj);
                 continue;
             }
