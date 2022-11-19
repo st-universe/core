@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
-use Exception;
 use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -29,6 +28,9 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -106,290 +108,333 @@ final class ManageOrbitalShips implements ActionControllerInterface
             $userId
         );
 
-        $ships = request::postArray('ships');
-        if (count($ships) == 0) {
+        $shipIds = request::postArray('ships');
+        if (count($shipIds) == 0) {
             $game->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
         }
-        $msg = array();
+        $msg = [];
+
+        foreach ($shipIds as $shipId) {
+            $this->handleShip($game, $shipId, $colony, $msg);
+        }
+        $this->colonyRepository->save($colony);
+
+        $game->addInformationMerge($msg);
+    }
+
+    private function handleShip(
+        GameControllerInterface $game,
+        int $shipId,
+        ColonyInterface $colony,
+        &$msg
+    ): void {
+
+        $user = $game->getUser();
+
+        $ship = $this->shipRepository->find($shipId);
+        if ($ship === null) {
+            return;
+        }
+        if ($ship->getCloakState()) {
+            return;
+        }
+        if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
+            return;
+        }
+        if ($ship->getIsDestroyed()) {
+            return;
+        }
+
+        $this->batteryShip($ship, $user, $colony, $msg);
+        $this->manShip($ship, $user, $colony, $msg);
+        $this->unmanShip($ship, $user, $colony, $msg);
+        $this->reactorShip($ship, $colony, $msg);
+        $this->torpedoShip($ship, $user, $colony, $msg);
+
+        $this->shipRepository->save($ship);
+    }
+
+
+    private function batteryShip(ShipInterface $ship, UserInterface $user, ColonyInterface $colony, &$msg): void
+    {
         $batt = request::postArrayFatal('batt');
-        $man = request::postArray('man');
-        $unman = request::postArray('unman');
-        $reactor = request::postArray('reactor');
-        $torp = request::postArray('torp');
-        $torp_type = request::postArray('torp_type');
-        $storage = $colony->getStorage();
+        $shipId = $ship->getId();
+        $userId = $user->getId();
 
         $sectorString = $colony->getSX() . '|' . $colony->getSY();
         if ($colony->isInSystem()) {
             $sectorString .= ' (' . $colony->getSystem()->getName() . '-System)';
         }
 
-        foreach ($ships as $ship) {
-            $shipobj = $this->shipRepository->find((int) $ship);
-            if ($shipobj === null) {
-                continue;
-            }
-            if ($shipobj->getCloakState()) {
-                continue;
-            }
-            if (!$this->positionChecker->checkColonyPosition($colony, $shipobj)) {
-                continue;
-            }
-            if ($shipobj->getIsDestroyed()) {
-                continue;
-            }
-            if ($colony->getEps() > 0 && $shipobj->getEBatt() < $shipobj->getMaxEbatt() && array_key_exists(
-                $ship,
-                $batt
-            )) {
-                if ($batt[$ship] == 'm') {
-                    $load = $shipobj->getMaxEbatt() - $shipobj->getEBatt();
-                } else {
-                    $load = (int) $batt[$ship];
-                    if ($shipobj->getEBatt() + $load > $shipobj->getMaxEBatt()) {
-                        $load = $shipobj->getMaxEBatt() - $shipobj->getEBatt();
-                    }
-                }
-                if ($load > $colony->getEps()) {
-                    $load = $colony->getEps();
-                }
-                if ($load > 0) {
-                    $shipobj->setEBatt($shipobj->getEBatt() + $load);
-                    $colony->lowerEps($load);
-                    $msg[] = sprintf(
-                        _('%s: Batterie um %d Einheiten aufgeladen'),
-                        $shipobj->getName(),
-                        $load
-                    );
-                    if ($shipobj->getUser() !== $user) {
-
-                        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $shipobj->getId());
-
-                        $this->privateMessageSender->send(
-                            $userId,
-                            (int) $shipobj->getUser()->getId(),
-                            sprintf(
-                                _('Die Kolonie %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
-                                $colony->getName(),
-                                $sectorString,
-                                $shipobj->getName(),
-                                $load
-                            ),
-                            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-                            $href
-                        );
-                    }
+        if ($colony->getEps() > 0 && $ship->getEBatt() < $ship->getMaxEbatt() && array_key_exists(
+            $shipId,
+            $batt
+        )) {
+            if ($batt[$shipId] == 'm') {
+                $load = $ship->getMaxEbatt() - $ship->getEBatt();
+            } else {
+                $load = (int) $batt[$shipId];
+                if ($ship->getEBatt() + $load > $ship->getMaxEBatt()) {
+                    $load = $ship->getMaxEBatt() - $ship->getEBatt();
                 }
             }
-            if (
-                isset($man[$shipobj->getId()])
-                && $shipobj->getCrewCount() == 0
-                && $shipobj->getBuildplan()->getCrew() > 0
-                && $shipobj->getUser()->getId() == $userId
-            ) {
-                if ($shipobj->getBuildplan()->getCrew() > $colony->getCrewAssignmentAmount()) {
-                    $msg[] = sprintf(
-                        _('%s: Nicht genügend Crew auf der Kolonie vorhanden (%d benötigt)'),
-                        $shipobj->getName(),
-                        $shipobj->getBuildplan()->getCrew()
-                    );
-                } else {
-                    $this->crewCreator->createShipCrew($shipobj, $colony);
-                    $msg[] = sprintf(
-                        _('%s: Die Crew wurde hochgebeamt'),
-                        $shipobj->getName()
-                    );
-
-                    if ($shipobj->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
-                        $this->shipSystemManager->activate($shipobj, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
-                    }
-                }
+            if ($load > $colony->getEps()) {
+                $load = $colony->getEps();
             }
-            if (
-                isset($unman[$shipobj->getId()]) && $shipobj->getUser()->getId() == $userId && $shipobj->getCrewCount() > 0
-            ) {
-                //check if there is enough space for crew on colony
-                if ($shipobj->getCrewCount() > $colony->getFreeAssignmentCount()) {
-                    $msg[] = sprintf(
-                        _('%s: Nicht genügend Platz für die Crew auf der Kolonie'),
-                        $shipobj->getName()
-                    );
-                    throw new Exception();
-                }
-
-                //assign to colony
-                foreach ($shipobj->getCrewlist() as $crewAssignment) {
-                    $crewAssignment->setColony($colony);
-                    $crewAssignment->setShip(null);
-                    $crewAssignment->setSlot(null);
-                    $this->shipCrewRepository->save($crewAssignment);
-                }
-                $shipobj->getCrewlist()->clear();
+            if ($load > 0) {
+                $ship->setEBatt($ship->getEBatt() + $load);
+                $colony->lowerEps($load);
                 $msg[] = sprintf(
-                    _('%s: Die Crew wurde runtergebeamt'),
-                    $shipobj->getName()
+                    _('%s: Batterie um %d Einheiten aufgeladen'),
+                    $ship->getName(),
+                    $load
+                );
+                if ($ship->getUser() !== $user) {
+
+                    $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+
+                    $this->privateMessageSender->send(
+                        $userId,
+                        $ship->getUser()->getId(),
+                        sprintf(
+                            _('Die Kolonie %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
+                            $colony->getName(),
+                            $sectorString,
+                            $ship->getName(),
+                            $load
+                        ),
+                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                        $href
+                    );
+                }
+            }
+        }
+    }
+
+    private function manShip(ShipInterface $ship, UserInterface $user, ColonyInterface $colony, &$msg): void
+    {
+        $man = request::postArray('man');
+
+        if (
+            isset($man[$ship->getId()])
+            && $ship->getCrewCount() == 0
+            && $ship->getBuildplan()->getCrew() > 0
+            && $ship->getUser() === $user
+        ) {
+            if ($ship->getBuildplan()->getCrew() > $colony->getCrewAssignmentAmount()) {
+                $msg[] = sprintf(
+                    _('%s: Nicht genügend Crew auf der Kolonie vorhanden (%d benötigt)'),
+                    $ship->getName(),
+                    $ship->getBuildplan()->getCrew()
+                );
+            } else {
+                $this->crewCreator->createShipCrew($ship, $colony);
+                $msg[] = sprintf(
+                    _('%s: Die Crew wurde hochgebeamt'),
+                    $ship->getName()
                 );
 
-                foreach ($shipobj->getDockedShips() as $dockedShip) {
-                    $dockedShip->setDockedTo(null);
-                    $this->shipRepository->save($dockedShip);
-                }
-                $shipobj->getDockedShips()->clear();
-
-                $this->shipSystemManager->deactivateAll($shipobj);
-
-                $shipobj->setAlertStateGreen();
-            }
-            if (isset($reactor[$shipobj->getId()]) && $reactor[$shipobj->getId()] > 0) {
-                $hasWarpcore = $shipobj->hasWarpcore();
-                $hasFusionReactor = $shipobj->hasFusionReactor();
-
-                if (!$hasWarpcore && !$hasFusionReactor) {
-                    throw new Exception();
-                }
-
-                if ($this->reactorUtil->storageContainsNeededCommodities($storage, $hasWarpcore)) {
-                    $load = $reactor[$shipobj->getId()] == 'm' ? PHP_INT_MAX : (int)$reactor[$shipobj->getId()];
-                    $loadMessage = $this->reactorUtil->loadReactor($shipobj, $load, $colony, null, $hasWarpcore);
-
-                    if ($loadMessage !== null) {
-                        $msg[] = $loadMessage;
-                    }
-                } else {
-                    $msg[] = sprintf(
-                        _('%s: Es werden mindestens folgende Waren zum Aufladen des %s benötigt:'),
-                        $shipobj->getName(),
-                        $hasWarpcore ? 'Warpkerns' : 'Fusionsreaktors'
-                    );
-                    $costs = $hasWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
-                    foreach ($costs as $commodityId => $loadCost) {
-                        $msg[] = sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId));
-                    }
+                if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
+                    $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
                 }
             }
-            if (isset($torp[$shipobj->getId()]) && $shipobj->getMaxTorpedos() > 0) {
-                if ($torp[$shipobj->getId()] == 'm') {
-                    $count = $shipobj->getMaxTorpedos();
-                } else {
-                    $count = (int) $torp[$shipobj->getId()];
+        }
+    }
+
+    private function unmanShip(ShipInterface $ship, UserInterface $user, ColonyInterface $colony, &$msg): void
+    {
+        $unman = request::postArray('unman');
+
+        if (
+            isset($unman[$ship->getId()]) && $ship->getUser() === $user && $ship->getCrewCount() > 0
+        ) {
+            //check if there is enough space for crew on colony
+            if ($ship->getCrewCount() > $colony->getFreeAssignmentCount()) {
+                $msg[] = sprintf(
+                    _('%s: Nicht genügend Platz für die Crew auf der Kolonie'),
+                    $ship->getName()
+                );
+                return;
+            }
+
+            //assign to colony
+            foreach ($ship->getCrewlist() as $crewAssignment) {
+                $crewAssignment->setColony($colony);
+                $crewAssignment->setShip(null);
+                $crewAssignment->setSlot(null);
+                $this->shipCrewRepository->save($crewAssignment);
+            }
+            $ship->getCrewlist()->clear();
+            $msg[] = sprintf(
+                _('%s: Die Crew wurde runtergebeamt'),
+                $ship->getName()
+            );
+
+            foreach ($ship->getDockedShips() as $dockedShip) {
+                $dockedShip->setDockedTo(null);
+                $this->shipRepository->save($dockedShip);
+            }
+            $ship->getDockedShips()->clear();
+
+            $this->shipSystemManager->deactivateAll($ship);
+
+            $ship->setAlertStateGreen();
+        }
+    }
+
+    private function reactorShip(ShipInterface $ship, ColonyInterface $colony, &$msg): void
+    {
+        $reactor = request::postArray('reactor');
+        $storage = $colony->getStorage();
+
+        if (isset($reactor[$ship->getId()]) && $reactor[$ship->getId()] > 0) {
+            $hasWarpcore = $ship->hasWarpcore();
+            $hasFusionReactor = $ship->hasFusionReactor();
+
+            if (!$hasWarpcore && !$hasFusionReactor) {
+                return;
+            }
+
+            if ($this->reactorUtil->storageContainsNeededCommodities($storage, $hasWarpcore)) {
+                $load = $reactor[$ship->getId()] == 'm' ? PHP_INT_MAX : (int)$reactor[$ship->getId()];
+                $loadMessage = $this->reactorUtil->loadReactor($ship, $load, $colony, null, $hasWarpcore);
+
+                if ($loadMessage !== null) {
+                    $msg[] = $loadMessage;
                 }
-                try {
-                    if ($count < 0) {
-                        throw new Exception();
-                    }
-                    if ($count == $shipobj->getTorpedoCount()) {
-                        throw new Exception();
-                    }
-                    if ($shipobj->getUser() !== $user && $count <= $shipobj->getTorpedoCount()) {
-                        throw new Exception();
-                    }
+            } else {
+                $msg[] = sprintf(
+                    _('%s: Es werden mindestens folgende Waren zum Aufladen des %s benötigt:'),
+                    $ship->getName(),
+                    $hasWarpcore ? 'Warpkerns' : 'Fusionsreaktors'
+                );
+                $costs = $hasWarpcore ? ShipEnum::WARPCORE_LOAD_COST : ShipEnum::REACTOR_LOAD_COST;
+                foreach ($costs as $commodityId => $loadCost) {
+                    $msg[] = sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId));
+                }
+            }
+        }
+    }
 
-                    if ($shipobj->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
-                        $possibleTorpedoTypes = $this->torpedoTypeRepository->getAll();
-                    } else {
-                        $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel((int) $shipobj->getRump()->getTorpedoLevel());
-                    }
+    private function torpedoShip(ShipInterface $ship, UserInterface $user, ColonyInterface $colony, &$msg): void
+    {
+        $torp = request::postArray('torp');
+        $torp_type = request::postArray('torp_type');
+        $storage = $colony->getStorage();
 
-                    if (
-                        $shipobj->getTorpedoCount() == 0 && (!isset($torp_type[$shipobj->getId()]) ||
-                            !array_key_exists($torp_type[$shipobj->getId()], $possibleTorpedoTypes))
-                    ) {
-                        throw new Exception();
-                    }
-                    if ($count > $shipobj->getMaxTorpedos()) {
-                        $count = $shipobj->getMaxTorpedos();
-                    }
-                    if ($shipobj->getTorpedoCount() > 0) {
-                        $torp_obj = $possibleTorpedoTypes[$shipobj->getTorpedo()->getId()];
-                        $load = $count - $shipobj->getTorpedoCount();
-                        if ($load > 0) {
-                            if ($torp_obj === null) {
-                                $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-                                $this->loggerUtil->log(sprintf('shipId: %d', $shipobj->getId()));
-                                $possTorpTypeIds = [];
-                                foreach ($possibleTorpedoTypes as $torpType) {
-                                    $possTorpTypeIds[] = $torpType->getId();
-                                }
-                                $this->loggerUtil->log(sprintf('possibleTorpedoTypes: %s', implode(',', $possTorpTypeIds)));
-                                $this->loggerUtil->log(sprintf('shipTorpedoCount: %d', $shipobj->getTorpedoCount()));
-                                $this->loggerUtil->log(sprintf('shipTorpedoId: %d', $shipobj->getTorpedo()->getId()));
-                                $this->loggerUtil->log(sprintf('load: %d', $load));
-                            }
-                            if (!$storage->containsKey($torp_obj->getCommodityId())) {
-                                $msg[] = sprintf(
-                                    _('%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden'),
-                                    $shipobj->getName(),
-                                    $torp_obj->getName()
-                                );
-                                throw new Exception();
-                            }
-                            if ($load > $storage[$torp_obj->getCommodityId()]->getAmount()) {
-                                $load = $storage[$torp_obj->getCommodityId()]->getAmount();
-                            }
+        if (isset($torp[$ship->getId()]) && $ship->getMaxTorpedos() > 0) {
+            if ($torp[$ship->getId()] == 'm') {
+                $count = $ship->getMaxTorpedos();
+            } else {
+                $count = (int) $torp[$ship->getId()];
+            }
+            if ($count < 0) {
+                return;
+            }
+            if ($count == $ship->getTorpedoCount()) {
+                return;
+            }
+            if ($ship->getUser() !== $user && $count <= $ship->getTorpedoCount()) {
+                return;
+            }
+
+            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
+                $possibleTorpedoTypes = $this->torpedoTypeRepository->getAll();
+            } else {
+                $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel((int) $ship->getRump()->getTorpedoLevel());
+            }
+
+            if (
+                $ship->getTorpedoCount() == 0 && (!isset($torp_type[$ship->getId()]) ||
+                    !array_key_exists($torp_type[$ship->getId()], $possibleTorpedoTypes))
+            ) {
+                return;
+            }
+            if ($count > $ship->getMaxTorpedos()) {
+                $count = $ship->getMaxTorpedos();
+            }
+            if ($ship->getTorpedoCount() > 0) {
+                $torp_obj = $possibleTorpedoTypes[$ship->getTorpedo()->getId()];
+                $load = $count - $ship->getTorpedoCount();
+                if ($load > 0) {
+                    if ($torp_obj === null) {
+                        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+                        $this->loggerUtil->log(sprintf('shipId: %d', $ship->getId()));
+                        $possTorpTypeIds = [];
+                        foreach ($possibleTorpedoTypes as $torpType) {
+                            $possTorpTypeIds[] = $torpType->getId();
                         }
-                        $this->shipTorpedoManager->changeTorpedo($shipobj, $load);
-                        if ($load < 0) {
-                            $this->colonyStorageManager->upperStorage($colony, $torp_obj->getCommodity(), abs($load));
-                            $torpName = $torp_obj->getName();
-
-                            $msg[] = sprintf(
-                                _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
-                                $shipobj->getName(),
-                                abs($load),
-                                $torpName
-                            );
-                        } elseif ($load > 0) {
-                            $this->colonyStorageManager->lowerStorage(
-                                $colony,
-                                $this->commodityRepository->find($torp_obj->getCommodityId()),
-                                $load
-                            );
-
-                            $msg[] = sprintf(
-                                _('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
-                                $shipobj->getName(),
-                                $load,
-                                $torp_obj->getName()
-                            );
-                        }
-                    } else {
-                        $type = (int) $torp_type[$shipobj->getId()];
-                        $torp_obj = $this->torpedoTypeRepository->find($type);
-                        if (!$storage->containsKey($torp_obj->getCommodityId())) {
-                            throw new Exception();
-                        }
-                        if ($count > $storage[$torp_obj->getCommodityId()]->getAmount()) {
-                            $count = $storage[$torp_obj->getCommodityId()]->getAmount();
-                        }
-                        if ($count > $shipobj->getMaxTorpedos()) {
-                            $count = $shipobj->getMaxTorpedos();
-                        }
-                        $this->shipTorpedoManager->changeTorpedo($shipobj, $count, $torp_obj);
-
-                        $this->colonyStorageManager->lowerStorage(
-                            $colony,
-                            $this->commodityRepository->find($torp_obj->getCommodityId()),
-                            $count
-                        );
-
+                        $this->loggerUtil->log(sprintf('possibleTorpedoTypes: %s', implode(',', $possTorpTypeIds)));
+                        $this->loggerUtil->log(sprintf('shipTorpedoCount: %d', $ship->getTorpedoCount()));
+                        $this->loggerUtil->log(sprintf('shipTorpedoId: %d', $ship->getTorpedo()->getId()));
+                        $this->loggerUtil->log(sprintf('load: %d', $load));
+                    }
+                    if (!$storage->containsKey($torp_obj->getCommodityId())) {
                         $msg[] = sprintf(
-                            _('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
-                            $shipobj->getName(),
-                            $count,
+                            _('%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden'),
+                            $ship->getName(),
                             $torp_obj->getName()
                         );
+                        return;
                     }
-                } catch (Exception $e) {
-                    // nothing
+                    if ($load > $storage[$torp_obj->getCommodityId()]->getAmount()) {
+                        $load = $storage[$torp_obj->getCommodityId()]->getAmount();
+                    }
                 }
+                $this->shipTorpedoManager->changeTorpedo($ship, $load);
+                if ($load < 0) {
+                    $this->colonyStorageManager->upperStorage($colony, $torp_obj->getCommodity(), abs($load));
+                    $torpName = $torp_obj->getName();
+
+                    $msg[] = sprintf(
+                        _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
+                        $ship->getName(),
+                        abs($load),
+                        $torpName
+                    );
+                } elseif ($load > 0) {
+                    $this->colonyStorageManager->lowerStorage(
+                        $colony,
+                        $this->commodityRepository->find($torp_obj->getCommodityId()),
+                        $load
+                    );
+
+                    $msg[] = sprintf(
+                        _('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
+                        $ship->getName(),
+                        $load,
+                        $torp_obj->getName()
+                    );
+                }
+            } else {
+                $type = (int) $torp_type[$ship->getId()];
+                $torp_obj = $this->torpedoTypeRepository->find($type);
+                if (!$storage->containsKey($torp_obj->getCommodityId())) {
+                    return;
+                }
+                if ($count > $storage[$torp_obj->getCommodityId()]->getAmount()) {
+                    $count = $storage[$torp_obj->getCommodityId()]->getAmount();
+                }
+                if ($count > $ship->getMaxTorpedos()) {
+                    $count = $ship->getMaxTorpedos();
+                }
+                $this->shipTorpedoManager->changeTorpedo($ship, $count, $torp_obj);
+
+                $this->colonyStorageManager->lowerStorage(
+                    $colony,
+                    $this->commodityRepository->find($torp_obj->getCommodityId()),
+                    $count
+                );
+
+                $msg[] = sprintf(
+                    _('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
+                    $ship->getName(),
+                    $count,
+                    $torp_obj->getName()
+                );
             }
-
-            $this->shipRepository->save($shipobj);
         }
-        $this->colonyRepository->save($colony);
-
-        $game->addInformationMerge($msg);
     }
 
     public function performSessionCheck(): bool
