@@ -116,7 +116,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $msg = [];
 
         foreach ($shipIds as $shipId) {
-            $this->handleShip($game, $shipId, $colony, $msg);
+            $this->handleShip($game, (int)$shipId, $colony, $msg);
         }
         $this->colonyRepository->save($colony);
 
