@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AttackShip;
 
 use request;
+use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -31,18 +32,22 @@ final class AttackShip implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private NbsUtilityInterface $nbsUtility;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipAttackCycleInterface $shipAttackCycle,
         PositionCheckerInterface $positionChecker,
-        AlertRedHelperInterface $alertRedHelper
+        AlertRedHelperInterface $alertRedHelper,
+        NbsUtilityInterface $nbsUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipAttackCycle = $shipAttackCycle;
         $this->positionChecker = $positionChecker;
         $this->alertRedHelper = $alertRedHelper;
+        $this->nbsUtility = $nbsUtility;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -90,6 +95,10 @@ final class AttackShip implements ActionControllerInterface
 
         if (!$target->canBeAttacked(!$isAttackingActiveTractorShip)) {
             throw new SanityCheckException('Target cant be attacked');
+        }
+
+        if ($target->getCloakState() && !$this->nbsUtility->isTachyonActive($ship)) {
+            throw new SanityCheckException('Attacked cloaked ship without active tachyon');
         }
 
         if ($target->getRump()->isTrumfield()) {
