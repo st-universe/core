@@ -97,7 +97,7 @@ final class SalvageCrew implements ActionControllerInterface
             if ($crewToTransfer === 0) {
                 break;
             }
-            if (!$crewAssignment->getUser() === $game->getUser()) {
+            if ($crewAssignment->getUser() !== $game->getUser()) {
                 continue;
             }
             $crewAssignment->setTradepost(null);
