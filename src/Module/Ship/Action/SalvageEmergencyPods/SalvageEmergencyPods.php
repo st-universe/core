@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -83,7 +84,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        $ship->canInteractWith($target);
+        if (!$ship->canInteractWith($target)) {
+            throw new SanityCheckException('can not interact with target');
+        }
 
         if (!$ship->hasEnoughCrew($game)) {
             return;

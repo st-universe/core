@@ -123,6 +123,7 @@ use Stu\Module\Ship\Action\RenameCrew\RenameCrew;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleet;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequest;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequestInterface;
+use Stu\Module\Ship\Action\SalvageCrew\SalvageCrew;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPods;
 use Stu\Module\Ship\Action\SelfDestruct\SelfDestruct;
 use Stu\Module\Ship\Action\Selfrepair\Selfrepair;
@@ -328,7 +329,8 @@ return [
         SetLSSModeNormal::ACTION_IDENTIFIER => autowire(SetLSSModeNormal::class),
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
         Transwarp::ACTION_IDENTIFIER => autowire(Transwarp::class),
-        ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class)
+        ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class),
+        SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

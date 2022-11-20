@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface TradePostInterface
 {
     public function getId(): int;
@@ -45,6 +47,13 @@ interface TradePostInterface
     public function setShip(ShipInterface $ship): TradePostInterface;
 
     public function setMap(MapInterface $map): TradePostInterface;
+
+    /**
+     * @return ShipCrewInterface[]
+     */
+    public function getCrewAssignments(): Collection;
+
+    public function getCrewCountOfCurrentUser(): int;
 
     public function isNpcTradepost(): bool;
 }

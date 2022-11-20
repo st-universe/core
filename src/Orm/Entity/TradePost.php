@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 
@@ -71,9 +72,15 @@ class TradePost implements TradePostInterface
      */
     private $map;
 
+    /**
+     * @OneToMany(targetEntity="ShipCrew", mappedBy="tradepost")
+     */
+    private $crewAssignments;
+
     public function __construct()
     {
         $this->licenseInfos = new ArrayCollection();
+        $this->crewAssignments = new ArrayCollection();
     }
 
     public function getId(): int
@@ -206,6 +213,27 @@ class TradePost implements TradePostInterface
         $this->map = $map;
 
         return $this;
+    }
+
+    public function getCrewAssignments(): Collection
+    {
+        return $this->crewAssignments;
+    }
+
+    public function getCrewCountOfCurrentUser(): int
+    {
+        global $container;
+        $currentUser = $container->get(GameControllerInterface::class)->getUser();
+
+        $count = 0;
+
+        foreach ($this->crewAssignments as $crewAssignment) {
+            if ($crewAssignment->getUser() === $currentUser) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     public function isNpcTradepost(): bool
