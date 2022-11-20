@@ -60,7 +60,7 @@ class ShipDeletionHandlerTest extends StuTestCase
             ->andReturn([$ship]);
 
         $this->shipRemover->shouldReceive('remove')
-            ->with($ship)
+            ->with($ship, true)
             ->once();
 
         $this->entityManager->shouldReceive('flush')
