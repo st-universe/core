@@ -260,6 +260,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
             //assign to colony
             foreach ($ship->getCrewlist() as $crewAssignment) {
+                $colony->getCrewAssignments()->add($crewAssignment);
+
                 $crewAssignment->setColony($colony);
                 $crewAssignment->setShip(null);
                 $crewAssignment->setSlot(null);
