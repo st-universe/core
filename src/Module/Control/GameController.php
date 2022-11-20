@@ -11,6 +11,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
+use Stu\Exception\SanityCheckException;
 use Stu\Exception\SemaphoreException;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
@@ -569,12 +570,20 @@ final class GameController implements GameControllerInterface
 
             // log action & view and time they took
             $startTime = hrtime(true);
-            $action = $this->executeCallback($actions);
+            try {
+                $action = $this->executeCallback($actions);
+            } catch (SanityCheckException $e) {
+                $this->logSanityCheck($e);
+            }
             $gameRequest->unsetParameter($action);
             $actionMs = hrtime(true) - $startTime;
 
             $startTime = hrtime(true);
-            $view = $this->executeView($views);
+            try {
+                $view = $this->executeView($views);
+            } catch (SanityCheckException $e) {
+                $this->logSanityCheck($e);
+            }
             $gameRequest->unsetParameter($view);
             $viewMs = hrtime(true) - $startTime;
 
@@ -660,6 +669,16 @@ final class GameController implements GameControllerInterface
         // SAVE META DATA
         $gameRequest->setRenderMs((int)$renderMs / 1000000);
         $this->persistGameRequest($gameRequest);
+    }
+
+    private function logSanityCheck(SanityCheckException $exception): void
+    {
+        $this->loggerUtil->init('sanity', LoggerEnum::LEVEL_WARNING);
+        $this->loggerUtil->log(sprintf(
+            "SANITY-CHECK-FAILED\nMessage: %s\nTrace: %s",
+            $exception->getMessage(),
+            $exception->getTraceAsString()
+        ));
     }
 
     private function persistGameRequest(GameRequestInterface $request): void

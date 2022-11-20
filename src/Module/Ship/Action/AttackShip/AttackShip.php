@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AttackShip;
 
 use request;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -73,9 +74,8 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
         if (!$this->positionChecker->checkPosition($target, $ship)) {
-            return;
+            throw new SanityCheckException('PositionChecker->checkPosition failed');
         }
-
 
         $isAttackingActiveTractorShip = false;
         $isActiveTractorShipWarped = false;
@@ -89,7 +89,7 @@ final class AttackShip implements ActionControllerInterface
         }
 
         if (!$target->canBeAttacked(!$isAttackingActiveTractorShip)) {
-            return;
+            throw new SanityCheckException('Target cant be attacked');
         }
 
         if ($target->getRump()->isTrumfield()) {
