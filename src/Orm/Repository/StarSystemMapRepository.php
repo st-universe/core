@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -160,13 +161,19 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 ON r.category_id = rc.id
                 WHERE s.cx = :cx
                 AND s.cy = :cy
+                AND NOT EXISTS (SELECT ss.id
+                                    FROM stu_ships_systems ss
+                                    WHERE s.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
                 GROUP BY rc.name
                 ORDER BY 2 desc',
                 $rsm
             )
             ->setParameters([
                 'cx' => $cx,
-                'cy' => $cy
+                'cy' => $cy,
+                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
             ])
             ->getResult();
     }
