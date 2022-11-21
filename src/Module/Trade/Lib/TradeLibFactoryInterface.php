@@ -17,6 +17,12 @@ interface TradeLibFactoryInterface
         int $userId
     ): BasicTradeAccountTalInterface;
 
+    public function createDealAccountTal(
+        TradePostInterface $tradePost,
+        array $deals,
+        int $userId
+    ): DealAccountTalInterface;
+
     public function createTradePostStorageManager(
         TradePostInterface $tradePost,
         int $userId

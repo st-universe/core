@@ -15,4 +15,7 @@ final class TradeEnum
     public const BASIC_TRADE_LATEST_RATE_AMOUNT = 5;
     public const BASIC_TRADE_BUY_MODIFIER = -10;
     public const BASIC_TRADE_SELL_MODIFIER = 10;
+
+    // Deals
+    public const DEALS_FERG_TRADEPOST_ID = 17;
 }

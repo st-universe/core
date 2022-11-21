@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradePost;
@@ -70,6 +71,27 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->setParameters([
                 'userId' => $userId,
                 'actime' => $time
+            ])
+            ->getResult();
+    }
+
+    public function getByUserLicenseOnlyFerg(int $userId): array
+    {
+        $time = time();
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tp FROM %s tp WHERE tp.user_id = 14 AND tp.id IN (
+                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime AND tl.posts_id = :tradepostId
+                    )',
+                    TradePost::class,
+                    TradeLicense::class
+                )
+            )
+            ->setParameters([
+                'userId' => $userId,
+                'actime' => $time,
+                'tradepostId' => TradeEnum::DEALS_FERG_TRADEPOST_ID
             ])
             ->getResult();
     }

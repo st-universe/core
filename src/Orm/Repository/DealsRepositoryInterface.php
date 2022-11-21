@@ -17,4 +17,6 @@ interface DealsRepositoryInterface extends ObjectRepository
     public function save(DealsInterface $post): void;
 
     public function delete(DealsInterface $post): void;
+
+    public function getDeals(int $userId): array;
 }

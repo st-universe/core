@@ -1,0 +1,15 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+    <metal:macro metal:fill-slot="body">
+        <metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
+        <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+        <div class="box" tal:condition="not:ACCOUNTS">
+            <div class="box_title">Meldung</div>
+            <div class="box_body">
+                <span>Keine Deals vorhanden</span>
+            </div>
+        </div>
+    </metal:macro>
+</metal:macro>
+
+</html>

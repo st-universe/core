@@ -33,6 +33,7 @@ use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
+use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseList;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequest;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequestInterface;
@@ -122,6 +123,7 @@ return [
         ShowSearchOffer::VIEW_IDENTIFIER => autowire(ShowSearchOffer::class),
         ShowSearchBoth::VIEW_IDENTIFIER => autowire(ShowSearchBoth::class),
         ShowBasicTrade::VIEW_IDENTIFIER => autowire(ShowBasicTrade::class),
+        ShowDeals::VIEW_IDENTIFIER => autowire(ShowDeals::class),
         ShowShiplist::VIEW_IDENTIFIER => autowire(ShowShiplist::class)
     ],
 ];

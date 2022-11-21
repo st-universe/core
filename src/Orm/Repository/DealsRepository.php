@@ -30,4 +30,19 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         $em->remove($post);
         $em->flush();
     }
+
+    public function getDeals(int $userId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT d FROM %s d
+                WHERE :time < d.end
+                ORDER BY d.id ASC',
+                Deals::class,
+            )
+        )->setParameters([
+            'userId' => $userId,
+            'time' => $this->time()
+        ])->getResult();
+    }
 }

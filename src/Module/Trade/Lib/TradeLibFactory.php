@@ -57,6 +57,21 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         );
     }
 
+    public function createDealAccountTal(
+        TradePostInterface $tradePost,
+        array $deals,
+        int $userId
+    ): DealAccountTalInterface {
+        return new DealAccountTal(
+            $this->storageRepository,
+            $tradePost,
+            $deals,
+            $userId,
+            $this->commodityRepository,
+            $this->loggerUtilFactory
+        );
+    }
+
     public function createBasicTradeAccountTal(
         TradePostInterface $tradePost,
         array $basicTrades,
