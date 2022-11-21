@@ -289,6 +289,11 @@ return [
     ): DatabaseUserRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class);
     },
+    DealsRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): DealsRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Deals::class);
+    },
     DockingPrivilegeRepositoryInterface::class => function (
         ContainerInterface $c
     ): DockingPrivilegeRepositoryInterface {
