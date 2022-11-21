@@ -102,10 +102,9 @@ final class ShipLeaver implements ShipLeaverInterface
             return _('Die Rettungskapseln wurden zerstört, die Crew ist daher verstorben!');
         }
 
-        //create pods entity
-        $pods = $this->launchEscapePods($ship);
+        $podRump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_ESCAPE_PODS);
 
-        if ($pods == null) {
+        if ($podRump === null) {
             $this->letCrewDie($ship);
             return _('Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!');
         }
@@ -115,19 +114,22 @@ final class ShipLeaver implements ShipLeaverInterface
             if ($this->transferOwnCrewToColony($ship) > 0) {
                 //remaining crew into pods
                 if ($ship->getCrewCount() > 0) {
-                    $this->escapeIntoPods($ship, $pods);
+                    $this->escapeIntoPods($ship);
                 }
                 return _('Die Crew hat sich auf die Kolonie gerettet!');
             }
         }
 
-        $this->escapeIntoPods($ship, $pods);
+        $this->escapeIntoPods($ship);
 
         return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
     }
 
-    private function escapeIntoPods(ShipInterface $ship, ShipInterface $pods): void
+    private function escapeIntoPods(ShipInterface $ship): void
     {
+        //create pods entity
+        $pods = $this->launchEscapePods($ship);
+
         //transfer crew into pods
         //TODO not all...! depends on race config
         $crewList = $ship->getCrewlist();
