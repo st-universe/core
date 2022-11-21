@@ -38,6 +38,9 @@ interface StarSystemMapInterface
 
     public function getFieldStyle(): string;
 
+    /**
+     * @return ShipInterface[]
+     */
     public function getShips(): Collection;
 
     public function getSignatures(): Collection;

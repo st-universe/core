@@ -20,6 +20,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -112,10 +113,10 @@ final class ShipTickManager implements ShipTickManagerInterface
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-        $this->removeEmptyEscapePods();
+        $this->handleEscapePods();
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\tremoveEmptyEscapePods, seconds: %F", $endTime - $startTime));
+            $this->loggerUtil->log(sprintf("\t\thandleEscapePods, seconds: %F", $endTime - $startTime));
         }
         //$this->loggerUtil->init();
 
@@ -164,13 +165,66 @@ final class ShipTickManager implements ShipTickManagerInterface
         }
     }
 
-    private function removeEmptyEscapePods(): void
+    private function handleEscapePods(): void
     {
-        foreach ($this->shipRepository->getEscapePods() as $ship) {
-            if ($ship->getCrewCount() == 0) {
-                $this->shipRemover->remove($ship);
+        $escapedToColonies = [];
+
+        foreach ($this->shipRepository->getEscapePods() as $escapePod) {
+            if ($escapePod->getCrewCount() === 0) {
+                $this->shipRemover->remove($escapePod);
+            }
+
+            if ($escapePod->getStarsystemMap() !== null) {
+                $colony = $escapePod->getStarsystemMap()->getColony();
+
+                if ($colony !== null) {
+                    $count = $this->transferOwnCrewToColony($escapePod, $colony);
+
+                    if ($count > 0) {
+                        if (array_key_exists($colony->getId(), $escapedToColonies)) {
+                            $oldCount = $escapedToColonies[$colony->getId()][1];
+
+                            $escapedToColonies[$colony->getId()][1] = $oldCount +  $count;
+                        } else {
+                            $escapedToColonies[$colony->getId()] = [$colony, $count];
+                        }
+                    }
+                }
             }
         }
+
+        foreach ($escapedToColonies as [$colony, $count]) {
+            $msg = sprintf(_('%d deiner Crewman sind aus Fluchtkapseln auf deiner Kolonie %s gelandet'), $count, $colony->getName());
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $colony->getUser()->getId(),
+                $msg,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            );
+        }
+    }
+
+    private function transferOwnCrewToColony(ShipInterface $escapePod, ColonyInterface $colony): int
+    {
+        $count = 0;
+
+        foreach ($escapePod->getCrewlist() as $crewAssignment) {
+            if ($colony->getFreeAssignmentCount() === 0) {
+                break;
+            }
+            if ($crewAssignment->getUser() !== $colony->getUser()) {
+                continue;
+            }
+            $count++;
+            $crewAssignment->setShip(null);
+            $crewAssignment->setSlot(null);
+            $crewAssignment->setColony($colony);
+            $escapePod->getCrewlist()->removeElement($crewAssignment);
+            $colony->getCrewAssignments()->add($crewAssignment);
+            $this->shipCrewRepository->save($crewAssignment);
+        }
+
+        return $count;
     }
 
     private function checkForCrewLimitation(): void

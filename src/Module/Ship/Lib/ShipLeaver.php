@@ -109,17 +109,6 @@ final class ShipLeaver implements ShipLeaverInterface
             return _('Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!');
         }
 
-        //check for possibility to reach colony
-        if ($this->isOverOwnColony($ship)) {
-            if ($this->transferOwnCrewToColony($ship) > 0) {
-                //remaining crew into pods
-                if ($ship->getCrewCount() > 0) {
-                    $this->escapeIntoPods($ship);
-                }
-                return _('Die Crew hat sich auf die Kolonie gerettet!');
-            }
-        }
-
         $this->escapeIntoPods($ship);
 
         return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
@@ -138,42 +127,6 @@ final class ShipLeaver implements ShipLeaverInterface
             $shipCrew->setSlot(null);
             $this->shipCrewRepository->save($shipCrew);
         }
-    }
-
-    private function transferOwnCrewToColony(ShipInterface $ship): int
-    {
-        $count = 0;
-        $colony = $ship->getStarsystemMap()->getColony();
-
-        //TODO not all...! depends on race config
-        foreach ($ship->getCrewlist() as $crewAssignment) {
-            if ($colony->getFreeAssignmentCount() === 0) {
-                break;
-            }
-            if ($crewAssignment->getUser() !== $colony->getUser()) {
-                continue;
-            }
-            $count++;
-            $crewAssignment->setShip(null);
-            $crewAssignment->setSlot(null);
-            $crewAssignment->setColony($colony);
-            $ship->getCrewlist()->removeElement($crewAssignment);
-            $colony->getCrewAssignments()->add($crewAssignment);
-            $this->shipCrewRepository->save($crewAssignment);
-        }
-
-        return $count;
-    }
-
-    private function isOverOwnColony(ShipInterface $ship): bool
-    {
-        $currentColony = $ship->getStarsystemMap() !== null ? $ship->getStarsystemMap()->getColony() : null;
-
-        if ($currentColony === null) {
-            return false;
-        }
-
-        return $currentColony->getUser() === $ship->getUser();
     }
 
     public function dumpCrewman(int $shipCrewId): string
