@@ -36,7 +36,7 @@ final class GameRequestRepository extends EntityRepository implements GameReques
                     'SELECT COUNT(gr.id) FROM %s gr
                     WHERE gr.user_id = :userId
                     AND gr.params LIKE :params
-                    AND gr.action = \':action\'',
+                    AND gr.action = :action',
                     GameRequest::class
                 )
             )
