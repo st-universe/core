@@ -22,6 +22,7 @@ final class ShipRumpEnum
     public const SHIP_ROLE_SENSOR = 14;
     public const SHIP_ROLE_OUTPOST = 15;
     public const SHIP_ROLE_BASE = 16;
+    public const SHIP_ROLE_ADVENT_DOOR = 17;
 
     // rump offsets
     public const SHIP_RUMP_BASE_ID_ESCAPE_PODS = 100;

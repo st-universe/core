@@ -1171,6 +1171,18 @@
           </td>
         </tr>
       </table>
+      <table class="tcal" tal:condition="exists:ADVENT_DAY">
+        <tr>
+          <th>Adventstürchen</th>
+        </tr>
+        <tr>
+          <td style="width: 450px;">
+            <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
+            <input type="hidden" name="advent" tal:attributes="value ADVENT_DAY" />
+            <input type="submit" style="cursor: pointer;" name="B_ADVENT_DOOR" value="Türchen öffnen" />
+          </td>
+        </tr>
+      </table>
     </form>
   </tal:block>
 </metal:block>

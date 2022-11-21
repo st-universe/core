@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowScan;
 
 use request;
-
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -91,6 +91,9 @@ final class ShowScan implements ViewControllerInterface
         $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
         $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($target));
         $game->setTemplateVar('SHIP', $ship);
+        if ($target->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR) {
+            $game->setTemplateVar('ADVENT_DAY', date("j"));
+        }
     }
 
     private function calculateShieldPercentage(ShipInterface $target): int
