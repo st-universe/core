@@ -359,7 +359,7 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private function letCrewQuit(int $userId): ?int
     {
-        $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($userId());
+        $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($userId);
 
         if ($randomShipId === null) {
             return null;
