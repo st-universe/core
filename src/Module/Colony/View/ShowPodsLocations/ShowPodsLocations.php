@@ -30,7 +30,7 @@ final class ShowPodsLocations implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $pods = $this->shipRepository->getEscapePodsByCrewOwner($userId);
-        $crewAssignmentsAtTradeposts = $this->shipCrewRepository->getByUserAtTradeposts($userId);
+        $crewAssignmentsAtTradeposts = $this->shipCrewRepository->getOrphanedSummaryByUserAtTradeposts($userId);
 
         $game->setPageTitle("Rettungskapsel/Tradeposts Scan");
         $game->setMacroInAjaxWindow('html/colonymacros.xhtml/orphanedcrewlocations');

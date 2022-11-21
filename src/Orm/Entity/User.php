@@ -652,12 +652,6 @@ class User implements UserInterface
             // @todo refactor
             global $container;
 
-            $this->crew_count_debris_and_tradeposts = $container->get(CrewRepositoryInterface::class)
-                ->getAmountByUserAndShipRumpCategory(
-                    (int) $this->getId(),
-                    ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD
-                );
-
             $this->crew_count_debris_and_tradeposts += $container->get(CrewRepositoryInterface::class)
                 ->getAmountByUserAndShipRumpCategory(
                     (int) $this->getId(),

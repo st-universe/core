@@ -27,17 +27,34 @@ interface ShipCrewRepositoryInterface extends ObjectRepository
      */
     public function getByShipAndSlot(int $shipId, int $slotId): array;
 
+    //VIA LOCATION
+    /**
+     * @return ShipCrewInterface[]
+     */
+    public function getByUserAtColonies(int $userId): array;
+
+    /**
+     * @return ShipCrewInterface[]
+     */
+    public function getByUserOnEscapePods(int $userId): array;
+
+    /**
+     * @return ShipCrewInterface[]
+     */
     public function getByUserAtTradeposts(int $userId): array;
 
-    public function getAmountByShip(int $shipId): int;
-
+    //AMOUNT
     public function getAmountByUser(int $userId): int;
 
     public function getAmountByUserAtTradeposts(int $userId): int;
 
+    public function getAmountByUserOnColonies(int $userId): int;
+
     public function getAmountByUserOnShips(int $userId): int;
 
     public function getCrewsTop10(): array;
+
+    public function getOrphanedSummaryByUserAtTradeposts(int $userId): array;
 
     public function truncateByShip(int $shipId): void;
 }

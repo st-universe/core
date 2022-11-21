@@ -22,7 +22,6 @@ use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -184,48 +183,129 @@ final class ShipTickManager implements ShipTickManagerInterface
                 continue;
             }
 
+            $userId = $user->getId();
+
             $crewLimit = $user->getGlobalCrewLimit();
+            $crewOnColonies = $this->shipCrewRepository->getAmountByUserOnColonies($user->getId());
             $crewOnShips = $this->shipCrewRepository->getAmountByUserOnShips($user->getId());
-            $freeCrewCount = $this->crewRepository->getFreeAmountByUser($user->getId());
+            $crewAtTradeposts = $this->shipCrewRepository->getAmountByUserAtTradeposts($user->getId());
 
-            if (($crewOnShips + $freeCrewCount) > $crewLimit) {
-                if ($freeCrewCount > 0) {
-                    $deleteAmount = min($crewOnShips + $freeCrewCount - $crewLimit, $freeCrewCount);
+            $crewToQuit = max(0, $crewOnColonies + $crewOnShips + $crewAtTradeposts - $crewLimit);
 
-                    foreach ($this->crewRepository->getFreeByUser($user->getId(), $deleteAmount) as $crew) {
-                        $this->crewRepository->delete($crew);
-                    }
-
-                    $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d freie Crewman ihren Dienst quittiert'), $deleteAmount);
-                    $this->privateMessageSender->send(
-                        GameEnum::USER_NOONE,
-                        (int) $user->getId(),
-                        $msg,
-                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
-                    );
-
-                    $freeCrewCount = $freeCrewCount - $deleteAmount;
-                }
-                if (($crewOnShips + $freeCrewCount) > $crewLimit) {
-                    $crewToQuit = $crewOnShips - $crewLimit;
-
-                    while ($crewToQuit > 0) {
-                        $quitAmount = $this->letCrewQuit($user);
-
-                        if ($quitAmount === null) {
-                            break;
-                        }
-
-                        $crewToQuit -= $quitAmount;
-                    }
-                }
+            //mutiny order: colonies, ships, tradeposts, escape pods
+            if ($crewToQuit > 0 && $crewOnColonies > 0) {
+                $crewToQuit -= $this->letColonyAssignmentsQuit($userId, $crewToQuit);
+            }
+            if ($crewToQuit > 0 && $crewOnShips > 0) {
+                $crewToQuit -= $this->letShipAssignmentsQuit($userId, $crewToQuit);
+            }
+            if ($crewToQuit > 0 && $crewAtTradeposts > 0) {
+                $crewToQuit -= $this->letTradepostAssignmentsQuit($userId, $crewToQuit);
+            }
+            if ($crewToQuit > 0) {
+                $this->letEscapePodAssignmentsQuit($userId, $crewToQuit);
             }
         }
     }
 
-    private function letCrewQuit(UserInterface $user): ?int
+    private function letColonyAssignmentsQuit(int $userId, int $crewToQuit): int
     {
-        $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($user->getId());
+        $amount = 0;
+
+        foreach ($this->shipCrewRepository->getByUserAtColonies($userId) as $crewAssignment) {
+            if ($amount === $crewToQuit) {
+                break;
+            }
+
+            $amount--;
+            $this->crewRepository->delete($crewAssignment->getCrew());
+        }
+
+        if ($amount > 0) {
+            $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d Crewman ihren Dienst auf deinen Kolonien quittiert'), $amount);
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $userId,
+                $msg,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            );
+        }
+
+        return $amount;
+    }
+
+    private function letTradepostAssignmentsQuit(int $userId, int $crewToQuit): int
+    {
+        $amount = 0;
+
+        foreach ($this->shipCrewRepository->getByUserAtTradeposts($userId) as $crewAssignment) {
+            if ($amount === $crewToQuit) {
+                break;
+            }
+
+            $amount--;
+            $this->crewRepository->delete($crewAssignment->getCrew());
+        }
+
+        if ($amount > 0) {
+            $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Handelsposten ihren Dienst quittiert'), $amount);
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $userId,
+                $msg,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+            );
+        }
+
+        return $amount;
+    }
+
+    private function letEscapePodAssignmentsQuit(int $userId, int $crewToQuit): int
+    {
+        $amount = 0;
+
+        foreach ($this->shipCrewRepository->getByUserOnEscapePods($userId) as $crewAssignment) {
+            if ($amount === $crewToQuit) {
+                break;
+            }
+
+            $amount--;
+            $this->crewRepository->delete($crewAssignment->getCrew());
+        }
+
+        if ($amount > 0) {
+            $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Fluchtkapseln ihren Dienst quittiert'), $amount);
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $userId,
+                $msg,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+            );
+        }
+
+        return $amount;
+    }
+
+    private function letShipAssignmentsQuit(int $userId, int $crewToQuit): int
+    {
+        $amount = 0;
+
+        while ($amount < $crewToQuit) {
+            $quitAmount = $this->letCrewQuit($userId);
+
+            if ($quitAmount === null) {
+                break;
+            }
+
+            $amount += $quitAmount;
+        }
+
+        return $amount;
+    }
+
+    private function letCrewQuit(int $userId): ?int
+    {
+        $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($userId());
 
         if ($randomShipId === null) {
             return null;
@@ -254,7 +334,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
         $this->privateMessageSender->send(
             GameEnum::USER_NOONE,
-            (int) $user->getId(),
+            $userId,
             $msg,
             $randomShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );

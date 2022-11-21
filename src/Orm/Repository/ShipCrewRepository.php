@@ -6,8 +6,11 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipCrewInterface;
+use Stu\Orm\Entity\ShipRump;
 
 final class ShipCrewRepository extends EntityRepository implements ShipCrewRepositoryInterface
 {
@@ -46,7 +49,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         ]);
     }
 
-    public function getByUserAtTradeposts(int $userId): array
+    public function getOrphanedSummaryByUserAtTradeposts(int $userId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
@@ -68,18 +71,72 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getResult();
     }
 
-    public function getAmountByShip(int $shipId): int
-    {
-        return $this->count([
-            'ship_id' => $shipId
-        ]);
-    }
-
     public function getAmountByUser(int $userId): int
     {
         return $this->count([
             'user_id' => $userId
         ]);
+    }
+
+    public function getByUserAtColonies(int $userId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ca
+                FROM %s ca
+                WHERE ca.user_id = :userId
+                AND ca.colony_id IS NOT NULL',
+                ShipCrew::class
+            )
+        )->setParameter('userId', $userId)->getResult();
+    }
+
+    public function getByUserOnEscapePods(int $userId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ca
+                FROM %s ca
+                JOIN %s s
+                WITH ca.ship_id = s.id
+                JOIN %s r
+                WITH s.rumps_id = r.id
+                WHERE ca.user_id = :userId
+                AND r.category_id = :categoryId',
+                ShipCrew::class,
+                Ship::class,
+                ShipRump::class
+            )
+        )->setParameters([
+            'userId' => $userId,
+            'categoryId' => ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
+        ])->getResult();
+    }
+
+    public function getByUserAtTradeposts(int $userId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ca
+                FROM %s ca
+                WHERE ca.user_id = :userId
+                AND ca.tradepost_id IS NOT NULL',
+                ShipCrew::class
+            )
+        )->setParameter('userId', $userId)->getResult();
+    }
+
+    public function getAmountByUserOnColonies(int $userId): int
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT count(ca.id)
+                FROM %s ca
+                WHERE ca.user_id = :userId
+                AND ca.colony_id IS NOT NULL',
+                ShipCrew::class
+            )
+        )->setParameter('userId', $userId)->getSingleScalarResult();
     }
 
     public function getAmountByUserOnShips(int $userId): int

@@ -18,8 +18,6 @@ interface CrewRepositoryInterface extends ObjectRepository
 
     public function getAmountByUserAndShipRumpCategory(int $userId, int $shipRumpCategoryId): int;
 
-    public function getFreeAmountByUser(int $userId): int;
-
     /**
      * @return CrewInterface[]
      */

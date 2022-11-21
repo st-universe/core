@@ -54,22 +54,6 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             ->getSingleScalarResult();
     }
 
-    public function getFreeAmountByUser(int $userId): int
-    {
-        return (int) $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT COUNT(c.id) FROM %s c WHERE c.user_id = :userId AND c.id NOT IN (
-                        SELECT sc.crew_id FROM %s sc WHERE sc.user_id = :userId
-                    )',
-                    Crew::class,
-                    ShipCrew::class
-                )
-            )
-            ->setParameters(['userId' => $userId])
-            ->getSingleScalarResult();
-    }
-
     public function getFreeByUserAndType(int $userId, int $typeId, int $maxAmount): array
     {
         return $this->getEntityManager()
