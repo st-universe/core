@@ -155,7 +155,7 @@ final class ShipLeaver implements ShipLeaverInterface
             $crewAssignment->setShip(null);
             $crewAssignment->setSlot(null);
             $crewAssignment->setColony($colony);
-            $ship->getCrewlist()->remove($crewAssignment);
+            $ship->getCrewlist()->removeElement($crewAssignment);
             $colony->getCrewAssignments()->add($crewAssignment);
             $this->shipCrewRepository->save($crewAssignment);
         }
