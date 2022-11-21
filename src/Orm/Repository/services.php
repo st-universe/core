@@ -40,6 +40,7 @@ use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
+use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\Fleet;
