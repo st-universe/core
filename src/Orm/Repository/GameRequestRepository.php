@@ -35,14 +35,14 @@ final class GameRequestRepository extends EntityRepository implements GameReques
                 sprintf(
                     'SELECT COUNT(gr.id) FROM %s gr
                     WHERE gr.user_id = :userId
-                    AND gr.params LIKE \'%[advent] => :date%\'
+                    AND gr.params LIKE :params
                     AND gr.action = \':action\'',
                     GameRequest::class
                 )
             )
             ->setParameters([
                 'userId' => $userId,
-                'date' => date("m.d.y"),
+                'params' => sprintf('%%[advent] => %s%%', date("m.d.y")),
                 'action' => OpenAdventDoor::ACTION_IDENTIFIER
             ])
             ->getSingleScalarResult()) > 0;
