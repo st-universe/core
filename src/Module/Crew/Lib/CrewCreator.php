@@ -75,7 +75,10 @@ final class CrewCreator implements CrewCreatorInterface
         $crewAssignment = $this->shipCrewRepository->prototype();
         $crewAssignment->setUser($user);
         $crewAssignment->setCrew($crew);
-        $crewAssignment->setColony($colony);
+        if ($colony !== null) {
+            $crewAssignment->setColony($colony);
+            $colony->getCrewAssignments()->add($crewAssignment);
+        }
         $this->shipCrewRepository->save($crewAssignment);
 
         return $crew;
