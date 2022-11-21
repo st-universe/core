@@ -42,7 +42,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             )
         )->setParameters([
             'userId' => $userId,
-            'time' => $this->time()
+            'time' => time()
         ])->getResult();
     }
 }
