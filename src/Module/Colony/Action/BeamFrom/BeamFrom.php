@@ -145,7 +145,7 @@ final class BeamFrom implements ActionControllerInterface
 
             $commodity = $storage->getCommodity();
 
-            if (!$commodity->isBeamable()) {
+            if (!$commodity->isBeamable($userId, $target->getUser()->getId())) {
                 $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
                 continue;
             }

@@ -120,7 +120,7 @@ final class BeamFromColony implements ActionControllerInterface
                 continue;
             }
             $count = $gcount[$key];
-            if (!$commodity->getCommodity()->isBeamable()) {
+            if (!$commodity->getCommodity()->isBeamable($userId, $target->getUser()->getId())) {
                 $game->addInformation(sprintf(_('%s ist nicht beambar'), $commodity->getCommodity()->getName()));
                 continue;
             }

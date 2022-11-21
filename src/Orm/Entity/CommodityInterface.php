@@ -24,9 +24,11 @@ interface CommodityInterface
 
     public function isTradeable(): bool;
 
-    public function isBeamable(): bool;
+    public function isBeamable(?int $userId = null, ?int $targetUserId = null): bool;
 
     public function isSaveable(): bool;
+
+    public function isBoundToAccount(): bool;
 
     public function isShuttle(): bool;
 

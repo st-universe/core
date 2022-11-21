@@ -35,8 +35,8 @@ class Commodity implements CommodityInterface
     /** @Column(type="boolean") */
     private $npc_commodity = false;
 
-    /** @Column(type="boolean", nullable=true) */
-    private $bound;
+    /** @Column(type="boolean") */
+    private $bound = false;
 
     public function getId(): int
     {
@@ -96,14 +96,21 @@ class Commodity implements CommodityInterface
         return $this->isBeamable() && $this->npc_commodity === false;
     }
 
-    public function isBeamable(): bool
+    public function isBeamable(?int $userId = null, ?int $targetUserId = null): bool
     {
-        return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD && $this->getView() === true;
+        $isBound = $userId !== null && $targetUserId !== null && $this->isBoundToAccount() && $userId !== $targetUserId;
+
+        return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD && $this->getView() === true && !$isBound;
     }
 
     public function isSaveable(): bool
     {
         return $this->getType() === CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
+    }
+
+    public function isBoundToAccount(): bool
+    {
+        return $this->bound;
     }
 
     public function isShuttle(): bool

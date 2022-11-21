@@ -135,7 +135,7 @@ final class BeamTo implements ActionControllerInterface
             if ($count < 1) {
                 continue;
             }
-            if (!$storage->getCommodity()->isBeamable()) {
+            if (!$storage->getCommodity()->isBeamable($userId, $target->getUser()->getId())) {
                 $game->addInformationf(_('%s ist nicht beambar'), $storage->getCommodity()->getName());
                 continue;
             }
