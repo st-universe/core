@@ -92,7 +92,7 @@ final class ShowScan implements ViewControllerInterface
         $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($target));
         $game->setTemplateVar('SHIP', $ship);
         if ($target->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR) {
-            $game->setTemplateVar('ADVENT_DAY', date("j"));
+            $game->setTemplateVar('ADVENT_DAY', date("m.d.y"));
         }
     }
 

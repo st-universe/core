@@ -116,6 +116,7 @@ use Stu\Module\Ship\Action\MoveShipDown\MoveShipDown;
 use Stu\Module\Ship\Action\MoveShipLeft\MoveShipLeft;
 use Stu\Module\Ship\Action\MoveShipRight\MoveShipRight;
 use Stu\Module\Ship\Action\MoveShipUp\MoveShipUp;
+use Stu\Module\Ship\Action\OpenAdventDoor\OpenAdventDoor;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleet;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequest;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequestInterface;
@@ -330,7 +331,8 @@ return [
         SetLSSModeBorder::ACTION_IDENTIFIER => autowire(SetLSSModeBorder::class),
         Transwarp::ACTION_IDENTIFIER => autowire(Transwarp::class),
         ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class),
-        SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class)
+        SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class),
+        OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

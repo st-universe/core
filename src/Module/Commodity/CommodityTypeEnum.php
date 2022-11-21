@@ -18,6 +18,7 @@ final class CommodityTypeEnum
     public const COMMODITY_DILITHIUM = 8;
     public const COMMODITY_DURANIUM = 21;
     public const COMMODITY_LATINUM = 50;
+    public const COMMODITY_ADVENT_POINT = 60;
     public const COMMODITY_SPARE_PART = 10001;
     public const COMMODITY_SYSTEM_COMPONENT = 10002;
 
