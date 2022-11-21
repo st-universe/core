@@ -27,7 +27,7 @@ final class CrewEnum
         CrewEnum::CREW_TYPE_CREWMAN
     ];
 
-    public static function getDescription(int $crewType): string
+    public static function getDescription(?int $crewType): string
     {
         switch ($crewType) {
             case self::CREW_TYPE_CAPTAIN:
