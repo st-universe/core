@@ -271,7 +271,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                 break;
             }
 
-            $amount--;
+            $amount++;
             $this->crewRepository->delete($crewAssignment->getCrew());
         }
 
@@ -297,7 +297,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                 break;
             }
 
-            $amount--;
+            $amount++;
             $this->crewRepository->delete($crewAssignment->getCrew());
         }
 
@@ -323,7 +323,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                 break;
             }
 
-            $amount--;
+            $amount++;
             $this->crewRepository->delete($crewAssignment->getCrew());
         }
 
