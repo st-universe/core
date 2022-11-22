@@ -10,7 +10,6 @@ use Stu\Orm\Entity\DealsInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\Lib\DealsItem;
 use Stu\Module\Trade\Lib\DealsItemInterface;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -19,10 +18,6 @@ final class ShowDeals implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_DEALS';
 
     private DealsRepositoryInterface $dealsRepository;
-
-    private TradePostRepositoryInterface $tradePostRepository;
-
-    private TradeLibFactoryInterface $tradeLibFactory;
 
     public function __construct(
         DealsRepositoryInterface $dealsRepository,
@@ -40,11 +35,10 @@ final class ShowDeals implements ViewControllerInterface
 
         $deals = $this->dealsRepository->getDeals($userId);
 
-        $dealAccounts = array_map(
+        $dealAccounts = array(
             function (DealsInterface $deals) use ($userId): DealsItemInterface {
                 return new DealsItem($deals, $userId);
-            },
-            $this->dealsRepository->getByUserLicenseOnlyFerg($userId)
+            }
         );
 
         $game->appendNavigationPart(
