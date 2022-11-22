@@ -32,12 +32,13 @@ final class ShowDeals implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         $deals = $this->dealsRepository->getDeals($userId);
 
         $dealAccounts = array(
-            function (DealsInterface $deals) use ($userId): DealsItemInterface {
-                return new DealsItem($deals, $userId);
+            function (DealsInterface $deals) use ($user): DealsItemInterface {
+                return new DealsItem($deals, $user);
             }
         );
 
