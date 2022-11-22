@@ -19,4 +19,6 @@ interface DealsRepositoryInterface extends ObjectRepository
     public function delete(DealsInterface $post): void;
 
     public function getDeals(int $userId): array;
+
+    public function getByUserLicenseOnlyFerg(int $userId): array;
 }

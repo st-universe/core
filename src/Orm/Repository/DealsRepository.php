@@ -44,4 +44,25 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             'time' => time()
         ])->getResult();
     }
+
+    public function getByUserLicenseOnlyFerg(int $userId): array
+    {
+        $time = time();
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tp FROM %s tp WHERE tp.user_id = 14 AND tp.id IN (
+                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime AND tl.posts_id = :tradepostId
+                    )',
+                    TradePost::class,
+                    TradeLicense::class
+                )
+            )
+            ->setParameters([
+                'userId' => $userId,
+                'actime' => $time,
+                'tradepostId' => TradeEnum::DEALS_FERG_TRADEPOST_ID
+            ])
+            ->getResult();
+    }
 }

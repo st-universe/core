@@ -44,7 +44,7 @@ final class ShowDeals implements ViewControllerInterface
             function (DealsInterface $deals) use ($userId): DealsItemInterface {
                 return new DealsItem($deals, $userId);
             },
-            $this->tradePostRepository->getByUserLicenseOnlyFerg($userId)
+            $this->DealsRepository->getByUserLicenseOnlyFerg($userId)
         );
 
         $game->appendNavigationPart(
