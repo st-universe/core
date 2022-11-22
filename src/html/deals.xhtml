@@ -9,10 +9,10 @@
                 <th>Prestige</th>
                 <th>Anzahl</th>
             </tr>
-            <tr tal:condition="not:ACCOUNT">
+            <tr tal:condition="not:ACCOUNTS">
                 <td colspan="6">Keine Deals vorhanden</td>
             </tr>
-            <tal:block tal:repeat="deals ACCOUNT">
+            <tal:block tal:repeat="deals ACCOUNTS">
                 <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
                     <td tal:content="data/getwantPrestige">GETWANTPRESTIGE</td>
                     <td tal:content="data/getAmount">AMOUNT</td>
