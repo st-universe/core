@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\DealsInterface;
 
