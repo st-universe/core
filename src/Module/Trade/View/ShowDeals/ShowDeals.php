@@ -6,8 +6,10 @@ namespace Stu\Module\Trade\View\ShowDeals;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Trade\Lib\DealAccountTalInterface;
+use Stu\Orm\Entity\DealsInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Module\Trade\Lib\DealsItem;
+use Stu\Module\Trade\Lib\DealsItemInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -39,8 +41,8 @@ final class ShowDeals implements ViewControllerInterface
         $deals = $this->dealsRepository->getDeals($userId);
 
         $dealAccounts = array_map(
-            function (TradePostInterface $tradePost) use ($deals, $userId): DealAccountTalInterface {
-                return $this->tradeLibFactory->createDealAccountTal($tradePost, $deals, $userId);
+            function (DealsInterface $deals) use ($userId): DealsItemInterface {
+                return new DealsItem($deals, $userId);
             },
             $this->tradePostRepository->getByUserLicenseOnlyFerg($userId)
         );

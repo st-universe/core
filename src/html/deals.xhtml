@@ -3,12 +3,22 @@
     <metal:macro metal:fill-slot="body">
         <metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
         <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-        <div class="box" tal:condition="not:ACCOUNTS">
-            <div class="box_title">Meldung</div>
-            <div class="box_body">
-                <span>Keine Deals vorhanden</span>
-            </div>
-        </div>
+        <table class="tcal">
+            <tr>
+                <th></th>
+                <th>Prestige</th>
+                <th>Anzahl</th>
+            </tr>
+            <tr tal:condition="not:ACCOUNT">
+                <td colspan="6">Keine Deals vorhanden</td>
+            </tr>
+            <tal:block tal:repeat="deals ACCOUNT">
+                <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
+                    <td tal:content="data/getwantPrestige">GETWANTPRESTIGE</td>
+                    <td tal:content="data/getAmount">AMOUNT</td>
+                </tr>
+            </tal:block>
+        </table>
     </metal:macro>
 </metal:macro>
 
