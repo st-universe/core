@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\DealsInterface;
+use Stu\Orm\Entity\TradeLicense;
+use Stu\Orm\Entity\TradePost;
 
 final class DealsRepository extends EntityRepository implements DealsRepositoryInterface
 {
