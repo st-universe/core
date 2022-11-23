@@ -8,12 +8,20 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 
 final class TroopQuartersShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
     public const QUARTER_COUNT = 100;
     public const QUARTER_COUNT_BASE = 300;
 
+    private CrewRepositoryInterface $crewRepository;
+
+    public function __construct(
+        CrewRepositoryInterface $crewRepository
+    ) {
+        $this->crewRepository = $crewRepository;
+    }
     public function activate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->setMode(ShipSystemModeEnum::MODE_ON);
@@ -26,12 +34,11 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
 
     public function handleDestruction(ShipInterface $ship): void
     {
-        //TODO let troops die
-    }
-
-    public function handleDamage(ShipInterface $ship): void
-    {
-        //TODO let troops die
+        foreach ($ship->getCrewlist() as $crewAssignment) {
+            if ($crewAssignment->getSlot() === null) {
+                $this->crewRepository->delete($crewAssignment->getCrew());
+            }
+        }
     }
 
     public function getEnergyUsageForActivation(): int
