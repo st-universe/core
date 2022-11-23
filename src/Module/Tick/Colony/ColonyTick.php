@@ -32,8 +32,6 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
-    public const PEOPLE_FOOD = 7;
-
     private ResearchedRepositoryInterface $researchedRepository;
 
     private ShipRumpUserRepositoryInterface $shipRumpUserRepository;

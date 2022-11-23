@@ -733,11 +733,6 @@ class Colony implements ColonyInterface
         return $this;
     }
 
-    public function getBevFood(): int
-    {
-        return (int) ceil(($this->getWorkers() + $this->getWorkless()) / ColonyTick::PEOPLE_FOOD);
-    }
-
     public function getPopulation(): int
     {
         return $this->getWorkers() + $this->getWorkless();
@@ -852,7 +847,7 @@ class Colony implements ColonyInterface
 
     public function getLifeStandardPercentage(): int
     {
-        return min(100, (int)ceil($this->getProductionRaw()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD]->getProduction() * 100 / $this->getBevFood()));
+        return min(100, (int)ceil($this->getProductionRaw()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD]->getProduction() * 100 / $this->getPopulation()));
     }
 
     public function getFreeAssignmentCount(): int

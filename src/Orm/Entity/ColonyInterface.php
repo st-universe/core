@@ -182,8 +182,6 @@ interface ColonyInterface
 
     public function setUser(UserInterface $user): ColonyInterface;
 
-    public function getBevFood(): int;
-
     public function getPopulation(): int;
 
     public function getFreeHousing(): int;
