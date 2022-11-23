@@ -196,11 +196,11 @@ interface ColonyInterface
 
     public function getPositiveEffectSecondary(): int;
 
-    public function getCrewLimit(?bool $considerLifeStandard = true): int;
+    public function getCrewLimit(): int;
 
     public function getLifeStandardPercentage(): int;
 
-    public function getFreeAssignmentCount(?bool $considerLifeStandard = true): int;
+    public function getFreeAssignmentCount(): int;
 
     public function clearCache(): void;
 

@@ -104,13 +104,24 @@
         <tr>
           <td style="width: 25%" class="darkbg"><span
               tal:replace="COLONY_SURFACE/getNegativeEffectDescription">PRIMARY</span></td>
-          <td style="width: 25%" class="darkbg">Erzeugte Crew</td>
+          <td style="width: 25%" class="darkbg">Lebensstandard</td>
         </tr>
         <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="COLONY/getNegativeEffect">VALUE</span>
           </td>
+          <td>
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Prozent" />
+            <span tal:replace="COLONY/getLifeStandardPercentage">VALUE</span>%
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 25%" class="darkbg"><span
+              tal:replace="COLONY_SURFACE/getNegativeEffectDescription">PRIMARY</span></td>
+          <td style="width: 25%" class="darkbg">Erzeugte Crew</td>
+        </tr>
+        <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="COLONY/getCrewLimit">VALUE</span>
