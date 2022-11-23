@@ -57,6 +57,8 @@ interface ColonyListItemInterface
 
     public function getCrewLimit(): int;
 
+    public function getCrewLimitStyle(): string;
+
     public function getStorageStatusBar(): string;
 
     public function getEpsStatusBar(): string;

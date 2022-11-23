@@ -49,7 +49,9 @@
 						</a>
 						<span tal:condition="php:colony.getSignatureCount() EQ 0">0</span>
 					</td>
-					<td style="vertical-align: middle;">${colony/getCrewAssignmentAmount}/${colony/getCrewLimit}
+					<td style="vertical-align: middle;">${colony/getCrewAssignmentAmount}/<span
+							tal:content="${colony/getCrewLimit}"
+							tal:attributes="style string:${colony/getCrewLimitStyle};">LIMIT</span>
 						(${colony/getCrewTrainingAmount})</td>
 					<td style="vertical-align: middle;">
 						<img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.png" />

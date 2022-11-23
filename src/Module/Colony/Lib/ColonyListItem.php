@@ -145,6 +145,21 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->colony->getCrewLimit();
     }
 
+    public function getCrewLimitStyle(): string
+    {
+        $lifeStandardPercentage = $this->colony->getLifeStandardPercentage();
+        if ($lifeStandardPercentage === 100) {
+            return "color: green;";
+        }
+        if ($lifeStandardPercentage > 75) {
+            return "color: yellow;";
+        }
+        if ($lifeStandardPercentage > 50) {
+            return "color: orange;";
+        }
+        return "color: red;";
+    }
+
     public function getStorageStatusBar(): string
     {
         return (new TalStatusBar())
