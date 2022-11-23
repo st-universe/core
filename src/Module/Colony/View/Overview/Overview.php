@@ -111,11 +111,6 @@ final class Overview implements ViewControllerInterface
             'COLONY_LIST',
             array_map(
                 function (ColonyInterface $colony): ColonyListItemInterface {
-                    if ($colony->getId() === 1145) {
-                        $this->loggerUtil->init('COLO', LoggerEnum::LEVEL_ERROR);
-                        $this->loggerUtil->log(sprintf('getLifeStandardPercentage: %d', $colony->getLifeStandardPercentage()));
-                    }
-
                     return $this->colonyLibFactory->createColonyListItem($colony);
                 },
                 $colonyList
