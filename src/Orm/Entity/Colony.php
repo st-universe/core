@@ -845,7 +845,7 @@ class Colony implements ColonyInterface
         return $this->positive_effect_secondary;
     }
 
-    public function getCrewLimit(?bool $considerLifeStandard = false): int
+    public function getCrewLimit(?bool $considerLifeStandard = true): int
     {
         return (int) floor(
             min(
@@ -866,7 +866,7 @@ class Colony implements ColonyInterface
         return (int)ceil($this->getProductionRaw()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD] * 100 / $this->getBevFood());
     }
 
-    public function getFreeAssignmentCount(?bool $considerLifeStandard = false): int
+    public function getFreeAssignmentCount(?bool $considerLifeStandard = true): int
     {
         return $this->getCrewLimit($considerLifeStandard) - $this->getCrewAssignmentAmount();
     }
