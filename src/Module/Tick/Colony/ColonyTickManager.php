@@ -78,14 +78,25 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             if ($user[$obj->getUserId()] >= $obj->getUser()->getTrainableCrewCountMax()) {
                 continue;
             }
+            $colony = $obj->getColony();
+
+            //colony can't hold more crew
+            if ($colony->getFreeAssignmentCount(true) <= 0) {
+                $this->crewTrainingRepository->delete($obj);
+                continue;
+            }
+
+            //user has to much crew
             if ($obj->getUser()->getGlobalCrewLimit() - $obj->getUser()->getAssignedCrewCount() <= 0) {
                 $this->crewTrainingRepository->delete($obj);
                 continue;
             }
-            if (!$obj->getColony()->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
+
+            //no academy online
+            if (!$colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
                 continue;
             }
-            $this->crewCreator->create($obj->getUserId(), $obj->getColony());
+            $this->crewCreator->create($obj->getUserId(), $colony);
 
             $this->crewTrainingRepository->delete($obj);
             $user[$obj->getUserId()]++;

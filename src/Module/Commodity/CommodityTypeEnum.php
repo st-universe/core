@@ -22,6 +22,9 @@ final class CommodityTypeEnum
     public const COMMODITY_SPARE_PART = 10001;
     public const COMMODITY_SYSTEM_COMPONENT = 10002;
 
+    //effects
+    public const COMMODITY_EFFECT_LIFE_STANDARD = 1300;
+
     //base value for e.g. shuttles
     public const BASE_ID_WORKBEE = 20060;
     public const BASE_IDS_SHUTTLE =  [self::BASE_ID_WORKBEE];
