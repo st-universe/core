@@ -53,6 +53,9 @@ final class ShowAcademy implements ViewControllerInterface
         if ($trainableCrew > $colony->getWorkless()) {
             $trainableCrew = $colony->getWorkless();
         }
+        if ($trainableCrew > $colony->getFreeAssignmentCount()) {
+            $trainableCrew = $colony->getFreeAssignmentCount();
+        }
 
         $game->showMacro('html/colonymacros.xhtml/cm_academy');
 
