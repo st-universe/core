@@ -81,7 +81,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             $colony = $obj->getColony();
 
             //colony can't hold more crew
-            if ($colony->getFreeAssignmentCount() <= 0) {
+            if ($colony->getFreeAssignmentCount() === 0) {
                 $this->crewTrainingRepository->delete($obj);
                 continue;
             }

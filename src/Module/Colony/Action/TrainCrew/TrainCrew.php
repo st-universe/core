@@ -76,7 +76,7 @@ final class TrainCrew implements ActionControllerInterface
             $game->addInformation(_('Derzeit kann keine weitere Crew ausgebildet werden'));
             return;
         }
-        if ($colony->getFreeAssignmentCount() <= 0) {
+        if ($colony->getFreeAssignmentCount() === 0) {
             $game->addInformation(_('Auf dieser Kolonie kann derzeit keine weitere Crew ausgebildet werden'));
             return;
         }

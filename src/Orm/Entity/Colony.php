@@ -852,7 +852,7 @@ class Colony implements ColonyInterface
 
     public function getFreeAssignmentCount(): int
     {
-        return $this->getCrewLimit() - $this->getCrewAssignmentAmount();
+        return max(0, $this->getCrewLimit() - $this->getCrewAssignmentAmount());
     }
 
     public function clearCache(): void
