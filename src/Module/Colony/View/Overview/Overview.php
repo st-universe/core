@@ -9,6 +9,9 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
@@ -29,18 +32,22 @@ final class Overview implements ViewControllerInterface
 
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         ColonyRepositoryInterface $colonyRepository,
-        ModuleQueueRepositoryInterface $moduleQueueRepository
+        ModuleQueueRepositoryInterface $moduleQueueRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyRepository = $colonyRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -104,6 +111,11 @@ final class Overview implements ViewControllerInterface
             'COLONY_LIST',
             array_map(
                 function (ColonyInterface $colony): ColonyListItemInterface {
+                    if ($colony->getId() === 1145) {
+                        $this->loggerUtil->init('COLO', LoggerEnum::LEVEL_ERROR);
+                        $this->loggerUtil->log(sprintf('getLifeStandardPercentage: %d', $colony->getLifeStandardPercentage()));
+                    }
+
                     return $this->colonyLibFactory->createColonyListItem($colony);
                 },
                 $colonyList
