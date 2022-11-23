@@ -863,7 +863,7 @@ class Colony implements ColonyInterface
 
     public function getLifeStandardPercentage(): int
     {
-        return (int)ceil($this->getProductionRaw()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD] * 100 / $this->getBevFood());
+        return (int)ceil($this->getProductionRaw()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD]->getProduction() * 100 / $this->getBevFood());
     }
 
     public function getFreeAssignmentCount(?bool $considerLifeStandard = true): int
