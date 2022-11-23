@@ -667,20 +667,9 @@ class Colony implements ColonyInterface
 
     public function getProduction(): array
     {
+        //TODO kann weg und durch $colony->getProductionRaw() ersetzt werden?!
         if ($this->production === null) {
             $this->production = $this->getProductionRaw();
-            if (array_key_exists(CommodityTypeEnum::COMMODITY_FOOD, $this->production)) {
-                if ($this->production[CommodityTypeEnum::COMMODITY_FOOD]->getProduction() - $this->getBevFood() == 0) {
-                    unset($this->production[CommodityTypeEnum::COMMODITY_FOOD]);
-                } else {
-                    $this->production[CommodityTypeEnum::COMMODITY_FOOD]->lowerProduction($this->getBevFood());
-                }
-            } else {
-                $obj = new ColonyProduction;
-                $obj->setProduction(-$this->getBevFood());
-                $obj->setCommodityId(CommodityTypeEnum::COMMODITY_FOOD);
-                $this->production[CommodityTypeEnum::COMMODITY_FOOD] = $obj;
-            }
         }
         return $this->production;
     }

@@ -88,11 +88,6 @@ final class PlanetColonization implements PlanetColonizationInterface
 
         $this->colonyStorageManager->upperStorage(
             $colony,
-            $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_FOOD),
-            100
-        );
-        $this->colonyStorageManager->upperStorage(
-            $colony,
             $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS),
             150
         );

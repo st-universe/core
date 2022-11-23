@@ -225,9 +225,8 @@ final class ColonyTick implements ColonyTickInterface
         }
 
         $emigrated = 0;
-        $production = $this->proceedFood($colony);
+        $production = $colony->getProductionRaw();
         $sum = $colony->getStorageSum();
-        $storage = $colony->getStorage();
 
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -240,19 +239,6 @@ final class ColonyTick implements ColonyTickInterface
             }
 
             $amount = abs($amount);
-
-            if ($commodityId == CommodityTypeEnum::COMMODITY_FOOD) {
-                $storageItem = $storage[CommodityTypeEnum::COMMODITY_FOOD] ?? null;
-                if ($storageItem === null && $amount > 0) {
-                    $this->proceedEmigration($colony, true);
-                    $emigrated = 1;
-                    $amount = 0;
-                } elseif ($storageItem->getAmount() - $amount < 0) {
-                    $this->proceedEmigration($colony, true, abs($storageItem->getAmount() - $amount));
-                    $emigrated = 1;
-                    $amount = $storageItem->getAmount();
-                }
-            }
 
             if ($amount > 0) {
                 $this->colonyStorageManager->lowerStorage(
@@ -406,59 +392,19 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    /**
-     * @return ColonyProduction[]
-     */
-    private function proceedFood(ColonyInterface $colony): array
-    {
-        $foodvalue = $colony->getBevFood();
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-        $prod = &$colony->getProductionRaw();
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tgetProd, seconds: %F", $endTime - $startTime));
-        }
-        if (!array_key_exists(CommodityTypeEnum::COMMODITY_FOOD, $prod)) {
-            $obj = new ColonyProduction();
-            $obj->setCommodityId(CommodityTypeEnum::COMMODITY_FOOD);
-            $obj->lowerProduction($foodvalue);
-            $prod[CommodityTypeEnum::COMMODITY_FOOD] = $obj;
-        } else {
-            $prod[CommodityTypeEnum::COMMODITY_FOOD]->lowerProduction($foodvalue);
-        }
-        return $prod;
-    }
-
     private function proceedImmigration(ColonyInterface $colony): void
     {
         // @todo
-        $im = $colony->getImmigration();
+        $im = (int)ceil($colony->getImmigration() * $colony->getLifeStandardPercentage() / 100);
         $colony->setWorkless($colony->getWorkless() + $im);
     }
 
-    private function proceedEmigration(ColonyInterface $colony, $foodrelated = false, $foodmissing = false)
+    private function proceedEmigration(ColonyInterface $colony)
     {
         if ($colony->getWorkless()) {
-            if ($foodmissing > 0) {
-                $bev = $foodmissing * self::PEOPLE_FOOD;
-                if ($bev > $colony->getWorkless()) {
-                    $bev = $colony->getWorkless();
-                }
-            } else {
-                if ($foodrelated) {
-                    $bev = $colony->getWorkless();
-                } else {
-                    $bev = rand(1, $colony->getWorkless());
-                }
-            }
+            $bev = rand(1, $colony->getWorkless());
             $colony->setWorkless($colony->getWorkless() - $bev);
-            if ($foodrelated) {
-                $this->msg[] = $bev . " Einwohner sind aufgrund des Nahrungsmangels ausgewandert";
-            } else {
-                $this->msg[] = $bev . " Einwohner sind ausgewandert";
-            }
+            $this->msg[] = $bev . " Einwohner sind ausgewandert";
         }
     }
 
