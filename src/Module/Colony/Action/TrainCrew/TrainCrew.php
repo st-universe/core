@@ -94,7 +94,7 @@ final class TrainCrew implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $game->addInformationf(_('Es werden %d Crew ausgebildet'), $count);
+        $game->addInformationf(_('Es werden %d Crew auf dieser Kolonie ausgebildet'), $count);
     }
 
     public function performSessionCheck(): bool
