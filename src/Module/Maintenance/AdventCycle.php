@@ -58,7 +58,7 @@ final class AdventCycle implements MaintenanceHandlerInterface
             //return; RESET
         }
 
-        if ($day === 24) { //RESET TO 1
+        if ($day === 1) {
 
             //reset all existing advent points on first of december
             $this->storageRepository->truncateByCommodity(CommodityTypeEnum::COMMODITY_ADVENT_POINT);
