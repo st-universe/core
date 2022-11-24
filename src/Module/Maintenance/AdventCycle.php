@@ -104,11 +104,8 @@ final class AdventCycle implements MaintenanceHandlerInterface
 
     private function setRandomLocation(array $adventDoors): void
     {
-        $mapCount = $this->mapRepository->count([]);
-        $systemMapCount = $this->starSystemMapRepository->count([]);
-
         foreach ($adventDoors as $adventDoor) {
-            if (rand(0, $mapCount + $systemMapCount) < $mapCount) {
+            if (rand(0, 1) === 0) {
                 $randomMapId = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage();
                 $adventDoor->updateLocation($this->mapRepository->find($randomMapId), null);
             } else {
