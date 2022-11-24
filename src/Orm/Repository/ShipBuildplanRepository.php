@@ -136,7 +136,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->setParameters([
                 'roleId' => ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR
             ])
-            ->getResult();
+            ->getSingleResult();
     }
 
     public function prototype(): ShipBuildplanInterface
