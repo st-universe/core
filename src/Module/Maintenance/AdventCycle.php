@@ -51,11 +51,11 @@ final class AdventCycle implements MaintenanceHandlerInterface
 
     public function handle(): void
     {
-        $day = (int)date("d");
-        $month = (int)date("m");
+        $day = (int)date("j");
+        $month = (int)date("n");
 
         if ($month < 12) {
-            //return; RESET
+            return;
         }
 
         if ($day === 1) {
