@@ -110,10 +110,10 @@ final class AdventCycle implements MaintenanceHandlerInterface
         foreach ($adventDoors as $adventDoor) {
             if (rand(0, $mapCount + $systemMapCount) < $mapCount) {
                 $randomMapId = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage();
-                $adventDoor->setMap($this->mapRepository->find($randomMapId));
+                $adventDoor->updateLocation($this->mapRepository->find($randomMapId), null);
             } else {
                 $randomSysMapId = $this->starSystemMapRepository->getRandomPassableUnoccupiedWithoutDamage();
-                $adventDoor->setStarsystemMap($this->starSystemMapRepository->find($randomSysMapId));
+                $adventDoor->updateLocation(null, $this->starSystemMapRepository->find($randomSysMapId));
             }
 
             $this->shipRepository->save($adventDoor);
