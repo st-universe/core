@@ -387,10 +387,15 @@
     <img src="assets/ships/wrack/${ship/getFormerRumpId}.png" tal:attributes="title ship/getRumpName" />
   </tal:block>
   <tal:block tal:condition="not:ship/isTrumfield">
-    <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
-      tal:attributes="title ship/getRumpName" />
-    <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-      tal:attributes="title ship/getRumpName" />
+    <tal:block tal:condition="not:ship/getRump/isAdventDoor">
+      <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
+        tal:attributes="title ship/getRumpName" />
+      <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+        tal:attributes="title ship/getRumpName" />
+    </tal:block>
+    <tal:block tal:condition="ship/getRump/isAdventDoor">
+      <img src="assets/ships/adv/${ship/getRump/isAdventDoor}.png" tal:attributes="title ship/getRumpName" />
+    </tal:block>
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shipimagenameastitle">

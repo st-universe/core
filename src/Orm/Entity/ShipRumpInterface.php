@@ -180,4 +180,6 @@ interface ShipRumpInterface
     public function getCrewObj(): ?ShipRumpCategoryRoleCrewInterface;
 
     public function getFractionId(): int;
+
+    public function isAdventDoor(): ?int;
 }

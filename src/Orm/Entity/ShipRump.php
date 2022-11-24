@@ -693,4 +693,9 @@ class ShipRump implements ShipRumpInterface
         //last digit of id shows fraction id
         return $this->getId() % 10;
     }
+
+    public function isAdventDoor(): ?int
+    {
+        return $this->getRoleId() === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR ? (int)date("j") : null;
+    }
 }

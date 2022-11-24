@@ -151,4 +151,25 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ])
             ->getResult();
     }
+
+    public function getRandomPassableUnoccupiedWithoutDamage(): int
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT m.id
+                FROM stu_map m
+                JOIN stu_map_ftypes mft
+                ON m.field_id = mft.id
+                WHERE NOT EXISTS (SELECT s.id FROM stu_ships s WHERE s.map_id = m.id)
+                AND mft.x_damage = 0
+                AND mft.passable = true
+                ORDER BY RANDOM()
+                LIMIT 1',
+                $rsm
+            )
+            ->getSingleScalarResult();
+    }
 }

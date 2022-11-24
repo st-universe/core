@@ -42,4 +42,6 @@ interface MapRepositoryInterface extends ObjectRepository
     public function save(MapInterface $map): void;
 
     public function getExplored(int $userId, int $startX, int $endX, int $cy): array;
+
+    public function getRandomPassableUnoccupiedWithoutDamage(): int;
 }

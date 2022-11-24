@@ -119,6 +119,26 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->getResult();
     }
 
+    public function getAdventDoorBuildplan(): ShipBuildplanInterface
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT sb
+                    FROM %s sb
+                    JOIN %s sr
+                    WITH sb.rump_id = sr.id
+                    WHERE sr.role_id = :roleId',
+                    ShipBuildplan::class,
+                    ShipRump::class
+                )
+            )
+            ->setParameters([
+                'roleId' => ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR
+            ])
+            ->getResult();
+    }
+
     public function prototype(): ShipBuildplanInterface
     {
         return new ShipBuildplan();

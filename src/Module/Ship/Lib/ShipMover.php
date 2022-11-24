@@ -566,7 +566,11 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //Einflugschaden Feldschaden
-        if ($nextField->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $nextField->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$nextField->getFieldType()->getSpecialDamageInnerSystem()))) {
+        if (
+            $nextField->getFieldType()->getSpecialDamage()
+            && (($ship->getSystem() !== null && $nextField->getFieldType()->getSpecialDamageInnerSystem())
+                || ($ship->getSystem() === null && !$ship->getWarpState() && !$nextField->getFieldType()->getSpecialDamageInnerSystem()))
+        ) {
             $this->addInformation(sprintf(_('%s in Sektor %d|%d'), $nextField->getFieldType()->getName(), $ship->getPosX(), $ship->getPosY()));
 
             $this->applyFieldDamage($ship, $leadShip, $nextField->getFieldType()->getSpecialDamage(), true, '');

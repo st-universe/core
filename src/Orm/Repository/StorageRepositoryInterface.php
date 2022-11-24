@@ -63,4 +63,6 @@ interface StorageRepositoryInterface extends ObjectRepository
     public function getLatinumTop10(): array;
 
     public function truncateByColony(ColonyInterface $colony): void;
+
+    public function truncateByCommodity(int $commodityId): void;
 }
