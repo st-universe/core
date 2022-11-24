@@ -109,4 +109,14 @@ final class ShipNfsItem
     {
         return $this->values['uplinkstate'] > 0;
     }
+
+    public function getRump()
+    {
+        return $this;
+    }
+
+    public function isAdventDoor(): ?int
+    {
+        return $this->values['rumproleid'] === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR ? (int)date("j") : null;
+    }
 }
