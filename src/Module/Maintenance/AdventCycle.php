@@ -15,6 +15,8 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 
 final class AdventCycle implements MaintenanceHandlerInterface
 {
+    private const ADVENT_DOOR_AMOUNT = 5;
+
     private StorageRepositoryInterface $storageRepository;
 
     private ShipRepositoryInterface $shipRepository;
@@ -62,52 +64,67 @@ final class AdventCycle implements MaintenanceHandlerInterface
             $this->storageRepository->truncateByCommodity(CommodityTypeEnum::COMMODITY_ADVENT_POINT);
 
             //create advent door and set random location
-            $adventDoor = $this->createAdventDoor();
-            $this->setRandomLocation($adventDoor);
+            $adventDoors = $this->createAdventDoors();
+            $this->setRandomLocation($adventDoors);
         } else if ($day < 25) {
 
             //set new random advent door location
-            $this->setRandomLocation($this->getCurrentAdventDoor());
+            $this->setRandomLocation($this->getCurrentAdventDoors());
         } else {
 
             //remove advent door
-            $this->shipRemover->remove($this->getCurrentAdventDoor());
+            foreach ($this->getCurrentAdventDoors() as $adventDoor) {
+                $this->shipRemover->remove($adventDoor);
+            }
         }
     }
 
-    private function createAdventDoor(): ShipInterface
+    /**
+     * @return ShipInterface[]
+     */
+    private function createAdventDoors(): array
     {
+        $result = [];
+
         $plan = $this->shipBuildplanRepository->getAdventDoorBuildplan();
 
-        $adventDoor = $this->shipCreator->createBy(GameEnum::USER_NOONE, $plan->getRump()->getId(), $plan->getId());
-        $adventDoor->setEps($adventDoor->getMaxEps());
-        $adventDoor->setReactorLoad($adventDoor->getReactorCapacity());
-        $adventDoor->setShield($adventDoor->getMaxShield());
-        $adventDoor->setEBatt($adventDoor->getMaxEBatt());
+        for ($i = 0; $i < self::ADVENT_DOOR_AMOUNT; $i++) {
+            $adventDoor = $this->shipCreator->createBy(GameEnum::USER_NOONE, $plan->getRump()->getId(), $plan->getId());
+            $adventDoor->setEps($adventDoor->getMaxEps());
+            $adventDoor->setReactorLoad($adventDoor->getReactorCapacity());
+            $adventDoor->setShield($adventDoor->getMaxShield());
+            $adventDoor->setEBatt($adventDoor->getMaxEBatt());
 
-        $this->shipRepository->save($adventDoor);
+            $this->shipRepository->save($adventDoor);
+            $result[] = $adventDoor;
+        }
 
-        return $adventDoor;
+        return $result;
     }
 
-    private function setRandomLocation(ShipInterface $adventDoor): void
+    private function setRandomLocation(array $adventDoors): void
     {
         $mapCount = $this->mapRepository->count([]);
         $systemMapCount = $this->starSystemMapRepository->count([]);
 
-        if (rand(0, $mapCount + $systemMapCount) < $mapCount) {
-            $randomMapId = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage();
-            $adventDoor->setMap($this->mapRepository->find($randomMapId));
-        } else {
-            $randomSysMapId = $this->starSystemMapRepository->getRandomPassableUnoccupiedWithoutDamage();
-            $adventDoor->setStarsystemMap($this->starSystemMapRepository->find($randomSysMapId));
-        }
+        foreach ($adventDoors as $adventDoor) {
+            if (rand(0, $mapCount + $systemMapCount) < $mapCount) {
+                $randomMapId = $this->mapRepository->getRandomPassableUnoccupiedWithoutDamage();
+                $adventDoor->setMap($this->mapRepository->find($randomMapId));
+            } else {
+                $randomSysMapId = $this->starSystemMapRepository->getRandomPassableUnoccupiedWithoutDamage();
+                $adventDoor->setStarsystemMap($this->starSystemMapRepository->find($randomSysMapId));
+            }
 
-        $this->shipRepository->save($adventDoor);
+            $this->shipRepository->save($adventDoor);
+        }
     }
 
-    private function getCurrentAdventDoor(): ShipInterface
+    /**
+     * @return ShipInterface[]
+     */
+    private function getCurrentAdventDoors(): array
     {
-        return $this->shipBuildplanRepository->getAdventDoorBuildplan()->getShiplist()->first();
+        return $this->shipBuildplanRepository->getAdventDoorBuildplan()->getShiplist()->toArray();
     }
 }
