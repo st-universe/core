@@ -32,6 +32,9 @@ class ColonyClass implements ColonyClassInterface
     private $is_moon = false;
 
     /** @Column(type="integer", nullable=true) * */
+    private $type;
+
+    /** @Column(type="integer", nullable=true) * */
     private $database_id;
 
     /** @Column(type="json") */
