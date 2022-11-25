@@ -12,8 +12,6 @@ interface ColonyClassInterface
 
     public function getIsMoon(): bool;
 
-    public function setIsMoon(bool $isMoon): ColonyClassInterface;
-
     public function getDatabaseId(): ?int;
 
     public function setDatabaseId(?int $databaseId): ColonyClassInterface;

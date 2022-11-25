@@ -7,6 +7,7 @@ namespace Stu\Orm\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyClassRepository")
@@ -84,14 +85,7 @@ class ColonyClass implements ColonyClassInterface
 
     public function getIsMoon(): bool
     {
-        return $this->is_moon;
-    }
-
-    public function setIsMoon(bool $isMoon): ColonyClassInterface
-    {
-        $this->is_moon = $isMoon;
-
-        return $this;
+        return $this->type === ColonyTypeEnum::COLONY_TYPE_MOON;
     }
 
     public function getDatabaseId(): ?int
