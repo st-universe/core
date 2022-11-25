@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
@@ -42,14 +43,14 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(c.id) from %s c WHERE c.user_id = :userId AND c.colonies_classes_id IN (
-                    SELECT pt.id FROM %s pt WHERE pt.is_moon = :isMoon
+                    SELECT cc.id FROM %s cc WHERE cc.type = :type
                 )',
                 Colony::class,
                 ColonyClass::class
             )
         )->setParameters([
             'userId' => $user,
-            'isMoon' => $isMoon,
+            'type' => $isMoon ? ColonyTypeEnum::COLONY_TYPE_MOON : ColonyTypeEnum::COLONY_TYPE_PLANET,
         ])->getSingleScalarResult();
     }
 
