@@ -10,7 +10,7 @@ interface DatabaseCategoryTalInterface
 
     public function isCategoryTradePosts(): bool;
 
-    public function isCategoryPlanetTypes(): bool;
+    public function isCategoryColonyClasses(): bool;
 
     public function isCategoryRumpTypes(): bool;
 

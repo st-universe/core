@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Component\Colony\ColonyEnum;
 
 /**
- * @Entity(repositoryClass="Stu\Orm\Repository\PlanetTypeRepository")
+ * @Entity(repositoryClass="Stu\Orm\Repository\ColonyClassRepository")
  * @Table(
  *     name="stu_colonies_classes",
  *     indexes={
  *     }
  * )
  **/
-class PlanetType implements PlanetTypeInterface
+class ColonyClass implements ColonyClassInterface
 {
     /** 
      * @Id
@@ -50,6 +52,16 @@ class PlanetType implements PlanetTypeInterface
      */
     private $databaseEntry;
 
+    /**
+     * @OneToMany(targetEntity="ColonyDeposit", mappedBy="colonyClass")
+     */
+    private $colonyDeposits;
+
+    public function __construct()
+    {
+        $this->colonyDeposits = new ArrayCollection();
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -60,7 +72,7 @@ class PlanetType implements PlanetTypeInterface
         return $this->name;
     }
 
-    public function setName(string $name): PlanetTypeInterface
+    public function setName(string $name): ColonyClassInterface
     {
         $this->name = $name;
 
@@ -72,7 +84,7 @@ class PlanetType implements PlanetTypeInterface
         return $this->is_moon;
     }
 
-    public function setIsMoon(bool $isMoon): PlanetTypeInterface
+    public function setIsMoon(bool $isMoon): ColonyClassInterface
     {
         $this->is_moon = $isMoon;
 
@@ -84,7 +96,7 @@ class PlanetType implements PlanetTypeInterface
         return $this->database_id;
     }
 
-    public function setDatabaseId(?int $databaseId): PlanetTypeInterface
+    public function setDatabaseId(?int $databaseId): ColonyClassInterface
     {
         $this->database_id = $databaseId;
 
@@ -96,7 +108,7 @@ class PlanetType implements PlanetTypeInterface
         return $this->colonizeable_fields;
     }
 
-    public function setColonizeableFields(array $colonizeableFields): PlanetTypeInterface
+    public function setColonizeableFields(array $colonizeableFields): ColonyClassInterface
     {
         $this->colonizeable_fields = $colonizeableFields;
 
@@ -108,7 +120,7 @@ class PlanetType implements PlanetTypeInterface
         return $this->bev_growth_rate;
     }
 
-    public function setBevGrowthRate(int $bevGroethRate): PlanetTypeInterface
+    public function setBevGrowthRate(int $bevGroethRate): ColonyClassInterface
     {
         $this->bev_growth_rate = $bevGroethRate;
 
@@ -120,7 +132,7 @@ class PlanetType implements PlanetTypeInterface
         return $this->special;
     }
 
-    public function setSpecialId(int $specialId): PlanetTypeInterface
+    public function setSpecialId(int $specialId): ColonyClassInterface
     {
         $this->special = $specialId;
 
@@ -132,11 +144,16 @@ class PlanetType implements PlanetTypeInterface
         return $this->allow_start;
     }
 
-    public function setAllowStart(bool $allowStart): PlanetTypeInterface
+    public function setAllowStart(bool $allowStart): ColonyClassInterface
     {
         $this->allow_start = $allowStart;
 
         return $this;
+    }
+
+    public function getColonyDeposits(): Collection
+    {
+        return $this->colonyDeposits;
     }
 
     public function hasRing(): bool

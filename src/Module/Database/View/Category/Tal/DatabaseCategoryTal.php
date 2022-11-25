@@ -42,9 +42,9 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST;
     }
 
-    public function isCategoryPlanetTypes(): bool
+    public function isCategoryColonyClasses(): bool
     {
-        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_PLANET_TYPE;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS;
     }
 
     public function isCategoryRumpTypes(): bool
@@ -59,7 +59,7 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
             && !$this->isCategoryTradePosts()
             && !$this->isCategoryStarSystemTypes()
             && !$this->isCategoryRumpTypes()
-            && !$this->isCategoryPlanetTypes();
+            && !$this->isCategoryColonyClasses();
     }
 
     public function getEntries(): array

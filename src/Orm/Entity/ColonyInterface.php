@@ -9,7 +9,7 @@ interface ColonyInterface
 {
     public function getId(): int;
 
-    public function getColonyClass(): int;
+    public function getColonyClassId(): int;
 
     public function getUserId(): int;
 
@@ -107,9 +107,9 @@ interface ColonyInterface
 
     public function setSurfaceWidth(int $surfaceWidth): ColonyInterface;
 
-    public function getPlanetType(): PlanetTypeInterface;
+    public function getColonyClass(): ColonyClassInterface;
 
-    public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface;
+    public function setColonyClass(ColonyClassInterface $colonyClass): ColonyInterface;
 
     public function getStorageSum(): int;
 

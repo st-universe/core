@@ -3,7 +3,7 @@
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Entity\PlanetTypeInterface;
+use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
 interface ColonyListItemInterface
@@ -41,7 +41,7 @@ interface ColonyListItemInterface
      */
     public function getStorage(): Collection;
 
-    public function getPlanetType(): PlanetTypeInterface;
+    public function getColonyClass(): ColonyClassInterface;
 
     public function getProductionSum(): int;
 

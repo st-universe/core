@@ -4,7 +4,7 @@ namespace Stu\Orm\Entity;
 
 interface ColonyDepositInterface
 {
-    public function getPlanetType(): PlanetTypeInterface;
+    public function getColonyClass(): ColonyClassInterface;
 
     public function getCommodity(): CommodityInterface;
 

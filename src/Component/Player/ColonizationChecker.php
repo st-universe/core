@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace Stu\Component\Player;
 
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetTypeResearchInterface;
+use Stu\Orm\Entity\ColonyClassResearchInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\PlanetTypeResearchRepositoryInterface;
+use Stu\Orm\Repository\ColonyClassResearchRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class ColonizationChecker implements ColonizationCheckerInterface
 {
     private ResearchedRepositoryInterface $researchedRepository;
 
-    private PlanetTypeResearchRepositoryInterface $planetTypeResearchRepository;
+    private ColonyClassResearchRepositoryInterface $colonyClassResearchRepository;
 
     private ColonyLimitCalculatorInterface $colonyLimitCalculator;
 
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
-        PlanetTypeResearchRepositoryInterface $planetTypeResearchRepository,
+        ColonyClassResearchRepositoryInterface $colonyClassResearchRepository,
         ColonyLimitCalculatorInterface $colonyLimitCalculator
     ) {
         $this->researchedRepository = $researchedRepository;
-        $this->planetTypeResearchRepository = $planetTypeResearchRepository;
+        $this->colonyClassResearchRepository = $colonyClassResearchRepository;
         $this->colonyLimitCalculator = $colonyLimitCalculator;
     }
 
@@ -34,9 +34,9 @@ final class ColonizationChecker implements ColonizationCheckerInterface
             return false;
         }
 
-        $planetType = $colony->getPlanetType();
+        $colonyClass = $colony->getColonyClass();
 
-        if ($planetType->getIsMoon()) {
+        if ($colonyClass->getIsMoon()) {
             if ($this->colonyLimitCalculator->canColonizeFurtherMoons($user) === false) {
                 return false;
             }
@@ -47,10 +47,10 @@ final class ColonizationChecker implements ColonizationCheckerInterface
         }
 
         $researchIds = array_map(
-            function (PlanetTypeResearchInterface $planetTypeResearch): int {
-                return $planetTypeResearch->getResearch()->getId();
+            function (ColonyClassResearchInterface $colonyClassResearch): int {
+                return $colonyClassResearch->getResearch()->getId();
             },
-            $this->planetTypeResearchRepository->getByPlanetType($planetType)
+            $this->colonyClassResearchRepository->getByColonyClass($colonyClass)
         );
         if ($researchIds !== [] && $this->researchedRepository->hasUserFinishedResearch($user, $researchIds) === false) {
             return false;

@@ -10,7 +10,7 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
-use Stu\Orm\Entity\PlanetType;
+use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -45,7 +45,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                     SELECT pt.id FROM %s pt WHERE pt.is_moon = :isMoon
                 )',
                 Colony::class,
-                PlanetType::class
+                ColonyClass::class
             )
         )->setParameters([
             'userId' => $user,
@@ -69,7 +69,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 )',
                 Colony::class,
                 StarSystemMap::class,
-                PlanetType::class,
+                ColonyClass::class,
                 Map::class,
                 MapRegionSettlement::class
             )

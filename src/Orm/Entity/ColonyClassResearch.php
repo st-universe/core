@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity(repositoryClass="Stu\Orm\Repository\PlanetTypeResearchRepository")
+ * @Entity(repositoryClass="Stu\Orm\Repository\ColonyClassResearchRepository")
  * @Table(
  *     name="stu_planet_type_research",
  *     indexes={
@@ -13,7 +13,9 @@ namespace Stu\Orm\Entity;
  *     }
  * )
  **/
-class PlanetTypeResearch implements PlanetTypeResearchInterface {
+//TODO rename table and column planet_type_id
+class ColonyClassResearch implements ColonyClassResearchInterface
+{
     /** 
      * @Id
      * @Column(type="integer")
@@ -34,10 +36,10 @@ class PlanetTypeResearch implements PlanetTypeResearchInterface {
     private $research;
 
     /**
-     * @ManyToOne(targetEntity="PlanetType")
+     * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="planet_type_id", referencedColumnName="id")
      */
-    private $planetType;
+    private $colonyClass;
 
     public function getId(): int
     {
@@ -49,20 +51,20 @@ class PlanetTypeResearch implements PlanetTypeResearchInterface {
         return $this->research;
     }
 
-    public function setResearch(ResearchInterface $research): PlanetTypeResearchInterface
+    public function setResearch(ResearchInterface $research): ColonyClassResearchInterface
     {
         $this->research = $research;
         return $this;
     }
 
-    public function getPlanetType(): PlanetTypeInterface
+    public function getColonyClass(): ColonyClassInterface
     {
-        return $this->planetType;
+        return $this->colonyClass;
     }
 
-    public function setPlanetType(PlanetTypeInterface $planetType): PlanetTypeResearchInterface
+    public function setColonyClass(ColonyClassInterface $colonyClass): ColonyClassResearchInterface
     {
-        $this->planetType = $planetType;
+        $this->colonyClass = $colonyClass;
         return $this;
     }
 }

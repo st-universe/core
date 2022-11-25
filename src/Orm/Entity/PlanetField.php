@@ -422,7 +422,7 @@ class PlanetField implements PlanetFieldInterface
 
     public function isColonizeAble(): bool
     {
-        return in_array($this->getFieldType(), $this->getColony()->getPlanetType()->getColonizeableFields());
+        return in_array($this->getFieldType(), $this->getColony()->getColonyClass()->getColonizeableFields());
     }
 
     public function isUnderground(): bool

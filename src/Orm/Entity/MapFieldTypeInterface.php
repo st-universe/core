@@ -22,9 +22,9 @@ interface MapFieldTypeInterface
 
     public function setName(string $name): MapFieldTypeInterface;
 
-    public function getPlanetTypeId(): int;
+    public function getColonyClassId(): int;
 
-    public function setPlanetTypeId(int $planetTypeId): MapFieldTypeInterface;
+    public function setColonyClassId(int $colonyClassId): MapFieldTypeInterface;
 
     public function getDamage(): int;
 
@@ -46,5 +46,5 @@ interface MapFieldTypeInterface
 
     public function setPassable(int $passable): MapFieldTypeInterface;
 
-    public function getPlanetType(): ?PlanetTypeInterface;
+    public function getColonyClass(): ?ColonyClassInterface;
 }

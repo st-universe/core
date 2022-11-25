@@ -31,10 +31,10 @@ class ColonyDeposit implements ColonyDepositInterface
     private $max_amount = 0;
 
     /**
-     * @ManyToOne(targetEntity="PlanetType")
+     * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colony_class_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $planetType;
+    private $colonyClass;
 
     /**
      * @ManyToOne(targetEntity="Commodity")
@@ -42,9 +42,9 @@ class ColonyDeposit implements ColonyDepositInterface
      */
     private $commodity;
 
-    public function getPlanetType(): PlanetTypeInterface
+    public function getColonyClass(): ColonyClassInterface
     {
-        return $this->planetType;
+        return $this->colonyClass;
     }
 
     public function getCommodity(): CommodityInterface

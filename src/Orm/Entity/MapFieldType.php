@@ -53,10 +53,10 @@ class MapFieldType implements MapFieldTypeInterface
     private $passable = false;
 
     /**
-     * @ManyToOne(targetEntity="PlanetType")
+     * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
      */
-    private $planetType;
+    private $colonyClass;
 
     public function getId(): int
     {
@@ -111,14 +111,14 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
-    public function getPlanetTypeId(): int
+    public function getColonyClassId(): int
     {
         return $this->colonies_classes_id;
     }
 
-    public function setPlanetTypeId(int $planetTypeId): MapFieldTypeInterface
+    public function setColonyClassId(int $colonyClassId): MapFieldTypeInterface
     {
-        $this->colonies_classes_id = $planetTypeId;
+        $this->colonies_classes_id = $colonyClassId;
 
         return $this;
     }
@@ -183,8 +183,8 @@ class MapFieldType implements MapFieldTypeInterface
         return $this;
     }
 
-    public function getPlanetType(): ?PlanetTypeInterface
+    public function getColonyClass(): ?ColonyClassInterface
     {
-        return $this->planetType;
+        return $this->colonyClass;
     }
 }

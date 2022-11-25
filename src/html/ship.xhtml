@@ -666,13 +666,13 @@
 				<td style="width: 50%;">
 					<a href="colony.php?SHOW_COLONY=1&id=${CURRENT_COLONY/getId}&target=${SHIP/getId}"
 						tal:condition="OWNS_CURRENT_COLONY">
-						<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif"
+						<img src="assets/planets/${CURRENT_COLONY/getColonyClassId}.gif"
 							style="width: 15px; height: 15px;" />
 						<span tal:replace="structure bbcode:CURRENT_COLONY/getName">NAME</span>
 					</a>
 					<tal:block tal:condition="not:CURRENT_COLONY/isFree">
 						<span tal:condition="not:OWNS_CURRENT_COLONY">
-							<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif"
+							<img src="assets/planets/${CURRENT_COLONY/getColonyClassId}.gif"
 								style="width: 15px; height: 15px;" />
 							<span tal:condition="not:CURRENT_COLONY/isFree"
 								tal:replace="structure bbcode:CURRENT_COLONY/getName">NAME</span>
@@ -696,9 +696,9 @@
 						</div>
 					</tal:block>
 					<tal:block tal:condition="CURRENT_COLONY/isFree">
-						<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif"
+						<img src="assets/planets/${CURRENT_COLONY/getColonyClassId}.gif"
 							style="width: 15px; height: 15px;" />
-						<span tal:replace="CURRENT_COLONY/getPlanetType/getName">PLANETTYPE</span>
+						<span tal:replace="CURRENT_COLONY/getColonyClass/getName">COLONYCLASS</span>
 					</tal:block>
 				</td>
 				<td style="width: 50%;">
@@ -771,7 +771,7 @@
 						</div>
 					</tal:block>
 					<tal:block tal:condition="not:OWNS_CURRENT_COLONY">
-						<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif"
+						<img src="assets/planets/${CURRENT_COLONY/getColonyClassId}.gif"
 							style="width: 15px; height: 15px;" />
 						<a onclick="showColonization(${CURRENT_COLONY/getId});" href="javascript:void(0);"
 							tal:condition="CAN_COLONIZE_CURRENT_COLONY">

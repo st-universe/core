@@ -98,10 +98,10 @@ class Colony implements ColonyInterface
     private $surface_width = 1;
 
     /**
-     * @ManyToOne(targetEntity="PlanetType")
+     * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
      */
-    private $planetType;
+    private $colonyClass;
 
     /**
      * @OneToOne(targetEntity="StarSystemMap", inversedBy="colony")
@@ -186,7 +186,7 @@ class Colony implements ColonyInterface
         return $this->id;
     }
 
-    public function getColonyClass(): int
+    public function getColonyClassId(): int
     {
         return $this->colonies_classes_id;
     }
@@ -521,14 +521,14 @@ class Colony implements ColonyInterface
         return $this;
     }
 
-    public function getPlanetType(): PlanetTypeInterface
+    public function getColonyClass(): ColonyClassInterface
     {
-        return $this->planetType;
+        return $this->colonyClass;
     }
 
-    public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface
+    public function setColonyClass(ColonyClassInterface $colonyClass): ColonyInterface
     {
-        $this->planetType = $planetType;
+        $this->colonyClass = $colonyClass;
         return $this;
     }
 
@@ -646,7 +646,7 @@ class Colony implements ColonyInterface
             global $container;
             $result = $container->get(BuildingCommodityRepositoryInterface::class)->getProductionByColony(
                 $this->getId(),
-                $this->getPlanetType()->getId()
+                $this->getColonyClass()->getId()
             );
 
             $this->productionRaw = [];
@@ -758,7 +758,7 @@ class Colony implements ColonyInterface
         if ($im < 0) {
             return 0;
         }
-        return (int) round($im / 100 * $this->getPlanetType()->getBevGrowthRate());
+        return (int) round($im / 100 * $this->getColonyClass()->getBevGrowthRate());
     }
 
     public function getNegativeEffect(): int

@@ -7,9 +7,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
-use Stu\Orm\Entity\PlanetType;
+use Stu\Orm\Entity\ColonyClass;
 
-final class PlanetTypeRepository extends EntityRepository implements PlanetTypeRepositoryInterface
+final class ColonyClassRepository extends EntityRepository implements ColonyClassRepositoryInterface
 {
     public function getWithoutDatabaseEntry(): array
     {
@@ -17,12 +17,12 @@ final class PlanetTypeRepository extends EntityRepository implements PlanetTypeR
             ->createQuery(
                 sprintf(
                     'SELECT p FROM %s p WHERE p.database_id NOT IN (SELECT d.id FROM %s d WHERE d.category_id = :categoryId)',
-                    PlanetType::class,
+                    ColonyClass::class,
                     DatabaseEntry::class
                 )
             )
             ->setParameters([
-                'categoryId' => DatabaseCategoryTypeEnum::DATABASE_CATEGORY_PLANET_TYPE
+                'categoryId' => DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS
             ])
             ->getResult();
     }

@@ -123,7 +123,7 @@ final class Colonize implements ActionControllerInterface
 
         $this->shipRemover->remove($ship);
 
-        $game->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());
+        $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
 
         $game->redirectTo(sprintf(
             '/colony.php?%s=1&id=%d',

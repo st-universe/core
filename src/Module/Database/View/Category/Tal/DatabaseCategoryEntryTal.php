@@ -9,7 +9,7 @@ use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\DatabaseUserInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
+use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
@@ -23,7 +23,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
 
     private ShipRepositoryInterface $shipRepository;
 
-    private PlanetTypeRepositoryInterface $planetTypeRepository;
+    private ColonyClassRepositoryInterface $colonyClassRepository;
 
     private UserInterface $user;
 
@@ -32,14 +32,14 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         DatabaseEntryInterface $databaseEntry,
         StarSystemRepositoryInterface $starSystemRepository,
         ShipRepositoryInterface $shipRepository,
-        PlanetTypeRepositoryInterface $planetTypeRepository,
+        ColonyClassRepositoryInterface $colonyClassRepository,
         UserInterface $user
     ) {
         $this->databaseEntry = $databaseEntry;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->starSystemRepository = $starSystemRepository;
         $this->shipRepository = $shipRepository;
-        $this->planetTypeRepository = $planetTypeRepository;
+        $this->colonyClassRepository = $colonyClassRepository;
         $this->user = $user;
     }
 
@@ -63,8 +63,8 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
             case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST:
                 return $this->shipRepository->find($this->databaseEntry->getObjectId());
                 break;
-            case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_PLANET_TYPE:
-                return $this->planetTypeRepository->find($this->databaseEntry->getObjectId());
+            case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_COLONY_CLASS:
+                return $this->colonyClassRepository->find($this->databaseEntry->getObjectId());
                 break;
         }
 

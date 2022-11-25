@@ -8,7 +8,7 @@ use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
+use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
@@ -18,19 +18,19 @@ final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInte
 
     private StarSystemRepositoryInterface $starSystemRepository;
 
-    private PlanetTypeRepositoryInterface $planetTypeRepositoryInterface;
+    private ColonyClassRepositoryInterface $colonyClassRepositoryInterface;
 
     private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         DatabaseUserRepositoryInterface $databaseUserRepository,
         StarSystemRepositoryInterface $starSystemRepository,
-        PlanetTypeRepositoryInterface $planetTypeRepositoryInterface,
+        ColonyClassRepositoryInterface $colonyClassRepositoryInterface,
         ShipRepositoryInterface $shipRepository
     ) {
         $this->databaseUserRepository = $databaseUserRepository;
         $this->starSystemRepository = $starSystemRepository;
-        $this->planetTypeRepositoryInterface = $planetTypeRepositoryInterface;
+        $this->colonyClassRepositoryInterface = $colonyClassRepositoryInterface;
         $this->shipRepository = $shipRepository;
     }
 
@@ -54,7 +54,7 @@ final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInte
             $databaseEntry,
             $this->starSystemRepository,
             $this->shipRepository,
-            $this->planetTypeRepositoryInterface,
+            $this->colonyClassRepositoryInterface,
             $user
         );
     }

@@ -134,7 +134,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurfaceTileStyle(): string
     {
-        $width = $this->planetGenerator->loadPlanetTypeConfig($this->colony->getColonyClass())[PlanetGenerator::CONFIG_COLGEN_SIZEW];
+        $width = $this->planetGenerator->loadColonyClassConfig($this->colony->getColonyClassId())[PlanetGenerator::CONFIG_COLGEN_SIZEW];
         $gridArray = [];
         for ($i = 0; $i < $width; $i++) {
             $gridArray[] = '43px';

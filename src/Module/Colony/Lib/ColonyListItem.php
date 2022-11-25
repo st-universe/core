@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetTypeInterface;
+use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
 final class ColonyListItem implements ColonyListItemInterface
@@ -105,9 +105,9 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->colony->getStorage();
     }
 
-    public function getPlanetType(): PlanetTypeInterface
+    public function getColonyClass(): ColonyClassInterface
     {
-        return $this->colony->getPlanetType();
+        return $this->colony->getColonyClass();
     }
 
     public function getProductionSum(): int

@@ -68,9 +68,9 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function loadPlanetTypeConfig(int $colonyClass): array
+    public function loadColonyClassConfig(int $colonyClassId): array
     {
-        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadPlanetType($colonyClass);
+        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadColonyClass($colonyClassId);
 
         return [
             [$ophase, $phase, $uphase, $hasground],
@@ -93,7 +93,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         //    $this->loggerUtil->log(print_r($ophase, true));
         //}
 
-        $config = $this->loadPlanetTypeConfig($colony->getColonyClass());
+        $config = $this->loadColonyClassConfig($colony->getColonyClassId());
         [$ophase, $phase, $uphase, $hasground] = $config[0];
 
         // start bonus
@@ -255,7 +255,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         return [$colfields, $orbfields, $undergroundFields];
     }
 
-    private function loadPlanetType(int $id): array
+    private function loadColonyClass(int $id): array
     {
         $fileName = sprintf(
             '%s/coldata/%d.php',

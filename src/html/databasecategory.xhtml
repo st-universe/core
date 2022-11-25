@@ -5,7 +5,7 @@
 		<metal:macro metal:use-macro="category_starsystems" tal:condition="CATEGORY/isCategoryStarSystems" />
 		<metal:macro metal:use-macro="category_starsystem_types" tal:condition="CATEGORY/isCategoryStarSystemTypes" />
 		<metal:macro metal:use-macro="category_tradeposts" tal:condition="CATEGORY/isCategoryTradePosts" />
-		<metal:macro metal:use-macro="category_planettypes" tal:condition="CATEGORY/isCategoryPlanetTypes" />
+		<metal:macro metal:use-macro="category_colonyclasses" tal:condition="CATEGORY/isCategoryColonyClasses" />
 		<metal:macro metal:use-macro="category_rumptypes" tal:condition="CATEGORY/isCategoryRumpTypes" />
 		<table class="use" tal:condition="CATEGORY/displayDefaultList">
 			<tr>
@@ -109,7 +109,7 @@
 		</tr>
 	</table>
 </metal:macro>
-<metal:macro metal:define-macro="category_planettypes">
+<metal:macro metal:define-macro="category_colonyclasses">
 	<table class="use">
 		<tr>
 			<th></th>

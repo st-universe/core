@@ -14,7 +14,7 @@
                 tal:repeat="colony FREE_PLANET_LIST" tal:attributes="class string:row${repeat/colony/odd} divbody"
                 style="cursor: pointer; display: block; float: left; width: 300px;">
                 <div style="display: table-cell;">
-                  <img src="assets/planets/${colony/getColonyClass}.gif" />
+                  <img src="assets/planets/${colony/getColonyClassId}.gif" />
                 </div>
                 <div style="vertical-align: middle; display: table-cell;">
                   <div style="font-size: 120%" tal:content="colony/getPlanetName"></div>

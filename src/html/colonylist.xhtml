@@ -89,7 +89,7 @@
 							</tr>
 							<tr tal:repeat="data BUILDINGJOB_LIST">
 								<td style="width: 45px; text-align: center;vertical-align: middle">
-									<img src="assets/planets/${data/getColony/getColonyClass}.gif" title="runtime"
+									<img src="assets/planets/${data/getColony/getColonyClassId}.gif" title="runtime"
 										tal:attributes="title bbcode2txt:data/getColony/getName" />
 								</td>
 								<td style="width: 45px; text-align:center;">
@@ -111,7 +111,7 @@
 							</tr>
 							<tr tal:repeat="data TERRAFORMING_LIST">
 								<td style="width: 45px; text-align: center;vertical-align: middle">
-									<img src="assets/planets/${data/getColony/getColonyClass}.gif" title="runtime"
+									<img src="assets/planets/${data/getColony/getColonyClassId}.gif" title="runtime"
 										tal:attributes="title bbcode2txt:data/getColony/getName" />
 								</td>
 								<td style="width: 45px; text-align:center;">
@@ -172,7 +172,7 @@
 							</td>
 							<td style="vertical-align: middle;">
 								<a href="colony.php?SHOW_COLONY=1&id=${mod/getColony/getId}">
-									<img src="assets/planets/${mod/getColony/getColonyClass}.gif"
+									<img src="assets/planets/${mod/getColony/getColonyClassId}.gif"
 										tal:attributes="title bbcode2txt:mod/getColony/getName" /></a>
 							</td>
 							<td style="vertical-align: middle;">

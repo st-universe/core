@@ -59,7 +59,7 @@ final class GiveUp implements ActionControllerInterface
         $this->colonyResetter->reset($colony);
         $colonyAmount--;
 
-        $isMoon = $colony->getPlanetType()->getIsMoon();
+        $isMoon = $colony->getColonyClass()->getIsMoon();
         if (!$isMoon && $colonyAmount === 0) {
             $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
 

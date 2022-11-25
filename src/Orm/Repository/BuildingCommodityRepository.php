@@ -16,7 +16,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         ]);
     }
 
-    public function getProductionByColony(int $colonyId, int $planetTypeId): iterable
+    public function getProductionByColony(int $colonyId, int $colonyClassId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -28,7 +28,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             FROM stu_commodity a
                 LEFT JOIN stu_colonies_fielddata b ON b.colonies_id = :colonyId AND b.aktiv = :state
                 LEFT JOIN stu_buildings_commodity c ON c.commodity_id = a.id AND c.buildings_id = b.buildings_id
-                LEFT JOIN stu_planets_commodity d ON d.commodity_id = a.id AND d.planet_classes_id = :planetTypeId
+                LEFT JOIN stu_planets_commodity d ON d.commodity_id = a.id AND d.planet_classes_id = :colonyClassId
             WHERE c.count != 0 OR d.count != 0
             GROUP BY a.id
             ORDER BY a.sort ASC',
@@ -36,7 +36,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         )->setParameters([
             'state' => 1,
             'colonyId' => $colonyId,
-            'planetTypeId' => $planetTypeId
+            'colonyClassId' => $colonyClassId
         ])->getResult();
     }
 

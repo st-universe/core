@@ -73,8 +73,8 @@ final class FirstColony implements ActionControllerInterface
 
         $this->userRepository->save($user);
 
-        // Database entries for planettype
-        $game->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());
+        // Database entries for colonyclass
+        $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
 
         $game->redirectTo('./colony.php?id=' . $colony->getId());
     }

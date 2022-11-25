@@ -70,8 +70,8 @@ use Stu\Orm\Entity\PartnerSite;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
-use Stu\Orm\Entity\PlanetType;
-use Stu\Orm\Entity\PlanetTypeResearch;
+use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\ColonyClassResearch;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
@@ -446,15 +446,15 @@ return [
     ): PlanetFieldTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(PlanetFieldType::class);
     },
-    PlanetTypeRepositoryInterface::class => function (
+    ColonyClassRepositoryInterface::class => function (
         ContainerInterface $c
-    ): PlanetTypeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PlanetType::class);
+    ): ColonyClassRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyClass::class);
     },
-    PlanetTypeResearchRepositoryInterface::class => function (
+    ColonyClassResearchRepositoryInterface::class => function (
         ContainerInterface $c
-    ): PlanetTypeResearchRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PlanetTypeResearch::class);
+    ): ColonyClassResearchRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyClassResearch::class);
     },
     PrestigeLogRepositoryInterface::class => function (
         ContainerInterface $c
