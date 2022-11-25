@@ -40,12 +40,6 @@ class Research implements ResearchInterface
     /** @Column(type="integer") * */
     private $commodity_id;
 
-    /** @Column(type="smallint", nullable=true) * */
-    private $upper_planetlimit;
-
-    /** @Column(type="smallint", nullable=true) * */
-    private $upper_moonlimit;
-
     /** @Column(type="integer", nullable=true) * */
     private $reward_buildplan_id;
 
