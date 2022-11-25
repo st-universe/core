@@ -1380,7 +1380,7 @@
   </metal:macro>
 </metal:block>
 <metal:macro metal:define-macro="colonysurface" tal:define="style string:margin: 1px;; width: 42px;; height: 42px;;">
-  <div tal:attributes="style string:COLONY_SURFACE/getSurfaceTileStyle">
+  <div tal:attributes="style string:${COLONY_SURFACE/getSurfaceTileStyle}">
     <tal:block tal:repeat="field COLONY_SURFACE/getSurface">
       <tal:block tal:condition="not:field/hasBuilding">
         <div tal:condition="not:field/getTerraforming" style="${style}" tal:attributes="class field/getCssClass">
