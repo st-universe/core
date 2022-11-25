@@ -172,7 +172,9 @@ final class AttackBuilding implements ActionControllerInterface
         }
 
         // OFFENSE OF ATTACKING SHIPS
-        $isMoon = $colony->getColonyClass()->getIsMoon();
+        $isMoon = $colony->getColonyClass()->isMoon();
+
+        //TODO dynamic!!
         $isOrbitField = $isMoon ? $field->getFieldId() < 14 : $field->getFieldId() < 20;
         $attackerPool = $this->fightLib->filterInactiveShips($attacker);
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE) * 6;

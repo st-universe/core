@@ -110,7 +110,8 @@ final class BuildOnField implements ActionControllerInterface
             return;
         }
 
-        $isMoon = $colony->getColonyClass()->getIsMoon();
+        //TODO make dynamic!
+        $isMoon = $colony->getColonyClass()->isMoon();
         $isOrbitField = $isMoon ? $field->getFieldId() < 14 : $field->getFieldId() < 20;
         if ($isOrbitField && $colony->isBlocked()) {
             $game->addInformation(_('Der Orbit kann nicht bebaut werden während die Kolonie blockiert wird'));

@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface ColonyClassInterface
 {
     public function getId(): int;
@@ -37,6 +39,8 @@ interface ColonyClassInterface
     public function getAllowStart(): bool;
 
     public function setAllowStart(bool $allowStart): ColonyClassInterface;
+
+    public function getColonyClassDeposits(): Collection;
 
     public function hasRing(): bool;
 }
