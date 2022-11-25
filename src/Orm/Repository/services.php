@@ -26,7 +26,7 @@ use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\ColonyDeposit;
+use Stu\Orm\Entity\ColonyClassDeposit;
 use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonyTerraforming;
@@ -246,10 +246,10 @@ return [
     ): ContactRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Contact::class);
     },
-    ColonyDepositRepositoryInterface::class => function (
+    ColonyClassDepositRepositoryInterface::class => function (
         ContainerInterface $c
-    ): ColonyDepositRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyDeposit::class);
+    ): ColonyClassDepositRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyClassDeposit::class);
     },
     ColonyShipRepairRepositoryInterface::class => function (
         ContainerInterface $c

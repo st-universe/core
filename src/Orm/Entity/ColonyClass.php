@@ -53,13 +53,13 @@ class ColonyClass implements ColonyClassInterface
     private $databaseEntry;
 
     /**
-     * @OneToMany(targetEntity="ColonyDeposit", mappedBy="colonyClass")
+     * @OneToMany(targetEntity="ColonyClassDeposit", mappedBy="colonyClass")
      */
-    private $colonyDeposits;
+    private $colonyClassDeposits;
 
     public function __construct()
     {
-        $this->colonyDeposits = new ArrayCollection();
+        $this->colonyClassDeposits = new ArrayCollection();
     }
 
     public function getId(): int
@@ -151,9 +151,9 @@ class ColonyClass implements ColonyClassInterface
         return $this;
     }
 
-    public function getColonyDeposits(): Collection
+    public function getColonyClassDeposits(): Collection
     {
-        return $this->colonyDeposits;
+        return $this->colonyClassDeposits;
     }
 
     public function hasRing(): bool

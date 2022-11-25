@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity(repositoryClass="Stu\Orm\Repository\ColonyDepositRepository")
+ * @Entity(repositoryClass="Stu\Orm\Repository\ColonyClassDepositRepository")
  * @Table(
- *     name="stu_colony_deposit"
+ *     name="stu_colony_class_deposit"
  * )
  **/
-class ColonyDeposit implements ColonyDepositInterface
+class ColonyClassDeposit implements ColonyClassDepositInterface
 {
     /** 
      * @Id

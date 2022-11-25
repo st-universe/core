@@ -2,7 +2,7 @@
 
 namespace Stu\Orm\Entity;
 
-interface ColonyDepositInterface
+interface ColonyClassDepositInterface
 {
     public function getColonyClass(): ColonyClassInterface;
 
