@@ -53,6 +53,12 @@ class Research implements ResearchInterface
     /** @Column(type="integer", nullable=true) * */
     private $needed_award;
 
+    /** @Column(type="smallint", nullable=true) * */
+    private $upper_limit_colony_type;
+
+    /** @Column(type="smallint", nullable=true) * */
+    private $upper_limit_colony_amount;
+
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
