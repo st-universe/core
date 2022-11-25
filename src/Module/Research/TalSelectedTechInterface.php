@@ -20,6 +20,8 @@ interface TalSelectedTechInterface
 
     public function getUpperMoonLimit(): int;
 
+    public function getUpperAsteroidLimit(): int;
+
     public function getCommodity(): CommodityInterface;
 
     public function getResearchState();

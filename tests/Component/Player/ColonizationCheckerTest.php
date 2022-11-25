@@ -69,7 +69,7 @@ class ColonizationCheckerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
-        $colony->shouldReceive('getColonyClass->getIsMoon')
+        $colony->shouldReceive('getColonyClass->isMoon')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -93,7 +93,7 @@ class ColonizationCheckerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
-        $colony->shouldReceive('getColonyClass->getIsMoon')
+        $colony->shouldReceive('getColonyClass->isMoon')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -117,7 +117,7 @@ class ColonizationCheckerTest extends StuTestCase
 
         $researchId = 666;
 
-        $colonyClass->shouldReceive('getIsMoon')
+        $colonyClass->shouldReceive('isMoon')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -165,7 +165,7 @@ class ColonizationCheckerTest extends StuTestCase
 
         $researchId = 666;
 
-        $colonyClass->shouldReceive('getIsMoon')
+        $colonyClass->shouldReceive('isMoon')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -210,7 +210,7 @@ class ColonizationCheckerTest extends StuTestCase
         $colony = $this->mock(ColonyInterface::class);
         $colonyClass = $this->mock(ColonyClassInterface::class);
 
-        $colonyClass->shouldReceive('getIsMoon')
+        $colonyClass->shouldReceive('isMoon')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();

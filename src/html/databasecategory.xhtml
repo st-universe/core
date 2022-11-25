@@ -129,8 +129,9 @@
 					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
 						tal:content="data/getDescription">NAME</a>
 				</td>
-				<td><span tal:condition="data/getObject/getIsMoon">Mond</span><span
-						tal:condition="not:data/getObject/getIsMoon">Planet</span></td>
+				<td><span tal:condition="data/getObject/isPlanet">Planet</span><span
+						tal:condition="data/getObject/isMoon">Mond</span><span
+						tal:condition="data/getObject/isAsteroid">Asteroid</span></td>
 				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 			</tal:block>
 			<tal:block tal:condition="not:data/wasDiscovered">

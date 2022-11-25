@@ -10,7 +10,13 @@ interface ColonyClassInterface
 
     public function setName(string $name): ColonyClassInterface;
 
-    public function getIsMoon(): bool;
+    public function getType(): int;
+
+    public function isPlanet(): bool;
+
+    public function isMoon(): bool;
+
+    public function isAsteroid(): bool;
 
     public function getDatabaseId(): ?int;
 

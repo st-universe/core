@@ -36,11 +36,9 @@ interface ResearchInterface
 
     public function getUpperPlanetLimit(): int;
 
-    public function setUpperPlanetLimit(int $upperPlanetLimit): ResearchInterface;
-
     public function getUpperMoonLimit(): int;
 
-    public function setUpperMoonLimit(int $upperMoonLimit): ResearchInterface;
+    public function getUpperAsteroidLimit(): int;
 
     public function getCommodity(): CommodityInterface;
 

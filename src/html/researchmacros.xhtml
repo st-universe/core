@@ -10,11 +10,14 @@
 					<span tal:content="structure nl2br:SELECTED_RESEARCH/getDescription">DESCRIPTION</span>
 					<br />
 					<br />
-					<div tal:condition="SELECTED_RESEARCH/getUpperPlanetlimit">
-						<span>Anzahl Kolonien auf Planeten:</span> +${SELECTED_RESEARCH/getUpperPlanetlimit}
+					<div tal:condition="SELECTED_RESEARCH/getUpperPlanetLimit">
+						<span>Anzahl Kolonien auf Planeten:</span> +${SELECTED_RESEARCH/getUpperPlanetLimit}
 					</div>
-					<div tal:condition="SELECTED_RESEARCH/getUpperMoonlimit">
-						<span>Anzahl Kolonien auf Monden:</span> +${SELECTED_RESEARCH/getUpperMoonlimit}
+					<div tal:condition="SELECTED_RESEARCH/getUpperMoonLimit">
+						<span>Anzahl Kolonien auf Monden:</span> +${SELECTED_RESEARCH/getUpperMoonLimit}
+					</div>
+					<div tal:condition="SELECTED_RESEARCH/getUpperAsteroidLimit">
+						<span>Anzahl Kolonien auf Asteroiden:</span> +${SELECTED_RESEARCH/getUpperAsteroidLimit}
 					</div>
 				</td>
 			</tr>

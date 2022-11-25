@@ -6,15 +6,9 @@ use Stu\Orm\Entity\UserInterface;
 
 interface ColonyLimitCalculatorInterface
 {
-    public function canColonizeFurtherPlanets(UserInterface $user): bool;
+    public function canColonizeFurtherColonyWithType(UserInterface $user, int $colonyType): bool;
 
-    public function canColonizeFurtherMoons(UserInterface $user): bool;
+    public function getColonyLimitWithType(UserInterface $user, int $colonyType): int;
 
-    public function getPlanetColonyLimit(UserInterface $user): int;
-
-    public function getMoonColonyLimit(UserInterface $user): int;
-
-    public function getPlanetColonyCount(UserInterface $user): int;
-
-    public function getMoonColonyCount(UserInterface $user): int;
+    public function getColonyCountWithType(UserInterface $user, int $colonyType): int;
 }

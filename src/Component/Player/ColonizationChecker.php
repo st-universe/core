@@ -36,14 +36,8 @@ final class ColonizationChecker implements ColonizationCheckerInterface
 
         $colonyClass = $colony->getColonyClass();
 
-        if ($colonyClass->getIsMoon()) {
-            if ($this->colonyLimitCalculator->canColonizeFurtherMoons($user) === false) {
-                return false;
-            }
-        } else {
-            if ($this->colonyLimitCalculator->canColonizeFurtherPlanets($user) === false) {
-                return false;
-            }
+        if (!$this->colonyLimitCalculator->canColonizeFurtherColonyWithType($user, $colonyClass->getType())) {
+            return false;
         }
 
         $researchIds = array_map(

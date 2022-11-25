@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Colony\ColonyTypeEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchRepository")
  * @Table(name="stu_research")
@@ -38,10 +40,10 @@ class Research implements ResearchInterface
     /** @Column(type="integer") * */
     private $commodity_id;
 
-    /** @Column(type="smallint") * */
+    /** @Column(type="smallint", nullable=true) * */
     private $upper_planetlimit;
 
-    /** @Column(type="smallint") * */
+    /** @Column(type="smallint", nullable=true) * */
     private $upper_moonlimit;
 
     /** @Column(type="integer", nullable=true) * */
@@ -168,26 +170,17 @@ class Research implements ResearchInterface
 
     public function getUpperPlanetLimit(): int
     {
-        return $this->upper_planetlimit;
-    }
-
-    public function setUpperPlanetLimit(int $upperPlanetLimit): ResearchInterface
-    {
-        $this->upper_planetlimit = $upperPlanetLimit;
-
-        return $this;
+        return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_PLANET ? $this->upper_limit_colony_amount : 0;
     }
 
     public function getUpperMoonLimit(): int
     {
-        return $this->upper_moonlimit;
+        return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_MOON ? $this->upper_limit_colony_amount : 0;
     }
 
-    public function setUpperMoonLimit(int $upperMoonLimit): ResearchInterface
+    public function getUpperAsteroidLimit(): int
     {
-        $this->upper_moonlimit = $upperMoonLimit;
-
-        return $this;
+        return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_ASTEROID ? $this->upper_limit_colony_amount : 0;
     }
 
     public function getRewardBuildplanId(): ?int

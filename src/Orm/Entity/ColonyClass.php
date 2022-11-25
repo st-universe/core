@@ -29,7 +29,7 @@ class ColonyClass implements ColonyClassInterface
     /** @Column(type="string") */
     private $name = '';
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $type;
 
     /** @Column(type="integer", nullable=true) * */
@@ -80,9 +80,24 @@ class ColonyClass implements ColonyClassInterface
         return $this;
     }
 
-    public function getIsMoon(): bool
+    public function getType(): int
     {
-        return $this->type === ColonyTypeEnum::COLONY_TYPE_MOON;
+        return $this->type;
+    }
+
+    public function isPlanet(): bool
+    {
+        return $this->getType() === ColonyTypeEnum::COLONY_TYPE_PLANET;
+    }
+
+    public function isMoon(): bool
+    {
+        return $this->getType() === ColonyTypeEnum::COLONY_TYPE_MOON;
+    }
+
+    public function isAsteroid(): bool
+    {
+        return $this->getType() === ColonyTypeEnum::COLONY_TYPE_ASTEROID;
     }
 
     public function getDatabaseId(): ?int

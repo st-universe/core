@@ -123,6 +123,10 @@
 									<span tal:replace="PLANET_COUNT" /> / <span tal:replace="PLANET_LIMIT" />
 									<img src="/assets/planets/401s.gif" title="Monde" />
 									<span tal:replace="MOON_COUNT" /> / <span tal:replace="MOON_LIMIT" />
+									<tal:block tal:condition="ASTEROID_LIMIT">
+										<img src="/assets/planets/xyz.gif" title="Asteroiden" />
+										<span tal:replace="ASTEROID_COUNT" /> / <span tal:replace="ASTEROID_LIMIT" />
+									</tal:block>
 								</div>
 							</div>
 						</div>

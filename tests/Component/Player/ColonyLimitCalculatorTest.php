@@ -35,9 +35,11 @@ class ColonyLimitCalculatorTest extends StuTestCase
         );
     }
 
-    public function testCanColonizeFurtherPlanetsReturnsFalseIfExceeded(): void {
+    public function testCanColonizeFurtherPlanetsReturnsFalseIfExceeded(): void
+    {
         $user = $this->mock(UserInterface::class);
 
+        //use new function
         $this->researchRepository->shouldReceive('getPlanetColonyLimitByUser')
             ->with($user)
             ->once()
@@ -54,9 +56,11 @@ class ColonyLimitCalculatorTest extends StuTestCase
     }
 
 
-    public function testCanColonizeFurtherPlanetsReturnsTrueIfPossible(): void {
+    public function testCanColonizeFurtherPlanetsReturnsTrueIfPossible(): void
+    {
         $user = $this->mock(UserInterface::class);
 
+        //use new function
         $this->researchRepository->shouldReceive('getPlanetColonyLimitByUser')
             ->with($user)
             ->once()
@@ -72,9 +76,11 @@ class ColonyLimitCalculatorTest extends StuTestCase
         );
     }
 
-    public function testCanColonizeFurtherMoonsReturnsFalseIfExceeded(): void {
+    public function testCanColonizeFurtherMoonsReturnsFalseIfExceeded(): void
+    {
         $user = $this->mock(UserInterface::class);
 
+        //use new function
         $this->researchRepository->shouldReceive('getMoonColonyLimitByUser')
             ->with($user)
             ->once()
@@ -91,9 +97,11 @@ class ColonyLimitCalculatorTest extends StuTestCase
     }
 
 
-    public function testCanColonizeFurtherMoonsReturnsTrueIfPossible(): void {
+    public function testCanColonizeFurtherMoonsReturnsTrueIfPossible(): void
+    {
         $user = $this->mock(UserInterface::class);
 
+        //use new function
         $this->researchRepository->shouldReceive('getMoonColonyLimitByUser')
             ->with($user)
             ->once()

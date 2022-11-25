@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\Overview;
 
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
@@ -128,9 +129,17 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar('USER', $user);
         $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
-        $game->setTemplateVar('PLANET_LIMIT', $this->colonyLimitCalculator->getPlanetColonyLimit($user));
-        $game->setTemplateVar('PLANET_COUNT', $this->colonyLimitCalculator->getPlanetColonyCount($user));
-        $game->setTemplateVar('MOON_LIMIT', $this->colonyLimitCalculator->getMoonColonyLimit($user));
-        $game->setTemplateVar('MOON_COUNT', $this->colonyLimitCalculator->getMoonColonyCount($user));
+
+        //planet
+        $game->setTemplateVar('PLANET_LIMIT', $this->colonyLimitCalculator->getColonyLimitWithType($user, ColonyTypeEnum::COLONY_TYPE_PLANET));
+        $game->setTemplateVar('PLANET_COUNT', $this->colonyLimitCalculator->getColonyCountWithType($user, ColonyTypeEnum::COLONY_TYPE_PLANET));
+
+        //moon
+        $game->setTemplateVar('MOON_LIMIT', $this->colonyLimitCalculator->getColonyLimitWithType($user, ColonyTypeEnum::COLONY_TYPE_MOON));
+        $game->setTemplateVar('MOON_COUNT', $this->colonyLimitCalculator->getColonyCountWithType($user, ColonyTypeEnum::COLONY_TYPE_MOON));
+
+        //asteroid
+        $game->setTemplateVar('ASTEROID_LIMIT', $this->colonyLimitCalculator->getColonyLimitWithType($user, ColonyTypeEnum::COLONY_TYPE_ASTEROID));
+        $game->setTemplateVar('ASTEROID_COUNT', $this->colonyLimitCalculator->getColonyCountWithType($user, ColonyTypeEnum::COLONY_TYPE_ASTEROID));
     }
 }

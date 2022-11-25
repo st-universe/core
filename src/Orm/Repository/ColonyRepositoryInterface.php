@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -20,7 +19,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
 
     public function delete(ColonyInterface $post): void;
 
-    public function getAmountByUser(UserInterface $user, bool $isMoon = false): int;
+    public function getAmountByUser(UserInterface $user, int $colonyType): int;
 
     /**
      * @return ColonyInterface[]

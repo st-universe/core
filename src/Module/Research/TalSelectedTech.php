@@ -94,6 +94,11 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->research->getUpperMoonLimit();
     }
 
+    public function getUpperAsteroidLimit(): int
+    {
+        return $this->research->getUpperAsteroidLimit();
+    }
+
     public function getCommodity(): CommodityInterface
     {
         return $this->research->getCommodity();

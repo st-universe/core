@@ -51,11 +51,13 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
             ->getResult();
     }
 
-    public function getPlanetColonyLimitByUser(UserInterface $user): int
+    public function getColonyTypeLimitByUser(UserInterface $user, int $colonyType): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT SUM(r.upper_planetlimit) FROM %s r WHERE r.id IN (
+                'SELECT SUM(r.upper_limit_colony_amount) FROM %s r
+                WHERE r.upper_limit_colony_type = :colonyType
+                AND r.id IN (
                     SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.aktiv = :activeState
                 )',
                 Research::class,
@@ -64,22 +66,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         )->setParameters([
             'userId' => $user,
             'activeState' => 0,
-        ])->getSingleScalarResult();
-    }
-
-    public function getMoonColonyLimitByUser(UserInterface $user): int
-    {
-        return (int)$this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT SUM(r.upper_moonlimit) FROM %s r WHERE r.id IN (
-                    SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.aktiv = :activeState
-                )',
-                Research::class,
-                Researched::class
-            )
-        )->setParameters([
-            'userId' => $user,
-            'activeState' => 0
+            'colonyType' => $colonyType
         ])->getSingleScalarResult();
     }
 

@@ -22,9 +22,7 @@ interface ResearchRepositoryInterface extends ObjectRepository
      */
     public function getForFaction(int $factionId): array;
 
-    public function getPlanetColonyLimitByUser(UserInterface $user): int;
-
-    public function getMoonColonyLimitByUser(UserInterface $user): int;
+    public function getColonyTypeLimitByUser(UserInterface $user, int $colonyType): int;
 
     /**
      * @return ResearchInterface[]

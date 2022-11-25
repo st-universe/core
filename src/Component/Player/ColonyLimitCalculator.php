@@ -22,33 +22,18 @@ final class ColonyLimitCalculator implements ColonyLimitCalculatorInterface
         $this->colonyRepository = $colonyRepository;
     }
 
-    public function canColonizeFurtherPlanets(UserInterface $user): bool
+    public function canColonizeFurtherColonyWithType(UserInterface $user, int $colonyType): bool
     {
-        return $this->getPlanetColonyCount($user) < $this->getPlanetColonyLimit($user);
+        return $this->colonyRepository->getAmountByUser($user, $colonyType) < $this->researchRepository->getColonyTypeLimitByUser($user, $colonyType);
     }
 
-    public function canColonizeFurtherMoons(UserInterface $user): bool
+    public function getColonyLimitWithType(UserInterface $user, int $colonyType): int
     {
-        return $this->getMoonColonyCount($user) < $this->getMoonColonyLimit($user);
+        return $this->researchRepository->getColonyTypeLimitByUser($user, $colonyType);
     }
 
-    public function getPlanetColonyLimit(UserInterface $user): int
+    public function getColonyCountWithType(UserInterface $user, int $colonyType): int
     {
-        return $this->researchRepository->getPlanetColonyLimitByUser($user);
-    }
-
-    public function getMoonColonyLimit(UserInterface $user): int
-    {
-        return $this->researchRepository->getMoonColonyLimitByUser($user);
-    }
-
-    public function getPlanetColonyCount(UserInterface $user): int
-    {
-        return $this->colonyRepository->getAmountByUser($user);
-    }
-
-    public function getMoonColonyCount(UserInterface $user): int
-    {
-        return $this->colonyRepository->getAmountByUser($user, true);
+        return $this->colonyRepository->getAmountByUser($user, $colonyType);
     }
 }

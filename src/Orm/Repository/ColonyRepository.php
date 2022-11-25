@@ -38,7 +38,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $em->flush();
     }
 
-    public function getAmountByUser(UserInterface $user, bool $isMoon = false): int
+    public function getAmountByUser(UserInterface $user, int $colonyType): int
     {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
@@ -50,7 +50,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             )
         )->setParameters([
             'userId' => $user,
-            'type' => $isMoon ? ColonyTypeEnum::COLONY_TYPE_MOON : ColonyTypeEnum::COLONY_TYPE_PLANET,
+            'type' => $colonyType
         ])->getSingleScalarResult();
     }
 

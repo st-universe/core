@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\GiveUp;
 
 use request;
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -42,7 +43,7 @@ final class GiveUp implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $colonyAmount = $this->colonyRepository->getAmountByUser($user);
+        $planetAmount = $this->colonyRepository->getAmountByUser($user, ColonyTypeEnum::COLONY_TYPE_PLANET);
         $colony = $this->colonyRepository->find($this->giveupRequest->getColonyId());
 
         if ($colony === null || $colony->getUserId() !== $userId) {
@@ -57,10 +58,9 @@ final class GiveUp implements ActionControllerInterface
         }
 
         $this->colonyResetter->reset($colony);
-        $colonyAmount--;
 
-        $isMoon = $colony->getColonyClass()->getIsMoon();
-        if (!$isMoon && $colonyAmount === 0) {
+        $isPlanet = $colony->getColonyClass()->isPlanet();
+        if ($isPlanet && $planetAmount === 1) {
             $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
 
             $this->userRepository->save($user);
