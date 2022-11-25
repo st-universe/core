@@ -6,7 +6,7 @@ interface ColonySurfaceInterface
 {
     public function getSurface(): array;
 
-    public function getSurfaceTileCssClass(): string;
+    public function getSurfaceTileStyle(): string;
 
     public function getEpsBoxTitleString(): string;
 

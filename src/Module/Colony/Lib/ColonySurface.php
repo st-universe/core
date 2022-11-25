@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
+use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGenerator;
 use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorFileMissingException;
 use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -131,13 +132,14 @@ final class ColonySurface implements ColonySurfaceInterface
         return false;
     }
 
-    public function getSurfaceTileCssClass(): string
+    public function getSurfaceTileStyle(): string
     {
-        //TODO make it dynamic!
-        if ($this->colony->getPlanetType()->getIsMoon()) {
-            return 'moonSurfaceTiles';
+        $width = $this->planetGenerator->loadPlanetTypeConfig($this->colony->getColonyClass())[PlanetGenerator::CONFIG_COLGEN_SIZEW];
+        $gridArray = [];
+        for ($i = 0; $i < $width; $i++) {
+            $gridArray[] = '43px';
         }
-        return 'planetSurfaceTiles';
+        return sprintf('display: grid; grid-template-columns: %s;', implode(' ', $gridArray));
     }
 
     public function getEpsBoxTitleString(): string

@@ -68,26 +68,33 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function generateColony(ColonyInterface $colony): array
+    public function loadPlanetTypeConfig(int $colonyClass): array
     {
-        $bonusdata = [];
-
-        $colonyClass = $colony->getColonyClass();
-        $bonusfields = $colony->getSystem()->getBonusFieldAmount();
         list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadPlanetType($colonyClass);
 
-        //if ($id === 221) {
-        //    $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        //    $this->loggerUtil->log(print_r($ophase, true));
-        //}
-
-        $config = [
+        return [
+            [$ophase, $phase, $uphase, $hasground],
             self::CONFIG_COLGEN_SIZEW => $data[self::CONFIG_COLGEN_SIZEW],
             self::CONFIG_COLGEN_SIZEH => $data[self::CONFIG_COLGEN_SIZEH],
             self::CONFIG_BASEFIELD_COLONY => $data[self::COLGEN_BASEFIELD],
             self::CONFIG_BASEFIELD_ORBIT => $odata[self::COLGEN_BASEFIELD],
             self::CONFIG_BASEFIELD_UNDERGROUND => $udata[self::COLGEN_BASEFIELD]
         ];
+    }
+
+    public function generateColony(ColonyInterface $colony): array
+    {
+        $bonusdata = [];
+
+        $bonusfields = $colony->getSystem()->getBonusFieldAmount();
+
+        //if ($id === 221) {
+        //    $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        //    $this->loggerUtil->log(print_r($ophase, true));
+        //}
+
+        $config = $this->loadPlanetTypeConfig($colony->getColonyClass());
+        [$ophase, $phase, $uphase, $hasground] = $config[0];
 
         // start bonus
         if ($config[self::CONFIG_COLGEN_SIZEW] != 10) {

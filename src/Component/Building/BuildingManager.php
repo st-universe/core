@@ -58,7 +58,7 @@ final class BuildingManager implements BuildingManagerInterface
 
     public function deactivate(PlanetFieldInterface $field): void
     {
-        if (!$field->isActivateAble()) {
+        if (!$field->isActivateable()) {
             return;
         }
         if (!$field->isActive()) {
@@ -68,8 +68,9 @@ final class BuildingManager implements BuildingManagerInterface
         $building = $field->getBuilding();
         $colony = $field->getColony();
         $workerAmount = $building->getWorkers();
+        $worklessAmount = $colony->getWorkless();
 
-        $colony->setWorkless($colony->getWorkless() + $workerAmount);
+        $colony->setWorkless($worklessAmount + $workerAmount);
         $colony->setWorkers($colony->getWorkers() - $workerAmount);
 
         $colony->setMaxBev($colony->getMaxBev() - $building->getHousing());
