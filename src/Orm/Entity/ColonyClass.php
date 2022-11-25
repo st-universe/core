@@ -29,9 +29,6 @@ class ColonyClass implements ColonyClassInterface
     /** @Column(type="string") */
     private $name = '';
 
-    /** @Column(type="boolean", nullable=true) */
-    private $is_moon;
-
     /** @Column(type="integer", nullable=true) * */
     private $type;
 
