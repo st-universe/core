@@ -14,7 +14,6 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
