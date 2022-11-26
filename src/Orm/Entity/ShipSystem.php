@@ -43,6 +43,9 @@ class ShipSystem implements ShipSystemInterface
     /** @Column(type="smallint") * */
     private $mode = 1;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $cooldown;
+
     /**
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
