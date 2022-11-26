@@ -93,6 +93,7 @@ final class ShowColonyScan implements ViewControllerInterface
 
         $game->setTemplateVar('currentColony', $colony);
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('DEPOSITS', $colony->getColonyClass()->getColonyClassDeposits());
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony, null, false));
         $game->setTemplateVar('ERROR', false);
     }

@@ -1753,7 +1753,19 @@
     <metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
   </tal:block>
   <br />
-  <tal:block tal:condition="not:ERROR" tal:define="style string:margin: 1px;; width: 42px;; height: 42px;;">
+  <tal:block tal:condition="not:ERROR" tal:define="style string:margin: 1px; width: 42px; height: 42px;">
+    <div tal:condition="DEPOSITS">
+      <table class="tcal">
+        <tr>
+          <th colspan="2">Ressourcenvorkommen</th>
+        </tr>
+        <tr tal:repeat="deposit DEPOSITS">
+          <td><img src="/assets/commodities/${deposit/getCommodity/getId}.png"
+              title="${deposit/getCommodity/getName}" /></td>
+          <td>min: ${deposit/getMinAmount},max: ${deposit/getMaxAmount}</td>
+        </tr>
+      </table>
+    </div>
     <div tal:attributes="style string:${COLONY_SURFACE/getSurfaceTileStyle}" tal:define="sstr THIS/getSessionString">
       <tal:block tal:repeat="field COLONY_SURFACE/getSurface">
         <tal:block tal:condition="not:field/hasBuilding">
