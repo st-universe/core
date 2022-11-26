@@ -13,6 +13,7 @@ use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemCooldownException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
@@ -41,6 +42,12 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             $this->checkActivationConditions($ship, $system, $shipSystemId);
         }
         $ship->setEps($ship->getEps() - $system->getEnergyUsageForActivation());
+
+        //cooldown
+        $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
+        if ($shipSystem !== null && $system->getCooldownSeconds() !== null) {
+            $shipSystem->setCooldown(time() + $system->getCooldownSeconds());
+        }
 
         $system->activate($ship);
     }
@@ -116,6 +123,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
 
         if ($ship->getEps() < $system->getEnergyUsageForActivation()) {
             throw new InsufficientEnergyException($system->getEnergyUsageForActivation());
+        }
+
+        $cooldown = $shipSystem->getCooldown();
+        if ($cooldown !== null && $cooldown > time()) {
+            throw new SystemCooldownException($cooldown - time());
         }
 
         $reason = null;

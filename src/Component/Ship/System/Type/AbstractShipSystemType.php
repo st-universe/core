@@ -50,4 +50,9 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
     {
         return ShipSystemModeEnum::MODE_OFF;
     }
+
+    public function getCooldownSeconds(): ?int
+    {
+        return null;
+    }
 }

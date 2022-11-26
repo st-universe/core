@@ -42,7 +42,7 @@ final class CrewCreator implements CrewCreatorInterface
         $this->userRepository = $userRepository;
     }
 
-    public function create(int $userId, ?ColonyInterface $colony = null): CrewInterface
+    public function create(int $userId, ?ColonyInterface $colony = null): ShipCrewInterface
     {
         $user = $this->userRepository->find($userId);
 
@@ -81,13 +81,11 @@ final class CrewCreator implements CrewCreatorInterface
         }
         $this->shipCrewRepository->save($crewAssignment);
 
-        return $crew;
+        return $crewAssignment;
     }
 
     public function createShipCrew(ShipInterface $ship, ?ColonyInterface $colony = null, ?ShipInterface $station = null): void
     {
-        $userId = $ship->getUser()->getId();
-
         $crewToSetup = $ship->getBuildPlan()->getCrew();
 
         foreach (CrewEnum::CREW_ORDER as $crewType) {
@@ -106,9 +104,9 @@ final class CrewCreator implements CrewCreatorInterface
                 $createdcount++;
                 $crewToSetup--;
 
-                $crewAssignment = $this->getCrewByType($userId, $crewType, $colony, $station);
+                $crewAssignment = $this->getCrewByType($crewType, $colony, $station);
                 if ($crewAssignment === null) {
-                    $crewAssignment = $this->getCrew($userId, $colony, $station);
+                    $crewAssignment = $this->getCrew($colony, $station);
                 }
                 $crewAssignment->setShip($ship);
                 $crewAssignment->setColony(null);
@@ -124,7 +122,7 @@ final class CrewCreator implements CrewCreatorInterface
         }
     }
 
-    private function getCrewByType(int $crewType, int $userId, ?ColonyInterface $colony, ?ShipInterface $station): ?ShipCrewInterface
+    private function getCrewByType(int $crewType, ?ColonyInterface $colony, ?ShipInterface $station): ?ShipCrewInterface
     {
         if ($colony === null && $station === null) {
             throw new CrewOriginException('no origin available');
@@ -152,21 +150,10 @@ final class CrewCreator implements CrewCreatorInterface
             }
 
             return null;
-        } else {
-            $crew = current($this->crewRepository->getFreeByUserAndType($userId, $crewType, 1));
-
-            if (!$crew) {
-                return null;
-            }
-
-            $crewAssignment = $this->shipCrewRepository->prototype();
-            $crewAssignment->setCrew($crew);
-
-            return $crewAssignment;
         }
     }
 
-    private function getCrew(int $userId, ?ColonyInterface $colony, ?ShipInterface $station): ShipCrewInterface
+    private function getCrew(?ColonyInterface $colony, ?ShipInterface $station): ShipCrewInterface
     {
         if ($colony === null && $station === null) {
             throw new CrewOriginException('no origin available');
@@ -187,13 +174,6 @@ final class CrewCreator implements CrewCreatorInterface
             $crewList->removeElement($random);
 
             return $random;
-        } else {
-            $crew = current($this->crewRepository->getFreeByUser($userId, 1));
-
-            $crewAssignment = $this->shipCrewRepository->prototype();
-            $crewAssignment->setCrew($crew);
-
-            return $crewAssignment;
         }
     }
 }

@@ -15,12 +15,14 @@ use Stu\Component\Ship\System\Exception\DeactivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemCooldownException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Tal\TalHelperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -32,14 +34,18 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private TalHelperInterface $talHelper;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        TalHelperInterface $talHelper
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->talHelper = $talHelper;
     }
 
     public function activate(
@@ -85,6 +91,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
                 $ship->getName(),
                 $systemName,
                 $e->getNeededEnergy()
+            ));
+        } catch (SystemCooldownException $e) {
+            $game->addInformation(sprintf(
+                _('%s: [b][color=FF2626]System %s kann nicht aktiviert werden, Cooldown noch %s[/color][/b]'),
+                $ship->getName(),
+                $systemName,
+                $this->talHelper->formatSeconds(strval($e->getRemainingSeconds()))
             ));
         } catch (SystemDamagedException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));

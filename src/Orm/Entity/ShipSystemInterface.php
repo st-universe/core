@@ -26,7 +26,9 @@ interface ShipSystemInterface
 
     public function setMode(int $mode): ShipSystemInterface;
 
-    public function isDisabled(): bool;
+    public function getCooldown(): ?int;
+
+    public function setCooldown(int $cooldown): ShipSystemInterface;
 
     public function getModule(): ?ModuleInterface;
 

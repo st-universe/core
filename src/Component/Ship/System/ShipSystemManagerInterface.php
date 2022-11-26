@@ -5,6 +5,7 @@ namespace Stu\Component\Ship\System;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
+use Stu\Component\Ship\System\Exception\SystemCooldownException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -18,6 +19,7 @@ interface ShipSystemManagerInterface
      * @throws InvalidSystemException
      * @throws SystemDamagedException
      * @throws SystemNotFoundException
+     * @throws SystemCooldownException
      */
     public function activate(ShipInterface $ship, int $shipSystemId, bool $force = false): void;
 

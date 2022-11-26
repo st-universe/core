@@ -28,4 +28,6 @@ interface ShipSystemTypeInterface
     public function handleDamage(ShipInterface $ship): void;
 
     public function getDefaultMode(): int;
+
+    public function getCooldownSeconds(): ?int;
 }

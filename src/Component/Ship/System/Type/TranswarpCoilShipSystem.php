@@ -30,6 +30,11 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
         return true;
     }
 
+    public function getCooldownSeconds(): ?int
+    {
+        return 300;
+    }
+
     public function getEnergyUsageForActivation(): int
     {
         return 55;

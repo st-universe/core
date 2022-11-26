@@ -131,10 +131,16 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
-    public function isDisabled(): bool
+    public function getCooldown(): ?int
     {
-        return $this->getStatus() === 0
-            || $this->getMode() < 2;
+        return $this->cooldown;
+    }
+
+    public function setCooldown(int $cooldown): ShipSystemInterface
+    {
+        $this->cooldown = $cooldown;
+
+        return $this;
     }
 
     public function getModule(): ?ModuleInterface

@@ -9,6 +9,7 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -29,6 +30,7 @@ $userRepo = $container->get(UserRepositoryInterface::class);
 $shipCreator = $container->get(ShipCreatorInterface::class);
 $shipRepo = $container->get(ShipRepositoryInterface::class);
 $crewCreator = $container->get(CrewCreatorInterface::class);
+$shipCrewRepo = $container->get(ShipCrewRepositoryInterface::class);
 $mapRepo = $container->get(MapRepositoryInterface::class);
 $torpedoManager = $container->get(ShipTorpedoManagerInterface::class);
 
@@ -62,11 +64,10 @@ if ($torptypeId > 0 || $noTorps) {
         $db->flush();
 
         for ($j = 1; $j <= $plan->getCrew(); $j++) {
-            $crewCreator->create($userId);
+            $crewAssignment = $crewCreator->create($userId);
+            $crewAssignment->setShip($ship);
+            $shipCrewRepo->save($crewAssignment);
         }
-        $db->flush();
-
-        $crewCreator->createShipCrew($ship);
         $db->flush();
     }
 
