@@ -447,6 +447,8 @@ interface ShipInterface
 
     public function hasTranswarp(): bool;
 
+    public function getTranswarpCooldown(): ?int;
+
     public function getMaxTorpedos(): int;
 
     public function getDockedShips(): Collection;
