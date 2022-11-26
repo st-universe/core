@@ -22,7 +22,7 @@ use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Tal\TalHelperInterface;
+use Stu\Module\Tal\TalHelper;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -34,18 +34,14 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private TalHelperInterface $talHelper;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        TalHelperInterface $talHelper
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->talHelper = $talHelper;
     }
 
     public function activate(
@@ -97,7 +93,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
                 _('%s: [b][color=FF2626]System %s kann nicht aktiviert werden, Cooldown noch %s[/color][/b]'),
                 $ship->getName(),
                 $systemName,
-                $this->talHelper->formatSeconds(strval($e->getRemainingSeconds()))
+                TalHelper::formatSeconds(strval($e->getRemainingSeconds()))
             ));
         } catch (SystemDamagedException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
