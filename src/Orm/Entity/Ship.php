@@ -1836,7 +1836,9 @@ class Ship implements ShipInterface
 
     public function getTranswarpCooldown(): ?int
     {
-        return $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->getCooldown();
+        $cooldown = $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->getCooldown();
+
+        return $cooldown > time() ? $cooldown : null;
     }
 
     public function getMaxTorpedos(): int
