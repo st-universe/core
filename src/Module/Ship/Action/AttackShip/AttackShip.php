@@ -93,6 +93,12 @@ final class AttackShip implements ActionControllerInterface
             }
         }
 
+        if ($target->getIsDestroyed()) {
+            $game->setView(ShowShip::VIEW_IDENTIFIER);
+            $game->addInformation(_('Das Ziel ist bereits zerstört'));
+            return;
+        }
+
         if (!$target->canBeAttacked(!$isAttackingActiveTractorShip)) {
             throw new SanityCheckException('Target cant be attacked');
         }

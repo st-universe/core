@@ -659,6 +659,7 @@ final class GameController implements GameControllerInterface
             $this->loggerUtil->init('tal', LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(sprintf('NO TEMPLATE FILE SPECIFIED, Method: %s', request::isPost() ? 'POST' : 'GET'));
             $this->loggerUtil->log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
+            $this->loggerUtil->init('stu');
         }
 
         // RENDER!
@@ -679,6 +680,7 @@ final class GameController implements GameControllerInterface
             $exception->getMessage(),
             $exception->getTraceAsString()
         ));
+        $this->loggerUtil->init('stu');
     }
 
     private function persistGameRequest(GameRequestInterface $request): void
