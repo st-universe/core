@@ -3,7 +3,7 @@
 namespace Stu\Module\Control;
 
 
-final class StuTime
+class StuTime
 {
     public function time(): int
     {

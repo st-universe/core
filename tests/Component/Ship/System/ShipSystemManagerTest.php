@@ -14,10 +14,12 @@ use Stu\Component\Ship\System\Exception\DeactivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
+use Stu\Component\Ship\System\Exception\SystemCooldownException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
+use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
@@ -40,6 +42,11 @@ class ShipSystemManagerTest extends StuTestCase
      */
     private $systemType;
 
+    /**
+     * @var null|MockInterface|StuTime
+     */
+    private $stuTimeMock;
+
     private $system_id = 666;
 
     /**
@@ -53,9 +60,11 @@ class ShipSystemManagerTest extends StuTestCase
         $this->shipSystem = $this->mock(ShipSystemInterface::class);
         $this->systemType = $this->mock(ShipSystemTypeInterface::class);
 
+        $this->stuTimeMock = $this->mock(StuTime::class);
+
         $this->manager = new ShipSystemManager([
             $this->system_id => $this->systemType
-        ]);
+        ], $this->stuTimeMock);
     }
 
     public function testActivateFailsIfSystemNotAvailable(): void
@@ -66,6 +75,11 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection());
+
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->activate($this->ship, $this->system_id);
     }
@@ -83,6 +97,11 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(0);
+
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->activate($this->ship, $this->system_id);
     }
@@ -106,6 +125,10 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_ALWAYS_OFF);
 
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->activate($this->ship, $this->system_id);
     }
@@ -129,6 +152,10 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_ON);
 
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->activate($this->ship, $this->system_id);
     }
@@ -155,6 +182,11 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->activate($this->ship, $this->system_id);
     }
@@ -192,6 +224,11 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_OFF);
+
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->activate($this->ship, $this->system_id);
     }
@@ -237,17 +274,26 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_OFF);
+        $this->shipSystem->shouldReceive('getCooldown')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
+
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->activate($this->ship, $this->system_id);
     }
 
-    public function testActivateActivatesSystem(): void
+    public function testActivateActivatesSystemNoCooldown(): void
     {
         $energyCosts = 1;
 
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
         $this->ship->shouldReceive('getEps')
             ->withNoArgs()
@@ -265,6 +311,10 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($energyCosts);
+        $this->systemType->shouldReceive('getCooldownSeconds')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
         $this->systemType->shouldReceive('checkActivationConditions')
             ->with($this->ship, Mockery::any())
             ->once()
@@ -282,6 +332,121 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_OFF);
+        $this->shipSystem->shouldReceive('getCooldown')
+            ->withNoArgs()
+            ->once()
+            ->andReturnNull();
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $this->manager->activate($this->ship, $this->system_id);
+    }
+
+    public function testActivateActivatesSystemOldCooldown(): void
+    {
+        $energyCosts = 1;
+
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->ship->shouldReceive('getEps')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(1);
+        $this->ship->shouldReceive('setEps')
+            ->with(0)
+            ->once();
+        $this->ship->shouldReceive('hasEnoughCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->systemType->shouldReceive('getEnergyUsageForActivation')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($energyCosts);
+        $this->systemType->shouldReceive('getCooldownSeconds')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn(5);
+        $this->systemType->shouldReceive('checkActivationConditions')
+            ->with($this->ship, Mockery::any())
+            ->once()
+            ->andReturnTrue();
+        $this->systemType->shouldReceive('activate')
+            ->with($this->ship)
+            ->once();
+
+        $this->shipSystem->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+        $this->shipSystem->shouldReceive('getCooldown')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(41);
+        $this->shipSystem->shouldReceive('setCooldown')
+            ->with(47)
+            ->once();
+
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
+        $this->manager->activate($this->ship, $this->system_id);
+    }
+
+    public function testActivateActivatesSystemLastingCooldown(): void
+    {
+        $this->expectException(SystemCooldownException::class);
+
+        $energyCosts = 1;
+
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+        $this->ship->shouldReceive('getEps')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(1);
+        $this->ship->shouldReceive('hasEnoughCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $this->systemType->shouldReceive('getEnergyUsageForActivation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($energyCosts);
+
+        $this->shipSystem->shouldReceive('getStatus')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(100);
+
+        $this->shipSystem->shouldReceive('getMode')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipSystemModeEnum::MODE_OFF);
+        $this->shipSystem->shouldReceive('getCooldown')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(43);
+
+        $this->stuTimeMock->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->activate($this->ship, $this->system_id);
     }

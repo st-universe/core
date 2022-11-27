@@ -41,8 +41,8 @@ final class ShipSystemManager implements ShipSystemManagerInterface
 
     public function activate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
     {
-        $system = $this->lookupSystem($shipSystemId);
         $time = $this->stuTime->time();
+        $system = $this->lookupSystem($shipSystemId);
 
         if (!$force) {
             $this->checkActivationConditions($ship, $system, $shipSystemId, $time);
