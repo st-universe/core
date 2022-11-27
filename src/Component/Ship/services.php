@@ -47,6 +47,7 @@ use Stu\Component\Ship\UpdateLocation\Handler\PreFlight\PreFlightTractorHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\PreFlight\ShipRepairHandler;
 use Stu\Component\Ship\UpdateLocation\UpdateLocationConsequences;
 use Stu\Component\Ship\UpdateLocation\UpdateLocationConsequencesInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 
 use function DI\autowire;
@@ -86,7 +87,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_UPLINK => autowire(UplinkShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => autowire(FusionReactorShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL => autowire(TranswarpCoilShipSystem::class)
-        ]
+        ],
+        autowire(StuTime::class)
     ),
     UpdateLocationConsequencesInterface::class => create(UpdateLocationConsequences::class)->constructor(
         //get(UserRepositoryInterface::class),

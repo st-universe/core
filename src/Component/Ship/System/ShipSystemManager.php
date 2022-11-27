@@ -18,6 +18,7 @@ use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
+use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ShipSystemManager implements ShipSystemManagerInterface
@@ -28,25 +29,30 @@ final class ShipSystemManager implements ShipSystemManagerInterface
      */
     private array $systemList;
 
+    private StuTime $stuTime;
+
     public function __construct(
-        array $systemList
+        array $systemList,
+        StuTime $stuTime
     ) {
         $this->systemList = $systemList;
+        $this->stuTime = $stuTime;
     }
 
     public function activate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
     {
         $system = $this->lookupSystem($shipSystemId);
+        $time = $this->stuTime->time();
 
         if (!$force) {
-            $this->checkActivationConditions($ship, $system, $shipSystemId);
+            $this->checkActivationConditions($ship, $system, $shipSystemId, $time);
         }
         $ship->setEps($ship->getEps() - $system->getEnergyUsageForActivation());
 
         //cooldown
         $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
         if ($shipSystem !== null && $system->getCooldownSeconds() !== null) {
-            $shipSystem->setCooldown(time() + $system->getCooldownSeconds());
+            $shipSystem->setCooldown($time + $system->getCooldownSeconds());
         }
 
         $system->activate($ship);
@@ -94,7 +100,8 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     private function checkActivationConditions(
         ShipInterface $ship,
         ShipSystemTypeInterface $system,
-        int $shipSystemId
+        int $shipSystemId,
+        $time
     ): void {
         $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
         if ($shipSystem === null) {
@@ -126,8 +133,8 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
 
         $cooldown = $shipSystem->getCooldown();
-        if ($cooldown !== null && $cooldown > time()) {
-            throw new SystemCooldownException($cooldown - time());
+        if ($cooldown !== null && $cooldown > $time) {
+            throw new SystemCooldownException($cooldown - $time);
         }
 
         $reason = null;
