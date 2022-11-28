@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player;
 
 use Mockery\MockInterface;
+use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\ColonyClassResearchInterface;
@@ -60,46 +61,23 @@ class ColonizationCheckerTest extends StuTestCase
         );
     }
 
-    public function testCanColonizeReturnsFalseIfIsPlanetAndLimitIsExceeded(): void
+    public function testCanColonizeReturnsFalseIfLimitIsExceeded(): void
     {
         $user = $this->mock(UserInterface::class);
         $colony = $this->mock(ColonyInterface::class);
+        $type = ColonyTypeEnum::COLONY_TYPE_MOON;
 
         $colony->shouldReceive('isFree')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
-        $colony->shouldReceive('getColonyClass->isMoon')
+        $colony->shouldReceive('getColonyClass->getType')
             ->withNoArgs()
             ->once()
-            ->andReturnFalse();
+            ->andReturn($type);
 
-        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherPlanets')
-            ->with($user)
-            ->once()
-            ->andReturnFalse();
-
-        $this->assertFalse(
-            $this->checker->canColonize($user, $colony)
-        );
-    }
-
-    public function testCanColonizeReturnsFalseIfIsMoonAndLimitIsExceeded(): void
-    {
-        $user = $this->mock(UserInterface::class);
-        $colony = $this->mock(ColonyInterface::class);
-
-        $colony->shouldReceive('isFree')
-            ->withNoArgs()
-            ->once()
-            ->andReturnTrue();
-        $colony->shouldReceive('getColonyClass->isMoon')
-            ->withNoArgs()
-            ->once()
-            ->andReturnTrue();
-
-        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherMoons')
-            ->with($user)
+        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherColonyWithType')
+            ->with($user, $type)
             ->once()
             ->andReturnFalse();
 
@@ -114,13 +92,14 @@ class ColonizationCheckerTest extends StuTestCase
         $colony = $this->mock(ColonyInterface::class);
         $colonyClassResearch = $this->mock(ColonyClassResearchInterface::class);
         $colonyClass = $this->mock(ColonyClassInterface::class);
+        $type = ColonyTypeEnum::COLONY_TYPE_MOON;
 
         $researchId = 666;
 
-        $colonyClass->shouldReceive('isMoon')
+        $colonyClass->shouldReceive('getType')
             ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturn($type);
 
         $colony->shouldReceive('isFree')
             ->withNoArgs()
@@ -131,8 +110,8 @@ class ColonizationCheckerTest extends StuTestCase
             ->once()
             ->andReturn($colonyClass);
 
-        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherMoons')
-            ->with($user)
+        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherColonyWithType')
+            ->with($user, $type)
             ->once()
             ->andReturnTrue();
 
@@ -162,13 +141,14 @@ class ColonizationCheckerTest extends StuTestCase
         $colony = $this->mock(ColonyInterface::class);
         $colonyClassResearch = $this->mock(ColonyClassResearchInterface::class);
         $colonyClass = $this->mock(ColonyClassInterface::class);
+        $type = ColonyTypeEnum::COLONY_TYPE_MOON;
 
         $researchId = 666;
 
-        $colonyClass->shouldReceive('isMoon')
+        $colonyClass->shouldReceive('getType')
             ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturn($type);
 
         $colony->shouldReceive('isFree')
             ->withNoArgs()
@@ -179,8 +159,8 @@ class ColonizationCheckerTest extends StuTestCase
             ->once()
             ->andReturn($colonyClass);
 
-        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherMoons')
-            ->with($user)
+        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherColonyWithType')
+            ->with($user, $type)
             ->once()
             ->andReturnTrue();
 
@@ -209,11 +189,12 @@ class ColonizationCheckerTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $colony = $this->mock(ColonyInterface::class);
         $colonyClass = $this->mock(ColonyClassInterface::class);
+        $type = ColonyTypeEnum::COLONY_TYPE_MOON;
 
-        $colonyClass->shouldReceive('isMoon')
+        $colonyClass->shouldReceive('getType')
             ->withNoArgs()
             ->once()
-            ->andReturnTrue();
+            ->andReturn($type);
 
         $colony->shouldReceive('isFree')
             ->withNoArgs()
@@ -224,8 +205,8 @@ class ColonizationCheckerTest extends StuTestCase
             ->once()
             ->andReturn($colonyClass);
 
-        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherMoons')
-            ->with($user)
+        $this->colonyLimitCalculator->shouldReceive('canColonizeFurtherColonyWithType')
+            ->with($user, $type)
             ->once()
             ->andReturnTrue();
 
