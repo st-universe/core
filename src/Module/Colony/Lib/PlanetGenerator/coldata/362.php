@@ -8,7 +8,8 @@ $data[PlanetGenerator::COLGEN_DETAILS] = "Klasse I/J (blau) mit Ring";
 $data[PlanetGenerator::CONFIG_COLGEN_SIZEW] = 10;
 $data[PlanetGenerator::CONFIG_COLGEN_SIZEH] = 6;
 
-$hasground = 0;
+$hasGround = 0;
+$hasOrbit = 1;
 $bonusfields = 0;
 
 $data[PlanetGenerator::COLGEN_BASEFIELD] = 1000;
@@ -700,5 +701,5 @@ return [
     $ophase,
     $phase,
     [],
-    $hasground
+    $hasGround, $hasOrbit
 ];

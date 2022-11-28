@@ -7,7 +7,8 @@ $data[PlanetGenerator::COLGEN_DETAILS] = "Klasse ??";
 $data[PlanetGenerator::CONFIG_COLGEN_SIZEW] = 7;
 $data[PlanetGenerator::CONFIG_COLGEN_SIZEH] = 5;
 
-$hasground = 0;
+$hasGround = 0;
+$hasOrbit = 1;
 
 $data[PlanetGenerator::COLGEN_BASEFIELD] = 1000;
 $odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
@@ -24,5 +25,5 @@ return [
     $ophase,
     [],
     [],
-    $hasground
+    $hasGround, $hasOrbit
 ];

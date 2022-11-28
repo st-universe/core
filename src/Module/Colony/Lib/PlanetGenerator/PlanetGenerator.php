@@ -70,10 +70,10 @@ final class PlanetGenerator implements PlanetGeneratorInterface
 
     public function loadColonyClassConfig(int $colonyClassId): array
     {
-        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadColonyClass($colonyClassId);
+        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasGround, $hasOrbit) = $this->loadColonyClass($colonyClassId);
 
         return [
-            [$ophase, $phase, $uphase, $hasground],
+            [$ophase, $phase, $uphase, $hasGround, $hasOrbit],
             self::CONFIG_COLGEN_SIZEW => $data[self::CONFIG_COLGEN_SIZEW],
             self::CONFIG_COLGEN_SIZEH => $data[self::CONFIG_COLGEN_SIZEH],
             self::CONFIG_BASEFIELD_COLONY => $data[self::COLGEN_BASEFIELD],
@@ -94,7 +94,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         //}
 
         $config = $this->loadColonyClassConfig($colony->getColonyClassId());
-        [$ophase, $phase, $uphase, $hasground] = $config[0];
+        [$ophase, $phase, $uphase, $hasGround, $hasOrbit] = $config[0];
 
         // start bonus
         if ($config[self::CONFIG_COLGEN_SIZEW] != 10) {
@@ -175,7 +175,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
             self::PHASE_COLONY => $phase, self::PHASE_ORBIT => $ophase, self::PHASE_UNDERGROUND => $uphase, self::PHASE_BONUS => $bphase
         ];
 
-        [$colonyFields, $orbitFields, $undergroundFields] = $this->doPhases($config, $phases, $hasground);
+        [$colonyFields, $orbitFields, $undergroundFields] = $this->doPhases($config, $phases, $hasGround, $hasOrbit);
 
         $surface = $this->combine($colonyFields, $orbitFields, $undergroundFields);
         $colony->setMask(base64_encode(serialize($surface)));
@@ -186,9 +186,9 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         return $surface;
     }
 
-    private function doPhases(array $config, array $phases, bool $hasground): array
+    private function doPhases(array $config, array $phases, bool $hasGround, bool $hasOrbit): array
     {
-        [$colonyFields, $orbitFields, $undergroundFields] = $this->initFields($config, $hasground);
+        [$colonyFields, $orbitFields, $undergroundFields] = $this->initFields($config, $hasGround, $hasOrbit);
 
         if (!empty($phases[self::PHASE_COLONY])) {
             $colonyPhaseCounts = count($phases[self::PHASE_COLONY]);
@@ -220,7 +220,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         return [$colonyFields, $orbitFields, $undergroundFields];
     }
 
-    private function initFields(array $config, bool $hasground): array
+    private function initFields(array $config, bool $hasGround, bool $hasOrbit): array
     {
         $h = $config[self::CONFIG_COLGEN_SIZEH];
         $w = $config[self::CONFIG_COLGEN_SIZEW];
@@ -233,16 +233,19 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         $colfields[self::COLGEN_Y] = $h;
         $colfields[self::COLGEN_W] = $w;
 
-        for ($i = 0; $i < 2; $i++) {
-            for ($j = 0; $j < $w; $j++) {
-                $orbfields[$j][$i] = $config[self::CONFIG_BASEFIELD_ORBIT];
+        $orbfields[self::COLGEN_Y] = 0;
+        if ($hasOrbit) {
+            for ($i = 0; $i < 2; $i++) {
+                for ($j = 0; $j < $w; $j++) {
+                    $orbfields[$j][$i] = $config[self::CONFIG_BASEFIELD_ORBIT];
+                }
             }
+            $orbfields[self::COLGEN_Y] = 2;
+            $orbfields[self::COLGEN_W] = $w;
         }
-        $orbfields[self::COLGEN_Y] = 2;
-        $orbfields[self::COLGEN_W] = $w;
 
         $undergroundFields[self::COLGEN_Y] = 0;
-        if ($hasground) {
+        if ($hasGround) {
             for ($i = 0; $i < 2; $i++) {
                 for ($j = 0; $j < $w; $j++) {
                     $undergroundFields[$j][$i] = $config[self::CONFIG_BASEFIELD_UNDERGROUND];

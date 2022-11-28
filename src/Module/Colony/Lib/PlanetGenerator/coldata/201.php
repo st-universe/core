@@ -14,7 +14,8 @@ $bonusdata = array(
 $data[PlanetGenerator::CONFIG_COLGEN_SIZEW] = 10;
 $data[PlanetGenerator::CONFIG_COLGEN_SIZEH] = 6;
 
-$hasground = 1;
+$hasGround = 1;
+$hasOrbit = 1;
 
 $data[PlanetGenerator::COLGEN_BASEFIELD] = 201;
 $odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
@@ -178,5 +179,5 @@ return [
     $ophase,
     $phase,
     $uphase,
-    $hasground
+    $hasGround, $hasOrbit
 ];
