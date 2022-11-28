@@ -418,9 +418,7 @@ $phases++;
 
 
 return [
-    $odata,
     $data,
-    $udata,
     [],
     $phase,
     [],
