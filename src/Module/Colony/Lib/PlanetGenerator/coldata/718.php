@@ -8,11 +8,15 @@ $data[PlanetGenerator::COLGEN_DETAILS] = "Klasse Dichter Eistasteorid";
 $data[PlanetGenerator::CONFIG_COLGEN_SIZEW] = 6;
 $data[PlanetGenerator::CONFIG_COLGEN_SIZEH] = 6;
 
-$hasground = 1;
+$hasground = 0;
 
 $data[PlanetGenerator::COLGEN_BASEFIELD] = 900;
+$odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
+$udata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
 
 $phases = 0;
+$ophases = 0;
+$uphases = 0;
 
 // Surface Phases
 
@@ -414,9 +418,11 @@ $phases++;
 
 
 return [
+    $odata,
     $data,
+    $udata,
     [],
     $phase,
-    [],
+    $uphase,
     $hasground
 ];
