@@ -11,12 +11,8 @@ $data[PlanetGenerator::CONFIG_COLGEN_SIZEH] = 6;
 $hasground = 1;
 
 $data[PlanetGenerator::COLGEN_BASEFIELD] = 900;
-$odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
-$udata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
 
 $phases = 0;
-$ophases = 0;
-$uphases = 0;
 
 // Surface Phases
 
