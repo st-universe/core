@@ -72,6 +72,7 @@ use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassResearch;
+use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
@@ -250,6 +251,11 @@ return [
         ContainerInterface $c
     ): ColonyClassDepositRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ColonyClassDeposit::class);
+    },
+    ColonyDepositMiningRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ColonyDepositMiningRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyDepositMining::class);
     },
     ColonyShipRepairRepositoryInterface::class => function (
         ContainerInterface $c
