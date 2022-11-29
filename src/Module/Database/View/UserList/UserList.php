@@ -77,7 +77,7 @@ final class UserList implements ViewControllerInterface
             $user_list = array_filter(
                 $user_list,
                 function (UserInterface $user): bool {
-                    return strpos($this->parser->parse($user->getName())->getAsText(), request::indString('search'));
+                    return strpos($this->parser->parse($user->getName())->getAsText(), request::indString('search')) !== false;
                 }
             );
         }
