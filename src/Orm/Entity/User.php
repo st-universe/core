@@ -148,6 +148,7 @@ class User implements UserInterface
 
     /**
      * @OneToMany(targetEntity="Colony", mappedBy="user")
+     * @OrderBy({"colonies_classes_id" = "ASC", "id" = "ASC"})
      */
     private $colonies;
 

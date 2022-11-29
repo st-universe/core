@@ -338,6 +338,7 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('PM_NAVLET', $folder);
             $colonies = $userId === GameEnum::USER_NOONE ? [] : $user->getColonies()->toArray();
 
+            /*
             usort(
                 $colonies,
                 function (ColonyInterface $a, ColonyInterface $b): int {
@@ -349,7 +350,7 @@ final class GameController implements GameControllerInterface
                     }
                     return ($a->getColonyClassId() < $b->getColonyClassId()) ? -1 : 1;
                 }
-            );
+            );*/
 
             $this->talPage->setVar('COLONIES', $colonies);
             $this->talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
