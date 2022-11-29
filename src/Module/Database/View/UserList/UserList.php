@@ -65,15 +65,17 @@ final class UserList implements ViewControllerInterface
         $game->setPageTitle(_('/ Siedlerliste'));
         $game->setTemplateFile('html/userlist.xhtml');
 
+        $search = request::indString('search');
+
         $user_list = $this->userRepository->getList(
             static::SORT_FIELD_MAP[$sort_field],
             static::SORT_ORDER_MAP[$sort_order],
-            static::LIST_LIMIT,
+            $search ? null : static::LIST_LIMIT,
             $pagination
         );
 
-        if (request::indString('search')) {
-            $search = strtoupper(request::indString('search'));
+        if ($search) {
+            $search = strtoupper($search);
 
             //filter by name/id
             $user_list = array_filter(

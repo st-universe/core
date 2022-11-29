@@ -64,7 +64,7 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getList(
         string $sortField,
         string $sortOrder,
-        int $limit,
+        ?int $limit,
         int $offset
     ): iterable;
 

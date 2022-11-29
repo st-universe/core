@@ -150,10 +150,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     public function getList(
         string $sortField,
         string $sortOrder,
-        int $limit,
+        ?int $limit,
         int $offset
     ): iterable {
-        return $this->getEntityManager()->createQuery(
+        $query = $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u WHERE u.id > 100 ORDER BY u.%s %s',
                 User::class,
@@ -161,9 +161,13 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 $sortOrder
             )
         )
-            ->setMaxResults($limit)
-            ->setFirstResult($offset)
-            ->getResult();
+            ->setFirstResult($offset);
+
+        if ($limit !== null) {
+            $query->setMaxResults($limit);
+        }
+
+        return $query->getResult();
     }
 
     public function getFriendsByUserAndAlliance(int $userId, int $allianceId): iterable
