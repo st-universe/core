@@ -80,7 +80,7 @@ final class UserList implements ViewControllerInterface
                 $user_list,
                 function (UserInterface $user) use ($search): bool {
                     $nameHit = strpos(strtoupper($this->parser->parse($user->getName())->getAsText()), $search) !== false;
-                    $idHit = is_numeric($search) && $user->getId() === (int)$search;
+                    $idHit = is_numeric($search) && ($user->getId() === (int)$search);
 
                     return $nameHit || $idHit;
                 }
