@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\UserList;
 
+use JBBCode\Parser;
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserList implements ViewControllerInterface
@@ -30,12 +33,16 @@ final class UserList implements ViewControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private Parser $parser;
+
     public function __construct(
         UserListRequestInterface $userListRequest,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        Parser $parser
     ) {
         $this->userListRequest = $userListRequest;
         $this->userRepository = $userRepository;
+        $this->parser = $parser;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,6 +71,16 @@ final class UserList implements ViewControllerInterface
             static::LIST_LIMIT,
             $pagination
         );
+
+        if (request::indString('search')) {
+            //filter by name
+            $user_list = array_filter(
+                $user_list,
+                function (UserInterface $user): bool {
+                    return strpos($this->parser->parse($user->getName())->getAsText(), request::indString('search'));
+                }
+            );
+        }
 
         $game->setTemplateVar('NAVIGATION', $this->getUserListNavigation($game));
         $game->setTemplateVar('LIST', $user_list);
