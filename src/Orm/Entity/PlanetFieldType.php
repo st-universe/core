@@ -7,7 +7,7 @@ namespace Stu\Orm\Entity;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldTypeRepository")
  * @Table(
- *     name="stu_colonies_fieldtypes",
+ *     name="stu_colony_fieldtype",
  *     indexes={@Index(name="field_id_idx", columns={"field_id"})}
  * )
  **/
@@ -69,5 +69,4 @@ class PlanetFieldType implements PlanetFieldTypeInterface
 
         return $this;
     }
-
 }
