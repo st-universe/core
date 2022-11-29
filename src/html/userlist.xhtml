@@ -12,25 +12,43 @@
         </tr>
       </table>
     </metal:macro>
-    <div style="width: 620px;">
-      <div class="divhead">Sortierung</div>
-      <div class="divbody">
-        <div class="userListSortItem">
-          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=up"><img src="assets/buttons/pup.png" /></a>
-          <span>Fraktion</span>
-          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=down"><img src="assets/buttons/pdown.png" /></a>
+    <div>
+      <div style="width: 620px; float:left;">
+        <div class="divhead">Sortierung</div>
+        <div class="divbody">
+          <div class="userListSortItem">
+            <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=up"><img src="assets/buttons/pup.png" /></a>
+            <span>Fraktion</span>
+            <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=down"><img
+                src="assets/buttons/pdown.png" /></a>
+          </div>
+          <div class="userListSortItem">
+            <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=up"><img src="assets/buttons/pup.png" /></a>
+            <span>Id</span>
+            <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=down"><img
+                src="assets/buttons/pdown.png" /></a>
+          </div>
+          <div class="userListSortItem">
+            <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=up"><img
+                src="assets/buttons/pup.png" /></a>
+            <span>Allianz</span>
+            <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=down"><img
+                src="assets/buttons/pdown.png" /></a>
+          </div>
         </div>
-        <div class="userListSortItem">
-          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=up"><img src="assets/buttons/pup.png" /></a>
-          <span>Id</span>
-          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=down"><img src="assets/buttons/pdown.png" /></a>
-        </div>
-        <div class="userListSortItem">
-          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=up"><img
-              src="assets/buttons/pup.png" /></a>
-          <span>Allianz</span>
-          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=down"><img
-              src="assets/buttons/pdown.png" /></a>
+      </div>
+      <div style="width: 320px; padding-left: 10px; overflow: hidden;">
+        <div class="divhead">Suche</div>
+        <div class="divbody">
+          <form method="post" action="database.php">
+            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+            <table>
+              <tr>
+                <td><input type="text" name="search" style="width: 150px;" /></td>
+                <td><input type="submit" class="button" value="nach Spielername suchen" name="SHOW_SETTLERLIST" /></td>
+              </tr>
+            </table>
+          </form>
         </div>
       </div>
     </div>
