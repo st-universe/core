@@ -75,11 +75,14 @@ final class UserList implements ViewControllerInterface
         if (request::indString('search')) {
             $search = strtoupper(request::indString('search'));
 
-            //filter by name
+            //filter by name/id
             $user_list = array_filter(
                 $user_list,
                 function (UserInterface $user) use ($search): bool {
-                    return strpos(strtoupper($this->parser->parse($user->getName())->getAsText()), $search) !== false;
+                    $nameHit = strpos(strtoupper($this->parser->parse($user->getName())->getAsText()), $search) !== false;
+                    $idHit = is_integer($search) && $user->getId() === (int)$search;
+
+                    return $nameHit || $idHit;
                 }
             );
         }
