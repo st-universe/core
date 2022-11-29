@@ -40,7 +40,7 @@ class PlanetField implements PlanetFieldInterface
     private $field_id = 0;
 
     /** @Column(type="integer") */
-    private $type = 0;
+    private $type_id = 0;
 
     /** @Column(type="integer", nullable=true) */
     private $buildings_id;
@@ -106,12 +106,12 @@ class PlanetField implements PlanetFieldInterface
 
     public function getFieldType(): int
     {
-        return $this->type;
+        return $this->type_id;
     }
 
     public function setFieldType(int $planetFieldTypeId): PlanetFieldInterface
     {
-        $this->type = $planetFieldTypeId;
+        $this->type_id = $planetFieldTypeId;
         return $this;
     }
 
@@ -427,6 +427,7 @@ class PlanetField implements PlanetFieldInterface
 
     public function isUnderground(): bool
     {
+        //TODO make it dynamic!
         return $this->field_id >= 80;
     }
 
