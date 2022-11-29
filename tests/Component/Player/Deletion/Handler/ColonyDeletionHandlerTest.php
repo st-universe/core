@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Doctrine\Common\Collections\Collection;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -46,9 +47,15 @@ class ColonyDeletionHandlerTest extends StuTestCase
     {
         $colony = Mockery::mock(ColonyInterface::class);
         $user = Mockery::mock(UserInterface::class);
+        $colonyList = Mockery::mock(Collection::class);
 
-        $this->colonyRepository->shouldReceive('getOrderedListByUser')
-            ->with($user)
+        $user->shouldReceive('getColonies')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colonyList);
+
+        $colonyList->shouldReceive('toArray')
+            ->withNoArgs()
             ->once()
             ->andReturn([$colony]);
 

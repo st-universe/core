@@ -10,22 +10,17 @@ use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Module\Colony\Lib\CommodityConsumptionInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class GetColonyList extends Action
 {
-    private ColonyRepositoryInterface $colonyRepository;
-
     private CommodityConsumptionInterface $commodityConsumption;
 
     private SessionInterface $session;
 
     public function __construct(
-        ColonyRepositoryInterface $colonyRepository,
         CommodityConsumptionInterface $commodityConsumption,
         SessionInterface $session
     ) {
-        $this->colonyRepository = $colonyRepository;
         $this->commodityConsumption = $commodityConsumption;
         $this->session = $session;
     }
@@ -78,7 +73,7 @@ final class GetColonyList extends Action
                         ]
                     ];
                 },
-                $this->colonyRepository->getOrderedListByUser($this->session->getUser())
+                $this->session->getUser()->getColonies()->toArray()
             )
         );
     }

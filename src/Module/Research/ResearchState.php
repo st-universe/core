@@ -15,7 +15,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ResearchedInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
@@ -34,8 +33,6 @@ final class ResearchState implements ResearchStateInterface
 
     private ShipCreatorInterface $shipCreator;
 
-    private ColonyRepositoryInterface $colonyRepository;
-
     private ShipRepositoryInterface $shipRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
@@ -51,7 +48,6 @@ final class ResearchState implements ResearchStateInterface
         CreateDatabaseEntryInterface $createDatabaseEntry,
         CrewCreatorInterface $crewCreator,
         ShipCreatorInterface $shipCreator,
-        ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         CreateUserAwardInterface $createUserAward,
@@ -63,7 +59,6 @@ final class ResearchState implements ResearchStateInterface
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->crewCreator = $crewCreator;
         $this->shipCreator = $shipCreator;
-        $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->entityManager = $entityManager;
@@ -105,7 +100,7 @@ final class ResearchState implements ResearchStateInterface
             return;
         }
 
-        $userColonies = $this->colonyRepository->getOrderedListByUser($state->getUser());
+        $userColonies = $state->getUser()->getColonies()->toArray();
 
         if (empty($userColonies)) {
             return;

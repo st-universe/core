@@ -675,13 +675,8 @@ class User implements UserInterface
     public function getGlobalCrewLimit(): int
     {
         if ($this->global_crew_limit === null) {
-            // @todo refactor
-            global $container;
-
-            $colonyRepository = $container->get(ColonyRepositoryInterface::class);
-
             $this->global_crew_limit = (int) array_reduce(
-                $colonyRepository->getOrderedListByUser($this),
+                $this->getColonies()->toArray(),
                 function (int $sum, ColonyInterface $colony): int {
                     return $colony->getCrewLimit() + $sum;
                 },

@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api\V1\Colony\ColonyList;
 
+use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Module\Colony\Lib\CommodityConsumptionInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuApiV1TestCase;
 
 class GetColonyListTest extends StuApiV1TestCase
 {
-    /**
-     * @var null|MockInterface|ColonyRepositoryInterface
-     */
-    private $colonyRepository;
-
     /**
      * @var null|MockInterface|CommodityConsumptionInterface
      */
@@ -31,13 +26,11 @@ class GetColonyListTest extends StuApiV1TestCase
 
     public function setUp(): void
     {
-        $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->commodityConsumption = $this->mock(CommodityConsumptionInterface::class);
         $this->session = $this->mock(SessionInterface::class);
 
         $this->setUpApiHandler(
             new GetColonyList(
-                $this->colonyRepository,
                 $this->commodityConsumption,
                 $this->session
             )
@@ -159,8 +152,14 @@ class GetColonyListTest extends StuApiV1TestCase
                 ]
             ]);
 
-        $this->colonyRepository->shouldReceive('getOrderedListByUser')
-            ->with($user)
+        $colonyList = $this->mock(Collection::class);
+        $user->shouldReceive('getColonies')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colonyList);
+
+        $colonyList->shouldReceive('toArray')
+            ->withNoArgs()
             ->once()
             ->andReturn([$colony]);
 

@@ -88,14 +88,6 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         ]);
     }
 
-    public function getOrderedListByUser(UserInterface $user): iterable
-    {
-        return $this->findBy(
-            ['user_id' => $user],
-            ['colonies_classes_id' => 'asc', 'id' => 'asc']
-        );
-    }
-
     public function getByTick(int $tick): iterable
     {
         /**

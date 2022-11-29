@@ -13,7 +13,6 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -28,8 +27,6 @@ final class Overview implements ViewControllerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private ColonyRepositoryInterface $colonyRepository;
-
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
     private LoggerUtilInterface $loggerUtil;
@@ -38,14 +35,12 @@ final class Overview implements ViewControllerInterface
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyRepositoryInterface $colonyRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyLibFactory = $colonyLibFactory;
-        $this->colonyRepository = $colonyRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -54,7 +49,7 @@ final class Overview implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $colonyList = $this->colonyRepository->getOrderedListByUser($game->getUser());
+        $colonyList = $game->getUser()->getColonies()->toArray();
 
         $game->appendNavigationPart(
             'colony.php',

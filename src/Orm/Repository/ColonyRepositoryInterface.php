@@ -31,11 +31,6 @@ interface ColonyRepositoryInterface extends ObjectRepository
     /**
      * @return ColonyInterface[]
      */
-    public function getOrderedListByUser(UserInterface $user): iterable;
-
-    /**
-     * @return ColonyInterface[]
-     */
     public function getByTick(int $tick): iterable;
 
     /**
