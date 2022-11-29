@@ -94,6 +94,7 @@ final class UserList implements ViewControllerInterface
         $game->setTemplateVar('SORT_ORDER', $sort_field);
         $game->setTemplateVar('ORDER_BY', $sort_order);
         $game->setTemplateVar('PAGINATION', $pagination);
+        $game->setTemplateVar('SEARCH', $search ? request::indString('search') : '');
     }
 
     private function getUserListNavigation(GameControllerInterface $game): array
