@@ -51,7 +51,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return $this->findBy([
             'colonies_id' => $colonyId,
-            'type' => $planetFieldTypeId,
+            'type_id' => $planetFieldTypeId,
         ]);
     }
 
