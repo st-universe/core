@@ -341,13 +341,13 @@ final class GameController implements GameControllerInterface
             usort(
                 $colonies,
                 function (ColonyInterface $a, ColonyInterface $b): int {
-                    if ($a->getColonyClass() == $b->getColonyClass()) {
-                        if ($a->getId() == $b->getId()) {
+                    if ($a->getColonyClassId() === $b->getColonyClassId()) {
+                        if ($a->getId() === $b->getId()) {
                             return 0;
                         }
                         return ($a->getId() > $b->getId()) ? -1 : 1;
                     }
-                    return ($a->getColonyClass() < $b->getColonyClass()) ? -1 : 1;
+                    return ($a->getColonyClassId() < $b->getColonyClassId()) ? -1 : 1;
                 }
             );
 
