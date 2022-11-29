@@ -159,8 +159,6 @@ class Colony implements ColonyInterface
 
     private $positive_effect_primary;
 
-    private $productionRaw;
-
     private $production;
 
     private $productionsum;
@@ -639,9 +637,9 @@ class Colony implements ColonyInterface
     /**
      * @return ColonyProduction[]
      */
-    public function getProductionRaw(): array
+    public function getProduction(): array
     {
-        if ($this->productionRaw === null) {
+        if ($this->production === null) {
             // @todo refactor
             global $container;
             $result = $container->get(BuildingCommodityRepositoryInterface::class)->getProductionByColony(
@@ -649,35 +647,26 @@ class Colony implements ColonyInterface
                 $this->getColonyClass()->getId()
             );
 
-            $this->productionRaw = [];
+            $this->production = [];
             foreach ($result as $data) {
                 if (($data['gc'] + $data['pc']) != 0) {
-                    $this->productionRaw[$data['commodity_id']] = new ColonyProduction($data);
+                    $this->production[$data['commodity_id']] = new ColonyProduction($data);
                 }
             }
         }
-        return $this->productionRaw;
-    }
-
-    public function setProductionRaw(array $array): void
-    {
-        $this->productionRaw = $array;
-    }
-
-    public function getProduction(): array
-    {
-        //TODO kann weg und durch $colony->getProductionRaw() ersetzt werden?!
-        if ($this->production === null) {
-            $this->production = $this->getProductionRaw();
-        }
         return $this->production;
+    }
+
+    public function setProduction(array $array): void
+    {
+        $this->production = $array;
     }
 
     public function getProductionSum(): int
     {
         if ($this->productionsum === null) {
             $sum = 0;
-            foreach ($this->getProduction() as $key => $value) {
+            foreach ($this->getProduction() as $value) {
                 if ($value->getCommodity()->getType() == CommodityTypeEnum::COMMODITY_TYPE_EFFECT) {
                     continue;
                 }
@@ -846,7 +835,7 @@ class Colony implements ColonyInterface
 
     public function getLifeStandardPercentage(): int
     {
-        $colonyProduction = $this->getProductionRaw()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD];
+        $colonyProduction = $this->getProduction()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD];
         $production = $colonyProduction !== null ? $colonyProduction->getProduction() : 0;
 
         return min(100, (int)ceil($production * 100 / $this->getPopulation()));
@@ -859,7 +848,6 @@ class Colony implements ColonyInterface
 
     public function clearCache(): void
     {
-        $this->productionRaw = null;
         $this->production = null;
     }
 

@@ -11,7 +11,6 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -141,7 +140,7 @@ final class ColonyTick implements ColonyTickInterface
 
         while (true) {
             $rewind = 0;
-            $production = $colony->getProductionRaw();
+            $production = $colony->getProduction();
             foreach ($production as $commodityId => $pro) {
                 if ($pro->getProduction() >= 0) {
                     continue;
@@ -223,7 +222,7 @@ final class ColonyTick implements ColonyTickInterface
         }
 
         $emigrated = 0;
-        $production = $colony->getProductionRaw();
+        $production = $colony->getProduction();
         $sum = $colony->getStorageSum();
 
         if ($this->loggerUtil->doLog()) {
@@ -431,7 +430,7 @@ final class ColonyTick implements ColonyTickInterface
 
     private function mergeProduction(ColonyInterface $colony, Collection $commodityProduction): void
     {
-        $prod = $colony->getProductionRaw();
+        $prod = $colony->getProduction();
         foreach ($commodityProduction as $obj) {
             $commodityId = $obj->getCommodityId();
             if (!array_key_exists($commodityId, $prod)) {
@@ -440,7 +439,7 @@ final class ColonyTick implements ColonyTickInterface
                 $data->setProduction($obj->getAmount() * -1);
 
                 $prod[$commodityId] = $data;
-                $colony->setProductionRaw($prod);
+                $colony->setProduction($prod);
             } else {
                 if ($obj->getAmount() < 0) {
                     $prod[$commodityId]->upperProduction(abs($obj->getAmount()));

@@ -163,14 +163,10 @@ interface ColonyInterface
     /**
      * @return ColonyProduction[]
      */
-    public function getProductionRaw(): array;
 
-    public function setProductionRaw(array $array): void;
-
-    /**
-     * @return ColonyProduction[]
-     */
     public function getProduction(): array;
+
+    public function setProduction(array $array): void;
 
     public function getProductionSum(): int;
 
