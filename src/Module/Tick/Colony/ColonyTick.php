@@ -317,7 +317,6 @@ final class ColonyTick implements ColonyTickInterface
                     $this->createDatabaseEntry,
                     $this->crewCreator,
                     $this->shipCreator,
-                    $this->colonyRepository,
                     $this->shipRepository,
                     $this->shipSystemManager,
                     $this->createUserAward,
