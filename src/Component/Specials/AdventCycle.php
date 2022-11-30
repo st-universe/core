@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Maintenance;
+namespace Stu\Component\Specials;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -13,7 +13,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
-final class AdventCycle implements MaintenanceHandlerInterface
+final class AdventCycle
 {
     private const ADVENT_DOOR_AMOUNT = 5;
 
@@ -49,7 +49,7 @@ final class AdventCycle implements MaintenanceHandlerInterface
         $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
-    public function handle(): void
+    public function cycle(): void
     {
         $day = (int)date("j");
         $month = (int)date("n");

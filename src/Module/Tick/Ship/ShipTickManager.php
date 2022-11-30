@@ -12,6 +12,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Specials\AdventCycleInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -61,6 +62,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
+    private AdventCycleInterface $adventCycle;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -78,6 +81,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
+        AdventCycleInterface $adventCycle,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -94,6 +98,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
         $this->moduleQueueRepository = $moduleQueueRepository;
+        $this->adventCycle = $adventCycle;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -163,6 +168,9 @@ final class ShipTickManager implements ShipTickManagerInterface
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\tloweringTrumfieldConstruction, seconds: %F", $endTime - $startTime));
         }
+
+        //do optional advent stuff
+        $this->adventCycle->cycle();
     }
 
     private function handleEscapePods(): void
