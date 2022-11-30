@@ -13,7 +13,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
-final class AdventCycle
+final class AdventCycle extends AdventCycleInterface
 {
     private const ADVENT_DOOR_AMOUNT = 5;
 
