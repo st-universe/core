@@ -838,7 +838,7 @@ class Colony implements ColonyInterface
         $colonyProduction = $this->getProduction()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD];
         $production = $colonyProduction !== null ? $colonyProduction->getProduction() : 0;
 
-        return min(100, (int)floor($production * 100 / max($this->getPopulation())));
+        return min(100, (int)floor($production * 100 / max(0, $this->getPopulation())));
     }
 
     public function getFreeAssignmentCount(): int
