@@ -51,10 +51,11 @@ final class AdventCycle implements AdventCycleInterface
 
     public function cycle(): void
     {
+        $hour = (int)date("G");
         $day = (int)date("j");
         $month = (int)date("n");
 
-        if ($month < 12) {
+        if ($month < 12 || $hour !== 0) {
             return;
         }
 
