@@ -29,7 +29,7 @@ class PlanetFieldType implements PlanetFieldTypeInterface
     /** @Column(type="integer") * */
     private $normal_id = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $category;
 
     public function getId(): int
@@ -71,5 +71,10 @@ class PlanetFieldType implements PlanetFieldTypeInterface
         $this->normal_id = $baseFieldType;
 
         return $this;
+    }
+
+    public function getCategory(): int
+    {
+        return $this->category;
     }
 }

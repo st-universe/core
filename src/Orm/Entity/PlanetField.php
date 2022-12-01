@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Colony\ColonyFieldTypeCategoryEnum;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -169,6 +170,14 @@ class PlanetField implements PlanetFieldInterface
         global $container;
 
         return $container->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($this->getFieldType());
+    }
+
+    private function getFieldTypeCategory(): int
+    {
+        // @todo remove
+        global $container;
+
+        return $container->get(PlanetFieldTypeRetrieverInterface::class)->getCategory($this->getFieldType());
     }
 
     public function getBuildtime(): int
@@ -425,10 +434,14 @@ class PlanetField implements PlanetFieldInterface
         return in_array($this->getFieldType(), $this->getColony()->getColonyClass()->getColonizeableFields());
     }
 
+    public function isOrbit(): bool
+    {
+        return $this->getFieldTypeCategory() === ColonyFieldTypeCategoryEnum::FIELD_TYPE_CATEGORY_ORBIT;
+    }
+
     public function isUnderground(): bool
     {
-        //TODO make it dynamic!
-        return $this->field_id >= 80;
+        return $this->getFieldTypeCategory() === ColonyFieldTypeCategoryEnum::FIELD_TYPE_CATEGORY_UNDERGROUND;
     }
 
     public function hasUpgradeOrTerraformingOption(): bool

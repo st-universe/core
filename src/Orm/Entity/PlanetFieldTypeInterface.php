@@ -17,4 +17,6 @@ interface PlanetFieldTypeInterface
     public function getBaseFieldType(): int;
 
     public function setBaseFieldType(int $baseFieldType): PlanetFieldTypeInterface;
+
+    public function getCategory(): int;
 }
