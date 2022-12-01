@@ -100,6 +100,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         }
 
         if ($stor->getAmount() <= $amount) {
+            unset($storage[$commodityId]);
             $this->storageRepository->delete($stor);
             return;
         }
