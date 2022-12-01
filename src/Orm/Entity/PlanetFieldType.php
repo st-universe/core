@@ -29,6 +29,9 @@ class PlanetFieldType implements PlanetFieldTypeInterface
     /** @Column(type="integer") * */
     private $normal_id = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $category;
+
     public function getId(): int
     {
         return $this->id;
