@@ -83,6 +83,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
             $stor->setUserId($this->userId);
             $stor->setCommodity($this->commodityRepository->find($commodityId));
             $stor->setTradePost($this->tradePost);
+            $storage[$commodityId] = $stor;
         }
         $stor->setAmount($stor->getAmount() + $amount);
 
