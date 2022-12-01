@@ -95,6 +95,11 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
+        if ($offeredCommodity->isBoundToAccount()) {
+            $game->addInformation("Diese Ware kann nicht gehandelt werden");
+            return;
+        }
+
         // is tradeable?
         if (!$offeredCommodity->isTradeable() || !$wantedCommodity->isTradeable()) {
             return;
