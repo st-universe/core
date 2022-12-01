@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Trade\Lib;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\TradePostInterface;
 
 interface TradePostStorageManagerInterface
@@ -15,7 +16,7 @@ interface TradePostStorageManagerInterface
     /**
      * @return StorageInterface[]
      */
-    public function getStorage(): array;
+    public function getStorage(): Collection;
 
     public function upperStorage(int $commodityId, int $amount): void;
 

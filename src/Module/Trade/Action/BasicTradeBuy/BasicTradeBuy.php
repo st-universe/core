@@ -77,7 +77,7 @@ final class BasicTradeBuy implements ActionControllerInterface
             return;
         }
 
-        $latinumStorage = $storageManager->getStorage()[CommodityTypeEnum::COMMODITY_LATINUM];
+        $latinumStorage = $storageManager->getStorage()->get(CommodityTypeEnum::COMMODITY_LATINUM);
 
         if ($latinumStorage === null || $latinumStorage < 1) {
             $game->addInformation("Dein Warenkonto verfügt über kein Latinum - es konnte nicht gekauft werden");

@@ -69,7 +69,7 @@ final class BasicTradeSell implements ActionControllerInterface
             return;
         }
 
-        $commodityStorage = $storageManager->getStorage()[$basicTrade->getCommodity()->getId()];
+        $commodityStorage = $storageManager->getStorage()->get($basicTrade->getCommodity()->getId());
         $sellValue = (int)($basicTrade->getValue() / BasicTradeItem::BASIC_TRADE_VALUE_SCALE * BasicTradeItem::BASIC_TRADE_SELL_BUY_ALPHA);
 
         if ($commodityStorage === null || $commodityStorage->getAmount() < $sellValue) {

@@ -86,7 +86,7 @@ final class TransferFromAccount implements ActionControllerInterface
         $gcount = request::postArray('count');
 
         $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $userId);
-        $curCommodities = $storageManager->getStorage();
+        $curCommodities = $storageManager->getStorage()->toArray();
 
         if ($curCommodities === []) {
             $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));

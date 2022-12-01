@@ -139,7 +139,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, (int) $tradepost->getUserId());
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager($targetTradepost, $userId);
 
-                $stor = $storageManager->getStorage()[$commodityId] ?? null;
+                $stor = $storageManager->getStorage()->get($commodityId) ?? null;
                 if ($stor === null) {
                     return;
                 }

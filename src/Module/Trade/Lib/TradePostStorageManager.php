@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -44,7 +46,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     {
         if ($this->storageSum === null) {
             $this->storageSum = array_reduce(
-                $this->getStorage(),
+                $this->getStorage()->toArray(),
                 function (int $value, StorageInterface $storage): int {
                     return $value + $storage->getAmount();
                 },
@@ -59,13 +61,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         return max(0, $this->tradePost->getStorage() - $this->getStorageSum());
     }
 
-    public function getStorage(): array
+    public function getStorage(): Collection
     {
         if ($this->storage === null) {
-            $this->storage = [];
+            $this->storage = new ArrayCollection();
 
             foreach ($this->storageRepository->getByTradePostAndUser($this->tradePost->getId(), $this->userId) as $storage) {
-                $this->storage[$storage->getCommodityId()] = $storage;
+                $this->storage->set($storage->getCommodityId(), $storage);
             }
         }
 
@@ -74,18 +76,18 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
 
     public function upperStorage(int $commodityId, int $amount): void
     {
-        /** @var StorageInterface[] $storage */
         $storage = $this->getStorage();
 
-        $stor = $storage[$commodityId] ?? null;
+        /** @var StorageInterface $stor */
+        $stor = $storage->get($commodityId) ?? null;
         if ($stor === null) {
             $stor = $this->storageRepository->prototype();
             $stor->setUserId($this->userId);
             $stor->setCommodity($this->commodityRepository->find($commodityId));
             $stor->setTradePost($this->tradePost);
-            $storage[$commodityId] = $stor;
         }
         $stor->setAmount($stor->getAmount() + $amount);
+        $storage->set($commodityId, $stor);
 
         $this->storageRepository->save($stor);
     }
@@ -94,13 +96,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     {
         $storage = $this->getStorage();
 
-        $stor = $storage[$commodityId] ?? null;
+        $stor = $storage->get($commodityId) ?? null;
         if ($stor === null) {
             return;
         }
 
         if ($stor->getAmount() <= $amount) {
-            unset($storage[$commodityId]);
+            $storage->remove($commodityId);
             $this->storageRepository->delete($stor);
             return;
         }
