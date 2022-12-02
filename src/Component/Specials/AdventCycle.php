@@ -4,6 +4,8 @@ namespace Stu\Component\Specials;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -97,6 +99,7 @@ final class AdventCycle implements AdventCycleInterface
             $adventDoor->setShield($adventDoor->getMaxShield());
             $adventDoor->setEBatt($adventDoor->getMaxEBatt());
             $adventDoor->setAlertState(ShipAlertStateEnum::ALERT_YELLOW, '');
+            $adventDoor->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_ON);
 
             $this->shipRepository->save($adventDoor);
             $result[] = $adventDoor;
