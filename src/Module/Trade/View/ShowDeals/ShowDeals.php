@@ -36,9 +36,9 @@ final class ShowDeals implements ViewControllerInterface
 
         $deals = $this->dealsRepository->getDeals($userId);
 
-        $dealAccounts = array(
-            function (DealsInterface $deals) use ($user): DealsItemInterface {
-                return new DealsItem($deals, $user);
+        $dealAccounts = array_map(
+            function (DealsInterface $deals): DealsItemInterface {
+                return new DealsItem($deals);
             },
             $this->dealsRepository->getActivDeals($userId)
         );
