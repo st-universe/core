@@ -65,20 +65,20 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     {
         if ($this->getFergLicense($userId) == FALSE) {
             return;
-        }
-        else{
-        $time = time();
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT d FROM %s d WHERE d.end > :actime
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d WHERE d.end > :actime
                     )',
-                    Deals::class,
+                        Deals::class,
+                    )
                 )
-            )
-            ->setParameters([
-                'actime' => $time,
-            ])
-            ->getResult();
+                ->setParameters([
+                    'actime' => $time,
+                ])
+                ->getResult();
+        }
     }
 }
