@@ -51,7 +51,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     public function getFergLicense(int $userId): bool
     {
         $time = time();
-        $result = $this->getEntityManager()->createQuery(sprintf('SELECT COUNT(tl.id) FROM %s tl WHERE tl.userId = :userId AND tl.exoured > :actime AND tl.posts_id =:tradepostId', TradeLicense::class))
+        $result = $this->getEntityManager()->createQuery(sprintf('SELECT COUNT(tl.id) FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime AND tl.posts_id =:tradepostId', TradeLicense::class))
             ->setParameters([
                 'userId' => $userId,
                 'actime' => $time,
