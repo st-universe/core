@@ -24,7 +24,7 @@ interface DealsRepositoryInterface extends ObjectRepository
 
     public function getActiveDeals(int $userId): array;
 
-    public function getActiveDealsGoods(int $userId): array;
+    public function getActiveDealsGoods(int $userId): ?array;
 
     public function getActiveDealsShips(int $userId): array;
 

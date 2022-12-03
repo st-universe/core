@@ -82,7 +82,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         }
     }
 
-    public function getActiveDealsGoods(int $userId): array
+    public function getActiveDealsGoods(int $userId): ?array
     {
         if ($this->getFergLicense($userId) == FALSE) {
             return null;
