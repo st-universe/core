@@ -36,11 +36,53 @@ final class ShowDeals implements ViewControllerInterface
 
         $deals = $this->dealsRepository->getDeals($userId);
 
-        $dealAccounts = array_map(
+        $activedeals = array_map(
             function (DealsInterface $deals): DealsItemInterface {
                 return new DealsItem($deals);
             },
-            $this->dealsRepository->getActivDeals($userId)
+            $this->dealsRepository->getActiveDeals($userId)
+        );
+
+        $activedealsgoods = array_map(
+            function (DealsInterface $deals): DealsItemInterface {
+                return new DealsItem($deals);
+            },
+            $this->dealsRepository->getActiveDealsGoods($userId)
+        );
+
+        $activedealsships = array_map(
+            function (DealsInterface $deals): DealsItemInterface {
+                return new DealsItem($deals);
+            },
+            $this->dealsRepository->getActiveDealsShips($userId)
+        );
+
+        $activedealsbuildplans = array_map(
+            function (DealsInterface $deals): DealsItemInterface {
+                return new DealsItem($deals);
+            },
+            $this->dealsRepository->getActiveDealsBuildplans($userId)
+        );
+
+        $activedealsgoodsprestige = array_map(
+            function (DealsInterface $deals): DealsItemInterface {
+                return new DealsItem($deals);
+            },
+            $this->dealsRepository->getActiveDealsGoodsPrestige($userId)
+        );
+
+        $activedealsshipsprestige = array_map(
+            function (DealsInterface $deals): DealsItemInterface {
+                return new DealsItem($deals);
+            },
+            $this->dealsRepository->getActiveDealsShipsPrestige($userId)
+        );
+
+        $activedealsbuildplansprestige = array_map(
+            function (DealsInterface $deals): DealsItemInterface {
+                return new DealsItem($deals);
+            },
+            $this->dealsRepository->getActiveDealsBuildplansPrestige($userId)
         );
 
         $game->appendNavigationPart(
@@ -54,6 +96,12 @@ final class ShowDeals implements ViewControllerInterface
         $game->setPageTitle(_('/ Handel'));
         $game->setTemplateFile('html/deals.xhtml');
 
-        $game->setTemplateVar('ACCOUNTS', $dealAccounts);
+        $game->setTemplateVar('ACTIVEDEALS', $activedeals);
+        $game->setTemplateVar('ACTIVEDEALSGOODS', $activedealsgoods);
+        $game->setTemplateVar('ACTIVEDEALSSHIPS', $activedealsships);
+        $game->setTemplateVar('ACTIVEDEALSBUILDPLANS', $activedealsbuildplans);
+        $game->setTemplateVar('ACTIVEDEALSGOODSPRESTIGE', $activedealsgoodsprestige);
+        $game->setTemplateVar('ACTIVEDEALSSHIPSPRESTIGE', $activedealsshipsprestige);
+        $game->setTemplateVar('ACTIVEDEALSBUILDPLANSPRESTIGE', $activedealsbuildplansprestige);
     }
 }

@@ -61,7 +61,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $result > 0;
     }
 
-    public function getActivDeals(int $userId): array
+    public function getActiveDeals(int $userId): array
     {
         if ($this->getFergLicense($userId) == FALSE) {
             return null;
@@ -70,7 +70,154 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE
+                    ',
+                        Deals::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveDealsGoods(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige = NULL AND d.buildplan_id = NULL AND d.ship = FALSE
+                    ',
+                        Deals::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveDealsShips(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige = NULL AND d.buildplan_id > 0 AND d.ship = TRUE
+                    ',
+                        Deals::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveDealsBuildplans(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige = NULL AND d.buildplan_id > 0 AND d.ship = FALSE
+                    ',
+                        Deals::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveDealsGoodsPrestige(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity = NULL AND d.buildplan_id = NULL AND d.ship = FALSE
+                    ',
+                        Deals::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveDealsShipsPrestige(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity = NULL AND d.buildplan_id > 0 AND d.ship = TRUE
+                    ',
+                        Deals::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveDealsBuildplansPrestige(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity = NULL AND d.buildplan_id > 0 AND d.ship = FALSE
+                    ',
+                        Deals::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveAuctions(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.acution = TRUE
                     ',
                         Deals::class,
                     )
