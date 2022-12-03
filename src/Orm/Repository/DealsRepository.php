@@ -71,7 +71,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->createQuery(
                 sprintf(
                     'SELECT d FROM %s d WHERE d.end > :actime
-                    )',
+                    ',
                     Deals::class,
                 )
             )
