@@ -39,7 +39,8 @@ final class ShowDeals implements ViewControllerInterface
         $dealAccounts = array(
             function (DealsInterface $deals) use ($user): DealsItemInterface {
                 return new DealsItem($deals, $user);
-            }
+            },
+            $this->dealsRepository->getActivDeals($userId)
         );
 
         $game->appendNavigationPart(

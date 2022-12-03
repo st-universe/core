@@ -48,23 +48,36 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         ])->getResult();
     }
 
-    public function getByUserLicenseOnlyFerg(int $userId): array
+    public function getFergLicense(int $userId): bool
     {
         $time = time();
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT tp FROM %s tp WHERE tp.user_id = 14 AND tp.id IN (
-                        SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime AND tl.posts_id = :tradepostId
-                    )',
-                    TradePost::class,
-                    TradeLicense::class
-                )
-            )
+        $result = $this->getEntityManager()->createQuery(sprintf('SELECT COUNT(tl.id) FROM %s tl WHERE tl.userId = :userId AND tl.exoured > :actime AND tl.posts_id =:tradepostId', TradeLicense::class))
             ->setParameters([
                 'userId' => $userId,
                 'actime' => $time,
                 'tradepostId' => TradeEnum::DEALS_FERG_TRADEPOST_ID
+            ])->getSingleScalarResult();
+
+        return $result > 0;
+    }
+
+    public function getActivDeals(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return;
+        }
+        else{
+        $time = time();
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT d FROM %s d WHERE d.end > :actime
+                    )',
+                    Deals::class,
+                )
+            )
+            ->setParameters([
+                'actime' => $time,
             ])
             ->getResult();
     }

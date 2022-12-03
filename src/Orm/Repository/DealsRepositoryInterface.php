@@ -20,5 +20,7 @@ interface DealsRepositoryInterface extends ObjectRepository
 
     public function getDeals(int $userId): array;
 
-    public function getByUserLicenseOnlyFerg(int $userId): array;
+    public function getActivDeals(int $userId): array;
+
+    public function getFergLicense(int $userId): bool;
 }
