@@ -52,10 +52,10 @@ class Deals implements DealsInterface
     /** @Column(type="boolean", nullable=true) */
     private $ship = NULL;
 
-    /** @Column(type="bigint") */
+    /** @Column(type="integer") */
     private $time;
 
-    /** @Column(type="bigint") */
+    /** @Column(type="integer") */
     private $end;
 
 
