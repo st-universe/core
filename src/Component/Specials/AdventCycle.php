@@ -100,6 +100,7 @@ final class AdventCycle implements AdventCycleInterface
             $adventDoor->setEBatt($adventDoor->getMaxEBatt());
             $adventDoor->setAlertState(ShipAlertStateEnum::ALERT_YELLOW, '');
             $adventDoor->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_ON);
+            $adventDoor->setName('✨[b][color=red]Ad[/color][color=green]ve[/color][color=white]nt[/color][color=red]st[/color][color=green]ür[/color][color=white]ch[/color][color=red]en[/color][/b] 🎁🎄');
 
             $this->shipRepository->save($adventDoor);
             $result[] = $adventDoor;
