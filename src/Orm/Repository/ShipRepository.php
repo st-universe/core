@@ -119,7 +119,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.%s = :mapId
                 AND s.fleets_id IS NULL
                 AND s.user_id = :userId
-                AND s.is_base = false',
+                AND s.is_base = false
+                ORDER BY s.rumps_id ASC, s.name ASC',
                 Ship::class,
                 $isSystem ? 'starsystem_map_id' : 'map_id'
             )
