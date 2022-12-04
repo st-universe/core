@@ -47,5 +47,5 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
 
     public function getNewAmountByFolder(int $folderId): int;
 
-    public function truncateByFolder(int $folderId): void;
+    public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void;
 }

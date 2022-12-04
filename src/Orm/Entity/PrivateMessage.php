@@ -195,4 +195,11 @@ class PrivateMessage implements PrivateMessageInterface
         $this->receivingUser = $recipient;
         return $this;
     }
+
+    public function setDeleted(int $timestamp): PrivateMessageInterface
+    {
+        $this->deleted = $timestamp;
+
+        return $this;
+    }
 }

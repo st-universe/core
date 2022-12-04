@@ -49,4 +49,6 @@ interface PrivateMessageInterface
     public function setSender(UserInterface $user): PrivateMessageInterface;
 
     public function setRecipient(UserInterface $recipient): PrivateMessageInterface;
+
+    public function setDeleted(int $timestamp): PrivateMessageInterface;
 }

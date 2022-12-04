@@ -94,15 +94,16 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         ]);
     }
 
-    public function truncateByFolder(int $folderId): void
+    public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s pm WHERE pm.cat_id = :folderId',
+                'UPDATE %s pm SET pm.deleted = :timestamp WHERE pm.cat_id = :folderId',
                 PrivateMessage::class
             )
         )->setParameters([
-            'folderId' => $folderId
+            'folderId' => $folderId,
+            'timestamp' => $timestamp
         ])->execute();
     }
 }

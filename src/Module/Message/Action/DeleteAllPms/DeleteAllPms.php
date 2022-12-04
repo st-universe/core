@@ -31,11 +31,13 @@ final class DeleteAllPms implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $timestamp = time();
+
         $folder = $this->privateMessageFolderRepository->find($this->deleteAllPmsRequest->getCategoryId());
         if ($folder === null || $folder->getUserId() !== $game->getUser()->getId()) {
             return;
         }
-        $this->privateMessageRepository->truncateByFolder($folder->getId());
+        $this->privateMessageRepository->setDeleteTimestampByFolder($folder->getId(), $timestamp);
 
         $game->addInformation(_('Der Ordner wurde geleert'));
     }
