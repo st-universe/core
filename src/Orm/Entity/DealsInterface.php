@@ -26,11 +26,11 @@ interface DealsInterface
 
     public function setwantCommodityId(CommodityInterface $wantcommodity): DealsInterface;
 
-    public function getgiveCommodityAmount(): CommodityInterface;
+    public function getgiveCommodityAmount(): int;
 
     public function setgiveCommodityAmount(CommodityInterface $givecommodityamount): DealsInterface;
 
-    public function getwantCommodityAmount(): CommodityInterface;
+    public function getwantCommodityAmount(): int;
 
     public function setwantCommodityAmount(CommodityInterface $wantcommodityamount): DealsInterface;
 
