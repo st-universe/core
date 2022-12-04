@@ -182,6 +182,20 @@ class KnCommentTalTest extends StuTestCase
         );
     }
 
+    public function testIsDeleteableReturnsFalseIfCommentBelongsToOtherUser(): void
+    {
+        $otherUser = $this->mock(UserInterface::class);
+
+        $this->comment->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($otherUser);
+
+        $this->assertFalse(
+            $this->tal->isDeleteable()
+        );
+    }
+
     public function testIsDeleteableReturnsTrueIfCommentBelongsToCurrentUser(): void
     {
         $this->comment->shouldReceive('getUser')
@@ -190,38 +204,6 @@ class KnCommentTalTest extends StuTestCase
             ->andReturn($this->user);
 
         $this->assertTrue(
-            $this->tal->isDeleteable()
-        );
-    }
-
-    public function testIsDeleteableReturnsTrueIfPostBelongsToCurrentUser(): void
-    {
-        $this->comment->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
-        $this->comment->shouldReceive('getPosting->getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->user);
-
-        $this->assertTrue(
-            $this->tal->isDeleteable()
-        );
-    }
-
-    public function testIsDeleteableReturnsFalseIfNotDeleteable(): void
-    {
-        $this->comment->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
-        $this->comment->shouldReceive('getPosting->getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->mock(UserInterface::class));
-
-        $this->assertFalse(
             $this->tal->isDeleteable()
         );
     }
