@@ -44,7 +44,7 @@
                     <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/ships/${data/getBuildplanId}.png" /></td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
-                            ${data/getWantedCommodityAmount}</td>
+                            ${data/getwantCommodityAmount}</td>
                         <td>
                             ${data/getAmount}</td>
                         <td>
@@ -68,7 +68,7 @@
                                 src="assets/ships/${data/getBuildplanId}.png" />
                         </td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
-                            ${data/getWantedCommodityAmount}</td>
+                            ${data/getwantCommodityAmount}</td>
                         <td>
                             ${data/getAmount}</td>
                         <td>
