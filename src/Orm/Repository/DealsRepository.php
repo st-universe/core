@@ -64,7 +64,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
     public function getActiveDeals(int $userId): array
     {
         if ($this->getFergLicense($userId) == FALSE) {
-            return null;
+            return [];
         } else {
             $time = time();
             return $this->getEntityManager()
