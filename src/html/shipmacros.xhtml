@@ -966,17 +966,20 @@
   <form action="ship.php" method="post">
     <input type="hidden" name="fleetid" tal:attributes="value FLEET/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-    <table class="tcal" id="availableShipsTable">
-      <tr tal:repeat="ship AVAILABLE_SHIPS">
-        <td>
-          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
-        </td>
-        <td><input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="${ship/getId}" /><span
-            tal:content="structure bbcode:ship/getName">NAME</span></td>
-      </tr>
-    </table>
-    <a href="javascript:void(0);" onclick="joinFleetInShiplist(${FLEET/getId});" title="Schiffe hinzufügen"
-      class="fabutton">Schiffe hinzufügen</a>
+    <span tal:condition="not:AVAILABLE_SHIPS">Keine Schiffe vorhanden</span>
+    <tal:block tal:condition="AVAILABLE_SHIPS">
+      <table class="tcal" id="availableShipsTable">
+        <tr tal:repeat="ship AVAILABLE_SHIPS">
+          <td>
+            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+          </td>
+          <td><input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="${ship/getId}" /><span
+              tal:content="structure bbcode:ship/getName">NAME</span></td>
+        </tr>
+      </table>
+      <a href="javascript:void(0);" onclick="joinFleetInShiplist(${FLEET/getId});" title="Schiffe hinzufügen"
+        class="fabutton">Schiffe hinzufügen</a>
+    </tal:block>
   </form>
 </metal:block>
 <metal:block metal:define-macro="show_troop_transfer">

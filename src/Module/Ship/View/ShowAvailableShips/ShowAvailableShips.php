@@ -37,7 +37,7 @@ final class ShowAvailableShips implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->setPageTitle(_('Schiff hinzufügen'));
+        $game->setPageTitle(_('Schiff(e) hinzufügen'));
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_available_ships');
 
         $game->setTemplateVar('FLEET', $fleet);
