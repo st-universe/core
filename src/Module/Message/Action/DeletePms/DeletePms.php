@@ -27,6 +27,7 @@ final class DeletePms implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
+        $timestamp = time();
 
         foreach ($this->deletePmsRequest->getDeletionIds() as $messageId) {
             $pm = $this->privateMessageRepository->find($messageId);
@@ -35,7 +36,8 @@ final class DeletePms implements ActionControllerInterface
                 continue;
             }
 
-            $this->privateMessageRepository->delete($pm);
+            $pm->setDeleted($timestamp);
+            $this->privateMessageRepository->save($pm);
         }
         $game->addInformation(_('Die Nachrichten wurden gelöscht'));
     }
