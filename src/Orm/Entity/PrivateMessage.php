@@ -50,6 +50,9 @@ class PrivateMessage implements PrivateMessageInterface
     /** @Column(type="string", nullable=true) */
     private $href;
 
+    /** @Column(type="integer", nullable=true) */
+    private $deleted;
+
     /**
      * @ManyToOne(targetEntity="PrivateMessageFolder")
      * @JoinColumn(name="cat_id", referencedColumnName="id", onDelete="CASCADE")

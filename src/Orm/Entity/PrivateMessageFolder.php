@@ -38,6 +38,9 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     /** @Column(type="smallint") */
     private $special = PrivateMessageFolderSpecialEnum::PM_DEFAULT_OWN;
 
+    /** @Column(type="integer", nullable=true) */
+    private $deleted;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")

@@ -38,6 +38,9 @@ class KnComment implements KnCommentInterface
     /** @Column(type="integer") */
     private $date = 0;
 
+    /** @Column(type="integer", nullable=true) */
+    private $deleted;
+
     /**
      * @ManyToOne(targetEntity="KnPost")
      * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
