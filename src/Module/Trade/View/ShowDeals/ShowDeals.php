@@ -31,12 +31,15 @@ final class ShowDeals implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $activedeals = $this->dealsRepository->getActiveDeals($userId);
-        $activedealsgoods = $this->dealsRepository->getActiveDealsGoods($userId);
-        $activedealsships = $this->dealsRepository->getActiveDealsShips($userId);
-        $activedealsbuildplans = $this->dealsRepository->getActiveDealsBuildplans($userId);
-        $activedealsgoodsprestige = $this->dealsRepository->getActiveDealsGoodsPrestige($userId);
-        $activedealsshipsprestige = $this->dealsRepository->getActiveDealsShipsPrestige($userId);
-        $activedealsbuildplansprestige = $this->dealsRepository->getActiveDealsBuildplansPrestige($userId);
+
+        if (!empty($activedeals)) {
+            $activedealsgoods = $this->dealsRepository->getActiveDealsGoods($userId);
+            $activedealsships = $this->dealsRepository->getActiveDealsShips($userId);
+            $activedealsbuildplans = $this->dealsRepository->getActiveDealsBuildplans($userId);
+            $activedealsgoodsprestige = $this->dealsRepository->getActiveDealsGoodsPrestige($userId);
+            $activedealsshipsprestige = $this->dealsRepository->getActiveDealsShipsPrestige($userId);
+            $activedealsbuildplansprestige = $this->dealsRepository->getActiveDealsBuildplansPrestige($userId);
+        }
 
         $game->appendNavigationPart(
             'trade.php',
