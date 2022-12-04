@@ -204,8 +204,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private function gotEnoughFreeTroopQuarters(ShipInterface $ship, int $count): bool
     {
-        return $ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-            && $this->troopTransferUtility->getFreeQuarters($ship) >= $count;
+        return $this->troopTransferUtility->getFreeQuarters($ship) >= $count;
     }
 
     private function transferToClosestLocation(ShipInterface $ship, ShipInterface $target, int $count, TradePostInterface $closestTradepost): string
