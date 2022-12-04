@@ -59,6 +59,18 @@ class Deals implements DealsInterface
     private $end;
 
 
+    /**
+     * @ManyToOne(targetEntity="Commodity")
+     * @JoinColumn(name="want_commodity", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $wantedCommodity;
+
+    /**
+     * @ManyToOne(targetEntity="Commodity")
+     * @JoinColumn(name="give_commodity", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $giveCommodity;
+
     public function getId(): int
     {
         return $this->id;
@@ -102,25 +114,25 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getgiveCommodity(): CommodityInterface
+    public function getgiveCommodityId(): CommodityInterface
     {
         return $this->give_commodity;
     }
 
 
-    public function setgiveCommodity(CommodityInterface $givecommodity): DealsInterface
+    public function setgiveCommodityId(CommodityInterface $givecommodity): DealsInterface
     {
         $this->give_commodity = $givecommodity;
 
         return $this;
     }
 
-    public function getwantCommodity(): CommodityInterface
+    public function getwantCommodityId(): CommodityInterface
     {
         return $this->want_commodity;
     }
 
-    public function setwantCommodity(CommodityInterface $wantcommodity): DealsInterface
+    public function setwantCommodityId(CommodityInterface $wantcommodity): DealsInterface
     {
         $this->want_commodity = $wantcommodity;
 
@@ -208,6 +220,30 @@ class Deals implements DealsInterface
     public function setEnd(int $end): DealsInterface
     {
         $this->end = $end;
+
+        return $this;
+    }
+
+    public function getWantedCommodity(): CommodityInterface
+    {
+        return $this->wantedCommodity;
+    }
+
+    public function setWantedCommodity(CommodityInterface $wantedCommodity): DealsInterface
+    {
+        $this->wantedCommodity = $wantedCommodity;
+
+        return $this;
+    }
+
+    public function getGiveCommodity(): CommodityInterface
+    {
+        return $this->giveCommodity;
+    }
+
+    public function setGiveCommodity(CommodityInterface $giveCommodity): DealsInterface
+    {
+        $this->giveCommodity = $giveCommodity;
 
         return $this;
     }
