@@ -45,6 +45,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
                 WHERE ((pm.send_user = :sendUserId AND pm.recip_user = :recipUserId) OR
                     (pm.send_user = :recipUserId AND pm.recip_user = :sendUserId))
                 AND pmf.special in (:specialIds)
+                AND pm.deleted IS NULL
                 ORDER BY pm.date DESC',
                 PrivateMessage::class,
                 PrivateMessageFolder::class
@@ -71,7 +72,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         int $limit
     ): iterable {
         return $this->findBy(
-            ['recip_user' => $userId, 'cat_id' => $folderId],
+            ['recip_user' => $userId, 'cat_id' => $folderId, 'deleted' => NULL],
             ['date' => 'desc', 'id' => 'desc'],
             $limit,
             $offset

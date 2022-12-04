@@ -34,7 +34,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
     public function getOrderedByUser(int $userId): iterable
     {
         return $this->findBy(
-            ['user_id' => $userId],
+            ['user_id' => $userId, 'deleted' => NULL],
             ['sort' => 'asc'],
         );
     }
