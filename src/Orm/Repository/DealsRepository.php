@@ -91,7 +91,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige = NULL AND d.buildplan_id = NULL AND d.ship = FALSE
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
                     ',
                         Deals::class,
                     )
@@ -112,7 +112,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige = NULL AND d.buildplan_id > 0 AND d.ship = TRUE
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE
                     ',
                         Deals::class,
                     )
@@ -133,7 +133,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige = NULL AND d.buildplan_id > 0 AND d.ship = FALSE
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
                     ',
                         Deals::class,
                     )
@@ -154,7 +154,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity = NULL AND d.buildplan_id = NULL AND d.ship = FALSE
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
                     ',
                         Deals::class,
                     )
@@ -175,7 +175,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity = NULL AND d.buildplan_id > 0 AND d.ship = TRUE
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE
                     ',
                         Deals::class,
                     )
@@ -196,7 +196,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity = NULL AND d.buildplan_id > 0 AND d.ship = FALSE
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
                     ',
                         Deals::class,
                     )
