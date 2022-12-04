@@ -6,10 +6,7 @@ namespace Stu\Module\Trade\View\ShowDeals;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Entity\DealsInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Module\Trade\Lib\DealsItem;
-use Stu\Module\Trade\Lib\DealsItemInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -32,58 +29,14 @@ final class ShowDeals implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-        $user = $game->getUser();
 
-        $deals = $this->dealsRepository->getDeals($userId);
-
-        $activedeals = array_map(
-            function (DealsInterface $deals): DealsItemInterface {
-                return new DealsItem($deals);
-            },
-            $this->dealsRepository->getActiveDeals($userId)
-        );
-
-        $activedealsgoods = array_map(
-            function (DealsInterface $deals): DealsItemInterface {
-                return new DealsItem($deals);
-            },
-            $this->dealsRepository->getActiveDealsGoods($userId)
-        );
-
-        $activedealsships = array_map(
-            function (DealsInterface $deals): DealsItemInterface {
-                return new DealsItem($deals);
-            },
-            $this->dealsRepository->getActiveDealsShips($userId)
-        );
-
-        $activedealsbuildplans = array_map(
-            function (DealsInterface $deals): DealsItemInterface {
-                return new DealsItem($deals);
-            },
-            $this->dealsRepository->getActiveDealsBuildplans($userId)
-        );
-
-        $activedealsgoodsprestige = array_map(
-            function (DealsInterface $deals): DealsItemInterface {
-                return new DealsItem($deals);
-            },
-            $this->dealsRepository->getActiveDealsGoodsPrestige($userId)
-        );
-
-        $activedealsshipsprestige = array_map(
-            function (DealsInterface $deals): DealsItemInterface {
-                return new DealsItem($deals);
-            },
-            $this->dealsRepository->getActiveDealsShipsPrestige($userId)
-        );
-
-        $activedealsbuildplansprestige = array_map(
-            function (DealsInterface $deals): DealsItemInterface {
-                return new DealsItem($deals);
-            },
-            $this->dealsRepository->getActiveDealsBuildplansPrestige($userId)
-        );
+        $activedeals = $this->dealsRepository->getActiveDeals($userId);
+        $activedealsgoods = $this->dealsRepository->getActiveDealsGoods($userId);
+        $activedealsships = $this->dealsRepository->getActiveDealsShips($userId);
+        $activedealsbuildplans = $this->dealsRepository->getActiveDealsBuildplans($userId);
+        $activedealsgoodsprestige = $this->dealsRepository->getActiveDealsGoodsPrestige($userId);
+        $activedealsshipsprestige = $this->dealsRepository->getActiveDealsShipsPrestige($userId);
+        $activedealsbuildplansprestige = $this->dealsRepository->getActiveDealsBuildplansPrestige($userId);
 
         $game->appendNavigationPart(
             'trade.php',

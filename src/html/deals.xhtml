@@ -16,8 +16,8 @@
                     <th>Endet</th>
                     <th></th>
                 </tr>
-                <tal:block tal:repeat="deals ACTIVEDEALSGOODS">
-                    <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
+                <tal:block tal:repeat="data ACTIVEDEALSGOODS">
+                    <tr tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
                             ${data/getgiveCommodityAmount}</td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
@@ -28,8 +28,8 @@
                             ${data/getEnd}</td>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="deals ACTIVEDEALSGOODSPRESTIGE">
-                    <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
+                <tal:block tal:repeat="data ACTIVEDEALSGOODSPRESTIGE">
+                    <tr tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
                             ${data/getgiveCommodityAmount}</td>
                         <td><img src="assets/buttons/prestige.png" />
@@ -39,8 +39,8 @@
                             ${data/getEnd}</td>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="deals ACTIVEDEALSSHIPS">
-                    <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
+                <tal:block tal:repeat="data ACTIVEDEALSSHIPS">
+                    <tr tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/ships/${data/getBuildplanId}.png" /></td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                             ${data/getwantCommodityAmount}</td>
@@ -50,8 +50,8 @@
                             ${data/getEnd}</td>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="deals ACTIVEDEALSSHIPSPRESTIGE">
-                    <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
+                <tal:block tal:repeat="data ACTIVEDEALSSHIPSPRESTIGE">
+                    <tr tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/ships/${data/getBuildplanId}.png" /></td>
                         <td><img src="assets/buttons/prestige.png" />
                             ${data/getwantPrestige}</td>
@@ -61,8 +61,8 @@
                             ${data/getEnd}</td>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="deals ACTIVEDEALSBUILDPLANS">
-                    <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
+                <tal:block tal:repeat="data ACTIVEDEALSBUILDPLANS">
+                    <tr tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/buttons/builds1.png" /><img
                                 src="assets/ships/${data/getBuildplanId}.png" />
                         </td>
