@@ -20,7 +20,7 @@
                 <tal:block tal:repeat="deals ACTIVEDEALSGOODS">
                     <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
-                            ${data/getGiveCommodityCount}</td>
+                            ${data/getgiveCommodityAmount()}</td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                             ${data/getWantedCommodityCount}</td>
                         <td>
@@ -32,7 +32,7 @@
                 <tal:block tal:repeat="deals ACTIVEDEALSGOODSPRESTIGE">
                     <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
-                            ${data/getGiveCommodityCount}</td>
+                            ${data/getgiveCommodityAmount()}</td>
                         <td><img src="assets/buttons/prestige.png" />
                             ${data/getwantPrestige}</td>
                         <td>${data/getAmount}</td>
@@ -44,7 +44,7 @@
                     <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/ships/${data/getBuildplanId}.png" /></td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
-                            ${data/getWantedCommodityCount}</td>
+                            ${data/getWantedCommodityAmount}</td>
                         <td>
                             ${data/getAmount}</td>
                         <td>
@@ -68,7 +68,7 @@
                                 src="assets/ships/${data/getBuildplanId}.png" />
                         </td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
-                            ${data/getWantedCommodityCount}</td>
+                            ${data/getWantedCommodityAmount}</td>
                         <td>
                             ${data/getAmount}</td>
                         <td>
