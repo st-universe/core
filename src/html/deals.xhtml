@@ -19,9 +19,9 @@
                 </tr>
                 <tal:block tal:repeat="deals ACTIVEDEALSGOODS">
                     <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
-                        <td><img src="assets/commodities/${data/getgiveCommodity}.png" />
+                        <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
                             ${data/getGiveCommodityCount}</td>
-                        <td><img src="assets/commodities/${data/getWantedCommodity}.png" />
+                        <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                             ${data/getWantedCommodityCount}</td>
                         <td>
                             ${data/getAmount}</td>
@@ -31,7 +31,7 @@
                 </tal:block>
                 <tal:block tal:repeat="deals ACTIVEDEALSGOODSPRESTIGE">
                     <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
-                        <td><img src="assets/commodities/${data/getgiveCommodity}.png" />
+                        <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
                             ${data/getGiveCommodityCount}</td>
                         <td><img src="assets/buttons/prestige.png" />
                             ${data/getwantPrestige}</td>
@@ -43,7 +43,7 @@
                 <tal:block tal:repeat="deals ACTIVEDEALSSHIPS">
                     <tr tal:define="data deals/getDeals" tal:attributes="class string:row${repeat/deals/odd}">
                         <td><img src="assets/ships/${data/getBuildplanId}.png" /></td>
-                        <td><img src="assets/commodities/${data/getWantedCommodity}.png" />
+                        <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                             ${data/getWantedCommodityCount}</td>
                         <td>
                             ${data/getAmount}</td>
@@ -67,7 +67,7 @@
                         <td><img src="assets/buttons/builds1.png" /><img
                                 src="assets/ships/${data/getBuildplanId}.png" />
                         </td>
-                        <td><img src="assets/commodities/${data/getWantedCommodity}.png" />
+                        <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                             ${data/getWantedCommodityCount}</td>
                         <td>
                             ${data/getAmount}</td>
