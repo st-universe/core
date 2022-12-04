@@ -18,13 +18,13 @@ interface DealsInterface
 
     public function setAmount(DealsInterface $amount): DealsInterface;
 
-    public function getgiveCommodity(): CommodityInterface;
+    public function getgiveCommodityId(): int;
 
-    public function setgiveCommodity(CommodityInterface $givecommodity): DealsInterface;
+    public function setgiveCommodityId(CommodityInterface $givecommodity): DealsInterface;
 
-    public function getwantCommodity(): CommodityInterface;
+    public function getwantCommodityId(): int;
 
-    public function setwantCommodity(CommodityInterface $wantcommodity): DealsInterface;
+    public function setwantCommodityId(CommodityInterface $wantcommodity): DealsInterface;
 
     public function getgiveCommodityAmount(): CommodityInterface;
 
@@ -53,4 +53,12 @@ interface DealsInterface
     public function getEnd(): int;
 
     public function setEnd(int $end): DealsInterface;
+
+    public function getWantedCommodity(): CommodityInterface;
+
+    public function setWantedCommodity(CommodityInterface $wantedCommodity): DealsInterface;
+
+    public function getGiveCommodity(): CommodityInterface;
+
+    public function setGiveCommodity(CommodityInterface $giveCommodity): DealsInterface;
 }

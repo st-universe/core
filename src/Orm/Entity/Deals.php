@@ -114,7 +114,7 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getgiveCommodityId(): CommodityInterface
+    public function getgiveCommodityId(): int
     {
         return $this->give_commodity;
     }
@@ -127,7 +127,7 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getwantCommodityId(): CommodityInterface
+    public function getwantCommodityId(): int
     {
         return $this->want_commodity;
     }
