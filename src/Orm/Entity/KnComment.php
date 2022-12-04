@@ -133,4 +133,16 @@ class KnComment implements KnCommentInterface
 
         return $this;
     }
+
+    public function setDeleted(int $timestamp): KnCommentInterface
+    {
+        $this->deleted = $timestamp;
+
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deleted !== null;
+    }
 }

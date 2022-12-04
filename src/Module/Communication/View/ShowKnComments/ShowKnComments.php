@@ -39,7 +39,9 @@ final class ShowKnComments implements ViewControllerInterface
 
         $list = [];
         foreach ($post->getComments() as $comment) {
-            $list[] = new KnCommentTal($comment, $user);
+            if (!$comment->isDeleted()) {
+                $list[] = new KnCommentTal($comment, $user);
+            }
         }
 
         $game->setPageTitle(sprintf(_('Kommentare für Beitrag %d'), $post->getId()));

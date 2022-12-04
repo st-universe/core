@@ -67,6 +67,6 @@ final class KnCommentTal implements KnCommentTalInterface
 
     public function isDeleteable(): bool
     {
-        return $this->comment->getUser() === $this->currentUser || $this->comment->getPosting()->getUser() === $this->currentUser;
+        return $this->comment->getUser() === $this->currentUser;
     }
 }

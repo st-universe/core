@@ -28,7 +28,6 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        //$em->flush();
     }
 
     public function stopQueueByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void

@@ -31,4 +31,8 @@ interface KnCommentInterface
     public function getPosting(): KnPostInterface;
 
     public function setPosting(KnPostInterface $post): KnCommentInterface;
+
+    public function setDeleted(int $timestamp): KnCommentInterface;
+
+    public function isDeleted(): bool;
 }
