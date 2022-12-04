@@ -21,7 +21,7 @@ final class KnCommentRepository extends EntityRepository implements KnCommentRep
 
     public function getAmountByPost(KnPostInterface $post): int
     {
-        return $this->count(['post_id' => $post]);
+        return $this->count(['post_id' => $post, 'deleted' => NULL]);
     }
 
     public function prototype(): KnCommentInterface
