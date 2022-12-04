@@ -35,4 +35,8 @@ interface PrivateMessageFolderInterface
     public function isDropable(): bool;
 
     public function isDeleteAble(): bool;
+
+    public function setDeleted(int $timestamp): PrivateMessageFolderInterface;
+
+    public function isDeleted(): bool;
 }

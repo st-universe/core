@@ -31,6 +31,8 @@ final class DeletePmCategory implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $timestamp = time();
+
         $folder = $this->privateMessageFolderRepository->find($this->deletePmCategoryRequest->getCategoryId());
         if (
             $folder === null ||
@@ -39,9 +41,10 @@ final class DeletePmCategory implements ActionControllerInterface
         ) {
             return;
         }
-        $this->privateMessageRepository->truncateByFolder($folder->getId());
+        $this->privateMessageRepository->setDeleteTimestampByFolder($folder->getId(), $timestamp);
 
-        $this->privateMessageFolderRepository->delete($folder);
+        $folder->setDeleted($timestamp);
+        $this->privateMessageFolderRepository->save($folder);
 
         $game->addInformation(_('Der Ordner wurde gelöscht'));
     }

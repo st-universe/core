@@ -60,7 +60,7 @@ final class Overview implements ViewControllerInterface
             );
         } else {
             $category = $this->privateMessageFolderRepository->find($categoryId);
-            if ($category === null || $category->getUserId() !== $userId) {
+            if ($category === null || $category->getUserId() !== $userId || $category->isDeleted()) {
                 $category = $this->privateMessageFolderRepository->getByUserAndSpecial(
                     $userId,
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN

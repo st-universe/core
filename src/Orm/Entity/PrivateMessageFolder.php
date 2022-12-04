@@ -156,4 +156,16 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     {
         return $this->getSpecial() === 0;
     }
+
+    public function setDeleted(int $timestamp): PrivateMessageFolderInterface
+    {
+        $this->deleted = $timestamp;
+
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deleted !== null;
+    }
 }
