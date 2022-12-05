@@ -86,11 +86,9 @@ final class OpenAdventDoor implements ActionControllerInterface
         $tries = $this->gameRequestRepository->getOpenAdventDoorTriesForUser($userId);
 
         //check for nicholas present
-        if ((int)date("j") === 5 && $userId === 126) {
-            if ($tries === 1) {
-                $this->nicholasPresent($game);
-                return;
-            }
+        if ((int)date("j") === 5 && $tries === 1 && $userId === 126) {
+            $this->nicholasPresent($game);
+            return;
         } else {
             if ($tries > 0) {
                 $game->addInformation("Du hast heute bereits ein Türchen geöffnet");
