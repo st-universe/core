@@ -127,7 +127,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->createNativeQuery(
                 'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id,
                     dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
-                    tp.id as tradepost_id, sys.name as system_name
+                    sys.name as system_name,
+                    (SELECT tp.id FROM stu_ships s JOIN stu_trade_posts tp ON s.id = tp.ship_id WHERE s.map_id = m.id) as tradepost_id
                 FROM stu_map m
                 LEFT JOIN stu_user_map um
                     ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId
@@ -136,8 +137,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 LEFT JOIN stu_database_user dbu
                     ON dbu.user_id = :userId
                     AND sys.database_id = dbu.database_id
-                LEFT JOIN stu_trade_posts tp
-                    ON tp.map_id = m.id
                 WHERE m.cx
                 BETWEEN :startX AND :endX AND m.cy = :cy
                 ORDER BY m.cx ASC',

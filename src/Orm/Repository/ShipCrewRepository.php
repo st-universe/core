@@ -62,8 +62,10 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             FROM stu_crew_assign ca
             JOIN stu_trade_posts tp
             ON ca.tradepost_id = tp.id
+            JOIN stu_ships s
+            ON tp.ship_id = s.id
             JOIN stu_map m
-            ON tp.map_id = m.id
+            ON s.map_id = m.id
             WHERE ca.user_id = :userId
             GROUP BY tp.id, tp.name, m.cx, m.cy',
             $rsm

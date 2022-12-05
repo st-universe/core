@@ -52,7 +52,7 @@ class TradePost implements TradePostInterface
     /** @Column(type="integer") * */
     private $storage = 0;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer", nullable=true) * */
     private $map_id;
 
     /**
@@ -66,12 +66,6 @@ class TradePost implements TradePostInterface
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
-
-    /**
-     * @OneToOne(targetEntity="Map")
-     * @JoinColumn(name="map_id", referencedColumnName="id")
-     */
-    private $map;
 
     /**
      * @OneToMany(targetEntity="ShipCrew", mappedBy="tradepost")
@@ -205,13 +199,6 @@ class TradePost implements TradePostInterface
     public function setShip(ShipInterface $ship): TradePostInterface
     {
         $this->ship = $ship;
-
-        return $this;
-    }
-
-    public function setMap(MapInterface $map): TradePostInterface
-    {
-        $this->map = $map;
 
         return $this;
     }

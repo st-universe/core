@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\Map;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradePostInterface;
@@ -114,12 +115,15 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->createQuery(
                 sprintf(
                     'SELECT tp
-                    FROM %s tp 
-                    JOIN %s m 
-                    WITH tp.map_id = m.id
+                    FROM %s tp
+                    JOIN %s s
+                    WITH tp.ship_id = s.id
+                    JOIN %s m
+                    WITH s.map_id = m.id
                     WHERE tp.user_id < :firstUserId
                     ORDER BY abs(m.cx - :cx) + abs(m.cy - :cy) ASC',
                     TradePost::class,
+                    Ship::class,
                     Map::class
                 )
             )
