@@ -10,6 +10,7 @@ use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
@@ -57,7 +58,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         $userId = $game->getUser()->getId();
         $dealId = $this->dealstakeOfferRequest->getDealId();
         $amount = $this->dealstakeOfferRequest->getAmount();
-
+        $game->setView(ShowDeals::VIEW_IDENTIFIER);
         if ($amount < 1) {
             return;
         }
