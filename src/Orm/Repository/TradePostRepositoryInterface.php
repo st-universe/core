@@ -28,4 +28,8 @@ interface TradePostRepositoryInterface extends ObjectRepository
     public function getTradePostIdByShip(int $ship_id): int;
 
     public function getClosestNpcTradePost(int $cx, int $cy): TradePostInterface;
+
+    public function getFergTradePost(
+        int $tradePostId
+    ): ?TradePostInterface;
 }

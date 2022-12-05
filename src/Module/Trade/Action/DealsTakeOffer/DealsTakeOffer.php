@@ -13,6 +13,7 @@ use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class DealsTakeOffer implements ActionControllerInterface
@@ -25,6 +26,8 @@ final class DealsTakeOffer implements ActionControllerInterface
 
     private DealsRepositoryInterface $dealsRepository;
 
+    private TradePostRepositoryInterface $tradepostRepository;
+
     private StorageRepositoryInterface $storageRepository;
 
     private CreatePrestigeLogInterface $createPrestigeLog;
@@ -33,6 +36,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         DealsTakeOfferRequestInterface $dealstakeOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
         DealsRepositoryInterface $dealsRepository,
+        TradePostRepositoryInterface $tradepostRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransactionRepositoryInterface $tradeTransactionRepository,
         StorageRepositoryInterface $storageRepository,
@@ -40,6 +44,7 @@ final class DealsTakeOffer implements ActionControllerInterface
     ) {
         $this->dealstakeOfferRequest = $dealstakeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradepostRepository = $tradepostRepository;
         $this->dealsRepository = $dealsRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransactionRepository = $tradeTransactionRepository;
@@ -90,7 +95,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             }
         }
 
-        $tradePost = $this->dealsRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
 
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
 

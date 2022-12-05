@@ -63,7 +63,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getFergTradePost(
         int $tradePostId
-    ): TradePostInterface {
+    ): ?TradePostInterface {
         return $this->findOneBy([
             'id' => $tradePostId
         ]);

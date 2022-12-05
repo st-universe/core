@@ -135,4 +135,12 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ])
             ->getSingleResult();
     }
+
+    public function getFergTradePost(
+        int $tradePostId
+    ): ?TradePostInterface {
+        return $this->findOneBy([
+            'id' => $tradePostId
+        ]);
+    }
 }
