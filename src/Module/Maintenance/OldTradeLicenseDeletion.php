@@ -3,7 +3,7 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\TimeConstants;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
@@ -19,14 +19,18 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private StuTime $stuTime;
+
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        StuTime $stuTime
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLicenseInfoRepository = $tradeLicenseInfoRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->stuTime = $stuTime;
     }
 
     public function handle(): void
@@ -53,7 +57,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
                 sprintf(
                     "Deine Lizenz am Handelsposten %s läuft in weniger als %d Tage(n) ab.",
                     $license->getTradePost()->getName(),
-                    (int)ceil(($license->getExpired() - time()) / TimeConstants::ONE_DAY_IN_SECONDS)
+                    $license->getRemainingFullDays($this->stuTime) + 1
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
             );

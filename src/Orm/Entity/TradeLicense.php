@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Game\TimeConstants;
+use Stu\Module\Control\StuTime;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradeLicenseRepository")
  * @Table(
@@ -113,5 +116,10 @@ class TradeLicense implements TradeLicenseInterface
         $this->tradePost = $tradePost;
 
         return $this;
+    }
+
+    public function getRemainingFullDays(?StuTime $stuTime = null): int
+    {
+        return (int)floor(($this->getExpired() - ($stuTime !== null ? $stuTime->time() : time())) / TimeConstants::ONE_DAY_IN_SECONDS);
     }
 }

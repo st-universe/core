@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Module\Control\StuTime;
+
 interface TradeLicenseInterface
 {
     public function getId(): int;
@@ -27,4 +29,6 @@ interface TradeLicenseInterface
     public function getTradePost(): TradePostInterface;
 
     public function setTradePost(TradePostInterface $tradePost): TradeLicenseInterface;
+
+    public function getRemainingFullDays(?StuTime $stuTime = null): int;
 }
