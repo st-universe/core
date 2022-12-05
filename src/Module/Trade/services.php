@@ -22,6 +22,9 @@ use Stu\Module\Trade\Action\CreateLicense\CreateLicenseRequestInterface;
 use Stu\Module\Trade\Action\CreateOffer\CreateOffer;
 use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequest;
 use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequestInterface;
+use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOffer;
+use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequest;
+use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequestInterface;
 use Stu\Module\Trade\Action\TakeOffer\TakeOffer;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequest;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequestInterface;
@@ -84,6 +87,7 @@ return [
     ChangeTradePostNameRequestInterface::class => autowire(ChangeTradePostNameRequest::class),
     ShowTakeOfferRequestInterface::class => autowire(ShowTakeOfferRequest::class),
     ShowTradePostInfoRequestInterface::class => autowire(ShowTradePostInfoRequest::class),
+    DealsTakeOfferRequestInterface::class => autowire(DealsTakeOfferRequest::class),
     TakeOfferRequestInterface::class => autowire(TakeOfferRequest::class),
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
     CreateLicenseRequestInterface::class => autowire(CreateLicenseRequest::class),
@@ -101,6 +105,7 @@ return [
         ChangeTradePostName::ACTION_IDENTIFIER => autowire(ChangeTradePostName::class),
         CreateLicense::ACTION_IDENTIFIER => autowire(CreateLicense::class),
         CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
+        DealsTakeOffer::ACTION_IDENTIFIER => autowire(DealsTakeOffer::class),
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
         TransferCommodities::ACTION_IDENTIFIER => autowire(TransferCommodities::class)
     ],

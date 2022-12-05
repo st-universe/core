@@ -115,9 +115,9 @@ class Deals implements DealsInterface
     }
 
 
-    public function setAmount(DealsInterface $amount): DealsInterface
+    public function setAmount(int $dealamount): DealsInterface
     {
-        $this->amount = $amount;
+        $this->amount = $dealamount;
 
         return $this;
     }
@@ -283,5 +283,10 @@ class Deals implements DealsInterface
     {
         $bpname = $this->getBuildplan()->getName();
         return $bpname;
+    }
+
+    public function getStorage(): StorageInterface
+    {
+        return $this->storage;
     }
 }

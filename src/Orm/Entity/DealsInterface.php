@@ -16,7 +16,7 @@ interface DealsInterface
 
     public function getAmount(): int;
 
-    public function setAmount(DealsInterface $amount): DealsInterface;
+    public function setAmount(int $amount): DealsInterface;
 
     public function getgiveCommodityId(): int;
 
@@ -69,4 +69,6 @@ interface DealsInterface
     public function getRumpId(): int;
 
     public function getBuildplanName(): string;
+
+    public function getStorage(): StorageInterface;
 }

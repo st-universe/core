@@ -18,14 +18,19 @@
                 </tr>
                 <tal:block tal:repeat="data ACTIVEDEALSGOODS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
-                        <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
-                            ${data/getgiveCommodityAmount}</td>
-                        <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
-                            ${data/getwantCommodityAmount}</td>
-                        <td>
-                            ${data/getAmount}</td>
-                        <td>
-                            ${data/getEnd}</td>
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" tal:attributes="value data/getId" />
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
+                                ${data/getgiveCommodityAmount}</td>
+                            <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
+                                ${data/getwantCommodityAmount}</td>
+                            <td>
+                                ${data/getAmount}</td>
+                            <td>
+                                ${data/getEnd}</td>
+                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
+                                    value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                     </tr>
                 </tal:block>
                 <tal:block tal:repeat="data ACTIVEDEALSGOODSPRESTIGE">
