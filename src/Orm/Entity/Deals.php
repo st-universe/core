@@ -278,4 +278,10 @@ class Deals implements DealsInterface
         $rumpid = $this->getBuildplan()->getRumpId();
         return $rumpid;
     }
+
+    public function getBuildplanName(): string
+    {
+        $bpname = $this->getBuildplan()->getName();
+        return $bpname;
+    }
 }

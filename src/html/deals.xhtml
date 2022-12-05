@@ -41,7 +41,11 @@
                 </tal:block>
                 <tal:block tal:repeat="data ACTIVEDEALSSHIPS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
-                        <td><img src="assets/ships/${data/getBuildplanId}.png" /></td>
+                        <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                            <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                                style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                                title="${mod/getName}" />
+                        </td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                             ${data/getwantCommodityAmount}</td>
                         <td>
@@ -52,7 +56,11 @@
                 </tal:block>
                 <tal:block tal:repeat="data ACTIVEDEALSSHIPSPRESTIGE">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
-                        <td><img src="assets/ships/${data/getBuildplanId}.png" /></td>
+                        <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                            <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                                style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                                title="${mod/getName}" />
+                        </td>
                         <td><img src="assets/buttons/prestige.png" />
                             ${data/getwantPrestige}</td>
                         <td>
@@ -63,13 +71,30 @@
                 </tal:block>
                 <tal:block tal:repeat="data ACTIVEDEALSBUILDPLANS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
-                        <td><img src="assets/buttons/builds1.png" /> <img src="assets/ships/${data/getRumpId}.png" />
+                        <td><img src="assets/buttons/builds1.png" /> <img src="assets/ships/${data/getRumpId}.png"
+                                title="${data/getBuildplanName}" />
                             <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                 style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                 title="${mod/getName}" />
                         </td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                             ${data/getwantCommodityAmount}</td>
+                        <td>
+                            ${data/getAmount}</td>
+                        <td>
+                            ${data/getEnd}</td>
+                    </tr>
+                </tal:block>
+                <tal:block tal:repeat="data ACTIVEDEALSBUILDPLANSPRESTIGE">
+                    <tr tal:attributes="class string:row${repeat/data/odd}">
+                        <td><img src="assets/buttons/builds1.png" /> <img src="assets/ships/${data/getRumpId}.png"
+                                title="${data/getBuildplanName}" />
+                            <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                                style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                                title="${mod/getName}" />
+                        </td>
+                        <td><img src="assets/buttons/prestige.png" />
+                            ${data/getwantPrestige}</td>
                         <td>
                             ${data/getAmount}</td>
                         <td>

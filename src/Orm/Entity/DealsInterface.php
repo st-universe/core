@@ -67,4 +67,6 @@ interface DealsInterface
     public function getBuildplan(): ?ShipBuildplanInterface;
 
     public function getRumpId(): int;
+
+    public function getBuildplanName(): string;
 }
