@@ -89,7 +89,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         $commodity = $this->commodityRepository->find(CommodityTypeEnum::COMMODITY_ADVENT_POINT);
         $this->shipStorageManager->upperStorage($ship, $commodity, 1);
 
-        $game->addInformation(sprintf('1 %s wurde in den Frachraum deines Schiffes transferiert', $commodity->getName()));
+        $game->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));
     }
 
     public function performSessionCheck(): bool
