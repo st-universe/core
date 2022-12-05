@@ -30,15 +30,20 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 
     public function handle(): void
     {
-        $this->informAboutAlmostExpiredLicenses();
-        $this->deleteExpiredLicenses();
+        $deletedLicenses = $this->deleteExpiredLicenses();
+        $this->informAboutAlmostExpiredLicenses($deletedLicenses);
     }
 
-    private function informAboutAlmostExpiredLicenses(): void
+    private function informAboutAlmostExpiredLicenses(array $deletedLicenses): void
     {
         $almostExpiredLicenses = $this->tradeLicenseRepository->getLicensesExpiredInLessThan(self::INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS);
 
         foreach ($almostExpiredLicenses as $license) {
+
+            //skip just deleted licenses
+            if (array_key_exists($license->getId(), $deletedLicenses)) {
+                continue;
+            }
 
             // send message to user
             $this->privateMessageSender->send(
@@ -47,14 +52,14 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
                 sprintf(
                     "Deine Lizenz am Handelsposten %s läuft in weniger als %d Tagen ab.",
                     $license->getTradePost()->getName(),
-                    self::INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS
+                    $license->getExpired() - time()
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
             );
         }
     }
 
-    private function deleteExpiredLicenses(): void
+    private function deleteExpiredLicenses(): array
     {
         $licensesToDelete = $this->tradeLicenseRepository->getExpiredLicenses();
 
@@ -77,5 +82,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 
             $this->tradeLicenseRepository->delete($license);
         }
+
+        return $licensesToDelete;
     }
 }

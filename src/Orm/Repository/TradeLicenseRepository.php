@@ -193,7 +193,8 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tl FROM %s tl WHERE tl.expired < :actualTime',
+                    'SELECT tl FROM %s tl INDEX BY tl.id
+                    WHERE tl.expired < :actualTime',
                     TradeLicense::class
                 )
             )
