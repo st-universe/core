@@ -13,6 +13,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -22,6 +23,8 @@ final class OpenAdventDoor implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ADVENT_DOOR';
 
+    private const NICHOLAS_AMOUNT = 500;
+
     private ShipLoaderInterface $shipLoader;
 
     private GameRequestRepositoryInterface $gameRequestRepository;
@@ -30,6 +33,8 @@ final class OpenAdventDoor implements ActionControllerInterface
 
     private ShipStorageManager $shipStorageManager;
 
+    private CreatePrestigeLogInterface $createPrestigeLog;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -37,12 +42,14 @@ final class OpenAdventDoor implements ActionControllerInterface
         GameRequestRepositoryInterface $gameRequestRepository,
         CommodityRepositoryInterface $commodityRepository,
         ShipStorageManager $shipStorageManager,
+        CreatePrestigeLogInterface $createPrestigeLog,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->gameRequestRepository = $gameRequestRepository;
         $this->commodityRepository = $commodityRepository;
         $this->shipStorageManager = $shipStorageManager;
+        $this->createPrestigeLog = $createPrestigeLog;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -76,9 +83,19 @@ final class OpenAdventDoor implements ActionControllerInterface
             return;
         }
 
-        if ($this->gameRequestRepository->hasUserOpenedAdventDoor($userId)) {
-            $game->addInformation("Du hast heute bereits ein Türchen geöffnet");
-            return;
+        $tries = $this->gameRequestRepository->getOpenAdventDoorTriesForUser($userId);
+
+        //check for nicholas present
+        if ((int)date("j") === 5 && $userId === 126) {
+            if ($tries === 1) {
+                $this->nicholasPresent($game);
+                return;
+            }
+        } else {
+            if ($tries > 0) {
+                $game->addInformation("Du hast heute bereits ein Türchen geöffnet");
+                return;
+            }
         }
 
         if ($ship->getStorageSum() === $ship->getMaxStorage()) {
@@ -90,6 +107,20 @@ final class OpenAdventDoor implements ActionControllerInterface
         $this->shipStorageManager->upperStorage($ship, $commodity, 1);
 
         $game->addInformation(sprintf('1 %s wurde in den Frachtraum deines Schiffes transferiert', $commodity->getName()));
+    }
+
+    private function nicholasPresent(GameControllerInterface $game): void
+    {
+        $msg = sprintf('%d Prestige vom Nikolaus erhalten', self::NICHOLAS_AMOUNT);
+
+        $this->createPrestigeLog->createLog(
+            self::NICHOLAS_AMOUNT,
+            $msg,
+            $game->getUser(),
+            time()
+        );
+
+        $game->addInformation("Du hast " . $msg);
     }
 
     public function performSessionCheck(): bool

@@ -16,5 +16,5 @@ interface GameRequestRepositoryInterface extends ObjectRepository
 
     public function delete(GameRequestInterface $gameRequest): void;
 
-    public function hasUserOpenedAdventDoor(int $userId): bool;
+    public function getOpenAdventDoorTriesForUser(int $userId): int;
 }

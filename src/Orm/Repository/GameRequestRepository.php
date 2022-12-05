@@ -28,9 +28,9 @@ final class GameRequestRepository extends EntityRepository implements GameReques
         $em->remove($gameRequest);
     }
 
-    public function hasUserOpenedAdventDoor(int $userId): bool
+    public function getOpenAdventDoorTriesForUser(int $userId): int
     {
-        return ((int) $this->getEntityManager()
+        return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT COUNT(gr.id) FROM %s gr
@@ -45,6 +45,6 @@ final class GameRequestRepository extends EntityRepository implements GameReques
                 'params' => sprintf('%%[advent] => %s%%', date("m.d.y")),
                 'action' => OpenAdventDoor::ACTION_IDENTIFIER
             ])
-            ->getSingleScalarResult()) > 0;
+            ->getSingleScalarResult();
     }
 }
