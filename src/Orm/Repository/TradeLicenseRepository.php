@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
 use Stu\Orm\Entity\TradePost;
@@ -170,6 +171,21 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                 'tradeNetworkId' => $tradeNetworkId
             ])
             ->getSingleScalarResult() > 0;
+    }
+
+    public function getLicensesExpiredInLessThan(int $days): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tl FROM %s tl WHERE tl.expired < :threshold',
+                    TradeLicense::class
+                )
+            )
+            ->setParameters([
+                'threshold' => time() + TimeConstants::ONE_DAY_IN_SECONDS * $days
+            ])
+            ->getResult();
     }
 
     public function getExpiredLicenses(): array

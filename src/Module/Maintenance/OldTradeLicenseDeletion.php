@@ -10,6 +10,8 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 
 final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 {
+    private const INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS = 7;
+
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
     private TradeLicenseInfoRepositoryInterface $tradeLicenseInfoRepository;
@@ -27,6 +29,32 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
     }
 
     public function handle(): void
+    {
+        $this->informAboutAlmostExpiredLicenses();
+        $this->deleteExpiredLicenses();
+    }
+
+    private function informAboutAlmostExpiredLicenses(): void
+    {
+        $almostExpiredLicenses = $this->tradeLicenseRepository->getLicensesExpiredInLessThan(self::INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS);
+
+        foreach ($almostExpiredLicenses as $license) {
+
+            // send message to user
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $license->getUser()->getId(),
+                sprintf(
+                    "Deine Lizenz am Handelsposten %s läuft in weniger als %d Tagen ab.",
+                    $license->getTradePost()->getName(),
+                    self::INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS
+                ),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+            );
+        }
+    }
+
+    private function deleteExpiredLicenses(): void
     {
         $licensesToDelete = $this->tradeLicenseRepository->getExpiredLicenses();
 

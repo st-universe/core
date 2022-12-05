@@ -47,5 +47,10 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
     /**
      * @return TradeLicenseInterface[]
      */
+    public function getLicensesExpiredInLessThan(int $days): array;
+
+    /**
+     * @return TradeLicenseInterface[]
+     */
     public function getExpiredLicenses(): array;
 }
