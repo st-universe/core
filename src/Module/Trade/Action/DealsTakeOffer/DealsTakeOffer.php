@@ -6,8 +6,7 @@ namespace Stu\Module\Trade\Action\DealsTakeOffer;
 
 use Stu\Exception\AccessViolation;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -28,22 +27,24 @@ final class DealsTakeOffer implements ActionControllerInterface
 
     private StorageRepositoryInterface $storageRepository;
 
+    private CreatePrestigeLogInterface $createPrestigeLog;
+
     public function __construct(
         DealsTakeOfferRequestInterface $dealstakeOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
         DealsRepositoryInterface $dealsRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
         TradeTransactionRepositoryInterface $tradeTransactionRepository,
-        StorageRepositoryInterface $storageRepository
+        StorageRepositoryInterface $storageRepository,
+        CreatePrestigeLogInterface $createPrestigeLog
     ) {
         $this->dealstakeOfferRequest = $dealstakeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->dealsRepository = $dealsRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->privateMessageSender = $privateMessageSender;
         $this->tradeTransactionRepository = $tradeTransactionRepository;
         $this->storageRepository = $storageRepository;
+        $this->createPrestigeLog = $createPrestigeLog;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -70,67 +71,105 @@ final class DealsTakeOffer implements ActionControllerInterface
             ));
         }
 
+        if ($selectedDeal->getwantCommodityId() > 0 || $selectedDeal->getwantPrestige() > 0) {
 
-        $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
-            TradeEnum::DEALS_FERG_TRADEPOST_ID,
-            $userId,
-            $selectedDeal->getWantCommodityId()
-        );
+            if ($selectedDeal->getwantCommodityId() > 0) {
+                $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
+                    TradeEnum::DEALS_FERG_TRADEPOST_ID,
+                    $userId,
+                    $selectedDeal->getWantCommodityId()
+                );
 
-        if ($storage === null || $storage->getAmount() < $selectedDeal->getwantCommodityAmount()) {
-            $game->addInformation(sprintf(
-                _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
-                $selectedDeal->getWantedCommodity()->getName()
-            ));
-            return;
-        }
 
-        $tradePost = $storage->getTradePost();
-
-        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
-
-        $freeStorage = $storageManagerUser->getFreeStorage();
-
-        if (
-            $freeStorage <= 0 &&
-            $selectedDeal->getgiveCommodityAmount() > $selectedDeal->getwantCommodityAmount()
-        ) {
-            $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
-            return;
-        }
-        if ($amount * $selectedDeal->getwantCommodityAmount() > $storage->getAmount()) {
-            $amount = (int) floor($storage->getAmount() / $selectedDeal->getwantCommodityAmount());
-        }
-        if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getwantCommodityAmount() > $freeStorage) {
-            $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getwantCommodityAmount()));
-            if ($amount <= 0) {
-                $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
-                return;
+                if ($storage === null || $storage->getAmount() < $selectedDeal->getwantCommodityAmount()) {
+                    $game->addInformation(sprintf(
+                        _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
+                        $selectedDeal->getWantedCommodity()->getName()
+                    ));
+                    return;
+                }
             }
+
+            $tradePost = $this->dealsRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+
+            $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
+
+            $freeStorage = $storageManagerUser->getFreeStorage();
+
+            if ($selectedDeal->getwantCommodityId() > 0) {
+
+                if (
+                    $freeStorage <= 0 &&
+                    $selectedDeal->getgiveCommodityAmount() > $selectedDeal->getwantCommodityAmount()
+                ) {
+                    $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
+                    return;
+                }
+                if ($amount * $selectedDeal->getwantCommodityAmount() > $storage->getAmount()) {
+                    $amount = (int) floor($storage->getAmount() / $selectedDeal->getwantCommodityAmount());
+                }
+                if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getwantCommodityAmount() > $freeStorage) {
+                    $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getwantCommodityAmount()));
+                    if ($amount <= 0) {
+                        $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
+                        return;
+                    }
+                }
+            }
+
+            if ($selectedDeal->getwantPrestige() > 0) {
+                $userprestige = $game->getUser()->getPrestige();
+                if (
+                    $freeStorage <= 0
+                ) {
+                    $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
+                    return;
+                }
+                if ($amount * $selectedDeal->getwantPrestige() > $userprestige) {
+                    $amount = (int) floor($userprestige / $selectedDeal->getwantPrestige());
+                }
+                if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getwantPrestige() > $freeStorage) {
+                    $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getwantPrestige()));
+                    if ($amount <= 0) {
+                        $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
+                        return;
+                    }
+                }
+            }
+
+
+            if ($selectedDeal->getAmount() <= $amount) {
+                $amount = $selectedDeal->getAmount();
+
+                $this->dealsRepository->delete($selectedDeal);
+            } else {
+
+                //modify deal
+                $selectedDeal->setAmount($selectedDeal->getAmount() - (int) $amount);
+                $this->dealsRepository->save($selectedDeal);
+            }
+
+            $storageManagerUser->upperStorage(
+                (int) $selectedDeal->getgiveCommodityId(),
+                (int) $selectedDeal->getgiveCommodityAmount() * $amount
+            );
+
+            if ($selectedDeal->getwantCommodityId() > 0) {
+                $storageManagerUser->lowerStorage(
+                    (int) $selectedDeal->getwantCommodityId(),
+                    (int) $selectedDeal->getwantCommodityAmount() * $amount
+                );
+            }
+
+            if ($selectedDeal->getwantPrestige() > 0) {
+                $description = sprintf(
+                    '%d Prestige beim Deals des Großen Nagus eingebüßt',
+                    $amount
+                );
+                $this->createPrestigeLog->createLog($amount, $description, $game->getUser(), time());
+            }
+            $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
         }
-
-        if ($selectedDeal->getAmount() <= $amount) {
-            $amount = $selectedDeal->getAmount();
-
-            $this->dealsRepository->delete($selectedDeal);
-        } else {
-
-            //modify deal
-            $selectedDeal->setAmount($selectedDeal->getAmount() - (int) $amount);
-            $this->dealsRepository->save($selectedDeal);
-        }
-
-        $storageManagerUser->upperStorage(
-            (int) $selectedDeal->getgiveCommodityId(),
-            (int) $selectedDeal->getgiveCommodityAmount() * $amount
-        );
-
-        $storageManagerUser->lowerStorage(
-            (int) $selectedDeal->getwantCommodityId(),
-            (int) $selectedDeal->getwantCommodityAmount() * $amount
-        );
-
-        $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
     }
 
     public function performSessionCheck(): bool

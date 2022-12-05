@@ -9,6 +9,7 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\DealsInterface;
 use Stu\Orm\Entity\TradeLicense;
+use Stu\Orm\Entity\TradePostInterface;
 
 final class DealsRepository extends EntityRepository implements DealsRepositoryInterface
 {
@@ -58,6 +59,14 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ])->getSingleScalarResult();
 
         return $result > 0;
+    }
+
+    public function getFergTradePost(
+        int $tradePostId
+    ): ?TradePostInterface {
+        return $this->findOneBy([
+            'id' => $tradePostId
+        ]);
     }
 
     public function getActiveDeals(int $userId): array

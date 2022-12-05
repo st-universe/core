@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\DealsInterface;
+use Stu\Orm\Entity\TradePostInterface;
 
 /**
  * @method null|DealsInterface find(integer $id)
@@ -37,4 +38,12 @@ interface DealsRepositoryInterface extends ObjectRepository
     public function getActiveDealsBuildplansPrestige(int $userId): array;
 
     public function getActiveAuctions(int $userId): array;
+
+    /**
+     * @return TradePostInterface
+     */
+
+    public function getFergTradePost(
+        int $tradePostId
+    ): ?TradePostInterface;
 }
