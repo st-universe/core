@@ -63,8 +63,9 @@
                 </tal:block>
                 <tal:block tal:repeat="data ACTIVEDEALSBUILDPLANS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
-                        <td><img src="assets/buttons/builds1.png" /><img
-                                src="assets/ships/${data/getBuildplanId}.png" />
+                        <td><img src="assets/buttons/builds1.png" /> <img tal:condition="data/getBuildplan"
+                                tal:repeat="mod data/getModules" style="margin-right: 5px;"
+                                src="assets/commodities/${mod/getCommodityId}.png" title="${mod/getName}" />
                         </td>
                         <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                             ${data/getwantCommodityAmount}</td>

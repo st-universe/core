@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\DealsRepository")
  * @Table(
@@ -70,6 +72,12 @@ class Deals implements DealsInterface
      * @JoinColumn(name="give_commodity", referencedColumnName="id", onDelete="CASCADE")
      */
     private $giveCommodity;
+
+    /**
+     * @ManyToOne(targetEntity="ShipBuildplan")
+     * @JoinColumn(name="buildplan_id", referencedColumnName="id")
+     */
+    private $buildplan;
 
     public function getId(): int
     {
@@ -246,5 +254,22 @@ class Deals implements DealsInterface
         $this->giveCommodity = $giveCommodity;
 
         return $this;
+    }
+
+    public function getModules(): array
+    {
+        $modules = [];
+
+        foreach ($this->getBuildplan()->getModules() as $obj) {
+            $module = $obj->getModule();
+            $index = $module->getType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL ? $module->getId() : $module->getType();
+            $modules[$index] = $module;
+        }
+        return $modules;
+    }
+
+    public function getBuildplan(): ?ShipBuildplanInterface
+    {
+        return $this->buildplan;
     }
 }

@@ -61,4 +61,8 @@ interface DealsInterface
     public function getGiveCommodity(): CommodityInterface;
 
     public function setGiveCommodity(CommodityInterface $giveCommodity): DealsInterface;
+
+    public function getModules(): array;
+
+    public function getBuildplan(): ?ShipBuildplanInterface;
 }
