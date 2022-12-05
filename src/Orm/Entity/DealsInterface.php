@@ -69,6 +69,4 @@ interface DealsInterface
     public function getRumpId(): int;
 
     public function getBuildplanName(): string;
-
-    public function getStorage(): StorageInterface;
 }

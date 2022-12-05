@@ -284,9 +284,4 @@ class Deals implements DealsInterface
         $bpname = $this->getBuildplan()->getName();
         return $bpname;
     }
-
-    public function getStorage(): StorageInterface
-    {
-        return $this->storage;
-    }
 }

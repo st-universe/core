@@ -11,7 +11,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
@@ -26,12 +25,6 @@ final class DealsTakeOffer implements ActionControllerInterface
     private TradeLibFactoryInterface $tradeLibFactory;
 
     private DealsRepositoryInterface $dealsRepository;
-
-    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private TradeTransactionRepositoryInterface $tradeTransactionRepository;
 
     private StorageRepositoryInterface $storageRepository;
 
@@ -119,7 +112,6 @@ final class DealsTakeOffer implements ActionControllerInterface
         if ($selectedDeal->getAmount() <= $amount) {
             $amount = $selectedDeal->getAmount();
 
-            $this->storageRepository->delete($selectedDeal->getStorage());
             $this->dealsRepository->delete($selectedDeal);
         } else {
 
