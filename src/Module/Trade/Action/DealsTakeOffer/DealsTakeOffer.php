@@ -71,7 +71,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             ));
         }
 
-        if ($selectedDeal->getwantCommodityId() > 0 || $selectedDeal->getwantPrestige() > 0) {
+        if (!$selectedDeal->getwantCommodityId() === null || !$selectedDeal->getwantPrestige() === null) {
 
             if ($selectedDeal->getwantCommodityId() > 0) {
                 $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
@@ -96,7 +96,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
             $freeStorage = $storageManagerUser->getFreeStorage();
 
-            if ($selectedDeal->getwantCommodityId() > 0) {
+            if (!$selectedDeal->getwantCommodityId() === null) {
 
                 if (
                     $freeStorage <= 0 &&
@@ -117,7 +117,7 @@ final class DealsTakeOffer implements ActionControllerInterface
                 }
             }
 
-            if ($selectedDeal->getwantPrestige() > 0) {
+            if (!$selectedDeal->getwantPrestige() === null) {
                 $userprestige = $game->getUser()->getPrestige();
                 if (
                     $freeStorage <= 0
@@ -154,14 +154,14 @@ final class DealsTakeOffer implements ActionControllerInterface
                 (int) $selectedDeal->getgiveCommodityAmount() * $amount
             );
 
-            if ($selectedDeal->getwantCommodityId() > 0) {
+            if (!$selectedDeal->getwantCommodityId() === null) {
                 $storageManagerUser->lowerStorage(
                     (int) $selectedDeal->getwantCommodityId(),
                     (int) $selectedDeal->getwantCommodityAmount() * $amount
                 );
             }
 
-            if ($selectedDeal->getwantPrestige() > 0) {
+            if (!$selectedDeal->getwantPrestige() === null) {
                 $description = sprintf(
                     '%d Prestige beim Deals des Großen Nagus eingebüßt',
                     $amount
