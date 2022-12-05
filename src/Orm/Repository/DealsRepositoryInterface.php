@@ -45,5 +45,5 @@ interface DealsRepositoryInterface extends ObjectRepository
 
     public function getFergTradePost(
         int $tradePostId
-    ): ?TradePostInterface;
+    ): TradePostInterface;
 }
