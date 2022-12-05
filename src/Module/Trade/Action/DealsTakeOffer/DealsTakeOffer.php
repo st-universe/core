@@ -78,7 +78,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
         //if (!$selectedDeal->getwantCommodityId() === null || !$selectedDeal->getwantPrestige() === null) {
 
-        if (!$selectedDeal->getwantCommodityId() === null) {
+        if ($selectedDeal->getwantCommodityId() !== null) {
             $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
                 TradeEnum::DEALS_FERG_TRADEPOST_ID,
                 $userId,
@@ -101,7 +101,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
         $freeStorage = $storageManagerUser->getFreeStorage();
 
-        if (!$selectedDeal->getwantCommodityId() === null) {
+        if ($selectedDeal->getwantCommodityId() !== null) {
 
             if (
                 $freeStorage <= 0 &&
@@ -122,7 +122,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             }
         }
 
-        if (!$selectedDeal->getwantPrestige() === null) {
+        if ($selectedDeal->getwantPrestige() !== null) {
             $userprestige = $game->getUser()->getPrestige();
             if (
                 $freeStorage <= 0
@@ -159,14 +159,14 @@ final class DealsTakeOffer implements ActionControllerInterface
             (int) $selectedDeal->getgiveCommodityAmount() * $amount
         );
 
-        if (!$selectedDeal->getwantCommodityId() === null) {
+        if ($selectedDeal->getwantCommodityId() !== null) {
             $storageManagerUser->lowerStorage(
                 (int) $selectedDeal->getwantCommodityId(),
                 (int) $selectedDeal->getwantCommodityAmount() * $amount
             );
         }
 
-        if (!$selectedDeal->getwantPrestige() === null) {
+        if ($selectedDeal->getwantPrestige() !== null) {
             $description = sprintf(
                 '%d Prestige beim Deals des Großen Nagus eingebüßt',
                 $amount * $selectedDeal->getwantPrestige()
