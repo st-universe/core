@@ -134,8 +134,9 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         }
 
         return sprintf(
-            '%s (Lizenz: %d %s)',
+            '%s (Lizenz für %d Tage: %d %s)',
             $this->getStringWithoutBbCode($tradepost->getName()),
+            $licenseInfo->getDays(),
             $licenseInfo->getAmount(),
             $licenseInfo->getCommodity()->getName()
         );
