@@ -73,7 +73,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
         if (!$selectedDeal->getwantCommodityId() === null || !$selectedDeal->getwantPrestige() === null) {
 
-            if ($selectedDeal->getwantCommodityId() > 0) {
+            if (!$selectedDeal->getwantCommodityId() === null) {
                 $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
                     TradeEnum::DEALS_FERG_TRADEPOST_ID,
                     $userId,
