@@ -276,19 +276,22 @@
 	<table class="tcal">
 		<tr>
 			<td style="vertical-align: middle;">Verlangte Ware</td>
-			<td> <img src="assets/commodities/${LICENSECOMMODITY}.png" tal:attributes="title LICENSECOMMODITYNAME" />
-				<span tal:replace="LICENSECOST">COST</span>
+			<td> <img src="assets/commodities/${LICENSEINFO/getCommodityId}.png"
+					tal:attributes="title LICENSECOMMODITYNAME" />
+				<span tal:replace="LICENSEINFO/getAmount">COST</span>
 			</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: middle;">Laufzeit in Tagen</td>
 			<td>
-				<span tal:replace="LICENSEDAYS">DAYS</span>
+				<span tal:replace="LICENSEINFO/getDays">DAYS</span><span tal:condition="CURRENTLICENSE">
+					(${CURRENTLICENSE/getRemainingFullDays}
+					übrig)</span>
 			</td>
 		</tr>
 		<td style="vertical-align: middle;">Lizenzgebühr zuletzt geändert</td>
 		<td>
-			<span tal:replace="date:LICENSEDATE">DATE</span>
+			<span tal:replace="date:LICENSEINFO/getDate">DATE</span>
 		</td>
 	</table>
 </metal:macro>
