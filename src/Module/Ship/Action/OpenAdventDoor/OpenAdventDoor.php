@@ -86,7 +86,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         $tries = $this->gameRequestRepository->getOpenAdventDoorTriesForUser($userId);
 
         //check for nicholas present
-        if ((int)date("j") === 5 && $tries === 1 && $userId === 126) {
+        if ((int)date("j") === 6 && $tries === 1) {
             $this->nicholasPresent($game);
             return;
         } else {
