@@ -176,7 +176,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             }
 
 
-            if ($selectedDeal->getwantCommodityId() !== null) {
+            if ($selectedDeal->getgiveCommodityId() !== null) {
                 $storageManagerUser->upperStorage(
                     (int) $selectedDeal->getgiveCommodityId(),
                     (int) $selectedDeal->getgiveCommodityAmount() * $amount
