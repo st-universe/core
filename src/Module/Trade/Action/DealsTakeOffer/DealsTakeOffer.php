@@ -9,6 +9,7 @@ use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -31,6 +32,8 @@ final class DealsTakeOffer implements ActionControllerInterface
 
     private StorageRepositoryInterface $storageRepository;
 
+    private ShipCreatorInterface $shipCreator;
+
     private CreatePrestigeLogInterface $createPrestigeLog;
 
     public function __construct(
@@ -41,6 +44,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransactionRepositoryInterface $tradeTransactionRepository,
         StorageRepositoryInterface $storageRepository,
+        ShipCreatorInterface $shipCreator,
         CreatePrestigeLogInterface $createPrestigeLog
     ) {
         $this->dealstakeOfferRequest = $dealstakeOfferRequest;
@@ -51,6 +55,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         $this->tradeTransactionRepository = $tradeTransactionRepository;
         $this->storageRepository = $storageRepository;
         $this->createPrestigeLog = $createPrestigeLog;
+        $this->shipCreator = $shipCreator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -103,46 +108,51 @@ final class DealsTakeOffer implements ActionControllerInterface
             $freeStorage = $storageManagerUser->getFreeStorage();
 
             if ($selectedDeal->getwantCommodityId() !== null) {
+                if ($selectedDeal->getwantCommodityId() !== null) {
 
-                if (
-                    $freeStorage <= 0 &&
-                    $selectedDeal->getgiveCommodityAmount() > $selectedDeal->getwantCommodityAmount()
-                ) {
-                    $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
-                    return;
-                }
-                if ($amount * $selectedDeal->getwantCommodityAmount() > $storage->getAmount()) {
-                    $amount = (int) floor($storage->getAmount() / $selectedDeal->getwantCommodityAmount());
-                }
-                if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getwantCommodityAmount() > $freeStorage) {
-                    $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getwantCommodityAmount()));
-                    if ($amount <= 0) {
-                        $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
+                    if (
+                        $freeStorage <= 0 &&
+                        $selectedDeal->getgiveCommodityAmount() > $selectedDeal->getwantCommodityAmount()
+                    ) {
+                        $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
                         return;
+                    }
+                    if ($amount * $selectedDeal->getwantCommodityAmount() > $storage->getAmount()) {
+                        $amount = (int) floor($storage->getAmount() / $selectedDeal->getwantCommodityAmount());
+                    }
+                    if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getwantCommodityAmount() > $freeStorage) {
+                        $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getwantCommodityAmount()));
+                        if ($amount <= 0) {
+                            $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
+                            return;
+                        }
+                    }
+                }
+
+                if ($selectedDeal->getwantPrestige() !== null) {
+                    $userprestige = $game->getUser()->getPrestige();
+                    if (
+                        $freeStorage <= 0
+                    ) {
+                        $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
+                        return;
+                    }
+                    if ($amount * $selectedDeal->getwantPrestige() > $userprestige) {
+                        $amount = (int) floor($userprestige / $selectedDeal->getwantPrestige());
+                    }
+                    if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getwantPrestige() > $freeStorage) {
+                        $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getwantPrestige()));
+                        if ($amount <= 0) {
+                            $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
+                            return;
+                        }
                     }
                 }
             }
 
-            if ($selectedDeal->getwantPrestige() !== null) {
-                $userprestige = $game->getUser()->getPrestige();
-                if (
-                    $freeStorage <= 0
-                ) {
-                    $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
-                    return;
-                }
-                if ($amount * $selectedDeal->getwantPrestige() > $userprestige) {
-                    $amount = (int) floor($userprestige / $selectedDeal->getwantPrestige());
-                }
-                if ($amount * $selectedDeal->getgiveCommodityAmount() - $amount * $selectedDeal->getwantPrestige() > $freeStorage) {
-                    $amount = (int) floor($freeStorage / ($selectedDeal->getgiveCommodityAmount() - $selectedDeal->getwantPrestige()));
-                    if ($amount <= 0) {
-                        $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
-                        return;
-                    }
-                }
+            if ($selectedDeal->getBuildplanId > 0) {
+                $amount = 1;
             }
-
 
             if ($selectedDeal->getAmount() <= $amount) {
                 $amount = $selectedDeal->getAmount();
@@ -155,10 +165,18 @@ final class DealsTakeOffer implements ActionControllerInterface
                 $this->dealsRepository->save($selectedDeal);
             }
 
-            $storageManagerUser->upperStorage(
-                (int) $selectedDeal->getgiveCommodityId(),
-                (int) $selectedDeal->getgiveCommodityAmount() * $amount
-            );
+
+            if ($selectedDeal->getwantCommodityId() !== null) {
+                $storageManagerUser->upperStorage(
+                    (int) $selectedDeal->getgiveCommodityId(),
+                    (int) $selectedDeal->getgiveCommodityAmount() * $amount
+                );
+            }
+
+            if ($selectedDeal->getShip() == true) {
+
+                $this->createShip($selectedDeal->getBuildplan(), $tradePost, $userId);
+            }
 
             if ($selectedDeal->getwantCommodityId() !== null) {
                 $storageManagerUser->lowerStorage(
@@ -174,8 +192,29 @@ final class DealsTakeOffer implements ActionControllerInterface
                 );
                 $this->createPrestigeLog->createLog(- ($amount * $selectedDeal->getwantPrestige()), $description, $game->getUser(), time());
             }
-            $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
+            $game->addInformation(sprintf(_('Der Deal wurde %d mal angenommen'), $amount));
         }
+    }
+
+
+    private function createShip($buildplan, $tradePost, $userId): void
+    {
+        $tradepostposition = $this->$tradePost->getShip()->getCurrentMapField();
+
+        if (empty($tradepostposition)) {
+            return;
+        }
+
+        $ship = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId(), $tradepostposition);
+
+        $ship->setEps($ship->getTheoreticalMaxEps() / 4);
+        $ship->setReactorLoad($ship->getReactorCapacity() / 4);
+        $ship->setEBatt(0);
+
+
+        $this->shipRepository->save($ship);
+
+        $this->entityManager->flush();
     }
 
     public function performSessionCheck(): bool
