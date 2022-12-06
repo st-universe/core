@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeEmail;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -19,19 +20,23 @@ final class ChangeEmail implements ActionControllerInterface
 
     private BlockedUserRepositoryInterface $blockedUserRepository;
 
+    private StuHashInterface $stuHash;
+
     public function __construct(
         ChangeEmailRequestInterface $changeEmailRequest,
         UserRepositoryInterface $userRepository,
-        BlockedUserRepositoryInterface $blockedUserRepository
+        BlockedUserRepositoryInterface $blockedUserRepository,
+        StuHashInterface $stuHash
     ) {
         $this->changeEmailRequest = $changeEmailRequest;
         $this->userRepository = $userRepository;
         $this->blockedUserRepository = $blockedUserRepository;
+        $this->stuHash = $stuHash;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $value = $this->changeEmailRequest->getEmailAddress();
+        $value = trim($this->changeEmailRequest->getEmailAddress());
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $game->addInformation(_('Die E-Mailadresse ist ungültig'));
             return;
@@ -41,7 +46,7 @@ final class ChangeEmail implements ActionControllerInterface
             $game->addInformation(_('Die E-Mailadresse wird bereits verwendet'));
             return;
         }
-        if ($this->blockedUserRepository->getByEmail($value)) {
+        if ($this->blockedUserRepository->getByEmailHash($this->stuHash->hash($value))) {
             $game->addInformation(_('Die E-Mailadresse ist blockiert'));
             return;
         }

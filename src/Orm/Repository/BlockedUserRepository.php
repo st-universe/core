@@ -10,17 +10,17 @@ use Stu\Orm\Entity\BlockedUserInterface;
 
 final class BlockedUserRepository extends EntityRepository implements BlockedUserRepositoryInterface
 {
-    public function getByEmail(string $emailHash): ?BlockedUserInterface
+    public function getByEmailHash(string $emailHash): ?BlockedUserInterface
     {
         return $this->findOneBy([
-            'email' => $emailHash
+            'emailHash' => $emailHash
         ]);
     }
 
-    public function getByMobile(string $mobileHash): ?BlockedUserInterface
+    public function getByMobileHash(string $mobileHash): ?BlockedUserInterface
     {
         return $this->findOneBy([
-            'mobile' => $mobileHash
+            'mobileHash' => $mobileHash
         ]);
     }
 

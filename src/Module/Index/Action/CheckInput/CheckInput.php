@@ -60,7 +60,7 @@ final class CheckInput implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $var = $this->checkInputRequest->getVariable();
-        $value = $this->checkInputRequest->getValue();
+        $value =  trim($this->checkInputRequest->getValue());
         $state = self::REGISTER_STATE_NOK;
         switch ($var) {
             default:
@@ -86,7 +86,7 @@ final class CheckInput implements ActionControllerInterface
                     $state = self::REGISTER_STATE_DUP;
                     break;
                 }
-                if ($this->blockedUserRepository->getByEmail($value)) {
+                if ($this->blockedUserRepository->getByEmailHash($this->stuHash->hash($value))) {
                     $state = self::REGISTER_STATE_BLK;
                     break;
                 }
@@ -117,7 +117,7 @@ final class CheckInput implements ActionControllerInterface
                     $state = self::REGISTER_STATE_DUP;
                     break;
                 }
-                if ($this->blockedUserRepository->getByMobile($trimmedMobileHash)) {
+                if ($this->blockedUserRepository->getByMobileHash($trimmedMobileHash)) {
                     $state = self::REGISTER_STATE_BLK;
                     break;
                 }

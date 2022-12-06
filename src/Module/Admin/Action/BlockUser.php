@@ -73,11 +73,11 @@ final class BlockUser implements ActionControllerInterface
         $blockedUser = $this->blockedUserRepository->prototype();
         $blockedUser->setId($userIdToBlock);
         $blockedUser->setTime(time());
-        $blockedUser->setEmail($this->stuHash->hash($userToBlock->getEmail()));
+        $blockedUser->setEmailHash($this->stuHash->hash($userToBlock->getEmail()));
         if ($userToBlock->getMobile() !== null) {
             $alreadyHashed = strlen($userToBlock->getMobile()) >= 40;
 
-            $blockedUser->setMobile($alreadyHashed ? $userToBlock->getMobile() : $this->stuHash->hash($userToBlock->getMobile()));
+            $blockedUser->setMobileHash($alreadyHashed ? $userToBlock->getMobile() : $this->stuHash->hash($userToBlock->getMobile()));
         }
         $this->blockedUserRepository->save($blockedUser);
 

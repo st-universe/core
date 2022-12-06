@@ -12,11 +12,11 @@ interface BlockedUserInterface
 
     public function setTime(int $time): BlockedUserInterface;
 
-    public function getEmail(): string;
+    public function getEmailHash(): string;
 
-    public function setEmail(string $email): BlockedUserInterface;
+    public function setEmailHash(string $emailHash): BlockedUserInterface;
 
-    public function getMobile(): ?string;
+    public function getMobileHash(): ?string;
 
-    public function setMobile(?string $mobile): BlockedUserInterface;
+    public function setMobileHash(?string $mobileHash): BlockedUserInterface;
 }

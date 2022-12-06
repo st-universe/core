@@ -38,7 +38,7 @@ final class ChangePassword implements ActionControllerInterface
             return;
         }
 
-        $newPassword = $this->changePasswordRequest->getNewPassword();
+        $newPassword = trim($this->changePasswordRequest->getNewPassword());
         $newPasswordReEntered = $this->changePasswordRequest->getNewPasswordReEntered();
 
         if (!$newPassword) {

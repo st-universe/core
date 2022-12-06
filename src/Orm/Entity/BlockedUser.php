@@ -22,10 +22,10 @@ class BlockedUser implements BlockedUserInterface
     private $time = 0;
 
     /** @Column(type="string", length=255) */
-    private $email = '';
+    private $emailHash = '';
 
     /** @Column(type="string", length=255, nullable=true) */
-    private $mobile;
+    private $mobileHash;
 
     public function getId(): int
     {
@@ -49,25 +49,25 @@ class BlockedUser implements BlockedUserInterface
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmailHash(): string
     {
-        return $this->email;
+        return $this->emailHash;
     }
 
-    public function setEmail(string $email): BlockedUserInterface
+    public function setEmailHash(string $emailHash): BlockedUserInterface
     {
-        $this->email = $email;
+        $this->emailHash = $emailHash;
         return $this;
     }
 
-    public function getMobile(): ?string
+    public function getMobileHash(): ?string
     {
-        return $this->mobile;
+        return $this->mobileHash;
     }
 
-    public function setMobile(?string $mobile): BlockedUserInterface
+    public function setMobileHash(?string $mobileHash): BlockedUserInterface
     {
-        $this->mobile = $mobile;
+        $this->mobileHash = $mobileHash;
         return $this;
     }
 }
