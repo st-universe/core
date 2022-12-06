@@ -140,7 +140,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         string $smsCode = null
     ): UserInterface {
         $player = $this->userRepository->prototype();
-        $player->setLogin(mb_strtolower($loginName));
+        $player->setLogin($loginName);
         $player->setEmail($emailAddress);
         $player->setFaction($faction);
 

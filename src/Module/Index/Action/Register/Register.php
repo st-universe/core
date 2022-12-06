@@ -56,7 +56,7 @@ final class Register implements ActionControllerInterface
             return;
         }
 
-        $loginname = $this->registerRequest->getLoginName();
+        $loginname = mb_strtolower($this->registerRequest->getLoginName());
         $email = $this->registerRequest->getEmailAddress();
 
         try {

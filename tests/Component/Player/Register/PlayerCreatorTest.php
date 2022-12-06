@@ -271,7 +271,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->andReturnTrue();
 
         $user->shouldReceive('setLogin')
-            ->with(mb_strtolower($loginname))
+            ->with($loginname)
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('setEmail')
