@@ -160,9 +160,9 @@ final class DealsTakeOffer implements ActionControllerInterface
                 }
             }
 
-            if ($selectedDeal->getBuildplanId() !== null) {
-                $amount = 1;
-            }
+            //      if ($selectedDeal->getBuildplanId() !== null) {
+            //      $amount = 1;
+            // }
 
             if ($selectedDeal->getAmount() <= $amount) {
                 $amount = $selectedDeal->getAmount();
@@ -184,8 +184,8 @@ final class DealsTakeOffer implements ActionControllerInterface
             }
 
             if ($selectedDeal->getShip() == true) {
-                $game->addInformation(sprintf(_('Test %d mal angenommen'), $amount));
-                //$this->createShip($selectedDeal->getBuildplan(), $tradePost, $userId);
+
+                $this->createShip($selectedDeal->getBuildplan(), $tradePost, $userId);
             }
 
             if ($selectedDeal->getwantCommodityId() !== null) {
