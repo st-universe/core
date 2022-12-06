@@ -73,17 +73,22 @@
                 </tal:block>
                 <tal:block tal:repeat="data ACTIVEDEALSSHIPSPRESTIGE">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
-                        <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
-                            <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
-                                style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
-                                title="${mod/getName}" />
-                        </td>
-                        <td><img src="assets/buttons/prestige.png" />
-                            ${data/getwantPrestige}</td>
-                        <td>
-                            ${data/getAmount}</td>
-                        <td>
-                            ${data/getEnd}</td>
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" tal:attributes="value data/getId" />
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                                <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                                    style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                                    title="${mod/getName}" />
+                            </td>
+                            <td><img src="assets/buttons/prestige.png" />
+                                ${data/getwantPrestige}</td>
+                            <td>
+                                ${data/getAmount}</td>
+                            <td>
+                                ${data/getEnd}</td>
+                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+                        </form>
                     </tr>
                 </tal:block>
                 <tal:block tal:repeat="data ACTIVEDEALSBUILDPLANS">
