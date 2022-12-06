@@ -15,6 +15,7 @@ use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
@@ -34,6 +35,8 @@ final class DealsTakeOffer implements ActionControllerInterface
 
     private ShipCreatorInterface $shipCreator;
 
+    private ShipRepositoryInterface $shipRepository;
+
     private CreatePrestigeLogInterface $createPrestigeLog;
 
     public function __construct(
@@ -45,6 +48,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         TradeTransactionRepositoryInterface $tradeTransactionRepository,
         StorageRepositoryInterface $storageRepository,
         ShipCreatorInterface $shipCreator,
+        ShipRepositoryInterface $shipRepository,
         CreatePrestigeLogInterface $createPrestigeLog
     ) {
         $this->dealstakeOfferRequest = $dealstakeOfferRequest;
@@ -55,6 +59,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         $this->tradeTransactionRepository = $tradeTransactionRepository;
         $this->storageRepository = $storageRepository;
         $this->createPrestigeLog = $createPrestigeLog;
+        $this->shipRepository = $shipRepository;
         $this->shipCreator = $shipCreator;
     }
 
