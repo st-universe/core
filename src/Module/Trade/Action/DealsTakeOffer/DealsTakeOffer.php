@@ -214,8 +214,8 @@ final class DealsTakeOffer implements ActionControllerInterface
 
         $this->entityManager->flush();
 
-        $ship->setEps($ship->getTheoreticalMaxEps() / 4);
-        $ship->setReactorLoad($ship->getReactorCapacity() / 4);
+        $ship->setEps((int)floor($ship->getTheoreticalMaxEps() / 4));
+        $ship->setReactorLoad((int)floor($ship->getReactorCapacity() / 4));
         $ship->setEBatt(0);
         $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());
 
