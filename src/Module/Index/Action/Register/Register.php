@@ -15,7 +15,6 @@ use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class Register implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_SEND_REGISTRATION';
 
     private RegisterRequestInterface $registerRequest;
@@ -40,11 +39,11 @@ final class Register implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $factionId = $this->registerRequest->getFactionId();
-
         if (!$this->config->get('game.registration.enabled')) {
             return;
         }
+
+        $factionId = $this->registerRequest->getFactionId();
 
         $factions = array_filter(
             $this->factionRepository->getByChooseable(true),
@@ -56,8 +55,8 @@ final class Register implements ActionControllerInterface
             return;
         }
 
-        $loginname = mb_strtolower($this->registerRequest->getLoginName());
-        $email = $this->registerRequest->getEmailAddress();
+        $loginname = trim(mb_strtolower($this->registerRequest->getLoginName()));
+        $email = trim(mb_strtolower($this->registerRequest->getEmailAddress()));
 
         try {
             if ($this->config->get('game.registration.sms_code_verification.enabled')) {
@@ -66,7 +65,7 @@ final class Register implements ActionControllerInterface
                 if ($mobileNumber === null) {
                     return;
                 }
-                $this->registerViaSms($loginname, $email, $mobileNumber, $factions);
+                $this->registerViaSms($loginname, $email, trim($mobileNumber), $factions);
             } else {
                 $this->registerViaToken($loginname, $email, $factions);
             }
