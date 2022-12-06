@@ -18,7 +18,7 @@ interface DealsInterface
 
     public function setAmount(int $amount): DealsInterface;
 
-    public function getgiveCommodityId(): int;
+    public function getgiveCommodityId(): ?int;
 
     public function setgiveCommodityId(CommodityInterface $givecommodity): DealsInterface;
 
