@@ -107,7 +107,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
             $freeStorage = $storageManagerUser->getFreeStorage();
 
-            if ($selectedDeal->getwantCommodityId() !== null) {
+            if ($selectedDeal->getgiveCommodityId() !== null) {
                 if ($selectedDeal->getwantCommodityId() !== null) {
 
                     if (
