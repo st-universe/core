@@ -2,6 +2,7 @@
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Tick\Maintenance\MaintenanceTick;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
@@ -15,6 +16,7 @@ $entityManager->beginTransaction();
 try {
     $maintenance = new MaintenanceTick(
         $container->get(GameConfigRepositoryInterface::class),
+        $container->get(LoggerUtilFactoryInterface::class),
         $container->get('maintenance_handler')
     );
     $maintenance->handle();

@@ -8,6 +8,7 @@ use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -18,17 +19,21 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
 
     private ConfigInterface $config;
 
+    private StuHashInterface $stuHash;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
-        ConfigInterface $config
+        ConfigInterface $config,
+        StuHashInterface $stuHash
     ) {
         $this->userRepository = $userRepository;
         $this->config = $config;
+        $this->stuHash = $stuHash;
     }
 
     public function request(UserInterface $user): void
     {
-        $token = sha1(time() . $user->getCreationDate());
+        $token = $this->stuHash->hash(time() . $user->getCreationDate());
 
         $user->setDeletionMark(UserEnum::DELETION_REQUESTED);
         $user->setPasswordToken($token);

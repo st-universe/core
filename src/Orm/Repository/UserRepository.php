@@ -111,7 +111,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ]);
     }
 
-    public function getByMobile(string $mobile): ?UserInterface
+    public function getByMobile(string $mobile, string $mobileHash): ?UserInterface
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -122,7 +122,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'mobile' => $mobile,
-            'mobileHash' => sha1($mobile)
+            'mobileHash' => $mobileHash
         ])->getOneOrNullResult();
     }
 

@@ -13,6 +13,7 @@ use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserInvitationInterface;
@@ -48,6 +49,11 @@ class PlayerCreatorTest extends MockeryTestCase
     private $userInvitationRepository;
 
     /**
+     * @var null|MockInterface|StuHashInterface
+     */
+    private $stuHash;
+
+    /**
      * @var null|MockInterface|ConfigInterface
      */
     private $config;
@@ -69,6 +75,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->registrationEmailSender = Mockery::mock(RegistrationEmailSenderInterface::class);
         $this->smsVerificationCodeSender = Mockery::mock(SmsVerificationCodeSenderInterface::class);
         $this->userInvitationRepository = Mockery::mock(UserInvitationRepositoryInterface::class);
+        $this->stuHash = Mockery::mock(StuHashInterface::class);
         $this->config = Mockery::mock(ConfigInterface::class);
         $this->passwordGenerator = Mockery::mock(PasswordGeneratorInterface::class);
 
@@ -78,6 +85,7 @@ class PlayerCreatorTest extends MockeryTestCase
             $this->registrationEmailSender,
             $this->smsVerificationCodeSender,
             $this->userInvitationRepository,
+            $this->stuHash,
             $this->config,
             $this->passwordGenerator
         );

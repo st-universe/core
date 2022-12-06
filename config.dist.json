@@ -46,6 +46,7 @@
     "language": "de_DE",
     "user_avatar_path": "avatare/user/",
     "alliance_avatar_path": "avatare/alliance/",
+    "hash_method": "sha256",
     "invitation": {
       "tokens_per_user": 2,
       "ttl": 86400

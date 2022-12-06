@@ -10,6 +10,7 @@ use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -20,18 +21,22 @@ final class SendPassword implements ActionControllerInterface
 
     private SendPasswordRequestInterface $sendPasswordRequest;
 
-    private ConfigInterface $config;
-
     private UserRepositoryInterface $userRepository;
+
+    private StuHashInterface $stuHash;
+
+    private ConfigInterface $config;
 
     public function __construct(
         SendPasswordRequestInterface $sendPasswordRequest,
-        ConfigInterface $config,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        StuHashInterface $stuHash,
+        ConfigInterface $config
     ) {
         $this->sendPasswordRequest = $sendPasswordRequest;
-        $this->config = $config;
         $this->userRepository = $userRepository;
+        $this->stuHash = $stuHash;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -50,7 +55,7 @@ final class SendPassword implements ActionControllerInterface
             return;
         }
 
-        $token = sha1(time() . $user->getLogin());
+        $token = $this->stuHash->hash(time() . $user->getLogin());
         $user->setPasswordToken($token);
 
         $this->userRepository->save($user);

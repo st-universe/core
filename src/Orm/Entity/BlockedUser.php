@@ -21,10 +21,10 @@ class BlockedUser implements BlockedUserInterface
     /** @Column(type="integer") */
     private $time = 0;
 
-    /** @Column(type="string", length=200) */
+    /** @Column(type="string", length=255) */
     private $email = '';
 
-    /** @Column(type="string", length=50, nullable=true) */
+    /** @Column(type="string", length=255, nullable=true) */
     private $mobile;
 
     public function getId(): int

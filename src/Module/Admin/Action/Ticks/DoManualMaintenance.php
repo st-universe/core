@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Maintenance\DatabaseBackup;
 use Stu\Module\Tick\Maintenance\MaintenanceTick;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
@@ -16,11 +17,19 @@ final class DoManualMaintenance implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MAINTENANCE';
 
+    private GameConfigRepositoryInterface $gameConfigRepository;
+
+    private LoggerUtilFactoryInterface $loggerUtilFactory;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
+        GameConfigRepositoryInterface $gameConfigRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory,
         EntityManagerInterface $entityManager
     ) {
+        $this->gameConfigRepository = $gameConfigRepository;
+        $this->loggerUtilFactory = $loggerUtilFactory;
         $this->entityManager = $entityManager;
     }
 
@@ -37,7 +46,8 @@ final class DoManualMaintenance implements ActionControllerInterface
         global $container;
 
         $maintenance = new MaintenanceTick(
-            $container->get(GameConfigRepositoryInterface::class),
+            $this->gameConfigRepository,
+            $this->loggerUtilFactory,
             array_filter(
                 $container->get('maintenance_handler'),
                 function ($key): bool {

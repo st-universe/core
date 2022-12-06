@@ -54,7 +54,7 @@ class User implements UserInterface
     /** @Column(type="string", length=200) */
     private $email = '';
 
-    /** @Column(type="string", length=50, nullable=true) */
+    /** @Column(type="string", length=255, nullable=true) */
     private $mobile;
 
     /** @Column(type="integer", nullable=true) */
@@ -117,7 +117,7 @@ class User implements UserInterface
     /** @Column(type="text") */
     private $sessiondata = '';
 
-    /** @Column(type="string", length=100) */
+    /** @Column(type="string", length=255) */
     private $password_token = '';
 
     /** @Column(type="string", length=7) */

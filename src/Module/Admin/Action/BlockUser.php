@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -23,15 +24,19 @@ final class BlockUser implements ActionControllerInterface
 
     private BlockedUserRepositoryInterface $blockedUserRepository;
 
+    private StuHashInterface $stuHash;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
         BlockedUserRepositoryInterface $blockedUserRepository,
+        StuHashInterface $stuHash,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->userRepository = $userRepository;
         $this->blockedUserRepository = $blockedUserRepository;
+        $this->stuHash = $stuHash;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -68,11 +73,11 @@ final class BlockUser implements ActionControllerInterface
         $blockedUser = $this->blockedUserRepository->prototype();
         $blockedUser->setId($userIdToBlock);
         $blockedUser->setTime(time());
-        $blockedUser->setEmail(sha1($userToBlock->getEmail()));
+        $blockedUser->setEmail($this->stuHash->hash($userToBlock->getEmail()));
         if ($userToBlock->getMobile() !== null) {
-            $alreadyHashed = strlen($userToBlock->getMobile()) === 40;
+            $alreadyHashed = strlen($userToBlock->getMobile()) >= 40;
 
-            $blockedUser->setMobile($alreadyHashed ? $userToBlock->getMobile() : sha1($userToBlock->getMobile()));
+            $blockedUser->setMobile($alreadyHashed ? $userToBlock->getMobile() : $this->stuHash->hash($userToBlock->getMobile()));
         }
         $this->blockedUserRepository->save($blockedUser);
 

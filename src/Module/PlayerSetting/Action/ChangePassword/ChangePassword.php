@@ -50,7 +50,7 @@ final class ChangePassword implements ActionControllerInterface
             return;
         }
         if ($newPassword !== $newPasswordReEntered) {
-            $game->addInformation(_('Die eingegebenen Passwörter stimmen nichberein'));
+            $game->addInformation(_('Die eingegebenen Passwörter stimmen nicht überein'));
             return;
         }
         $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));

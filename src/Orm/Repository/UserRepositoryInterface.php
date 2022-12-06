@@ -44,7 +44,7 @@ interface UserRepositoryInterface extends ObjectRepository
 
     public function getByEmail(string $email): ?UserInterface;
 
-    public function getByMobile(string $trimmedMobile): ?UserInterface;
+    public function getByMobile(string $mobile, string $mobileHash): ?UserInterface;
 
     public function getByLogin(string $loginName): ?UserInterface;
 

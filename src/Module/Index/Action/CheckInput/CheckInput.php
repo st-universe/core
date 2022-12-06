@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\CheckInput;
 
 use Noodlehaus\ConfigInterface;
-use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
@@ -34,6 +33,8 @@ final class CheckInput implements ActionControllerInterface
 
     private BlockedUserRepositoryInterface $blockedUserRepository;
 
+    private StuHashInterface $stuHash;
+
     private ConfigInterface $config;
 
     private LoggerUtilInterface $loggerUtil;
@@ -43,6 +44,7 @@ final class CheckInput implements ActionControllerInterface
         UserRepositoryInterface $userRepository,
         UserInvitationRepositoryInterface $userInvitationRepository,
         BlockedUserRepositoryInterface $blockedUserRepository,
+        StuHashInterface $stuHash,
         ConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -50,6 +52,7 @@ final class CheckInput implements ActionControllerInterface
         $this->userRepository = $userRepository;
         $this->userInvitationRepository = $userInvitationRepository;
         $this->blockedUserRepository = $blockedUserRepository;
+        $this->stuHash = $stuHash;
         $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -100,6 +103,8 @@ final class CheckInput implements ActionControllerInterface
             case 'mobile':
 
                 $trimmedMobile = str_replace('+', '00', str_replace(' ', '', trim($value, " \t\n\r\x0B")));
+                $trimmedMobileHash = $this->stuHash->hash($trimmedMobile);
+
                 if (!$this->isMobileNumberCountryAllowed($trimmedMobile)) {
                     $state = self::REGISTER_STATE_UCP;
                     break;
@@ -108,11 +113,11 @@ final class CheckInput implements ActionControllerInterface
                     $state = self::REGISTER_STATE_UPD;
                     break;
                 }
-                if ($this->userRepository->getByMobile($trimmedMobile)) {
+                if ($this->userRepository->getByMobile($trimmedMobile, $trimmedMobileHash)) {
                     $state = self::REGISTER_STATE_DUP;
                     break;
                 }
-                if ($this->blockedUserRepository->getByMobile($trimmedMobile)) {
+                if ($this->blockedUserRepository->getByMobile($trimmedMobileHash)) {
                     $state = self::REGISTER_STATE_BLK;
                     break;
                 }

@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SessionInvalidException;
 use Stu\Component\Player\Validation\LoginValidationInterface;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
@@ -21,6 +22,8 @@ final class Session implements SessionInterface
 
     private $userRepository;
 
+    private StuHashInterface $stuHash;
+
     private $loginValidation;
 
     /**
@@ -32,11 +35,13 @@ final class Session implements SessionInterface
         UserIpTableRepositoryInterface $userIpTableRepository,
         SessionStringRepositoryInterface $sessionStringRepository,
         UserRepositoryInterface $userRepository,
+        StuHashInterface $stuHash,
         LoginValidationInterface $loginValidation
     ) {
         $this->userIpTableRepository = $userIpTableRepository;
         $this->sessionStringRepository = $sessionStringRepository;
         $this->userRepository = $userRepository;
+        $this->stuHash = $stuHash;
         $this->loginValidation = $loginValidation;
     }
 
@@ -171,7 +176,7 @@ final class Session implements SessionInterface
 
     private function buildCookieString(UserInterface $user): string
     {
-        return sha1($user->getId() . $user->getEMail() . $user->getCreationDate());
+        return $this->stuHash->hash(($user->getId() . $user->getEMail() . $user->getCreationDate()));
     }
 
     private function destroySession(?UserInterface $user = null): void

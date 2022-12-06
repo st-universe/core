@@ -8,5 +8,6 @@ use function DI\autowire;
 
 return [
     SemaphoreUtilInterface::class => autowire(SemaphoreUtil::class),
-    StuTime::class => autowire(StuTime::class)
+    StuTime::class => autowire(StuTime::class),
+    StuHashInterface::class => autowire(StuHash::class)
 ];

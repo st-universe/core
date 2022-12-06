@@ -11,6 +11,7 @@ use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\MobileNumberInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -31,6 +32,8 @@ final class PlayerCreator implements PlayerCreatorInterface
 
     private ConfigInterface $config;
 
+    private StuHashInterface $stuHash;
+
     private PasswordGeneratorInterface $passwordGenerator;
 
     public function __construct(
@@ -39,6 +42,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         RegistrationEmailSenderInterface $registrationEmailSender,
         SmsVerificationCodeSenderInterface $smsVerificationCodeSender,
         UserInvitationRepositoryInterface $userInvitationRepository,
+        StuHashInterface $stuHash,
         ConfigInterface $config,
         PasswordGeneratorInterface $passwordGenerator
     ) {
@@ -47,6 +51,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         $this->registrationEmailSender = $registrationEmailSender;
         $this->smsVerificationCodeSender = $smsVerificationCodeSender;
         $this->userInvitationRepository = $userInvitationRepository;
+        $this->stuHash = $stuHash;
         $this->config = $config;
         $this->passwordGenerator = $passwordGenerator;
     }
@@ -112,7 +117,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress)) {
             throw new PlayerDuplicateException();
         }
-        if ($mobile !== null && $this->userRepository->getByMobile($mobile)) {
+        if ($mobile !== null && $this->userRepository->getByMobile($mobile, $this->stuHash->hash($mobile))) {
             throw new PlayerDuplicateException();
         }
         if ($mobile !== null) {

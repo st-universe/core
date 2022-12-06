@@ -9,6 +9,7 @@ use Stu\Lib\AccountNotVerifiedException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuHashInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -21,13 +22,17 @@ final class SmsVerification implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private StuHashInterface $stuHash;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
+        StuHashInterface $stuHash,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->userRepository = $userRepository;
+        $this->stuHash = $stuHash;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -48,7 +53,7 @@ final class SmsVerification implements ActionControllerInterface
         $this->loggerUtil->log('Y');
 
         $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
-        $user->setMobile(sha1($user->getMobile()));
+        $user->setMobile($this->stuHash->hash($user->getMobile()));
         $this->userRepository->save($user);
 
         $this->loggerUtil->log('Z');

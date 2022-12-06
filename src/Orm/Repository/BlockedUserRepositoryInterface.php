@@ -10,9 +10,9 @@ use Stu\Orm\Entity\BlockedUserInterface;
  */
 interface BlockedUserRepositoryInterface extends ObjectRepository
 {
-    public function getByEmail(string $email): ?BlockedUserInterface;
+    public function getByEmail(string $emailHash): ?BlockedUserInterface;
 
-    public function getByMobile(string $mobile): ?BlockedUserInterface;
+    public function getByMobile(string $mobileHash): ?BlockedUserInterface;
 
     public function save(BlockedUserInterface $blockedUser): void;
 
