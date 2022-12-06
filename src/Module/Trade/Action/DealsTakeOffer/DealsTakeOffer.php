@@ -184,8 +184,8 @@ final class DealsTakeOffer implements ActionControllerInterface
             }
 
             if ($selectedDeal->getShip() == true) {
-
-                $this->createShip($selectedDeal->getBuildplan(), $tradePost, $userId);
+                $game->addInformation(sprintf(_('Test %d mal angenommen'), $amount));
+                //$this->createShip($selectedDeal->getBuildplan(), $tradePost, $userId);
             }
 
             if ($selectedDeal->getwantCommodityId() !== null) {
