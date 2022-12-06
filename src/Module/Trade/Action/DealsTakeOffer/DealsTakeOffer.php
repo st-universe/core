@@ -217,6 +217,8 @@ final class DealsTakeOffer implements ActionControllerInterface
 
         $ship = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
 
+        $this->entityManager->flush();
+
         $ship->setEps($ship->getTheoreticalMaxEps() / 4);
         $ship->setReactorLoad($ship->getReactorCapacity() / 4);
         $ship->setEBatt(0);
@@ -224,8 +226,6 @@ final class DealsTakeOffer implements ActionControllerInterface
 
 
         $this->shipRepository->save($ship);
-
-        $this->entityManager->flush();
     }
 
     public function performSessionCheck(): bool
