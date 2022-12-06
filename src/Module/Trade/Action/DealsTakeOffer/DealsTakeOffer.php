@@ -74,9 +74,9 @@ final class DealsTakeOffer implements ActionControllerInterface
         $dealId = $this->dealstakeOfferRequest->getDealId();
         $amount = $this->dealstakeOfferRequest->getAmount();
         $game->setView(ShowDeals::VIEW_IDENTIFIER);
-        if ($amount < 1) {
-            return;
-        }
+        //if ($amount < 1) {
+        //      return;
+        //   }
 
         $selectedDeal = $this->dealsRepository->find($dealId);
 
