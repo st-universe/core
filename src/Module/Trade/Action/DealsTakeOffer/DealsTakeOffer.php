@@ -210,11 +210,6 @@ final class DealsTakeOffer implements ActionControllerInterface
     private function createShip($buildplan, $tradePost, $userId): void
     {
 
-
-        if (empty($tradepostposition)) {
-            return;
-        }
-
         $ship = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
 
         $this->entityManager->flush();
