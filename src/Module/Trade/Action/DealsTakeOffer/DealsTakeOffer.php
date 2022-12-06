@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsTakeOffer;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
@@ -37,6 +38,8 @@ final class DealsTakeOffer implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private EntityManagerInterface $entityManager;
+
     private CreatePrestigeLogInterface $createPrestigeLog;
 
     public function __construct(
@@ -49,7 +52,8 @@ final class DealsTakeOffer implements ActionControllerInterface
         StorageRepositoryInterface $storageRepository,
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
-        CreatePrestigeLogInterface $createPrestigeLog
+        CreatePrestigeLogInterface $createPrestigeLog,
+        EntityManagerInterface $entityManager
     ) {
         $this->dealstakeOfferRequest = $dealstakeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
@@ -61,6 +65,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         $this->createPrestigeLog = $createPrestigeLog;
         $this->shipRepository = $shipRepository;
         $this->shipCreator = $shipCreator;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
