@@ -103,26 +103,14 @@ final class Session implements SessionInterface
 
         $password_hash = $result->getPassword();
 
-        $password_info = password_get_info($password_hash);
+        if (!password_verify($password, $password_hash)) {
+            throw new LoginException(_('Login oder Passwort inkorrekt'));
+        }
 
-        if ($password_info['algo'] === 0) {
-            // @todo remove old password handling. This is just temporary
-            if ($password_hash !== sha1($password)) {
-                throw new LoginException(_('Login oder Passwort inkorrekt'));
-            }
+        if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {
             $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
             $this->userRepository->save($result);
-        } else {
-            if (!password_verify($password, $password_hash)) {
-                throw new LoginException(_('Login oder Passwort inkorrekt'));
-            }
-
-            if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {
-                $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
-
-                $this->userRepository->save($result);
-            }
         }
 
         if ($result->getState() === UserEnum::USER_STATE_NEW) {
