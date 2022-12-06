@@ -17,6 +17,6 @@ final class TakeOfferRequest implements TakeOfferRequestInterface
 
     public function getAmount(): int
     {
-        return $this->queryParameter('amount')->int()->defaultsTo(0);
+        return $this->queryParameter('amount')->int()->defaultsTo(1);
     }
 }
