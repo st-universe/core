@@ -56,7 +56,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <input type="hidden" name="amount" tal:attributes="1" />
+                            <input type="hidden" name="amount" tal:attributes="value 1" />
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
