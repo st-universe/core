@@ -184,7 +184,7 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getBuildplanId(): int
+    public function getBuildplanId(): ?int
     {
         return $this->buildplan_id;
     }

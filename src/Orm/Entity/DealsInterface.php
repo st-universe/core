@@ -38,7 +38,7 @@ interface DealsInterface
 
     public function setwantPrestige(int $wantprestige): DealsInterface;
 
-    public function getBuildplanId(): int;
+    public function getBuildplanId(): ?int;
 
     public function setBuildplanId(int $buildplanid): DealsInterface;
 
