@@ -160,9 +160,9 @@ final class DealsTakeOffer implements ActionControllerInterface
                 }
             }
 
-            //      if ($selectedDeal->getBuildplanId() !== null) {
-            //      $amount = 1;
-            // }
+            if ($selectedDeal->getBuildplanId() !== null) {
+                $amount = 1;
+            }
 
             if ($selectedDeal->getAmount() <= $amount) {
                 $amount = $selectedDeal->getAmount();
