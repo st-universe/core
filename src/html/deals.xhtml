@@ -28,16 +28,18 @@
                     <th>Preis</th>
                     <th>Noch Verfügbar</th>
                     <th>Endet</th>
-                    <th></th>
+                    <th>Dealen</th>
                 </tr>
                 <tal:block tal:repeat="data ACTIVEDEALSGOODS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
+                            <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
+                                    title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
-                            <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
+                            <td><img src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
                                 ${data/getwantCommodityAmount}</td>
                             <td tal:condition="data/getAmount">
                                 ${data/getAmount}</td>
@@ -55,9 +57,10 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td><img src="assets/commodities/${data/getgiveCommodityId}.png" />
+                            <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
+                                    title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
-                            <td><img src="assets/buttons/prestige.png" />
+                            <td><img src="assets/buttons/prestige.png" title="Prestige" />
                                 ${data/getwantPrestige}</td>
                             <td tal:condition="data/getAmount">
                                 ${data/getAmount}</td>
@@ -80,7 +83,8 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
+                            <td><img src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
                                 ${data/getwantCommodityAmount}</td>
                             <td tal:condition="data/getAmount">
                                 ${data/getAmount}</td>
@@ -102,7 +106,7 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td><img src="assets/buttons/prestige.png" />
+                            <td><img src="assets/buttons/prestige.png" title="Prestige" />
                                 ${data/getwantPrestige}</td>
                             <td tal:condition="data/getAmount">
                                 ${data/getAmount}</td>
@@ -119,8 +123,8 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td><img src="assets/buttons/builds1.png" /> <img src="assets/ships/${data/getRumpId}.png"
-                                    title="${data/getBuildplanName}" />
+                            <td><img src="assets/buttons/builds1.png" title="Bauplan" /> <img
+                                    src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
@@ -143,13 +147,13 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td><img src="assets/buttons/builds1.png" /> <img src="assets/ships/${data/getRumpId}.png"
-                                    title="${data/getBuildplanName}" />
+                            <td><img src="assets/buttons/builds1.png" title="Bauplan" /> <img
+                                    src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td><img src="assets/buttons/prestige.png" />
+                            <td><img src="assets/buttons/prestige.png" title="Prestige" />
                                 ${data/getwantPrestige}</td>
                             <td tal:condition="data/getAmount">
                                 ${data/getAmount}</td>
