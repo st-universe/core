@@ -125,7 +125,8 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
+                            <td><img src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
                                 ${data/getwantCommodityAmount}</td>
                             <td tal:condition="data/getAmount">
                                 ${data/getAmount}</td>
