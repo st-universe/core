@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 
 use request;
-use Stu\Exception\AccessViolation;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Lib\ColonyStorageCommodityWrapper\ColonyStorageCommodityWrapper;
 use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
@@ -51,18 +51,9 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $plan = $this->shipBuildplanRepository->find(request::indInt('planid'),);
         if ($plan === null || $plan->getUserId() !== $userId) {
-            return;
+            throw new SanityCheckException(sprintf('This buildplan belongs to someone else'));
         }
         $rump = $plan->getRump();
-
-        if (!array_key_exists($rump->getId(), $this->shipRumpRepository->getBuildableByUser($userId))) {
-            throw new AccessViolation(sprintf(
-                'userId %d tried to use buildplanId %d, but has not researched the rump with name %s',
-                $userId,
-                $plan->getId(),
-                $rump->getName()
-            ));
-        }
 
         $moduleScreenTabs = new ModuleScreenTabWrapper;
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {

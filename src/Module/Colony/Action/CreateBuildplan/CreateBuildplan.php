@@ -18,6 +18,7 @@ use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Exception\AccessViolation;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
@@ -64,6 +65,9 @@ final class CreateBuildplan implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $user = $game->getUser();
+        $userId = $user->getId();
+
         $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
 
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
@@ -75,6 +79,14 @@ final class CreateBuildplan implements ActionControllerInterface
             return;
         }
         $this->loggerUtil->log('B');
+
+        if (!array_key_exists($rump->getId(), $this->shipRumpRepository->getBuildableByUser($userId))) {
+            throw new AccessViolation(sprintf(
+                'userId %d tried to create a buildplan with rump %s, but has not researched the rump',
+                $userId,
+                $rump->getName()
+            ));
+        }
 
         $modules = array();
         $sigmod = array();
@@ -171,7 +183,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 date('d.m.Y H:i')
             );
         }
-        if ($this->shipBuildplanRepository->findByUserAndName($game->getUser()->getId(), $planname) !== null) {
+        if ($this->shipBuildplanRepository->findByUserAndName($userId, $planname) !== null) {
             $game->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
             $this->exitOnError($game);
             return;
@@ -182,7 +194,7 @@ final class CreateBuildplan implements ActionControllerInterface
             $planname
         );
         $plan = $this->shipBuildplanRepository->prototype();
-        $plan->setUser($game->getUser());
+        $plan->setUser($user);
         $plan->setRump($rump);
         $plan->setName($planname);
         $plan->setSignature($signature);
