@@ -6,5 +6,5 @@ interface DealsTakeOfferRequestInterface
 {
     public function getDealId(): int;
 
-    public function getAmount(): ?int;
+    public function getAmount(): int;
 }

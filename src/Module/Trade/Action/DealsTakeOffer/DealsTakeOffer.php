@@ -178,17 +178,19 @@ final class DealsTakeOffer implements ActionControllerInterface
                 $amount = 1;
             }
 
-            if ($selectedDeal->getAmount() <= $amount) {
-                $amount = $selectedDeal->getAmount();
 
-                $this->dealsRepository->delete($selectedDeal);
-            } else {
+            if ($selectedDeal->getAmount() !== null) {
+                if ($selectedDeal->getAmount() <= $amount) {
+                    $amount = $selectedDeal->getAmount();
 
-                //modify deal
-                $selectedDeal->setAmount($selectedDeal->getAmount() - (int) $amount);
-                $this->dealsRepository->save($selectedDeal);
+                    $this->dealsRepository->delete($selectedDeal);
+                } else {
+
+                    //modify deal
+                    $selectedDeal->setAmount($selectedDeal->getAmount() - (int) $amount);
+                    $this->dealsRepository->save($selectedDeal);
+                }
             }
-
 
             if ($selectedDeal->getgiveCommodityId() !== null) {
                 $storageManagerUser->upperStorage(
