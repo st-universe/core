@@ -49,7 +49,7 @@ final class ShowDeals implements ViewControllerInterface
             sprintf('trade.php?%s=1', static::VIEW_IDENTIFIER),
             _('Deals')
         );
-        $game->setPageTitle(_('/ Handel'));
+        $game->setPageTitle(_('/ Handel / Deals des Großen Nagus'));
         $game->setTemplateFile('html/deals.xhtml');
 
         $game->setTemplateVar('ACTIVEDEALS', $activedeals);
