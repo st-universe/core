@@ -108,7 +108,6 @@ final class DealsBidAuction implements ActionControllerInterface
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
         $storageManagerSecondUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $selectedDeal->getAuctionUser()->getId());
 
-        $freeStorage = $storageManagerUser->getFreeStorage();
 
         if ($selectedDeal->getwantCommodityId() !== null) {
 
@@ -134,25 +133,26 @@ final class DealsBidAuction implements ActionControllerInterface
                 (int) $selectedDeal->getwantCommodityId(),
                 (int) $selectedDeal->getwantCommodityAmount() * $amount
             );
+            if ($selectedDeal->getAuctionUserId() > 100) {
+                $storageManagerSecondUser->upperStorage(
+                    (int) $selectedDeal->getwantCommodityId(),
+                    (int) $selectedDeal->getwantCommodityAmount() * $selectedDeal->getAuctionAmount()
+                );
 
-            $storageManagerSecondUser->upperStorage(
-                (int) $selectedDeal->getwantCommodityId(),
-                (int) $selectedDeal->getwantCommodityAmount() * $selectedDeal->getAuctionAmount()
-            );
-
-            $this->privateMessageSender->send(
-                $selectedDeal->getAuctionUserId(),
-                $selectedDeal->getAuctionUserId(),
-                sprintf(
-                    'Du wurdes bei einer Auction des großen Nagus von %s überboten und hast insgesamt %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
-                    $user->getUserName(),
-                    $selectedDeal->getAuctionAmount(),
-                    $selectedDeal->getWantedCommodity()->getName(),
-                    $amount,
-                    $selectedDeal->getWantedCommodity()->getName()
-                ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
-            );
+                $this->privateMessageSender->send(
+                    $selectedDeal->getAuctionUserId(),
+                    1,
+                    sprintf(
+                        'Du wurdes bei einer Auction des großen Nagus von %s überboten und hast insgesamt %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
+                        $user->getUserName(),
+                        $selectedDeal->getAuctionAmount(),
+                        $selectedDeal->getWantedCommodity()->getName(),
+                        $amount,
+                        $selectedDeal->getWantedCommodity()->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                );
+            }
         }
 
         if ($selectedDeal->getwantPrestige() !== null) {
@@ -170,7 +170,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
                 $this->privateMessageSender->send(
                     $selectedDeal->getAuctionUserId(),
-                    $selectedDeal->getAuctionUserId(),
+                    1,
                     sprintf(
                         'Du wurdes bei einer Auction des großen Nagus von %s überboten und hast insgesamt %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
                         $user->getUserName(),
