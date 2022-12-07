@@ -62,7 +62,7 @@ interface DealsInterface
 
     public function setAuctionAmount(int $auction_amount): DealsInterface;
 
-    public function getAuctionUser(): UserInterface;
+    public function getAuctionUser(): ?UserInterface;
 
     public function getWantedCommodity(): CommodityInterface;
 

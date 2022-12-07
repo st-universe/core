@@ -268,7 +268,7 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getAuctionUser(): UserInterface
+    public function getAuctionUser(): ?UserInterface
     {
         return $this->auctionuser;
     }
