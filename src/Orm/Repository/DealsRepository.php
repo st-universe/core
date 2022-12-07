@@ -10,6 +10,7 @@ use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\DealsInterface;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\User;
 
 final class DealsRepository extends EntityRepository implements DealsRepositoryInterface
 {
@@ -99,13 +100,15 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                         Deals::class,
+                        User::class,
                     )
                 )
                 ->setParameters([
                     'actime' => $time,
+                    'userid' => $userId,
                 ])
                 ->getResult();
         }
@@ -120,13 +123,15 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                         Deals::class,
+                        User::class,
                     )
                 )
                 ->setParameters([
                     'actime' => $time,
+                    'userid' => $userId,
                 ])
                 ->getResult();
         }
@@ -141,13 +146,15 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                         Deals::class,
+                        User::class,
                     )
                 )
                 ->setParameters([
                     'actime' => $time,
+                    'userid' => $userId,
                 ])
                 ->getResult();
         }
@@ -162,13 +169,15 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
+                        'SELECT d FROM %s d  JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                         Deals::class,
+                        User::class,
                     )
                 )
                 ->setParameters([
                     'actime' => $time,
+                    'userid' => $userId,
                 ])
                 ->getResult();
         }
@@ -183,13 +192,15 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                         Deals::class,
+                        User::class,
                     )
                 )
                 ->setParameters([
                     'actime' => $time,
+                    'userid' => $userId,
                 ])
                 ->getResult();
         }
@@ -204,13 +215,15 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                         Deals::class,
+                        User::class,
                     )
                 )
                 ->setParameters([
                     'actime' => $time,
+                    'userid' => $userId,
                 ])
                 ->getResult();
         }
