@@ -30,7 +30,7 @@ class Deals implements DealsInterface
     /** @Column(type="boolean") */
     private $auction = FALSE;
 
-    /** @Column(type="integer") */
+    /** @Column(type="integer", nullable=true) */
     private $amount = 0;
 
     /** @Column(type="integer", nullable=true) */
@@ -109,7 +109,7 @@ class Deals implements DealsInterface
         return $this->auction;
     }
 
-    public function getAmount(): int
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
