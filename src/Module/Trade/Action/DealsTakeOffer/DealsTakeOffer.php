@@ -264,7 +264,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
         foreach ($modules as $obj) {
             $mod = $this->buildplanModuleRepository->prototype();
-            $mod->setModuleType((int) $obj->getType());
+            $mod->setModuleType((int) $obj->getModule()->getType());
             $mod->setBuildplan($plan);
             $mod->setModule($obj);
             $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
