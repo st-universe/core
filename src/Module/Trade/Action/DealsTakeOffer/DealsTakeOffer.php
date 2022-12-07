@@ -7,12 +7,15 @@ namespace Stu\Module\Trade\Action\DealsTakeOffer;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Trade\TradeEnum;
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
+use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
@@ -30,9 +33,13 @@ final class DealsTakeOffer implements ActionControllerInterface
 
     private DealsRepositoryInterface $dealsRepository;
 
+    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
+
     private TradePostRepositoryInterface $tradepostRepository;
 
     private StorageRepositoryInterface $storageRepository;
+
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     private ShipCreatorInterface $shipCreator;
 
@@ -50,6 +57,8 @@ final class DealsTakeOffer implements ActionControllerInterface
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransactionRepositoryInterface $tradeTransactionRepository,
         StorageRepositoryInterface $storageRepository,
+        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
         CreatePrestigeLogInterface $createPrestigeLog,
@@ -57,12 +66,14 @@ final class DealsTakeOffer implements ActionControllerInterface
     ) {
         $this->dealstakeOfferRequest = $dealstakeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->tradepostRepository = $tradepostRepository;
         $this->dealsRepository = $dealsRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransactionRepository = $tradeTransactionRepository;
         $this->storageRepository = $storageRepository;
         $this->createPrestigeLog = $createPrestigeLog;
+        $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->shipRepository = $shipRepository;
         $this->shipCreator = $shipCreator;
         $this->entityManager = $entityManager;
@@ -71,6 +82,7 @@ final class DealsTakeOffer implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+        $user = $game->getUser();
         $dealId = $this->dealstakeOfferRequest->getDealId();
         $amount = $this->dealstakeOfferRequest->getAmount();
         $game->setView(ShowDeals::VIEW_IDENTIFIER);
@@ -190,6 +202,10 @@ final class DealsTakeOffer implements ActionControllerInterface
                 $this->createShip($selectedDeal->getBuildplan(), $tradePost, $userId);
             }
 
+            if ($selectedDeal->getShip() == false && $selectedDeal->getBuildplanId() !== null) {
+                $this->createBuildplan($selectedDeal, $user);
+            }
+
             if ($selectedDeal->getwantCommodityId() !== null) {
                 $storageManagerUser->lowerStorage(
                     (int) $selectedDeal->getwantCommodityId(),
@@ -228,5 +244,32 @@ final class DealsTakeOffer implements ActionControllerInterface
     public function performSessionCheck(): bool
     {
         return true;
+    }
+
+    private function createBuildplan($selectedDeal, $user): void
+    {
+        $plan = $this->shipBuildplanRepository->prototype();
+        $plan->setUser($user);
+        $plan->setRump($selectedDeal->getBuildplan()->getRump());
+        $plan->setName($selectedDeal->getBuildplan()->getName());
+        $plan->setSignature($selectedDeal->getBuildplan()->getSignature());
+        $plan->setBuildtime($selectedDeal->getBuildplan()->getBuildtime());
+        $plan->setCrew($selectedDeal->getBuildplan()->getCrew());
+
+        $this->shipBuildplanRepository->save($plan);
+        $this->entityManager->flush();
+
+
+        $modules = $selectedDeal->getBuildplan()->getModules();
+
+        foreach ($modules as $obj) {
+            $mod = $this->buildplanModuleRepository->prototype();
+            $mod->setModuleType((int) $obj->getType());
+            $mod->setBuildplan($plan);
+            $mod->setModule($obj);
+            $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
+        }
+
+        $this->buildplanModuleRepository->save($mod);
     }
 }
