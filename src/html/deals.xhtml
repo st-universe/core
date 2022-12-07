@@ -200,7 +200,7 @@
                         </form>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="data ACTIVEDEALSGOODSPRESTIGE">
+                <tal:block tal:repeat="data ACTIVEAUCTIONSGOODSPRESTIGE">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
@@ -219,7 +219,7 @@
                         </form>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="data ACTIVEDEALSSHIPS">
+                <tal:block tal:repeat="data ACTIVEAUCTIONSSHIPS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
@@ -241,7 +241,7 @@
                         </form>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="data ACTIVEDEALSSHIPSPRESTIGE">
+                <tal:block tal:repeat="data ACTIVEAUCTIONSSHIPSPRESTIGE">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
@@ -262,7 +262,7 @@
                         </form>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="data ACTIVEDEALSBUILDPLANS">
+                <tal:block tal:repeat="data ACTIVEAUCTIONSBUILDPLANS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
@@ -285,7 +285,7 @@
                         </form>
                     </tr>
                 </tal:block>
-                <tal:block tal:repeat="data ACTIVEDEALSBUILDPLANSPRESTIGE">
+                <tal:block tal:repeat="data ACTIVEAUCTIONSBUILDPLANSPRESTIGE">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
