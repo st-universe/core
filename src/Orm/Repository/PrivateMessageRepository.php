@@ -82,7 +82,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     public function getAmountByFolder(int $folderId): int
     {
         return $this->count([
-            'cat_id' => $folderId
+            'cat_id' => $folderId, 'deleted' => NULL
         ]);
     }
 
@@ -90,7 +90,8 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     {
         return $this->count([
             'cat_id' => $folderId,
-            'new' => 1
+            'new' => 1,
+            'deleted' => NULL
         ]);
     }
 
