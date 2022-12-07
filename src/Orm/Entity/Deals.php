@@ -60,6 +60,12 @@ class Deals implements DealsInterface
     /** @Column(type="integer") */
     private $end;
 
+    /** @Column(type="integer") */
+    private $auction_user;
+
+    /** @Column(type="integer") */
+    private $auction_amount;
+
 
     /**
      * @ManyToOne(targetEntity="Commodity")
@@ -78,6 +84,12 @@ class Deals implements DealsInterface
      * @JoinColumn(name="buildplan_id", referencedColumnName="id")
      */
     private $buildplan;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="auction_user", referencedColumnName="id")
+     */
+    private $auctionuser;
 
     public function getId(): int
     {
@@ -230,6 +242,35 @@ class Deals implements DealsInterface
         $this->end = $end;
 
         return $this;
+    }
+
+    public function getAuctionUserId(): ?int
+    {
+        return $this->auction_user;
+    }
+
+    public function setAuctionUserId(int $auction_user): DealsInterface
+    {
+        $this->auction_user = $auction_user;
+
+        return $this;
+    }
+
+    public function getAuctionAmount(): ?int
+    {
+        return $this->auction_amount;
+    }
+
+    public function setAuctionAmount(int $auction_amount): DealsInterface
+    {
+        $this->auction_amount = $auction_amount;
+
+        return $this;
+    }
+
+    public function getAuctionUser(): UserInterface
+    {
+        return $this->auctionuser;
     }
 
     public function getWantedCommodity(): CommodityInterface
