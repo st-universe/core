@@ -51,6 +51,10 @@ final class ShowSignatures implements ViewControllerInterface
             $signatureRange = $this->flightSignatureRepository->getSignatureRangeForAlly($allyId);
         }
 
+        if (empty($signatureRange)) {
+            return;
+        }
+
         $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
             $userId,
             $allyId,
