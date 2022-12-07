@@ -260,7 +260,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         $this->entityManager->flush();
 
 
-        $modules = $selectedDeal->getBuildplan()->getModules();
+        $modules = $selectedDeal->getBuildplan()->getModules()->toArray();
 
         foreach ($modules as $obj) {
             $mod = $this->buildplanModuleRepository->prototype();
