@@ -267,7 +267,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             $mod->setModuleType((int) $obj->getModule()->getType());
             $mod->setBuildplan($plan);
             $mod->setModule($obj->getModule());
-            $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
+            $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getModule()->getSpecials()));
         }
 
         $this->buildplanModuleRepository->save($mod);
