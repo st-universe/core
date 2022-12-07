@@ -140,8 +140,8 @@ final class DealsBidAuction implements ActionControllerInterface
                 );
 
                 $this->privateMessageSender->send(
+                    14,
                     $selectedDeal->getAuctionUserId(),
-                    1,
                     sprintf(
                         'Du wurdes bei einer Auction des großen Nagus von %s überboten und hast insgesamt %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
                         $user->getUserName(),
@@ -169,8 +169,8 @@ final class DealsBidAuction implements ActionControllerInterface
                 $this->createPrestigeLog->createLog($selectedDeal->getAuctionAmount(), $descriptionsecond, $selectedDeal->getAuctionUser(), time());
 
                 $this->privateMessageSender->send(
+                    14,
                     $selectedDeal->getAuctionUserId(),
-                    1,
                     sprintf(
                         'Du wurdes bei einer Auction des großen Nagus von %s überboten und hast insgesamt %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
                         $user->getUserName(),
