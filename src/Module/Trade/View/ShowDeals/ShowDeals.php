@@ -69,12 +69,12 @@ final class ShowDeals implements ViewControllerInterface
         $game->setTemplateVar('ACTIVEDEALSGOODSPRESTIGE', $activedealsgoodsprestige);
         $game->setTemplateVar('ACTIVEDEALSSHIPSPRESTIGE', $activedealsshipsprestige);
         $game->setTemplateVar('ACTIVEDEALSBUILDPLANSPRESTIGE', $activedealsbuildplansprestige);
-        $game->setTemplateVar('ACTIVEAUCTIONS', $activedeals);
-        $game->setTemplateVar('ACTIVEAUCTIONSGOODS', $activedealsgoods);
-        $game->setTemplateVar('ACTIVEAUCTIONSSHIPS', $activedealsships);
-        $game->setTemplateVar('ACTIVEAUCTIONSBUILDPLANS', $activedealsbuildplans);
-        $game->setTemplateVar('ACTIVEAUCTIONSGOODSPRESTIGE', $activedealsgoodsprestige);
-        $game->setTemplateVar('ACTIVEAUCTIONSSHIPSPRESTIGE', $activedealsshipsprestige);
-        $game->setTemplateVar('ACTIVEAUCTIONSBUILDPLANSPRESTIGE', $activedealsbuildplansprestige);
+        $game->setTemplateVar('ACTIVEAUCTIONS', $activauctions);
+        $game->setTemplateVar('ACTIVEAUCTIONSGOODS', $activauctionsgoods);
+        $game->setTemplateVar('ACTIVEAUCTIONSSHIPS', $activauctionsships);
+        $game->setTemplateVar('ACTIVEAUCTIONSBUILDPLANS', $activauctionsbuildplans);
+        $game->setTemplateVar('ACTIVEAUCTIONSGOODSPRESTIGE', $activauctionsgoodsprestige);
+        $game->setTemplateVar('ACTIVEAUCTIONSSHIPSPRESTIGE', $activauctionsshipsprestige);
+        $game->setTemplateVar('ACTIVEAUCTIONSBUILDPLANSPRESTIGE', $activauctionsbuildplansprestige);
     }
 }
