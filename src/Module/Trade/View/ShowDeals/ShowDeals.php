@@ -41,6 +41,16 @@ final class ShowDeals implements ViewControllerInterface
             $activedealsbuildplansprestige = $this->dealsRepository->getActiveDealsBuildplansPrestige($userId);
         }
 
+        $activauctions = $this->dealsRepository->getActiveAuctions($userId);
+        if (!empty($activauctions)) {
+            $activauctionsgoods = $this->dealsRepository->getActiveAuctionsGoods($userId);
+            $activauctionsships = $this->dealsRepository->getActiveAuctionsShips($userId);
+            $activauctionsbuildplans = $this->dealsRepository->getActiveAuctionsBuildplans($userId);
+            $activauctionsgoodsprestige = $this->dealsRepository->getActiveAuctionsGoodsPrestige($userId);
+            $activauctionsshipsprestige = $this->dealsRepository->getActiveAuctionsShipsPrestige($userId);
+            $activauctionsbuildplansprestige = $this->dealsRepository->getActiveAuctionsBuildplansPrestige($userId);
+        }
+
         $game->appendNavigationPart(
             'trade.php',
             _('Handel')
@@ -59,5 +69,12 @@ final class ShowDeals implements ViewControllerInterface
         $game->setTemplateVar('ACTIVEDEALSGOODSPRESTIGE', $activedealsgoodsprestige);
         $game->setTemplateVar('ACTIVEDEALSSHIPSPRESTIGE', $activedealsshipsprestige);
         $game->setTemplateVar('ACTIVEDEALSBUILDPLANSPRESTIGE', $activedealsbuildplansprestige);
+        $game->setTemplateVar('ACTIVEAUCTIONS', $activedeals);
+        $game->setTemplateVar('ACTIVEAUCTIONSGOODS', $activedealsgoods);
+        $game->setTemplateVar('ACTIVEAUCTIONSSHIPS', $activedealsships);
+        $game->setTemplateVar('ACTIVEAUCTIONSBUILDPLANS', $activedealsbuildplans);
+        $game->setTemplateVar('ACTIVEAUCTIONSGOODSPRESTIGE', $activedealsgoodsprestige);
+        $game->setTemplateVar('ACTIVEAUCTIONSSHIPSPRESTIGE', $activedealsshipsprestige);
+        $game->setTemplateVar('ACTIVEAUCTIONSBUILDPLANSPRESTIGE', $activedealsbuildplansprestige);
     }
 }

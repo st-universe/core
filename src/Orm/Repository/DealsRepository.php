@@ -249,4 +249,142 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 ->getResult();
         }
     }
+
+    public function getActiveAuctionsGoods(int $userId): ?array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    ',
+                        Deals::class,
+                        User::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                    'userid' => $userId,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveAuctionsShips(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    ',
+                        Deals::class,
+                        User::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                    'userid' => $userId,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveAuctionsBuildplans(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    ',
+                        Deals::class,
+                        User::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                    'userid' => $userId,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveAuctionsGoodsPrestige(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d  JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    ',
+                        Deals::class,
+                        User::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                    'userid' => $userId,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveAuctionsShipsPrestige(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    ',
+                        Deals::class,
+                        User::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                    'userid' => $userId,
+                ])
+                ->getResult();
+        }
+    }
+
+    public function getActiveAuctionsBuildplansPrestige(int $userId): array
+    {
+        if ($this->getFergLicense($userId) == FALSE) {
+            return null;
+        } else {
+            $time = time();
+            return $this->getEntityManager()
+                ->createQuery(
+                    sprintf(
+                        'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    ',
+                        Deals::class,
+                        User::class,
+                    )
+                )
+                ->setParameters([
+                    'actime' => $time,
+                    'userid' => $userId,
+                ])
+                ->getResult();
+        }
+    }
 }

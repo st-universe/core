@@ -39,6 +39,18 @@ interface DealsRepositoryInterface extends ObjectRepository
 
     public function getActiveAuctions(int $userId): array;
 
+    public function getActiveAuctionsGoods(int $userId): ?array;
+
+    public function getActiveAuctionsShips(int $userId): array;
+
+    public function getActiveAuctionsBuildplans(int $userId): array;
+
+    public function getActiveAuctionsGoodsPrestige(int $userId): array;
+
+    public function getActiveAuctionsShipsPrestige(int $userId): array;
+
+    public function getActiveAuctionsBuildplansPrestige(int $userId): array;
+
     /**
      * @return TradePostInterface
      */
