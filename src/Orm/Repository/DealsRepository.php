@@ -238,7 +238,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT d FROM %s d WHERE d.end > :actime AND d.acution = TRUE
+                        'SELECT d FROM %s d WHERE d.end > :actime AND d.auction = TRUE
                     ',
                         Deals::class,
                     )
