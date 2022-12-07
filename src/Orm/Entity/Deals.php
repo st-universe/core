@@ -60,10 +60,10 @@ class Deals implements DealsInterface
     /** @Column(type="integer") */
     private $end;
 
-    /** @Column(type="integer") */
+    /** @Column(type="integer", nullable=true) */
     private $auction_user;
 
-    /** @Column(type="integer") */
+    /** @Column(type="integer", nullable=true) */
     private $auction_amount;
 
 
