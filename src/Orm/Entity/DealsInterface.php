@@ -14,7 +14,7 @@ interface DealsInterface
 
     public function getAuction(): bool;
 
-    public function getAmount(): int;
+    public function getAmount(): ?int;
 
     public function setAmount(int $amount): DealsInterface;
 
