@@ -127,11 +127,9 @@
                             </td>
                             <td><img src="assets/commodities/${data/getwantCommodityId}.png" />
                                 ${data/getwantCommodityAmount}</td>
-                            <td>
+                            <td tal:condition="data/getAmount">
                                 ${data/getAmount}</td>
-                            <td tal:condition="data/getEnd">
-                                ${data/getEnd}</td>
-                            <td tal:condition="not:data/getEnd">
+                            <td tal:condition="not:data/getAmount">
                                 <b>∞</b>
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
