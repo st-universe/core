@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Repair;
 
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -25,15 +27,23 @@ final class RepairUtil implements RepairUtilInterface
 
     private RepairTaskRepositoryInterface $repairTaskRepository;
 
+    private ShipStorageManagerInterface $shipStorageManager;
+
+    private ColonyStorageManagerInterface $colonyStorageManager;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         RepairTaskRepositoryInterface $repairTaskRepository,
+        ShipStorageManagerInterface $shipStorageManager,
+        ColonyStorageManagerInterface $colonyStorageManager,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->repairTaskRepository = $repairTaskRepository;
+        $this->shipStorageManager = $shipStorageManager;
+        $this->colonyStorageManager = $colonyStorageManager;
         $this->privateMessageSender = $privateMessageSender;
     }
 
