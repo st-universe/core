@@ -57,6 +57,10 @@ final class Selfrepair implements ActionControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(request::postIntFatal('id'), $userId);
 
+        if (!$ship->isAlertGreen()) {
+            return;
+        }
+
         $repairType = request::postInt('partschoice');
         $systemType = request::postInt('sid');
 

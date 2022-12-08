@@ -1645,51 +1645,64 @@
     <form id="selfrepair_form" method="post" action="ship.php">
       <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
       <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-      <table class="tcal">
-        <tr>
-          <th>Beschädigtes System <img title="Durch die Crew reparierbare Systeme" src="assets/buttons/info2.png"
-              style="height:16px;" /></th>
-          <th>Anzahl Ingenieure <img title="Die Anzahl Ingenieure beschleunigt die Reparatur"
-              src="assets/buttons/info2.png" style="height:16px;" /></th>
-          <th>Verwendete Teile <img title="Umfang der Reparatur" src="assets/buttons/info2.png" style="height:16px;" />
-          </th>
-          <th>Sofortreparatur <img title="Erfordert die dreifache Menge an Teilen" src="assets/buttons/info2.png"
-              style="height:16px;" /></th>
-        </tr>
-        <tr>
-          <td>
-            <select name="sid" id="systemSelect" style="width:100%;">
-              <tal:block tal:repeat="data REPAIR_OPTIONS">
-                <option tal:attributes="value data/getSystemType;"><span tal:replace="data/getName">NAME</span>,
-                  aktuell: <span tal:replace="data/getStatus">STATUS</span>%</option>
-              </tal:block>
-            </select>
-          </td>
-          <td style="text-align: center;">
-            <span tal:replace="ENGINEER_COUNT"></span>
-          </td>
-          <td>
-            <label>
-              <input type="radio" name="partschoice" value="1" /> nur
-              Ersatzteile (~ auf <span tal:replace="SPARE_PARTS_ONLY">PERCENTAGE</span>%)</label>
-            <br />
-            <label>
-              <input type="radio" name="partschoice" value="2" /> nur
-              Systemkomponenten (~ auf <span tal:replace="SYSTEM_COMPONENTS_ONLY">PERCENTAGE</span>%)</label>
-            <br />
-            <label>
-              <input type="radio" name="partschoice" value="3" />
-              beides (~ auf <span tal:replace="BOTH">PERCENTAGE</span>%)</label>
-          </td>
-          <td>
-            <input type="checkbox" name="instantrepair" /> sofort
-          </td>
-        </tr>
-        <tr style="text-align: center;">
-          <td colspan="4"><input type="submit" class="button" value="Reparatur starten" name="B_SELF_REPAIR"
-              id="selfrepair_button" /></td>
-        </tr>
-      </table>
+      <div class="box" tal:condition="SHIP/isBase">
+        <div class="box_title">Passive Reparatur <img title="Wird durch angedockte Workbees durchgeführt"
+            src="assets/buttons/info2.png" style="height:16px;" /></div>
+        <div class="box_body"><input type="submit" class="button" value="Passive Reparatur starten"
+            name="B_STATION_REPAIR" id="repair_button" /></div>
+      </div>
+      <div class="box">
+        <div class="box_title">Aktive Reparatur <img title="Wird durch die Crew des Schiffes durchgeführt"
+            src="assets/buttons/info2.png" style="height:16px;" /></div>
+        <div class="box_body">
+          <table class="tcal">
+            <tr>
+              <th>Beschädigtes System <img title="Durch die Crew reparierbare Systeme" src="assets/buttons/info2.png"
+                  style="height:16px;" /></th>
+              <th>Anzahl Ingenieure <img title="Die Anzahl Ingenieure beschleunigt die Reparatur"
+                  src="assets/buttons/info2.png" style="height:16px;" /></th>
+              <th>Verwendete Teile <img title="Umfang der Reparatur" src="assets/buttons/info2.png"
+                  style="height:16px;" />
+              </th>
+              <th>Sofortreparatur <img title="Erfordert die dreifache Menge an Teilen" src="assets/buttons/info2.png"
+                  style="height:16px;" /></th>
+            </tr>
+            <tr>
+              <td>
+                <select name="sid" id="systemSelect" style="width:100%;">
+                  <tal:block tal:repeat="data REPAIR_OPTIONS">
+                    <option tal:attributes="value data/getSystemType;"><span tal:replace="data/getName">NAME</span>,
+                      aktuell: <span tal:replace="data/getStatus">STATUS</span>%</option>
+                  </tal:block>
+                </select>
+              </td>
+              <td style="text-align: center;">
+                <span tal:replace="ENGINEER_COUNT"></span>
+              </td>
+              <td>
+                <label>
+                  <input type="radio" name="partschoice" value="1" /> nur
+                  Ersatzteile (~ auf <span tal:replace="SPARE_PARTS_ONLY">PERCENTAGE</span>%)</label>
+                <br />
+                <label>
+                  <input type="radio" name="partschoice" value="2" /> nur
+                  Systemkomponenten (~ auf <span tal:replace="SYSTEM_COMPONENTS_ONLY">PERCENTAGE</span>%)</label>
+                <br />
+                <label>
+                  <input type="radio" name="partschoice" value="3" />
+                  beides (~ auf <span tal:replace="BOTH">PERCENTAGE</span>%)</label>
+              </td>
+              <td>
+                <input type="checkbox" name="instantrepair" /> sofort
+              </td>
+            </tr>
+            <tr style="text-align: center;">
+              <td colspan="4"><input type="submit" class="button" value="Aktive Reparatur starten" name="B_SELF_REPAIR"
+                  id="selfrepair_button" /></td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </form>
   </tal:block>
 </metal:macro>
