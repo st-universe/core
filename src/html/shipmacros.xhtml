@@ -216,7 +216,10 @@
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
         <img tal:condition="ship/getDockedTo" src="assets/buttons/dock2.png" title="Schiff ist angedockt"
           style="height:20px;" />
-        <img tal:condition="php:ship.getState() EQ 1" src="assets/buttons/rep2.png"
+        <img tal:condition="php:ship.getState() EQ 1 && ship.isBase()" src="assets/buttons/rep2.png"
+          tal:attributes="title string:Station wird repariert (noch ${ship/getRepairDuration} Runden)"
+          style="height:20px;" />
+        <img tal:condition="php:ship.getState() EQ 1 && !ship.isBase()" src="assets/buttons/rep2.png"
           tal:attributes="title string:Schiff wird repariert (noch ${ship/getRepairDuration} Runden)"
           style="height:20px;" />
         <img tal:condition="php:ship.getState() EQ 4" src="assets/buttons/rep2.png"
