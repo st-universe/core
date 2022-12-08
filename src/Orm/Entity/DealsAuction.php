@@ -26,7 +26,7 @@ class DealsAuction implements DealsAuctionInterface
     private $auction_id;
 
     /** @Column(type="integer")  */
-    private $userid;
+    private $user_id;
 
     /** @Column(type="integer")  */
     private $actual_amount;
@@ -43,7 +43,7 @@ class DealsAuction implements DealsAuctionInterface
 
     /**
      * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="userid", referencedColumnName="id")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $auctionuser;
 
