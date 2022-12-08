@@ -68,7 +68,6 @@ final class DealsBidAuction implements ActionControllerInterface
         $game->setView(ShowDeals::VIEW_IDENTIFIER);
 
         $selectedDeal = $this->dealsRepository->find($dealId);
-        $oldamount = $selectedDeal->getAuctionAmount();
         if ($amount < 1) {
             $game->addInformation(_('Zu geringe Anzahl ausgewählt'));
             return;
@@ -111,7 +110,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
         if ($selectedDeal->getwantCommodityId() !== null) {
 
-            if ($amount * $selectedDeal->getwantCommodityAmount() > $storage->getAmount()) {
+            if ($amount  > $storage->getAmount()) {
                 $amount = (int) floor($storage->getAmount() / $selectedDeal->getwantCommodityAmount());
             }
         }
@@ -131,19 +130,19 @@ final class DealsBidAuction implements ActionControllerInterface
         if ($selectedDeal->getwantCommodityId() !== null) {
             $storageManagerUser->lowerStorage(
                 (int) $selectedDeal->getwantCommodityId(),
-                (int) $selectedDeal->getwantCommodityAmount() * $amount
+                (int) $amount
             );
             if ($selectedDeal->getAuctionUserId() > 100) {
                 $storageManagerSecondUser->upperStorage(
                     (int) $selectedDeal->getwantCommodityId(),
-                    (int) $selectedDeal->getwantCommodityAmount() * $selectedDeal->getAuctionAmount()
+                    (int) $selectedDeal->getAuctionAmount()
                 );
 
                 $this->privateMessageSender->send(
                     14,
                     $selectedDeal->getAuctionUserId(),
                     sprintf(
-                        'Du wurdes bei einer Auction des großen Nagus von %s überboten und hast insgesamt %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
+                        'Du wurdes bei einer Auktion des großen Nagus von %s überboten und hast insgesamt %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
                         $user->getUserName(),
                         $selectedDeal->getAuctionAmount(),
                         $selectedDeal->getWantedCommodity()->getName(),
@@ -164,10 +163,10 @@ final class DealsBidAuction implements ActionControllerInterface
 
             if ($selectedDeal->getAuctionUserId() > 100) {
                 $descriptionsecond = sprintf(
-                    '%d Prestige: Du wurdest bei einer Auction des Großen Nagus überboten und has dein Prestige zurück erhalten',
+                    '%d Prestige: Du wurdest bei einer Auktion des Großen Nagus überboten und has dein Prestige zurück erhalten',
                     $amount * $selectedDeal->getwantPrestige()
                 );
-                $this->createPrestigeLog->createLog($oldamount, $descriptionsecond, $selectedDeal->getAuctionUser(), time());
+                $this->createPrestigeLog->createLog($selectedDeal->getAuctionAmount(), $descriptionsecond, $selectedDeal->getAuctionUser(), time());
 
                 $this->privateMessageSender->send(
                     14,
