@@ -6,8 +6,8 @@ namespace Stu\Component\Ship;
 
 use Stu\Component\Ship\Nbs\NbsUtility;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
-use Stu\Component\Ship\Selfrepair\SelfrepairUtil;
-use Stu\Component\Ship\Selfrepair\SelfrepairUtilInterface;
+use Stu\Component\Ship\Repair\RepairUtil;
+use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\Storage\ShipStorageManager;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManager;
@@ -57,7 +57,7 @@ use function DI\get;
 return [
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
     NbsUtilityInterface::class => autowire(NbsUtility::class),
-    SelfrepairUtilInterface::class => autowire(SelfrepairUtil::class),
+    RepairUtilInterface::class => autowire(RepairUtil::class),
     TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
     ShipSystemManagerInterface::class => create(ShipSystemManager::class)->constructor(
         [

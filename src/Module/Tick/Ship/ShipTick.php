@@ -4,6 +4,7 @@ namespace Stu\Module\Tick\Ship;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -40,6 +41,8 @@ final class ShipTick implements ShipTickInterface
 
     private StationUtilityInterface $stationUtility;
 
+    private RepairUtilInterface $repairUtil;
+
     private array $msg = [];
 
     public function __construct(
@@ -51,7 +54,8 @@ final class ShipTick implements ShipTickInterface
         AstroEntryLibInterface $astroEntryLib,
         DatabaseUserRepositoryInterface $databaseUserRepository,
         CreateDatabaseEntryInterface $createDatabaseEntry,
-        StationUtilityInterface $stationUtility
+        StationUtilityInterface $stationUtility,
+        RepairUtilInterface $repairUtil
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
@@ -62,6 +66,7 @@ final class ShipTick implements ShipTickInterface
         $this->databaseUserRepository = $databaseUserRepository;
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->stationUtility = $stationUtility;
+        $this->repairUtil = $repairUtil;
     }
 
     public function work(ShipInterface $ship): void
@@ -71,6 +76,11 @@ final class ShipTick implements ShipTickInterface
             $this->shipRepository->save($ship);
             $this->sendMessages($ship);
             return;
+        }
+
+        // repair station
+        if ($ship->isBase() && $ship->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+            $this->doRepairStation($ship);
         }
 
         // leave ship
@@ -217,6 +227,76 @@ final class ShipTick implements ShipTickInterface
         }
 
         return true;
+    }
+
+    private function doRepairStation(ShipInterface $station): void
+    {
+        if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $station->getRump())) {
+            $neededWorkbees = (int)ceil($station->getRump()->getNeededWorkbees() / 5);
+
+            $this->msg[] = sprintf(
+                _('Nicht genügend Workbees (%d/%d) angedockt um die Reparatur weiterführen zu können'),
+                $this->stationUtility->getDockedWorkbeeCount($station),
+                $neededWorkbees
+            );
+            return;
+        }
+
+        $neededParts = $this->repairUtil->determineSpareParts($station);
+
+        // parts stored?
+        if (!$this->repairUtil->enoughSparePartsOnEntity($neededParts, $station, false, $station)) {
+            return;
+        }
+
+        //repair hull
+        $station->setHuell($station->getHuell() + $station->getRepairRate());
+        if ($station->getHuell() > $station->getMaxHuell()) {
+            $station->setHuell($station->getMaxHuell());
+        }
+
+        //repair station systems
+        $damagedSystems = $station->getDamagedSystems();
+        if (!empty($damagedSystems)) {
+            $firstSystem = $damagedSystems[0];
+            $firstSystem->setStatus(100);
+
+            if ($station->getCrewCount() > 0) {
+                $firstSystem->setMode($this->shipSystemManager->lookupSystem($firstSystem->getSystemType())->getDefaultMode());
+            }
+
+            // maximum of two systems get repaired
+            if (count($damagedSystems) > 1) {
+                $secondSystem = $damagedSystems[1];
+                $secondSystem->setStatus(100);
+
+                if ($station->getCrewCount() > 0) {
+                    $secondSystem->setMode($this->shipSystemManager->lookupSystem($secondSystem->getSystemType())->getDefaultMode());
+                }
+            }
+        }
+
+        // consume spare parts
+        $this->repairUtil->consumeSpareParts($neededParts, $station, false);
+
+        if (!$station->canBeRepaired()) {
+            $station->setHuell($station->getMaxHuell());
+            $station->setState(ShipStateEnum::SHIP_STATE_NONE);
+
+            $shipOwnerMessage = sprintf(
+                "Die Reparatur der %s wurde in Sektor %s fertiggestellt",
+                $station->getName(),
+                $station->getSectorString()
+            );
+
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $station->getUser()->getId(),
+                $shipOwnerMessage,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+            );
+        }
+        $this->shipRepository->save($station);
     }
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void

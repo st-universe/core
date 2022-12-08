@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowRepairOptions;
 
 use request;
+use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\RepairTaskEnum;
-use Stu\Component\Ship\Selfrepair\SelfrepairUtilInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -17,14 +17,14 @@ final class ShowRepairOptions implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private SelfrepairUtilInterface $selfrepairUtil;
+    private RepairUtilInterface $repairUtil;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        SelfrepairUtilInterface $selfrepairUtil
+        RepairUtilInterface $repairUtil
     ) {
         $this->shipLoader = $shipLoader;
-        $this->selfrepairUtil = $selfrepairUtil;
+        $this->repairUtil = $repairUtil;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,11 +46,11 @@ final class ShowRepairOptions implements ViewControllerInterface
             return;
         }
 
-        $repairOptions = $this->selfrepairUtil->determineRepairOptions($ship);
+        $repairOptions = $this->repairUtil->determineRepairOptions($ship);
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('REPAIR_OPTIONS', $repairOptions);
-        $game->setTemplateVar('ENGINEER_COUNT', $this->selfrepairUtil->determineFreeEngineerCount($ship));
+        $game->setTemplateVar('ENGINEER_COUNT', $this->repairUtil->determineFreeEngineerCount($ship));
         $game->setTemplateVar('ERROR', false);
 
         $game->setTemplateVar('SPARE_PARTS_ONLY', (int)((RepairTaskEnum::SPARE_PARTS_ONLY_MIN + RepairTaskEnum::SPARE_PARTS_ONLY_MAX) / 2));

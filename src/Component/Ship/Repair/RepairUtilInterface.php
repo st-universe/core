@@ -1,12 +1,18 @@
 <?php
 
-namespace Stu\Component\Ship\Selfrepair;
+namespace Stu\Component\Ship\Repair;
 
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-interface SelfrepairUtilInterface
+interface RepairUtilInterface
 {
+    public function determineSpareParts(ShipInterface $ship): array;
+
+    public function enoughSparePartsOnEntity(array $neededParts, $entity, bool $isColony, ShipInterface $ship): bool;
+
+    public function consumeSpareParts(array $neededParts, $entity, bool $isColony): void;
+
     public function determineFreeEngineerCount(ShipInterface $ship): int;
 
     public function determineRepairOptions(ShipInterface $ship): array;

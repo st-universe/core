@@ -139,14 +139,21 @@ final class StationUtility implements StationUtilityInterface
         return $dockedWorkbees;
     }
 
-    public function hasEnoughDockedWorkbees(ShipInterface $ship, ShipRumpInterface $rump): bool
+    public function hasEnoughDockedWorkbees(ShipInterface $station, ShipRumpInterface $rump): bool
     {
-        $isUnderConstruction = $ship->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION;
+        if ($station->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION) {
+            $neededWorkbees = $rump->getNeededWorkbees();
+        }
 
-        $neededWorkbees = $isUnderConstruction ? $rump->getNeededWorkbees() :
-            (int)ceil($rump->getNeededWorkbees() / 2);
+        if ($station->getState() === ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
+            $neededWorkbees = (int)ceil($rump->getNeededWorkbees() / 2);
+        }
 
-        return $this->getDockedWorkbeeCount($ship) >= $neededWorkbees;
+        if ($station->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+            $neededWorkbees = (int)ceil($rump->getNeededWorkbees() / 5);
+        }
+
+        return $this->getDockedWorkbeeCount($station) >= $neededWorkbees;
     }
 
     public function getConstructionProgress(ShipInterface $ship): ?ConstructionProgressInterface

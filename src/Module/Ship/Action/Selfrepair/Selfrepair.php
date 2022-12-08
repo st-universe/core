@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\Selfrepair;
 
 use request;
+use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\RepairTaskEnum;
-use Stu\Component\Ship\Selfrepair\SelfrepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -27,7 +27,7 @@ final class Selfrepair implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private SelfrepairUtilInterface $selfrepairUtil;
+    private RepairUtilInterface $repairUtil;
 
     private ShipRepositoryInterface $shipRepository;
 
@@ -37,13 +37,13 @@ final class Selfrepair implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        SelfrepairUtilInterface $selfrepairUtil,
+        RepairUtilInterface $repairUtil,
         ShipRepositoryInterface $shipRepository,
         ShipStorageManagerInterface $shipStorageManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
-        $this->selfrepairUtil = $selfrepairUtil;
+        $this->repairUtil = $repairUtil;
         $this->shipRepository = $shipRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -76,7 +76,7 @@ final class Selfrepair implements ActionControllerInterface
             return;
         }
 
-        $repairOptions = $this->selfrepairUtil->determineRepairOptions($ship);
+        $repairOptions = $this->repairUtil->determineRepairOptions($ship);
         if (!array_key_exists($systemType, $repairOptions)) {
             return;
         }
@@ -110,11 +110,11 @@ final class Selfrepair implements ActionControllerInterface
 
             $ship->setState(ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE);
 
-            $freeEngineerCount = $this->selfrepairUtil->determineFreeEngineerCount($ship);
+            $freeEngineerCount = $this->repairUtil->determineFreeEngineerCount($ship);
             $duration = RepairTaskEnum::STANDARD_REPAIR_DURATION * (1 - $freeEngineerCount / 10);
 
             $this->consumeCommodities($ship, $repairType, $neededSparePartCount, $game);
-            $this->selfrepairUtil->createRepairTask($ship, $systemType, $repairType, time() + (int) $duration);
+            $this->repairUtil->createRepairTask($ship, $systemType, $repairType, time() + (int) $duration);
             $game->addInformationf(_('Das Schiffssystem %s wird repariert. Fertigstellung %s'), ShipSystemTypeEnum::getDescription($systemType), date("d.m.Y H:i", (time() + (int) $duration)));
         } else {
             if (!$this->checkForSpareParts($ship, 3 * $neededSparePartCount, $repairType, $game)) {
@@ -122,8 +122,8 @@ final class Selfrepair implements ActionControllerInterface
             }
 
             $this->consumeCommodities($ship, $repairType, 3 * $neededSparePartCount, $game);
-            $healingPercentage = $this->selfrepairUtil->determineHealingPercentage($repairType);
-            $isSuccess = $this->selfrepairUtil->instantSelfRepair($ship, $systemType, $healingPercentage);
+            $healingPercentage = $this->repairUtil->determineHealingPercentage($repairType);
+            $isSuccess = $this->repairUtil->instantSelfRepair($ship, $systemType, $healingPercentage);
 
             if ($isSuccess) {
                 $game->addInformationf(

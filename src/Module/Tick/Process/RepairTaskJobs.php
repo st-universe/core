@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\Selfrepair\SelfrepairUtilInterface;
+use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -18,19 +18,19 @@ final class RepairTaskJobs implements ProcessTickInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private SelfrepairUtilInterface $selfrepairUtil;
+    private RepairUtilInterface $repairUtil;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         RepairTaskRepositoryInterface $repairTaskRepository,
         ShipRepositoryInterface $shipRepository,
-        SelfrepairUtilInterface $selfrepairUtil,
+        RepairUtilInterface $repairUtil,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->repairTaskRepository = $repairTaskRepository;
         $this->shipRepository = $shipRepository;
-        $this->selfrepairUtil = $selfrepairUtil;
+        $this->repairUtil = $repairUtil;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -61,7 +61,7 @@ final class RepairTaskJobs implements ProcessTickInterface
                 continue;
             }
 
-            $isSuccess = $this->selfrepairUtil->selfRepair($ship, $repairTask);
+            $isSuccess = $this->repairUtil->selfRepair($ship, $repairTask);
             $this->shipRepository->save($ship);
 
             if ($isSuccess) {
