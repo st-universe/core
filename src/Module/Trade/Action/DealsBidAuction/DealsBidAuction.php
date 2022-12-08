@@ -186,7 +186,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
 
             $selectedDeal->setAuctionAmount((int) $amount);
-            $selectedDeal->setAuctionUserId((int)$userId);
+            $selectedDeal->setAuctionUser($user);
             $this->dealsRepository->save($selectedDeal);
 
             $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Du bist nun meistbietender!'), $amount));

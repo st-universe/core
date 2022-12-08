@@ -249,13 +249,6 @@ class Deals implements DealsInterface
         return $this->auction_user;
     }
 
-    public function setAuctionUserId(int $auction_user): DealsInterface
-    {
-        $this->auction_user = $auction_user;
-
-        return $this;
-    }
-
     public function getAuctionAmount(): ?int
     {
         return $this->auction_amount;
@@ -271,6 +264,13 @@ class Deals implements DealsInterface
     public function getAuctionUser(): ?UserInterface
     {
         return $this->auctionuser;
+    }
+
+    public function setAuctionUser(UserInterface $auctionuser): DealsInterface
+    {
+        $this->auctionuser = $auctionuser;
+
+        return $this;
     }
 
     public function getWantedCommodity(): CommodityInterface
