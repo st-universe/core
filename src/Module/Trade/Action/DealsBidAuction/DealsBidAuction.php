@@ -122,7 +122,9 @@ final class DealsBidAuction implements ActionControllerInterface
                 $amount = (int) floor($userprestige / $selectedDeal->getwantPrestige());
             }
         }
-        if ($selectedDeal->getAuctionAmount() >= $amount) {
+
+        $currentHighestBid = $selectedDeal->getAuctionAmount();
+        if ($currentHighestBid >= $amount) {
             $game->addInformation(_('Zu geringe Menge angegeben'));
             return;
         }
@@ -134,17 +136,17 @@ final class DealsBidAuction implements ActionControllerInterface
             );
             if ($selectedDeal->getAuctionUserId() > 100) {
                 $storageManagerSecondUser->upperStorage(
-                    (int) $selectedDeal->getwantCommodityId(),
-                    (int) $selectedDeal->getAuctionAmount()
+                    $selectedDeal->getwantCommodityId(),
+                    $currentHighestBid
                 );
 
                 $this->privateMessageSender->send(
                     14,
                     $selectedDeal->getAuctionUserId(),
                     sprintf(
-                        'Du wurdes bei einer Auktion des großen Nagus von %s überboten und hast insgesamt %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
+                        'Du wurdes bei einer Auktion des großen Nagus von %s überboten und hast %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
                         $user->getUserName(),
-                        $selectedDeal->getAuctionAmount(),
+                        $currentHighestBid,
                         $selectedDeal->getWantedCommodity()->getName(),
                         $amount,
                         $selectedDeal->getWantedCommodity()->getName()
@@ -156,34 +158,31 @@ final class DealsBidAuction implements ActionControllerInterface
 
         if ($selectedDeal->getwantPrestige() !== null) {
             $description = sprintf(
-                '-%d Prestige: Eingebüßt bei einer Auction des Großen Nagus',
+                '-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus',
                 $amount * $selectedDeal->getwantPrestige()
             );
             $this->createPrestigeLog->createLog(- ($amount * $selectedDeal->getwantPrestige()), $description, $game->getUser(), time());
 
             if ($selectedDeal->getAuctionUserId() > 100) {
                 $descriptionsecond = sprintf(
-                    '%d Prestige: Du wurdest bei einer Auktion des Großen Nagus überboten und has dein Prestige zurück erhalten',
+                    '%d Prestige: Du wurdest bei einer Auktion des Großen Nagus überboten und hast dein Prestige zurück erhalten',
                     $amount * $selectedDeal->getwantPrestige()
                 );
-                $this->createPrestigeLog->createLog($selectedDeal->getAuctionAmount(), $descriptionsecond, $selectedDeal->getAuctionUser(), time());
+                $this->createPrestigeLog->createLog($currentHighestBid, $descriptionsecond, $selectedDeal->getAuctionUser(), time());
 
                 $this->privateMessageSender->send(
                     14,
                     $selectedDeal->getAuctionUserId(),
                     sprintf(
-                        'Du wurdes bei einer Auction des großen Nagus von %s überboten und hast insgesamt %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
+                        'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
                         $user->getUserName(),
-                        $selectedDeal->getAuctionAmount(),
+                        $currentHighestBid,
                         $amount
 
                     ),
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
                 );
             }
-
-
-
 
             $selectedDeal->setAuctionAmount((int) $amount);
             $selectedDeal->setAuctionUser($user);
