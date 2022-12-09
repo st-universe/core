@@ -349,27 +349,32 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         $amount = 0;
 
-        while ($amount < $crewToQuit) {
-            $quitAmount = $this->letCrewQuit($userId);
+        $wipedShipIds = [];
 
-            if ($quitAmount === null) {
+        while ($amount < $crewToQuit) {
+
+            $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($userId);
+
+            //if no more ships available
+            if ($randomShipId === null) {
                 break;
             }
 
-            $amount += $quitAmount;
+            //if ship already wiped, go to next
+            if (in_array($randomShipId, $wipedShipIds)) {
+                continue;
+            }
+
+            //wipe ship crew
+            $wipedShipsIds[] = $randomShipId;
+            $amount += $this->letCrewQuit($randomShipId, $userId);
         }
 
         return $amount;
     }
 
-    private function letCrewQuit(int $userId): ?int
+    private function letCrewQuit(int $randomShipId, int $userId): ?int
     {
-        $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($userId);
-
-        if ($randomShipId === null) {
-            return null;
-        }
-
         $randomShip = $this->shipRepository->find($randomShipId);
         $doAlertRedCheck = $randomShip->getWarpState() || $randomShip->getCloakState();
         //deactivate ship
