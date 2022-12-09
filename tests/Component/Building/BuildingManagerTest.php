@@ -224,16 +224,106 @@ class BuildingManagerTest extends StuTestCase
         $this->buildingManager->deactivate($field);
     }
 
-    public function testDeactivateDeactivates(): void
+    public function testDeactivateDeactivatesForProduction(): void
     {
         $field = $this->mock(PlanetFieldInterface::class);
         $colony = $this->mock(ColonyInterface::class);
         $building = $this->mock(BuildingInterface::class);
 
-        $worker = 6;
         $currentWorker = 33;
+        $currentWorkless = 55;
         $currentHousing = 88;
-        $workless = 55;
+
+        $worker = 6;
+        $housing = 0;
+
+        $field->shouldReceive('isActivateable')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $field->shouldReceive('isActive')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+        $field->shouldReceive('getBuilding')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($building);
+        $field->shouldReceive('getColony')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colony);
+        $field->shouldReceive('setActive')
+            ->with(0)
+            ->once();
+
+        $colony->shouldReceive('getMaxBev')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($currentHousing);
+        $colony->shouldReceive('getWorkers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($currentWorker);
+
+        $newWorkless = $currentWorkless + $worker;
+        $colony->shouldReceive('setWorkless')
+            ->with($newWorkless)
+            ->once()
+            ->andReturnSelf();
+        $colony->shouldReceive('getWorkless')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($currentWorkless);
+
+        $newWorkers = $currentWorker - $worker;
+        $colony->shouldReceive('setWorkers')
+            ->with($newWorkers)
+            ->once()
+            ->andReturnSelf();
+
+        $newHousing = $currentHousing - $housing;
+        $colony->shouldReceive('setMaxBev')
+            ->with($newHousing)
+            ->once();
+        $colony->shouldReceive('getPopulation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($newWorkers + $newWorkless);
+
+        $building->shouldReceive('getWorkers')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($worker);
+        $building->shouldReceive('getHousing')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($housing);
+        $building->shouldReceive('postDeactivation')
+            ->with($colony)
+            ->once();
+
+        $this->planetFieldRepository->shouldReceive('save')
+            ->with($field)
+            ->once();
+        $this->colonyRepository->shouldReceive('save')
+            ->with($colony)
+            ->once();
+
+        $this->buildingManager->deactivate($field);
+    }
+
+    public function testDeactivateDeactivatesForHousing(): void
+    {
+        $field = $this->mock(PlanetFieldInterface::class);
+        $colony = $this->mock(ColonyInterface::class);
+        $building = $this->mock(BuildingInterface::class);
+
+        $currentWorker = 33;
+        $currentWorkless = 55;
+        $currentHousing = 88;
+
+        $worker = 0;
         $housing = 11;
 
         $field->shouldReceive('isActivateable')
@@ -258,27 +348,38 @@ class BuildingManagerTest extends StuTestCase
 
         $colony->shouldReceive('getWorkless')
             ->withNoArgs()
-            ->once()
-            ->andReturn($workless);
-        $colony->shouldReceive('getMaxBev')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($currentHousing);
+            ->times(4)
+            ->andReturn($currentWorkless);
         $colony->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorker);
+
+        $newWorkless = $currentWorkless + $worker;
         $colony->shouldReceive('setWorkless')
-            ->with($workless + $worker)
+            ->with($newWorkless)
             ->once()
             ->andReturnSelf();
+
+        $newWorkers = $currentWorker - $worker;
         $colony->shouldReceive('setWorkers')
-            ->with($currentWorker - $worker)
+            ->with($newWorkers)
             ->once()
             ->andReturnSelf();
+
+        $newHousing = $currentHousing - $housing;
         $colony->shouldReceive('setMaxBev')
-            ->with($currentHousing - $housing)
+            ->with($newHousing)
             ->once();
+        $colony->shouldReceive('getMaxBev')
+            ->withNoArgs()
+            ->times(3)
+            ->andReturn($currentHousing, $newHousing, $newHousing);
+
+        $colony->shouldReceive('getPopulation')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($currentWorker + $currentWorkless);
 
         $building->shouldReceive('getWorkers')
             ->withNoArgs()
@@ -291,6 +392,11 @@ class BuildingManagerTest extends StuTestCase
         $building->shouldReceive('postDeactivation')
             ->with($colony)
             ->once();
+
+        $colony->shouldReceive('setWorkless')
+            ->with(44)
+            ->once()
+            ->andReturnSelf();
 
         $this->planetFieldRepository->shouldReceive('save')
             ->with($field)
