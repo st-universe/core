@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -67,18 +69,29 @@ final class BuildingManager implements BuildingManagerInterface
 
         $building = $field->getBuilding();
         $colony = $field->getColony();
-        $workerAmount = $building->getWorkers();
-        $worklessAmount = $colony->getWorkless();
 
-        $colony->setWorkless($worklessAmount + $workerAmount);
-        $colony->setWorkers($colony->getWorkers() - $workerAmount);
-
-        $colony->setMaxBev($colony->getMaxBev() - $building->getHousing());
+        $this->updateWorkerAndWorkless($building, $colony);
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
         $building->postDeactivation($colony);
         $this->colonyRepository->save($colony);
+    }
+
+    private function updateWorkerAndWorkless(BuildingInterface $building, ColonyInterface $colony): void
+    {
+        $workerAmount = $building->getWorkers();
+        $worklessAmount = $colony->getWorkless();
+        $colony->setWorkless($worklessAmount + $workerAmount);
+        $colony->setWorkers($colony->getWorkers() - $workerAmount);
+
+        $colony->setMaxBev($colony->getMaxBev() - $building->getHousing());
+
+        //reduce workless if exceeded
+        if ($colony->getPopulation() > $colony->getMaxBev() && $colony->getWorkless() > 0) {
+            $reductionAmount = min($colony->getWorkless(), $colony->getPopulation() - $colony->getMaxBev());
+            $colony->setWorkless($colony->getWorkless() - $reductionAmount);
+        }
     }
 
     public function remove(
