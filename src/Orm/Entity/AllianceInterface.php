@@ -49,7 +49,7 @@ interface AllianceInterface
     public function getDiplomatic(): ?AllianceJobInterface;
 
     /**
-     * @return UserInterface[]
+     * @return UserInterface[]|Collection
      */
     public function getMembers(): Collection;
 }

@@ -37,7 +37,7 @@ interface ColonyListItemInterface
     public function getMaxStorage(): int;
 
     /**
-     * @return StorageInterface[]
+     * @return StorageInterface[]|Collection
      */
     public function getStorage(): Collection;
 

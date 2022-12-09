@@ -39,7 +39,7 @@ interface StarSystemMapInterface
     public function getFieldStyle(): string;
 
     /**
-     * @return ShipInterface[]
+     * @return ShipInterface[]|Collection
      */
     public function getShips(): Collection;
 

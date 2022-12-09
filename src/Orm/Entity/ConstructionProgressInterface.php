@@ -13,7 +13,7 @@ interface ConstructionProgressInterface
     public function setShip(ShipInterface $ship): ConstructionProgressInterface;
 
     /**
-     * @return ConstructionProgressModule[]
+     * @return ConstructionProgressModule[]|Collection
      */
     public function getSpecialModules(): Collection;
 

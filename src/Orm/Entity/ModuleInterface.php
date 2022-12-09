@@ -57,7 +57,7 @@ interface ModuleInterface
     public function getSpecials(): Collection;
 
     /**
-     * @return ModuleCostInterface[]
+     * @return ModuleCostInterface[]|Collection
      */
     public function getCost(): Collection;
 

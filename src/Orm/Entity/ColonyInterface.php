@@ -133,26 +133,26 @@ interface ColonyInterface
     public function getBeamableStorage(): array;
 
     /**
-     * @return StorageInterface[]
+     * @return StorageInterface[]|Collection
      */
     public function getStorage(): Collection;
 
     public function isDefended(): bool;
 
     /**
-     * @return FleetInterface[]
+     * @return FleetInterface[]|Collection
      */
     public function getDefenders(): Collection;
 
     public function isBlocked(): bool;
 
     /**
-     * @return FleetInterface[]
+     * @return FleetInterface[]|Collection
      */
     public function getBlockers(): Collection;
 
     /**
-     * @return ShipCrewInterface[]
+     * @return ShipCrewInterface[]|Collection
      */
     public function getCrewAssignments(): Collection;
 

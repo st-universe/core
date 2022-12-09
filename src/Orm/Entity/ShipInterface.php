@@ -198,7 +198,7 @@ interface ShipInterface
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface;
 
     /**
-     * @return ShipCrewInterface[]
+     * @return ShipCrewInterface[]|Collection
      */
     public function getCrewlist(): Collection;
 
@@ -273,7 +273,7 @@ interface ShipInterface
     public function setTorpedoStorage(?TorpedoStorageInterface $torpedoStorage): ShipInterface;
 
     /**
-     * @return StorageInterface[] Indexed by commodityId, ordered by commodityId
+     * @return StorageInterface[]|Collection Indexed by commodityId, ordered by commodityId
      */
     public function getStorage(): Collection;
 
@@ -282,7 +282,7 @@ interface ShipInterface
     public function getMaxStorage(): int;
 
     /**
-     * @return StorageInterface[] Indexed by commodityId, ordered by commodityId
+     * @return StorageInterface[]|Collection Indexed by commodityId, ordered by commodityId
      */
     public function getBeamableStorage(): array;
 
@@ -320,7 +320,7 @@ interface ShipInterface
     public function lowerEpsUsage($value): void;
 
     /**
-     * @return ShipSystemInterface[]
+     * @return ShipSystemInterface[]|Collection
      */
     public function getSystems(): Collection;
 

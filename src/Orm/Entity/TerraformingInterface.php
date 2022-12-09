@@ -33,7 +33,7 @@ interface TerraformingInterface
     public function setResearchId(?int $researchId): TerraformingInterface;
 
     /**
-     * @return TerraformingCostInterface[]
+     * @return TerraformingCostInterface[]|Collection
      */
     public function getCosts(): Collection;
 }

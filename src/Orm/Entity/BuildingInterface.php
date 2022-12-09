@@ -85,22 +85,22 @@ interface BuildingInterface
     public function hasLimitColony(): bool;
 
     /**
-     * @return PlanetFieldTypeBuildingInterface[]
+     * @return PlanetFieldTypeBuildingInterface[]|Collection
      */
     public function getBuildableFields(): Collection;
 
     /**
-     * @return BuildingCostInterface[]
+     * @return BuildingCostInterface[]|Collection
      */
     public function getCosts(): Collection;
 
     /**
-     * @return BuildingCommodityInterface[]
+     * @return BuildingCommodityInterface[]|Collection
      */
     public function getCommodities(): Collection;
 
     /**
-     * @return BuildingFunctionInterface[]
+     * @return BuildingFunctionInterface[]|Collection
      */
     public function getFunctions(): Collection;
 

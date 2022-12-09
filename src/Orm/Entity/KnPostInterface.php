@@ -43,7 +43,7 @@ interface KnPostInterface
     public function setRpgPlot(?RpgPlotInterface $rpgPlot): KnPostInterface;
 
     /**
-     * @return KnCommentInterface[]
+     * @return KnCommentInterface[]|Collection
      */
     public function getComments(): Collection;
 

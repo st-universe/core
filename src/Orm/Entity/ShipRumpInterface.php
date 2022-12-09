@@ -169,7 +169,7 @@ interface ShipRumpInterface
     public function getModuleLevels(): ?ShipRumpModuleLevelInterface;
 
     /**
-     * @return ShipRumpCostInterface[]
+     * @return ShipRumpCostInterface[]|Collection
      */
     public function getBuildingCosts(): Collection;
 

@@ -39,7 +39,7 @@ interface RpgPlotInterface
     public function getPostingCount(): int;
 
     /**
-     * @return RpgPlotMemberInterface[]
+     * @return RpgPlotMemberInterface[]|Collection
      */
     public function getMembers(): Collection;
 }

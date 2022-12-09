@@ -47,7 +47,7 @@ interface TradePostInterface
     public function setShip(ShipInterface $ship): TradePostInterface;
 
     /**
-     * @return ShipCrewInterface[]
+     * @return ShipCrewInterface[]|Collection
      */
     public function getCrewAssignments(): Collection;
 

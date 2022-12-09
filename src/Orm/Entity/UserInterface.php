@@ -47,7 +47,7 @@ interface UserInterface
     public function getAwards(): Collection;
 
     /**
-     * @return ColonyInterface[]
+     * @return ColonyInterface[]|Collection
      */
     public function getColonies(): Collection;
 
