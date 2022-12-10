@@ -77,6 +77,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $auction = $this->dealsRepository->find($dealId);
         $currentBidAmount = $auction->getAuctionAmount();
 
+
         if ($maxAmount < 1 || $maxAmount <= $currentBidAmount) {
             $game->addInformation(_('Zu geringe Anzahl ausgewählt'));
             return;
@@ -102,7 +103,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
         $userHasHighestBid = $highestBid->getUser() === $user;
         if ($userHasHighestBid) {
-            $this->raiseOwnBit($maxAmount, $highestBid, $game);
+            $this->raiseOwnBit($maxAmount, $highestBid, $game, $auction);
             return;
         }
 
@@ -131,12 +132,22 @@ final class DealsBidAuction implements ActionControllerInterface
         $game->addInformation(sprintf(_('Du hast das erste Gebot abgegeben. Dein Maximalgebot liegt bei %d'), $maxAmount));
     }
 
-    private function raiseOwnBit(int $maxAmount, AuctionBidInterface $bid, GameControllerInterface $game): void
+    private function raiseOwnBit(int $maxAmount, AuctionBidInterface $bid, GameControllerInterface $game, $auction): void
     {
+
+        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+
+        $currentHighestBid = $auction->getHighestBid();
+        $storageManagerOld = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $currentHighestBid->getUser()->getId());
         $bid->setMaxAmount($maxAmount);
         $this->auctionBidRepository->save($bid);
 
         $game->addInformation(sprintf(_('Dein Maximalgebot wurde auf %d erhöht'), $maxAmount));
+
+        $storageManagerOld->lowerStorage(
+            $auction->getwantCommodityId(),
+            ($maxAmount - $currentHighestBid->getMaxAmount())
+        );
     }
 
     private function raiseCurrentAmount(int $maxAmount, DealsInterface $auction, $game): void
@@ -200,13 +211,13 @@ final class DealsBidAuction implements ActionControllerInterface
         if ($auction->getwantCommodityId() !== null) {
             $storageManagerNew->lowerStorage(
                 $auction->getwantCommodityId(),
-                $newCurrentAmount
+                $maxAmount
             );
 
             if ($currentHighestBid->getUserId() > 100) {
                 $storageManagerOld->upperStorage(
                     $auction->getwantCommodityId(),
-                    $auction->getAuctionAmount()
+                    $currentHighestBid->getMaxAmount()
                 );
 
                 $this->privateMessageSender->send(
@@ -238,6 +249,8 @@ final class DealsBidAuction implements ActionControllerInterface
             $bid->setMaxAmount($maxAmount);
             $bid->setAuction($auction);
             $this->auctionBidRepository->save($bid);
+
+            $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Du bist nun Meistbietender!'), $newCurrentAmount));
         }
 
         if ($auction->getwantPrestige() !== null) {
