@@ -19,8 +19,4 @@ final class DealsBidAuctionRequest implements DealsBidAuctionRequestInterface
     {
         return $this->queryParameter('amount')->int()->defaultsTo(0);
     }
-    public function getMaxAmount(): int
-    {
-        return $this->queryParameter('maxamount')->int()->defaultsTo(0);
-    }
 }

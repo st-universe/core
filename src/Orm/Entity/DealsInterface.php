@@ -79,8 +79,4 @@ interface DealsInterface
     public function getRumpId(): int;
 
     public function getBuildplanName(): string;
-
-    public function getAuctions(): ?DealsAuctionInterface;
-
-    public function setAuctions(DealsAuctionInterface $auctionid): DealsInterface;
 }
