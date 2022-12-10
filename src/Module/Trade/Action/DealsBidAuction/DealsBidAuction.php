@@ -108,7 +108,11 @@ final class DealsBidAuction implements ActionControllerInterface
         }
 
         $currentMaxAmount = $highestBid->getMaxAmount();
-        if ($maxAmount <= $currentMaxAmount) {
+        if ($maxAmount = $currentMaxAmount) {
+            $this->setCurrentMaxAmount($currentMaxAmount, $auction, $game);
+        }
+
+        if ($maxAmount < $currentMaxAmount) {
             $this->raiseCurrentAmount($maxAmount, $auction, $game);
             return;
         }
@@ -161,8 +165,28 @@ final class DealsBidAuction implements ActionControllerInterface
             14,
             $auction->getHighestBid()->getUserId(),
             sprintf(
-                'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %s',
-                $auction->getAuctionAmount()
+                'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d %s',
+                $auction->getAuctionAmount(),
+                $auction->getWantedCommodity()->getName()
+            ),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+        );
+    }
+
+    private function setCurrentMaxAmount(int $currentMaxAmount, DealsInterface $auction, $game): void
+    {
+        $auction->setAuctionAmount($currentMaxAmount);
+        $this->dealsRepository->save($auction);
+
+        $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt bereits bei %d'), $auction->getAuctionAmount()));
+
+        $this->privateMessageSender->send(
+            14,
+            $auction->getHighestBid()->getUserId(),
+            sprintf(
+                'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei deinem Maximalgebot von %d %s',
+                $auction->getAuctionAmount(),
+                $auction->getWantedCommodity()->getName()
             ),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
