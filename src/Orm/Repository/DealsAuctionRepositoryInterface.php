@@ -9,7 +9,7 @@ use Stu\Orm\Entity\DealsAuctionInterface;
 
 
 /**
- * @method null|DealsAuctionInterface find(integer $id)
+ * @method null|DealsAuctionInterface find(integer $auction_id)
  */
 interface DealsAuctionRepositoryInterface extends ObjectRepository
 {
