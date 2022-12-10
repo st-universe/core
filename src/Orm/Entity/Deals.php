@@ -265,6 +265,13 @@ class Deals implements DealsInterface
         return $highestBid !== null ? $highestBid->getUser() : null;
     }
 
+    public function setAuctionUser(int $auction_user): DealsInterface
+    {
+        $this->auction_user = $auction_user;
+
+        return $this;
+    }
+
     public function getWantedCommodity(): CommodityInterface
     {
         return $this->wantedCommodity;

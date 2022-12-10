@@ -223,6 +223,21 @@ final class DealsBidAuction implements ActionControllerInterface
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
                 );
             }
+
+
+            // change deals
+
+            $auction->setAuctionAmount($newCurrentAmount);
+            $auction->setAuctionUser($userId);
+            $this->dealsRepository->save($auction);
+
+
+            // create new bid
+            $bid = $this->auctionBidRepository->prototype();
+            $bid->setUser($game->getUser());
+            $bid->setMaxAmount($maxAmount);
+            $bid->setAuction($auction);
+            $this->auctionBidRepository->save($bid);
         }
 
         if ($auction->getwantPrestige() !== null) {
@@ -252,8 +267,11 @@ final class DealsBidAuction implements ActionControllerInterface
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
                 );
             }
+            // change deals
 
             $auction->setAuctionAmount($newCurrentAmount);
+            $auction->setAuctionUser($userId);
+            $this->dealsRepository->save($auction);
 
             // create new bid
             $bid = $this->auctionBidRepository->prototype();
