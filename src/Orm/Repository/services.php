@@ -41,7 +41,7 @@ use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
-use Stu\Orm\Entity\DealsAuction;
+use Stu\Orm\Entity\AuctionBid;
 use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Faction;
@@ -308,10 +308,10 @@ return [
     ): DealsRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Deals::class);
     },
-    DealsAuctionRepositoryInterface::class => function (
+    AuctionBidRepositoryInterface::class => function (
         ContainerInterface $c
-    ): DealsAuctionRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(DealsAuction::class);
+    ): AuctionBidRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(AuctionBid::class);
     },
     DockingPrivilegeRepositoryInterface::class => function (
         ContainerInterface $c

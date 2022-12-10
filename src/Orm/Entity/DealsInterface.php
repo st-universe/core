@@ -54,15 +54,11 @@ interface DealsInterface
 
     public function setEnd(int $end): DealsInterface;
 
-    public function getAuctionUserId(): ?int;
-
     public function getAuctionAmount(): ?int;
 
     public function setAuctionAmount(int $auction_amount): DealsInterface;
 
     public function getAuctionUser(): ?UserInterface;
-
-    public function setAuctionUser(UserInterface $auctionuser): DealsInterface;
 
     public function getWantedCommodity(): CommodityInterface;
 
@@ -80,7 +76,5 @@ interface DealsInterface
 
     public function getBuildplanName(): string;
 
-    public function getAuctions(): ?DealsAuctionInterface;
-
-    public function setAuctions(DealsAuctionInterface $auctionid): DealsInterface;
+    public function getHighestBid(): ?AuctionBidInterface;
 }

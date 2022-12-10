@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\DealsRepository")
  * @Table(
- *     name="stu_deals",
- *     indexes={
- *         @Index(name="deals_idx", columns={"id"})
- *     }
+ *     name="stu_deals"
  * )
  **/
 class Deals implements DealsInterface
@@ -66,7 +64,6 @@ class Deals implements DealsInterface
     /** @Column(type="integer", nullable=true) */
     private $auction_amount;
 
-
     /**
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="want_commodity", referencedColumnName="id", onDelete="CASCADE")
@@ -86,16 +83,15 @@ class Deals implements DealsInterface
     private $buildplan;
 
     /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="auction_user", referencedColumnName="id")
+     * @OneToMany(targetEntity="AuctionBid", mappedBy="auction", cascade={"remove"})
+     * @OrderBy({"max_amount" = "DESC"})
      */
-    private $auctionuser;
+    private $auctionBids;
 
-    /**
-     * @ManyToOne(targetEntity="DealsAuction", inversedBy="id")
-     * @JoinColumn(name="auction_id", referencedColumnName="id")
-     */
-    private $auctionid;
+    public function __construct()
+    {
+        $this->auctionBids = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -250,11 +246,6 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getAuctionUserId(): ?int
-    {
-        return $this->auction_user;
-    }
-
     public function getAuctionAmount(): ?int
     {
         return $this->auction_amount;
@@ -269,14 +260,9 @@ class Deals implements DealsInterface
 
     public function getAuctionUser(): ?UserInterface
     {
-        return $this->auctionuser;
-    }
+        $highestBid = $this->getHighestBid();
 
-    public function setAuctionUser(UserInterface $auctionuser): DealsInterface
-    {
-        $this->auctionuser = $auctionuser;
-
-        return $this;
+        return $highestBid !== null ? $highestBid->getUser() : null;
     }
 
     public function getWantedCommodity(): CommodityInterface
@@ -332,15 +318,8 @@ class Deals implements DealsInterface
         return $bpname;
     }
 
-    public function getAuctions(): ?DealsAuctionInterface
+    public function getHighestBid(): ?AuctionBidInterface
     {
-        return $this->auctionid;
-    }
-
-    public function setAuctions(DealsAuctionInterface $auctionid): DealsInterface
-    {
-        $this->auctionid = $auctionid;
-
-        return $this;
+        return $this->auctionBids->first();
     }
 }
