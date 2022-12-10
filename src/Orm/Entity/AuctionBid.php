@@ -29,11 +29,7 @@ class AuctionBid implements AuctionBidInterface
     private $user_id;
 
     /** @Column(type="integer", nullable=true)  */
-    private $actual_amount;
-
-    /** @Column(type="integer", nullable=true)  */
     private $max_amount;
-
 
     /**
      * @ManyToOne(targetEntity="Deals")
