@@ -194,18 +194,18 @@
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
-                            <td tal:condition="deals/getAuctionAmount"><img
+                            <td tal:condition="data/getAuctionAmount"><img
                                     src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img
+                            <td tal:condition="not:data/getAuctionAmount"><img
                                     src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 Kein Gebot</td>
-                            <td tal:condition="deals/getAuctionUser">
+                            <td tal:condition="data/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
-                            <td tal:condition="not:deals/getAuctionUser">
+                            <td tal:condition="not:data/getAuctionUser">
                                 Kein Gebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
@@ -222,16 +222,16 @@
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
                                     title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
                                     title=" Prestige" />
                                 Kein Gebot</td>
-                            <td tal:condition="deals/getAuctionUser">
+                            <td tal:condition="data/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
-                            <td tal:condition="not:deals/getAuctionUser">
+                            <td tal:condition="not:data/getAuctionUser">
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
@@ -250,18 +250,18 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td tal:condition="deals/getAuctionAmount"><img
+                            <td tal:condition="data/getAuctionAmount"><img
                                     src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img
+                            <td tal:condition="not:data/getAuctionAmount"><img
                                     src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 Kein Gebot</td>
-                            <td tal:condition="deals/getAuctionUser">
+                            <td tal:condition="data/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
-                            <td tal:condition="not:deals/getAuctionUser">
+                            <td tal:condition="not:data/getAuctionUser">
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
@@ -280,16 +280,16 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
                                     title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
                                     title=" Prestige" />
                                 Kein Gebot</td>
-                            <td tal:condition="deals/getAuctionUser">
+                            <td tal:condition="data/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
-                            <td tal:condition="not:deals/getAuctionUser">
+                            <td tal:condition="not:data/getAuctionUser">
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
@@ -309,18 +309,18 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td tal:condition="deals/getAuctionAmount"><img
+                            <td tal:condition="data/getAuctionAmount"><img
                                     src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img
+                            <td tal:condition="not:data/getAuctionAmount"><img
                                     src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 Kein Gebot</td>
-                            <td tal:condition="deals/getAuctionUser">
+                            <td tal:condition="data/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
-                            <td tal:condition="not:deals/getAuctionUser">
+                            <td tal:condition="not:data/getAuctionUser">
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
@@ -340,16 +340,16 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
                                     title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
                                     title=" Prestige" />
                                 Kein Gebot</td>
-                            <td tal:condition="deals/getAuctionUser">
+                            <td tal:condition="data/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
-                            <td tal:condition="not:deals/getAuctionUser">
+                            <td tal:condition="not:data/getAuctionUser">
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
