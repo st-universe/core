@@ -108,13 +108,13 @@ final class DealsBidAuction implements ActionControllerInterface
         }
 
         $currentMaxAmount = $highestBid->getMaxAmount();
-        if ($maxAmount = $currentMaxAmount) {
-            $this->setCurrentMaxAmount($maxAmount, $auction, $game);
-            return;
-        }
+        //        if ($maxAmount = $currentMaxAmount) {
+        //            $this->setCurrentMaxAmount($maxAmount, $auction, $game);
+        //            return;
+        //        }
 
-        if ($maxAmount < $currentMaxAmount) {
-            $this->raiseCurrentAmount($maxAmount, $auction, $game);
+        if ($maxAmount <= $currentMaxAmount) {
+            $this->raiseCurrentAmount($maxAmount, $currentMaxAmount, $auction, $game);
             return;
         }
 
@@ -155,10 +155,17 @@ final class DealsBidAuction implements ActionControllerInterface
         $this->auctionBidRepository->save($bid);
     }
 
-    private function raiseCurrentAmount(int $maxAmount, DealsInterface $auction, $game): void
+    private function raiseCurrentAmount(int $maxAmount, int $currentMaxAmount, DealsInterface $auction, $game): void
     {
-        $auction->setAuctionAmount($maxAmount + 1);
-        $this->dealsRepository->save($auction);
+        if ($maxAmount < $currentMaxAmount) {
+            $auction->setAuctionAmount($maxAmount + 1);
+            $this->dealsRepository->save($auction);
+        }
+
+        if ($maxAmount < $currentMaxAmount) {
+            $auction->setAuctionAmount($maxAmount);
+            $this->dealsRepository->save($auction);
+        }
 
         $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt bei %d'), $auction->getAuctionAmount()));
 
