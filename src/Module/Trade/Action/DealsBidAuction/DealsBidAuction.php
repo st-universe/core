@@ -139,8 +139,6 @@ final class DealsBidAuction implements ActionControllerInterface
 
         $currentHighestBid = $auction->getHighestBid();
         $storageManagerOld = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $currentHighestBid->getUser()->getId());
-        $bid->setMaxAmount($maxAmount);
-        $this->auctionBidRepository->save($bid);
 
         $game->addInformation(sprintf(_('Dein Maximalgebot wurde auf %d erhöht'), $maxAmount));
 
@@ -148,6 +146,8 @@ final class DealsBidAuction implements ActionControllerInterface
             $auction->getwantCommodityId(),
             ($maxAmount - $currentHighestBid->getMaxAmount())
         );
+        $bid->setMaxAmount($maxAmount);
+        $this->auctionBidRepository->save($bid);
     }
 
     private function raiseCurrentAmount(int $maxAmount, DealsInterface $auction, $game): void
