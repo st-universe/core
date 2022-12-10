@@ -163,7 +163,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 AND s.cy = :cy
                 AND NOT EXISTS (SELECT ss.id
                                     FROM stu_ship_system ss
-                                    WHERE s.id = ss.ships_id
+                                    WHERE s.id = ss.ship_id
                                     AND ss.system_type = :systemId
                                     AND ss.mode > 1)
                 GROUP BY rc.name

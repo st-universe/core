@@ -161,7 +161,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND sm.sx = :sx AND sm.sy = :sy
                 AND NOT EXISTS (SELECT ss.id
                                     FROM %s ss
-                                    WHERE s.id = ss.ships_id
+                                    WHERE s.id = ss.ship_id
                                     AND ss.system_type = :systemId
                                     AND ss.mode > 1)
                 ORDER BY s.is_destroyed ASC, f.sort DESC, f.id DESC, s.is_fleet_leader DESC,
@@ -196,12 +196,12 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.%s = :mapId
                 AND NOT EXISTS (SELECT ss.id
                                 FROM %s ss
-                                WHERE s.id = ss.ships_id
+                                WHERE s.id = ss.ship_id
                                 AND ss.system_type = :cloakSystemId
                                 AND ss.mode > 1)
                 AND NOT EXISTS (SELECT ss2.id
                                 FROM %s ss2
-                                WHERE s.id = ss2.ships_id
+                                WHERE s.id = ss2.ship_id
                                 AND ss2.system_type = :warpSystemId
                                 AND ss2.mode > 1)
                 AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
@@ -231,7 +231,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.starsystem_map_id is null AND s.cx = :cx AND s.cy = :cy
                 AND NOT EXISTS (SELECT ss.id
                                     FROM %s ss
-                                    WHERE s.id = ss.ships_id
+                                    WHERE s.id = ss.ship_id
                                     AND ss.system_type = :systemId
                                     AND ss.mode > 1)
                 ORDER BY s.is_destroyed ASC, s.fleets_id DESC, s.id ASC',
@@ -277,7 +277,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 JOIN %s c
                 WITH sc.crew_id = c.id
                 JOIN %s ss
-                WITH ss.ships_id = s.id
+                WITH ss.ship_id = s.id
                 JOIN %s u
                 WITH s.user_id = u.id
                 WHERE s.user_id != :userId
@@ -328,7 +328,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT s FROM %s s
                 JOIN %s ss
-                WITH s.id = ss.ships_id
+                WITH s.id = ss.ship_id
                 JOIN %s bp
                 WITH s.plans_id = bp.id
                 WHERE ss.system_type = :shieldType
@@ -507,14 +507,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     where a.id = b.starsystem_map_id
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss
-                                        WHERE b.id = ss.ships_id
+                                        WHERE b.id = ss.ship_id
                                         AND ss.system_type = :systemId
                                         AND ss.mode > 1)) as shipcount,
                 (select count(distinct c.id) from stu_ships c
                     where a.id = c.starsystem_map_id
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_ship_system ss2
-                                        WHERE c.id = ss2.ships_id
+                                        WHERE c.id = ss2.ship_id
                                         AND ss2.system_type = :systemId
                                         AND ss2.mode > 1)) as cloakcount,
                 (SELECT COUNT(cfd) > 0
@@ -597,14 +597,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     where b.cx=a.cx AND b.cy=a.cy
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss
-                                        WHERE b.id = ss.ships_id
+                                        WHERE b.id = ss.ship_id
                                         AND ss.system_type = :systemId
                                         AND ss.mode > 1)) as shipcount,
                 (select count(distinct c.id) from stu_ships c
                     where c.cx = a.cx AND c.cy=a.cy
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_ship_system ss2
-                                        WHERE c.id = ss2.ships_id
+                                        WHERE c.id = ss2.ship_id
                                         AND ss2.system_type = :systemId
                                         AND ss2.mode > 1)) as cloakcount,
 				(select al.rgb_code FROM stu_alliances al 
@@ -804,16 +804,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid
                 FROM stu_ships s
                 LEFT JOIN stu_ship_system ss
-                ON s.id = ss.ships_id
+                ON s.id = ss.ship_id
                 AND ss.system_type = :warpdriveType
                 LEFT JOIN stu_ship_system ss2
-                ON s.id = ss2.ships_id
+                ON s.id = ss2.ship_id
                 AND ss2.system_type = :cloakType
                 LEFT JOIN stu_ship_system ss3
-                ON s.id = ss3.ships_id
+                ON s.id = ss3.ship_id
                 AND ss3.system_type = :shieldType
                 LEFT JOIN stu_ship_system ss4
-                ON s.id = ss4.ships_id
+                ON s.id = ss4.ship_id
                 AND ss4.system_type = :uplinkType
                 JOIN stu_rumps r
                 ON s.rumps_id = r.id
@@ -877,16 +877,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid
                 FROM stu_ships s
                 LEFT JOIN stu_ship_system ss
-                ON s.id = ss.ships_id
+                ON s.id = ss.ship_id
                 AND ss.system_type = :warpdriveType
                 LEFT JOIN stu_ship_system ss2
-                ON s.id = ss2.ships_id
+                ON s.id = ss2.ship_id
                 AND ss2.system_type = :cloakType
                 LEFT JOIN stu_ship_system ss3
-                ON s.id = ss3.ships_id
+                ON s.id = ss3.ship_id
                 AND ss3.system_type = :shieldType
                 LEFT JOIN stu_ship_system ss4
-                ON s.id = ss4.ships_id
+                ON s.id = ss4.ship_id
                 AND ss4.system_type = :uplinkType
                 JOIN stu_rumps r
                 ON s.rumps_id = r.id
@@ -932,7 +932,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $cloakSql = sprintf(
             ' AND EXISTS (SELECT ss.id
                             FROM %s ss
-                            WHERE s.id = ss.ships_id
+                            WHERE s.id = ss.ship_id
                             AND ss.system_type = %d
                             AND ss.mode > 1) ',
             ShipSystem::class,

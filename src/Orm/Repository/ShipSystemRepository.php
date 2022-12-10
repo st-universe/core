@@ -34,7 +34,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
     public function getByShip(int $shipId): array
     {
         return $this->findBy(
-            ['ships_id' => $shipId],
+            ['ship_id' => $shipId],
             ['system_type' => 'asc']
         );
     }
@@ -44,7 +44,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s s WHERE s.ships_id = :shipId',
+                    'DELETE FROM %s s WHERE s.ship_id = :shipId',
                     ShipSystem::class
                 )
             )

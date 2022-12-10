@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
  * @Table(
  *     name="stu_ship_system",
  *     indexes={
+ *         @Index(name="ship_system_ship_idx", columns={"ship_id"}),
  *         @Index(name="ship_system_status_idx", columns={"status"}),
  *         @Index(name="ship_system_type_idx", columns={"system_type"}),
  *         @Index(name="ship_system_module_idx", columns={"module_id"}),
@@ -28,7 +29,7 @@ class ShipSystem implements ShipSystemInterface
     private $id;
 
     /** @Column(type="integer") * */
-    private $ships_id = 0;
+    private $ship_id = 0;
 
     /** @Column(type="smallint") * */
     private $system_type = 0;
@@ -53,7 +54,7 @@ class ShipSystem implements ShipSystemInterface
 
     /**
      * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
 
