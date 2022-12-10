@@ -107,9 +107,8 @@ class DealsAuction implements DealsAuctionInterface
 
     public function getAuctionUser(): ?UserInterface
     {
-        $this->auctionuser;
 
-        return $this;
+        return $this->auctionuser;
     }
 
     public function setAuctionUser(UserInterface $auctionuser): DealsAuctionInterface
@@ -121,9 +120,8 @@ class DealsAuction implements DealsAuctionInterface
 
     public function getAuction(): ?DealsInterface
     {
-        $this->auctionid;
 
-        return $this;
+        return $this->auctionid;
     }
 
     public function setAuction(DealsInterface $auctionid): DealsAuctionInterface
