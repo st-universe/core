@@ -18,6 +18,9 @@
 
         </div>
         <br />
+        <header>
+            <h1>Auktionen</h1>
+        </header>
         <tr tal:condition="not:ACTIVEDEALS">
             <td colspan="6">Keine Deals vorhanden</td>
         </tr>
@@ -168,6 +171,9 @@
             </table>
         </tr>
         <br />
+        <header>
+            <h1>Auktionen</h1>
+        </header>
         <tr tal:condition="not:ACTIVEAUCTIONS">
             <td colspan="6">Keine Deals vorhanden</td>
         </tr>
@@ -188,16 +194,23 @@
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
-                            <td><img src="assets/commodities/${data/getwantCommodityId}.png"
+                            <td tal:condition="deals/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 ${data/getAuctionAmount}</td>
-                            <td>
+                            <td tal:condition="not:deals/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                Kein Gebot</td>
+                            <td tal:condition="deals/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
+                            <td tal:condition="not:deals/getAuctionUser">
+                                Kein Gebot
+                            </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td>Gebot:<input type="text" size="2" name="amount" value="1" />Max Gebot:<input type="text"
-                                    size="2" name="maxamount" value="1" /> <input type="submit" value="Bieten"
-                                    name="B_DEALS_BID_AUCTION" /></td>
+                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -209,14 +222,21 @@
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
-                            <td><img src="assets/buttons/prestige.png" title="Prestige" />
+                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                                    title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td>
+                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png""
+                                        title=" Prestige" />
+                                Kein Gebot</td>
+                            <td tal:condition="deals/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
+                            <td tal:condition="not:deals/getAuctionUser">
+                                Kein Angebot
+                            </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
-                                    value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -230,15 +250,23 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td><img src="assets/commodities/${data/getwantCommodityId}.png"
+                            <td tal:condition="deals/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 ${data/getAuctionAmount}</td>
-                            <td>
+                            <td tal:condition="not:deals/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                Kein Gebot</td>
+                            <td tal:condition="deals/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
+                            <td tal:condition="not:deals/getAuctionUser">
+                                Kein Angebot
+                            </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
-                                    value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -252,14 +280,21 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td><img src="assets/buttons/prestige.png" title="Prestige" />
+                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                                    title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td>
+                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png""
+                                    title=" Prestige" />
+                                Kein Gebot</td>
+                            <td tal:condition="deals/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
+                            <td tal:condition="not:deals/getAuctionUser">
+                                Kein Angebot
+                            </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
-                                    value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -274,15 +309,23 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td><img src="assets/commodities/${data/getwantCommodityId}.png"
+                            <td tal:condition="deals/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
                                     title="${data/getWantedCommodity/getName}" />
                                 ${data/getAuctionAmount}</td>
-                            <td>
+                            <td tal:condition="not:deals/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                Kein Gebot</td>
+                            <td tal:condition="deals/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
+                            <td tal:condition="not:deals/getAuctionUser">
+                                Kein Angebot
+                            </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
-                                    value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -297,14 +340,21 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td><img src="assets/buttons/prestige.png" title="Prestige" />
+                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                                    title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td>
+                            <td tal:condition="not:deals/getAuctionAmount"><img src="assets/buttons/prestige.png""
+                                    title=" Prestige" />
+                                Kein Gebot</td>
+                            <td tal:condition="deals/getAuctionUser">
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
+                            <td tal:condition="not:deals/getAuctionUser">
+                                Kein Angebot
+                            </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
-                                    value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
