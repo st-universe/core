@@ -93,7 +93,7 @@ class Deals implements DealsInterface
 
     /**
      * @ManyToOne(targetEntity="DealsAuction")
-     * @JoinColumn(name="id", referencedColumnName="auction_id")
+     * @JoinColumn(name="id", referencedColumnName="id")
      */
     private $auctionid;
 
