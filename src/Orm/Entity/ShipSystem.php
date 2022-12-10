@@ -9,7 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipSystemRepository")
  * @Table(
- *     name="stu_ships_systems",
+ *     name="stu_ship_system",
  *     indexes={
  *         @Index(name="ship_system_ship_idx", columns={"ships_id"}),
  *         @Index(name="ship_system_status_idx", columns={"status"}),

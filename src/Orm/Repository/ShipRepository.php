@@ -506,14 +506,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 (select count(distinct b.id)from stu_ships b
                     where a.id = b.starsystem_map_id
                     AND NOT EXISTS (SELECT ss.id
-                                        FROM stu_ships_systems ss
+                                        FROM stu_ship_system ss
                                         WHERE b.id = ss.ships_id
                                         AND ss.system_type = :systemId
                                         AND ss.mode > 1)) as shipcount,
                 (select count(distinct c.id) from stu_ships c
                     where a.id = c.starsystem_map_id
                     AND EXISTS (SELECT ss2.id
-                                        FROM stu_ships_systems ss2
+                                        FROM stu_ship_system ss2
                                         WHERE c.id = ss2.ships_id
                                         AND ss2.system_type = :systemId
                                         AND ss2.mode > 1)) as cloakcount,
@@ -596,14 +596,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 (select count(distinct b.id)from stu_ships b
                     where b.cx=a.cx AND b.cy=a.cy
                     AND NOT EXISTS (SELECT ss.id
-                                        FROM stu_ships_systems ss
+                                        FROM stu_ship_system ss
                                         WHERE b.id = ss.ships_id
                                         AND ss.system_type = :systemId
                                         AND ss.mode > 1)) as shipcount,
                 (select count(distinct c.id) from stu_ships c
                     where c.cx = a.cx AND c.cy=a.cy
                     AND EXISTS (SELECT ss2.id
-                                        FROM stu_ships_systems ss2
+                                        FROM stu_ship_system ss2
                                         WHERE c.id = ss2.ships_id
                                         AND ss2.system_type = :systemId
                                         AND ss2.mode > 1)) as cloakcount,
@@ -803,16 +803,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     s.is_base as isbase, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid
                 FROM stu_ships s
-                LEFT JOIN stu_ships_systems ss
+                LEFT JOIN stu_ship_system ss
                 ON s.id = ss.ships_id
                 AND ss.system_type = :warpdriveType
-                LEFT JOIN stu_ships_systems ss2
+                LEFT JOIN stu_ship_system ss2
                 ON s.id = ss2.ships_id
                 AND ss2.system_type = :cloakType
-                LEFT JOIN stu_ships_systems ss3
+                LEFT JOIN stu_ship_system ss3
                 ON s.id = ss3.ships_id
                 AND ss3.system_type = :shieldType
-                LEFT JOIN stu_ships_systems ss4
+                LEFT JOIN stu_ship_system ss4
                 ON s.id = ss4.ships_id
                 AND ss4.system_type = :uplinkType
                 JOIN stu_rumps r
@@ -876,16 +876,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid
                 FROM stu_ships s
-                LEFT JOIN stu_ships_systems ss
+                LEFT JOIN stu_ship_system ss
                 ON s.id = ss.ships_id
                 AND ss.system_type = :warpdriveType
-                LEFT JOIN stu_ships_systems ss2
+                LEFT JOIN stu_ship_system ss2
                 ON s.id = ss2.ships_id
                 AND ss2.system_type = :cloakType
-                LEFT JOIN stu_ships_systems ss3
+                LEFT JOIN stu_ship_system ss3
                 ON s.id = ss3.ships_id
                 AND ss3.system_type = :shieldType
-                LEFT JOIN stu_ships_systems ss4
+                LEFT JOIN stu_ship_system ss4
                 ON s.id = ss4.ships_id
                 AND ss4.system_type = :uplinkType
                 JOIN stu_rumps r
