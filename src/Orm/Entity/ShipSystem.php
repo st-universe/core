@@ -11,7 +11,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
  * @Table(
  *     name="stu_ship_system",
  *     indexes={
- *         @Index(name="ship_system_ship_idx", columns={"ships_id"}),
  *         @Index(name="ship_system_status_idx", columns={"status"}),
  *         @Index(name="ship_system_type_idx", columns={"system_type"}),
  *         @Index(name="ship_system_module_idx", columns={"module_id"}),
