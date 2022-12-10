@@ -91,6 +91,12 @@ class Deals implements DealsInterface
      */
     private $auctionuser;
 
+    /**
+     * @ManyToOne(targetEntity="DealsAuction")
+     * @JoinColumn(name="id", referencedColumnName="auction_id")
+     */
+    private $auctionid;
+
     public function getId(): int
     {
         return $this->id;
@@ -324,5 +330,17 @@ class Deals implements DealsInterface
     {
         $bpname = $this->getBuildplan()->getName();
         return $bpname;
+    }
+
+    public function getAuctions(): ?DealsAuctionInterface
+    {
+        return $this->auctionid;
+    }
+
+    public function setAuctions(DealsAuctionInterface $auctionid): DealsInterface
+    {
+        $this->auctionid = $auctionid;
+
+        return $this;
     }
 }

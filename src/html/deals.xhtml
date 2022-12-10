@@ -195,8 +195,9 @@
                                 <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
-                                    value="Bieten" name="B_DEALS_BID_AUCTION" /></td>
+                            <td>Gebot:<input type="text" size="2" name="amount" value="1" />Max Gebot:<input type="text"
+                                    size="2" name="maxamount" value="1" /> <input type="submit" value="Bieten"
+                                    name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
