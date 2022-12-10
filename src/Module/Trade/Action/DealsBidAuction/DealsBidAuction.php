@@ -162,7 +162,7 @@ final class DealsBidAuction implements ActionControllerInterface
             $this->dealsRepository->save($auction);
         }
 
-        if ($maxAmount < $currentMaxAmount) {
+        if ($maxAmount = $currentMaxAmount) {
             $auction->setAuctionAmount($maxAmount);
             $this->dealsRepository->save($auction);
         }
