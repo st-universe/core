@@ -177,13 +177,13 @@ final class DealsTakeAuction implements ActionControllerInterface
             if ($auction->getShip() == true) {
 
                 $this->createShip($auction->getBuildplan(), $tradePost, $userId);
-                $game->addInformation(sprintf(_('Du hast dein Schiff erhalten'), $auction->getgiveCommodityAmount()));
+                $game->addInformation(sprintf(_('Du hast dein Schiff erhalten')));
             }
 
             if ($auction->getShip() == false && $auction->getBuildplanId() !== null) {
                 $this->copyBuildplan($auction->getBuildplan(), $user);
 
-                $game->addInformation(sprintf(_('Du hast deinen Bauplan erhalten'), $auction->getgiveCommodityAmount()));
+                $game->addInformation(sprintf(_('Du hast deinen Bauplan erhalten')));
             }
         }
 
