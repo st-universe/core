@@ -18,9 +18,11 @@
 
         </div>
         <br />
-        <tr>
-            <td colspan="11">Deals</td>
-        </tr>
+        <table class="tcal">
+            <tr>
+                <td colspan="11">Deals</td>
+            </tr>
+        </table>
         <tr tal:condition="not:ACTIVEDEALS">
             <td colspan="6">Keine Deals vorhanden</td>
         </tr>
@@ -171,9 +173,11 @@
             </table>
         </tr>
         <br />
-        <tr>
-            <td colspan="11">Auktionen</td>
-        </tr>
+        <table class="tcal">
+            <tr>
+                <td colspan="11">Auktionen</td>
+            </tr>
+        </table>
         <tr tal:condition="not:ACTIVEAUCTIONS">
             <td colspan="6">Keine Deals vorhanden</td>
         </tr>
@@ -361,9 +365,11 @@
             </table>
         </tr>
         <br />
-        <tr>
-            <td colspan="11">Beendete Deals</td>
-        </tr>
+        <table class="tcal">
+            <tr>
+                <td colspan="11">Beendete Deals</td>
+            </tr>
+        </table>
         <tr tal:condition="not:ANYENDEDAUCTIONS">
             <td colspan="6">Keine beendeten Auktionen vorhanden</td>
         </tr>
