@@ -188,7 +188,7 @@ final class DealsBidAuction implements ActionControllerInterface
             $auction->setAuctionAmount($maxAmount + 1);
             $this->dealsRepository->save($auction);
 
-            $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $maxAmount));
+            $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $maxAmount + 1));
         }
 
         if ($maxAmount === $currentMaxAmount) {
@@ -197,6 +197,8 @@ final class DealsBidAuction implements ActionControllerInterface
 
             $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $maxAmount));
         }
+
+
         if ($auction->getwantCommodityId() !== null) {
 
             $this->privateMessageSender->send(
