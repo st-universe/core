@@ -85,6 +85,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         $game->setView(ShowDeals::VIEW_IDENTIFIER);
 
         $auction = $this->dealsRepository->find($dealId);
+        $amount = $auction->getAuctionAmount();
 
         if ($auction->getAuctionUser()->getId() != $userId) {
             return;
