@@ -130,7 +130,12 @@ final class DealsTakeAuction implements ActionControllerInterface
                 $currentBidAmount = $auction->getAuctionAmount();
                 $currentMaxAmount = $auction->getHighestBid()->getMaxAmount();
                 if ($auction->getwantCommodityId() != null) {
-                    if ($storage->getAmount() < ($currentMaxAmount - $currentBidAmount)) {
+                    $wantstorage = $this->storageRepository->getByTradepostAndUserAndCommodity(
+                        TradeEnum::DEALS_FERG_TRADEPOST_ID,
+                        $userId,
+                        $auction->getwantCommodityId()
+                    );
+                    if ($wantstorage->getAmount() < ($currentMaxAmount - $currentBidAmount)) {
                         $game->addInformation(sprintf(
                             _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
                             $currentMaxAmount - $currentBidAmount,
