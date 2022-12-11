@@ -108,7 +108,7 @@ final class DealsTakeAuction implements ActionControllerInterface
                 $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
                     TradeEnum::DEALS_FERG_TRADEPOST_ID,
                     $userId,
-                    $auction->getWantCommodityId()
+                    $auction->getgiveCommodityId()
                 );
 
 
