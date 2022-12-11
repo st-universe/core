@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface DealsInterface
 {
     public function getId(): int;
@@ -77,6 +79,8 @@ interface DealsInterface
     public function getRumpId(): int;
 
     public function getBuildplanName(): string;
+
+    public function getAuctionBids(): Collection;
 
     public function getHighestBid(): ?AuctionBidInterface;
 }

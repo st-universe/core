@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 
 /**
@@ -84,7 +85,7 @@ class Deals implements DealsInterface
 
     /**
      * @OneToMany(targetEntity="AuctionBid", mappedBy="auction", cascade={"remove"})
-     * @OrderBy({"max_amount" = "DESC"})
+     * @OrderBy({"max_amount" = "ASC"})
      */
     private $auctionBids;
 
@@ -325,8 +326,13 @@ class Deals implements DealsInterface
         return $bpname;
     }
 
+    public function getAuctionBids(): Collection
+    {
+        return $this->auctionBids;
+    }
+
     public function getHighestBid(): ?AuctionBidInterface
     {
-        return $this->auctionBids->count() > 0 ? $this->auctionBids->first() : null;
+        return $this->getAuctionBids()->count() > 0 ? $this->getAuctionBids()->last() : null;
     }
 }

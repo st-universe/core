@@ -340,11 +340,6 @@ final class DealsBidAuction implements ActionControllerInterface
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
                 );
             }
-            // change deals
-
-            $auction->setAuctionAmount($newCurrentAmount);
-            $auction->setAuctionUser($userId);
-            $this->dealsRepository->save($auction);
 
             // create new bid
             $bid = $this->auctionBidRepository->prototype();
@@ -352,6 +347,12 @@ final class DealsBidAuction implements ActionControllerInterface
             $bid->setMaxAmount($maxAmount);
             $bid->setAuction($auction);
             $this->auctionBidRepository->save($bid);
+
+            // modify auction
+            $auction->setAuctionAmount($newCurrentAmount);
+            $auction->setAuctionUser($userId);
+            $auction->getAuctionBids()->add($bid);
+            $this->dealsRepository->save($auction);
 
             $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d. Du bist nun Meistbietender!'), $newCurrentAmount, $maxAmount));
         }
