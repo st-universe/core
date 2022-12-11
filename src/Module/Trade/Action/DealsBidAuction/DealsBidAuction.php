@@ -111,7 +111,6 @@ final class DealsBidAuction implements ActionControllerInterface
 
         if ($maxAmount <= $currentMaxAmount) {
             $this->raiseCurrentAmount($maxAmount, $currentMaxAmount, $auction, $game);
-            return;
         }
 
         if ($maxAmount > $currentMaxAmount) {
