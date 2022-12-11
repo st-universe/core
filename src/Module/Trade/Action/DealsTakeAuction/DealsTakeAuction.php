@@ -103,7 +103,7 @@ final class DealsTakeAuction implements ActionControllerInterface
             ));
         }
 
-        if ($auction->getgiveCommodityId() !== null || $auction->getwantPrestige() !== null) {
+        if ($auction->getgiveCommodityId() !== null || $auction->getwantPrestige() !== null || $auction->getwantCommodityId() !== null) {
 
             if ($auction->getgiveCommodityId() !== null) {
                 $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
@@ -124,18 +124,14 @@ final class DealsTakeAuction implements ActionControllerInterface
             $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
 
             $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
-
+            $freeStorage = $storageManagerUser->getFreeStorage();
 
             if ($auction->getAuctionAmount() <  $auction->getHighestBid()->getMaxAmount()) {
                 $currentBidAmount = $auction->getAuctionAmount();
                 $currentMaxAmount = $auction->getHighestBid()->getMaxAmount();
                 if ($auction->getwantCommodityId() != null) {
-                    $wantstorage = $this->storageRepository->getByTradepostAndUserAndCommodity(
-                        TradeEnum::DEALS_FERG_TRADEPOST_ID,
-                        $userId,
-                        $auction->getwantCommodityId()
-                    );
-                    if ($wantstorage->getAmount() < ($currentMaxAmount - $currentBidAmount)) {
+
+                    if ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
                         $game->addInformation(sprintf(
                             _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
                             $currentMaxAmount - $currentBidAmount,
