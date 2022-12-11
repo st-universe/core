@@ -29,17 +29,19 @@
         <tr tal:condition="ACTIVEDEALS">
             <table class="tcal">
                 <tr>
+                    <th>Dealen</th>
                     <th>Angebot</th>
                     <th>Preis</th>
                     <th>Noch Verfügbar</th>
                     <th>Endet</th>
-                    <th>Dealen</th>
                 </tr>
                 <tal:block tal:repeat="data ACTIVEDEALSGOODS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
+                                    value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
@@ -52,8 +54,7 @@
                                 <b>∞</b>
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
-                                    value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+
                         </form>
                     </tr>
                 </tal:block>
@@ -62,6 +63,8 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
+                                    value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
@@ -73,8 +76,7 @@
                                 <b>∞</b>
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="text" size="2" name="amount" value="1" /> <input type="submit"
-                                    value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+
                         </form>
                     </tr>
                 </tal:block>
@@ -83,6 +85,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
@@ -97,7 +100,7 @@
                                 <b>∞</b>
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+
                         </form>
                     </tr>
                 </tal:block>
@@ -106,6 +109,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
@@ -119,7 +123,7 @@
                                 <b>∞</b>
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+
                         </form>
                     </tr>
                 </tal:block>
@@ -128,6 +132,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                             <td><img src="assets/buttons/bauplan.png" title="Bauplan" /> <img
                                     src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
@@ -143,7 +148,7 @@
                                 <b>∞</b>
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
+
                         </form>
                     </tr>
                 </tal:block>
@@ -152,6 +157,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                             <td><img src="assets/buttons/bauplan.png" title="Bauplan" /> <img
                                     src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
@@ -166,7 +172,6 @@
                                 <b>∞</b>
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td><input type="submit" value="annehmen" name="B_DEALS_TAKE_OFFER" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -184,17 +189,19 @@
         <tr tal:condition="ACTIVEAUCTIONS">
             <table class="tcal">
                 <tr>
+                    <th>Bieten</th>
                     <th>Angebot</th>
                     <th>Höchstgebot</th>
                     <th>Höchstbietender</th>
                     <th>Endet</th>
-                    <th>Bieten</th>
                 </tr>
                 <tal:block tal:repeat="data ACTIVEAUCTIONSGOODS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
@@ -213,8 +220,6 @@
                                 Kein Gebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
-                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -223,6 +228,8 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
@@ -239,8 +246,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
-                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -249,6 +254,8 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
@@ -269,8 +276,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
-                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -279,6 +284,8 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
@@ -297,8 +304,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
-                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -307,6 +312,8 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/buttons/bauplan.png" title="Bauplan" /> <img
                                     src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
@@ -328,8 +335,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
-                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -338,6 +343,8 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/buttons/bauplan.png" title="Bauplan" /> <img
                                     src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
@@ -357,8 +364,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td>Max Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
-                                    type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -376,17 +381,18 @@
         <tr tal:condition="OWNENDEDAUCTIONS">
             <table class="tcal">
                 <tr>
+                    <th>Einlösen</th>
                     <th>Angebot</th>
                     <th>Höchstgebot</th>
                     <th>Höchstbietender</th>
                     <th>Beendet am</th>
-                    <th>Einlösen</th>
                 </tr>
                 <tal:block tal:repeat="data OWNENDEDAUCTIONSGOODS">
                     <tr tal:attributes="class string:row${repeat/data/odd}">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
@@ -405,9 +411,6 @@
                                 Kein Gebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td>
-                                <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" />
-                            </td>
                         </form>
                     </tr>
                 </tal:block>
@@ -416,6 +419,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
@@ -432,7 +436,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -441,6 +444,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
@@ -461,7 +465,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -470,6 +473,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
@@ -488,7 +492,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -497,6 +500,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                             <td><img src="assets/buttons/bauplan.png" title="Bauplan" /> <img
                                     src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
@@ -518,7 +522,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
@@ -527,6 +530,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                             <td><img src="assets/buttons/bauplan.png" title="Bauplan" /> <img
                                     src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
@@ -546,7 +550,6 @@
                                 Kein Angebot
                             </td>
                             <td tal:content="datetime:data/getEnd">DATE</td>
-                            <td> <input type="submit" value="einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
                         </form>
                     </tr>
                 </tal:block>
