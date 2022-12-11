@@ -29,7 +29,7 @@ use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuction;
 use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuctionRequest;
 use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuctionRequestInterface;
 use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuction;
-use Stu\Module\Trade\Action\DealsTakeAuction\DealsTeakeAuctionRequest;
+use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuctionRequest;
 use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuctionRequestInterface;
 use Stu\Module\Trade\Action\TakeOffer\TakeOffer;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequest;
