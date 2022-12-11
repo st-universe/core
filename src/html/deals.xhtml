@@ -19,7 +19,9 @@
         </div>
         <br />
         <header>
-            <h1>Auktionen</h1>
+            <h3>
+                <p style="text-align:center"><b>Deals </b></p>
+            </h3>
         </header>
         <tr tal:condition="not:ACTIVEDEALS">
             <td colspan="6">Keine Deals vorhanden</td>
@@ -172,7 +174,9 @@
         </tr>
         <br />
         <header>
-            <h1>Auktionen</h1>
+            <h3>
+                <p style="text-align:center"><b>Auktionen </b></p>
+            </h3>
         </header>
         <tr tal:condition="not:ACTIVEAUCTIONS">
             <td colspan="6">Keine Deals vorhanden</td>
@@ -222,10 +226,10 @@
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
                                 ${data/getgiveCommodityAmount}</td>
-                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png"
                                     title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
                                     title=" Prestige" />
                                 Kein Gebot</td>
                             <td tal:condition="data/getAuctionUser">
@@ -280,10 +284,10 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png"
                                     title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
                                     title=" Prestige" />
                                 Kein Gebot</td>
                             <td tal:condition="data/getAuctionUser">
@@ -340,10 +344,10 @@
                                     style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
                                     title="${mod/getName}" />
                             </td>
-                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png"
                                     title="Prestige" />
                                 ${data/getAuctionAmount}</td>
-                            <td tal:condition="not:data/getAuctionAmount"><img src="assets/buttons/prestige.png"
+                            <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
                                     title=" Prestige" />
                                 Kein Gebot</td>
                             <td tal:condition="data/getAuctionUser">
