@@ -124,7 +124,6 @@ final class DealsTakeAuction implements ActionControllerInterface
 
             $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
 
-            $freeStorage = $storageManagerUser->getFreeStorage();
 
             if ($auction->getAuctionAmount() <  $auction->getHighestBid()->getMaxAmount()) {
                 $currentBidAmount = $auction->getAuctionAmount();
@@ -172,10 +171,10 @@ final class DealsTakeAuction implements ActionControllerInterface
             if ($auction->getgiveCommodityId() !== null) {
                 $storageManagerUser->upperStorage(
                     (int) $auction->getgiveCommodityId(),
-                    (int) $auction->getgiveCommodityAmount() * $amount
+                    (int) $amount
                 );
 
-                $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getgiveCommodityAmount() * $amount, $auction->getgiveCommodity()->getName()));
+                $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $amount, $auction->getgiveCommodity()->getName()));
             }
 
             if ($auction->getShip() == true) {
