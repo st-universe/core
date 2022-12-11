@@ -145,12 +145,25 @@ final class DealsBidAuction implements ActionControllerInterface
         $currentHighestBid = $auction->getHighestBid();
         $storageManagerOld = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $currentHighestBid->getUser()->getId());
 
-        $game->addInformation(sprintf(_('Dein Maximalgebot wurde auf %d erhöht'), $maxAmount));
 
-        $storageManagerOld->lowerStorage(
-            $auction->getwantCommodityId(),
-            ($maxAmount - $currentHighestBid->getMaxAmount())
-        );
+
+        if ($auction->getwantCommodityId() !== null) {
+            $storageManagerOld->lowerStorage(
+                $auction->getwantCommodityId(),
+                ($maxAmount - $currentHighestBid->getMaxAmount())
+            );
+        }
+
+
+        if ($auction->getwantPrestige() !== null) {
+            $description = sprintf(
+                '-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus',
+                ($maxAmount - $currentHighestBid->getMaxAmount())
+            );
+
+            $this->createPrestigeLog->createLog($maxAmount - $currentHighestBid->getMaxAmount(), $description, $game->getUser(), time());
+        }
+        $game->addInformation(sprintf(_('Dein Maximalgebot wurde auf %d erhöht'), $maxAmount));
         $bid->setMaxAmount($maxAmount);
         $this->auctionBidRepository->save($bid);
     }
