@@ -308,7 +308,7 @@ final class DealsBidAuction implements ActionControllerInterface
             $bid->setAuction($auction);
             $this->auctionBidRepository->save($bid);
 
-            $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Du bist nun Meistbietender!'), $newCurrentAmount));
+            $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d Du bist nun Meistbietender!'), $newCurrentAmount, $maxAmount));
         }
 
         if ($auction->getwantPrestige() !== null) {
@@ -351,7 +351,7 @@ final class DealsBidAuction implements ActionControllerInterface
             $bid->setAuction($auction);
             $this->auctionBidRepository->save($bid);
 
-            $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Du bist nun Meistbietender!'), $newCurrentAmount));
+            $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d Du bist nun Meistbietender!'), $newCurrentAmount, $maxAmount));
         }
     }
 
