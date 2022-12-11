@@ -364,6 +364,336 @@
                 </tal:block>
             </table>
         </tr>
+        <br />
+        <header>
+            <h3>
+                <p style="text-align:center"><b>Beendete Auktionen </b></p>
+            </h3>
+        </header>
+        <tr tal:condition="not:ANYENDEDAUCTIONS">
+            <td colspan="6">Keine beendeten Auktionen vorhanden</td>
+        </tr>
+        <tr tal:condition="OWNENDEDAUCTIONS">
+            <table class="tcal">
+                <tr>
+                    <th>Angebot</th>
+                    <th>Höchstgebot</th>
+                    <th>Höchstbietender</th>
+                    <th>Beendet am</th>
+                    <th>Einlösen</th>
+                </tr>
+                <tal:block tal:repeat="data OWNENDEDAUCTIONSGOODS">
+                    <tr tal:attributes="class string:row${repeat/data/odd}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" tal:attributes="value data/getId" />
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
+                                    title="${data/getGiveCommodity/getName}" />
+                                ${data/getgiveCommodityAmount}</td>
+                            <td tal:condition="data/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                ${data/getAuctionAmount}</td>
+                            <td tal:condition="not:data/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                Kein Gebot</td>
+                            <td tal:condition="data/getAuctionUser">
+                                <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                            </td>
+                            <td tal:condition="not:data/getAuctionUser">
+                                Kein Gebot
+                            </td>
+                            <td tal:content="datetime:data/getEnd">DATE</td>
+                            <input type="submit" value="Einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                        </form>
+                    </tr>
+                </tal:block>
+                <tal:block tal:repeat="data OWNENDEDAUCTIONSGOODSPRESTIGE">
+                    <tr tal:attributes="class string:row${repeat/data/odd}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" tal:attributes="value data/getId" />
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
+                                    title="${data/getGiveCommodity/getName}" />
+                                ${data/getgiveCommodityAmount}</td>
+                            <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                                    title="Prestige" />
+                                ${data/getAuctionAmount}</td>
+                            <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                                    title=" Prestige" />
+                                Kein Gebot</td>
+                            <td tal:condition="data/getAuctionUser">
+                                <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                            </td>
+                            <td tal:condition="not:data/getAuctionUser">
+                                Kein Angebot
+                            </td>
+                            <td tal:content="datetime:data/getEnd">DATE</td>
+                            <td> <input type="submit" value="Einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                        </form>
+                    </tr>
+                </tal:block>
+                <tal:block tal:repeat="data OWNENDEDAUCTIONSSHIPS">
+                    <tr tal:attributes="class string:row${repeat/data/odd}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" tal:attributes="value data/getId" />
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                                <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                                    style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                                    title="${mod/getName}" />
+                            </td>
+                            <td tal:condition="data/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                ${data/getAuctionAmount}</td>
+                            <td tal:condition="not:data/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                Kein Gebot</td>
+                            <td tal:condition="data/getAuctionUser">
+                                <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                            </td>
+                            <td tal:condition="not:data/getAuctionUser">
+                                Kein Angebot
+                            </td>
+                            <td tal:content="datetime:data/getEnd">DATE</td>
+                            <td> <input type="submit" value="Einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                        </form>
+                    </tr>
+                </tal:block>
+                <tal:block tal:repeat="data OWNENDEDAUCTIONSSHIPSPRESTIGE">
+                    <tr tal:attributes="class string:row${repeat/data/odd}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" tal:attributes="value data/getId" />
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                                <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                                    style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                                    title="${mod/getName}" />
+                            </td>
+                            <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                                    title="Prestige" />
+                                ${data/getAuctionAmount}</td>
+                            <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                                    title=" Prestige" />
+                                Kein Gebot</td>
+                            <td tal:condition="data/getAuctionUser">
+                                <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                            </td>
+                            <td tal:condition="not:data/getAuctionUser">
+                                Kein Angebot
+                            </td>
+                            <td tal:content="datetime:data/getEnd">DATE</td>
+                            <td> <input type="submit" value="Einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                        </form>
+                    </tr>
+                </tal:block>
+                <tal:block tal:repeat="data OWNENDEDAUCTIONSBUILDPLANS">
+                    <tr tal:attributes="class string:row${repeat/data/odd}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" tal:attributes="value data/getId" />
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><img src="assets/buttons/builds1.png" title="Bauplan" /> <img
+                                    src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                                <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                                    style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                                    title="${mod/getName}" />
+                            </td>
+                            <td tal:condition="data/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                ${data/getAuctionAmount}</td>
+                            <td tal:condition="not:data/getAuctionAmount"><img
+                                    src="assets/commodities/${data/getwantCommodityId}.png"
+                                    title="${data/getWantedCommodity/getName}" />
+                                Kein Gebot</td>
+                            <td tal:condition="data/getAuctionUser">
+                                <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                            </td>
+                            <td tal:condition="not:data/getAuctionUser">
+                                Kein Angebot
+                            </td>
+                            <td tal:content="datetime:data/getEnd">DATE</td>
+                            <td> <input type="submit" value="Einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                        </form>
+                    </tr>
+                </tal:block>
+                <tal:block tal:repeat="data OWNENDEDAUCTIONSBUILDPLANSPRESTIGE">
+                    <tr tal:attributes="class string:row${repeat/data/odd}">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="dealid" tal:attributes="value data/getId" />
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <td><img src="assets/buttons/builds1.png" title="Bauplan" /> <img
+                                    src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                                <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                                    style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                                    title="${mod/getName}" />
+                            </td>
+                            <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                                    title="Prestige" />
+                                ${data/getAuctionAmount}</td>
+                            <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                                    title=" Prestige" />
+                                Kein Gebot</td>
+                            <td tal:condition="data/getAuctionUser">
+                                <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                            </td>
+                            <td tal:condition="not:data/getAuctionUser">
+                                Kein Angebot
+                            </td>
+                            <td tal:content="datetime:data/getEnd">DATE</td>
+                            <td> <input type="submit" value="Einlösen" name="B_DEALS_TAKE_AUCTION" /></td>
+                        </form>
+                    </tr>
+                </tal:block>
+            </table>
+        </tr>
+        <tr tal:condition="ENDEDAUCTIONS"></tr>
+        <table class="tcal">
+            <tr>
+                <th>Angebot</th>
+                <th>Höchstgebot</th>
+                <th>Höchstbietender</th>
+                <th>Beendet am</th>
+            </tr>
+            <tal:block tal:repeat="data ENDEDAUCTIONSGOODS">
+                <tr tal:attributes="class string:row${repeat/data/odd}">
+                    <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
+                            title="${data/getGiveCommodity/getName}" />
+                        ${data/getgiveCommodityAmount}</td>
+                    <td tal:condition="data/getAuctionAmount"><img
+                            src="assets/commodities/${data/getwantCommodityId}.png"
+                            title="${data/getWantedCommodity/getName}" />
+                        ${data/getAuctionAmount}</td>
+                    <td tal:condition="not:data/getAuctionAmount"><img
+                            src="assets/commodities/${data/getwantCommodityId}.png"
+                            title="${data/getWantedCommodity/getName}" />
+                        Kein Gebot</td>
+                    <td tal:condition="data/getAuctionUser">
+                        <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                    </td>
+                    <td tal:condition="not:data/getAuctionUser">
+                        Kein Gebot
+                    </td>
+                    <td tal:content="datetime:data/getEnd">DATE</td>
+                </tr>
+            </tal:block>
+            <tal:block tal:repeat="data ENDEDAUCTIONSGOODSPRESTIGE">
+                <tr tal:attributes="class string:row${repeat/data/odd}">
+                    <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
+                            title="${data/getGiveCommodity/getName}" />
+                        ${data/getgiveCommodityAmount}</td>
+                    <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png" title="Prestige" />
+                        ${data/getAuctionAmount}</td>
+                    <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                            title=" Prestige" />
+                        Kein Gebot</td>
+                    <td tal:condition="data/getAuctionUser">
+                        <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                    </td>
+                    <td tal:condition="not:data/getAuctionUser">
+                        Kein Angebot
+                    </td>
+                    <td tal:content="datetime:data/getEnd">DATE</td>
+                </tr>
+            </tal:block>
+            <tal:block tal:repeat="data ENDEDAUCTIONSSHIPS">
+                <tr tal:attributes="class string:row${repeat/data/odd}">
+
+                    <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                        <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                            style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                            title="${mod/getName}" />
+                    </td>
+                    <td tal:condition="data/getAuctionAmount"><img
+                            src="assets/commodities/${data/getwantCommodityId}.png"
+                            title="${data/getWantedCommodity/getName}" />
+                        ${data/getAuctionAmount}</td>
+                    <td tal:condition="not:data/getAuctionAmount"><img
+                            src="assets/commodities/${data/getwantCommodityId}.png"
+                            title="${data/getWantedCommodity/getName}" />
+                        Kein Gebot</td>
+                    <td tal:condition="data/getAuctionUser">
+                        <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                    </td>
+                    <td tal:condition="not:data/getAuctionUser">
+                        Kein Angebot
+                    </td>
+                    <td tal:content="datetime:data/getEnd">DATE</td>
+                </tr>
+            </tal:block>
+            <tal:block tal:repeat="data ENDEDAUCTIONSSHIPSPRESTIGE">
+                <tr tal:attributes="class string:row${repeat/data/odd}">
+                    <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                        <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                            style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                            title="${mod/getName}" />
+                    </td>
+                    <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png" title="Prestige" />
+                        ${data/getAuctionAmount}</td>
+                    <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                            title=" Prestige" />
+                        Kein Gebot</td>
+                    <td tal:condition="data/getAuctionUser">
+                        <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                    </td>
+                    <td tal:condition="not:data/getAuctionUser">
+                        Kein Angebot
+                    </td>
+                    <td tal:content="datetime:data/getEnd">DATE</td>
+                </tr>
+            </tal:block>
+            <tal:block tal:repeat="data ENDEDAUCTIONSBUILDPLANS">
+                <tr tal:attributes="class string:row${repeat/data/odd}">
+                    <td><img src="assets/buttons/builds1.png" title="Bauplan" /> <img
+                            src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                        <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                            style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                            title="${mod/getName}" />
+                    </td>
+                    <td tal:condition="data/getAuctionAmount"><img
+                            src="assets/commodities/${data/getwantCommodityId}.png"
+                            title="${data/getWantedCommodity/getName}" />
+                        ${data/getAuctionAmount}</td>
+                    <td tal:condition="not:data/getAuctionAmount"><img
+                            src="assets/commodities/${data/getwantCommodityId}.png"
+                            title="${data/getWantedCommodity/getName}" />
+                        Kein Gebot</td>
+                    <td tal:condition="data/getAuctionUser">
+                        <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                    </td>
+                    <td tal:condition="not:data/getAuctionUser">
+                        Kein Angebot
+                    </td>
+                    <td tal:content="datetime:data/getEnd">DATE</td>
+                </tr>
+            </tal:block>
+            <tal:block tal:repeat="data ENDEDAUCTIONSBUILDPLANSPRESTIGE">
+                <tr tal:attributes="class string:row${repeat/data/odd}">
+                    <td><img src="assets/buttons/builds1.png" title="Bauplan" /> <img
+                            src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
+                        <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
+                            style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+                            title="${mod/getName}" />
+                    </td>
+                    <td tal:condition="data/getwantPrestige"><img src="assets/buttons/prestige.png" title="Prestige" />
+                        ${data/getAuctionAmount}</td>
+                    <td tal:condition="not:data/getwantPrestige"><img src="assets/buttons/prestige.png"
+                            title=" Prestige" />
+                        Kein Gebot</td>
+                    <td tal:condition="data/getAuctionUser">
+                        <span tal:replace="structure bbcode:data/getAuctionUser/getUserName">NAME</span>
+                    </td>
+                    <td tal:condition="not:data/getAuctionUser">
+                        Kein Angebot
+                    </td>
+                    <td tal:content="datetime:data/getEnd">DATE</td>
+                </tr>
+            </tal:block>
+        </table>
+        </tr>
     </metal:macro>
 </metal:macro>
 
