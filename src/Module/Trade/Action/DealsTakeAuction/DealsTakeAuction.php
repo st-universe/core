@@ -85,7 +85,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         $game->setView(ShowDeals::VIEW_IDENTIFIER);
 
         $auction = $this->dealsRepository->find($dealId);
-        $amount = $auction->getAuctionAmount();
+
 
         if ($auction->getAuctionUser()->getId() != $userId) {
             return;
@@ -165,29 +165,25 @@ final class DealsTakeAuction implements ActionControllerInterface
                 }
             }
 
-            if ($auction->getBuildplanId() !== null) {
-                $amount = 1;
-            }
-
             if ($auction->getgiveCommodityId() !== null) {
                 $storageManagerUser->upperStorage(
                     (int) $auction->getgiveCommodityId(),
-                    (int) $amount
+                    (int) $auction->getgiveCommodityAmount()
                 );
 
-                $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $amount, $auction->getgiveCommodity()->getName()));
+                $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getgiveCommodityAmount(), $auction->getgiveCommodity()->getName()));
             }
 
             if ($auction->getShip() == true) {
 
                 $this->createShip($auction->getBuildplan(), $tradePost, $userId);
-                $game->addInformation(sprintf(_('Du hast dein Schiff erhalten'), $amount));
+                $game->addInformation(sprintf(_('Du hast dein Schiff erhalten'), $auction->getgiveCommodityAmount()));
             }
 
             if ($auction->getShip() == false && $auction->getBuildplanId() !== null) {
                 $this->copyBuildplan($auction->getBuildplan(), $user);
 
-                $game->addInformation(sprintf(_('Du hast deinen Bauplan erhalten'), $amount));
+                $game->addInformation(sprintf(_('Du hast deinen Bauplan erhalten'), $auction->getgiveCommodityAmount()));
             }
         }
 

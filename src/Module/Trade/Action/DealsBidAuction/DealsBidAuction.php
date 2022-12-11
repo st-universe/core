@@ -314,10 +314,10 @@ final class DealsBidAuction implements ActionControllerInterface
         if ($auction->getwantPrestige() !== null) {
             $description = sprintf(
                 '-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus',
-                $newCurrentAmount
+                $maxAmount
             );
 
-            $this->createPrestigeLog->createLog(-$newCurrentAmount, $description, $game->getUser(), time());
+            $this->createPrestigeLog->createLog(-$maxAmount, $description, $game->getUser(), time());
 
             if ($currentHighestBid->getUserId() > 100) {
                 $descriptionsecond = sprintf(
