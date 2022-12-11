@@ -42,7 +42,7 @@ final class ShowDeals implements ViewControllerInterface
         }
 
         $activeauctions = $this->dealsRepository->getActiveAuctions($userId);
-        if (!empty($activauctions)) {
+        if (!empty($activeauctions)) {
             $activeauctionsgoods = $this->dealsRepository->getActiveAuctionsGoods($userId);
             $activeauctionsships = $this->dealsRepository->getActiveAuctionsShips($userId);
             $activeauctionsbuildplans = $this->dealsRepository->getActiveAuctionsBuildplans($userId);
