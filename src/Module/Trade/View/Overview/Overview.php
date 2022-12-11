@@ -77,8 +77,10 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('POST_ID', $postId ?? 0);
 
         $tradeLicenses = $this->tradeLicenseRepository->getLicensesCountbyUser($userId);
+        $nagus = $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, TradeEnum::DEALS_FERG_TRADEPOST_ID);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
         $game->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
+        $game->setTemplateVar('SHOW_DEALS', $nagus);
 
         $commodityList = $this->commodityRepository->getTradeable();
         $game->setTemplateVar('SELECTABLE_COMMODITIES', $commodityList);
