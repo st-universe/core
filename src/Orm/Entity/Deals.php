@@ -327,6 +327,6 @@ class Deals implements DealsInterface
 
     public function getHighestBid(): ?AuctionBidInterface
     {
-        return $this->auctionBids->first();
+        return $this->auctionBids->count() > 0 ? $this->auctionBids->first() : null;
     }
 }
