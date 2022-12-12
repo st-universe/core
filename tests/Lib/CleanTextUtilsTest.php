@@ -10,15 +10,8 @@ class CleanTextUtilsTest extends StuTestCase
 {
     public function testClearUnicodeRemoveUnicode(): void
     {
-        $result = CleanTextUtils::clearUnicode('abc &#12345; &100000011; &; && ;;;def');
+        $result = CleanTextUtils::clearUnicode('abc &#12345; &100000011; &; && ;;;def &12');
 
-        $this->assertEquals('abc   &; && ;;;def', $result);
-    }
-
-    public function testClearUnicodeNoUnicodeFound_SemicolonMissing(): void
-    {
-        $result = CleanTextUtils::clearUnicode('abc &#12345 def');
-
-        $this->assertEquals('abc &#12345 def', $result);
+        $this->assertEquals('abc   &; && ;;;def ', $result);
     }
 }

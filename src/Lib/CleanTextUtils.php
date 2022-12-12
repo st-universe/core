@@ -15,7 +15,7 @@ class CleanTextUtils
 
 	public static function clearUnicode(string $text): string
 	{
-		return preg_replace('/&#?\d+;/', '', $text);
+		return preg_replace('/&#?\d+;?/', '', $text);
 	}
 
 	public static function checkBBCode($str): bool
