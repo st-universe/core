@@ -30,6 +30,17 @@ final class ShowDeals implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
+        $game->appendNavigationPart(
+            'trade.php',
+            _('Handel')
+        );
+        $game->appendNavigationPart(
+            sprintf('trade.php?%s=1', static::VIEW_IDENTIFIER),
+            _('Deals')
+        );
+        $game->setPageTitle(_('/ Handel / Deals des Großen Nagus'));
+        $game->setTemplateFile('html/deals.xhtml');
+
         $hasLicense = $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, TradeEnum::DEALS_FERG_TRADEPOST_ID);
 
         $game->setTemplateVar('HAS_LICENSE', $hasLicense);
@@ -74,17 +85,6 @@ final class ShowDeals implements ViewControllerInterface
             $ownendedauctionsshipsprestige = $this->dealsRepository->getOwnEndedAuctionsShipsPrestige($userId);
             $ownendedauctionsbuildplansprestige = $this->dealsRepository->getOwnEndedAuctionsBuildplansPrestige($userId);
         }
-
-        $game->appendNavigationPart(
-            'trade.php',
-            _('Handel')
-        );
-        $game->appendNavigationPart(
-            sprintf('trade.php?%s=1', static::VIEW_IDENTIFIER),
-            _('Deals')
-        );
-        $game->setPageTitle(_('/ Handel / Deals des Großen Nagus'));
-        $game->setTemplateFile('html/deals.xhtml');
 
         $game->setTemplateVar('ACTIVEDEALS', $activedeals);
         $game->setTemplateVar('ACTIVEDEALSGOODS', $activedealsgoods);
