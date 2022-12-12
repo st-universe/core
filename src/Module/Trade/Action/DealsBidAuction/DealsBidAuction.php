@@ -254,10 +254,10 @@ final class DealsBidAuction implements ActionControllerInterface
         if ($auction->getwantPrestige() !== null) {
             $userprestige = $game->getUser()->getPrestige();
 
-            if ($newCurrentAmount > $userprestige) {
+            if ($maxAmount > $userprestige) {
                 $game->addInformation(sprintf(
                     _('Du hast nicht genügend Prestige, benötigt: %d'),
-                    $newCurrentAmount
+                    ($maxAmount - $userprestige)
                 ));
                 return;
             }
