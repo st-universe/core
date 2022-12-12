@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -72,7 +73,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
         if (!$this->positionChecker->checkPosition($ship, $target)) {
-            return;
+            throw new SanityCheckException('PositionChecker->checkPosition failed');
         }
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
