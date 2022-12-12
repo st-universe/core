@@ -261,6 +261,17 @@ final class DealsBidAuction implements ActionControllerInterface
                 ));
                 return;
             }
+
+            if ($auction->getwantPrestige() !== null) {
+                $userprestige = $game->getUser()->getPrestige();
+    
+                if ($newCurrentAmount > $userprestige) {
+                    $game->addInformation(sprintf(
+                        _('Du hast nicht genügend Prestige, benötigt: %d'),
+                        ($newCurrentAmount)
+                    ));
+                    return;
+                }
         }
 
         $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
