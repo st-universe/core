@@ -45,6 +45,12 @@ final class ChangeUserName implements ActionControllerInterface
         }
 
         $value = CleanTextUtils::clearEmojis($text);
+        $nameWithoutUnicode = CleanTextUtils::clearUnicode($value);
+        if ($value != $nameWithoutUnicode) {
+            $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+            return;
+        }
+
         $valueWithoutMarkup = $this->bbcodeParser->parse($value)->getAsText();
 
         if (mb_strlen($valueWithoutMarkup) < 6) {

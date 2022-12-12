@@ -40,6 +40,12 @@ final class ChangeTradePostName implements ActionControllerInterface
             return;
         }
 
+        $nameWithoutUnicode = CleanTextUtils::clearUnicode($newName);
+        if ($newName != $nameWithoutUnicode) {
+            $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+            return;
+        }
+
         if (mb_strlen($newName) > 200) {
             $game->addInformation(_('Der Name ist zu lang (Maximum: 200 Zeichen)'));
             return;

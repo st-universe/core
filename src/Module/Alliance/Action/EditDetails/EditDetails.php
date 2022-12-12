@@ -66,6 +66,12 @@ final class EditDetails implements ActionControllerInterface
         }
 
         $name = CleanTextUtils::clearEmojis($this->editDetailsRequest->getName());
+        $nameWithoutUnicode = CleanTextUtils::clearUnicode($name);
+        if ($name != $nameWithoutUnicode) {
+            $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+            return;
+        }
+
         $faction_mode = $this->editDetailsRequest->getFactionMode();
         $description = $this->editDetailsRequest->getDescription();
         $homepage = $this->editDetailsRequest->getHomepage();

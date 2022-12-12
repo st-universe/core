@@ -170,6 +170,12 @@ final class CreateBuildplan implements ActionControllerInterface
             $planname = request::indString('buildplanname');
 
             $planname = CleanTextUtils::clearEmojis($planname);
+            $nameWithoutUnicode = CleanTextUtils::clearUnicode($planname);
+            if ($planname != $nameWithoutUnicode) {
+                $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+                $this->exitOnError($game);
+                return;
+            }
 
             if (mb_strlen($planname) > 255) {
                 $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));

@@ -13,6 +13,11 @@ class CleanTextUtils
 		return iconv('ISO-8859-15', 'UTF-8', $text);
 	}
 
+	public static function clearUnicode(string $text): string
+	{
+		return preg_replace('/&#?\d+;/', '', $text);
+	}
+
 	public static function checkBBCode($str): bool
 	{
 		$taglist = array("b", "i", "u", "color"); //the bb-tags to search for

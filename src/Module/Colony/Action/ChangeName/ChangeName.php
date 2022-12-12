@@ -55,6 +55,11 @@ final class ChangeName implements ActionControllerInterface
         }
 
         $value = CleanTextUtils::clearEmojis($text);
+        $nameWithoutUnicode = CleanTextUtils::clearUnicode($value);
+        if ($value != $nameWithoutUnicode) {
+            $game->addInformation(_('Der Name enthält ungültigen Unicode'));
+            return;
+        }
 
         if (mb_strlen($value) > 255) {
             $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
