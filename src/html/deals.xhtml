@@ -200,7 +200,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input
                                     type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
@@ -228,7 +228,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input
                                     type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/commodities/${data/getgiveCommodityId}.png"
                                     title="${data/getGiveCommodity/getName}" />
@@ -254,7 +254,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input
                                     type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
@@ -284,7 +284,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input
                                     type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
                                 <img tal:condition="data/getBuildplan" tal:repeat="mod data/getModules"
@@ -312,7 +312,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input
                                     type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/buttons/bauplan.png" title="Bauplan" /> <img
                                     src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
@@ -343,7 +343,7 @@
                         <form method="post" action="trade.php">
                             <input type="hidden" name="dealid" tal:attributes="value data/getId" />
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                            <td>Maximal Gebot: <input type="text" size="2" name="maxamount" value="1" /> <input
+                            <td>Maximalgebot: <input type="text" size="2" name="maxamount" value="1" /> <input
                                     type="submit" value="bieten" name="B_DEALS_BID_AUCTION" /></td>
                             <td><img src="assets/buttons/bauplan.png" title="Bauplan" /> <img
                                     src="assets/ships/${data/getRumpId}.png" title="${data/getBuildplanName}" />
@@ -372,7 +372,7 @@
         <br />
         <table class="tcal">
             <tr>
-                <td colspan="11">Beendete Auktion</td>
+                <td colspan="11">Beendete Auktionen</td>
             </tr>
         </table>
         <tr tal:condition="not:ANYENDEDAUCTIONS">
