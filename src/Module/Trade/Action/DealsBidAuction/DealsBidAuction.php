@@ -133,7 +133,7 @@ final class DealsBidAuction implements ActionControllerInterface
         if ($auction->getwantPrestige() !== null) {
             $description = sprintf(
                 '-%d Prestige: Eingebüßt beim setzen eines Erstgebots bei einer Auktion des Großen Nagus',
-                ($maxAmount)
+                (-$maxAmount)
             );
 
             $this->createPrestigeLog->createLog($maxAmount, $description, $game->getUser(), time());
@@ -172,7 +172,7 @@ final class DealsBidAuction implements ActionControllerInterface
         if ($auction->getwantPrestige() !== null) {
             $description = sprintf(
                 '-%d Prestige: Eingebüßt beim erhöhen deines Maximalgebots bei einer Auktion des Großen Nagus',
-                ($maxAmount - $currentHighestBid->getMaxAmount())
+                (- ($maxAmount - $currentHighestBid->getMaxAmount()))
             );
 
             $this->createPrestigeLog->createLog($maxAmount - $currentHighestBid->getMaxAmount(), $description, $game->getUser(), time());
@@ -316,7 +316,7 @@ final class DealsBidAuction implements ActionControllerInterface
         if ($auction->getwantPrestige() !== null) {
             $description = sprintf(
                 '-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus',
-                $maxAmount
+                -$maxAmount
             );
 
             $this->createPrestigeLog->createLog(-$maxAmount, $description, $game->getUser(), time());
