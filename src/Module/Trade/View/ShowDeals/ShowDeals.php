@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowDeals;
 
+use Stu\Component\Trade\TradeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
-use Stu\Orm\Repository\TradePostRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 
 final class ShowDeals implements ViewControllerInterface
 {
@@ -16,20 +16,26 @@ final class ShowDeals implements ViewControllerInterface
 
     private DealsRepositoryInterface $dealsRepository;
 
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+
     public function __construct(
         DealsRepositoryInterface $dealsRepository,
-        TradePostRepositoryInterface $tradePostRepository,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->dealsRepository = $dealsRepository;
-        $this->tradePostRepository = $tradePostRepository;
-        $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
+        $hasLicense = $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, TradeEnum::DEALS_FERG_TRADEPOST_ID);
+
+        $game->setTemplateVar('HAS_LICENSE', $hasLicense);
+        if (!$hasLicense) {
+            return;
+        }
         $activedeals = $this->dealsRepository->getActiveDeals($userId);
 
         if (!empty($activedeals)) {

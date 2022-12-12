@@ -95,7 +95,7 @@ final class ShowScan implements ViewControllerInterface
             $target->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR
             && $ship->getMaxStorage() > $ship->getStorageSum()
         ) {
-            $game->setTemplateVar('ADVENT_DAY', date("m.d.y"));
+            $game->setTemplateVar('ADVENT_DAY', date("m.d.y")); //TODO fix to d.m.y
         }
     }
 
