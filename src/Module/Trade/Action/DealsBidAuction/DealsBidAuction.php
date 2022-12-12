@@ -310,7 +310,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
             // change deals
 
-            $auction->setAuctionAmount($newCurrentAmount);
+            $auction->setAuctionAmount($currentHighestBid->getMaxAmount() + 1);
             $auction->setAuctionUser($userId);
             $this->dealsRepository->save($auction);
 
