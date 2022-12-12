@@ -109,6 +109,8 @@ final class GameController implements GameControllerInterface
 
     private $semaphores = [];
 
+    private $sanityCheckExceptions = [];
+
     public function __construct(
         SessionInterface $session,
         SessionStringRepositoryInterface $sessionStringRepository,
@@ -560,7 +562,7 @@ final class GameController implements GameControllerInterface
             try {
                 $action = $this->executeCallback($actions);
             } catch (SanityCheckException $e) {
-                $this->logSanityCheck($e);
+                $this->sanityCheckExceptions[] = $e;
             }
             $gameRequest->unsetParameter($action);
             $actionMs = hrtime(true) - $startTime;
@@ -569,7 +571,7 @@ final class GameController implements GameControllerInterface
             try {
                 $view = $this->executeView($views);
             } catch (SanityCheckException $e) {
-                $this->logSanityCheck($e);
+                $this->sanityCheckExceptions[] = $e;
             }
             $gameRequest->unsetParameter($view);
             $viewMs = hrtime(true) - $startTime;
@@ -656,21 +658,27 @@ final class GameController implements GameControllerInterface
 
         // SAVE META DATA
         $gameRequest->setRenderMs((int)$renderMs / 1000000);
-        $this->persistGameRequest($gameRequest);
+        $gameRequestId = $this->persistGameRequest($gameRequest);
+
+        $this->logSanityChecks($gameRequestId);
     }
 
-    private function logSanityCheck(SanityCheckException $exception): void
+    private function logSanityChecks(int $gameRequestId): void
     {
         $this->loggerUtil->init('sanity', LoggerEnum::LEVEL_WARNING);
-        $this->loggerUtil->log(sprintf(
-            "SANITY-CHECK-FAILED\nMessage: %s\nTrace: %s",
-            $exception->getMessage(),
-            $exception->getTraceAsString()
-        ));
+
+        foreach ($this->sanityCheckExceptions as $exception) {
+            $this->loggerUtil->log(sprintf(
+                "SANITY-CHECK-FAILED - GameRequestId: %d, Message: %s, Trace: %s",
+                $gameRequestId,
+                $exception->getMessage(),
+                $exception->getTraceAsString()
+            ));
+        }
         $this->loggerUtil->init('stu');
     }
 
-    private function persistGameRequest(GameRequestInterface $request): void
+    private function persistGameRequest(GameRequestInterface $request): int
     {
         $request->setParams();
 
@@ -679,6 +687,8 @@ final class GameController implements GameControllerInterface
         $entityManagerLogging->persist($request);
         $entityManagerLogging->flush();
         $entityManagerLogging->commit();
+
+        return $request->getId();
     }
 
     public function isSemaphoreAlreadyAcquired(int $key): bool
