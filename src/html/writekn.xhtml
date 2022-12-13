@@ -38,8 +38,12 @@
 							<select name="plotid" style="width: 500px;">
 								<option value="0">------------------------------</option>
 								<tal:block tal:repeat="plot ACTIVE_RPG_PLOTS">
-									<option value="runtime" tal:attributes="value plot/getId;"
+									<option value="runtime" tal:condition="exists:PLOT_ID"
+										tal:attributes="value plot/getId; selected php:PLOT_ID==plot.getId()"
 										tal:content="structure plot/getTitle"></option>
+									<option value="runtime" tal:condition="not:exists:PLOT_ID"
+										tal:attributes="value plot/getId;" tal:content="structure plot/getTitle">
+									</option>
 								</tal:block>
 							</select>
 						</metal:macro>
