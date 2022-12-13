@@ -70,7 +70,7 @@ final class BeamFrom implements ActionControllerInterface
         }
 
         // check for fleet option
-        if (request::postIntFatal('isfleet') && $ship->getFleet() !== null) {
+        if (request::postInt('isfleet') && $ship->getFleet() !== null) {
             foreach ($ship->getFleet()->getShips() as $ship) {
                 $this->beamFromTarget($ship, $target, $game);
             }
