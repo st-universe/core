@@ -692,14 +692,14 @@
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <table class="tcal">
       <tr>
-        <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
+        <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
       <tr>
-        <td colspan="2">Kapazität pro 1 Energie: <span
+        <td colspan="3">Kapazität pro 1 Energie: <span
             tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
-        <td style="width: 100%;">
+        <td colspan="2" style="width: 100%;">
           <tal:block tal:condition="SHIP/getBeamableStorage" tal:repeat="stor SHIP/getBeamableStorage">
             <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodity/getId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
@@ -744,10 +744,16 @@
           </table>
         </td>
       </tr>
-      <tr>
-        <td style="text-align: center;">
+      <tr style="text-align: right;">
+        <td style="width: 60%;">
           <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" />
           <input type="submit" class="button" value="Beamen" name="B_BEAMTO" />
+        </td>
+        <td>
+          <tal:block tal:condition="SHIP/getIsFleetLeader"><input value="1" type="checkbox" name="isfleet" />
+            Flotte <img title="Alle Flottenschiffe versuchen die Waren zu beamen" src="assets/buttons/info2.png"
+              style="height:16px;" />
+          </tal:block>
         </td>
       </tr>
     </table>
@@ -834,18 +840,18 @@
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <table class="tcal">
       <tr>
-        <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
+        <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
       <tr tal:condition="php:targetColony.getShieldState() AND NOT OWNS_TARGET">
         <td>Schildfrequenz:</td>
         <td><input type="text" size="3" name="frequency" /> MHz</td>
       </tr>
       <tr>
-        <td colspan="2">Kapazität pro 1 Energie: <span
+        <td colspan="3">Kapazität pro 1 Energie: <span
             tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
-        <td style="width: 100%;">
+        <td colspan="2" style="width: 100%;">
           <tal:block tal:condition="SHIP/getBeamableStorage" tal:repeat="stor SHIP/getBeamableStorage">
             <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodity/getId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
@@ -891,10 +897,16 @@
           </table>
         </td>
       </tr>
-      <tr>
-        <td style="text-align: center;">
+      <tr style="text-align: right;">
+        <td style="width: 60%;">
           <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" /> <input type="submit"
             class="button" value="Beamen" name="B_BEAMTO_COLONY" />
+        </td>
+        <td>
+          <tal:block tal:condition="SHIP/getIsFleetLeader"><input value="1" type="checkbox" name="isfleet" />
+            Flotte <img title="Alle Flottenschiffe versuchen die Waren zu beamen" src="assets/buttons/info2.png"
+              style="height:16px;" />
+          </tal:block>
         </td>
       </tr>
     </table>
@@ -907,18 +919,18 @@
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <table class="tcal">
       <tr>
-        <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
+        <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
       <tr tal:condition="php:targetColony.getShieldState() AND NOT OWNS_TARGET">
         <td>Schildfrequenz:</td>
         <td><input type="text" size="3" name="frequency" /> MHz</td>
       </tr>
       <tr>
-        <td colspan="2">Kapazität pro 1 Energie: <span
+        <td colspan="3">Kapazität pro 1 Energie: <span
             tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
-        <td style="width: 100%;">
+        <td colspan="2" style="width: 100%;">
           <tal:block tal:condition="targetColony/getBeamableStorage" tal:repeat="stor targetColony/getBeamableStorage">
             <input type="hidden" name="commodities[]" tal:attributes="value stor/getCommodityId" />
             <div tal:condition="repeat/stor/odd" style="float: right; width: 50%;">
@@ -964,10 +976,16 @@
           </table>
         </td>
       </tr>
-      <tr>
-        <td style="text-align: center;">
+      <tr style="text-align: right;">
+        <td style="width: 60%;">
           <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" /> <input type="submit"
             class="button" value="Beamen" name="B_BEAMFROM_COLONY" />
+        </td>
+        <td>
+          <tal:block tal:condition="SHIP/getIsFleetLeader"><input value="1" type="checkbox" name="isfleet" />
+            Flotte <img title="Alle Flottenschiffe versuchen die Waren zu beamen" src="assets/buttons/info2.png"
+              style="height:16px;" />
+          </tal:block>
         </td>
       </tr>
     </table>

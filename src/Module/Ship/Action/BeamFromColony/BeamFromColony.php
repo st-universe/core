@@ -12,6 +12,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -54,6 +56,44 @@ final class BeamFromColony implements ActionControllerInterface
             $userId
         );
 
+        $target = $this->colonyRepository->find((int) request::postIntFatal('target'));
+        if ($target === null || !$ship->canInteractWith($target, true)) {
+            return;
+        }
+
+        $commodities = request::postArray('commodities');
+        $gcount = request::postArray('count');
+        if (count($commodities) == 0 || count($gcount) == 0) {
+            $game->addInformation(_("Es wurden keine Waren zum Beamen ausgewählt"));
+            return;
+        }
+
+        if ($target->getUserId() !== $userId && $target->getShieldState()) {
+            if ($target->getShieldFrequency() !== 0) {
+
+                $frequency = (int) request::postInt('frequency');
+
+                if ($frequency !== $target->getShieldFrequency()) {
+                    $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
+                    return;
+                }
+            }
+        }
+
+        // check for fleet option
+        if (request::postInt('isfleet') && $ship->getFleet() !== null) {
+            foreach ($ship->getFleet()->getShips() as $ship) {
+                $this->beamFromTarget($ship, $target, $game);
+            }
+        } else {
+            $this->beamFromTarget($ship, $target, $game);
+        }
+    }
+
+    private function beamFromTarget(ShipInterface $ship, ColonyInterface $target, GameControllerInterface $game): void
+    {
+        $userId = $game->getUser()->getId();
+
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
@@ -73,21 +113,7 @@ final class BeamFromColony implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        $target = $this->colonyRepository->find((int) request::postIntFatal('target'));
-        if ($target === null || !$ship->canInteractWith($target, true)) {
-            return;
-        }
-        if ($target->getUserId() !== $userId && $target->getShieldState()) {
-            if ($target->getShieldFrequency() !== 0) {
 
-                $frequency = (int) request::postInt('frequency');
-
-                if ($frequency !== $target->getShieldFrequency()) {
-                    $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
-                    return;
-                }
-            }
-        }
         if ($ship->getMaxStorage() <= $ship->getStorageSum()) {
             $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;

@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BeamTo implements ActionControllerInterface
@@ -62,6 +63,19 @@ final class BeamTo implements ActionControllerInterface
             return;
         }
 
+        // check for fleet option
+        if (request::postInt('isfleet') && $ship->getFleet() !== null) {
+            foreach ($ship->getFleet()->getShips() as $ship) {
+                $this->beamToTarget($ship, $target, $game);
+            }
+        } else {
+            $this->beamToTarget($ship, $target, $game);
+        }
+    }
+
+    private function beamToTarget(ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): void
+    {
+        $userId = $game->getUser()->getId();
 
         //sanity checks
         $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
