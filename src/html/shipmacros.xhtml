@@ -818,7 +818,7 @@
             class="button" value="Beamen" name="B_BEAMFROM" />
         </td>
         <td>
-          <tal:block><input tal:condition="SHIP/getIsFleetLeader" value="1" type="checkbox" name="isfleet" />
+          <tal:block tal:condition="SHIP/getIsFleetLeader"><input value="1" type="checkbox" name="isfleet" />
             Flotte <img title="Alle Flottenschiffe versuchen die Waren zu beamen" src="assets/buttons/info2.png"
               style="height:16px;" />
           </tal:block>
