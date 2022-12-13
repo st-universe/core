@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 use request;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\ShipEnum;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;

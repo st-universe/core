@@ -180,7 +180,7 @@ final class AttackShip implements ActionControllerInterface
         } else {
             $attacker = [$ship->getId() => $ship];
         }
-        if ($target->getFleetId()) {
+        if ($target->getFleet() !== null) {
             $defender = [];
 
             // only uncloaked defenders fight
