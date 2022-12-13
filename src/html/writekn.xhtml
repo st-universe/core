@@ -62,8 +62,16 @@
 					<td>
 						<input type="submit" name="B_WRITE_KN" value="Hinzufügen" />
 						<input type="submit" name="B_PREVIEW_KN" value="Vorschau" />
-						<input value="1" type="checkbox" name="markposting" /> <span>Lesezeichen bei diesem Beitrag
-							setzen</span>
+						<tal:block tal:condition="exists:MARK">
+							<input tal:condition="MARK" value="1" type="checkbox" name="markposting" checked /><input
+								tal:condition="not:MARK" value="1" type="checkbox" name="markposting" />
+							<span>Lesezeichen bei diesem Beitrag
+								setzen</span>
+						</tal:block>
+						<tal:block tal:condition="not:exists:MARK">
+							<input value="1" type="checkbox" name="markposting" /> <span>Lesezeichen bei diesem Beitrag
+								setzen</span>
+						</tal:block>
 					</td>
 				</tr>
 			</table>
