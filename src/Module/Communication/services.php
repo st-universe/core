@@ -38,6 +38,7 @@ use Stu\Module\Communication\Action\EditKnPost\EditKnPostRequestInterface;
 use Stu\Module\Communication\Action\EndKnPlot\EndKnPlot;
 use Stu\Module\Communication\Action\EndKnPlot\EndKnPlotRequest;
 use Stu\Module\Communication\Action\EndKnPlot\EndKnPlotRequestInterface;
+use Stu\Module\Communication\Action\KnPostPreview\KnPostPreview;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Communication\Action\PostKnComment\PostKnCommentRequest;
 use Stu\Module\Communication\Action\PostKnComment\PostKnCommentRequestInterface;
@@ -108,6 +109,7 @@ return [
         CreateKnPlot::ACTION_IDENTIFIER => autowire(CreateKnPlot::class),
         EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
         RateKnPost::ACTION_IDENTIFIER => autowire(RateKnPost::class),
+        KnPostPreview::ACTION_IDENTIFIER => autowire(KnPostPreview::class)
     ],
     'COMMUNICATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
