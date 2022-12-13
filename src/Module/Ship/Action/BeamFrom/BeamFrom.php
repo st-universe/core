@@ -12,6 +12,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BeamFrom implements ActionControllerInterface
@@ -63,6 +64,25 @@ final class BeamFrom implements ActionControllerInterface
             return;
         }
 
+        if ($target->getWarpState()) {
+            $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
+            return;
+        }
+
+        // check for fleet option
+        if (request::postIntFatal('isfleet') && $ship->getFleet() !== null) {
+            foreach ($ship->getFleet()->getShips() as $ship) {
+                $this->beamFromTarget($ship, $target, $game);
+            }
+        } else {
+            $this->beamFromTarget($ship, $target, $game);
+        }
+    }
+
+    private function beamFromTarget(ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): void
+    {
+        $userId = $game->getUser()->getId();
+
         //sanity checks
         $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
         if (!$isDockTransfer && $ship->getEps() == 0) {
@@ -79,10 +99,6 @@ final class BeamFrom implements ActionControllerInterface
         }
         if ($ship->getShieldState()) {
             $game->addInformation(_("Die Schilde sind aktiviert"));
-            return;
-        }
-        if ($target->getWarpState()) {
-            $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
         }
         if ($ship->getDockedTo() !== $target && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)) {
