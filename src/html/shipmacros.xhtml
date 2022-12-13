@@ -817,7 +817,12 @@
           <input type="button" class="button" value="max" onclick="maximizeCommodityAmounts();" /> <input type="submit"
             class="button" value="Beamen" name="B_BEAMFROM" />
         </td>
-        <td><input tal:condition="SHIP/getIsFleetLeader" value="1" type="checkbox" name="isfleet" /> Flotte</td>
+        <td>
+          <tal:block><input tal:condition="SHIP/getIsFleetLeader" value="1" type="checkbox" name="isfleet" />
+            Flotte <img title="Alle Flottenschiffe versuchen die Waren zu beamen" src="assets/buttons/info2.png"
+              style="height:16px;" />
+          </tal:block>
+        </td>
       </tr>
     </table>
   </form>
