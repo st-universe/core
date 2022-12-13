@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\KnPostPreview;
 
+use JBBCode\Parser;
 use request;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
@@ -16,10 +17,14 @@ final class KnPostPreview implements ActionControllerInterface
 
     private AddKnPostRequestInterface $request;
 
+    private Parser $bbcodeParser;
+
     public function __construct(
-        AddKnPostRequestInterface $request
+        AddKnPostRequestInterface $request,
+        Parser $bbcodeParser
     ) {
         $this->request = $request;
+        $this->bbcodeParser = $bbcodeParser;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,7 +38,7 @@ final class KnPostPreview implements ActionControllerInterface
         $game->setTemplateVar('TEXT', request::indString('text'));
         $game->setTemplateVar('PLOT_ID', $plotId);
         $game->setTemplateVar('MARK', $mark);
-        $game->setTemplateVar('PREVIEW', $text);
+        $game->setTemplateVar('PREVIEW', $this->bbcodeParser->parse($text)->getAsHTML());
 
         $game->addInformation(_('Vorschau wurde erstellt'));
 
