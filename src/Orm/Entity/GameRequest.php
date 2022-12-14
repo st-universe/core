@@ -7,7 +7,10 @@ namespace Stu\Orm\Entity;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\GameRequestRepository")
  * @Table(
- *     name="stu_game_request"
+ *     name="stu_game_request",
+ *     indexes={
+ *          @Index(name="game_request_idx",columns={"user_id, action, view"})
+ *     }
  * )
  **/
 class GameRequest implements GameRequestInterface
