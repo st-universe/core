@@ -17,5 +17,6 @@ return [
     ColonyCorrectorHandler::class => autowire(ColonyCorrectorHandler::class),
     EmptyPlotDeletion::class => autowire(EmptyPlotDeletion::class),
     IdleUserDeletion::class => autowire(IdleUserDeletion::class),
-    OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class)
+    OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class),
+    TopFlightsReward::class => autowire(TopFlightsReward::class)
 ];
