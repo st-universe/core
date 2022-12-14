@@ -389,10 +389,10 @@
                 <tal:block tal:condition="post/getPlot">
                   <span tal:content="post/getPlot/getTitle" class="knh1">PLOTTITLE</span>
                   <span>(<a href="?SHOW_PLOT=1&plotid=${post/getPlot/getId}" target="_blank">Zum Plot</a>)</span>
+                  <br tal:condition="post/getTitle" />
                 </tal:block>
                 <tal:block tal:condition="post/getTitle">
-                  <br />
-                  <span tal:content="post/getTitle" class="knh1">KNTITLE</span>
+                  <span tal:content="post/getTitle" class="knh2">KNTITLE</span>
                 </tal:block>
                 <br />
                 <br />
