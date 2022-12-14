@@ -105,6 +105,11 @@ final class DealsTakeAuction implements ActionControllerInterface
 
         if ($auction->getgiveCommodityId() !== null || $auction->getwantPrestige() !== null || $auction->getwantCommodityId() !== null) {
 
+            $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+
+            $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
+            $freeStorage = $storageManagerUser->getFreeStorage();
+
             if ($auction->getgiveCommodityId() !== null) {
                 $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
                     TradeEnum::DEALS_FERG_TRADEPOST_ID,
@@ -113,18 +118,21 @@ final class DealsTakeAuction implements ActionControllerInterface
                 );
 
 
-                if ($storage === null || $storage->getAmount() < $auction->getgiveCommodityAmount()) {
+                if ($storage === null || $storage->getAmount() < $auction->getwantCommodityAmount()) {
                     $game->addInformation(sprintf(
-                        _('Es befindet sich nicht genügend Platz auf diesem Handelsposten')
+                        _('Es befindet sich nicht genügend Platz auf diesem Handelsposten'),
+                        $auction->getWantedCommodity()->getName()
                     ));
                     return;
                 }
+                if (
+                    $freeStorage <= 0 &&
+                    $auction->getgiveCommodityAmount() > $auction->getwantCommodityAmount()
+                ) {
+                    $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
+                    return;
+
             }
-
-            $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
-
-            $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
-            $freeStorage = $storageManagerUser->getFreeStorage();
 
             if ($auction->getAuctionAmount() <  $auction->getHighestBid()->getMaxAmount()) {
                 $currentBidAmount = $auction->getAuctionAmount();
