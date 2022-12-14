@@ -131,7 +131,7 @@ final class DealsTakeAuction implements ActionControllerInterface
                 ) {
                     $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
                     return;
-
+                }
             }
 
             if ($auction->getAuctionAmount() <  $auction->getHighestBid()->getMaxAmount()) {
