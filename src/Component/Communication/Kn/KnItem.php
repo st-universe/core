@@ -55,7 +55,7 @@ final class KnItem implements KnItemInterface
         return $this->post->getUserId();
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->post->getTitle();
     }

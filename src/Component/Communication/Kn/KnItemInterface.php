@@ -14,7 +14,7 @@ interface KnItemInterface
 
     public function getUserId(): int;
 
-    public function getTitle(): string;
+    public function getTitle(): ?string;
 
     public function getText(): string;
 

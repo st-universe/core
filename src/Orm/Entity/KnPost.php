@@ -27,7 +27,7 @@ class KnPost implements KnPostInterface
      */
     private $id;
 
-    /** @Column(type="string") */
+    /** @Column(type="string", nullable=true) */
     private $titel = '';
 
     /** @Column(type="text") */
@@ -79,7 +79,7 @@ class KnPost implements KnPostInterface
         return $this->id;
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->titel;
     }
