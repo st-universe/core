@@ -76,10 +76,8 @@ final class AddKnPost implements ActionControllerInterface
             $plot = $this->rpgPlotRepository->find($plotId);
             if ($plot !== null && $this->rpgPlotMemberRepository->getByPlotAndUser($plotId, $userId) !== null) {
                 $post->setRpgPlot($plot);
-                $post->setTitle($plot->getTitle());
             }
         } else {
-            $post->setTitle($title);
 
             if (mb_strlen($title) < 6) {
                 $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
@@ -91,6 +89,7 @@ final class AddKnPost implements ActionControllerInterface
                 return;
             }
         }
+        $post->setTitle($title);
         $post->setText($text);
         $post->setUser($user);
         $post->setDate(time());

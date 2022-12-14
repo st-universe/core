@@ -8,7 +8,7 @@ interface KnPostInterface
 {
     public function getId(): int;
 
-    public function getTitle(): string;
+    public function getTitle(): ?string;
 
     public function setTitle(string $title): KnPostInterface;
 
