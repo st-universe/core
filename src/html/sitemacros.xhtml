@@ -235,7 +235,7 @@
               <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
               <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
               <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-              <span>Version: <span tal:replace="GAME_VERSION" /></span><br />
+              <span>Version: <a href="${FORUM}/viewforum.php?f=12"><span tal:replace="GAME_VERSION" /></a></span><br />
             </div>
           </div>
         </div>
@@ -516,7 +516,7 @@
   <metal:macro metal:use-macro="navigation_item"
     tal:define="title string:Skripte; url string:/admin/?SHOW_SCRIPTS=1; icon_url string:scripts" />
 </tal:block>
-<tal:block metal:define-macro="breadcrumb">
+<tal:block style="height: 100%;" metal:define-macro="breadcrumb">
   <div class="box">
     <div class="box_title" style="text-align: left">/
       <tal:block tal:repeat="item THIS/getNavigation">
