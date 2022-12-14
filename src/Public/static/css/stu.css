@@ -14,14 +14,14 @@ img {
 }
 
 body {
-  background-color: #000000;
-  color: #dddddd;
-  margin: 2px 2px 2px 2px;
-  scrollbar-arrow-color: #8897cf;
-  scrollbar-base-color: #000000;
-  scrollbar-3dlight-color: #000000;
-  scrollbar-face-color: #262323;
-  scrollbar-highlight-color: #000000;
+    background-color: #000000;
+    color: #dddddd;
+    margin: 2px 2px 2px 2px;
+    scrollbar-arrow-color: #8897cf;
+    scrollbar-base-color: #000000;
+    scrollbar-3dlight-color: #000000;
+    scrollbar-face-color: #262323;
+    scrollbar-highlight-color: #000000;
 }
 
 ul {
@@ -29,24 +29,24 @@ ul {
 }
 
 div.innerContent {
-  padding: 10px 5px 0 5px;
-  margin-left: 120px;
+    padding: 10px 5px 0 5px;
+    margin-left: 120px;
 }
 
 div.sidebar {
-  width: 120px;
-  background-color: #121220;
-  height: 100%;
-  border-right: 1px solid #4b4b4b;
-  left:0;
-  position: fixed;
+    width: 120px;
+    background-color: #121220;
+    height: 100%;
+    border-right: 1px solid #4b4b4b;
+    left: 0;
+    position: fixed;
 }
 
 div.footer {
-  font-size: 70%;
-  color: #2d2d2d;
-  text-align: center;
-  clear: both;
+    font-size: 70%;
+    color: #2d2d2d;
+    text-align: center;
+    clear: both;
 }
 
 a.selected {
@@ -338,7 +338,8 @@ ul.menu li img {
     margin-top: 10px;
 }
 
-ul.menu li div:hover, div.arrow:hover {
+ul.menu li div:hover,
+div.arrow:hover {
     color: #c2b942;
     background-color: #262323;
 }
@@ -437,13 +438,13 @@ div.lssobj {
     position: relative;
     top: 0;
     left: 0;
-    z-index: 1; 
+    z-index: 1;
 }
 
 .lssSubspaceOverShield {
     position: absolute;
     top: 0;
-    left: 0; 
+    left: 0;
 }
 
 .activeshield {
@@ -733,25 +734,25 @@ tr.fleetLeader {
 }
 
 input.upButton {
-    background:url(/assets/buttons/b_up1.png) no-repeat;
+    background: url(/assets/buttons/b_up1.png) no-repeat;
     height: 22px;
     width: 22px;
 }
 
 input.downButton {
-    background:url(/assets/buttons/b_down1.png) no-repeat;
+    background: url(/assets/buttons/b_down1.png) no-repeat;
     height: 22px;
     width: 22px;
 }
 
 input.leftButton {
-    background:url(/assets/buttons/b_from1.png) no-repeat;
+    background: url(/assets/buttons/b_from1.png) no-repeat;
     height: 22px;
     width: 22px;
 }
 
 input.rightButton {
-    background:url(/assets/buttons/b_to1.png) no-repeat;
+    background: url(/assets/buttons/b_to1.png) no-repeat;
     height: 22px;
     width: 22px;
 }
@@ -857,6 +858,7 @@ div.navitem_title {
 
 div.navigation_item_servertime {
     font-size: 80% ! important;
+    height: 6.2vh;
     text-align: center;
     padding: 5px;
     color: #9d9d9d;
@@ -1038,7 +1040,7 @@ div.achievementbox div.closebutton {
 }
 
 .error {
-  color: #8d001b;
+    color: #8d001b;
 }
 
 table.border {
@@ -1115,29 +1117,30 @@ div.moonSurfaceTiles {
     display: grid;
     grid-template-columns: 43px 43px 43px 43px 43px 43px 43px;
 }
+
 div.moduleScreenGrid {
     display: grid;
     grid-template-columns: auto 300px;
 }
 
 div.userList {
-  width: 100%;
+    width: 100%;
 }
 
 div.userList div.userListItem {
-  border: 1px solid #262323;
-  margin: 10px;
-  padding: 5px;
-  width: 500px;
-  display: inline-grid;
-  grid-template-columns: 70px auto;
-  grid-column-gap: 10px;
-  background-color: #171616;
+    border: 1px solid #262323;
+    margin: 10px;
+    padding: 5px;
+    width: 500px;
+    display: inline-grid;
+    grid-template-columns: 70px auto;
+    grid-column-gap: 10px;
+    background-color: #171616;
 }
 
 img.userListItemImage {
-  width: 70px;
-  height: 70px;
+    width: 70px;
+    height: 70px;
 }
 
 img.sysStatus0 {
@@ -1166,342 +1169,342 @@ img.navitem_img {
 }
 
 div.userListItemButtons {
-  padding-top: 5px;
+    padding-top: 5px;
 }
 
 div.userListItem div.userListItemName,
 div.plotMemberListItemName {
-  font-size: 120%;
-  padding-bottom: 3px;
+    font-size: 120%;
+    padding-bottom: 3px;
 }
 
 div.userListItemName,
 div.userListItemAllianceName,
 div.plotMemberListItemName {
-  width: 400px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 div.userListSortItem {
-  width: 200px;
-  display: inline-block;
-  text-align: center;
+    width: 200px;
+    display: inline-block;
+    text-align: center;
 }
 
 div.allianceList {
-  width: 100%;
+    width: 100%;
 }
 
 div.allianceList div.allianceListItem,
-div.plotList div.plotListItem
-{
-  border: 1px solid #262323;
-  padding: 5px;
-  width: 100%;
-  display: inline-grid;
-  grid-template-columns: 500px auto;
-  grid-column-gap: 10px;
-  background-color: #171616;
-  margin-bottom: 10px;
+div.plotList div.plotListItem {
+    border: 1px solid #262323;
+    padding: 5px;
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: 500px auto;
+    grid-column-gap: 10px;
+    background-color: #171616;
+    margin-bottom: 10px;
 }
 
 div.allianceListItem div.allianceListItemName {
-  font-size: 130%;
-  padding-bottom: 10px;
+    font-size: 130%;
+    padding-bottom: 10px;
 }
 
 div.allianceListItem div.allianceListItemBanner {
-  width: 500px;
+    width: 500px;
 }
 
 div.allianceListItem div.allianceListItemBanner img {
-  max-width: 500px;
-  max-height:110px;
+    max-width: 500px;
+    max-height: 110px;
 }
 
 div.allianceListItem div.allianceListItemMembers {
-  grid-row-start: span 2;
-  width: 100%;
+    grid-row-start: span 2;
+    width: 100%;
 }
 
 div.userAvatar {
-  display: inline-block;
-  background-color: #000000;
-  width: 48px;
-  padding: 3px;
-  border: 1px solid #262323;
+    display: inline-block;
+    background-color: #000000;
+    width: 48px;
+    padding: 3px;
+    border: 1px solid #262323;
 }
 
 div.userAvatar img {
-  width: 40px;
+    width: 40px;
 }
 
 div.userBoxDetailName {
-  width: 220px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 div.userBoxDetailAddendum {
-  padding-top: 3px;
+    padding-top: 3px;
 }
 
 div.userTag {
-  width: 60px;
-  height: 20px;
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
+    width: 60px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
 }
+
 div.userTag1 {
-  background-color: #8b001e;
+    background-color: #8b001e;
 }
 
 div.knRatingPositive {
-  cursor: pointer;
-  padding: 1px 7px 1px 7px;
-  color: #035600;
-  border: 1px solid #035600;
-  margin-left: 5px;
-  display: inline-block;
+    cursor: pointer;
+    padding: 1px 7px 1px 7px;
+    color: #035600;
+    border: 1px solid #035600;
+    margin-left: 5px;
+    display: inline-block;
 }
 
 div.knRatingNegative {
-  cursor: pointer;
-  padding: 1px 9px 1px 8px;
-  color: #8b001e;
-  border: 1px solid #8b001e;
-  margin-right: 5px;
-  display: inline-block;
+    cursor: pointer;
+    padding: 1px 9px 1px 8px;
+    color: #8b001e;
+    border: 1px solid #8b001e;
+    margin-right: 5px;
+    display: inline-block;
 }
 
 div.knRatingNegative:hover {
-  background-color: #ce002f;
+    background-color: #ce002f;
 }
 
 div.knRatingPositive:hover {
-  background-color: #048000;
+    background-color: #048000;
 }
 
 span.knh1 {
-  font-size: 130%;
-  font-weight: bold;
+    font-size: 130%;
+    font-weight: bold;
 }
 
 span.knh2 {
-  font-size: 120%;
-  font-weight: bold;
+    font-size: 120%;
+    font-weight: bold;
 }
 
 span.knh3 {
-  font-size: 110%;
+    font-size: 110%;
 }
 
 div.knGrid {
-  display: grid;
-  grid-template-columns: auto 200px;
-  grid-template-rows: auto auto
+    display: grid;
+    grid-template-columns: auto 200px;
+    grid-template-rows: auto auto
 }
 
 div.pmGrid {
-  display: grid;
-  grid-template-columns: auto 200px;
-  grid-template-rows: auto auto
+    display: grid;
+    grid-template-columns: auto 200px;
+    grid-template-rows: auto auto
 }
 
 div.knGridText {
-  grid-row-start: span 2;
-  background-color: #161515;
+    grid-row-start: span 2;
+    background-color: #161515;
 }
 
 div.knGridUser {
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 15px;
 }
 
 div.knGridUser div.segment,
-div.knGridRating div.segment
-{
-  padding-bottom: 15px;
-  text-align: center;
-  width: 100%;
+div.knGridRating div.segment {
+    padding-bottom: 15px;
+    text-align: center;
+    width: 100%;
 }
 
 div.knGridRating {
-  align-self: end;
+    align-self: end;
 }
 
 div.plotList div.plotListItem {
-  display: grid;
-  grid-template-columns: 50% 220px auto;
+    display: grid;
+    grid-template-columns: 50% 220px auto;
 }
 
 div.plotList div.plotTitle {
-  font-size: 130%;
-  padding-bottom: 7px;
+    font-size: 130%;
+    padding-bottom: 7px;
 }
 
 div.plotMemberList {
-  background-color: #171616;
-  display: grid;
-  grid-template-columns: 56px auto;
-  padding: 3px;
-  margin-bottom: 3px;
+    background-color: #171616;
+    display: grid;
+    grid-template-columns: 56px auto;
+    padding: 3px;
+    margin-bottom: 3px;
 }
 
 div.plotMemberList div.plotMemberListItemAvatar {
-  grid-row-start: span 2; margin: 3px;
+    grid-row-start: span 2;
+    margin: 3px;
 }
 
 div.plotMemberList div.plotMemberListItemPm {
-  display: inline-block;
+    display: inline-block;
 }
 
 div.plotMemberList div.plotMemberListItemDelete {
-  display: inline-block;
-  padding-left: 20px;
+    display: inline-block;
+    padding-left: 20px;
 }
 
-div.researchList div.researchListItem
-{
-  border: 1px solid #262323;
-  padding: 5px;
-  width: 100%;
-  display: inline-grid;
-  grid-template-columns: 80px auto;
-  grid-column-gap: 10px;
-  background-color: #171616;
-  margin-bottom: 10px;
+div.researchList div.researchListItem {
+    border: 1px solid #262323;
+    padding: 5px;
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: 80px auto;
+    grid-column-gap: 10px;
+    background-color: #171616;
+    margin-bottom: 10px;
 }
 
 div.researchListItemName {
-  font-size: 130%;
-  margin-bottom: 10px;
+    font-size: 130%;
+    margin-bottom: 10px;
 }
 
 div.researchListItemDescription {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
+
 div.researchListItemNeeds {
-  height: 25px;
+    height: 25px;
 }
 
 div.researchListItemNeeds img {
-  vertical-align: middle;
+    vertical-align: middle;
 }
 
 div.researchListItemImage {
-  place-self: center;
+    place-self: center;
 }
 
 div.researchListItemImage img {
-  width: 80px;
-  height: 80px;
+    width: 80px;
+    height: 80px;
 }
 
 div.finishedResearchList {
-  width: 100%;
+    width: 100%;
 }
 
 div.finishedResearchList div.finishedResearchListItem {
-  border: 1px solid #262323;
-  margin: 10px;
-  padding: 5px;
-  width: 300px;
-  display: inline-grid;
-  grid-template-columns: 45px auto;
-  grid-column-gap: 10px;
-  background-color: #171616;
+    border: 1px solid #262323;
+    margin: 10px;
+    padding: 5px;
+    width: 300px;
+    display: inline-grid;
+    grid-template-columns: 45px auto;
+    grid-column-gap: 10px;
+    background-color: #171616;
 }
 
 div.finishedResearchListItemImage {
-  place-self: center;
+    place-self: center;
 }
 
 div.finishedResearchListItemImage img {
-  width: 40px;
-  height: 40px;
+    width: 40px;
+    height: 40px;
 }
 
 div.researchNavlet {
-  width: 100%;
-  height: 100%;
-  display: inline-grid;
-  grid-template-columns: 35% auto;
-  grid-column-gap: 5px;
+    width: 100%;
+    height: 100%;
+    display: inline-grid;
+    grid-template-columns: 35% auto;
+    grid-column-gap: 5px;
 }
 
 div.researchNavlet div.researchNavletImage {
-  text-align: right;
+    text-align: right;
 }
+
 div.researchNavlet div.researchNavletDetails {
-  text-align: left;
+    text-align: left;
 }
 
 div.researchNavlet div.researchNavletName {
-  grid-column-start: span 2;
-  font-size: 120%;
+    grid-column-start: span 2;
+    font-size: 120%;
 }
 
 div.researchNavletImage img {
-  width: 35px;
-  height: 35px;
+    width: 35px;
+    height: 35px;
 }
 
 div.header {
-  height: 80px;
-  width: 100%;
-  background-color: #121220;
-  z-Index: 111111111;
-  grid-column: 1 / span 2;
-  top: 0;
-  position: fixed;
+    height: 80px;
+    width: 100%;
+    background-color: #121220;
+    z-Index: 111111111;
+    grid-column: 1 / span 2;
+    top: 0;
+    position: fixed;
 }
 
 div.headerBottom {
-  margin: 80px 0px 0 117px;
-  height: 10px;
-  width: auto;
-  border-width: 1px;
-  border-bottom: 0;
-  border-right: 0;
-  border-style: solid;
-  border-color: #4b4b4b;
-  background-color: #000000;
-  border-radius: 3px 3px 0 0;
+    margin: 80px 0px 0 117px;
+    height: 10px;
+    width: auto;
+    border-width: 1px;
+    border-bottom: 0;
+    border-right: 0;
+    border-style: solid;
+    border-color: #4b4b4b;
+    background-color: #000000;
+    border-radius: 3px 3px 0 0;
 }
 
 div.pmGrid img.pmUserAvatar,
-div.knGrid img.knUserAvatar
-{
-  width: 80px;
-  height: 80px;
+div.knGrid img.knUserAvatar {
+    width: 80px;
+    height: 80px;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
-  div.container {
-    width: 1000px;
-  }
+    div.container {
+        width: 1000px;
+    }
 
-  div.header_box_user {
-    width: 300px;
-    margin: 5px 0 0 10px;
-  }
+    div.header_box_user {
+        width: 300px;
+        margin: 5px 0 0 10px;
+    }
 
-  div.user_box_grid {
-    display: grid;
-    grid-template-columns: 50px auto;
-    width: 100%;
-  }
+    div.user_box_grid {
+        display: grid;
+        grid-template-columns: 50px auto;
+        width: 100%;
+    }
 }
 
 @media (max-width: 1515px) {
     div.header_box_col {
-      display: none;
+        display: none;
     }
 }
 
@@ -1509,12 +1512,12 @@ div.knGrid img.knUserAvatar
     div.user_box_details {
         display: none;
     }
-    
+
     div.header_box_user {
         width: 100px;
         margin: 5px 0 0 10px;
     }
-    
+
     div.user_box_grid {
         display: grid;
         grid-template-columns: 100%;
@@ -1525,21 +1528,22 @@ div.knGrid img.knUserAvatar
 
 @media (max-width: 1025px) {
     div.container {
-      width: 1000px;
+        width: 1000px;
     }
-  
-    
-  }
-  @media (max-height: 1200px) {
-      div.navitem_titlefoo {
-          display: none;
-      }
-  
-      div.navitem_title {
-          margin-top: 0vh;
-      }
-  
-      div.navigation_item {
-          padding: 0.5vh 0 1vh 0
-      }
-  }
+
+
+}
+
+@media (max-height: 1200px) {
+    div.navitem_titlefoo {
+        display: none;
+    }
+
+    div.navitem_title {
+        margin-top: 0vh;
+    }
+
+    div.navigation_item {
+        padding: 0.5vh 0 1vh 0
+    }
+}
