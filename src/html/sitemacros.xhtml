@@ -516,8 +516,8 @@
   <metal:macro metal:use-macro="navigation_item"
     tal:define="title string:Skripte; url string:/admin/?SHOW_SCRIPTS=1; icon_url string:scripts" />
 </tal:block>
-<tal:block style="height: 80%;" metal:define-macro="breadcrumb">
-  <div class="box">
+<tal:block metal:define-macro="breadcrumb">
+  <div class="box" style="height: 80%;">
     <div class="box_title" style="text-align: left">/
       <tal:block tal:repeat="item THIS/getNavigation">
         <a href="#" tal:attributes="href repeat/item/key" tal:content="structure bbcode2txt:item">...</a>
