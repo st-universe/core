@@ -10,8 +10,9 @@ final class PlanetFieldTypeBuildingRepository extends EntityRepository implement
 {
     public function getByBuilding(int $buildingId): array
     {
-        return $this->findBy([
-            'buildings_id' => $buildingId
-        ]);
+        return $this->findBy(
+            ['buildings_id' => $buildingId],
+            ['view' => TRUE],
+        );
     }
 }
