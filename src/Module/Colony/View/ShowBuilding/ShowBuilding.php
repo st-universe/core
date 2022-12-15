@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
-use Stu\Orm\Repository\PlanetFieldTypeBuildingRepositoryInterface;
+//use Stu\Orm\Repository\PlanetFieldTypeBuildingRepositoryInterface;
 
 final class ShowBuilding implements ViewControllerInterface
 {
@@ -28,7 +28,7 @@ final class ShowBuilding implements ViewControllerInterface
 
     private BuildingRepositoryInterface $buildingRepository;
 
-    private PlanetFieldTypeBuildingRepositoryInterface $planetfieldtypebuildingRepository;
+    //private PlanetFieldTypeBuildingRepositoryInterface $planetfieldtypebuildingRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
@@ -36,14 +36,14 @@ final class ShowBuilding implements ViewControllerInterface
         ShowBuildingRequestInterface $showBuildingRequest,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
         BuildingRepositoryInterface $buildingRepository,
-        PlanetFieldTypeBuildingRepositoryInterface $planetfieldtypebuildingRepository
+        //PlanetFieldTypeBuildingRepositoryInterface $planetfieldtypebuildingRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->showBuildingRequest = $showBuildingRequest;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
         $this->buildingRepository = $buildingRepository;
-        $this->$planetfieldtypebuildingRepository = $planetfieldtypebuildingRepository;
+        //$this->$planetfieldtypebuildingRepository = $planetfieldtypebuildingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
