@@ -19,7 +19,7 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
         ]);
     }
 
-    public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): iterable
+    /*  public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): iterable
     {
         return $this->getEntityManager()->createQuery(
             
@@ -37,5 +37,5 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
                 'buildingId' => $buildingId
             ])
             ->getResult();
-    }
+    } */
 }
