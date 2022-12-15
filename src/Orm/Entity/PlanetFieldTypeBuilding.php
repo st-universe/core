@@ -34,9 +34,6 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
     /** @Column(type="integer", nullable=true) * */
     private $research_id;
 
-    /** @Column(type="boolean", nullable=true) * */
-    private $view = true;
-
     /**
      * @ManyToOne(targetEntity="Building", inversedBy="buildingPossibleFieldTypes")
      * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
@@ -80,18 +77,6 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
     public function setResearchId(?int $researchId): PlanetFieldTypeBuildingInterface
     {
         $this->research_id = $researchId;
-
-        return $this;
-    }
-
-    public function getView(): ?bool
-    {
-        return $this->view;
-    }
-
-    public function setView(?bool $view): PlanetFieldTypeBuildingInterface
-    {
-        $this->view = $view;
 
         return $this;
     }

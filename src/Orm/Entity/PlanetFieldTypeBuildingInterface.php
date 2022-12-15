@@ -18,9 +18,5 @@ interface PlanetFieldTypeBuildingInterface
 
     public function setResearchId(?int $researchId): PlanetFieldTypeBuildingInterface;
 
-    public function getView(): ?bool;
-
-    public function setView(?bool $view): PlanetFieldTypeBuildingInterface;
-
     public function getFieldTypeDescription(): string;
 }
