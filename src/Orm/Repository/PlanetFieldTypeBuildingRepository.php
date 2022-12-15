@@ -17,7 +17,7 @@ final class PlanetFieldTypeBuildingRepository extends EntityRepository implement
         );
     }
 
-    public function getShowableFieldtypes(int $buildingId, int $userId): iterable
+    public function getShowableFieldtypes(int $buildingId, int $userId): array
     {
         return $this->getEntityManager()->createQuery(
 
