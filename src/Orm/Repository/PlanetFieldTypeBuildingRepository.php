@@ -13,12 +13,11 @@ final class PlanetFieldTypeBuildingRepository extends EntityRepository implement
     public function getByBuilding(int $buildingId): array
     {
         return $this->findBy(
-            ['buildings_id' => $buildingId],
-            ['view' => TRUE],
+            ['buildings_id' => $buildingId]
         );
     }
 
-    /* public function getShowableFieldtypes(int $buildingId, int $userId): array
+    public function getShowableFieldtypes(int $buildingId, int $userId): array
     {
         return $this->getEntityManager()->createQuery(
 
@@ -36,5 +35,5 @@ final class PlanetFieldTypeBuildingRepository extends EntityRepository implement
                 'buildingId' => $buildingId
             ])
             ->getResult();
-    } */
+    }
 }

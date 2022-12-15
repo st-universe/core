@@ -11,5 +11,5 @@ interface PlanetFieldTypeBuildingRepositoryInterface
      */
     public function getByBuilding(int $buildingId): array;
 
-    /*  public function getShowableFieldtypes(int $buildingId, int $userId): array; */
+    public function getShowableFieldtypes(int $buildingId, int $userId): array;
 }
