@@ -71,7 +71,7 @@ final class ShowBuilding implements ViewControllerInterface
             $useableFieldTypes = current($alternativeBuildings)->getBuilding()->getBuildableFields();
         }
 
-        //$showablefieldtypes = $this->planetfieldtypebuildingRepository->getShowableFieldtypes((int) $building->getId(), $userId);
+        $showablefieldtypes = $this->planetfieldtypebuildingRepository->getShowableFieldtypes((int) $building->getId(), $userId);
 
         // @todo: Code verschoenern
         $storage        = $colony->getStorage();
@@ -109,7 +109,7 @@ final class ShowBuilding implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('ALTERNATIVE_BUILDINGS', $alternativeBuildings);
         $game->setTemplateVar('USEABLE_FIELD_TYPES', $useableFieldTypes);
-        //$game->setTemplateVar('SHOWABLE_FIELD_TYPES', $showablefieldtypes);
+        $game->setTemplateVar('SHOWABLE_FIELD_TYPES', $showablefieldtypes);
         $game->setTemplateVar(
             'ENERGY_PRODUCTION_PREVIEW',
             new ColonyEpsProductionPreviewWrapper($colony)
