@@ -1309,7 +1309,7 @@
           <strong>Baubar</strong><br />
           <strong>Anzahl:</strong> <span id="counter">${buildingcount}</span><br />
           <img src="#" tal:repeat="field USEABLE_FIELD_TYPES"
-            tal:attributes="src string:assets/generated/fields/${field/getFieldTypeId}.png; title field/getFieldTypeDescription"
+            tal:attributes="src string:assets/generated/fields/t${field/getFieldTypeId}.png; title field/getFieldTypeDescription"
             style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
         </td>
         <td style="vertical-align: top; width: 110px;">
@@ -1443,7 +1443,7 @@
       <td>
         <div style="width: 100%;" tal:condition="FIELD/isUnderConstruction">
           <div
-            style="background-image: url(assets/generated/fields/${FIELD/getFieldType}.png); width: 40px; height: 40px; display: table-cell;">
+            style="background-image: url(assets/generated/fields/t${FIELD/getFieldType}.png); width: 40px; height: 40px; display: table-cell;">
             <div
               style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${FIELD/getPictureType}${FIELD/getDayNightPrefix}.png)">
               <div style="height: 40px; overflow: hidden; width: ${FIELD/getOverlayWidth}px;">
@@ -1478,7 +1478,7 @@
         <div tal:condition="not:FIELD/isUnderConstruction">
           <div tal:condition="not: FIELD/hasBuilding">
             <div style="display: table-cell;">
-              <img src="assets/generated/fields/${FIELD/getFieldType}.png" /><br />
+              <img src="assets/generated/fields/t${FIELD/getFieldType}.png" /><br />
             </div>
             <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
               ${FIELD/getFieldTypeName}
@@ -1487,7 +1487,7 @@
           <div tal:condition="FIELD/hasBuilding">
             <div style="display: table-cell">
               <div
-                style="background-image: url(assets/generated/fields/${FIELD/getFieldType}.png); width: 40px; height: 40px;">
+                style="background-image: url(assets/generated/fields/t${FIELD/getFieldType}.png); width: 40px; height: 40px;">
                 <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString"
                   src="assets/generated/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}${FIELD/getBuildingState}${FIELD/getDayNightPrefix}.png" />
               </div>
@@ -1676,13 +1676,13 @@
                 </tr>
                 <tr>
                   <td style="width: 45px;">
-                    <img src="assets/generated/fields/${data/getFromFieldTypeId}.png" />
+                    <img src="assets/generated/fields/t${data/getFromFieldTypeId}.png" />
                   </td>
                   <td style="vertical-align: middle; width: 50px; text-align: center;">
                     =&gt;
                   </td>
                   <td style="width: 45px;">
-                    <img src="assets/generated/fields/${data/getToFieldTypeId}.png" />
+                    <img src="assets/generated/fields/t${data/getToFieldTypeId}.png" />
                   </td>
                   <td style="vertical-align: top;" rowspan="2">
                     <strong>Kosten</strong>
