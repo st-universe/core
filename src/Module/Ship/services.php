@@ -166,7 +166,7 @@ use Stu\Module\Ship\Lib\ShipMover2;
 use Stu\Module\Ship\Lib\ShipMover2Interface;
 use Stu\Module\Ship\Lib\ShipTorpedoManager;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
-use Stu\Module\Ship\Lib\ShipWrapper;
+use Stu\Module\Ship\Lib\ShipWrapperFactory;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
@@ -229,7 +229,7 @@ return [
     PriorizeFleetRequestInterface::class => autowire(PriorizeFleetRequest::class),
     ReactorUtilInterface::class => autowire(ReactorUtil::class),
     ShipTorpedoManagerInterface::class => autowire(ShipTorpedoManager::class),
-    ShipWrapperFactoryInterface::class => autowire(ShipWrapper::class),
+    ShipWrapperFactoryInterface::class => autowire(ShipWrapperFactory::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
