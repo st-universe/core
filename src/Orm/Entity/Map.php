@@ -21,6 +21,7 @@ use Stu\Component\Map\MapEnum;
  **/
 class Map implements MapInterface
 {
+
     /** 
      * @Id
      * @Column(type="integer")
