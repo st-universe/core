@@ -15,6 +15,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -38,6 +39,8 @@ final class ShowSensorScan implements ViewControllerInterface
 
     private NbsUtilityInterface $nbsUtility;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     private $fadedSignaturesUncloaked = [];
@@ -50,6 +53,7 @@ final class ShowSensorScan implements ViewControllerInterface
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         NbsUtilityInterface $nbsUtility,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -58,6 +62,7 @@ final class ShowSensorScan implements ViewControllerInterface
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->nbsUtility = $nbsUtility;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -143,7 +148,7 @@ final class ShowSensorScan implements ViewControllerInterface
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $userId, $sysid !== 0));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
         $game->setTemplateVar('ERROR', false);
     }
 

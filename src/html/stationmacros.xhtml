@@ -71,7 +71,7 @@
 </metal:macro>
 <metal:macro metal:define-macro="sensorscan">
   <tal:block tal:condition="not:ERROR">
-    <table class="tcal">
+    <table class="tcal" tal:define="SHIP WRAPPER/get">
       <tr>
         <th style="width: 40%;"></th>
         <th style="width: 60%;">Aktueller Scan</th>
@@ -260,7 +260,7 @@
       </tal:block>
     </td>
     <td>
-      <tal:block tal:condition="SHIP/isOwnedByCurrentUser">
+      <tal:block tal:condition="WRAPPER/isOwnedByCurrentUser">
         <a tal:condition="ship/isBase" href="javascript:void(0);"
           onclick="openPmWindow(${SHIP/getId},${ship/getId},4,4)"
           title="Nachricht an ${bbcode2txt:ship/getUserName} verfassen"
