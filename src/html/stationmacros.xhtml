@@ -292,7 +292,7 @@
   </ul>
 </metal:block>
 <metal:macro metal:define-macro="shuttlemanagement">
-  <form action="station.php" method="post">
+  <form action="station.php" method="post" tal:define="SHIP WRAPPER/get">
     <input type="hidden" name="id" tal:attributes="value STATION/getId" />
     <input type="hidden" name="sid" tal:attributes="value SHIP/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
@@ -307,7 +307,7 @@
             <img src="assets/commodities/${data/getCommodityId}.png" title="${data/getCommodityName}" />
           </td>
           <td>
-            <a tal:condition="SHIP/isOwnedByCurrentUser" href="javascript:void(0);"
+            <a tal:condition="WRAPPER/isOwnedByCurrentUser" href="javascript:void(0);"
               onclick="decreaseShuttleAmount(${data/getCommodityId});">
               <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
           </td>

@@ -11,6 +11,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ShowShuttleManagement implements ViewControllerInterface
 {
@@ -20,16 +21,19 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShowShuttleManagementRequestInterface $request,
         ShipLoaderInterface $shipLoader,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->request = $request;
         $this->shipLoader = $shipLoader;
-        $this->shipLoader = $shipLoader;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -81,7 +85,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
         $smi = current($shuttles);
 
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
         $game->setTemplateVar('STATION', $station);
         $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
         $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles);
