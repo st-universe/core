@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Utility;
 
-use Stu\Component\Ship\System\ShipSystemManager;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -13,12 +13,12 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 {
     private ApplyDamageInterface $applyDamage;
 
-    private ShipSystemManager $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
 
     public function __construct(
         ApplyDamageInterface $applyDamage,
-        ShipSystemManager $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->applyDamage = $applyDamage;
         $this->shipSystemManager = $shipSystemManager;
