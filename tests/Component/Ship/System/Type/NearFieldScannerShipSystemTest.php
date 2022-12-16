@@ -8,6 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
@@ -78,6 +79,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
+        $managerMock = $this->mock(ShipSystemManagerInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
         $ship->shouldReceive('getShipSystem')
@@ -88,7 +90,7 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
 
-        $this->system->activate($ship);
+        $this->system->activate($ship, $managerMock);
     }
 
     public function testDeactivateDeactivates(): void

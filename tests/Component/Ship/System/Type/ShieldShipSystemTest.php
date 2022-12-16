@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
@@ -157,6 +158,7 @@ class ShieldShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
+        $managerMock = $this->mock(ShipSystemManagerInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
         $ship->shouldReceive('setDockedTo')
@@ -174,7 +176,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->with($ship)
             ->once();
 
-        $this->system->activate($ship);
+        $this->system->activate($ship, $managerMock);
     }
 
     public function testDeactivateDeactivates(): void

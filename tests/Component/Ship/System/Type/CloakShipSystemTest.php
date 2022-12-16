@@ -8,11 +8,10 @@ use Mockery;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
@@ -35,21 +34,14 @@ class CloakShipSystemTest extends StuTestCase
      */
     private $cancelRepairMock;
 
-    /**
-     * @var null|MockInterface|ShipWrapperFactoryInterface
-     */
-    private $shipWrapperFactoryMock;
-
     public function setUp(): void
     {
         $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
         $this->cancelRepairMock = $this->mock(CancelRepairInterface::class);
-        $this->shipWrapperFactoryMock = $this->mock(ShipWrapperFactoryInterface::class);
 
         $this->system = new CloakShipSystem(
             $this->astroEntryLib,
-            $this->cancelRepairMock,
-            $this->shipWrapperFactoryMock
+            $this->cancelRepairMock
         );
     }
 
@@ -185,7 +177,7 @@ class CloakShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
-        $wrapperMock = $this->mock(ShipWrapperInterface::class);
+        $managerMock = $this->mock(ShipSystemManagerInterface::class);
         $systemCloak = $this->mock(ShipSystemInterface::class);
 
         //OTHER
@@ -193,15 +185,12 @@ class CloakShipSystemTest extends StuTestCase
             ->with(null)
             ->once()
             ->andReturnSelf();
+        $ship->shouldReceive('isTractoring')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
         $this->cancelRepairMock->shouldReceive('cancelRepair')
             ->with($ship)
-            ->once();
-        $this->shipWrapperFactoryMock->shouldReceive('wrapShip')
-            ->with($ship)
-            ->once()
-            ->andReturn($wrapperMock);
-        $wrapperMock->shouldReceive('deactivateTractorBeam')
-            ->withNoArgs()
             ->once();
 
         //ASTRO STUFF
@@ -241,8 +230,11 @@ class CloakShipSystemTest extends StuTestCase
         $systemCloak->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
+        $managerMock->shouldReceive('deactivate')
+            ->with($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->once();
 
-        $this->system->activate($ship);
+        $this->system->activate($ship, $managerMock);
     }
 
     public function testDeactivateDeactivates(): void

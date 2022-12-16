@@ -8,10 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -36,6 +36,11 @@ class WarpdriveShipSystemTest extends StuTestCase
     private $shipWrapperFactoryMock;
 
     /**
+     * @var null|MockInterface|ShipSystemManagerInterface
+     */
+    private $managerMock;
+
+    /**
      * @var null|WarpdriveShipSystem
      */
     private $system;
@@ -44,12 +49,11 @@ class WarpdriveShipSystemTest extends StuTestCase
     {
         $this->shipRepositoryMock = $this->mock(ShipRepositoryInterface::class);
         $this->cancelRepairMock = $this->mock(CancelRepairInterface::class);
-        $this->shipWrapperFactoryMock = $this->mock(ShipWrapperFactoryInterface::class);
+        $this->managerMock = $this->mock(ShipSystemManagerInterface::class);
 
         $this->system = new WarpdriveShipSystem(
             $this->shipRepositoryMock,
-            $this->cancelRepairMock,
-            $this->shipWrapperFactoryMock
+            $this->cancelRepairMock
         );
     }
 
@@ -175,7 +179,6 @@ class WarpdriveShipSystemTest extends StuTestCase
     public function testActivateActivatesAndDisablesTraktorbeamOnEnergyShortage(): void
     {
         $ship = $this->mock(ShipInterface::class);
-        $wrapperMock = $this->mock(ShipWrapperInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
         $ship->shouldReceive('setDockedTo')
@@ -214,15 +217,11 @@ class WarpdriveShipSystemTest extends StuTestCase
         $this->cancelRepairMock->shouldReceive('cancelRepair')
             ->with($ship)
             ->once();
-        $this->shipWrapperFactoryMock->shouldReceive('wrapShip')
-            ->with($ship)
-            ->once()
-            ->andReturn($wrapperMock);
-        $wrapperMock->shouldReceive('deactivateTractorBeam')
-            ->withNoArgs()
+        $this->managerMock->shouldReceive('deactivate')
+            ->with($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
             ->once();
 
-        $this->system->activate($ship);
+        $this->system->activate($ship, $this->managerMock);
         $this->assertTrue($dockedShipsCollection->isEmpty());
     }
 
@@ -278,7 +277,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->with($traktorBeamShip)
             ->once();
 
-        $this->system->activate($ship);
+        $this->system->activate($ship, $this->managerMock);
     }
 
     public function testDeactivateDeactivates(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
@@ -90,6 +91,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
     public function testActivateActivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
+        $managerMock = $this->mock(ShipSystemManagerInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
         $ship->shouldReceive('getShipSystem')
@@ -100,7 +102,7 @@ class EnergyWeaponShipSystemTest extends StuTestCase
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
 
-        $this->system->activate($ship);
+        $this->system->activate($ship, $managerMock);
     }
 
     public function testDeactivateDeactivates(): void

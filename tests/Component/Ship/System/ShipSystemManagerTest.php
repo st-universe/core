@@ -320,7 +320,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturnTrue();
         $this->systemType->shouldReceive('activate')
-            ->with($this->ship)
+            ->with($this->ship, $this->manager)
             ->once();
 
         $this->shipSystem->shouldReceive('getStatus')
@@ -377,7 +377,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturnTrue();
         $this->systemType->shouldReceive('activate')
-            ->with($this->ship)
+            ->with($this->ship, $this->manager)
             ->once();
 
         $this->shipSystem->shouldReceive('getStatus')
