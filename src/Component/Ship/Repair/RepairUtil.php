@@ -19,14 +19,11 @@ use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 final class RepairUtil implements RepairUtilInterface
 {
     //TODO Unit-Tests!
-    private ShipRepositoryInterface $shipRepository;
-
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private RepairTaskRepositoryInterface $repairTaskRepository;
@@ -40,7 +37,6 @@ final class RepairUtil implements RepairUtilInterface
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
         RepairTaskRepositoryInterface $repairTaskRepository,
         ShipStorageManagerInterface $shipStorageManager,
@@ -48,7 +44,6 @@ final class RepairUtil implements RepairUtilInterface
         ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
-        $this->shipRepository = $shipRepository;
         $this->shipSystemRepository = $shipSystemRepository;
         $this->repairTaskRepository = $repairTaskRepository;
         $this->shipStorageManager = $shipStorageManager;
