@@ -205,7 +205,7 @@
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shiplist_body">
-  <tr tal:define="ship wrapper/get" tal:attributes="class string:row${repeat/ship/odd}">
+  <tr tal:define="ship wrapper/get" tal:attributes="class string:row${repeat/wrapper/odd}">
     <td style="background-color: #000000 ! important">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
         onmouseout="closeStorage();">
