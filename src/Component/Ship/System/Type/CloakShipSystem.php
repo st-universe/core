@@ -12,7 +12,6 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class CloakShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
@@ -21,16 +20,12 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 
     private CancelRepairInterface $cancelRepair;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
         AstroEntryLibInterface $astroEntryLib,
-        CancelRepairInterface $cancelRepair,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        CancelRepairInterface $cancelRepair
     ) {
         $this->astroEntryLib = $astroEntryLib;
         $this->cancelRepair = $cancelRepair;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
