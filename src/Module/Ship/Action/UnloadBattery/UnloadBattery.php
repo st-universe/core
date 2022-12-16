@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\UnloadBattery;
 
 use request;
-use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -25,14 +25,18 @@ final class UnloadBattery implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -97,9 +101,8 @@ final class UnloadBattery implements ActionControllerInterface
         $ship->setEBattWaitingTime(time() + $load * 60);
 
         //experimental
-        $data = new EpsSystemData();
-        $data->maxBatt = 42;
-        $this->shipSystemManager->updateSystemData($ship, ShipSystemTypeEnum::SYSTEM_EPS, $data);
+        $eps = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
+        $eps->setMaxBatt(42)->setBatt(55)->setBattWait(123)->update($ship, ShipSystemTypeEnum::SYSTEM_EPS);
 
         $this->shipRepository->save($ship);
 

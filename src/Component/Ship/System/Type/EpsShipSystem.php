@@ -12,8 +12,37 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    //TODO ebatt cooldown into data?
-    //public function getSystemData(): 
+    public int $maxBatt = 0;
+    public int $batt = 0;
+    public int $battWait = 0;
+
+    public function update(ShipInterface $ship): void
+    {
+        $this->updateSystemData($ship, ShipSystemTypeEnum::SYSTEM_EPS, $this);
+    }
+
+    public function setMaxBatt(int $maxBatt): EpsShipSystem
+    {
+        $this->maxBatt = $maxBatt;
+        return $this;
+    }
+
+    public function setBatt(int $batt): EpsShipSystem
+    {
+        $this->batt = $batt;
+        return $this;
+    }
+
+    public function setBattWait(int $battWait): EpsShipSystem
+    {
+        $this->battWait = $battWait;
+        return $this;
+    }
+
+    public function isEBattUseable(): bool
+    {
+        return $this->battWait < time();
+    }
 
     public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {

@@ -11,6 +11,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    protected function updateSystemData(ShipInterface $ship, int $systemType, $data): void
+    {
+        $ship->getShipSystem($systemType)->setData(json_encode($data));
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         return true;
