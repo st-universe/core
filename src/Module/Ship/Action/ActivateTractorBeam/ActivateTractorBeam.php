@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,6 +18,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
@@ -31,24 +32,28 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private ShipAttackCycleInterface $shipAttackCycle;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private ActivatorDeactivatorHelperInterface $helper;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipAttackCycleInterface $shipAttackCycle,
-        PositionCheckerInterface $positionChecker,
-        ActivatorDeactivatorHelperInterface $helper
+        InteractionCheckerInterface $interactionChecker,
+        ActivatorDeactivatorHelperInterface $helper,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->helper = $helper;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -72,8 +77,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!$this->positionChecker->checkPosition($ship, $target)) {
-            throw new SanityCheckException('PositionChecker->checkPosition failed');
+        if (!$this->interactionChecker->checkPosition($ship, $target)) {
+            throw new SanityCheckException('InteractionChecker->checkPosition failed');
         }
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
@@ -168,7 +173,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->abort($ship, $game);
             return;
         }
-        $target->deactivateTractorBeam(); //forced active deactivation
+        $this->shipWrapperFactory->wrapShip($target)->deactivateTractorBeam(); //forced active deactivation
         $target->setDockedTo(null);
         $ship->setTractoredShip($target);
         $this->shipRepository->save($ship);

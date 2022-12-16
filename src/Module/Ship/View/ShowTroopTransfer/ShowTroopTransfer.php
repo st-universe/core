@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -99,7 +100,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
 
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
-        if ($target === null || $ship->canInteractWith($target, $isColony) === false) {
+        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, $isColony)) {
             return;
         }
 

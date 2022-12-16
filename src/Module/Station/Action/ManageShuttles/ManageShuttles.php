@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\ManageShuttles;
 
 use request;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -29,20 +29,20 @@ final class ManageShuttles implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipStorageManagerInterface $shipStorageManager,
         CommodityRepositoryInterface $commodityRepository,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipStorageManager = $shipStorageManager;
         $this->commodityRepository = $commodityRepository;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,7 +64,7 @@ final class ManageShuttles implements ActionControllerInterface
         $station = $shipArray[$stationId];
         $ship = $shipArray[$shipId];
 
-        if (!$this->positionChecker->checkPosition($station, $ship)) {
+        if (!$this->interactionChecker->checkPosition($station, $ship)) {
             return;
         }
 

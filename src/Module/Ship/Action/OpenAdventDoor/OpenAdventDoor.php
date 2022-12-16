@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -75,7 +76,7 @@ final class OpenAdventDoor implements ActionControllerInterface
         if ($target->getRump()->getRoleId() !== ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR) {
             throw new SanityCheckException('target is not an advent door');
         }
-        if (!$ship->canInteractWith($target)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game,)) {
             throw new SanityCheckException('can not interact with target');
         }
 

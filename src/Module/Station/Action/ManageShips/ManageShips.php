@@ -9,7 +9,7 @@ use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -49,7 +49,7 @@ final class ManageShips implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private ReactorUtilInterface $reactorUtil;
 
@@ -67,7 +67,7 @@ final class ManageShips implements ActionControllerInterface
         ShipStorageManagerInterface $shipStorageManager,
         CommodityRepositoryInterface $commodityRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         ReactorUtilInterface $reactorUtil,
         StationUtilityInterface $stationUtility,
         ShipTorpedoManagerInterface $shipTorpedoManager
@@ -81,7 +81,7 @@ final class ManageShips implements ActionControllerInterface
         $this->shipStorageManager = $shipStorageManager;
         $this->commodityRepository = $commodityRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->reactorUtil = $reactorUtil;
         $this->stationUtility = $stationUtility;
         $this->shipTorpedoManager = $shipTorpedoManager;
@@ -127,7 +127,7 @@ final class ManageShips implements ActionControllerInterface
             if ($shipobj->getCloakState()) {
                 continue;
             }
-            if (!$this->positionChecker->checkPosition($station, $shipobj)) {
+            if (!$this->interactionChecker->checkPosition($station, $shipobj)) {
                 continue;
             }
             if ($shipobj->getIsDestroyed()) {
@@ -214,7 +214,6 @@ final class ManageShips implements ActionControllerInterface
                         $shipCrew->setShip($station);
                         $shipCrew->setSlot(null);
                         $station->getCrewlist()->add($shipCrew);
-                        //TODO set role to null
                         $this->shipCrewRepository->save($shipCrew);
                     }
                     $shipobj->getCrewlist()->clear();

@@ -6,33 +6,22 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\ShipLSSModeEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Station\StationUtility;
-use Stu\Module\Ship\Lib\PositionChecker;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\ShipRepairCost;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
-use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
-use Stu\Orm\Repository\RepairTaskRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
@@ -273,10 +262,6 @@ class Ship implements ShipInterface
      */
     private $influenceArea;
 
-    private $epsUsage;
-
-    private $effectiveEpsProduction;
-
     public function __construct()
     {
         $this->dockedShips = new ArrayCollection();
@@ -397,46 +382,15 @@ class Ship implements ShipInterface
         return $this->alvl;
     }
 
-    public function setAlertStateGreen(): ShipInterface
+    public function setAlertState(int $alvl): ShipInterface
     {
-        $dummyMsg = null;
-        return $this->setAlertState(ShipAlertStateEnum::ALERT_GREEN, $dummyMsg);
+        $this->alvl = $alvl;
+        return $this;
     }
 
-    public function setAlertState(int $alertState, &$msg): ShipInterface
+    public function setAlertStateGreen(): ShipInterface
     {
-        //check if enough energy
-        if (
-            $alertState == ShipAlertStateEnum::ALERT_YELLOW
-            && $this->alvl == ShipAlertStateEnum::ALERT_GREEN
-        ) {
-            if ($this->getEps() < 1) {
-                throw new InsufficientEnergyException(1);
-            }
-            $this->eps -= 1;
-        }
-        if (
-            $alertState == ShipAlertStateEnum::ALERT_RED
-            && $this->alvl !== ShipAlertStateEnum::ALERT_RED
-        ) {
-            if ($this->getEps() < 2) {
-                throw new InsufficientEnergyException(2);
-            }
-            $this->eps -= 2;
-        }
-
-        // cancel repair if not on alert green
-        if ($alertState !== ShipAlertStateEnum::ALERT_GREEN) {
-            if ($this->cancelRepair()) {
-                $msg = _('Die Reparatur wurde abgebrochen');
-            }
-        }
-
-        // now change
-        $this->alvl = $alertState;
-        $this->reloadEpsUsage();
-
-        return $this;
+        return $this->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
     }
 
     public function isSystemHealthy(int $systemId): bool
@@ -978,24 +932,6 @@ class Ship implements ShipInterface
         return $result;
     }
 
-    public function leaveFleet(): void
-    {
-        $fleet = $this->getFleet();
-
-        if ($fleet !== null) {
-            $fleet->getShips()->removeElement($this);
-
-            $this->setFleet(null);
-            $this->setIsFleetLeader(false);
-            $this->setFleetId(null);
-
-            // @todo refactor
-            global $container;
-
-            $container->get(ShipRepositoryInterface::class)->save($this);
-        }
-    }
-
     public function getFleet(): ?FleetInterface
     {
         return $this->fleet;
@@ -1103,26 +1039,6 @@ class Ship implements ShipInterface
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP);
     }
 
-    public function getEffectiveEpsProduction(): int
-    {
-        if ($this->effectiveEpsProduction === null) {
-            $prod = $this->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
-            if ($prod <= 0) {
-                return $prod;
-            }
-            if ($this->getEps() + $prod > $this->getMaxEps()) {
-                return $this->getMaxEps() - $this->getEps();
-            }
-            $this->effectiveEpsProduction = $prod;
-        }
-        return $this->effectiveEpsProduction;
-    }
-
-    public function getWarpcoreUsage(): int
-    {
-        return $this->getEffectiveEpsProduction() + $this->getEpsUsage();
-    }
-
     public function isEBattUseable(): bool
     {
         return $this->getEBattWaitingTime() < time();
@@ -1141,18 +1057,6 @@ class Ship implements ShipInterface
     public function isTractored(): bool
     {
         return $this->getTractoringShip() !== null;
-    }
-
-    public function deactivateTractorBeam(): void
-    {
-        if (!$this->isTractoring()) {
-            return;
-        }
-
-        global $container;
-        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
-
-        $shipSystemManager->deactivate($this, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
     }
 
     public function isOverSystem(): ?StarSystemInterface
@@ -1315,36 +1219,6 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getEpsUsage(): int
-    {
-        if ($this->epsUsage === null) {
-            $this->reloadEpsUsage();
-        }
-        return $this->epsUsage;
-    }
-
-    private function reloadEpsUsage(): void
-    {
-        $result = 0;
-
-        //@todo refactor
-        global $container;
-        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
-
-        foreach ($this->getActiveSystems() as $shipSystem) {
-            $result += $shipSystemManager->getEnergyConsumption($shipSystem->getSystemType());
-        }
-
-        if ($this->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
-            $result += ShipAlertStateEnum::ALERT_YELLOW_EPS_USAGE;
-        }
-        if ($this->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-            $result += ShipAlertStateEnum::ALERT_RED_EPS_USAGE;
-        }
-
-        $this->epsUsage = $result;
-    }
-
     public function lowerEpsUsage($value): void
     {
         $this->epsUsage -= $value;
@@ -1367,42 +1241,6 @@ class Ship implements ShipInterface
         return $this->getSystems()->get($system);
     }
 
-    /**
-     * @return ShipSystemInterface[]
-     * sort = true: lowest prio first
-     */
-    public function getActiveSystems(bool $sort = false): array
-    {
-        //@todo refactor
-        global $container;
-        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
-
-        $activeSystems = [];
-        $prioArray = [];
-        foreach ($this->getSystems() as $system) {
-            if ($system->getMode() > 1) {
-                $activeSystems[] = $system;
-                if ($sort) {
-                    $prioArray[$system->getSystemType()] = $shipSystemManager->lookupSystem($system->getSystemType())->getPriority();
-                }
-            }
-        }
-
-        if ($sort) {
-            usort(
-                $activeSystems,
-                function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
-                    if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
-                        return 0;
-                    }
-                    return ($prioArray[$a->getSystemType()] < $prioArray[$b->getSystemType()]) ? -1 : 1;
-                }
-            );
-        }
-
-        return $activeSystems;
-    }
-
     public function getHealthySystems(): array
     {
         $healthySystems = [];
@@ -1412,39 +1250,6 @@ class Ship implements ShipInterface
             }
         }
         return $healthySystems;
-    }
-
-    //highest damage first, then prio
-    public function getDamagedSystems(): array
-    {
-        //@todo refactor
-        global $container;
-        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
-
-        $damagedSystems = [];
-        $prioArray = [];
-        foreach ($this->getSystems() as $system) {
-            if ($system->getStatus() < 100) {
-                $damagedSystems[] = $system;
-                $prioArray[$system->getSystemType()] = $shipSystemManager->lookupSystem($system->getSystemType())->getPriority();
-            }
-        }
-
-        // sort by damage and priority
-        usort(
-            $damagedSystems,
-            function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
-                if ($a->getStatus() == $b->getStatus()) {
-                    if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
-                        return 0;
-                    }
-                    return ($prioArray[$a->getSystemType()] > $prioArray[$b->getSystemType()]) ? -1 : 1;
-                }
-                return ($a->getStatus() < $b->getStatus()) ? -1 : 1;
-            }
-        );
-
-        return $damagedSystems;
     }
 
     public function displayNbsActions(): bool
@@ -1558,41 +1363,6 @@ class Ship implements ShipInterface
             || $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
     }
 
-    public function isOwnedByCurrentUser(): bool
-    {
-        global $container;
-        if ($container->get(GameControllerInterface::class)->getUser() !== $this->getUser()) {
-            return false;
-        }
-        return true;
-    }
-
-    public function canLandOnCurrentColony(): bool
-    {
-        if (!$this->getRump()->getCommodityId()) {
-            return false;
-        }
-        if ($this->isShuttle()) {
-            return false;
-        }
-
-        $currentColony = $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getColony() : null;
-
-        if ($currentColony === null) {
-            return false;
-        }
-        if ($currentColony->getUser() !== $this->getUser()) {
-            return false;
-        }
-
-        // @todo refactor
-        global $container;
-
-        return $container->get(ColonyLibFactoryInterface::class)
-            ->createColonySurface($currentColony)
-            ->hasAirfield();
-    }
-
     public function canBeAttacked(bool $checkWarpState = true): bool
     {
         return !$this->getRump()->isTrumfield() && (!$checkWarpState || !$this->getWarpState());
@@ -1608,144 +1378,10 @@ class Ship implements ShipInterface
         return $this->getRump()->isEscapePods() && $this->getCrewCount() > 0;
     }
 
-    public function canBeRepaired(): bool
-    {
-        if ($this->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN) {
-            return false;
-        }
-
-        if ($this->getShieldState()) {
-            return false;
-        }
-
-        if ($this->getCloakState()) {
-            return false;
-        }
-
-        if (!empty($this->getDamagedSystems())) {
-            return true;
-        }
-
-        return $this->getHuell() < $this->getMaxHuell();
-    }
-
-    public function getRepairDuration(): int
-    {
-        $ticks = (int) ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
-        $ticks = max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
-
-        return $ticks;
-    }
-
-    public function getRepairCosts(): array
-    {
-        $neededSpareParts = 0;
-        $neededSystemComponents = 0;
-
-        $hull = $this->getHuell();
-        $maxHull = $this->getMaxHuell();
-
-        if ($hull < $maxHull) {
-            $ticks = (int) ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
-            $neededSpareParts += ((int)($this->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
-        }
-
-        $damagedSystems = $this->getDamagedSystems();
-        foreach ($damagedSystems as $system) {
-            $systemLvl = $this->determinSystemLevel($system);
-            $healingPercentage = (100 - $system->getStatus()) / 100;
-
-            $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
-            $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
-        }
-
-        return [
-            new ShipRepairCost($neededSpareParts, CommodityTypeEnum::COMMODITY_SPARE_PART, CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SPARE_PART)),
-            new ShipRepairCost($neededSystemComponents, CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT, CommodityTypeEnum::getDescription(CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT))
-        ];
-    }
-
-    private function determinSystemLevel(ShipSystemInterface $system): int
-    {
-        $module = $system->getModule();
-
-        if ($module !== null) {
-            return $module->getLevel();
-        } else {
-            return $system->getShip()->getRump()->getModuleLevel();
-        }
-    }
-
-    public function cancelRepair(): bool
-    {
-        if ($this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            $this->setStateNoneAndSave();
-
-            global $container;
-            // @todo inject
-            $container->get(ColonyShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
-            $container->get(StationShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
-
-            return true;
-        } else if ($this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
-            $this->setStateNoneAndSave();
-
-            // @todo inject
-            global $container;
-            $container->get(RepairTaskRepositoryInterface::class)->truncateByShipId($this->getId());
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private function setStateNoneAndSave(): void
-    {
-        $this->setState(ShipStateEnum::SHIP_STATE_NONE);
-        global $container;
-        $container->get(ShipRepositoryInterface::class)->save($this);
-    }
-
     public function getRepairRate(): int
     {
         // @todo
         return 100;
-    }
-
-    //TODO intercept script attacks, e.g. beam from cloaked or warped ship
-    public function canInteractWith($target, bool $colony = false, bool $doCloakCheck = false): bool
-    {
-        if ($target->getUser()->isVacationRequestOldEnough()) {
-            global $container;
-            $game = $container->get(GameControllerInterface::class);
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
-
-            return false;
-        }
-
-        if ($this->getCloakState()) {
-            return false;
-        }
-
-        $positionChecker = new PositionChecker();
-        if ($colony === true) {
-            if (!$positionChecker->checkColonyPosition($target, $this) || $target->getId() == $this->getId()) {
-                return false;
-            }
-            return true;
-        } else {
-            if (!$positionChecker->checkPosition($this, $target)) {
-                return false;
-            }
-        }
-        if ($target->getShieldState() && $target->getUserId() != $this->getUser()->getId()) {
-            return false;
-        }
-        if ($doCloakCheck && $target->getCloakState()) {
-            return false;
-        }
-        return true;
     }
 
     public function getRump(): ShipRumpInterface

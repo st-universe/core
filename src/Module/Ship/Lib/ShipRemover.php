@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -53,6 +54,10 @@ final class ShipRemover implements ShipRemoverInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
+    private CancelRepairInterface $cancelRepair;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -70,6 +75,8 @@ final class ShipRemover implements ShipRemoverInterface
         AstroEntryLibInterface $astroEntryLib,
         ShipTorpedoManagerInterface $shipTorpedoManager,
         TradePostRepositoryInterface $tradePostRepository,
+        CancelRepairInterface $cancelRepair,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
@@ -86,6 +93,8 @@ final class ShipRemover implements ShipRemoverInterface
         $this->astroEntryLib = $astroEntryLib;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->tradePostRepository = $tradePostRepository;
+        $this->cancelRepair = $cancelRepair;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -143,7 +152,7 @@ final class ShipRemover implements ShipRemoverInterface
         $oldName = $ship->getName();
         $ship->setName(_('Trümmer'));
         $ship->setIsDestroyed(true);
-        $ship->cancelRepair();
+        $this->cancelRepair->cancelRepair($ship);
 
         // delete ship systems
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
@@ -172,7 +181,7 @@ final class ShipRemover implements ShipRemoverInterface
         // clear tractor status
         if ($ship->isTractored()) {
             $tractoringShip = $ship->getTractoringShip();
-            $tractoringShip->deactivateTractorBeam();
+            $this->shipWrapperFactory->wrapShip($tractoringShip)->deactivateTractorBeam();
 
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
 
@@ -277,9 +286,9 @@ final class ShipRemover implements ShipRemoverInterface
 
         //both sides have to be cleared, foreign key violation
         if ($ship->isTractoring()) {
-            $ship->deactivateTractorBeam();
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam();
         } else if ($ship->isTractored()) {
-            $ship->getTractoringShip()->deactivateTractorBeam();
+            $this->shipWrapperFactory->wrapShip($ship->getTractoringShip())->deactivateTractorBeam();
         }
 
         foreach ($ship->getStorage() as $item) {

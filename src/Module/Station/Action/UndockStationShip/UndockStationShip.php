@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\UndockStationShip;
 
 use request;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -21,15 +22,19 @@ final class UndockStationShip implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private CancelRepairInterface $cancelRepair;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
+        CancelRepairInterface $cancelRepair,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
+        $this->cancelRepair = $cancelRepair;
         $this->entityManager = $entityManager;
     }
 
@@ -74,7 +79,7 @@ final class UndockStationShip implements ActionControllerInterface
             );
         }
 
-        $target->cancelRepair();
+        $this->cancelRepair->cancelRepair($target);
         $target->setDockedTo(null);
         $target->setDockedToId(null);
         $station->getDockedShips()->remove($target->getId());

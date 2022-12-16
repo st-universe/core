@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\Shutdown;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -23,14 +24,18 @@ final class Shutdown implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private ShipSystemManagerInterface $shipSystemManager;
+
     public function __construct(
         ActivatorDeactivatorHelperInterface $helper,
         ShipLoaderInterface $shipLoader,
-        AlertRedHelperInterface $alertRedHelper
+        AlertRedHelperInterface $alertRedHelper,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->helper = $helper;
         $this->shipLoader = $shipLoader;
         $this->alertRedHelper = $alertRedHelper;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,7 +47,7 @@ final class Shutdown implements ActionControllerInterface
         $triggerAlertRed = $ship->getWarpState() || $ship->getCloakState();
 
         //deactivate all systems except life support and troop quarters
-        foreach ($ship->getActiveSystems() as $system) {
+        foreach ($this->shipSystemManager->getActiveSystems($ship) as $system) {
             if (
                 $system->getSystemType() !== ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT &&
                 $system->getSystemType() !== ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS

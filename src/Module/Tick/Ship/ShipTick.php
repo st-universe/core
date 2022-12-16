@@ -16,6 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -43,6 +44,8 @@ final class ShipTick implements ShipTickInterface
 
     private RepairUtilInterface $repairUtil;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private array $msg = [];
 
     public function __construct(
@@ -55,7 +58,8 @@ final class ShipTick implements ShipTickInterface
         DatabaseUserRepositoryInterface $databaseUserRepository,
         CreateDatabaseEntryInterface $createDatabaseEntry,
         StationUtilityInterface $stationUtility,
-        RepairUtilInterface $repairUtil
+        RepairUtilInterface $repairUtil,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
@@ -67,10 +71,13 @@ final class ShipTick implements ShipTickInterface
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->stationUtility = $stationUtility;
         $this->repairUtil = $repairUtil;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function work(ShipInterface $ship): void
     {
+        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
         // do construction stuff
         if ($this->doConstructionStuff($ship)) {
             $this->shipRepository->save($ship);
@@ -96,7 +103,7 @@ final class ShipTick implements ShipTickInterface
             $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig! Systeme werden deaktiviert!');
 
             //deactivate all systems except life support
-            foreach ($ship->getActiveSystems() as $system) {
+            foreach ($this->shipSystemManager->getActiveSystems($ship) as $system) {
                 if ($system->getSystemType() != ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
                     $this->shipSystemManager->deactivate($ship, $system->getSystemType(), true);
                 }
@@ -108,16 +115,15 @@ final class ShipTick implements ShipTickInterface
         }
 
         //try to save energy by reducing alert state
-        if ($ship->getEpsUsage() > $availableEps) {
-            $malus = $ship->getEpsUsage() - $availableEps;
+        if ($wrapper->getEpsUsage() > $availableEps) {
+            $malus = $wrapper->getEpsUsage() - $availableEps;
             $alertUsage = $ship->getAlertState() - 1;
 
             if ($alertUsage > 0) {
                 $preState = $ship->getAlertState();
                 $reduce = min($malus, $alertUsage);
 
-                $dummyMsg = null;
-                $ship->setAlertState($preState - $reduce, $dummyMsg);
+                $ship->setAlertState($preState - $reduce);
                 $this->msg[] = sprintf(
                     _('Wechsel von %s auf %s wegen Energiemangel'),
                     ShipAlertStateEnum::getDescription($preState),
@@ -127,8 +133,8 @@ final class ShipTick implements ShipTickInterface
         }
 
         //try to save energy by deactivating systems from low to high priority
-        if ($ship->getEpsUsage() > $availableEps) {
-            $activeSystems = $ship->getActiveSystems(true);
+        if ($wrapper->getEpsUsage() > $availableEps) {
+            $activeSystems = $this->shipSystemManager->getActiveSystems($ship, true);
 
             foreach ($activeSystems as $system) {
 
@@ -137,8 +143,8 @@ final class ShipTick implements ShipTickInterface
                     continue;
                 }
 
-                //echo "- eps: ".$eps." - usage: ".$ship->getEpsUsage()."\n";
-                if ($availableEps - $ship->getEpsUsage() - $energyConsumption < 0) {
+                //echo "- eps: ".$eps." - usage: ".$wrapper->getEpsUsage()."\n";
+                if ($availableEps - $wrapper->getEpsUsage() - $energyConsumption < 0) {
                     //echo "-- hit system: ".$system->getDescription()."\n";
 
                     $this->shipSystemManager->deactivate($ship, $system->getSystemType(), true);
@@ -153,17 +159,17 @@ final class ShipTick implements ShipTickInterface
                         return;
                     }
                 }
-                if ($ship->getEpsUsage() <= $availableEps) {
+                if ($wrapper->getEpsUsage() <= $availableEps) {
                     break;
                 }
             }
         }
-        $newEps = $availableEps - $ship->getEpsUsage();
+        $newEps = $availableEps - $wrapper->getEpsUsage();
         if ($newEps > $ship->getMaxEps()) {
             $newEps = $ship->getMaxEps();
         }
-        $usedEnergy = $ship->getEpsUsage() + ($newEps - $ship->getEps());
-        //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$ship->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
+        $usedEnergy = $wrapper->getEpsUsage() + ($newEps - $ship->getEps());
+        //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$wrapper->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
         $ship->setEps($newEps);
 
         //core OR fusion
@@ -231,6 +237,7 @@ final class ShipTick implements ShipTickInterface
 
     private function doRepairStation(ShipInterface $station): void
     {
+
         if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $station->getRump())) {
             $neededWorkbees = (int)ceil($station->getRump()->getNeededWorkbees() / 5);
 
@@ -255,8 +262,10 @@ final class ShipTick implements ShipTickInterface
             $station->setHuell($station->getMaxHuell());
         }
 
+        $wrapper = $this->shipWrapperFactory->wrapShip($station);
+
         //repair station systems
-        $damagedSystems = $station->getDamagedSystems();
+        $damagedSystems = $wrapper->getDamagedSystems();
         if (!empty($damagedSystems)) {
             $firstSystem = $damagedSystems[0];
             $firstSystem->setStatus(100);
@@ -279,7 +288,7 @@ final class ShipTick implements ShipTickInterface
         // consume spare parts
         $this->repairUtil->consumeSpareParts($neededParts, $station, false);
 
-        if (!$station->canBeRepaired()) {
+        if (!$wrapper->canBeRepaired()) {
             $station->setHuell($station->getMaxHuell());
             $station->setState(ShipStateEnum::SHIP_STATE_NONE);
 

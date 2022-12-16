@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -11,6 +12,14 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ShieldShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    private CancelRepairInterface $cancelRepair;
+
+    public function __construct(
+        CancelRepairInterface $cancelRepair
+    ) {
+        $this->cancelRepair = $cancelRepair;
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         if ($ship->getCloakState()) {
@@ -38,7 +47,7 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->cancelRepair();
+        $this->cancelRepair->cancelRepair($ship);
         $ship->setDockedTo(null);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_ON);
     }

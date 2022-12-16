@@ -14,6 +14,7 @@ use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -34,18 +35,22 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
-        TractorMassPayloadUtilInterface $tractorMassPayloadUtil
+        TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -127,12 +132,12 @@ final class EnterStarSystem implements ActionControllerInterface
                         _("Die %s hat die Flotte verlassen. Grund: Zu wenig Crew"),
                         $fleetShip->getName()
                     );
-                    $fleetShip->leaveFleet();
+                    $this->shipWrapperFactory->wrapShip($fleetShip)->leaveFleet();
                     continue;
                 }
                 if ($fleetShip->getEps() === 0) {
                     $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: Energiemangel";
-                    $fleetShip->leaveFleet();
+                    $this->shipWrapperFactory->wrapShip($fleetShip)->leaveFleet();
                     continue;
                 }
 
@@ -154,7 +159,7 @@ final class EnterStarSystem implements ActionControllerInterface
             $game->addInformationMerge($msg);
         } else {
             if ($ship->getFleetId()) {
-                $ship->leaveFleet();
+                $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
             $game->addInformation("Das Schiff fliegt in das " . $system->getName() . "-System ein");
@@ -174,7 +179,7 @@ final class EnterStarSystem implements ActionControllerInterface
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Systemeinflug deaktiviert'),
@@ -191,7 +196,7 @@ final class EnterStarSystem implements ActionControllerInterface
 
         if ($ship->getEps() < 1) {
             $name = $tractoredShip->getName();
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
             return;
         }

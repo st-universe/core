@@ -10,6 +10,7 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class ShowShipRepair implements ViewControllerInterface
@@ -20,12 +21,16 @@ final class ShowShipRepair implements ViewControllerInterface
 
     private StationUtilityInterface $stationUtility;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        StationUtilityInterface $stationUtility
+        StationUtilityInterface $stationUtility,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->stationUtility = $stationUtility;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,13 +48,14 @@ final class ShowShipRepair implements ViewControllerInterface
 
         $repairableShips = [];
         foreach ($station->getDockedShips() as $ship) {
+            $wrapper = $this->shipWrapperFactory->wrapShip($ship);
             if (
-                !$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                !$wrapper->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
                 || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
             ) {
                 continue;
             }
-            $repairableShips[$ship->getId()] = $ship;
+            $repairableShips[$ship->getId()] = $wrapper;
         }
 
         $game->appendNavigationPart(

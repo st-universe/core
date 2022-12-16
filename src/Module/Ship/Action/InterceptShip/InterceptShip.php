@@ -8,7 +8,7 @@ use request;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -28,7 +28,7 @@ final class InterceptShip implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private AlertRedHelperInterface $alertRedHelper;
 
@@ -38,14 +38,14 @@ final class InterceptShip implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipSystemManagerInterface $shipSystemManager,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipSystemManager = $shipSystemManager;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
         $this->entityManager = $entityManager;
     }
@@ -71,7 +71,7 @@ final class InterceptShip implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!$this->positionChecker->checkPosition($target, $ship)) {
+        if (!$this->interactionChecker->checkPosition($target, $ship)) {
             return;
         }
 

@@ -8,6 +8,8 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -29,13 +31,16 @@ final class ShowField implements ViewControllerInterface
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ShowFieldRequestInterface $showFieldRequest,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
@@ -43,6 +48,7 @@ final class ShowField implements ViewControllerInterface
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -63,9 +69,14 @@ final class ShowField implements ViewControllerInterface
             return;
         }
 
-        $shipRepairProgress = $this->colonyShipRepairRepository->getByColonyField(
-            $colony->getId(),
-            $field->getFieldId()
+        $shipRepairProgress = array_map(
+            function (ColonyShipRepairInterface $repair): ShipWrapperInterface {
+                return $this->shipWrapperFactory->wrapShip($repair->getShip());
+            },
+            $this->colonyShipRepairRepository->getByColonyField(
+                $colony->getId(),
+                $field->getFieldId()
+            )
         );
 
         $game->setPageTitle(sprintf('Feld %d - Informationen', $field->getFieldId()));

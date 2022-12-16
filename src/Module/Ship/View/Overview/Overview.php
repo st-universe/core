@@ -11,6 +11,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -22,6 +23,8 @@ final class Overview implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private SessionInterface $session;
 
     private LoggerUtilInterface $loggerUtil;
@@ -29,11 +32,13 @@ final class Overview implements ViewControllerInterface
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         SessionInterface $session,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->session = $session;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -63,8 +68,8 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
         $game->setTemplateVar('SHIPS_AVAILABLE', $fleets !== [] || $ships !== []);
-        $game->setTemplateVar('FLEETS', $fleets);
-        $game->setTemplateVar('SHIPS', $ships);
+        $game->setTemplateVar('FLEETS', $this->shipWrapperFactory->wrapFleets($fleets));
+        $game->setTemplateVar('SHIPS', $this->shipWrapperFactory->wrapShips($ships));
 
         $this->loggerUtil->log(sprintf('Shiplist-end, timestamp: %F', microtime(true)));
     }

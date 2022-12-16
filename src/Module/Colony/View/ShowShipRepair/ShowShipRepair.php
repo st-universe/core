@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
@@ -28,18 +29,22 @@ final class ShowShipRepair implements ViewControllerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowShipRepairRequestInterface $showShipRepairRequest,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showShipRepairRequest = $showShipRepairRequest;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -70,15 +75,17 @@ final class ShowShipRepair implements ViewControllerInterface
             foreach ($colony->getOrbitShipList($userId) as $fleet) {
                 /** @var ShipInterface $ship */
                 foreach ($fleet['ships'] as $ship) {
+                    $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
                     if (
-                        !$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                        !$wrapper->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
                         || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
                     ) {
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
                         if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
-                            $repairableShips[$ship->getId()] = $ship;
+                            $repairableShips[$ship->getId()] = $wrapper;
                             break;
                         }
                     }

@@ -5,6 +5,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Exception\InvalidParamException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
@@ -50,6 +51,10 @@ final class ShipMover implements ShipMoverInterface
 
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
+    private CancelRepairInterface $cancelRepair;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -75,7 +80,9 @@ final class ShipMover implements ShipMoverInterface
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         AstroEntryRepositoryInterface $astroEntryRepository,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
-        TractorMassPayloadUtilInterface  $tractorMassPayloadUtil
+        TractorMassPayloadUtilInterface  $tractorMassPayloadUtil,
+        CancelRepairInterface $cancelRepair,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -89,6 +96,8 @@ final class ShipMover implements ShipMoverInterface
         $this->astroEntryRepository = $astroEntryRepository;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
+        $this->cancelRepair = $cancelRepair;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     private function setDestination(
@@ -356,7 +365,7 @@ final class ShipMover implements ShipMoverInterface
         foreach ($ships as $ship) {
             $ship->setDockedTo(null);
 
-            if ($ship->cancelRepair()) {
+            if ($this->cancelRepair->cancelRepair($ship)) {
                 $this->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getId()));
             }
 
@@ -651,7 +660,7 @@ final class ShipMover implements ShipMoverInterface
     {
         $this->addInformation($msg);
         unset($this->tractoredShips[$ship->getId()]);
-        $ship->deactivateTractorBeam(); //active deactivation
+        $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
     }
 
     private function addLostShip(ShipInterface $ship, ShipInterface $leadShip, bool $isFixedFleetMode, ?string $msg)
@@ -671,7 +680,7 @@ final class ShipMover implements ShipMoverInterface
 
     private function leaveFleet(ShipInterface $ship, bool $addLeaveInfo = true)
     {
-        $ship->leaveFleet();
+        $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
 
         if ($addLeaveInfo) {
 

@@ -9,6 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -77,7 +78,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
             return;
         }
 
-        if (!$ship->canInteractWith($tradepost->getShip())) {
+        if (!InteractionChecker::canInteractWith($ship, $tradepost->getShip(), $game)) {
             return;
         }
         $licenseInfo = $this->TradeLicenseInfoRepository->getLatestLicenseInfo($tradepost->getId());

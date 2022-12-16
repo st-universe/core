@@ -9,7 +9,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -45,7 +45,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -57,7 +57,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         ShipRepositoryInterface $shipRepository,
         CommodityRepositoryInterface $commodityRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
@@ -68,7 +68,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $this->shipRepository = $shipRepository;
         $this->commodityRepository = $commodityRepository;
         $this->privateMessageSender = $privateMessageSender;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -88,7 +88,7 @@ final class BuyTradeLicense implements ActionControllerInterface
             return;
         }
 
-        if (!$this->positionChecker->checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
             return;
         }
         $targetId = (int) request::getIntFatal('target');
@@ -113,7 +113,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 if ($obj === null || $obj->getUser()->getId() !== $userId) {
                     return;
                 }
-                if (!$this->positionChecker->checkPosition($tradepost->getShip(), $obj)) {
+                if (!$this->interactionChecker->checkPosition($tradepost->getShip(), $obj)) {
                     return;
                 }
 

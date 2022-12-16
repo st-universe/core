@@ -14,6 +14,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -36,13 +37,16 @@ final class EnterWormhole implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
         WormholeEntryRepositoryInterface $wormholeEntryRepository,
-        AlertRedHelperInterface $alertRedHelper
+        AlertRedHelperInterface $alertRedHelper,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -50,6 +54,7 @@ final class EnterWormhole implements ActionControllerInterface
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->wormholeEntryRepository = $wormholeEntryRepository;
         $this->alertRedHelper = $alertRedHelper;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -116,12 +121,12 @@ final class EnterWormhole implements ActionControllerInterface
                         _("Die %s hat die Flotte verlassen. Grund: Zu wenig Crew"),
                         $fleetShip->getName()
                     );
-                    $fleetShip->leaveFleet();
+                    $this->shipWrapperFactory->wrapShip($fleetShip)->leaveFleet();
                     continue;
                 }
                 if ($fleetShip->getEps() === 0) {
                     $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: Energiemangel";
-                    $fleetShip->leaveFleet();
+                    $this->shipWrapperFactory->wrapShip($fleetShip)->leaveFleet();
                     continue;
                 }
 
@@ -143,7 +148,7 @@ final class EnterWormhole implements ActionControllerInterface
             $game->addInformationMerge($msg);
         } else {
             if ($ship->getFleetId()) {
-                $ship->leaveFleet();
+                $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
             $game->addInformation("Das Schiff fliegt in das " . $wormhole->getName() . " ein");
@@ -173,7 +178,7 @@ final class EnterWormhole implements ActionControllerInterface
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Wurmlocheinflug deaktiviert'),
@@ -190,7 +195,7 @@ final class EnterWormhole implements ActionControllerInterface
 
         if ($ship->getEps() < 1) {
             $name = $tractoredShip->getName();
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Wurmlocheinflug aufgrund Energiemangels deaktiviert");
             return;
         }

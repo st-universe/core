@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\View\ShowEpsTransfer;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowEpsTransfer implements ViewControllerInterface
@@ -43,7 +44,7 @@ final class ShowEpsTransfer implements ViewControllerInterface
         if ($target === null) {
             return;
         }
-        if ($ship->canInteractWith($target, false, true) === false) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
             return;
         }
 

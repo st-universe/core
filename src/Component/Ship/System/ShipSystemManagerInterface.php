@@ -39,4 +39,6 @@ interface ShipSystemManagerInterface
     public function handleDestroyedSystem(ShipInterface $ship, int $shipSystemId): void;
 
     public function handleDamagedSystem(ShipInterface $ship, int $shipSystemId): void;
+
+    public function getActiveSystems(ShipInterface $ship, bool $sort = false): array;
 }

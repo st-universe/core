@@ -17,6 +17,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -41,6 +42,8 @@ final class LeaveWormhole implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -51,6 +54,7 @@ final class LeaveWormhole implements ActionControllerInterface
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
         WormholeEntryRepositoryInterface $wormholeEntryRepository,
         AlertRedHelperInterface $alertRedHelper,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -60,6 +64,7 @@ final class LeaveWormhole implements ActionControllerInterface
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->wormholeEntryRepository = $wormholeEntryRepository;
         $this->alertRedHelper = $alertRedHelper;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -128,7 +133,7 @@ final class LeaveWormhole implements ActionControllerInterface
             $game->addInformationMerge($msg);
         } else {
             if ($ship->getFleetId()) {
-                $ship->leaveFleet();
+                $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
             $game->addInformation("Das Wurmloch wurde verlassen");
@@ -158,7 +163,7 @@ final class LeaveWormhole implements ActionControllerInterface
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Verlassen des Wurmlochs deaktiviert'),
@@ -175,7 +180,7 @@ final class LeaveWormhole implements ActionControllerInterface
 
         if ($ship->getEps() < 1) {
             $name = $tractoredShip->getName();
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Wurmlochs aufgrund Energiemangels deaktiviert");
             return;
         }

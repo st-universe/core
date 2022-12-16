@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\TransferToAccount;
 
 use request;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -30,7 +30,7 @@ final class TransferToAccount implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -38,14 +38,14 @@ final class TransferToAccount implements ActionControllerInterface
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->shipStorageManager = $shipStorageManager;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -67,7 +67,7 @@ final class TransferToAccount implements ActionControllerInterface
             return;
         }
 
-        if (!$this->positionChecker->checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
             return;
         }
 

@@ -42,6 +42,8 @@ final class ShipMover2 implements ShipMover2Interface
 
     private UpdateLocationConsequencesInterface $updateLocationConsequences;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -65,7 +67,8 @@ final class ShipMover2 implements ShipMover2Interface
         ApplyDamageInterface $applyDamage,
         AlertRedHelperInterface $alertRedHelper,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
-        UpdateLocationConsequencesInterface $updateLocationConsequences
+        UpdateLocationConsequencesInterface $updateLocationConsequences,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -77,6 +80,7 @@ final class ShipMover2 implements ShipMover2Interface
         $this->alertRedHelper = $alertRedHelper;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->updateLocationConsequences = $updateLocationConsequences;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     private function setDestination(
@@ -574,7 +578,7 @@ final class ShipMover2 implements ShipMover2Interface
     {
         $this->addInformation($msg);
         unset($this->tractoredShips[$ship->getId()]);
-        $ship->deactivateTractorBeam(); //active deactivation
+        $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
     }
 
     private function addLostShip(ShipInterface $ship, ShipInterface $leadShip, bool $isFixedFleetMode, ?string $msg)
@@ -594,7 +598,7 @@ final class ShipMover2 implements ShipMover2Interface
 
     private function leaveFleet(ShipInterface $ship, bool $addLeaveInfo = true)
     {
-        $ship->leaveFleet();
+        $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
 
         if ($addLeaveInfo) {
 

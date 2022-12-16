@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\UndockShip;
 
 use request;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,12 +21,16 @@ final class UndockShip implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private CancelRepairInterface $cancelRepair;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        CancelRepairInterface $cancelRepair
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->cancelRepair = $cancelRepair;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +44,7 @@ final class UndockShip implements ActionControllerInterface
             $userId
         );
         if ($ship->isFleetLeader()) {
-            $msg = array();
+            $msg = [];
             $msg[] = _("Flottenbefehl ausgeführt: Abdocken von ") . $ship->getDockedTo()->getName();;
             foreach ($ship->getFleet()->getShips() as $ship) {
                 if (!$ship->getDockedTo()) {
@@ -56,7 +61,7 @@ final class UndockShip implements ActionControllerInterface
                     $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                     continue;
                 }
-                if ($ship->cancelRepair()) {
+                if ($this->cancelRepair->cancelRepair($ship)) {
                     $msg[] = $ship->getName() . _(": Die Reparatur wurde abgebrochen");
                     continue;
                 }
@@ -79,7 +84,7 @@ final class UndockShip implements ActionControllerInterface
             $game->addInformation('Zum Abdocken wird 1 Energie benötigt');
             return;
         }
-        if ($ship->cancelRepair()) {
+        if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
         $ship->setEps($ship->getEps() - 1);

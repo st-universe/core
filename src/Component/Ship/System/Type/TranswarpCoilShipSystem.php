@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -14,10 +15,14 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
 {
     private ShipRepositoryInterface $shipRepository;
 
+    private CancelRepairInterface $cancelRepair;
+
     public function __construct(
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        CancelRepairInterface $cancelRepair
     ) {
         $this->shipRepository = $shipRepository;
+        $this->cancelRepair = $cancelRepair;
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
@@ -42,7 +47,7 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->cancelRepair();
+        $this->cancelRepair->cancelRepair($ship);
         $this->undock($ship);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->setMode(ShipSystemModeEnum::MODE_ON);
     }

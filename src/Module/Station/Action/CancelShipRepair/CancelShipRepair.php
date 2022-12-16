@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\CancelShipRepair;
 
 use request;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -19,13 +20,17 @@ final class CancelShipRepair implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private CancelRepairInterface $cancelRepair;
+
     private StationShipRepairRepositoryInterface $stationShipRepairRepository;
 
     public function __construct(
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        CancelRepairInterface $cancelRepair,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->stationShipRepairRepository = $stationShipRepairRepository;
+        $this->cancelRepair = $cancelRepair;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -58,7 +63,7 @@ final class CancelShipRepair implements ActionControllerInterface
             return;
         }
 
-        $target->cancelRepair();
+        $this->cancelRepair->cancelRepair($target);
         $game->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $target->getName()));
 
         $this->privateMessageSender->send(

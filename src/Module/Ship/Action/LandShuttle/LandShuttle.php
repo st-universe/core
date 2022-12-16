@@ -10,7 +10,7 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -36,7 +36,7 @@ final class LandShuttle implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -47,7 +47,7 @@ final class LandShuttle implements ActionControllerInterface
         EntityManagerInterface $entityManager,
         TroopTransferUtilityInterface $troopTransferUtility,
         ShipRemoverInterface $shipRemover,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
@@ -57,7 +57,7 @@ final class LandShuttle implements ActionControllerInterface
         $this->entityManager = $entityManager;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->shipRemover = $shipRemover;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -80,7 +80,7 @@ final class LandShuttle implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!$this->positionChecker->checkPosition($ship, $target)) {
+        if (!$this->interactionChecker->checkPosition($ship, $target)) {
             return;
         }
         if ($target->getUser() !== $ship->getUser()) {

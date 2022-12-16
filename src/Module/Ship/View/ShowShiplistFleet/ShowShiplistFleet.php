@@ -10,6 +10,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class ShowShiplistFleet implements ViewControllerInterface
@@ -18,13 +19,17 @@ final class ShowShiplistFleet implements ViewControllerInterface
 
     private FleetRepositoryInterface $fleetRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private SessionInterface $session;
 
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         SessionInterface $session
     ) {
         $this->fleetRepository = $fleetRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->session = $session;
     }
 
@@ -46,7 +51,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
 
         $game->showMacro('html/shipmacros.xhtml/shiplist_fleetform');
 
-        $game->setTemplateVar('fleet', $fleet);
+        $game->setTemplateVar('wrapper', $this->shipWrapperFactory->wrapFleet($fleet));
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
     }
 }

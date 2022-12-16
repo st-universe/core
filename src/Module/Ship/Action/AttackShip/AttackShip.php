@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Action\AttackShip;
 use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -28,7 +28,7 @@ final class AttackShip implements ActionControllerInterface
 
     private ShipAttackCycleInterface $shipAttackCycle;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private AlertRedHelperInterface $alertRedHelper;
 
@@ -38,14 +38,14 @@ final class AttackShip implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipAttackCycleInterface $shipAttackCycle,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
         NbsUtilityInterface $nbsUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipAttackCycle = $shipAttackCycle;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
         $this->nbsUtility = $nbsUtility;
     }
@@ -78,8 +78,8 @@ final class AttackShip implements ActionControllerInterface
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
-        if (!$this->positionChecker->checkPosition($target, $ship)) {
-            throw new SanityCheckException('PositionChecker->checkPosition failed');
+        if (!$this->interactionChecker->checkPosition($target, $ship)) {
+            throw new SanityCheckException('InteractionChecker->checkPosition failed');
         }
 
         $isAttackingActiveTractorShip = false;

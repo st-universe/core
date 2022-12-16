@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Station\View\ShowShipRepair\ShowShipRepair;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
@@ -25,17 +26,21 @@ final class RepairShip implements ActionControllerInterface
 
     private StationShipRepairRepositoryInterface $stationShipRepairRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         StationUtilityInterface $stationUtility,
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->stationUtility = $stationUtility;
         $this->stationShipRepairRepository = $stationShipRepairRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -64,7 +69,7 @@ final class RepairShip implements ActionControllerInterface
         $repairableShiplist = [];
         foreach ($station->getDockedShips() as $dockedShip) {
             if (
-                !$dockedShip->canBeRepaired() || $dockedShip->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                !$this->shipWrapperFactory->wrapShip($dockedShip)->canBeRepaired() || $dockedShip->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
                 || $dockedShip->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
             ) {
                 continue;
@@ -75,7 +80,7 @@ final class RepairShip implements ActionControllerInterface
         if ($ship === null || !array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }
-        if (!$ship->canBeRepaired()) {
+        if (!$this->shipWrapperFactory->wrapShip($ship)->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
@@ -102,7 +107,7 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
-        $ticks = $ship->getRepairDuration();
+        $ticks = $this->shipWrapperFactory->wrapShip($ship)->getRepairDuration();
         $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
 
         $this->privateMessageSender->send(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tal;
 
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 
@@ -11,10 +12,14 @@ final class OrbitShipItem implements OrbitShipItemInterface
 {
     private ?ShipInterface $ship;
 
+    private GameControllerInterface $game;
+
     public function __construct(
-        ?ShipInterface $ship
+        ?ShipInterface $ship,
+        GameControllerInterface $game
     ) {
         $this->ship = $ship;
+        $this->game = $game;
     }
 
     public function getId(): int
@@ -84,7 +89,7 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function ownedByUser(): bool
     {
-        return $this->ship->isOwnedByCurrentUser();
+        return $this->game->getUser() === $this->ship->getUser();
     }
 
     public function getHullStatusBar(): string

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SalvageCrew;
 
 use request;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -14,6 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -31,6 +33,8 @@ final class SalvageCrew implements ActionControllerInterface
 
     private ActivatorDeactivatorHelperInterface $helper;
 
+    private CancelRepairInterface $cancelRepair;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -38,12 +42,14 @@ final class SalvageCrew implements ActionControllerInterface
         ShipCrewRepositoryInterface $shipCrewRepository,
         TroopTransferUtilityInterface  $troopTransferUtility,
         ActivatorDeactivatorHelperInterface $helper,
+        CancelRepairInterface $cancelRepair,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->helper = $helper;
+        $this->cancelRepair = $cancelRepair;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -70,7 +76,7 @@ final class SalvageCrew implements ActionControllerInterface
         if ($tradepost === null) {
             throw new SanityCheckException('target is not a tradepost');
         }
-        if (!$ship->canInteractWith($target)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game)) {
             throw new SanityCheckException('can not interact with target');
         }
 
@@ -85,7 +91,7 @@ final class SalvageCrew implements ActionControllerInterface
             $game->addInformation(sprintf(_('Zum Bergen der Crew wird %d Energie benötigt'), 1));
             return;
         }
-        if ($ship->cancelRepair()) {
+        if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
 

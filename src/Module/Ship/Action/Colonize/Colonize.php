@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\Colonize;
 
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -41,7 +41,7 @@ final class Colonize implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private ColonizationCheckerInterface $colonizationChecker;
 
@@ -55,7 +55,7 @@ final class Colonize implements ActionControllerInterface
         PlanetColonizationInterface $planetColonization,
         ColonyRepositoryInterface $colonyRepository,
         ShipRemoverInterface $shipRemover,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         ColonizationCheckerInterface $colonizationChecker,
         ShipCrewRepositoryInterface $shipCrewRepository
     ) {
@@ -66,7 +66,7 @@ final class Colonize implements ActionControllerInterface
         $this->planetColonization = $planetColonization;
         $this->colonyRepository = $colonyRepository;
         $this->shipRemover = $shipRemover;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->colonizationChecker = $colonizationChecker;
         $this->shipCrewRepository = $shipCrewRepository;
     }
@@ -100,7 +100,7 @@ final class Colonize implements ActionControllerInterface
         if ($colony->getId() != $field->getColonyId()) {
             return;
         }
-        if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
             return;
         }
         if ($this->colonizationChecker->canColonize($user, $colony) === false) {

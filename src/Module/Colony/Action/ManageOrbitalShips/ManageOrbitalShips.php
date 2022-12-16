@@ -8,7 +8,7 @@ use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -56,7 +56,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private ReactorUtilInterface $reactorUtil;
 
@@ -75,7 +75,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         ReactorUtilInterface $reactorUtil,
         ShipTorpedoManagerInterface $shipTorpedoManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -90,7 +90,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->reactorUtil = $reactorUtil;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -139,7 +139,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         if ($ship->getCloakState()) {
             return;
         }
-        if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
             return;
         }
         if ($ship->getIsDestroyed()) {

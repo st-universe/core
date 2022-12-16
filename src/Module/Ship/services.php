@@ -24,8 +24,8 @@ use Stu\Module\Ship\Lib\AstroEntryLib;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
-use Stu\Module\Ship\Lib\PositionChecker;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycle;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Control\GameController;
@@ -166,6 +166,8 @@ use Stu\Module\Ship\Lib\ShipMover2;
 use Stu\Module\Ship\Lib\ShipMover2Interface;
 use Stu\Module\Ship\Lib\ShipTorpedoManager;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Module\Ship\Lib\ShipWrapper;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -202,7 +204,7 @@ return [
     ShipMoverInterface::class => autowire(ShipMover::class),
     ShipMover2Interface::class => autowire(ShipMover2::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
-    PositionCheckerInterface::class => autowire(PositionChecker::class),
+    InteractionCheckerInterface::class => autowire(InteractionChecker::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ApplyDamageInterface::class => autowire(ApplyDamage::class),
@@ -227,6 +229,7 @@ return [
     PriorizeFleetRequestInterface::class => autowire(PriorizeFleetRequest::class),
     ReactorUtilInterface::class => autowire(ReactorUtil::class),
     ShipTorpedoManagerInterface::class => autowire(ShipTorpedoManager::class),
+    ShipWrapperFactoryInterface::class => autowire(ShipWrapper::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),

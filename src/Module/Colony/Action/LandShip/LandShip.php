@@ -13,6 +13,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -37,6 +38,8 @@ final class LandShip implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
@@ -44,7 +47,8 @@ final class LandShip implements ActionControllerInterface
         ShipRemoverInterface $shipRemover,
         ShipLoaderInterface $shipLoader,
         ShipTorpedoManagerInterface $shipTorpedoManager,
-        ShipCrewRepositoryInterface $shipCrewRepository
+        ShipCrewRepositoryInterface $shipCrewRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
@@ -53,6 +57,7 @@ final class LandShip implements ActionControllerInterface
         $this->shipLoader = $shipLoader;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -65,7 +70,10 @@ final class LandShip implements ActionControllerInterface
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
         $ship = $this->shipLoader->find(request::getIntFatal('shipid'));
-        if ($ship->getUser()->getId() !== $game->getUser()->getId() || !$ship->canLandOnCurrentColony()) {
+        if (
+            $ship->getUser()->getId() !== $game->getUser()->getId()
+            || !$this->shipWrapperFactory->wrapShip($ship)->canLandOnCurrentColony()
+        ) {
             return;
         }
         if (!$colony->storagePlaceLeft()) {

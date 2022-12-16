@@ -7,15 +7,21 @@ namespace Stu\Component\Ship\UpdateLocation\Handler\PreFlight;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Component\Ship\UpdateLocation\Handler\AbstractUpdateLocationHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implements UpdateLocationHandlerInterface
 {
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
-    public function __construct(TractorMassPayloadUtilInterface $tractorMassPayloadUtil)
-    {
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
+    public function __construct(
+        TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
+        ShipWrapperFactoryInterface $shipWrapperFactory
+    ) {
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(ShipInterface $ship, ?ShipInterface $tractoringShip): void
@@ -31,7 +37,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
             $tractoredShip->getFleetId()
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
 
             $this->addMessageInternal(
                 sprintf(
@@ -49,7 +55,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
         if ($abortionMsg === null) {
             //Traktorstrahl Kosten
             if ($ship->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
-                $ship->deactivateTractorBeam();
+                $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam();
                 $this->addMessageInternal(sprintf(
                     _('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'),
                     $tractoredShip->getName(),
@@ -58,7 +64,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
                 ));
             }
         } else {
-            $ship->deactivateTractorBeam();
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam();
             $this->addMessageInternal($abortionMsg);
         }
     }

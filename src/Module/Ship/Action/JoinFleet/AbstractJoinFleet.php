@@ -7,7 +7,7 @@ namespace Stu\Module\Ship\Action\JoinFleet;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Game\GameEnum;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -21,19 +21,19 @@ abstract class AbstractJoinFleet
 
     protected ShipLoaderInterface $shipLoader;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     protected LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
         ShipLoaderInterface $shipLoader,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->shipLoader = $shipLoader;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -58,7 +58,7 @@ abstract class AbstractJoinFleet
         if ($fleet->getLeadShip()->getId() === $ship->getId()) {
             return;
         }
-        if (!$this->positionChecker->checkPosition($fleet->getLeadShip(), $ship)) {
+        if (!$this->interactionChecker->checkPosition($fleet->getLeadShip(), $ship)) {
             return;
         }
         if ($ship->isTractored()) {

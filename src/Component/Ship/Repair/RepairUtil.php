@@ -14,15 +14,19 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 final class RepairUtil implements RepairUtilInterface
 {
     //TODO Unit-Tests!
+    private ShipRepositoryInterface $shipRepository;
+
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private RepairTaskRepositoryInterface $repairTaskRepository;
@@ -31,19 +35,25 @@ final class RepairUtil implements RepairUtilInterface
 
     private ColonyStorageManagerInterface $colonyStorageManager;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
+        ShipRepositoryInterface $shipRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
         RepairTaskRepositoryInterface $repairTaskRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ColonyStorageManagerInterface $colonyStorageManager,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
+        $this->shipRepository = $shipRepository;
         $this->shipSystemRepository = $shipSystemRepository;
         $this->repairTaskRepository = $repairTaskRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -60,7 +70,7 @@ final class RepairUtil implements RepairUtilInterface
             $neededSpareParts += (int)($ship->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
         }
 
-        $damagedSystems = $ship->getDamagedSystems();
+        $damagedSystems = $this->shipWrapperFactory->wrapShip($ship)->getDamagedSystems();
         if (!empty($damagedSystems)) {
             $firstSystem = $damagedSystems[0];
             $firstSystemLvl = $this->determinSystemLevel($firstSystem);
@@ -229,7 +239,7 @@ final class RepairUtil implements RepairUtilInterface
         }
 
         //check for system options
-        foreach ($ship->getDamagedSystems() as $system) {
+        foreach ($this->shipWrapperFactory->wrapShip($ship)->getDamagedSystems() as $system) {
             if ($system->getStatus() < RepairTaskEnum::BOTH_MAX) {
                 $repairOptions[$system->getSystemType()] = $system;
             }

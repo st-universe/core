@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\View\ShowShiplistSingles;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowShiplistSingles implements ViewControllerInterface
@@ -14,10 +15,14 @@ final class ShowShiplistSingles implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipRepository = $shipRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -26,7 +31,7 @@ final class ShowShiplistSingles implements ViewControllerInterface
 
         $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
 
-        $game->setTemplateVar('SHIPS', $ships);
+        $game->setTemplateVar('SHIPS', $this->shipWrapperFactory->wrapShips($ships));
         $game->showMacro('html/shipmacros.xhtml/shiplist_singles');
     }
 }

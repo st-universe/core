@@ -14,7 +14,7 @@ interface TradePostStorageManagerInterface
     public function getFreeStorage(): int;
 
     /**
-     * @return StorageInterface[]
+     * @return StorageInterface[]|Collection
      */
     public function getStorage(): Collection;
 

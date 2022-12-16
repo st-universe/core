@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -30,20 +31,24 @@ final class DockShip implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
+
+    private CancelRepairInterface $cancelRepair;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipSystemManagerInterface $shipSystemManager,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker,
+        CancelRepairInterface $cancelRepair
     ) {
         $this->shipLoader = $shipLoader;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipSystemManager = $shipSystemManager;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
+        $this->cancelRepair = $cancelRepair;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -67,7 +72,7 @@ final class DockShip implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!$this->positionChecker->checkPosition($target, $ship)) {
+        if (!$this->interactionChecker->checkPosition($target, $ship)) {
             return;
         }
         if ($ship->getDockedTo()) {
@@ -134,7 +139,7 @@ final class DockShip implements ActionControllerInterface
         } catch (ShipSystemException $e) {
         }
 
-        if ($ship->cancelRepair()) {
+        if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
         $ship->setEps($ship->getEps() - 1);
@@ -175,7 +180,7 @@ final class DockShip implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }
-            if ($ship->cancelRepair()) {
+            if ($this->cancelRepair->cancelRepair($ship)) {
                 $msg[] = $ship->getName() . _(': Die Reparatur wurde abgebrochen');
                 continue;
             }

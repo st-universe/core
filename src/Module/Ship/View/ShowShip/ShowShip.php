@@ -24,8 +24,11 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Tal\OrbitShipItem;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StationShipRepairInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -63,6 +66,8 @@ final class ShowShip implements ViewControllerInterface
 
     private StationUtilityInterface $stationUtility;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
@@ -75,6 +80,7 @@ final class ShowShip implements ViewControllerInterface
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
         ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
         StationUtilityInterface $stationUtility,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
@@ -88,6 +94,7 @@ final class ShowShip implements ViewControllerInterface
         $this->stationShipRepairRepository = $stationShipRepairRepository;
         $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
         $this->stationUtility = $stationUtility;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtilFactory = $loggerUtilFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -169,7 +176,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setPagetitle($ship->getName());
         $game->setTemplateFile('html/ship.xhtml');
 
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
         if ($starsystem !== null) {
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
@@ -319,8 +326,13 @@ final class ShowShip implements ViewControllerInterface
         if ($this->stationUtility->canRepairShips($ship)) {
             $game->setTemplateVar('CAN_REPAIR', true);
 
-            $shipRepairProgress = $this->stationShipRepairRepository->getByStation(
-                $ship->getId()
+            $shipRepairProgress = array_map(
+                function (StationShipRepairInterface $repair): ShipWrapperInterface {
+                    return $this->shipWrapperFactory->wrapShip($repair->getShip());
+                },
+                $this->stationShipRepairRepository->getByStation(
+                    $ship->getId()
+                )
             );
 
             $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);
@@ -349,7 +361,7 @@ final class ShowShip implements ViewControllerInterface
             }
         }
 
-        $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip) : null);
+        $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip, $game) : null);
         $game->setTemplateVar('CAN_UNDOCK', true);
 
         if ($ship->getRump()->isShipyard()) {

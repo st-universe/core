@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\DockFleet;
 
 use request;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -18,6 +18,7 @@ use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
@@ -33,7 +34,9 @@ final class DockFleet implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
+
+    private CancelRepairInterface $cancelRepair;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -42,14 +45,16 @@ final class DockFleet implements ActionControllerInterface
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
+        CancelRepairInterface $cancelRepair,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
+        $this->cancelRepair = $cancelRepair;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -70,7 +75,7 @@ final class DockFleet implements ActionControllerInterface
             $this->loggerUtil->log('B');
             return;
         }
-        if (!$this->positionChecker->checkPosition($targetFleet->getLeadShip(), $station)) {
+        if (!$this->interactionChecker->checkPosition($targetFleet->getLeadShip(), $station)) {
             $this->loggerUtil->log('C');
             return;
         }
@@ -120,7 +125,7 @@ final class DockFleet implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }
-            if ($ship->cancelRepair()) {
+            if ($this->cancelRepair->cancelRepair($ship)) {
                 $msg[] = $ship->getName() . _(': Die Reparatur wurde abgebrochen');
             }
 

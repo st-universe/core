@@ -34,14 +34,18 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function activate(
@@ -309,7 +313,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         try {
             $alertMsg = null;
-            $ship->setAlertState($alertState, $alertMsg);
+            $this->shipWrapperFactory->wrapShip($ship)->setAlertState($alertState, $alertMsg);
             $this->shipRepository->save($ship);
 
             if ($alertMsg !== null) {

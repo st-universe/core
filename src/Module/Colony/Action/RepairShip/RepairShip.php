@@ -12,6 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -32,6 +33,8 @@ final class RepairShip implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -40,6 +43,7 @@ final class RepairShip implements ActionControllerInterface
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ShipRepositoryInterface $shipRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -47,6 +51,7 @@ final class RepairShip implements ActionControllerInterface
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->shipRepository = $shipRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -78,8 +83,9 @@ final class RepairShip implements ActionControllerInterface
              * @var ShipInterface $ship
              */
             foreach ($fleet['ships'] as $ship) {
+                $wrapper = $this->shipWrapperFactory->wrapShip($ship);
                 if (
-                    !$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                    !$wrapper->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
                     || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
                 ) {
                     continue;
@@ -94,6 +100,7 @@ final class RepairShip implements ActionControllerInterface
         }
 
         $ship = $this->shipRepository->find((int) request::getIntFatal('ship_id'));
+        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
         if ($ship === null || !array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }
@@ -101,7 +108,7 @@ final class RepairShip implements ActionControllerInterface
             $game->addInformation(_('Schiffsreparatur ist nicht möglich während die Kolonie blockiert wird'));
             return;
         }
-        if (!$ship->canBeRepaired()) {
+        if (!$wrapper->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
@@ -130,7 +137,7 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
-        $ticks = $ship->getRepairDuration();
+        $ticks = $wrapper->getRepairDuration();
         $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
 
         $this->privateMessageSender->send(

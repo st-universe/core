@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -39,6 +40,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ApplyDamageInterface $applyDamage,
@@ -46,7 +49,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRemoverInterface $shipRemover,
         EntryCreatorInterface $entryCreator,
-        AlertRedHelperInterface $alertRedHelper
+        AlertRedHelperInterface $alertRedHelper,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->applyDamage = $applyDamage;
@@ -55,6 +59,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $this->shipRemover = $shipRemover;
         $this->entryCreator = $entryCreator;
         $this->alertRedHelper = $alertRedHelper;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -120,7 +125,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $tractoringShip = $ship->getTractoringShip();
 
         $tractoringShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setStatus(0);
-        $tractoringShip->deactivateTractorBeam(); // forced active deactivation
+        $this->shipWrapperFactory->wrapShip($tractoringShip)->deactivateTractorBeam(); // forced active deactivation
 
         $this->shipRepository->save($tractoringShip);
 

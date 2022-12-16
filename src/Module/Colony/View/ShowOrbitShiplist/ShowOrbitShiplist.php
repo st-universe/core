@@ -40,8 +40,8 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 
         foreach ($colony->getOrbitShipList($userId) as $entry) {
             $entry['ships'] = array_map(
-                function (ShipInterface $ship): OrbitShipItemInterface {
-                    return new OrbitShipItem($ship);
+                function (ShipInterface $ship) use ($game): OrbitShipItemInterface {
+                    return new OrbitShipItem($ship, $game);
                 },
                 $entry['ships']
             );

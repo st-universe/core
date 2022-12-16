@@ -12,7 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
@@ -32,7 +32,7 @@ final class AttackBuilding implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private FightLibInterface $fightLib;
 
@@ -54,7 +54,7 @@ final class AttackBuilding implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyRepositoryInterface $colonyRepository,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         FightLibInterface $fightLib,
         EnergyWeaponPhaseInterface $energyWeaponPhase,
         ProjectileWeaponPhaseInterface $projectileWeaponPhase,
@@ -66,7 +66,7 @@ final class AttackBuilding implements ActionControllerInterface
         $this->shipLoader = $shipLoader;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyRepository = $colonyRepository;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->fightLib = $fightLib;
         $this->energyWeaponPhase = $energyWeaponPhase;
         $this->projectileWeaponPhase = $projectileWeaponPhase;
@@ -123,7 +123,7 @@ final class AttackBuilding implements ActionControllerInterface
         if ($colony->getId() != $field->getColonyId()) {
             return;
         }
-        if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
             return;
         }
 

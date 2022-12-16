@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -60,7 +61,7 @@ final class BeamFrom implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!$ship->canInteractWith($target, false, true)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
             return;
         }
 

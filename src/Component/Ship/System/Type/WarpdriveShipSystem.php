@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -14,10 +16,18 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 {
     private ShipRepositoryInterface $shipRepository;
 
+    private CancelRepairInterface $cancelRepair;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        CancelRepairInterface $cancelRepair,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipRepository = $shipRepository;
+        $this->cancelRepair = $cancelRepair;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
@@ -42,7 +52,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->cancelRepair();
+        $this->cancelRepair->cancelRepair($ship);
         $this->undock($ship);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_ON);
 
@@ -50,13 +60,13 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
             if ($ship->getEps() > $this->getEnergyUsageForActivation()) {
                 $traktorShip = $ship->getTractoredShip();
 
-                $traktorShip->cancelRepair();
+                $this->cancelRepair->cancelRepair($traktorShip);
 
                 $ship->setEps($ship->getEps() - $this->getEnergyUsageForActivation());
 
                 $this->shipRepository->save($traktorShip);
             } else {
-                $ship->deactivateTractorBeam(); //active deactivation
+                $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
             }
         }
     }

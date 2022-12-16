@@ -13,6 +13,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 
 final class TorpedoTransfer implements ActionControllerInterface
@@ -56,6 +57,12 @@ final class TorpedoTransfer implements ActionControllerInterface
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
+        if ($target === null) {
+            return;
+        }
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+            return;
+        }
 
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
             $game->addInformation(_("Das Torpedolager ist zerstört"));
@@ -80,12 +87,6 @@ final class TorpedoTransfer implements ActionControllerInterface
 
         $isUnload = request::has('isUnload');
 
-        if ($target === null) {
-            return;
-        }
-        if (!$ship->canInteractWith($target, false, true)) {
-            return;
-        }
         if ($target->getWarpState()) {
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;

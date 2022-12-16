@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\View\ShowBeamFromColony;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
@@ -39,7 +40,7 @@ final class ShowBeamFromColony implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
         $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
-        if ($target === null || $ship->canInteractWith($target, true) === false) {
+        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
 

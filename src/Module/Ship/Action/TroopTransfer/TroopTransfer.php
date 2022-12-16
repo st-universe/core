@@ -23,6 +23,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -102,6 +103,19 @@ final class TroopTransfer implements ActionControllerInterface
             return;
         }
 
+        $isColony = request::has('isColony');
+        if ($isColony) {
+            $target = $this->colonyRepository->find((int)request::postIntFatal('target'));
+        } else {
+            $target = $this->shipRepository->find((int)request::postIntFatal('target'));
+        }
+        if ($target === null) {
+            return;
+        }
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, $isColony, !$isColony)) {
+            return;
+        }
+
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
             $game->addInformation(_("Die Truppenquartiere sind zerstört"));
             return;
@@ -123,22 +137,9 @@ final class TroopTransfer implements ActionControllerInterface
             return;
         }
 
-        $isColony = request::has('isColony');
         $isUnload = request::has('isUnload');
 
-        if ($isColony) {
-            $target = $this->colonyRepository->find((int)request::postIntFatal('target'));
-        } else {
-            $target = $this->shipRepository->find((int)request::postIntFatal('target'));
-        }
 
-
-        if ($target === null) {
-            return;
-        }
-        if (!$ship->canInteractWith($target, $isColony, !$isColony)) {
-            return;
-        }
         if (!$isColony && $target->getWarpState()) {
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;

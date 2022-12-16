@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ManageOrbitalShuttles;
 
 use request;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -36,7 +36,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
@@ -45,7 +45,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         ShipStorageManagerInterface $shipStorageManager,
         CommodityRepositoryInterface $commodityRepository,
         ShipLoaderInterface $shipLoader,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->privateMessageSender = $privateMessageSender;
@@ -53,7 +53,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         $this->shipStorageManager = $shipStorageManager;
         $this->commodityRepository = $commodityRepository;
         $this->shipLoader = $shipLoader;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -70,7 +70,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
         $ship = $this->shipLoader->find(request::indInt('sid'));
 
-        if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
             return;
         }
 

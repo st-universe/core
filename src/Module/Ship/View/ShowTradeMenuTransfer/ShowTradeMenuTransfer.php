@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\View\ShowTradeMenuTransfer;
 
 use Stu\Exception\AccessViolation;
 use request;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -24,18 +24,18 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -62,7 +62,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
             return;
         }
 
-        if (!$this->positionChecker->checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
             new AccessViolation;
         }
 

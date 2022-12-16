@@ -13,7 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -39,7 +39,7 @@ final class StoreShuttle implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -52,7 +52,7 @@ final class StoreShuttle implements ActionControllerInterface
         EntityManagerInterface $entityManager,
         TroopTransferUtilityInterface $troopTransferUtility,
         ShipRemoverInterface $shipRemover,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -63,7 +63,7 @@ final class StoreShuttle implements ActionControllerInterface
         $this->entityManager = $entityManager;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->shipRemover = $shipRemover;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -87,7 +87,7 @@ final class StoreShuttle implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!$this->positionChecker->checkPosition($ship, $target)) {
+        if (!$this->interactionChecker->checkPosition($ship, $target)) {
             return;
         }
         if ($target->getUser() !== $ship->getUser()) {

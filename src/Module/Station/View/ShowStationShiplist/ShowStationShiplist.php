@@ -49,8 +49,8 @@ final class ShowStationShiplist implements ViewControllerInterface
 
         foreach ($this->stationUtility->getManageableShipList($station) as $entry) {
             $entry['ships'] = array_map(
-                function (ShipInterface $ship): OrbitShipItemInterface {
-                    return new OrbitShipItem($ship);
+                function (ShipInterface $ship) use ($game): OrbitShipItemInterface {
+                    return new OrbitShipItem($ship, $game);
                 },
                 $entry['ships']
             );

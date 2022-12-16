@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use request;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -15,6 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -40,6 +41,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private TroopTransferUtilityInterface $troopTransferUtility;
 
+    private CancelRepairInterface $cancelRepair;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -49,6 +52,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         TradePostRepositoryInterface $tradePostRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         TroopTransferUtilityInterface  $troopTransferUtility,
+        CancelRepairInterface $cancelRepair,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -57,6 +61,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $this->tradePostRepository = $tradePostRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->troopTransferUtility = $troopTransferUtility;
+        $this->cancelRepair = $cancelRepair;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -84,7 +89,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!$ship->canInteractWith($target)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game)) {
             throw new SanityCheckException('can not interact with target');
         }
 
@@ -100,7 +105,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $game->addInformation(sprintf(_('Zum Bergen der Rettungskapseln wird %d Energie benötigt'), 1));
             return;
         }
-        if ($ship->cancelRepair()) {
+        if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
 

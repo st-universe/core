@@ -49,9 +49,9 @@ interface ShipInterface
 
     public function getAlertState(): int;
 
-    public function setAlertStateGreen(): ShipInterface;
+    public function setAlertState(int $alvl): ShipInterface;
 
-    public function setAlertState(int $alertState, &$msg): ShipInterface;
+    public function setAlertStateGreen(): ShipInterface;
 
     public function isSystemHealthy(int $systemId): bool;
 
@@ -214,8 +214,6 @@ interface ShipInterface
 
     public function hasEnoughCrew(?GameControllerInterface $game = null): bool;
 
-    public function leaveFleet(): void;
-
     public function getFleet(): ?FleetInterface;
 
     public function setFleet(?FleetInterface $fleet): ShipInterface;
@@ -246,10 +244,6 @@ interface ShipInterface
 
     public function isShuttleRampHealthy(): bool;
 
-    public function getEffectiveEpsProduction(): int;
-
-    public function getWarpcoreUsage(): int;
-
     public function isEBattUseable(): bool;
 
     public function isWarpAble(): bool;
@@ -257,8 +251,6 @@ interface ShipInterface
     public function isTractoring(): bool;
 
     public function isTractored(): bool;
-
-    public function deactivateTractorBeam(): void;
 
     public function isOverSystem(): ?StarSystemInterface;
 
@@ -315,8 +307,6 @@ interface ShipInterface
 
     public function setBuildplan(?ShipBuildplanInterface $shipBuildplan): ShipInterface;
 
-    public function getEpsUsage(): int;
-
     public function lowerEpsUsage($value): void;
 
     /**
@@ -334,19 +324,7 @@ interface ShipInterface
     /**
      * @return ShipSystemInterface[]
      */
-    public function getActiveSystems(bool $sort = false): array;
-
-    /**
-     * @return ShipSystemInterface[]
-     */
     public function getHealthySystems(): array;
-
-    /**
-     * highest damage first, then prio
-     * 
-     * @return ShipSystemInterface[]
-     */
-    public function getDamagedSystems(): array;
 
     public function displayNbsActions(): bool;
 
@@ -391,27 +369,13 @@ interface ShipInterface
 
     public function canMove(): bool;
 
-    public function isOwnedByCurrentUser(): bool;
-
-    public function canLandOnCurrentColony(): bool;
-
     public function canBeAttacked(bool $checkWarpState = true): bool;
 
     public function canAttack(): bool;
 
     public function hasEscapePods(): bool;
 
-    public function canBeRepaired(): bool;
-
-    public function getRepairDuration(): int;
-
-    public function getRepairCosts(): array;
-
-    public function cancelRepair(): bool;
-
     public function getRepairRate(): int;
-
-    public function canInteractWith($target, bool $colony = false, bool $doCloakCheck = false): bool;
 
     public function getRump(): ShipRumpInterface;
 
@@ -451,6 +415,9 @@ interface ShipInterface
 
     public function getMaxTorpedos(): int;
 
+    /**
+     * @return ShipInterface[]|Collection
+     */
     public function getDockedShips(): Collection;
 
     public function getDockedTo(): ?ShipInterface;

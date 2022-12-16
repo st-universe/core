@@ -9,6 +9,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -49,6 +50,9 @@ final class EpsTransfer implements ActionControllerInterface
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+            return;
+        }
 
         if ($ship->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
@@ -63,9 +67,6 @@ final class EpsTransfer implements ActionControllerInterface
             return;
         }
         if ($target === null) {
-            return;
-        }
-        if (!$ship->canInteractWith($target, false, true)) {
             return;
         }
         if ($target->getIsDestroyed()) {

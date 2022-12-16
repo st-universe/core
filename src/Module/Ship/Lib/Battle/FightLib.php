@@ -4,21 +4,30 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class FightLib implements FightLibInterface
 {
-
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
+    private CancelRepairInterface $cancelRepair;
+
     public function __construct(
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
+        CancelRepairInterface $cancelRepair
     ) {
         $this->shipSystemManager = $shipSystemManager;
+        $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->cancelRepair = $cancelRepair;
     }
 
     public function ready(ShipInterface $ship): array
@@ -32,7 +41,7 @@ final class FightLib implements FightLibInterface
         } catch (ShipSystemException $e) {
         }
 
-        $ship->cancelRepair();
+        $this->cancelRepair->cancelRepair($ship);
 
         $msg = $this->alertLevelBasedReaction($ship);
 
@@ -62,7 +71,7 @@ final class FightLib implements FightLibInterface
         if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
             try {
                 $alertMsg = null;
-                $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW, $alertMsg);
+                $this->shipWrapperFactory->wrapShip($ship)->setAlertState(ShipAlertStateEnum::ALERT_YELLOW, $alertMsg);
                 $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb";
                 if ($alertMsg !== null) {
                     $msg[] = "- " . $alertMsg;

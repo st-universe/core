@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowTorpedoTransfer implements ViewControllerInterface
@@ -42,6 +43,9 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
             return;
         }
+        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+            return;
+        }
 
         $isUnload = request::has('isUnload');
 
@@ -61,9 +65,6 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
 
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
-        if ($target === null || !$ship->canInteractWith($target, false, true)) {
-            return;
-        }
 
         if (
             $target->getUser() != $ship->getUser()

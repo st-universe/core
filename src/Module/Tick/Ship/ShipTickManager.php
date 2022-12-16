@@ -19,6 +19,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -61,6 +62,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private AdventCycleInterface $adventCycle;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -79,6 +82,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         RepairUtilInterface $repairUtil,
         AdventCycleInterface $adventCycle,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -96,6 +100,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->repairUtil = $repairUtil;
         $this->adventCycle = $adventCycle;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -452,8 +457,10 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         // @todo
         foreach ($this->shipRepository->getNpcShipsForTick() as $ship) {
+            $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
             if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)) {
-                $eps = (int) ceil($ship->getReactorOutput() - $ship->getEpsUsage());
+                $eps = (int) ceil($ship->getReactorOutput() - $wrapper->getEpsUsage());
                 if ($eps + $ship->getEps() > $ship->getMaxEps()) {
                     $eps = $ship->getMaxEps() - $ship->getEps();
                 }
@@ -549,6 +556,7 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private function repairShipOnEntity(ShipInterface $ship, $entity, bool $isColony): bool
     {
+
         // check for U-Mode
         if ($entity->getUser()->isVacationRequestOldEnough()) {
             return false;
@@ -568,8 +576,10 @@ final class ShipTickManager implements ShipTickManagerInterface
             $ship->setHuell($ship->getMaxHuell());
         }
 
+        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
         //repair ship systems
-        $damagedSystems = $ship->getDamagedSystems();
+        $damagedSystems = $wrapper->getDamagedSystems();
         if (!empty($damagedSystems)) {
             $firstSystem = $damagedSystems[0];
             $firstSystem->setStatus(100);
@@ -592,7 +602,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         // consume spare parts
         $this->repairUtil->consumeSpareParts($neededParts, $entity, $isColony);
 
-        if (!$ship->canBeRepaired()) {
+        if (!$wrapper->canBeRepaired()) {
             $repairFinished = true;
 
             $ship->setHuell($ship->getMaxHuell());

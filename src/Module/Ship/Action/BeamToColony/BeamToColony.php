@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -57,7 +58,7 @@ final class BeamToColony implements ActionControllerInterface
         );
 
         $target = $this->colonyRepository->find((int) request::postIntFatal('target'));
-        if ($target === null || !$ship->canInteractWith($target, true)) {
+        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, true)) {
             return;
         }
 

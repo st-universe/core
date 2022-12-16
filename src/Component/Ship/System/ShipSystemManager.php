@@ -20,6 +20,7 @@ use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Control\StuTime;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 
 final class ShipSystemManager implements ShipSystemManagerInterface
 {
@@ -183,5 +184,33 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $system = $this->lookupSystem($shipSystemId);
 
         $system->handleDamage($ship);
+    }
+
+    public function getActiveSystems(ShipInterface $ship, bool $sort = false): array
+    {
+        $activeSystems = [];
+        $prioArray = [];
+        foreach ($ship->getSystems() as $system) {
+            if ($system->getMode() > 1) {
+                $activeSystems[] = $system;
+                if ($sort) {
+                    $prioArray[$system->getSystemType()] = $this->lookupSystem($system->getSystemType())->getPriority();
+                }
+            }
+        }
+
+        if ($sort) {
+            usort(
+                $activeSystems,
+                function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
+                    if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
+                        return 0;
+                    }
+                    return ($prioArray[$a->getSystemType()] < $prioArray[$b->getSystemType()]) ? -1 : 1;
+                }
+            );
+        }
+
+        return $activeSystems;
     }
 }

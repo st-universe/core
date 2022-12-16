@@ -4,22 +4,32 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class CloakShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
     private AstroEntryLibInterface $astroEntryLib;
 
+    private CancelRepairInterface $cancelRepair;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
-        AstroEntryLibInterface $astroEntryLib
+        AstroEntryLibInterface $astroEntryLib,
+        CancelRepairInterface $cancelRepair,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->astroEntryLib = $astroEntryLib;
+        $this->cancelRepair = $cancelRepair;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
@@ -64,9 +74,9 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->deactivateTractorBeam(); //active deactivation
+        $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
         $ship->setDockedTo(null);
-        $ship->cancelRepair();
+        $this->cancelRepair->cancelRepair($ship);
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);

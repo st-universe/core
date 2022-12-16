@@ -6,8 +6,7 @@ namespace Stu\Module\Ship\View\ShowTradeMenu;
 
 use Stu\Exception\AccessViolation;
 use request;
-use Stu\Component\Game\GameEnum;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -32,7 +31,7 @@ final class ShowTradeMenu implements ViewControllerInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private CommodityRepositoryInterface $commodityRepository;
 
@@ -43,7 +42,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         CommodityRepositoryInterface $commodityRepository,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
@@ -51,7 +50,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->commodityRepository = $commodityRepository;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -71,7 +70,7 @@ final class ShowTradeMenu implements ViewControllerInterface
             return;
         }
 
-        if (!$this->positionChecker->checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
             new AccessViolation();
         }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowBeamFrom;
 
 use Stu\Exception\AccessViolation;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -21,18 +21,18 @@ final class ShowBeamFrom implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowBeamFromRequestInterface $showBeamFromRequest,
         ShipLoaderInterface $shipLoader,
-        PositionCheckerInterface $positionChecker
+        InteractionCheckerInterface $interactionChecker
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showBeamFromRequest = $showBeamFromRequest;
         $this->shipLoader = $shipLoader;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -50,7 +50,7 @@ final class ShowBeamFrom implements ViewControllerInterface
             return;
         }
 
-        if (!$this->positionChecker->checkColonyPosition($colony, $target)) {
+        if (!$this->interactionChecker->checkColonyPosition($colony, $target)) {
             throw new AccessViolation(sprintf(_('Target-shipId %d is not at same position as colonyId %d'), $target->getId(), $colony->getId()));
         }
 

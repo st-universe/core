@@ -22,6 +22,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -45,6 +46,8 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -56,6 +59,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         AstroEntryLibInterface $astroEntryLib,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -66,6 +70,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->astroEntryLib = $astroEntryLib;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -137,7 +142,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             foreach ($result as $fleetShip) {
                 if (!$this->helper->activate($fleetShip->getId(), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game)) {
                     $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: Warpantrieb kann nicht aktiviert werden";
-                    $fleetShip->leaveFleet();
+                    $this->shipWrapperFactory->wrapShip($fleetShip)->leaveFleet();
                     $this->shipRepository->save($fleetShip);
                 } else {
                     //reload ship because it got saved in helper class
@@ -157,7 +162,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $game->addInformationMerge($msg);
         } else {
             if ($ship->getFleetId()) {
-                $ship->leaveFleet();
+                $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
             $game->addInformation("Das Sternsystem wurde verlassen");
@@ -175,7 +180,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Verlassen des Systems deaktiviert'),
@@ -192,7 +197,7 @@ final class LeaveStarSystem implements ActionControllerInterface
 
         if ($ship->getEps() < 1) {
             $name = $tractoredShip->getName();
-            $ship->deactivateTractorBeam(); //active deactivation
+            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }

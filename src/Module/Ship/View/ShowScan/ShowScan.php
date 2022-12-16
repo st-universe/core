@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\View\ShowScan;
 
 use request;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -20,17 +20,17 @@ final class ShowScan implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private PositionCheckerInterface $positionChecker;
+    private InteractionCheckerInterface $interactionChecker;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PositionCheckerInterface $positionChecker,
+        InteractionCheckerInterface $interactionChecker,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
-        $this->positionChecker = $positionChecker;
+        $this->interactionChecker = $interactionChecker;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -54,7 +54,7 @@ final class ShowScan implements ViewControllerInterface
         }
         $game->setPageTitle(_('Scan'));
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_ship_scan');
-        if (!$this->positionChecker->checkPosition($ship, $target)) {
+        if (!$this->interactionChecker->checkPosition($ship, $target)) {
             $game->addInformation(_('Das Schiff befindet sich nicht in diesem Sektor'));
             return;
         }
