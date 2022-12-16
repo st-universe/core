@@ -17,7 +17,7 @@
 					<td colspan="11">Stationen</td>
 				</tr>
 				<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
-				<tal:block tal:repeat="ship BASES">
+				<tal:block tal:repeat="wrapper BASES">
 					<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
 				</tal:block>
 			</table>

@@ -1782,27 +1782,28 @@
     <tr>
       <th colspan="5">Schiffe in Reparatur</th>
     </tr>
-    <tr tal:repeat="data SHIP_REPAIR_PROGRESS" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
+    <tr tal:repeat="wrapper SHIP_REPAIR_PROGRESS" style="height: 50px"
+      tal:attributes="class string:row${repeat/wrapper/odd}">
       <td style="text-align: center; vertical-align: middle;">
-        <img src="assets/ships/${data/getShip/getRump/getId}.png" title="${data/getShip/getRump/getName}" />
+        <img src="assets/ships/${wrapper/get/getRump/getId}.png" title="${wrapper/get/getRump/getName}" />
       </td>
       <td style="text-align: center; vertical-align: middle">
-        <span tal:replace="structure bbcode:data/getShip/getName">NAME</span>
+        <span tal:replace="structure bbcode:wrapper/get/getName">NAME</span>
       </td>
       <td style="text-align: center; vertical-align: middle">
         <img src="assets/buttons/modul_1.png" title="Hülle" style="width: 12px; height: 12px;" />
-        ${data/getShip/getHuell}/${data/getShip/getMaxHuell}
+        ${wrapper/get/getHuell}/${wrapper/get/getMaxHuell}
       </td>
       <td style="text-align: center; vertical-align: middle">
-        <img tal:repeat="sys data/getShip/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"
+        <img tal:repeat="sys wrapper/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"
           style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.png" />
       </td>
       <td>
-        <a href="?id=${COLONY/getId}&B_CANCEL_REPAIR=1&shipid=${data/getShip/getId}&sstr=${THIS/getSessionString}"
-          onmouseover="cp('cancel${data/getShip/getId}','buttons/x2');"
-          onmouseout="cp('cancel${data/getShip/getId}','buttons/x1');">
-          <span tal:content="data/getShip/getRepairDuration">DURATION</span> Ticks
-          <img src="assets/buttons/x1.png" name="cancel${data/getShip/getId}" title="Reparatur abbrechen" />
+        <a href="?id=${COLONY/getId}&B_CANCEL_REPAIR=1&shipid=${wrapper/get/getId}&sstr=${THIS/getSessionString}"
+          onmouseover="cp('cancel${wrapper/get/getId}','buttons/x2');"
+          onmouseout="cp('cancel${wrapper/get/getId}','buttons/x1');">
+          <span tal:content="wrapper/getRepairDuration">DURATION</span> Ticks
+          <img src="assets/buttons/x1.png" name="cancel${wrapper/get/getId}" title="Reparatur abbrechen" />
         </a>
       </td>
     </tr>

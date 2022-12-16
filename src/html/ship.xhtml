@@ -778,7 +778,7 @@
 							Kolonie gründen
 						</a>
 					</tal:block>
-					<div tal:condition="SHIP/canLandOnCurrentColony">
+					<div tal:condition="WRAPPER/canLandOnCurrentColony">
 						<a
 							href="colony.php?B_LAND_SHIP=1&id=${CURRENT_COLONY/getId}&shipid=${SHIP/getId}&sstr=${THIS/getSessionString}">Landen</a>
 					</div>
@@ -1121,9 +1121,9 @@
 				<br />
 			</div>
 		</tal:block>
-		<tal:block tal:condition="exists: SHIP">
+		<tal:block tal:condition="exists: WRAPPER">
 			<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
-			<form action="ship.php" method="post" name="shipform" id="shipform"
+			<form tal:define="SHIP WRAPPER/get" action="ship.php" method="post" name="shipform" id="shipform"
 				onkeydown="return event.key != 'Enter';">
 				<metal:macro metal:use-macro="html/shipmacros.xhtml/hiddenshipid" />
 				<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
@@ -1193,9 +1193,9 @@
 						</td>
 						<td style="text-align: center;">
 							${SHIP/getEps}/${SHIP/getMaxEps}
-							<span>${addPlusCharacter:SHIP/getEffectiveEpsProduction}</span>
-							(<span tal:content="SHIP/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
-								tal:content="SHIP/getWarpcoreUsage">CORE</span>)
+							<span>${addPlusCharacter:WRAPPER/getEffectiveEpsProduction}</span>
+							(<span tal:content="WRAPPER/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
+								tal:content="WRAPPER/getWarpcoreUsage">CORE</span>)
 						</td>
 						<td style="text-align: center;">
 							${SHIP/getEBatt}
@@ -1251,7 +1251,7 @@
 								<img src="assets/buttons/shutdown1.png" title="Energieverbrauch minimieren"
 									name="shutdown" />
 							</a>
-							<a tal:condition="SHIP/canBeRepaired" href="javascript:void(0);"
+							<a tal:condition="WRAPPER/canBeRepaired" href="javascript:void(0);"
 								onclick="showRepairOptions(${SHIP/getId});"
 								onmouseover="cp('selfrepair','buttons/rep2');"
 								onmouseout="cp('selfrepair','buttons/rep1');">

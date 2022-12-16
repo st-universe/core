@@ -205,7 +205,7 @@
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shiplist_body">
-  <tr tal:attributes="class string:row${repeat/ship/odd}">
+  <tr tal:define="ship wrapper/get" tal:attributes="class string:row${repeat/ship/odd}">
     <td style="background-color: #000000 ! important">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
         onmouseout="closeStorage();">
@@ -217,10 +217,10 @@
         <img tal:condition="ship/getDockedTo" src="assets/buttons/dock2.png" title="Schiff ist angedockt"
           style="height:20px;" />
         <img tal:condition="php:ship.getState() EQ 1 && ship.isBase()" src="assets/buttons/rep2.png"
-          tal:attributes="title string:Station wird repariert (noch ${ship/getRepairDuration} Runden)"
+          tal:attributes="title string:Station wird repariert (noch ${wrapper/getRepairDuration} Runden)"
           style="height:20px;" />
         <img tal:condition="php:ship.getState() EQ 1 && !ship.isBase()" src="assets/buttons/rep2.png"
-          tal:attributes="title string:Schiff wird repariert (noch ${ship/getRepairDuration} Runden)"
+          tal:attributes="title string:Schiff wird repariert (noch ${wrapper/getRepairDuration} Runden)"
           style="height:20px;" />
         <img tal:condition="php:ship.getState() EQ 4 && ship.isBase()" src="assets/buttons/rep2.png"
           tal:attributes="title string:Stationscrew repariert die Station" style="height:20px;" />
@@ -255,9 +255,9 @@
     </td>
     <td>
       ${ship/getEps}/${ship/getMaxEps}
-      <span>${addPlusCharacter:ship/getEffectiveEpsProduction}</span>
-      (<span tal:content="ship/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
-        tal:content="ship/getWarpcoreUsage">CORE</span>)
+      <span>${addPlusCharacter:wrapper/getEffectiveEpsProduction}</span>
+      (<span tal:content="wrapper/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
+        tal:content="wrapper/getWarpcoreUsage">CORE</span>)
     </td>
     <td>
       <div style="float: left; width: 50%">
@@ -321,61 +321,63 @@
   </tr>
 </metal:macro>
 <metal:macro metal:define-macro="shiplist_fleetform">
-  <form action="ship.php" method="post" id="shiplist_fleet_form_${fleet/getId}" tal:define="fleetid fleet/getId">
-    <input type="hidden" name="fleetid" value="runtime" tal:attributes="value fleet/getId" />
-    <table class="tcal">
-      <tr>
-        <td colspan="11">
-          <table style="width: 100%;">
-            <tr>
-              <td style="width: 35%;">
-                <div style="display: table-cell;">
-                  <a href="javascript:void(0);" onclick="toggleFleet(${fleetid});" title="zuklappen/aufklappen">
-                    <img src="assets/buttons/fleet.png" />
+  <tal:block tal:define="fleet wrapper/get">
+    <form action="ship.php" method="post" id="shiplist_fleet_form_${fleet/getId}" tal:define="fleetid fleet/getId">
+      <input type="hidden" name="fleetid" value="runtime" tal:attributes="value fleet/getId" />
+      <table class="tcal">
+        <tr>
+          <td colspan="11">
+            <table style="width: 100%;">
+              <tr>
+                <td style="width: 35%;">
+                  <div style="display: table-cell;">
+                    <a href="javascript:void(0);" onclick="toggleFleet(${fleetid});" title="zuklappen/aufklappen">
+                      <img src="assets/buttons/fleet.png" />
+                    </a>
+                  </div>
+                  <div style="display: table-cell; vertical-align:middle;">
+                    <span tal:replace="structure bbcode:fleet/getName">NAME</span>
+                    <span>
+                      (<span tal:replace="fleet/getCrewSum" />/<span tal:replace="MAX_CREW_PER_FLEET" /> Crew)
+                    </span>
+                  </div>
+                </td>
+                <td style="width: 25%;">
+                  <tal:block tal:condition="fleet/getDefendedColony">
+                    <img src="/assets/buttons/defend1.png" title="verteidigt die Kolonie" />
+                    <span tal:replace="structure bbcode:fleet/getDefendedColony/getName">NAME</span>
+                  </tal:block>
+                  <tal:block tal:condition="fleet/getBlockedColony">
+                    <img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
+                    <span tal:replace="structure bbcode:fleet/getBlockedColony/getName">NAME</span>
+                  </tal:block>
+                </td>
+                <td style="width: 20%;">
+                  <input type="text" name="fleetname" style="width: 150px;" tal:attributes="value fleet/getName" />
+                  <button type="submit" name="B_FLEET_CHANGE_NAME" value="Name ändern" title="Name ändern">
+                    <img src="assets/buttons/knedit2.png" alt="Name ändern" />
+                  </button>
+                </td>
+                <td style="width: 20%; text-align: right;">
+                  <a href="javascript:void(0);" onclick="showAvailableShips(${fleetid});" title="Schiff hinzufügen"><img
+                      src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" /></a>
+                  <a href="?B_FLEET_UP=1&id=${fleetid}">
+                    <img src="assets/buttons/bt_up1.png" title="Flotte nach oben schieben" />
                   </a>
-                </div>
-                <div style="display: table-cell; vertical-align:middle;">
-                  <span tal:replace="structure bbcode:fleet/getName">NAME</span>
-                  <span>
-                    (<span tal:replace="fleet/getCrewSum" />/<span tal:replace="MAX_CREW_PER_FLEET" /> Crew)
-                  </span>
-                </div>
-              </td>
-              <td style="width: 25%;">
-                <tal:block tal:condition="fleet/getDefendedColony">
-                  <img src="/assets/buttons/defend1.png" title="verteidigt die Kolonie" />
-                  <span tal:replace="structure bbcode:fleet/getDefendedColony/getName">NAME</span>
-                </tal:block>
-                <tal:block tal:condition="fleet/getBlockedColony">
-                  <img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
-                  <span tal:replace="structure bbcode:fleet/getBlockedColony/getName">NAME</span>
-                </tal:block>
-              </td>
-              <td style="width: 20%;">
-                <input type="text" name="fleetname" style="width: 150px;" tal:attributes="value fleet/getName" />
-                <button type="submit" name="B_FLEET_CHANGE_NAME" value="Name ändern" title="Name ändern">
-                  <img src="assets/buttons/knedit2.png" alt="Name ändern" />
-                </button>
-              </td>
-              <td style="width: 20%; text-align: right;">
-                <a href="javascript:void(0);" onclick="showAvailableShips(${fleetid});" title="Schiff hinzufügen"><img
-                    src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" /></a>
-                <a href="?B_FLEET_UP=1&id=${fleetid}">
-                  <img src="assets/buttons/bt_up1.png" title="Flotte nach oben schieben" />
-                </a>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-    <table tal:attributes="style string:${fleet/getHiddenStyle};" class="tcal" id="fleetbody_${fleetid}">
-      <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
-      <tal:block tal:repeat="ship fleet/getShips">
-        <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
-      </tal:block>
-    </table>
-  </form>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <table tal:attributes="style string:${fleet/getHiddenStyle};" class="tcal" id="fleetbody_${fleetid}">
+        <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
+        <tal:block tal:repeat="wrapper wrapper/getShips">
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
+        </tal:block>
+      </table>
+    </form>
+  </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shiplist_singles">
   <table class="tcal" id="shiplist_singles_table">
@@ -383,7 +385,7 @@
       <td colspan="11">Einzelschiffe</td>
     </tr>
     <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
-    <tal:block tal:repeat="ship SHIPS">
+    <tal:block tal:repeat="wrapper SHIPS">
       <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
     </tal:block>
   </table>

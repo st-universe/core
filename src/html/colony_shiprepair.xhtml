@@ -15,17 +15,17 @@
 					<th>Insgesamt benötigte Teile</th>
 					<th></th>
 				</tr>
-				<tal:block tal:repeat="ship REPAIRABLE_SHIP_LIST">
-					<tr tal:attributes="class string:row${repeat/ship/odd}">
+				<tal:block tal:repeat="wrapper REPAIRABLE_SHIP_LIST">
+					<tr tal:define="ship wrapper/get" tal:attributes="class string:row${repeat/ship/odd}">
 						<td>
 							<input type="hidden" name="ships[]" tal:attributes="value ship/getId" />
 							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 						</td>
 						<td tal:content="structure bbcode:ship/getName">NAME</td>
-						<td tal:content="structure bbcode:ship/getRepairDuration">DURATION</td>
+						<td tal:content="structure bbcode:wrapper/getRepairDuration">DURATION</td>
 						<td>
 							<table class="tcal">
-								<tr tal:repeat="cost ship/getRepairCosts">
+								<tr tal:repeat="cost wrapper/getRepairCosts">
 									<td tal:content="cost/getAmount"></td>
 									<td><img src="assets/commodities/${cost/getCommodityId}.png"
 											tal:attributes="title cost/getCommodityName" /></td>
@@ -33,7 +33,7 @@
 							</table>
 						</td>
 						<td>
-							<div tal:condition="ship/canBeRepaired">
+							<div tal:condition="wrapper/canBeRepaired">
 								<a
 									href="?id=${COLONY/getId}&B_REPAIR_SHIP=1&ship_id=${ship/getId}&fid=${FIELD/getFieldId}">Reparieren</a>
 							</div>
