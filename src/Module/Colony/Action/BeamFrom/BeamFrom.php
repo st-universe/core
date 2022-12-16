@@ -109,7 +109,7 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_('Es wurden keine Waren zum Beamen ausgewählt'));
             return;
         }
-        $isOwnedByCurrentUser = $this->game->getUser() === $target->getUser();
+        $isOwnedByCurrentUser = $game->getUser() === $target->getUser();
         if ($isOwnedByCurrentUser) {
             $link = "ship.php?SHOW_SHIP=1&id=" . $target->getId();
 
