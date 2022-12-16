@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ShipInterface;
 final class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
     //TODO ebatt cooldown into data?
-
+    //public function getSystemData(): 
 
     public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {

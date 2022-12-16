@@ -47,7 +47,7 @@ class ShipSystem implements ShipSystemInterface
     private $cooldown;
 
     /** @Column(type="json", nullable=true) */
-    private $data = [];
+    private $data;
 
     /**
      * @ManyToOne(targetEntity="Module")
@@ -174,7 +174,7 @@ class ShipSystem implements ShipSystemInterface
         return $this->data;
     }
 
-    public function setData(array $data): ShipSystemInterface
+    public function setData($data): ShipSystemInterface
     {
         $this->data = $data;
         return $this;

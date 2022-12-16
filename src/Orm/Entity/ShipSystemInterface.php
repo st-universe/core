@@ -40,5 +40,5 @@ interface ShipSystemInterface
 
     public function getData(): array;
 
-    public function setData(array $data): ShipSystemInterface;
+    public function setData($data): ShipSystemInterface;
 }
