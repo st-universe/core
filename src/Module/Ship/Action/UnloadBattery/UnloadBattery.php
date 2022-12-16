@@ -98,7 +98,7 @@ final class UnloadBattery implements ActionControllerInterface
 
         //experimental
         $data = new EpsSystemData();
-        $data->setMaxBatt(42);
+        $data->maxBatt = 42;
         $this->shipSystemManager->updateSystemData($ship, ShipSystemTypeEnum::SYSTEM_EPS, $data);
 
         $this->shipRepository->save($ship);
