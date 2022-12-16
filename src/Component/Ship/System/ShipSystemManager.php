@@ -44,7 +44,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     {
         $shipSystem = $ship->getSystems()[$systemId] ?? null;
         if ($shipSystem !== null) {
-            $shipSystem->setData($data);
+            $shipSystem->setData(serialize($data));
         }
     }
 
