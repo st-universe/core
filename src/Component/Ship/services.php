@@ -6,6 +6,8 @@ namespace Stu\Component\Ship;
 
 use Stu\Component\Ship\Nbs\NbsUtility;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
+use Stu\Component\Ship\Repair\CancelRepair;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\Repair\RepairUtil;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\Storage\ShipStorageManager;
@@ -58,6 +60,7 @@ return [
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
     NbsUtilityInterface::class => autowire(NbsUtility::class),
     RepairUtilInterface::class => autowire(RepairUtil::class),
+    CancelRepairInterface::class => autowire(CancelRepair::class),
     TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
     ShipSystemManagerInterface::class => create(ShipSystemManager::class)->constructor(
         [
