@@ -46,6 +46,9 @@ class ShipSystem implements ShipSystemInterface
     /** @Column(type="integer", nullable=true) * */
     private $cooldown;
 
+    /** @Column(type="json", nullable=true) */
+    private $data = [];
+
     /**
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
@@ -163,6 +166,17 @@ class ShipSystem implements ShipSystemInterface
     public function setShip(ShipInterface $ship): ShipSystemInterface
     {
         $this->ship = $ship;
+        return $this;
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function setData(array $data): ShipSystemInterface
+    {
+        $this->data = $data;
         return $this;
     }
 }
