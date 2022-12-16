@@ -1121,9 +1121,9 @@
 				<br />
 			</div>
 		</tal:block>
-		<tal:block tal:condition="exists: WRAPPER">
+		<tal:block tal:condition="exists: WRAPPER" tal:define="SHIP WRAPPER/get">
 			<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
-			<form tal:define="SHIP WRAPPER/get" action="ship.php" method="post" name="shipform" id="shipform"
+			<form action="ship.php" method="post" name="shipform" id="shipform"
 				onkeydown="return event.key != 'Enter';">
 				<metal:macro metal:use-macro="html/shipmacros.xhtml/hiddenshipid" />
 				<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
