@@ -16,7 +16,7 @@
 					<th></th>
 				</tr>
 				<tal:block tal:repeat="wrapper REPAIRABLE_SHIP_LIST">
-					<tr tal:define="ship wrapper/get" tal:attributes="class string:row${repeat/ship/odd}">
+					<tr tal:define="ship wrapper/get" tal:attributes="class string:row${repeat/wrapper/odd}">
 						<td>
 							<input type="hidden" name="ships[]" tal:attributes="value ship/getId" />
 							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
