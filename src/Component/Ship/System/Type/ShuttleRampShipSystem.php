@@ -6,6 +6,7 @@ namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\Storage\ShipStorageManager;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -18,7 +19,7 @@ final class ShuttleRampShipSystem extends AbstractShipSystemType implements Ship
     {
         $this->shipStorageManager = $shipStorageManager;
     }
-    public function activate(ShipInterface $ship): void
+    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {
         //nothing to do here
     }

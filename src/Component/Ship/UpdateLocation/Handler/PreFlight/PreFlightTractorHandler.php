@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\UpdateLocation\Handler\PreFlight;
 
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Component\Ship\UpdateLocation\Handler\AbstractUpdateLocationHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implements UpdateLocationHandlerInterface
 {
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(ShipInterface $ship, ?ShipInterface $tractoringShip): void
@@ -37,7 +38,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
             $tractoredShip->getFleetId()
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
-            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);  //active deactivation
 
             $this->addMessageInternal(
                 sprintf(
@@ -55,7 +56,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
         if ($abortionMsg === null) {
             //Traktorstrahl Kosten
             if ($ship->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
-                $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam();
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
                 $this->addMessageInternal(sprintf(
                     _('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'),
                     $tractoredShip->getName(),
@@ -64,7 +65,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
                 ));
             }
         } else {
-            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam();
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
             $this->addMessageInternal($abortionMsg);
         }
     }

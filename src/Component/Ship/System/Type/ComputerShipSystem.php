@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -11,7 +12,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ComputerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function activate(ShipInterface $ship): void
+    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }

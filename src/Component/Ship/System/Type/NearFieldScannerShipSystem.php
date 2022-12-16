@@ -6,6 +6,7 @@ namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -32,7 +33,7 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         return true;
     }
 
-    public function activate(ShipInterface $ship): void
+    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_ON);
     }

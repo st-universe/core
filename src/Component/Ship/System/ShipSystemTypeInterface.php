@@ -19,7 +19,7 @@ interface ShipSystemTypeInterface
      */
     public function getPriority(): int;
 
-    public function activate(ShipInterface $ship): void;
+    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void;
 
     public function deactivate(ShipInterface $ship): void;
 

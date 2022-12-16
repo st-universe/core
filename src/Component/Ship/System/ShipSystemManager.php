@@ -56,7 +56,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             $shipSystem->setCooldown($time + $system->getCooldownSeconds());
         }
 
-        $system->activate($ship);
+        $system->activate($ship, $this);
     }
 
     public function deactivate(ShipInterface $ship, int $shipSystemId, bool $force = false): void

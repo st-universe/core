@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -37,7 +38,7 @@ final class SubspaceSensorShipSystem extends AbstractShipSystemType implements S
         return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER];
     }
 
-    public function activate(ShipInterface $ship): void
+    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER)->setMode(ShipSystemModeEnum::MODE_ON);
     }

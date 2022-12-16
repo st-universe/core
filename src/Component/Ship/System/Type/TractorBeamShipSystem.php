@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -83,7 +84,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         return 2;
     }
 
-    public function activate(ShipInterface $ship): void
+    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_ON);
     }

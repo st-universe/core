@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Utility;
 
+use Stu\Component\Ship\System\ShipSystemManager;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 {
     private ApplyDamageInterface $applyDamage;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
+    private ShipSystemManager $shipSystemManager;
+
 
     public function __construct(
         ApplyDamageInterface $applyDamage,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipSystemManager $shipSystemManager
     ) {
         $this->applyDamage = $applyDamage;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function tryToTow(ShipInterface $ship, ShipInterface $tractoredShip): ?string
@@ -30,7 +31,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
 
         // ship to heavy?
         if ($mass > $payload) {
-            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam();
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
             return sprintf(
                 _('Traktoremitter der %s war nicht stark genug um die %s zu ziehen und wurde daher deaktiviert'),
@@ -58,7 +59,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
                     $ship->getName(),
                     $tractoredShip->getName()
                 );
-                $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam();
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
                 return false;
             } else {

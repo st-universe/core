@@ -152,15 +152,6 @@ final class ShipWrapper implements ShipWrapperInterface
         }
     }
 
-    public function deactivateTractorBeam(): void
-    {
-        if (!$this->get()->isTractoring()) {
-            return;
-        }
-
-        $this->shipSystemManager->deactivate($this->get(), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
-    }
-
     //highest damage first, then prio
     public function getDamagedSystems(): array
     {

@@ -20,8 +20,6 @@ interface ShipWrapperInterface
 
     public function leaveFleet(): void;
 
-    public function deactivateTractorBeam(): void;
-
     /**
      * highest damage first, then prio
      * 

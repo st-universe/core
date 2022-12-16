@@ -178,7 +178,7 @@ final class EnterWormhole implements ActionControllerInterface
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();
-            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Wurmlocheinflug deaktiviert'),
@@ -195,7 +195,7 @@ final class EnterWormhole implements ActionControllerInterface
 
         if ($ship->getEps() < 1) {
             $name = $tractoredShip->getName();
-            $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Wurmlocheinflug aufgrund Energiemangels deaktiviert");
             return;
         }

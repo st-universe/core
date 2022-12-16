@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
@@ -18,7 +19,6 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
@@ -36,7 +36,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private ActivatorDeactivatorHelperInterface $helper;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -45,7 +45,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         ShipAttackCycleInterface $shipAttackCycle,
         InteractionCheckerInterface $interactionChecker,
         ActivatorDeactivatorHelperInterface $helper,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
@@ -53,7 +53,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->shipAttackCycle = $shipAttackCycle;
         $this->interactionChecker = $interactionChecker;
         $this->helper = $helper;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -173,7 +173,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->abort($ship, $game);
             return;
         }
-        $this->shipWrapperFactory->wrapShip($target)->deactivateTractorBeam(); //forced active deactivation
+        $this->shipSystemManager->deactivate($target, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //forced active deactivation
         $target->setDockedTo(null);
         $ship->setTractoredShip($target);
         $this->shipRepository->save($ship);

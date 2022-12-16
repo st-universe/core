@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System\Type;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -72,9 +73,12 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_CLOAK];
     }
 
-    public function activate(ShipInterface $ship): void
+    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {
-        $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
+        if ($ship->isTractoring()) {
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+        }
+
         $ship->setDockedTo(null);
         $this->cancelRepair->cancelRepair($ship);
 

@@ -578,7 +578,7 @@ final class ShipMover2 implements ShipMover2Interface
     {
         $this->addInformation($msg);
         unset($this->tractoredShips[$ship->getId()]);
-        $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
+        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
     }
 
     private function addLostShip(ShipInterface $ship, ShipInterface $leadShip, bool $isFixedFleetMode, ?string $msg)

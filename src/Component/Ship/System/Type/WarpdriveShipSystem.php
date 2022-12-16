@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -18,16 +18,12 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     private CancelRepairInterface $cancelRepair;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
         ShipRepositoryInterface $shipRepository,
-        CancelRepairInterface $cancelRepair,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        CancelRepairInterface $cancelRepair
     ) {
         $this->shipRepository = $shipRepository;
         $this->cancelRepair = $cancelRepair;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
@@ -50,7 +46,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         return true;
     }
 
-    public function activate(ShipInterface $ship): void
+    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
     {
         $this->cancelRepair->cancelRepair($ship);
         $this->undock($ship);
@@ -66,7 +62,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
                 $this->shipRepository->save($traktorShip);
             } else {
-                $this->shipWrapperFactory->wrapShip($ship)->deactivateTractorBeam(); //active deactivation
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             }
         }
     }
