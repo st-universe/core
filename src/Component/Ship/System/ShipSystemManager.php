@@ -40,6 +40,14 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $this->stuTime = $stuTime;
     }
 
+    public function updateSystemData(ShipInterface $ship, int $systemId, $data): void
+    {
+        $shipSystem = $ship->getSystems()[$systemId] ?? null;
+        if ($shipSystem !== null) {
+            $shipSystem->setData($data);
+        }
+    }
+
     public function activate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
     {
         $time = $this->stuTime->time();

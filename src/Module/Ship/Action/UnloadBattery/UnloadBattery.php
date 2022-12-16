@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\UnloadBattery;
 
 use request;
-
+use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,12 +23,16 @@ final class UnloadBattery implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipSystemManagerInterface $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -90,6 +95,11 @@ final class UnloadBattery implements ActionControllerInterface
         $ship->setEBatt($ship->getEBatt() - $load);
         $ship->setEps($ship->getEps() + $load);
         $ship->setEBattWaitingTime(time() + $load * 60);
+
+        //experimental
+        $data = new EpsSystemData();
+        $data->setMaxBatt(42);
+        $this->shipSystemManager->updateSystemData($ship, ShipSystemTypeEnum::SYSTEM_EPS, $data);
 
         $this->shipRepository->save($ship);
 

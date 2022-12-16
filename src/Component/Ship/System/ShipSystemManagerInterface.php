@@ -13,6 +13,8 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface ShipSystemManagerInterface
 {
+    public function updateSystemData(ShipInterface $ship, int $systemId, $data): void;
+
     /**
      * @throws InsufficientEnergyException
      * @throws ActivationConditionsNotMetException
