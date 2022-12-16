@@ -628,7 +628,7 @@
 <metal:block metal:define-macro="initial_js">
   <script language="Javascript">
     var sstr = '${THIS/getSessionString}';
-    var shipid = ${ SHIP/getId};
+    var shipid = ${ WRAPPER/get/getId};
   </script>
   <script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js"></script>
   <script type="text/javascript" src="${THIS/getJavascriptPath}/js/shipmanagement.js"></script>
