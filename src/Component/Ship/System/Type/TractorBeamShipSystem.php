@@ -91,9 +91,9 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
-
         if ($ship->isTractoring()) {
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
+
             $traktor = $ship->getTractoredShip();
 
             $ship->setTractoredShip(null);
