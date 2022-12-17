@@ -38,6 +38,7 @@ use Stu\Module\Alliance\Action\CreateTopic\CreateTopicRequestInterface;
 use Stu\Module\Alliance\Action\DeclineApplication\DeclineApplication;
 use Stu\Module\Alliance\Action\DeclineApplication\DeclineApplicationRequest;
 use Stu\Module\Alliance\Action\DeclineApplication\DeclineApplicationRequestInterface;
+use Stu\Module\Alliance\Action\DeclineOffer\DeclineOffer;
 use Stu\Module\Alliance\Action\DeleteAlliance\DeleteAlliance;
 use Stu\Module\Alliance\Action\DeleteAvatar\DeleteAvatar;
 use Stu\Module\Alliance\Action\DeleteBoard\DeleteBoard;
@@ -166,6 +167,7 @@ return [
         SuggestPeace::ACTION_IDENTIFIER => autowire(SuggestPeace::class),
         CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
         AcceptOffer::ACTION_IDENTIFIER => autowire(AcceptOffer::class),
+        DeclineOffer::ACTION_IDENTIFIER => autowire(DeclineOffer::class),
         CancelContract::ACTION_IDENTIFIER => autowire(CancelContract::class),
         ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
         DeleteAvatar::ACTION_IDENTIFIER => autowire(DeleteAvatar::class),

@@ -96,7 +96,7 @@ final class AcceptOffer implements ActionControllerInterface
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }
 
-        $game->addInformation(_('Das Angebot wurden angemommen'));
+        $game->addInformation(_('Das Angebot wurden angenommen'));
     }
 
     public function performSessionCheck(): bool
