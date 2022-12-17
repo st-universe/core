@@ -1121,253 +1121,262 @@
 				<br />
 			</div>
 		</tal:block>
-		<tal:block tal:condition="exists: WRAPPER" tal:define="SHIP WRAPPER/get">
-			<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
-			<form action="ship.php" method="post" name="shipform" id="shipform"
-				onkeydown="return event.key != 'Enter';">
-				<metal:macro metal:use-macro="html/shipmacros.xhtml/hiddenshipid" />
-				<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-				<table class="tcal">
-					<tr>
-						<th style="text-align: center;">Typ</th>
-						<th></th>
-						<th style="text-align: center;" title="im System">Koordinaten <img
-								src="assets/buttons/info2.png" style="height:16px;" /></th>
-						<th style="text-align: center;" title="aktuell/maximal">Hülle <img
-								src="assets/buttons/info2.png" style="height:16px;" /></th>
-						<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img
-								src="assets/buttons/info2.png" style="height:16px;" /></th>
-						<th style="text-align: center;"
-							title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">Energie <img
-								src="assets/buttons/info2.png" style="height:16px;" /></th>
-						<th style="text-align: center;">Batterie</th>
-						<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img
-								src="assets/buttons/info2.png" style="height:16px;" /></th>
-						<th style="text-align: center;">Name</th>
-						<td rowspan="3" style="text-align: center;">
-							<tal:block tal:condition="SHIP/isConstruction">
-								<a href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
-									onmouseover="cp('scrap','buttons/scrap2');"
-									onmouseout="cp('scrap','buttons/scrap1');">
-									<img src="assets/buttons/scrap1.png" name="scrap" title="Konstrukt entfernen" />
+		<tal:block tal:condition="exists: WRAPPER">
+			<tal:block tal:define="SHIP WRAPPER/get">
+				<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
+				<form action="ship.php" method="post" name="shipform" id="shipform"
+					onkeydown="return event.key != 'Enter';">
+					<metal:macro metal:use-macro="html/shipmacros.xhtml/hiddenshipid" />
+					<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+					<table class="tcal">
+						<tr>
+							<th style="text-align: center;">Typ</th>
+							<th></th>
+							<th style="text-align: center;" title="im System">Koordinaten <img
+									src="assets/buttons/info2.png" style="height:16px;" /></th>
+							<th style="text-align: center;" title="aktuell/maximal">Hülle <img
+									src="assets/buttons/info2.png" style="height:16px;" /></th>
+							<th style="text-align: center;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde
+								<img src="assets/buttons/info2.png" style="height:16px;" />
+							</th>
+							<th style="text-align: center;"
+								title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">Energie <img
+									src="assets/buttons/info2.png" style="height:16px;" /></th>
+							<th style="text-align: center;">Batterie</th>
+							<th style="text-align: center;" title="aktuell (Minimum, Maximum)">Crew <img
+									src="assets/buttons/info2.png" style="height:16px;" /></th>
+							<th style="text-align: center;">Name</th>
+							<td rowspan="3" style="text-align: center;">
+								<tal:block tal:condition="SHIP/isConstruction">
+									<a href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
+										onmouseover="cp('scrap','buttons/scrap2');"
+										onmouseout="cp('scrap','buttons/scrap1');">
+										<img src="assets/buttons/scrap1.png" name="scrap" title="Konstrukt entfernen" />
+									</a>
+								</tal:block>
+								<tal:block tal:condition="not:SHIP/isConstruction">
+									<a href="javascript:void(0);" onclick="showSelfdestructWindow(${SHIP/getId});"
+										onmouseover="cp('selfdestruct','buttons/selfdes2');"
+										onmouseout="cp('selfdestruct','buttons/selfdes1');">
+										<img src="assets/buttons/selfdes1.png" name="selfdestruct"
+											title="Selbstzerstörung" />
+									</a>
+									<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING)"
+										href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
+										onmouseover="cp('scrap','buttons/scrap2');"
+										onmouseout="cp('scrap','buttons/scrap1');">
+										<img src="assets/buttons/scrap1.png" name="scrap" title="Station demontieren" />
+									</a>
+								</tal:block>
+							</td>
+						</tr>
+						<tr>
+							<td rowspan="2" tal:define="ship SHIP" style="vertical-align: middle; text-align: center;">
+								<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
+									<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 								</a>
-							</tal:block>
-							<tal:block tal:condition="not:SHIP/isConstruction">
-								<a href="javascript:void(0);" onclick="showSelfdestructWindow(${SHIP/getId});"
-									onmouseover="cp('selfdestruct','buttons/selfdes2');"
-									onmouseout="cp('selfdestruct','buttons/selfdes1');">
-									<img src="assets/buttons/selfdes1.png" name="selfdestruct"
-										title="Selbstzerstörung" />
+							</td>
+							<td style="text-align: center;">
+								<a href="javascript:void(0);" onclick="showALvlWindow();"><img
+										src="assets/buttons/alert${SHIP/getAlertState}.png" title="Alarmstufe"
+										name="setalvl" /></a>
+							</td>
+							<td style="text-align: center;">
+								${SHIP/getPosX}|${SHIP/getPosY}
+							</td>
+							<td style="text-align: center;">
+								${SHIP/getHuell}/${SHIP/getMaxHuell}
+							</td>
+							<td style="text-align: center;">
+								<span tal:condition="SHIP/getShieldState" class="activeshield"
+									tal:content="string:${SHIP/getShield}/${SHIP/getMaxShield}">..</span>
+								<span
+									tal:condition="not:SHIP/getShieldState">${SHIP/getShield}/${SHIP/getMaxShield}</span>
+								(+<span tal:replace="SHIP/getShieldRegenerationRate">REGENERATIONRATE</span>)
+							</td>
+							<td style="text-align: center;">
+								${SHIP/getEps}/${SHIP/getMaxEps}
+								<span>${addPlusCharacter:WRAPPER/getEffectiveEpsProduction}</span>
+								(<span tal:content="WRAPPER/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
+									tal:content="WRAPPER/getWarpcoreUsage">CORE</span>)
+							</td>
+							<td style="text-align: center;">
+								${SHIP/getEBatt}
+							</td>
+							<td style="text-align: center;">
+								<span tal:replace="SHIP/getCrewCount">CURRENT</span>&nbsp;(<span
+									tal:condition="SHIP/getBuildplan"
+									tal:replace="SHIP/getBuildplan/getCrew">MIN</span><span
+									tal:condition="not:SHIP/getBuildplan">kA</span>,<span
+									tal:condition="SHIP/getRump/getCrewObj"
+									tal:replace="SHIP/getMaxCrewCount">MAX</span><span
+									tal:condition="not:SHIP/getRump/getCrewObj">kA</span>)
+							</td>
+							<td style="text-align: center;">
+								<input type="text" name="shipname" size="25" tal:attributes="value SHIP/getName"
+									onkeydown="event.key == 'Enter' &amp;&amp;  $('changeshipnamebutton').click()" />
+								<input type="submit" class="button" id="changeshipnamebutton" name="B_CHANGE_NAME"
+									value="ändern" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<a href="?SHOW_SHIP=1&id=${SHIP/getId}" onmouseover="cp('uship','buttons/lese2');"
+									onmouseout="cp('uship','buttons/lese1');">
+									<img src="assets/buttons/lese1.png" title="Aktualisieren" name="uship" />
 								</a>
-								<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING)"
-									href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
-									onmouseover="cp('scrap','buttons/scrap2');"
-									onmouseout="cp('scrap','buttons/scrap1');">
-									<img src="assets/buttons/scrap1.png" name="scrap" title="Station demontieren" />
+								<a href="javascript:void(0);" onclick="showShipDetails(${SHIP/getId});"
+									onmouseover="cp('shinfo','buttons/info2');"
+									onmouseout="cp('shinfo','buttons/info1');">
+									<img src="assets/buttons/info1.png" title="Schiffsinformationen anzeigen"
+										name="shinfo" />
 								</a>
-							</tal:block>
-						</td>
-					</tr>
-					<tr>
-						<td rowspan="2" tal:define="ship SHIP" style="vertical-align: middle; text-align: center;">
-							<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
-								<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
-							</a>
-						</td>
-						<td style="text-align: center;">
-							<a href="javascript:void(0);" onclick="showALvlWindow();"><img
-									src="assets/buttons/alert${SHIP/getAlertState}.png" title="Alarmstufe"
-									name="setalvl" /></a>
-						</td>
-						<td style="text-align: center;">
-							${SHIP/getPosX}|${SHIP/getPosY}
-						</td>
-						<td style="text-align: center;">
-							${SHIP/getHuell}/${SHIP/getMaxHuell}
-						</td>
-						<td style="text-align: center;">
-							<span tal:condition="SHIP/getShieldState" class="activeshield"
-								tal:content="string:${SHIP/getShield}/${SHIP/getMaxShield}">..</span>
-							<span tal:condition="not:SHIP/getShieldState">${SHIP/getShield}/${SHIP/getMaxShield}</span>
-							(+<span tal:replace="SHIP/getShieldRegenerationRate">REGENERATIONRATE</span>)
-						</td>
-						<td style="text-align: center;">
-							${SHIP/getEps}/${SHIP/getMaxEps}
-							<span>${addPlusCharacter:WRAPPER/getEffectiveEpsProduction}</span>
-							(<span tal:content="WRAPPER/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
-								tal:content="WRAPPER/getWarpcoreUsage">CORE</span>)
-						</td>
-						<td style="text-align: center;">
-							${SHIP/getEBatt}
-						</td>
-						<td style="text-align: center;">
-							<span tal:replace="SHIP/getCrewCount">CURRENT</span>&nbsp;(<span
-								tal:condition="SHIP/getBuildplan"
-								tal:replace="SHIP/getBuildplan/getCrew">MIN</span><span
-								tal:condition="not:SHIP/getBuildplan">kA</span>,<span
-								tal:condition="SHIP/getRump/getCrewObj"
-								tal:replace="SHIP/getMaxCrewCount">MAX</span><span
-								tal:condition="not:SHIP/getRump/getCrewObj">kA</span>)
-						</td>
-						<td style="text-align: center;">
-							<input type="text" name="shipname" size="25" tal:attributes="value SHIP/getName"
-								onkeydown="event.key == 'Enter' &amp;&amp;  $('changeshipnamebutton').click()" /> <input
-								type="submit" class="button" id="changeshipnamebutton" name="B_CHANGE_NAME"
-								value="ändern" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<a href="?SHOW_SHIP=1&id=${SHIP/getId}" onmouseover="cp('uship','buttons/lese2');"
-								onmouseout="cp('uship','buttons/lese1');">
-								<img src="assets/buttons/lese1.png" title="Aktualisieren" name="uship" />
-							</a>
-							<a href="javascript:void(0);" onclick="showShipDetails(${SHIP/getId});"
-								onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
-								<img src="assets/buttons/info1.png" title="Schiffsinformationen anzeigen"
-									name="shinfo" />
-							</a>
-							<a href="?B_SET_LSS_BORDER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-								tal:condition="SHIP/isLSSModeNormal" onmouseover="cp('actlss','buttons/lss_button1');"
-								onmouseout="cp('actlss','buttons/lss_button3');">
-								<img src="assets/buttons/lss_button3.png" title="Territoriale Grenzansicht aktivieren"
-									name="actlss" />
-							</a>
-							<a href="?B_SET_LSS_NORMAL=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-								tal:condition="SHIP/isLSSModeBorder" onmouseover="cp('actlss','buttons/lss_button2');"
-								onmouseout="cp('actlss','buttons/lss_button1');">
-								<img src="assets/buttons/lss_button1.png" title="Territoriale Grenzansicht deaktivieren"
-									name="actlss" />
-							</a>
-							<a href="javascript:void(0);"
-								tal:condition="php: !SHIP.getSystem() OR !SHIP.getSystem().isWormhole()"
-								onclick="openStarMap(this,'${SHIP/getMapCX}','${SHIP/getMapCY}');"
-								onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
-								<img src="assets/buttons/map1.png" title="Karte anzeigen" name="shimap" />
-							</a>
-							<a href="?B_SHUTDOWN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-								onmouseover="cp('shutdown','buttons/shutdown2');"
-								onmouseout="cp('shutdown','buttons/shutdown1');">
-								<img src="assets/buttons/shutdown1.png" title="Energieverbrauch minimieren"
-									name="shutdown" />
-							</a>
-							<a tal:condition="WRAPPER/canBeRepaired" href="javascript:void(0);"
-								onclick="showRepairOptions(${SHIP/getId});"
-								onmouseover="cp('selfrepair','buttons/rep2');"
-								onmouseout="cp('selfrepair','buttons/rep1');">
-								<img src="assets/buttons/rep1.png" style="height: 20px;"
-									title="Reparaturoptionen anzeigen" name="selfrepair" />
-							</a>
-						</td>
-						<td colspan="2">
-							<img tal:condition="SHIP/getBuildplan" tal:repeat="mod SHIP/getModules"
-								style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
-								title="${mod/getName}" />
-						</td>
-						<td colspan="4">
-							<img tal:repeat="sys SHIP/getSystems" title="${sys/getName}: ${sys/getStatus}%"
-								style="margin-right: 5px;" class="${sys/getCssClass}"
-								src="assets/system/${sys/getSystemType}.png" />
-						</td>
-					</tr>
-				</table>
-				<br />
-				<table style="width: 100%;">
-					<tr tal:condition="not:SHIP/isBase">
-						<td style="width: 33%; vertical-align: top;">
-							<metal:macro metal:use-macro="control_nav" />
-						</td>
-						<td style="vertical-align: top; width: 33%;">
-							<metal:macro metal:use-macro="control_mid" />
-						</td>
-						<td style="vertical-align: top; width: 33%;">
-							<metal:macro metal:use-macro="control_right" />
-						</td>
-					</tr>
-					<tr tal:condition="SHIP/isBase">
-						<td style="vertical-align: top; width: 33%;">
-							<div class="box">
-								<div class="box_title">Angedockte Schiffe
-									(<span tal:condition="php: SHIP.getDockedShipCount() EQ SHIP.getDockingSlotCount()"
-										style="color: red;">${SHIP/getDockedShipCount}/${SHIP/getDockingSlotCount}</span><span
-										tal:condition="not:php:SHIP.getDockedShipCount() EQ SHIP.getDockingSlotCount()">${SHIP/getDockedShipCount}/${SHIP/getDockingSlotCount}</span>)
-								</div>
-								<div class="box_body">
-									<ul id="shipselector">
-										<metal:block tal:condition="FIRST_MANAGE_SHIP"
-											metal:use-macro="html/colonymacros.xhtml/shipselector"
-											tal:define="data FIRST_MANAGE_SHIP" />
-										<li tal:condition="not:FIRST_MANAGE_SHIP" style="text-align: center">Keine
-											Schiffe angedockt</li>
-									</ul>
-									<br />
-									<div style="display: flex;">
-										<div style="width: 50%; float: left;" tal:condition="FIRST_MANAGE_SHIP">
-											<a href="javascript:void(0);" onclick="showBeamFromWindow();"
-												onmouseover="cp('beamfrom','buttons/b_down2')"
-												onmouseout="cp('beamfrom','buttons/b_down1')"><img
-													src="assets/buttons/b_down1.png" name="beamfrom"
-													title="Von Schiff beamen" /></a>
-											<a href="javascript:void(0);" onclick="showBeamToWindow();"
-												onmouseover="cp('beamto','buttons/b_up2')"
-												onmouseout="cp('beamto','buttons/b_up1')"><img
-													src="assets/buttons/b_up1.png" name="beamto"
-													title="Zu Schiff beamen" /></a>
-											<a href="javascript:void(0);" onclick="getShipList();">Liste</a>
-											<tal:block tal:condition="exists:CAN_MANAGE"> | <a
-													href="station.php?SHOW_SHIP_MANAGEMENT=1&id=${SHIP/getId}">Management</a>
-											</tal:block>
-											<tal:block tal:condition="exists:CAN_REPAIR"> | <a
-													href="station.php?SHOW_SHIP_REPAIR=1&id=${SHIP/getId}">Reparatur</a>
-											</tal:block>
-										</div>
-										<div style="width: 50%; float: left;">
-											<a href="javascript:void(0);" onclick="editDockPrivileges()"
-												onmouseover="cp('dockPrivButton','buttons/dock2')"
-												onmouseout="cp('dockPrivButton','buttons/dock1')">
-												<img src="/assets/buttons/dock1.png" name="dockPrivButton"
-													title="Dockrechte bearbeiten" />Dockrechte</a>
+								<a href="?B_SET_LSS_BORDER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+									tal:condition="SHIP/isLSSModeNormal"
+									onmouseover="cp('actlss','buttons/lss_button1');"
+									onmouseout="cp('actlss','buttons/lss_button3');">
+									<img src="assets/buttons/lss_button3.png"
+										title="Territoriale Grenzansicht aktivieren" name="actlss" />
+								</a>
+								<a href="?B_SET_LSS_NORMAL=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+									tal:condition="SHIP/isLSSModeBorder"
+									onmouseover="cp('actlss','buttons/lss_button2');"
+									onmouseout="cp('actlss','buttons/lss_button1');">
+									<img src="assets/buttons/lss_button1.png"
+										title="Territoriale Grenzansicht deaktivieren" name="actlss" />
+								</a>
+								<a href="javascript:void(0);"
+									tal:condition="php: !SHIP.getSystem() OR !SHIP.getSystem().isWormhole()"
+									onclick="openStarMap(this,'${SHIP/getMapCX}','${SHIP/getMapCY}');"
+									onmouseover="cp('shimap','buttons/map2');"
+									onmouseout="cp('shimap','buttons/map1');">
+									<img src="assets/buttons/map1.png" title="Karte anzeigen" name="shimap" />
+								</a>
+								<a href="?B_SHUTDOWN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+									onmouseover="cp('shutdown','buttons/shutdown2');"
+									onmouseout="cp('shutdown','buttons/shutdown1');">
+									<img src="assets/buttons/shutdown1.png" title="Energieverbrauch minimieren"
+										name="shutdown" />
+								</a>
+								<a tal:condition="WRAPPER/canBeRepaired" href="javascript:void(0);"
+									onclick="showRepairOptions(${SHIP/getId});"
+									onmouseover="cp('selfrepair','buttons/rep2');"
+									onmouseout="cp('selfrepair','buttons/rep1');">
+									<img src="assets/buttons/rep1.png" style="height: 20px;"
+										title="Reparaturoptionen anzeigen" name="selfrepair" />
+								</a>
+							</td>
+							<td colspan="2">
+								<img tal:condition="SHIP/getBuildplan" tal:repeat="mod SHIP/getModules"
+									style="margin-right: 5px;" src="assets/commodities/${mod/getCommodityId}.png"
+									title="${mod/getName}" />
+							</td>
+							<td colspan="4">
+								<img tal:repeat="sys SHIP/getSystems" title="${sys/getName}: ${sys/getStatus}%"
+									style="margin-right: 5px;" class="${sys/getCssClass}"
+									src="assets/system/${sys/getSystemType}.png" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<table style="width: 100%;">
+						<tr tal:condition="not:SHIP/isBase">
+							<td style="width: 33%; vertical-align: top;">
+								<metal:macro metal:use-macro="control_nav" />
+							</td>
+							<td style="vertical-align: top; width: 33%;">
+								<metal:macro metal:use-macro="control_mid" />
+							</td>
+							<td style="vertical-align: top; width: 33%;">
+								<metal:macro metal:use-macro="control_right" />
+							</td>
+						</tr>
+						<tr tal:condition="SHIP/isBase">
+							<td style="vertical-align: top; width: 33%;">
+								<div class="box">
+									<div class="box_title">Angedockte Schiffe
+										(<span
+											tal:condition="php: SHIP.getDockedShipCount() EQ SHIP.getDockingSlotCount()"
+											style="color: red;">${SHIP/getDockedShipCount}/${SHIP/getDockingSlotCount}</span><span
+											tal:condition="not:php:SHIP.getDockedShipCount() EQ SHIP.getDockingSlotCount()">${SHIP/getDockedShipCount}/${SHIP/getDockingSlotCount}</span>)
+									</div>
+									<div class="box_body">
+										<ul id="shipselector">
+											<metal:block tal:condition="FIRST_MANAGE_SHIP"
+												metal:use-macro="html/colonymacros.xhtml/shipselector"
+												tal:define="data FIRST_MANAGE_SHIP" />
+											<li tal:condition="not:FIRST_MANAGE_SHIP" style="text-align: center">Keine
+												Schiffe angedockt</li>
+										</ul>
+										<br />
+										<div style="display: flex;">
+											<div style="width: 50%; float: left;" tal:condition="FIRST_MANAGE_SHIP">
+												<a href="javascript:void(0);" onclick="showBeamFromWindow();"
+													onmouseover="cp('beamfrom','buttons/b_down2')"
+													onmouseout="cp('beamfrom','buttons/b_down1')"><img
+														src="assets/buttons/b_down1.png" name="beamfrom"
+														title="Von Schiff beamen" /></a>
+												<a href="javascript:void(0);" onclick="showBeamToWindow();"
+													onmouseover="cp('beamto','buttons/b_up2')"
+													onmouseout="cp('beamto','buttons/b_up1')"><img
+														src="assets/buttons/b_up1.png" name="beamto"
+														title="Zu Schiff beamen" /></a>
+												<a href="javascript:void(0);" onclick="getShipList();">Liste</a>
+												<tal:block tal:condition="exists:CAN_MANAGE"> | <a
+														href="station.php?SHOW_SHIP_MANAGEMENT=1&id=${SHIP/getId}">Management</a>
+												</tal:block>
+												<tal:block tal:condition="exists:CAN_REPAIR"> | <a
+														href="station.php?SHOW_SHIP_REPAIR=1&id=${SHIP/getId}">Reparatur</a>
+												</tal:block>
+											</div>
+											<div style="width: 50%; float: left;">
+												<a href="javascript:void(0);" onclick="editDockPrivileges()"
+													onmouseover="cp('dockPrivButton','buttons/dock2')"
+													onmouseout="cp('dockPrivButton','buttons/dock1')">
+													<img src="/assets/buttons/dock1.png" name="dockPrivButton"
+														title="Dockrechte bearbeiten" />Dockrechte</a>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<br />
-							<metal:macro metal:use-macro="control_mid" />
-							<metal:macro metal:use-macro="control_right" />
-							<div id="systemsensorscan"></div>
-						</td>
-						<td style="vertical-align: top; width: 67%;">
-							<metal:macro metal:use-macro="control_nav" />
-							<tal:block tal:condition="exists: SHIP_REPAIR_PROGRESS">
-								<metal:macro metal:use-macro="html/stationmacros.xhtml/ship_repairprogress" />
-							</tal:block>
-							<tal:block
-								tal:condition="php: SHIP.getRump().isShipyard() AND SHIP.getConstructionHubState()">
-								<metal:macro metal:use-macro="html/colonymacros.xhtml/ship_buildprogress"
-									tal:condition="exists: SHIP_BUILD_PROGRESS" />
-								<metal:macro metal:use-macro="html/stationmacros.xhtml/shipyardoptions" />
-							</tal:block>
-						</td>
+								<br />
+								<metal:macro metal:use-macro="control_mid" />
+								<metal:macro metal:use-macro="control_right" />
+								<div id="systemsensorscan"></div>
+							</td>
+							<td style="vertical-align: top; width: 67%;">
+								<metal:macro metal:use-macro="control_nav" />
+								<tal:block tal:condition="exists: SHIP_REPAIR_PROGRESS">
+									<metal:macro metal:use-macro="html/stationmacros.xhtml/ship_repairprogress" />
+								</tal:block>
+								<tal:block
+									tal:condition="php: SHIP.getRump().isShipyard() AND SHIP.getConstructionHubState()">
+									<metal:macro metal:use-macro="html/colonymacros.xhtml/ship_buildprogress"
+										tal:condition="exists: SHIP_BUILD_PROGRESS" />
+									<metal:macro metal:use-macro="html/stationmacros.xhtml/shipyardoptions" />
+								</tal:block>
+							</td>
+						</tr>
+					</table>
+					<br />
+				</form>
+				<table class="tcal" tal:condition="SHIP/hasNbsLss">
+					<tr>
+						<th>
+							<a href="?B_ACTIVATE_NBS=1&id=${SHIP/getId}" tal:condition="not:SHIP/getNbs"><img
+									src="assets/buttons/kss2.png" /> Nahbereichssensoren aktivieren</a>
+							<a href="?B_DEACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+								tal:condition="SHIP/getNbs"><img src="assets/buttons/kss1.png" /> Nahbereichssensoren
+								deaktivieren</a>
+						</th>
 					</tr>
 				</table>
+				<tal:block tal:condition="SHIP/getNbs">
+					<metal:macro metal:use-macro="html/shipmacros.xhtml/nbsblock" />
+				</tal:block>
 				<br />
-			</form>
-			<table class="tcal" tal:condition="SHIP/hasNbsLss">
-				<tr>
-					<th>
-						<a href="?B_ACTIVATE_NBS=1&id=${SHIP/getId}" tal:condition="not:SHIP/getNbs"><img
-								src="assets/buttons/kss2.png" /> Nahbereichssensoren aktivieren</a>
-						<a href="?B_DEACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-							tal:condition="SHIP/getNbs"><img src="assets/buttons/kss1.png" /> Nahbereichssensoren
-							deaktivieren</a>
-					</th>
-				</tr>
-			</table>
-			<tal:block tal:condition="SHIP/getNbs">
-				<metal:macro metal:use-macro="html/shipmacros.xhtml/nbsblock" />
+				<metal:macro metal:use-macro="html/shipmacros.xhtml/shipstorage" />
 			</tal:block>
-			<br />
-			<metal:macro metal:use-macro="html/shipmacros.xhtml/shipstorage" />
 		</tal:block>
 	</metal:macro>
 </metal:macro>
