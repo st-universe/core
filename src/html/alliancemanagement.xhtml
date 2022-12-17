@@ -62,7 +62,7 @@
 				</td>
 				<td style="width: 200px;" tal:condition="data/isCurrentUser"></td>
 				<td style="text-align: center;">
-					<a tal:condition="not:data/isFounder"
+					<a tal:condition="php: !data.isFounder() && !data.isCurrentUser()"
 						href="alliance.php?B_KICK_USER=1&SHOW_MANAGEMENT=1&uid=${data/getId}&sstr=${THIS/getSessionString}"
 						class="linkbutton">Rauswerfen</a>
 				</td>
