@@ -15,6 +15,7 @@ final class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTy
     public int $maxBatt = 0;
     public int $batt = 0;
     public int $battWait = 0;
+    public bool $reloadBattery = false;
 
     public function update(ShipInterface $ship): void
     {

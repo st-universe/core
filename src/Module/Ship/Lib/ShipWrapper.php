@@ -65,6 +65,11 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->epsUsage;
     }
 
+    public function lowerEpsUsage($value): void
+    {
+        $this->epsUsage -= $value;
+    }
+
     private function reloadEpsUsage(): void
     {
         $result = 0;

@@ -307,8 +307,6 @@ interface ShipInterface
 
     public function setBuildplan(?ShipBuildplanInterface $shipBuildplan): ShipInterface;
 
-    public function lowerEpsUsage($value): void;
-
     /**
      * @return ShipSystemInterface[]|Collection
      */

@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -27,16 +28,20 @@ final class UnloadBattery implements ActionControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private StuTime $stuTime;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipWrapperFactoryInterface $shipWrapperFactory,
+        StuTime $stuTime
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->stuTime = $stuTime;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -76,6 +81,11 @@ final class UnloadBattery implements ActionControllerInterface
         if (!$ship->hasEnoughCrew()) {
             return sprintf(_('%s: Das Schiff hat zu wenig Crew'), $ship->getName());
         }
+
+        $eps = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
+        if ($eps === null) {
+            return sprintf(_('%s: Kein Energiesystem installiert'), $ship->getName());
+        }
         if (!$ship->getEBatt()) {
             return sprintf(_('%s: Die Ersatzbatterie ist leer'), $ship->getName());
         }
@@ -98,11 +108,12 @@ final class UnloadBattery implements ActionControllerInterface
         }
         $ship->setEBatt($ship->getEBatt() - $load);
         $ship->setEps($ship->getEps() + $load);
-        $ship->setEBattWaitingTime(time() + $load * 60);
+        $ship->setEBattWaitingTime($this->stuTime->time() + $load * 60);
 
         //experimental
-        $eps = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
-        $eps->setMaxBatt(42)->setBatt(55)->setBattWait(123)->update($ship, ShipSystemTypeEnum::SYSTEM_EPS);
+        $eps->setBatt($ship->getEBatt() - $load)
+            ->setBattWait($this->stuTime->time() + $load * 60)
+            ->update($ship, ShipSystemTypeEnum::SYSTEM_EPS);
 
         $this->shipRepository->save($ship);
 

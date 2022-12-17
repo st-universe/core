@@ -1219,11 +1219,6 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function lowerEpsUsage($value): void
-    {
-        $this->epsUsage -= $value;
-    }
-
     public function getSystems(): Collection
     {
         return $this->systems;

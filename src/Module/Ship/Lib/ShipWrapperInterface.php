@@ -12,6 +12,8 @@ interface ShipWrapperInterface
 
     public function getEpsUsage(): int;
 
+    public function lowerEpsUsage($value): void;
+
     public function getEffectiveEpsProduction(): int;
 
     public function getWarpcoreUsage(): int;

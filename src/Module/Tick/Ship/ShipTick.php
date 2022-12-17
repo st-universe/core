@@ -149,7 +149,7 @@ final class ShipTick implements ShipTickInterface
 
                     $this->shipSystemManager->deactivate($ship, $system->getSystemType(), true);
 
-                    $ship->lowerEpsUsage($energyConsumption);
+                    $wrapper->lowerEpsUsage($energyConsumption);
                     $this->msg[] = $this->getSystemDescription($system) . ' deaktiviert wegen Energiemangel';
 
                     if ($ship->getCrewCount() > 0 && $system->getSystemType() == ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
