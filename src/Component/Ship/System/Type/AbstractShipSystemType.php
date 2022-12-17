@@ -13,7 +13,8 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 {
     protected function updateSystemData(ShipInterface $ship, int $systemType, $data): void
     {
-        $ship->getShipSystem($systemType)->setData(json_encode($data));
+        //$ship->getShipSystem($systemType)->setData(json_encode($data));
+        $ship->getShipSystem($systemType)->setData($data);
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
