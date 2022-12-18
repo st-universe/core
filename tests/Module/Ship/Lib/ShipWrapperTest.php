@@ -65,7 +65,30 @@ class ShipWrapperTest extends StuTestCase
         );
     }
 
-    public function testGetEpsShipSystem(): void
+    public function testGetEpsShipSystemDataNotEmptyExpectDefaultValues(): void
+    {
+        $this->ship->shouldReceive('hasShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_EPS)
+            ->once()
+            ->andReturn(true);
+        $this->ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_EPS)
+            ->once()
+            ->andReturn($this->shipSystem);
+        $this->shipSystem->shouldReceive('getData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
+        $eps = $this->shipWrapper->getEpsShipSystem();
+
+        $this->assertEquals(0, $eps->getBattery());
+        $this->assertEquals(0, $eps->getMaxBattery());
+        $this->assertEquals(0, $eps->getBatteryCooldown());
+        $this->assertEquals(false, $eps->reloadBattery());
+    }
+
+    public function testGetEpsShipSystemDataNotEmptyExpectCorrectValues(): void
     {
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_EPS)

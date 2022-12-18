@@ -309,8 +309,10 @@ final class ShipWrapper implements ShipWrapperInterface
             return null;
         }
 
-        return $this->jsonMapper->mapObject(
-            json_decode($this->get()->getShipSystem($systemId)->getData()),
+        $data = $this->get()->getShipSystem($systemId)->getData();
+
+        return $data === null ? $object : $this->jsonMapper->mapObject(
+            json_decode($data),
             $object
         );
     }
