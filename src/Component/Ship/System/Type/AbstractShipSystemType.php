@@ -22,7 +22,7 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         ShipSystemRepositoryInterface $shipSystemRepository
     ): void {
         $system = $ship->getShipSystem($systemType);
-        $system->setData($data);
+        $system->setData(json_encode($data));
         $shipSystemRepository->save($system);
     }
 
