@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use JsonMapper;
+use JsonMapper\JsonMapper;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
