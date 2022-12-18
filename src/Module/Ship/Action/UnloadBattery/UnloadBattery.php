@@ -10,6 +10,9 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -30,18 +33,22 @@ final class UnloadBattery implements ActionControllerInterface
 
     private StuTime $stuTime;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        StuTime $stuTime
+        StuTime $stuTime,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->stuTime = $stuTime;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -83,6 +90,18 @@ final class UnloadBattery implements ActionControllerInterface
         }
 
         $eps = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
+
+        //experimetal
+        /**
+         * if ($ship->getUser()->getId() === 126) {
+            $epsWithData = $this->shipWrapperFactory->wrapShip($ship)->getFoo();
+
+            $this->loggerUtil->init('JSON', LoggerEnum::LEVEL_ERROR);
+
+            $this->loggerUtil->log(sprintf('battery: %d', $epsWithData->getBattery()));
+        }
+         */
+
         if ($eps === null) {
             return sprintf(_('%s: Kein Energiesystem installiert'), $ship->getName());
         }
@@ -111,9 +130,9 @@ final class UnloadBattery implements ActionControllerInterface
         $ship->setEBattWaitingTime($this->stuTime->time() + $load * 60);
 
         //experimental
-        $eps->setBatt($ship->getEBatt() - $load)
-            ->setBattWait($this->stuTime->time() + $load * 60)
-            ->update($ship, ShipSystemTypeEnum::SYSTEM_EPS);
+        //$eps->setBatt($ship->getEBatt() - $load)
+        //    ->setBattWait($this->stuTime->time() + $load * 60)
+        //    ->update($ship, ShipSystemTypeEnum::SYSTEM_EPS);
 
         $this->shipRepository->save($ship);
 
