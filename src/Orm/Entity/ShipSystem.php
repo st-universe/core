@@ -46,7 +46,7 @@ class ShipSystem implements ShipSystemInterface
     /** @Column(type="integer", nullable=true) * */
     private $cooldown;
 
-    /** @Column(type="json", nullable=true) */
+    /** @Column(type="text", nullable=true) */
     private $data;
 
     /**
@@ -169,12 +169,12 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
-    public function getData(): array
+    public function getData(): ?string
     {
         return $this->data;
     }
 
-    public function setData($data): ShipSystemInterface
+    public function setData(string $data): ShipSystemInterface
     {
         $this->data = $data;
         return $this;

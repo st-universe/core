@@ -11,12 +11,15 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 {
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipRepositoryInterface $shipRepository;
+
+    private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -27,12 +30,14 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,
         ShipRepositoryInterface $shipRepository,
+        ShipSystemRepositoryInterface $shipSystemRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
         GameControllerInterface $game
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemRepository = $shipSystemRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->cancelRepair = $cancelRepair;
         $this->game = $game;
@@ -44,6 +49,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $ship,
             $this->shipSystemManager,
             $this->shipRepository,
+            $this->shipSystemRepository,
             $this->colonyLibFactory,
             $this->cancelRepair,
             $this->game,

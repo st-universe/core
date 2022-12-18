@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use JsonMapper;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -17,6 +18,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 final class ShipWrapper implements ShipWrapperInterface
 {
@@ -25,6 +27,8 @@ final class ShipWrapper implements ShipWrapperInterface
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipRepositoryInterface $shipRepository;
+
+    private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -40,6 +44,7 @@ final class ShipWrapper implements ShipWrapperInterface
         ShipInterface $ship,
         ShipSystemManagerInterface $shipSystemManager,
         ShipRepositoryInterface $shipRepository,
+        ShipSystemRepositoryInterface $shipSystemRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
         GameControllerInterface $game
@@ -47,6 +52,7 @@ final class ShipWrapper implements ShipWrapperInterface
         $this->ship = $ship;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemRepository = $shipSystemRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->cancelRepair = $cancelRepair;
         $this->game = $game;
@@ -287,6 +293,22 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function getEpsShipSystem(): ?EpsShipSystem
     {
-        return $this->shipSystemManager->lookupSystem(ShipSystemTypeEnum::SYSTEM_EPS);
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_EPS,
+            new EpsShipSystem($this->shipSystemRepository)
+        );
+    }
+
+    private function getSpecificShipSystem(int $systemId, $object)
+    {
+        if (!$this->get()->hasShipSystem($systemId)) {
+            return null;
+        }
+        $mapper = new JsonMapper();
+
+        return $mapper->map(
+            json_decode($this->get()->getShipSystem($systemId)->getData()),
+            $object
+        );
     }
 }

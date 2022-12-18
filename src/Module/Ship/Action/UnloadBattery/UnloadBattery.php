@@ -92,15 +92,15 @@ final class UnloadBattery implements ActionControllerInterface
         $eps = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
 
         //experimetal
-        /**
-         * if ($ship->getUser()->getId() === 126) {
-            $epsWithData = $this->shipWrapperFactory->wrapShip($ship)->getFoo();
+
+        if ($ship->getUser()->getId() === 126) {
+            $epsWithData = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
 
             $this->loggerUtil->init('JSON', LoggerEnum::LEVEL_ERROR);
 
             $this->loggerUtil->log(sprintf('battery: %d', $epsWithData->getBattery()));
         }
-         */
+
 
         if ($eps === null) {
             return sprintf(_('%s: Kein Energiesystem installiert'), $ship->getName());
@@ -130,9 +130,9 @@ final class UnloadBattery implements ActionControllerInterface
         $ship->setEBattWaitingTime($this->stuTime->time() + $load * 60);
 
         //experimental
-        //$eps->setBatt($ship->getEBatt() - $load)
-        //    ->setBattWait($this->stuTime->time() + $load * 60)
-        //    ->update($ship, ShipSystemTypeEnum::SYSTEM_EPS);
+        $eps->setBattery($ship->getEBatt() - $load)
+            ->setBatteryCooldown($this->stuTime->time() + $load * 60)
+            ->update($ship);
 
         $this->shipRepository->save($ship);
 

@@ -8,13 +8,22 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    protected function updateSystemData(ShipInterface $ship, int $systemType, $data): void
-    {
-        //$ship->getShipSystem($systemType)->setData(json_encode($data));
-        $ship->getShipSystem($systemType)->setData($data);
+    /**
+     * updates the system metadata for this specific ship system
+     */
+    protected function updateSystemData(
+        ShipInterface $ship,
+        int $systemType,
+        $data,
+        ShipSystemRepositoryInterface $shipSystemRepository
+    ): void {
+        $system = $ship->getShipSystem($systemType);
+        $system->setData($data);
+        $shipSystemRepository->save($system);
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool

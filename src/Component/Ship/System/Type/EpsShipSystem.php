@@ -9,40 +9,79 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 final class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public int $maxBatt = 0;
-    public int $batt = 0;
-    public int $battWait = 0;
+    public int $maxBattery = 0;
+    public int $battery = 0;
+    public int $batteryCooldown = 0;
     public bool $reloadBattery = false;
+
+    private ShipSystemRepositoryInterface $shipSystemRepository;
+
+    public function __construct(ShipSystemRepositoryInterface $shipSystemRepository)
+    {
+        $this->shipSystemRepository = $shipSystemRepository;
+    }
 
     public function update(ShipInterface $ship): void
     {
-        $this->updateSystemData($ship, ShipSystemTypeEnum::SYSTEM_EPS, $this);
+        $this->updateSystemData(
+            $ship,
+            ShipSystemTypeEnum::SYSTEM_EPS,
+            $this,
+            $this->shipSystemRepository
+        );
     }
 
-    public function setMaxBatt(int $maxBatt): EpsShipSystem
+    public function getMaxBattery(): int
     {
-        $this->maxBatt = $maxBatt;
+        return $this->maxBattery;
+    }
+
+    public function setMaxBattery(int $maxBattery): EpsShipSystem
+    {
+        $this->maxBattery = $maxBattery;
         return $this;
     }
 
-    public function setBatt(int $batt): EpsShipSystem
+    public function getBattery(): int
     {
-        $this->batt = $batt;
+        return $this->battery;
+    }
+
+    public function setBattery(int $battery): EpsShipSystem
+    {
+        $this->battery = $battery;
         return $this;
     }
 
-    public function setBattWait(int $battWait): EpsShipSystem
+    public function getBatteryCooldown(): int
     {
-        $this->battWait = $battWait;
+        return $this->batteryCooldown;
+    }
+
+    public function setBatteryCooldown(int $batteryCooldown): EpsShipSystem
+    {
+        $this->batteryCooldown = $batteryCooldown;
+        return $this;
+    }
+
+    public function reloadBattery(): bool
+    {
+        return $this->reloadBattery;
+    }
+
+    public function setReloadBattery(bool $reloadBattery): EpsShipSystem
+    {
+        $this->reloadBattery = $reloadBattery;
         return $this;
     }
 
     public function isEBattUseable(): bool
     {
-        return $this->battWait < time();
+        return $this->batteryCooldown < time();
     }
 
     public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void

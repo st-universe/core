@@ -38,7 +38,7 @@ interface ShipSystemInterface
 
     public function setShip(ShipInterface $ship): ShipSystemInterface;
 
-    public function getData(): array;
+    public function getData(): ?string;
 
-    public function setData($data): ShipSystemInterface;
+    public function setData(string $data): ShipSystemInterface;
 }
