@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use JsonMapper\JsonMapperFactory;
+use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -31,6 +33,8 @@ class ShipWrapperTest extends StuTestCase
 
     private GameControllerInterface $game;
 
+    private JsonMapperInterface $jsonMapper;
+
     private ShipWrapper $shipWrapper;
 
     private ShipSystemInterface $shipSystem;
@@ -45,6 +49,7 @@ class ShipWrapperTest extends StuTestCase
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
+        $this->jsonMapper = (new JsonMapperFactory())->bestFit();;
 
         $this->shipSystem = $this->mock(ShipSystemInterface::class);
 
@@ -55,7 +60,8 @@ class ShipWrapperTest extends StuTestCase
             $this->shipSystemRepository,
             $this->colonyLibFactory,
             $this->cancelRepair,
-            $this->game
+            $this->game,
+            $this->jsonMapper
         );
     }
 
@@ -73,17 +79,17 @@ class ShipWrapperTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('{
-                "battery": 0,
+                "battery": 1,
                 "maxBattery": 55,
                 "batteryCooldown": 42,
-                "reloadBattery": false }
+                "reloadBattery": true }
             ');
 
         $eps = $this->shipWrapper->getEpsShipSystem();
 
-        $this->assertEquals(0, $eps->getBattery());
+        $this->assertEquals(1, $eps->getBattery());
         $this->assertEquals(55, $eps->getMaxBattery());
         $this->assertEquals(42, $eps->getBatteryCooldown());
-        $this->assertEquals(false, $eps->reloadBattery());
+        $this->assertEquals(true, $eps->reloadBattery());
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use JsonMapper\JsonMapper;
+use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -36,7 +36,7 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private GameControllerInterface $game;
 
-    private JsonMapper $jsonMapper;
+    private JsonMapperInterface $jsonMapper;
 
     private $epsUsage;
 
@@ -50,7 +50,7 @@ final class ShipWrapper implements ShipWrapperInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
         GameControllerInterface $game,
-        JsonMapper $jsonMapper
+        JsonMapperInterface $jsonMapper
     ) {
         $this->ship = $ship;
         $this->shipSystemManager = $shipSystemManager;
@@ -309,7 +309,7 @@ final class ShipWrapper implements ShipWrapperInterface
             return null;
         }
 
-        return $this->jsonMapper->map(
+        return $this->jsonMapper->mapObject(
             json_decode($this->get()->getShipSystem($systemId)->getData()),
             $object
         );

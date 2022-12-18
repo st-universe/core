@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use JsonMapper\JsonMapper;
+use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -28,7 +28,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     private GameControllerInterface $game;
 
-    private JsonMapper $jsonMapper;
+    private JsonMapperInterface $jsonMapper;
 
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,
@@ -37,7 +37,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
         GameControllerInterface $game,
-        JsonMapper $jsonMapper
+        JsonMapperInterface $jsonMapper
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;

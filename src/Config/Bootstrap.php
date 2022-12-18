@@ -16,7 +16,8 @@ use Exception;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
-use JsonMapper\JsonMapper;
+use JsonMapper\JsonMapperFactory;
+use JsonMapper\JsonMapperInterface;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -139,8 +140,8 @@ $builder->addDefinitions([
         $parserWithImage = new ParserWithImage($parser);
         return $parserWithImage;
     },
-    JsonMapper::class => function (): JsonMapper {
-        return new JsonMapper();
+    JsonMapperInterface::class => function (): JsonMapperInterface {
+        return (new JsonMapperFactory())->bestFit();
     },
     Ubench::class => function (): Ubench {
         $bench = new Ubench();
