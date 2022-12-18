@@ -36,6 +36,8 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private GameControllerInterface $game;
 
+    private JsonMapper $jsonMapper;
+
     private $epsUsage;
 
     private $effectiveEpsProduction;
@@ -47,7 +49,8 @@ final class ShipWrapper implements ShipWrapperInterface
         ShipSystemRepositoryInterface $shipSystemRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
-        GameControllerInterface $game
+        GameControllerInterface $game,
+        JsonMapper $jsonMapper
     ) {
         $this->ship = $ship;
         $this->shipSystemManager = $shipSystemManager;
@@ -56,6 +59,7 @@ final class ShipWrapper implements ShipWrapperInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->cancelRepair = $cancelRepair;
         $this->game = $game;
+        $this->jsonMapper = $jsonMapper;
     }
 
     public function get(): ShipInterface
@@ -304,9 +308,8 @@ final class ShipWrapper implements ShipWrapperInterface
         if (!$this->get()->hasShipSystem($systemId)) {
             return null;
         }
-        $mapper = new JsonMapper();
 
-        return $mapper->map(
+        return $this->jsonMapper->map(
             json_decode($this->get()->getShipSystem($systemId)->getData()),
             $object
         );
