@@ -60,7 +60,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d WHERE d.time < :actime AND d.end > :actime AND d.auction = FALSE
+                    'SELECT d FROM %s d WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE
                     ',
                     Deals::class,
                 )
@@ -76,7 +76,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -94,7 +94,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -112,7 +112,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -130,7 +130,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d  JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d  JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -148,7 +148,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -166,7 +166,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -184,7 +184,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d WHERE d.time < :actime AND d.end > :actime AND d.auction = TRUE
+                    'SELECT d FROM %s d WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                     ',
                     Deals::class,
                 )
@@ -201,7 +201,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -220,7 +220,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -239,7 +239,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -258,7 +258,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d  JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d  JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -277,7 +277,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
@@ -296,7 +296,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.time < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
+                    'SELECT d FROM %s d JOIN %s u WITH :userid = u.id WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE AND (d.faction_id = u.race OR d.faction_id IS NULL)
                     ',
                     Deals::class,
                     User::class,
