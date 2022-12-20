@@ -95,6 +95,34 @@ final class DealsBidAuction implements ActionControllerInterface
             ));
         }
 
+        if ($auction->getwantCommodityId() !== null) {
+            $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
+                TradeEnum::DEALS_FERG_TRADEPOST_ID,
+                $userId,
+                $auction->getWantCommodityId()
+            );
+
+            if ($storage === null || $storage->getAmount() < $maxAmount) {
+                $game->addInformation(sprintf(
+                    _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
+                    $auction->getWantedCommodity()->getName()
+                ));
+                return;
+            }
+        }
+
+        if ($auction->getwantPrestige() !== null) {
+            $userprestige = $game->getUser()->getPrestige();
+
+            if ($maxAmount > $userprestige) {
+                $game->addInformation(sprintf(
+                    _('Du hast nicht genügend Prestige, benötigt: %d'),
+                    ($maxAmount - $userprestige)
+                ));
+                return;
+            }
+        }
+
         $highestBid = $auction->getHighestBid();
         if ($highestBid === null) {
             $this->createFirstBid($maxAmount, $auction, $game, $userId);
