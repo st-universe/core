@@ -57,7 +57,9 @@ final class KnItem implements KnItemInterface
 
     public function getTitle(): ?string
     {
-        return $this->post->getTitle();
+        $plot = $this->post->getPlot;
+
+        return $plot === null ? $this->post->getTitle() : $plot->getTitle;
     }
 
     public function getText(): string
