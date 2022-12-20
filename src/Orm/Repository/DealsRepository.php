@@ -49,6 +49,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             )
             ->setParameters([
                 'actime' => time(),
+                'userid' => $userId
             ])
             ->getSingleScalarResult() > 0;
     }
@@ -70,7 +71,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             )
             ->setParameters([
                 'actime' => time(),
-                'userid' => $userId,
+                'userid' => $userId
             ])
             ->getResult();
     }
