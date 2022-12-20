@@ -151,6 +151,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $this->auctionBidRepository->save($bid);
 
         $auction->getAuctionBids()->add($bid);
+        $auction->setAuctionUser($game->getUser()->getId());
         $auction->setAuctionAmount(1);
         $this->dealsRepository->save($auction);
 

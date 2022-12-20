@@ -31,10 +31,10 @@
                 <div class="box_title">Deals</div>
                 <div class="box_body">
                     <table class="tcal">
-                        <tr tal:condition="not:ACTIVEDEALS">
+                        <tr tal:condition="not:HASACTIVEDEALS">
                             <td colspan="6">Keine Deals vorhanden</td>
                         </tr>
-                        <tal:block tal:condition="ACTIVEDEALS">
+                        <tal:block tal:condition="HASACTIVEDEALS">
                             <tr>
                                 <th>Dealen</th>
                                 <th>Angebot</th>
@@ -191,10 +191,10 @@
                 <div class="box_title">Auktionen</div>
                 <div class="box_body">
                     <table class="tcal">
-                        <tr tal:condition="not:ACTIVEAUCTIONS">
+                        <tr tal:condition="not:HASACTIVEAUCTIONS">
                             <td colspan="6">Keine Auktionen vorhanden</td>
                         </tr>
-                        <tal:block tal:condition="ACTIVEAUCTIONS">
+                        <tal:block tal:condition="HASACTIVEAUCTIONS">
                             <tr>
                                 <th>Bieten</th>
                                 <th>Angebot</th>
@@ -383,10 +383,7 @@
             <div class="box">
                 <div class="box_title">Beendete Auktionen</div>
                 <div class="box_body">
-                    <table tal:condition="OWNENDEDAUCTIONS" class="tcal">
-                        <tr tal:condition="not:ANYENDEDAUCTIONS">
-                            <td colspan="6">Keine beendeten Auktionen vorhanden</td>
-                        </tr>
+                    <table tal:condition="HASOWNENDEDAUCTIONS" class="tcal">
                         <tr>
                             <th>Einlösen</th>
                             <th>Angebot</th>
@@ -563,7 +560,7 @@
                             </tr>
                         </tal:block>
                     </table>
-                    <table tal:condition="ENDEDAUCTIONS" class="tcal">
+                    <table tal:condition="HASENDEDAUCTIONS" class="tcal">
                         <tr>
                             <th>Angebot</th>
                             <th>Höchstgebot</th>

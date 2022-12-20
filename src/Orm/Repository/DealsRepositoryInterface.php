@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\DealsInterface;
-use Stu\Orm\Entity\TradePostInterface;
 
 /**
  * @method null|DealsInterface find(integer $id)
@@ -19,9 +18,7 @@ interface DealsRepositoryInterface extends ObjectRepository
 
     public function delete(DealsInterface $post): void;
 
-    public function getDeals(int $userId): array;
-
-    public function getActiveDeals(int $userId): array;
+    public function hasActiveDeals(int $userId): bool;
 
     public function getActiveDealsGoods(int $userId): ?array;
 
@@ -35,7 +32,7 @@ interface DealsRepositoryInterface extends ObjectRepository
 
     public function getActiveDealsBuildplansPrestige(int $userId): array;
 
-    public function getActiveAuctions(int $userId): array;
+    public function hasActiveAuctions(int $userId): bool;
 
     public function getActiveAuctionsGoods(int $userId): ?array;
 
@@ -49,11 +46,9 @@ interface DealsRepositoryInterface extends ObjectRepository
 
     public function getActiveAuctionsBuildplansPrestige(int $userId): array;
 
-    public function getAnyEndedAuctions(int $userId): array;
+    public function hasEndedAuctions(int $userId): bool;
 
-    public function getEndedAuctions(int $userId): array;
-
-    public function getOwnEndedAuctions(int $userId): array;
+    public function hasOwnAuctionsToTake(int $userId): bool;
 
     public function getEndedAuctionsGoods(int $userId): ?array;
 
@@ -78,13 +73,4 @@ interface DealsRepositoryInterface extends ObjectRepository
     public function getOwnEndedAuctionsShipsPrestige(int $userId): array;
 
     public function getOwnEndedAuctionsBuildplansPrestige(int $userId): array;
-
-
-    /**
-     * @return TradePostInterface
-     */
-
-    public function getFergTradePost(
-        int $tradePostId
-    ): ?TradePostInterface;
 }
