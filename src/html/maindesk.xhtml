@@ -42,10 +42,16 @@
 										</a>
 									</td>
 									<td>
-										<span tal:condition="data/getPlot">Plot:</span>
-										<span tal:condition="not:data/getPlot">Titel:</span>
-										<a href="comm.php?mark=${data/getMark}&markedPost=${data/getId}#kn_post_${data/getId}"
-											tal:content="structure data/getTitle">TITLE</a>
+										<tal:block tal:condition="data/getPlot">
+											<span>Plot:</span>
+											<a href="comm.php?mark=${data/getMark}&markedPost=${data/getId}#kn_post_${data/getId}"
+												tal:content="structure data/getPlot/getTitle">TITLE</a>
+										</tal:block>
+										<tal:block tal:condition="not:data/getPlot">
+											<span>Titel:</span>
+											<a href="comm.php?mark=${data/getMark}&markedPost=${data/getId}#kn_post_${data/getId}"
+												tal:content="structure data/getTitle">TITLE</a>
+										</tal:block>
 									</td>
 								</tr>
 								<tr>
