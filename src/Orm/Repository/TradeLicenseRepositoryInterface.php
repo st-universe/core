@@ -34,6 +34,8 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
 
     public function getAmountByUser(int $userId): int;
 
+    public function hasFergLicense(int $userId): bool;
+
     public function hasLicenseByUserAndTradePost(int $userId, int $tradePostId): bool;
 
     public function getLatestActiveLicenseByUserAndTradePost(int $userId, int $tradePostId): ?TradeLicenseInterface;

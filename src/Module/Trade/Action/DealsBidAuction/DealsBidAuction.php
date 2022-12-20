@@ -11,6 +11,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
@@ -44,9 +45,13 @@ final class DealsBidAuction implements ActionControllerInterface
 
     private TradePostRepositoryInterface $tradepostRepository;
 
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+
     private StorageRepositoryInterface $storageRepository;
 
     private CreatePrestigeLogInterface $createPrestigeLog;
+
+    private StuTime $stuTime;
 
     public function __construct(
         DealsBidAuctionRequestInterface $dealsbidauctionRequest,
@@ -58,7 +63,8 @@ final class DealsBidAuction implements ActionControllerInterface
         TradeTransactionRepositoryInterface $tradeTransactionRepository,
         StorageRepositoryInterface $storageRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        CreatePrestigeLogInterface $createPrestigeLog
+        CreatePrestigeLogInterface $createPrestigeLog,
+        StuTime $stuTime
     ) {
         $this->dealsbidauctionRequest = $dealsbidauctionRequest;
         $this->tradeLibFactory = $tradeLibFactory;
@@ -70,6 +76,7 @@ final class DealsBidAuction implements ActionControllerInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->storageRepository = $storageRepository;
         $this->createPrestigeLog = $createPrestigeLog;
+        $this->stuTime = $stuTime;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -82,6 +89,12 @@ final class DealsBidAuction implements ActionControllerInterface
 
         $auction = $this->dealsRepository->find($dealId);
         $currentBidAmount = $auction->getAuctionAmount();
+        $time = $this->stuTime->time();
+
+        // sanity checks
+        if ($auction->getEnd() < $time || $auction->getStart() > $time) {
+            return;
+        }
 
 
         if ($maxAmount < 1 || $maxAmount <= $currentBidAmount) {
@@ -94,7 +107,7 @@ final class DealsBidAuction implements ActionControllerInterface
             return;
         }
 
-        if (!$this->dealsRepository->getFergLicense($userId)) {
+        if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
             throw new AccessViolation(sprintf(
                 _('UserId %d does not have license for Deals'),
                 $userId

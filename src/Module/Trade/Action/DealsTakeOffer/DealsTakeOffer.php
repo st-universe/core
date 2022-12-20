@@ -39,6 +39,8 @@ final class DealsTakeOffer implements ActionControllerInterface
 
     private TradePostRepositoryInterface $tradepostRepository;
 
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+
     private StorageRepositoryInterface $storageRepository;
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
@@ -97,7 +99,7 @@ final class DealsTakeOffer implements ActionControllerInterface
             return;
         }
 
-        if (!$this->dealsRepository->getFergLicense($userId)) {
+        if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
             throw new AccessViolation(sprintf(
                 _('UserId %d does not have license for Deals'),
                 $userId

@@ -10,15 +10,16 @@ use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
+use Stu\Orm\Entity\DealsInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -39,7 +40,7 @@ final class DealsTakeAuction implements ActionControllerInterface
 
     private TradePostRepositoryInterface $tradepostRepository;
 
-    private StorageRepositoryInterface $storageRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
@@ -49,6 +50,8 @@ final class DealsTakeAuction implements ActionControllerInterface
 
     private CreatePrestigeLogInterface $createPrestigeLog;
 
+    private StuTime $stuTime;
+
     public function __construct(
         DealsTakeAuctionRequestInterface $dealstakeAuctionRequest,
         TradeLibFactoryInterface $tradeLibFactory,
@@ -56,12 +59,12 @@ final class DealsTakeAuction implements ActionControllerInterface
         TradePostRepositoryInterface $tradepostRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransactionRepositoryInterface $tradeTransactionRepository,
-        StorageRepositoryInterface $storageRepository,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
-        CreatePrestigeLogInterface $createPrestigeLog
+        CreatePrestigeLogInterface $createPrestigeLog,
+        StuTime $stuTime
     ) {
         $this->dealstakeAuctionRequest = $dealstakeAuctionRequest;
         $this->tradeLibFactory = $tradeLibFactory;
@@ -70,11 +73,11 @@ final class DealsTakeAuction implements ActionControllerInterface
         $this->dealsRepository = $dealsRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransactionRepository = $tradeTransactionRepository;
-        $this->storageRepository = $storageRepository;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->shipRepository = $shipRepository;
         $this->shipCreator = $shipCreator;
+        $this->stuTime = $stuTime;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -86,104 +89,118 @@ final class DealsTakeAuction implements ActionControllerInterface
 
         $auction = $this->dealsRepository->find($dealId);
 
-
-        if ($auction->getAuctionUser()->getId() != $userId) {
-            return;
-        }
-
         if ($auction === null) {
             $game->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
             return;
         }
 
-        if (!$this->dealsRepository->getFergLicense($userId)) {
+        // sanity checks
+        if ($auction->getTakenTime() !== null) {
+            return;
+        }
+        if ($auction->getAuctionUser()->getId() !== $userId) {
+            return;
+        }
+
+
+        if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
             throw new AccessViolation(sprintf(
                 _('UserId %d does not have license for Deals'),
                 $userId
             ));
         }
 
-        if ($auction->getgiveCommodityId() !== null || $auction->getWantPrestige() !== null || $auction->getwantCommodityId() !== null) {
+        $neededStorageSpace = $this->determineNeededStorageSpace($auction);
+        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
+        $freeStorage = $storageManagerUser->getFreeStorage();
 
-            $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        //check if enough space in storage
+        if ($neededStorageSpace > $freeStorage) {
+            $game->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
+            return;
+        }
 
-            $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
-            $freeStorage = $storageManagerUser->getFreeStorage();
+        $currentBidAmount = $auction->getAuctionAmount();
+        $currentMaxAmount = $auction->getHighestBid()->getMaxAmount();
 
-            if ($auction->getgiveCommodityId() !== null) {
+        //give overpay back
+        if ($auction->getAuctionAmount() < $currentMaxAmount) {
 
-                if (
-                    $freeStorage <= 0 &&
-                    $auction->getgiveCommodityAmount() > $auction->getwantCommodityAmount()
-                ) {
-                    $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
+            //give prestige back
+            if ($auction->isPrestigeCost()) {
+
+                $description = sprintf(
+                    '%d Prestige: Du hast Prestige bei einer Auktion zurückerhalten, weil dein Maximalgebot über dem Höchstgebot lag',
+                    $currentMaxAmount - $currentBidAmount
+                );
+                $this->createPrestigeLog->createLog($currentMaxAmount - $currentBidAmount, $description, $user, time());
+
+                $game->addInformation(sprintf(
+                    _('Dir wurden %d Prestige gutgeschrieben'),
+                    $currentMaxAmount - $currentBidAmount,
+                ));
+            } else {
+
+                if ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
+                    $game->addInformation(sprintf(
+                        _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
+                        $currentMaxAmount - $currentBidAmount,
+                        $auction->getWantedCommodity()->getName()
+                    ));
                     return;
-                }
-            }
-
-            if ($auction->getAuctionAmount() <  $auction->getHighestBid()->getMaxAmount()) {
-                $currentBidAmount = $auction->getAuctionAmount();
-                $currentMaxAmount = $auction->getHighestBid()->getMaxAmount();
-                if ($auction->getwantCommodityId() != null) {
-
-                    if ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
-                        $game->addInformation(sprintf(
-                            _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
-                            $currentMaxAmount - $currentBidAmount,
-                            $auction->getWantedCommodity()->getName()
-                        ));
-                        return;
-                    } else {
-                        $storageManagerUser->upperStorage(
-                            $auction->getwantCommodityId(),
-                            $currentMaxAmount - $currentBidAmount
-                        );
-                        $game->addInformation(sprintf(
-                            _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
-                            $currentMaxAmount - $currentBidAmount,
-                            $auction->getWantedCommodity()->getName()
-                        ));
-                    }
-                }
-
-                if ($auction->getWantPrestige() != null) {
-
-                    $description = sprintf(
-                        '%d Prestige: Du hast Prestige bei einer Auktion zurückerhalten, weil die Maximalgebot über dem Höchstgebot lag',
+                } else {
+                    $storageManagerUser->upperStorage(
+                        $auction->getwantCommodityId(),
                         $currentMaxAmount - $currentBidAmount
                     );
-                    $this->createPrestigeLog->createLog($currentMaxAmount - $currentBidAmount, $description, $user, time());
-
                     $game->addInformation(sprintf(
-                        _('Dir wurden %d Prestige gutgeschrieben'),
+                        _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
                         $currentMaxAmount - $currentBidAmount,
+                        $auction->getWantedCommodity()->getName()
                     ));
                 }
             }
-
-            if ($auction->getgiveCommodityId() !== null) {
-                $storageManagerUser->upperStorage(
-                    (int) $auction->getgiveCommodityId(),
-                    (int) $auction->getgiveCommodityAmount()
-                );
-
-                $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getgiveCommodityAmount(), $auction->getgiveCommodity()->getName()));
-            }
-
-            if ($auction->getShip() == true) {
-
-                $this->createShip($auction->getBuildplan(), $tradePost, $userId);
-                $game->addInformation(sprintf(_('Du hast dein Schiff erhalten')));
-            }
-
-            if ($auction->getShip() == false && $auction->getBuildplanId() !== null) {
-                $this->copyBuildplan($auction->getBuildplan(), $user);
-
-                $game->addInformation(sprintf(_('Du hast deinen Bauplan erhalten')));
-            }
         }
 
-        $this->dealsRepository->delete($auction);
+        if ($auction->getgiveCommodityId() !== null) {
+            $storageManagerUser->upperStorage(
+                (int) $auction->getgiveCommodityId(),
+                (int) $auction->getgiveCommodityAmount()
+            );
+
+            $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getgiveCommodityAmount(), $auction->getgiveCommodity()->getName()));
+        }
+
+        if ($auction->getShip() == true) {
+
+            $this->createShip($auction->getBuildplan(), $tradePost, $userId);
+            $game->addInformation(sprintf(_('Du hast dein Schiff erhalten')));
+        }
+
+        if ($auction->getShip() == false && $auction->getBuildplanId() !== null) {
+            $this->copyBuildplan($auction->getBuildplan(), $user);
+
+            $game->addInformation(sprintf(_('Du hast deinen Bauplan erhalten')));
+        }
+
+        $auction->setTakenTime($this->stuTime->time());
+        $this->dealsRepository->save($auction);
+    }
+
+    private function determineNeededStorageSpace(DealsInterface $auction): int
+    {
+        $result = 0;
+
+        if ($auction->getgiveCommodityId() !== null) {
+            $result += $auction->getgiveCommodityAmount();
+        }
+
+        if ($auction->getAuctionAmount() < $auction->getHighestBid()->getMaxAmount()) {
+            $result += $auction->getHighestBid()->getMaxAmount() - $auction->getAuctionAmount();
+        }
+
+        return $result;
     }
 
 

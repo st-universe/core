@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\TimeConstants;
+use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
 use Stu\Orm\Entity\TradePost;
@@ -114,6 +115,14 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         return $this->count([
             'user_id' => $userId
         ]);
+    }
+
+    public function hasFergLicense(int $userId): bool
+    {
+        return $this->getLatestActiveLicenseByUserAndTradePost(
+            $userId,
+            TradeEnum::DEALS_FERG_TRADEPOST_ID
+        ) !== null;
     }
 
     public function hasLicenseByUserAndTradePost(int $userId, int $tradePostId): bool
