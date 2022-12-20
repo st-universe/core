@@ -6,6 +6,9 @@ use Stu\Component\Game\TimeConstants;
 
 final class UserEnum
 {
+    //NPC IDs
+    public const USER_NPC_FERG = 14;
+
     // first user id (below are NPCs)
     public const USER_FIRST_ID = 100;
 

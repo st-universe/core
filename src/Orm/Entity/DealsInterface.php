@@ -36,7 +36,7 @@ interface DealsInterface
 
     public function setwantCommodityAmount(CommodityInterface $wantcommodityamount): DealsInterface;
 
-    public function getwantPrestige(): ?int;
+    public function getWantPrestige(): ?int;
 
     public function setwantPrestige(int $wantprestige): DealsInterface;
 
@@ -83,4 +83,6 @@ interface DealsInterface
     public function getAuctionBids(): Collection;
 
     public function getHighestBid(): ?AuctionBidInterface;
+
+    public function isPrestigeCost(): bool;
 }

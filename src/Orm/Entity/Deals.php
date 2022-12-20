@@ -187,7 +187,7 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getwantPrestige(): ?int
+    public function getWantPrestige(): ?int
     {
         return $this->want_prestige;
     }
@@ -334,5 +334,10 @@ class Deals implements DealsInterface
     public function getHighestBid(): ?AuctionBidInterface
     {
         return $this->getAuctionBids()->count() > 0 ? $this->getAuctionBids()->last() : null;
+    }
+
+    public function isPrestigeCost(): bool
+    {
+        return $this->getWantPrestige() !== null;
     }
 }

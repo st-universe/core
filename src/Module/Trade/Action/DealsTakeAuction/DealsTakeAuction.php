@@ -103,7 +103,7 @@ final class DealsTakeAuction implements ActionControllerInterface
             ));
         }
 
-        if ($auction->getgiveCommodityId() !== null || $auction->getwantPrestige() !== null || $auction->getwantCommodityId() !== null) {
+        if ($auction->getgiveCommodityId() !== null || $auction->getWantPrestige() !== null || $auction->getwantCommodityId() !== null) {
 
             $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
 
@@ -146,7 +146,7 @@ final class DealsTakeAuction implements ActionControllerInterface
                     }
                 }
 
-                if ($auction->getwantPrestige() != null) {
+                if ($auction->getWantPrestige() != null) {
 
                     $description = sprintf(
                         '%d Prestige: Du hast Prestige bei einer Auktion zurückerhalten, weil die Maximalgebot über dem Höchstgebot lag',

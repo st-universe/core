@@ -6,7 +6,5 @@ interface DealsBidAuctionRequestInterface
 {
     public function getDealId(): int;
 
-    public function getAmount(): int;
-
     public function getMaxAmount(): int;
 }

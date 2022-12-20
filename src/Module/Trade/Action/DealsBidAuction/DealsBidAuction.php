@@ -11,6 +11,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\AuctionBidInterface;
@@ -25,6 +26,11 @@ use Stu\Orm\Repository\AuctionBidRepositoryInterface;
 final class DealsBidAuction implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEALS_BID_AUCTION';
+
+    private const BID_TYPE_FIRST = 0;
+    private const BID_TYPE_RAISE_OWN = 1;
+    private const BID_TYPE_REVISE = 2;
+    private const BID_TYPE_REVISE_OLD = 3;
 
     private DealsBidAuctionRequestInterface $dealsbidauctionRequest;
 
@@ -95,34 +101,6 @@ final class DealsBidAuction implements ActionControllerInterface
             ));
         }
 
-        if ($auction->getwantCommodityId() !== null) {
-            $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
-                TradeEnum::DEALS_FERG_TRADEPOST_ID,
-                $userId,
-                $auction->getWantCommodityId()
-            );
-
-            if ($storage === null || $storage->getAmount() < $maxAmount) {
-                $game->addInformation(sprintf(
-                    _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
-                    $auction->getWantedCommodity()->getName()
-                ));
-                return;
-            }
-        }
-
-        if ($auction->getwantPrestige() !== null) {
-            $userprestige = $game->getUser()->getPrestige();
-
-            if ($maxAmount > $userprestige) {
-                $game->addInformation(sprintf(
-                    _('Du hast nicht genügend Prestige, benötigt: %d'),
-                    ($maxAmount - $userprestige)
-                ));
-                return;
-            }
-        }
-
         $highestBid = $auction->getHighestBid();
         if ($highestBid === null) {
             $this->createFirstBid($maxAmount, $auction, $game, $userId);
@@ -131,14 +109,14 @@ final class DealsBidAuction implements ActionControllerInterface
 
         $userHasHighestBid = $highestBid->getUser() === $user;
         if ($userHasHighestBid) {
-            $this->raiseOwnBit($maxAmount, $highestBid, $game, $auction);
+            $this->raiseOwnBid($maxAmount, $highestBid, $game, $auction);
             return;
         }
 
         $currentMaxAmount = $highestBid->getMaxAmount();
 
         if ($maxAmount <= $currentMaxAmount) {
-            $this->raiseCurrentAmount($maxAmount, $currentMaxAmount, $auction, $game);
+            $this->raiseCurrentAmount($maxAmount, $auction, $game);
         }
 
         if ($maxAmount > $currentMaxAmount) {
@@ -146,25 +124,11 @@ final class DealsBidAuction implements ActionControllerInterface
         }
     }
 
-    private function createFirstBid(int $maxAmount, DealsInterface $auction, GameControllerInterface $game, $userId): void
+    private function createFirstBid(int $maxAmount, DealsInterface $auction, GameControllerInterface $game, int $userId): void
     {
-        if ($auction->getwantCommodityId() !== null) {
-            $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
-            $storageManagerNew = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
-
-            $storageManagerNew->lowerStorage(
-                $auction->getwantCommodityId(),
-                ($maxAmount)
-            );
-        }
-
-        if ($auction->getwantPrestige() !== null) {
-            $description = sprintf(
-                '-%d Prestige: Eingebüßt beim setzen eines Erstgebots bei einer Auktion des Großen Nagus',
-                (-$maxAmount)
-            );
-
-            $this->createPrestigeLog->createLog($maxAmount, $description, $game->getUser(), time());
+        //check if enough available
+        if (!$this->checkAndCollectCosts($auction, $maxAmount, self::BID_TYPE_FIRST, $game)) {
+            return;
         }
 
         $bid = $this->auctionBidRepository->prototype();
@@ -173,64 +137,49 @@ final class DealsBidAuction implements ActionControllerInterface
         $bid->setAuction($auction);
         $this->auctionBidRepository->save($bid);
 
+        $auction->getAuctionBids()->add($bid);
         $auction->setAuctionAmount(1);
         $this->dealsRepository->save($auction);
 
         $game->addInformation(sprintf(_('Du hast das erste Gebot abgegeben. Dein Maximalgebot liegt bei %d'), $maxAmount));
     }
 
-    private function raiseOwnBit(int $maxAmount, AuctionBidInterface $bid, GameControllerInterface $game, $auction): void
+    private function raiseOwnBid(int $maxAmount, AuctionBidInterface $bid, GameControllerInterface $game, DealsInterface $auction): void
     {
-
-        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
-
         $currentHighestBid = $auction->getHighestBid();
-        $storageManagerOld = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $currentHighestBid->getUser()->getId());
+        $additionalAmount = $maxAmount - $currentHighestBid->getMaxAmount();
 
-
-
-        if ($auction->getwantCommodityId() !== null) {
-            $storageManagerOld->lowerStorage(
-                $auction->getwantCommodityId(),
-                ($maxAmount - $currentHighestBid->getMaxAmount())
-            );
+        //check if enough available
+        if (!$this->checkAndCollectCosts($auction, $additionalAmount, self::BID_TYPE_RAISE_OWN, $game)) {
+            return;
         }
 
-
-        if ($auction->getwantPrestige() !== null) {
-            $description = sprintf(
-                '-%d Prestige: Eingebüßt beim erhöhen deines Maximalgebots bei einer Auktion des Großen Nagus',
-                (- ($maxAmount - $currentHighestBid->getMaxAmount()))
-            );
-
-            $this->createPrestigeLog->createLog($maxAmount - $currentHighestBid->getMaxAmount(), $description, $game->getUser(), time());
-        }
         $game->addInformation(sprintf(_('Dein Maximalgebot wurde auf %d erhöht'), $maxAmount));
         $bid->setMaxAmount($maxAmount);
         $this->auctionBidRepository->save($bid);
     }
 
-    private function raiseCurrentAmount(int $maxAmount, int $currentMaxAmount, DealsInterface $auction, $game): void
+    private function raiseCurrentAmount(int $maxAmount, DealsInterface $auction, GameControllerInterface $game): void
     {
-        if ($maxAmount < $currentMaxAmount) {
-            $auction->setAuctionAmount($maxAmount + 1);
-            $this->dealsRepository->save($auction);
+        $auction->setAuctionAmount($maxAmount + 1);
+        $this->dealsRepository->save($auction);
 
-            $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $maxAmount + 1));
-        }
+        $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $maxAmount + 1));
 
-        if ($maxAmount === $currentMaxAmount) {
-            $auction->setAuctionAmount($currentMaxAmount);
-            $this->dealsRepository->save($auction);
-
-            $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $maxAmount));
-        }
-
-
-        if ($auction->getwantCommodityId() !== null) {
+        if ($auction->isPrestigeCost()) {
 
             $this->privateMessageSender->send(
-                14,
+                UserEnum::USER_NPC_FERG,
+                $auction->getHighestBid()->getUserId(),
+                sprintf(
+                    'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d Prestige',
+                    $auction->getAuctionAmount(),
+                ),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+            );
+        } else {
+            $this->privateMessageSender->send(
+                UserEnum::USER_NPC_FERG,
                 $auction->getHighestBid()->getUserId(),
                 sprintf(
                     'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d %s',
@@ -240,28 +189,126 @@ final class DealsBidAuction implements ActionControllerInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
             );
         }
-
-        if ($auction->getwantPrestige() !== null) {
-
-            $this->privateMessageSender->send(
-                14,
-                $auction->getHighestBid()->getUserId(),
-                sprintf(
-                    'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d Prestige',
-                    $auction->getAuctionAmount(),
-                ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
-            );
-        }
     }
 
 
     private function setNewHighestBid(int $maxAmount, DealsInterface $auction, GameControllerInterface $game): void
     {
+        //check if enough available
+        if (!$this->checkAndCollectCosts($auction, $maxAmount, self::BID_TYPE_REVISE, $game)) {
+            return;
+        }
+
+        // create new bid
+        $bid = $this->auctionBidRepository->prototype();
+        $bid->setUser($game->getUser());
+        $bid->setMaxAmount($maxAmount);
+        $bid->setAuction($auction);
+        $this->auctionBidRepository->save($bid);
+
+        // modify auction
+        $auction->setAuctionAmount($auction->getHighestBid()->getMaxAmount() + 1);
+        $auction->setAuctionUser($game->getUser()->getId());
+        $auction->getAuctionBids()->add($bid);
+        $this->dealsRepository->save($auction);
+
+        $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d. Du bist nun Meistbietender!'), $auction->getAuctionAmount(), $maxAmount));
+    }
+
+    private function checkAndCollectCosts(DealsInterface $auction, int $neededAmount, int $bidType, GameControllerInterface $game): bool
+    {
+        //check for sufficient amount
+        if (!$this->isEnoughAvailable($auction, $neededAmount, $game)) {
+            return false;
+        }
+
         $user = $game->getUser();
-        $userId = $user->getId();
-        $currentHighestBid = $auction->getHighestBid();
-        $newCurrentAmount = $currentHighestBid->getMaxAmount() + 1;
+        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+
+        //reduce amount
+        if ($auction->isPrestigeCost()) {
+            $this->createPrestigeLog->createLog(
+                $neededAmount,
+                sprintf($this->getPrestigeTemplate($bidType), $neededAmount),
+                $game->getUser(),
+                time()
+            );
+        } else {
+            $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser()->getId());
+
+            $storageManager->lowerStorage(
+                $auction->getwantCommodityId(),
+                $neededAmount
+            );
+        }
+
+        //give back to previous
+        if ($bidType === self::BID_TYPE_REVISE) {
+            $currentHighestBid = $auction->getHighestBid();
+
+            if ($auction->isPrestigeCost()) {
+                $this->createPrestigeLog->createLog(
+                    $currentHighestBid->getMaxAmount(),
+                    sprintf($this->getPrestigeTemplate(self::BID_TYPE_REVISE_OLD), $currentHighestBid->getMaxAmount()),
+                    $currentHighestBid->getUser(),
+                    time()
+                );
+
+                $this->privateMessageSender->send(
+                    UserEnum::USER_NPC_FERG,
+                    $currentHighestBid->getUserId(),
+                    sprintf(
+                        'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
+                        $user->getUserName(),
+                        $currentHighestBid->getMaxAmount(),
+                        $currentHighestBid->getMaxAmount() + 1
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                );
+            } else {
+                $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser()->getId());
+
+                $storageManager->upperStorage(
+                    $auction->getwantCommodityId(),
+                    $currentHighestBid->getMaxAmount()
+                );
+
+                $this->privateMessageSender->send(
+                    UserEnum::USER_NPC_FERG,
+                    $currentHighestBid->getUserId(),
+                    sprintf(
+                        'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
+                        $user->getUserName(),
+                        $currentHighestBid->getMaxAmount(),
+                        $auction->getWantedCommodity()->getName(),
+                        $currentHighestBid->getMaxAmount() + 1,
+                        $auction->getWantedCommodity()->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                );
+            }
+        }
+
+        return true;
+    }
+
+    private function getPrestigeTemplate(int $bidType): string
+    {
+        switch ($bidType) {
+            case self::BID_TYPE_FIRST:
+                return _('-%d Prestige: Eingebüßt durch Setzen eines Erstgebots bei einer Auktion des Großen Nagus');
+            case self::BID_TYPE_RAISE_OWN:
+                return _('-%d Prestige: Eingebüßt durch Erhöhen deines Maximalgebots bei einer Auktion des Großen Nagus');
+            case self::BID_TYPE_REVISE_OLD:
+                return _('%d Prestige: Du wurdest bei einer Auktion des Großen Nagus überboten und hast dein Prestige zurück erhalten');
+            case self::BID_TYPE_REVISE:
+                return _('-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus');
+        }
+    }
+
+    private function isEnoughAvailable(DealsInterface $auction, int $neededAmount, GameControllerInterface $game): bool
+    {
+        $userId = $game->getUser()->getId();
 
         if ($auction->getwantCommodityId() !== null) {
             $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
@@ -270,132 +317,28 @@ final class DealsBidAuction implements ActionControllerInterface
                 $auction->getWantCommodityId()
             );
 
-            if ($storage === null || $storage->getAmount() < $maxAmount) {
+            if ($storage === null || $storage->getAmount() < $neededAmount) {
                 $game->addInformation(sprintf(
                     _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
                     $auction->getWantedCommodity()->getName()
                 ));
-                return;
+                return false;
             }
         }
 
-        if ($auction->getwantPrestige() !== null) {
+        if ($auction->isPrestigeCost()) {
             $userprestige = $game->getUser()->getPrestige();
 
-            if ($maxAmount > $userprestige) {
+            if ($neededAmount > $userprestige) {
                 $game->addInformation(sprintf(
                     _('Du hast nicht genügend Prestige, benötigt: %d'),
-                    ($maxAmount - $userprestige)
+                    ($neededAmount - $userprestige)
                 ));
-                return;
-            }
-
-            if ($auction->getwantPrestige() !== null) {
-                $userprestige = $game->getUser()->getPrestige();
-
-                if ($newCurrentAmount > $userprestige) {
-                    $game->addInformation(sprintf(
-                        _('Du hast nicht genügend Prestige, benötigt: %d'),
-                        ($newCurrentAmount)
-                    ));
-                    return;
-                }
+                return false;
             }
         }
 
-        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
-
-        $storageManagerNew = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
-        $storageManagerOld = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $currentHighestBid->getUser()->getId());
-
-        if ($auction->getwantCommodityId() !== null) {
-            $storageManagerNew->lowerStorage(
-                $auction->getwantCommodityId(),
-                $maxAmount
-            );
-
-            if ($currentHighestBid->getUserId() > 100) {
-                $storageManagerOld->upperStorage(
-                    $auction->getwantCommodityId(),
-                    $currentHighestBid->getMaxAmount()
-                );
-
-                $this->privateMessageSender->send(
-                    14,
-                    $currentHighestBid->getUserId(),
-                    sprintf(
-                        'Du wurdes bei einer Auktion des großen Nagus von %s überboten und hast %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
-                        $user->getUserName(),
-                        $currentHighestBid->getMaxAmount(),
-                        $auction->getWantedCommodity()->getName(),
-                        $newCurrentAmount,
-                        $auction->getWantedCommodity()->getName()
-                    ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
-                );
-            }
-
-
-            // change deals
-
-            $auction->setAuctionAmount($currentHighestBid->getMaxAmount() + 1);
-            $auction->setAuctionUser($userId);
-            $this->dealsRepository->save($auction);
-
-
-            // create new bid
-            $bid = $this->auctionBidRepository->prototype();
-            $bid->setUser($game->getUser());
-            $bid->setMaxAmount($maxAmount);
-            $bid->setAuction($auction);
-            $this->auctionBidRepository->save($bid);
-
-            $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d Du bist nun Meistbietender!'), $newCurrentAmount, $maxAmount));
-        }
-
-        if ($auction->getwantPrestige() !== null) {
-            $description = sprintf(
-                '-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus',
-                -$maxAmount
-            );
-
-            $this->createPrestigeLog->createLog(-$maxAmount, $description, $game->getUser(), time());
-
-            if ($currentHighestBid->getUserId() > 100) {
-                $descriptionsecond = sprintf(
-                    '%d Prestige: Du wurdest bei einer Auktion des Großen Nagus überboten und hast dein Prestige zurück erhalten',
-                    $currentHighestBid->getMaxAmount()
-                );
-                $this->createPrestigeLog->createLog($currentHighestBid->getMaxAmount(), $descriptionsecond, $currentHighestBid->getUser(), time());
-
-                $this->privateMessageSender->send(
-                    14,
-                    $currentHighestBid->getUserId(),
-                    sprintf(
-                        'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
-                        $user->getUserName(),
-                        $currentHighestBid->getMaxAmount(),
-                        $newCurrentAmount
-                    ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
-                );
-            }
-
-            // create new bid
-            $bid = $this->auctionBidRepository->prototype();
-            $bid->setUser($game->getUser());
-            $bid->setMaxAmount($maxAmount);
-            $bid->setAuction($auction);
-            $this->auctionBidRepository->save($bid);
-
-            // modify auction
-            $auction->setAuctionAmount($newCurrentAmount);
-            $auction->setAuctionUser($userId);
-            $auction->getAuctionBids()->add($bid);
-            $this->dealsRepository->save($auction);
-
-            $game->addInformation(sprintf(_('Gebot wurde auf %d erhöht. Dein Maximalgebot liegt bei %d. Du bist nun Meistbietender!'), $newCurrentAmount, $maxAmount));
-        }
+        return true;
     }
 
     public function performSessionCheck(): bool
