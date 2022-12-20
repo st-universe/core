@@ -54,10 +54,13 @@ class Deals implements DealsInterface
     private $ship = NULL;
 
     /** @Column(type="integer") */
-    private $time;
+    private $start;
 
     /** @Column(type="integer") */
     private $end;
+
+    /** @Column(type="integer", nullable=true) */
+    private $taken_time;
 
     /** @Column(type="integer", nullable=true) */
     private $auction_user;
@@ -223,16 +226,9 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getTime(): int
+    public function getStart(): int
     {
-        return $this->time;
-    }
-
-    public function setTime(int $time): DealsInterface
-    {
-        $this->time = $time;
-
-        return $this;
+        return $this->start;
     }
 
     public function getEnd(): int
@@ -243,6 +239,18 @@ class Deals implements DealsInterface
     public function setEnd(int $end): DealsInterface
     {
         $this->end = $end;
+
+        return $this;
+    }
+
+    public function getTakenTime(): ?int
+    {
+        return $this->taken_time;
+    }
+
+    public function setTakenTime(int $time): DealsInterface
+    {
+        $this->taken_time = $time;
 
         return $this;
     }

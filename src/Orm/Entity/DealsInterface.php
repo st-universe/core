@@ -48,13 +48,15 @@ interface DealsInterface
 
     public function setShip(bool $ship): DealsInterface;
 
-    public function getTime(): int;
-
-    public function setTime(int $time): DealsInterface;
+    public function getStart(): int;
 
     public function getEnd(): int;
 
     public function setEnd(int $end): DealsInterface;
+
+    public function getTakenTime(): ?int;
+
+    public function setTakenTime(int $time): DealsInterface;
 
     public function getAuctionAmount(): ?int;
 
