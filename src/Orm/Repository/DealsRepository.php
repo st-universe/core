@@ -346,7 +346,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     WHERE d.end < :actime
                     AND (d.end + 2592000) > :actime
                     AND d.auction = TRUE
-                    AND (d.auction_user != :userId || d.taken_time IS NOT NULL)
+                    AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
                         OR d.faction_id IS NULL)',
                     Deals::class,
@@ -392,7 +392,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                     WHERE d.end < :actime
                     AND (d.end + 2592000) > :actime
-                    AND (d.auction_user != :userId || d.taken_time IS NOT NULL)
+                    AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                     AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
                         OR d.faction_id IS NULL)',
@@ -416,7 +416,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     'SELECT d FROM %s d
                      WHERE d.end < :actime
                      AND (d.end + 2592000) > :actime
-                     AND (d.auction_user != :userId || d.taken_time IS NOT NULL)
+                     AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                      AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0
                      AND d.ship = TRUE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
@@ -440,7 +440,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 sprintf(
                     'SELECT d FROM %s d
                      WHERE d.end < :actime AND (d.end + 2592000) > :actime
-                     AND (d.auction_user != :userId || d.taken_time IS NOT NULL)
+                     AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                      AND d.auction = TRUE AND d.want_prestige IS NULL AND d.buildplan_id > 0
                      AND d.ship = FALSE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
@@ -464,7 +464,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 sprintf(
                     'SELECT d FROM %s d
                       WHERE d.end < :actime AND (d.end + 2592000) > :actime
-                      AND (d.auction_user != :userId || d.taken_time IS NOT NULL)
+                      AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                       AND d.auction = TRUE AND d.want_commodity IS NULL
                       AND d.buildplan_id IS NULL AND d.ship = FALSE
                       AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
@@ -488,7 +488,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 sprintf(
                     'SELECT d FROM %s d
                      WHERE d.end < :actime AND (d.end + 2592000) > :actime
-                     AND (d.auction_user != :userId || d.taken_time IS NOT NULL)
+                     AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                      AND d.auction = TRUE AND d.want_commodity IS NULL AND d.buildplan_id > 0
                      AND d.ship = TRUE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
@@ -512,7 +512,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                 sprintf(
                     'SELECT d FROM %s d
                      WHERE d.end < :actime AND (d.end + 2592000) > :actime
-                     AND (d.auction_user != :userId || d.taken_time IS NOT NULL)
+                     AND (d.auction_user != :userId OR d.taken_time IS NOT NULL)
                      AND d.auction = TRUE AND d.want_commodity IS NULL
                      AND d.buildplan_id > 0 AND d.ship = FALSE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
