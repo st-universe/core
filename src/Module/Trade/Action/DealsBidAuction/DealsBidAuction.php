@@ -242,7 +242,7 @@ final class DealsBidAuction implements ActionControllerInterface
                 $auction->getWantCommodityId()
             );
 
-            if ($storage === null || $storage->getAmount() < $newCurrentAmount) {
+            if ($storage === null || $storage->getAmount() < $maxAmount) {
                 $game->addInformation(sprintf(
                     _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
                     $auction->getWantedCommodity()->getName()
