@@ -273,14 +273,14 @@ final class DealsBidAuction implements ActionControllerInterface
                     $currentHighestBid->getUserId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
-                        $user->getUserName(),
+                        $currentHighestBid->getUser(),
                         $currentHighestBid->getMaxAmount(),
                         $currentHighestBid->getMaxAmount() + 1
                     ),
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
                 );
             } else {
-                $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
+                $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $currentHighestBid->getUser());
 
                 $storageManager->upperStorage(
                     $auction->getwantCommodityId(),
@@ -292,7 +292,7 @@ final class DealsBidAuction implements ActionControllerInterface
                     $currentHighestBid->getUserId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
-                        $user->getUserName(),
+                        $currentHighestBid->getUser(),
                         $currentHighestBid->getMaxAmount(),
                         $auction->getWantedCommodity()->getName(),
                         $currentHighestBid->getMaxAmount() + 1,
