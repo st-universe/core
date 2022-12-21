@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
@@ -33,18 +34,21 @@ class TradePostStorageManagerTest extends StuTestCase
 
     private StorageInterface $storage;
 
+    private UserInterface $user;
+
     public function setUp(): void
     {
         $this->storageRepository = $this->mock(StorageRepositoryInterface::class);
         $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
         $this->tradePost = $this->mock(TradePostInterface::class);
         $this->storage = $this->mock(StorageInterface::class);
+        $this->user = $this->mock(UserInterface::class);
 
         $this->manager = new TradePostStorageManager(
             $this->storageRepository,
             $this->commodityRepository,
             $this->tradePost,
-            42
+            $this->user
         );
     }
 
@@ -56,6 +60,10 @@ class TradePostStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(13);
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $result = $this->manager->getStorageSum();
 
@@ -73,6 +81,10 @@ class TradePostStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(13);
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $result = $this->manager->getFreeStorage();
 
@@ -82,6 +94,11 @@ class TradePostStorageManagerTest extends StuTestCase
     public function testGetStorage(): void
     {
         $this->mockStorage();
+
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $result = $this->manager->getStorage();
         $result = $this->manager->getStorage();
@@ -126,9 +143,13 @@ class TradePostStorageManagerTest extends StuTestCase
             ->with(2)
             ->once()
             ->andReturn($commodity);
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
-        $newStorage->shouldReceive('setUserId')
-            ->with(42)
+        $newStorage->shouldReceive('setUser')
+            ->with($this->user)
             ->once();
         $newStorage->shouldReceive('setCommodity')
             ->with($commodity)
@@ -170,6 +191,10 @@ class TradePostStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(7);
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->upperStorage(1, 10);
 
@@ -193,6 +218,10 @@ class TradePostStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn(100);
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->lowerStorage(1, 88);
     }
@@ -209,6 +238,11 @@ class TradePostStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(100);
+
+        $this->user->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
 
         $this->manager->lowerStorage(1, 100);
 

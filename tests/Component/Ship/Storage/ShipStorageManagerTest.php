@@ -11,6 +11,7 @@ use Stu\Component\Ship\Storage\Exception\QuantityTooSmallException;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -175,6 +176,7 @@ class ShipStorageManagerTest extends StuTestCase
         $commodity = $this->mock(CommodityInterface::class);
         $storageItem = $this->mock(StorageInterface::class);
         $storage = new ArrayCollection();
+        $user = $this->mock(UserInterface::class);
 
         $amount = 666;
         $commodityId = 42;
@@ -184,10 +186,10 @@ class ShipStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $ship->shouldReceive('getUser->getId')
+        $ship->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn($user);
 
         $commodity->shouldReceive('getId')
             ->withNoArgs()
@@ -202,8 +204,8 @@ class ShipStorageManagerTest extends StuTestCase
             ->with($storageItem)
             ->once();
 
-        $storageItem->shouldReceive('setUserId')
-            ->with(42)
+        $storageItem->shouldReceive('setUser')
+            ->with($user)
             ->once()
             ->andReturnSelf();
         $storageItem->shouldReceive('setShip')

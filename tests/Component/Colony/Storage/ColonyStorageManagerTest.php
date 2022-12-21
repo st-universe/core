@@ -13,6 +13,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -197,6 +198,7 @@ class ColonyStorageManagerTest extends StuTestCase
     public function testUpperStorageCreatesNewStorageItem(): void
     {
         $storageItem = $this->mock(StorageInterface::class);
+        $user = $this->mock(UserInterface::class);
         $storage = new ArrayCollection();
 
         $amount = 666;
@@ -212,10 +214,10 @@ class ColonyStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $this->colony->shouldReceive('getUser->getId')
+        $this->colony->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn(42);
+            ->andReturn($user);
         $this->colony->shouldReceive('clearCache')
             ->withNoArgs()
             ->once();
@@ -233,8 +235,8 @@ class ColonyStorageManagerTest extends StuTestCase
             ->with($storageItem)
             ->once();
 
-        $storageItem->shouldReceive('setUserId')
-            ->with(42)
+        $storageItem->shouldReceive('setUser')
+            ->with($user)
             ->once()
             ->andReturnSelf();
         $storageItem->shouldReceive('setColony')
