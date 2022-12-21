@@ -12,6 +12,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Specials\AdventCycleInterface;
+use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -28,6 +29,7 @@ use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipTickManager implements ShipTickManagerInterface
@@ -45,6 +47,8 @@ final class ShipTickManager implements ShipTickManagerInterface
     private CrewRepositoryInterface $crewRepository;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
+
+    private TradePostRepositoryInterface $tradePostRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
 
@@ -64,6 +68,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private EntryCreatorInterface $entryCreator;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -74,6 +80,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         UserRepositoryInterface $userRepository,
         CrewRepositoryInterface $crewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
+        TradePostRepositoryInterface $tradePostRepository,
         ShipSystemManagerInterface $shipSystemManager,
         AlertRedHelperInterface $alertRedHelper,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
@@ -83,6 +90,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         RepairUtilInterface $repairUtil,
         AdventCycleInterface $adventCycle,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        EntryCreatorInterface $entryCreator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -92,6 +100,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->userRepository = $userRepository;
         $this->crewRepository = $crewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->tradePostRepository = $tradePostRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->alertRedHelper = $alertRedHelper;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
@@ -101,6 +110,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->repairUtil = $repairUtil;
         $this->adventCycle = $adventCycle;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->entryCreator = $entryCreator;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -165,6 +175,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             $startTime = microtime(true);
         }
         $this->lowerTrumfieldHull();
+        $this->lowerOrphanizedTradepostHull();
         $this->lowerStationConstructionHull();
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
@@ -422,6 +433,28 @@ final class ShipTickManager implements ShipTickManagerInterface
             $lower = rand(5, 15);
             if ($ship->getHuell() <= $lower) {
                 $this->shipRemover->remove($ship);
+                continue;
+            }
+            $ship->setHuell($ship->getHuell() - $lower);
+
+            $this->shipRepository->save($ship);
+        }
+    }
+
+    private function lowerOrphanizedTradepostHull(): void
+    {
+        foreach ($this->tradePostRepository->getByUser(GameEnum::USER_NOONE) as $tradepost) {
+            $ship = $tradepost->getShip();
+
+            $lower = (int)ceil($ship->getMaxHuell() / 100);
+
+            if ($ship->getHuell() <= $lower) {
+                $this->shipRemover->destroy($ship);
+
+                $this->entryCreator->addStationEntry(
+                    'Der verlassene Handelsposten in Sektor ' . $ship->getSectorString() . ' ist zerfallen',
+                    $ship->getUser()->getId()
+                );
                 continue;
             }
             $ship->setHuell($ship->getHuell() - $lower);

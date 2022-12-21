@@ -155,8 +155,6 @@ interface ShipInterface
 
     public function getCanBeDisabled(): bool;
 
-    public function setCanBeDisabled(bool $canBeDisabled): ShipInterface;
-
     public function getHitChance(): int;
 
     public function setHitChance(int $hitChance): ShipInterface;
