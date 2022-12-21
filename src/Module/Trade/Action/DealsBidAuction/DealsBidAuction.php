@@ -257,7 +257,7 @@ final class DealsBidAuction implements ActionControllerInterface
         //reduce amount
         if ($auction->isPrestigeCost()) {
             $this->createPrestigeLog->createLog(
-                $neededAmount,
+                -$neededAmount,
                 sprintf($this->getPrestigeTemplate($bidType), $neededAmount),
                 $user,
                 time()
