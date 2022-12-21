@@ -30,8 +30,9 @@ final class DealsBidAuction implements ActionControllerInterface
 
     private const BID_TYPE_FIRST = 0;
     private const BID_TYPE_RAISE_OWN = 1;
-    private const BID_TYPE_REVISE = 2;
-    private const BID_TYPE_REVISE_OLD = 3;
+    private const BID_TYPE_RAISE_OTHER = 2;
+    private const BID_TYPE_REVISE = 3;
+    private const BID_TYPE_REVISE_OLD = 4;
 
     private DealsBidAuctionRequestInterface $dealsbidauctionRequest;
 
@@ -175,6 +176,11 @@ final class DealsBidAuction implements ActionControllerInterface
 
     private function raiseCurrentAmount(int $maxAmount, DealsInterface $auction, GameControllerInterface $game): void
     {
+        //check if enough available
+        if (!$this->checkAndCollectCosts($auction, $maxAmount, self::BID_TYPE_RAISE_OTHER, $game)) {
+            return;
+        }
+
         $auction->setAuctionAmount($maxAmount + 1);
         $this->dealsRepository->save($auction);
 
@@ -236,6 +242,11 @@ final class DealsBidAuction implements ActionControllerInterface
             return false;
         }
 
+        // raising does not need to collect
+        if ($bidType === self::BID_TYPE_RAISE_OTHER) {
+            return true;
+        }
+
         $user = $game->getUser();
         $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
 
@@ -270,7 +281,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
                 $this->privateMessageSender->send(
                     UserEnum::USER_NPC_FERG,
-                    $currentHighestBid->getUserId(),
+                    $user->getId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
                         $currentHighestBid->getUser(),
@@ -289,7 +300,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
                 $this->privateMessageSender->send(
                     UserEnum::USER_NPC_FERG,
-                    $currentHighestBid->getUserId(),
+                    $user->getId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
                         $currentHighestBid->getUser(),
