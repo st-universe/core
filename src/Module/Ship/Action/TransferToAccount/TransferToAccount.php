@@ -83,7 +83,7 @@ final class TransferToAccount implements ActionControllerInterface
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $userId);
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
             $game->addInformation(_('Dein Warenkonto an diesem Posten ist voll'));

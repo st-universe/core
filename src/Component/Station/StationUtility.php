@@ -195,7 +195,7 @@ final class StationUtility implements StationUtilityInterface
     {
         $owner = $station->getUser();
         $tradepost = $this->tradePostRepository->prototype();
-        $tradepost->setUserId($owner->getId());
+        $tradepost->setUser($owner);
         $tradepost->setName('Handelsposten');
         $tradepost->setDescription('Privater Handelsposten');
         $tradepost->setShip($station);

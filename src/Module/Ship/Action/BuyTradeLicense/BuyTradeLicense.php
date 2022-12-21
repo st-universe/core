@@ -117,7 +117,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                     return;
                 }
 
-                $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, (int) $tradepost->getUserId());
+                $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $tradepost->getUser());
                 $storage = $obj->getStorage()[$commodityId] ?? null;
                 if ($storage === null || $storage->getAmount() < $costs) {
                     return;
@@ -136,8 +136,8 @@ final class BuyTradeLicense implements ActionControllerInterface
                     return;
                 }
 
-                $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, (int) $tradepost->getUserId());
-                $storageManager = $this->tradeLibFactory->createTradePostStorageManager($targetTradepost, $userId);
+                $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $tradepost->getUser());
+                $storageManager = $this->tradeLibFactory->createTradePostStorageManager($targetTradepost, $game->getUser());
 
                 $stor = $storageManager->getStorage()->get($commodityId) ?? null;
                 if ($stor === null) {

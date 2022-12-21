@@ -10,7 +10,9 @@ interface TradePostInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): TradePostInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): TradePostInterface;
 
     public function getName(): string;
 

@@ -67,7 +67,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
                 $post = $this->tradePostRepository->find($offer->getTradePostId());
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager(
                     $post,
-                    $offer->getUserId(),
+                    $offer->getUser(),
                 );
                 $pm[] = "\n" . sprintf(_('%s:'), $post->getName());
             }

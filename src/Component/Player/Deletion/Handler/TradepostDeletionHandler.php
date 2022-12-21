@@ -52,15 +52,17 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
                 }
             }
 
+            $noOne = $this->userRepository->find(GameEnum::USER_NOONE);
+
             //transfer tradepost to noone user
-            $tradepost->setUserId(GameEnum::USER_NOONE);
+            $tradepost->setUser($noOne);
             $tradepost->setName('Verlassener Handelsposten');
             $tradepost->setDescription('Verlassener Handelsposten');
             $tradepost->setTradeNetwork(GameEnum::USER_NOONE);
             $this->tradePostRepository->save($tradepost);
 
             $ship = $tradepost->getShip();
-            $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
+            $ship->setUser($noOne);
             $ship->setName('Verlassener Handelsposten');
             $this->shipRepository->save($ship);
         }

@@ -53,6 +53,12 @@ class TradePost implements TradePostInterface
     private $storage = 0;
 
     /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost", cascade={"remove"})
      * @OrderBy({"id" = "DESC"})
      */
@@ -85,9 +91,14 @@ class TradePost implements TradePostInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): TradePostInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user): TradePostInterface
+    {
+        $this->user = $user;
 
         return $this;
     }
