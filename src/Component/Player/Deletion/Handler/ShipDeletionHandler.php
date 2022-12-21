@@ -29,9 +29,11 @@ final class ShipDeletionHandler implements PlayerDeletionHandlerInterface
 
     public function delete(UserInterface $user): void
     {
-        foreach ($this->shipRepository->getByUser($user) as $obj) {
-            $this->shipRemover->remove($obj, true);
-            $this->entityManager->flush();
+        foreach ($this->shipRepository->getByUser($user) as $ship) {
+            if ($ship->getTradePost() === null) {
+                $this->shipRemover->remove($ship, true);
+                $this->entityManager->flush();
+            }
         }
     }
 }

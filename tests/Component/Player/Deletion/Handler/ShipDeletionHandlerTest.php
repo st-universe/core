@@ -54,6 +54,11 @@ class ShipDeletionHandlerTest extends StuTestCase
         $user = Mockery::mock(UserInterface::class);
         $ship = Mockery::mock(ShipInterface::class);
 
+        $ship->shouldReceive('getTradePost')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
+
         $this->shipRepository->shouldReceive('getByUser')
             ->with($user)
             ->once()
