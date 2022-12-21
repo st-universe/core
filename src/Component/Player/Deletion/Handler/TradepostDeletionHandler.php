@@ -37,17 +37,19 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
     {
         foreach ($this->tradePostRepository->getByUser($user->getId()) as $tradepost) {
 
-            // send PMs to license owners
+            // send PMs to license owners except tradepost owner
             foreach ($this->tradePostRepository->getUsersWithStorageOnTradepost($tradepost->getId()) as $user) {
-                $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
-                    $user->getId(),
-                    sprintf(
-                        'Der Handelsposten "%s" bei den Koordinaten %s wurde verlassen. Du solltest deine Waren hier schleunigst abholen, sonst gehen sie verloren.',
-                        $tradepost->getName(),
-                        $tradepost->getShip()->getSectorString()
-                    )
-                );
+                if ($user->getId() !== $tradepost->getUserId()) {
+                    $this->privateMessageSender->send(
+                        GameEnum::USER_NOONE,
+                        $user->getId(),
+                        sprintf(
+                            'Der Handelsposten "%s" bei den Koordinaten %s wurde verlassen. Du solltest deine Waren hier schleunigst abholen, sonst gehen sie verloren.',
+                            $tradepost->getName(),
+                            $tradepost->getShip()->getSectorString()
+                        )
+                    );
+                }
             }
 
             //transfer tradepost to noone user
