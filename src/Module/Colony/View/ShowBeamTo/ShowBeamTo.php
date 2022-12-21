@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBeamTo;
 
-use Stu\Exception\AccessViolation;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -45,16 +44,18 @@ final class ShowBeamTo implements ViewControllerInterface
             $userId
         );
 
+        $game->setPageTitle(_('Zu Schiff beamen'));
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
+
         $target = $this->shipLoader->find($this->showBeamToRequest->getShipId());
         if ($target === null) {
             return;
         }
 
         if (!$this->interactionChecker->checkColonyPosition($colony, $target) || ($target->getCloakState() && $target->getUser() !== $user)) {
-            throw new AccessViolation();
+            return;
         }
 
-        $game->setPageTitle(_('Zu Schiff beamen'));
         $game->setMacroInAjaxWindow('html/colonymacros.xhtml/show_ship_beamto');
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('COLONY', $colony);
