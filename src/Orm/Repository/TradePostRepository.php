@@ -12,6 +12,7 @@ use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\User;
 
 final class TradePostRepository extends EntityRepository implements TradePostRepositoryInterface
 {
@@ -35,6 +36,12 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         $em->flush();
     }
 
+    public function getByUser(int $userId): array
+    {
+        return $this->findBy(
+            ['user_id' => $userId]
+        );
+    }
 
     public function getByUserLicense(int $userId): array
     {
@@ -142,5 +149,28 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         return $this->findOneBy([
             'id' => $tradePostId
         ]);
+    }
+
+    public function getUsersWithStorageOnTradepost(int $tradePostId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT u FROM %s u
+                    WHERE EXISTS(
+                            SELECT s.id FROM %s s
+                            WHERE s.user_id = u.id
+                            AND (s.tradepost_id = :tradePostId
+                                OR s.tradeoffer_id IN (SELECT o.id FROM %s o WHERE o.posts_id = :tradePostId))
+                            )',
+                    User::class,
+                    Storage::class,
+                    TradeOffer::class
+                )
+            )
+            ->setParameters([
+                'tradePostId' => $tradePostId
+            ])
+            ->getResult();
     }
 }

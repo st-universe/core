@@ -52,9 +52,6 @@ class TradePost implements TradePostInterface
     /** @Column(type="integer") * */
     private $storage = 0;
 
-    /** @Column(type="integer", nullable=true) * */
-    private $map_id;
-
     /**
      * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost", cascade={"remove"})
      * @OrderBy({"id" = "DESC"})
