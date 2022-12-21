@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TakeOffer;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -66,6 +67,11 @@ final class TakeOffer implements ActionControllerInterface
 
         if ($selectedOffer === null) {
             $game->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            return;
+        }
+
+        if ($selectedOffer->getTradePost()->getUserId() === GameEnum::USER_NOONE) {
+            $game->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
             return;
         }
 

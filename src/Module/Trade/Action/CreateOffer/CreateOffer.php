@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CreateOffer;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -60,6 +61,11 @@ final class CreateOffer implements ActionControllerInterface
         }
 
         $tradePost = $storage->getTradePost();
+
+        if ($tradePost->getUserId() === GameEnum::USER_NOONE) {
+            $game->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
+            return;
+        }
 
         $giveCommodityId = $this->createOfferRequest->getGiveCommodityId();
         $giveAmount = $this->createOfferRequest->getGiveAmount();
