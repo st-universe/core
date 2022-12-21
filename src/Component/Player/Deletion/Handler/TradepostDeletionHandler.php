@@ -64,6 +64,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             $ship = $tradepost->getShip();
             $ship->setUser($noOne);
             $ship->setName('Verlassener Handelsposten');
+            $ship->setDisabled(true);
             $this->shipRepository->save($ship);
         }
     }
