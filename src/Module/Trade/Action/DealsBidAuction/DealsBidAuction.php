@@ -255,11 +255,11 @@ final class DealsBidAuction implements ActionControllerInterface
             $this->createPrestigeLog->createLog(
                 $neededAmount,
                 sprintf($this->getPrestigeTemplate($bidType), $neededAmount),
-                $game->getUser(),
+                $user,
                 time()
             );
         } else {
-            $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
+            $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
 
             $storageManager->lowerStorage(
                 $auction->getwantCommodityId(),
@@ -281,7 +281,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
                 $this->privateMessageSender->send(
                     UserEnum::USER_NPC_FERG,
-                    $user->getId(),
+                    $currentHighestBid->getUser()->getId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
                         $currentHighestBid->getUser(),
@@ -300,7 +300,7 @@ final class DealsBidAuction implements ActionControllerInterface
 
                 $this->privateMessageSender->send(
                     UserEnum::USER_NPC_FERG,
-                    $user->getId(),
+                    $currentHighestBid->getUser()->getId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
                         $currentHighestBid->getUser(),
