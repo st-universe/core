@@ -181,13 +181,14 @@ final class DealsBidAuction implements ActionControllerInterface
             return;
         }
 
-        $auction->setAuctionAmount(min(
+        $newAmount = min(
             $maxAmount + 1,
             $auction->getHighestBid()->getMaxAmount()
-        ));
+        );
+        $auction->setAuctionAmount($newAmount);
         $this->dealsRepository->save($auction);
 
-        $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $maxAmount + 1));
+        $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $newAmount));
 
         if ($auction->isPrestigeCost()) {
 
@@ -196,7 +197,7 @@ final class DealsBidAuction implements ActionControllerInterface
                 $auction->getHighestBid()->getUserId(),
                 sprintf(
                     'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d Prestige',
-                    $auction->getAuctionAmount(),
+                    $newAmount,
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
             );
@@ -206,7 +207,7 @@ final class DealsBidAuction implements ActionControllerInterface
                 $auction->getHighestBid()->getUserId(),
                 sprintf(
                     'Ein Spieler hat auf ein Angebot bei "Deals des Großen Nagus" geboten, aber dein Maximalgebot nicht überschritten. Dein Höchstgebot liegt nun bei %d %s',
-                    $auction->getAuctionAmount(),
+                    $newAmount,
                     $auction->getWantedCommodity()->getName()
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
