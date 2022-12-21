@@ -53,7 +53,7 @@ final class CancelOffer implements ActionControllerInterface
 
         $this->tradeLibFactory->createTradePostStorageManager(
             $offer->getTradePost(),
-            $userId
+            $game->getUser()
         )->upperStorage(
             (int) $offer->getOfferedCommodityId(),
             (int) $offer->getOfferedCommodityCount() * $offer->getOfferCount()

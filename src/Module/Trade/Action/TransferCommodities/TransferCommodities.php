@@ -98,8 +98,8 @@ final class TransferCommodities implements ActionControllerInterface
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $userId);
-        $storageManagerTarget = $this->tradeLibFactory->createTradePostStorageManager($targetpost, $userId);
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
+        $storageManagerTarget = $this->tradeLibFactory->createTradePostStorageManager($targetpost, $game->getUser());
 
         $freeStorage = $storageManager->getFreeStorage();
 

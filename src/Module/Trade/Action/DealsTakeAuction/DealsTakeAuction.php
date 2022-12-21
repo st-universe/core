@@ -112,7 +112,7 @@ final class DealsTakeAuction implements ActionControllerInterface
 
         $neededStorageSpace = $this->determineNeededStorageSpace($auction);
         $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
-        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
+        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
         $freeStorage = $storageManagerUser->getFreeStorage();
 
         //check if enough space in storage

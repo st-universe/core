@@ -127,7 +127,7 @@ final class DealsTakeOffer implements ActionControllerInterface
 
             $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
 
-            $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
+            $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
 
             $freeStorage = $storageManagerUser->getFreeStorage();
 

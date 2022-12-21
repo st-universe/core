@@ -248,7 +248,7 @@ final class DealsBidAuction implements ActionControllerInterface
                 time()
             );
         } else {
-            $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser()->getId());
+            $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
 
             $storageManager->lowerStorage(
                 $auction->getwantCommodityId(),
@@ -280,7 +280,7 @@ final class DealsBidAuction implements ActionControllerInterface
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
                 );
             } else {
-                $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser()->getId());
+                $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
 
                 $storageManager->upperStorage(
                     $auction->getwantCommodityId(),

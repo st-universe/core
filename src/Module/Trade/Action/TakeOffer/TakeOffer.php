@@ -103,8 +103,8 @@ final class TakeOffer implements ActionControllerInterface
 
         $tradePost = $storage->getTradePost();
 
-        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
-        $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradePost, (int) $selectedOffer->getUserId());
+        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
+        $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $selectedOffer->getUser());
 
         $freeStorage = $storageManagerUser->getFreeStorage();
 

@@ -85,7 +85,7 @@ final class TransferFromAccount implements ActionControllerInterface
         $commodities = request::postArray('commodities');
         $gcount = request::postArray('count');
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $userId);
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $game->getUser());
         $curCommodities = $storageManager->getStorage()->toArray();
 
         if ($curCommodities === []) {
