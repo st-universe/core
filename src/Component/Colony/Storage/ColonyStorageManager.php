@@ -80,7 +80,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
 
         if ($stor === null) {
             $stor = $this->storageRepository->prototype()
-                ->setUserId($colony->getUser()->getId())
+                ->setUser($colony->getUser())
                 ->setColony($colony)
                 ->setCommodity($commodity);
 

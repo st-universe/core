@@ -53,7 +53,7 @@ final class ShipStorageManager implements ShipStorageManagerInterface
         $storageItem = $storage[$commodityId] ?? null;
         if ($storageItem === null) {
             $storageItem = $this->storageRepository->prototype()
-                ->setUserId($ship->getUser()->getId())
+                ->setUser($ship->getUser())
                 ->setShip($ship)
                 ->setCommodity($commodity);
             $storage->set($commodityId, $storageItem);

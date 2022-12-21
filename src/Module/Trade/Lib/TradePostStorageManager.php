@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 
@@ -19,7 +20,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
 
     private TradePostInterface $tradePost;
 
-    private int $userId;
+    private UserInterface $user;
 
     private $storageSum;
 
@@ -29,12 +30,12 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         StorageRepositoryInterface $storageRepository,
         CommodityRepositoryInterface $commodityRepository,
         TradePostInterface $tradePost,
-        int $userId
+        UserInterface $user
     ) {
         $this->storageRepository = $storageRepository;
         $this->commodityRepository = $commodityRepository;
         $this->tradePost = $tradePost;
-        $this->userId = $userId;
+        $this->user = $user;
     }
 
     public function getTradePost(): TradePostInterface
@@ -66,7 +67,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         if ($this->storage === null) {
             $this->storage = new ArrayCollection();
 
-            foreach ($this->storageRepository->getByTradePostAndUser($this->tradePost->getId(), $this->userId) as $storage) {
+            foreach ($this->storageRepository->getByTradePostAndUser($this->tradePost->getId(), $this->user->getId()) as $storage) {
                 $this->storage->set($storage->getCommodityId(), $storage);
             }
         }
@@ -82,7 +83,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         $stor = $storage->get($commodityId) ?? null;
         if ($stor === null) {
             $stor = $this->storageRepository->prototype();
-            $stor->setUserId($this->userId);
+            $stor->setUser($this->user);
             $stor->setCommodity($this->commodityRepository->find($commodityId));
             $stor->setTradePost($this->tradePost);
         }

@@ -7,6 +7,7 @@ namespace Stu\Module\Trade\Lib;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -96,13 +97,13 @@ final class TradeLibFactory implements TradeLibFactoryInterface
 
     public function createTradePostStorageManager(
         TradePostInterface $tradePost,
-        int $userId
+        UserInterface $user
     ): TradePostStorageManagerInterface {
         return new TradePostStorageManager(
             $this->storageRepository,
             $this->commodityRepository,
             $tradePost,
-            $userId
+            $user
         );
     }
 }

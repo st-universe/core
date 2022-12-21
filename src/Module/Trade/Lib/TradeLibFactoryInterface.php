@@ -3,6 +3,7 @@
 namespace Stu\Module\Trade\Lib;
 
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\UserInterface;
 
 interface TradeLibFactoryInterface
 {
@@ -25,6 +26,6 @@ interface TradeLibFactoryInterface
 
     public function createTradePostStorageManager(
         TradePostInterface $tradePost,
-        int $userId
+        UserInterface $user
     ): TradePostStorageManagerInterface;
 }

@@ -118,7 +118,7 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
             $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - Angebot kann nicht erstellt werden");
@@ -180,7 +180,7 @@ final class CreateOffer implements ActionControllerInterface
     private function saveStorage(TradeOfferInterface $tradeOffer): void
     {
         $storage = $this->storageRepository->prototype();
-        $storage->setUserId($tradeOffer->getUser()->getId());
+        $storage->setUser($tradeOffer->getUser());
         $storage->setTradeOffer($tradeOffer);
         $storage->setCommodity($tradeOffer->getOfferedCommodity());
         $storage->setAmount($tradeOffer->getOfferedCommodityCount() * $tradeOffer->getOfferCount());

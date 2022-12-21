@@ -96,9 +96,9 @@ class Storage implements StorageInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): StorageInterface
+    public function setUser(UserInterface $user): StorageInterface
     {
-        $this->user_id = $userId;
+        $this->user = $user;
 
         return $this;
     }

@@ -232,7 +232,7 @@ final class ShipRemover implements ShipRemoverInterface
     private function orphanizeStorage(ShipInterface $ship): void
     {
         foreach ($ship->getStorage() as $storage) {
-            $storage->setUserId(GameEnum::USER_NOONE);
+            $storage->setUser($this->userRepository->find(GameEnum::USER_NOONE));
             $this->storageRepository->save($storage);
         }
     }

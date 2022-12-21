@@ -62,7 +62,7 @@ final class BasicTradeSell implements ActionControllerInterface
             return;
         }
 
-        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $game->getUser());
 
         if ($storageManager->getFreeStorage() <= 0) {
             $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - es konnte nicht gekauft werden");
