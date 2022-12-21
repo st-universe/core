@@ -6,6 +6,8 @@ namespace Stu\Module\Message\Action\DeleteContacts;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Tal\TalHelper;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class DeleteContacts implements ActionControllerInterface
@@ -16,12 +18,16 @@ final class DeleteContacts implements ActionControllerInterface
 
     private ContactRepositoryInterface $contactRepository;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         DeleteContactsRequestInterface $deleteContactsRequest,
-        ContactRepositoryInterface $contactRepository
+        ContactRepositoryInterface $contactRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->deleteContactsRequest = $deleteContactsRequest;
         $this->contactRepository = $contactRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,6 +37,16 @@ final class DeleteContacts implements ActionControllerInterface
             if ($contact === null || $contact->getUserId() != $game->getUser()->getId()) {
                 continue;
             }
+
+            //send info PM to contact
+            $this->privateMessageSender->send(
+                $game->getUser()->getId(),
+                $contact->getRecipientId(),
+                sprintf(
+                    'Der Siedler betrachtet Dich nun nicht mehr als %s',
+                    TalHelper::getContactListModeDescription($contact->getMode())
+                )
+            );
 
             $this->contactRepository->delete($contact);
         }
