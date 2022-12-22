@@ -548,7 +548,7 @@ final class GameController implements GameControllerInterface
                     throw new TickGameStateException();
                 }
 
-                if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
+                if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->getUser()->isAdmin()) {
                     throw new MaintenanceGameStateException();
                 }
 
