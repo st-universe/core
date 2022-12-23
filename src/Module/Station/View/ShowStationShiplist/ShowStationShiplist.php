@@ -48,7 +48,7 @@ final class ShowStationShiplist implements ViewControllerInterface
             function (ShipInterface $ship): ShipWrapperInterface {
                 return $this->shipWrapperFactory->wrapShip($ship);
             },
-            $station->getDockedShips()
+            $station->getDockedShips()->toArray()
         );
 
         $game->setPageTitle(_('Angedockte Schiffe'));
