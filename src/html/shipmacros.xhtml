@@ -376,7 +376,7 @@
       <table tal:attributes="style string:${fleet/getHiddenStyle};" class="tcal" id="fleetbody_${fleetid}">
         <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
         <tal:block tal:repeat="wrapper fleetwrapper/getShips">
-
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
         </tal:block>
       </table>
     </form>
@@ -389,7 +389,6 @@
     </tr>
     <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
     <tal:block tal:repeat="wrapper SINGLESHIPWRAPPERS">
-      <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
     </tal:block>
   </table>
 </metal:macro>
