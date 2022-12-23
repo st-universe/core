@@ -271,8 +271,8 @@
             tal:replace="ship/getReactorLoad">Fusioncore</span>
         </tal:block>
       </div>
-      <div tal:conditon="epssystem" style="float: left; width: 50%">
-        <img tal:condition="eps" src="assets/buttons/batt.png" title="Ersatzbatterie" /> <span
+      <div tal:condition="epssystem" style="float: left; width: 50%">
+        <img src="assets/buttons/batt.png" title="Ersatzbatterie" /> <span
           tal:replace="epssystem/getBattery">BATTERY</span>
       </div>
     </td>
