@@ -150,9 +150,9 @@ final class ShipCreator implements ShipCreatorInterface
                 if ($this->loggerUtil->doLog()) {
                     $this->loggerUtil->log(sprintf("wrapperCallable!"));
                 }
-                /** @var ModuleRumpWrapperInterface $wrapper */
-                $wrapper = $wrapperCallable($ship, $wrapper);
-                $wrapper->apply($ship);
+                /** @var ModuleRumpWrapperInterface $moduleRumpWrapper */
+                $moduleRumpWrapper = $wrapperCallable($ship, $wrapper);
+                $moduleRumpWrapper->apply($ship);
             }
         }
 
