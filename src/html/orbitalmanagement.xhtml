@@ -27,98 +27,99 @@
               </tal:block>
             </td>
           </tr>
-          <tr tal:repeat="wrapper fleetwrapper/getShipWrappers" tal:attributes="class string:row${repeat/wrapper/odd}"
-            tal:define="ship wrapper/get">
-            <td>
-              <input type="hidden" name="ships[]" tal:attributes="value ship/getId" />
-              <tal:block tal:condition="wrapper/isOwnedByCurrentUser">
-                <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+          <tr tal:repeat="wrapper fleetwrapper/getShipWrappers" tal:attributes="class string:row${repeat/wrapper/odd}">
+            <tal:block tal:define="ship wrapper/get">
+              <td>
+                <input type="hidden" name="ships[]" tal:attributes="value ship/getId" />
+                <tal:block tal:condition="wrapper/isOwnedByCurrentUser">
+                  <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+                    <img src="assets/ships/${ship/getRumpId}.png" tal:attributes="title ship/getRumpName" />
+                  </a>
+                </tal:block>
+                <tal:block tal:condition="not:wrapper/isOwnedByCurrentUser">
                   <img src="assets/ships/${ship/getRumpId}.png" tal:attributes="title ship/getRumpName" />
-                </a>
-              </tal:block>
-              <tal:block tal:condition="not:wrapper/isOwnedByCurrentUser">
-                <img src="assets/ships/${ship/getRumpId}.png" tal:attributes="title ship/getRumpName" />
-              </tal:block>
-            </td>
-            <td tal:condition="not:wrapper/isOwnedByCurrentUser" tal:content="structure bbcode:ship/getName">NAME</td>
-            <td tal:condition="wrapper/isOwnedByCurrentUser">
-              <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span
-                  tal:content="structure bbcode:ship/getName">NAME</span></a>
-            </td>
-            <tal:block tal:condition="not:ship/getIsDestroyed">
-              <td tal:condition="wrapper/isOwnedByCurrentUser">
-                <div tal:condition="ship/canMan">
-                  <input type="checkbox" name="man[${ship/getId}]" />
-                  <span>Hochbeamen</span> (<span tal:replace="ship/getCrewCount">CREW</span>/<span
-                    tal:replace="ship/getBuildplan/getCrew">CREW</span>)
-                </div>
-                <div tal:condition="ship/getCrewCount">
-                  <input type="checkbox" name="unman[${ship/getId}]" />
-                  <span>Runterbeamen</span>: <span tal:replace="ship/getCrewCount">CREW</span>
-                </div>
-              </td>
-              <td tal:condition="not:wrapper/isOwnedByCurrentUser"> </td>
-              <td>
-                <div tal:define="eps wrapper/getEpsShipSystem">
-                  <img class="center" onclick="this.up('div').down('input').value=${eps/getMaxBattery}"
-                    src="assets/buttons/batt.png" title="Ersatzbatterie" />
-                  <input type="text" size="3" name="batt[${ship/getId}]" />
-                  <span tal:condition="wrapper/isOwnedByCurrentUser">${eps/getBattery}/${eps/getMaxBattery}</span>
-                </div>
-              </td>
-              <td>
-                <div tal:condition="ship/hasWarpcore">
-                  <img class="center" onclick="this.up('div').down('input').value=${ship/getReactorCapacity}"
-                    src="assets/buttons/warpk.png" title="Warpkernladung" />
-                  <input type="text" size="3" name="reactor[${ship/getId}]" />
-                  <span
-                    tal:condition="wrapper/isOwnedByCurrentUser">${ship/getReactorLoad}/${ship/getReactorCapacity}</span>
-                </div>
-                <div tal:condition="ship/hasFusionReactor">
-                  <img class="center" onclick="this.up('div').down('input').value=${ship/getReactorCapacity}"
-                    src="assets/buttons/fusrkt.png" title="Reaktorladung" />
-                  <input type="text" size="3" name="reactor[${ship/getId}]" />
-                  <span
-                    tal:condition="wrapper/isOwnedByCurrentUser">${ship/getReactorLoad}/${ship/getReactorCapacity}</span>
-                </div>
-              </td>
-              <td>
-                <div tal:condition="php: ship.getMaxTorpedos() > 0">
-                  <img class="center" onclick="this.up('div').down('input').value=${ship/getMaxTorpedos}"
-                    tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.png" title="Torpedos" />
-                  <img class="center" tal:condition="ship/getTorpedoCount"
-                    src="assets/commodities/${ship/getTorpedo/getCommodityId}.png"
-                    tal:attributes="title ship/getTorpedo/getName" />
-                  <tal:block tal:condition="wrapper/isOwnedByCurrentUser">
-                    <input type="text" size="3" name="torp[${ship/getId}]"
-                      tal:attributes="value ship/getTorpedoCount" />
-                    <span>Max.</span> ${ship/getMaxTorpedos}
-                  </tal:block>
-                  <input tal:condition="not:wrapper/isOwnedByCurrentUser" type="text" size="3"
-                    name="torp[${ship/getId}]" />
-                  <tal:block tal:condition="not:ship/getTorpedoCount">
-                    <tal:block tal:repeat="data wrapper/getPossibleTorpedoTypes">
-                      <img class="center" src="assets/commodities/${data/getCommodityId}.png"
-                        tal:attributes="title data/getName" />
-                      <input type="radio" name="torp_type[${ship/getId}]"
-                        tal:attributes="checked repeat/data/start; value data/getId" />
-                    </tal:block>
-                  </tal:block>
-                </div>
-              </td>
-              <td>
-                <tal:block tal:condition="ship/hasShuttleRamp">
-                  <div tal:condition="ship/isShuttleRampHealthy">
-                    <a href="javascript:void(0);"
-                      onclick="openShuttleManagement(this, ${ship/getId}, ${COLONY/getId});">
-                      Shuttle-Management öffnen
-                    </a>
-                  </div>
-                  <div tal:condition="not:ship/isShuttleRampHealthy">
-                    <span>Shuttle-Rampe ist defekt</span>
-                  </div>
                 </tal:block>
               </td>
+              <td tal:condition="not:wrapper/isOwnedByCurrentUser" tal:content="structure bbcode:ship/getName">NAME</td>
+              <td tal:condition="wrapper/isOwnedByCurrentUser">
+                <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span
+                    tal:content="structure bbcode:ship/getName">NAME</span></a>
+              </td>
+              <tal:block tal:condition="not:ship/getIsDestroyed">
+                <td tal:condition="wrapper/isOwnedByCurrentUser">
+                  <div tal:condition="ship/canMan">
+                    <input type="checkbox" name="man[${ship/getId}]" />
+                    <span>Hochbeamen</span> (<span tal:replace="ship/getCrewCount">CREW</span>/<span
+                      tal:replace="ship/getBuildplan/getCrew">CREW</span>)
+                  </div>
+                  <div tal:condition="ship/getCrewCount">
+                    <input type="checkbox" name="unman[${ship/getId}]" />
+                    <span>Runterbeamen</span>: <span tal:replace="ship/getCrewCount">CREW</span>
+                  </div>
+                </td>
+                <td tal:condition="not:wrapper/isOwnedByCurrentUser"> </td>
+                <td>
+                  <div tal:define="eps wrapper/getEpsShipSystem">
+                    <img class="center" onclick="this.up('div').down('input').value=${eps/getMaxBattery}"
+                      src="assets/buttons/batt.png" title="Ersatzbatterie" />
+                    <input type="text" size="3" name="batt[${ship/getId}]" />
+                    <span tal:condition="wrapper/isOwnedByCurrentUser">${eps/getBattery}/${eps/getMaxBattery}</span>
+                  </div>
+                </td>
+                <td>
+                  <div tal:condition="ship/hasWarpcore">
+                    <img class="center" onclick="this.up('div').down('input').value=${ship/getReactorCapacity}"
+                      src="assets/buttons/warpk.png" title="Warpkernladung" />
+                    <input type="text" size="3" name="reactor[${ship/getId}]" />
+                    <span
+                      tal:condition="wrapper/isOwnedByCurrentUser">${ship/getReactorLoad}/${ship/getReactorCapacity}</span>
+                  </div>
+                  <div tal:condition="ship/hasFusionReactor">
+                    <img class="center" onclick="this.up('div').down('input').value=${ship/getReactorCapacity}"
+                      src="assets/buttons/fusrkt.png" title="Reaktorladung" />
+                    <input type="text" size="3" name="reactor[${ship/getId}]" />
+                    <span
+                      tal:condition="wrapper/isOwnedByCurrentUser">${ship/getReactorLoad}/${ship/getReactorCapacity}</span>
+                  </div>
+                </td>
+                <td>
+                  <div tal:condition="php: ship.getMaxTorpedos() > 0">
+                    <img class="center" onclick="this.up('div').down('input').value=${ship/getMaxTorpedos}"
+                      tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.png" title="Torpedos" />
+                    <img class="center" tal:condition="ship/getTorpedoCount"
+                      src="assets/commodities/${ship/getTorpedo/getCommodityId}.png"
+                      tal:attributes="title ship/getTorpedo/getName" />
+                    <tal:block tal:condition="wrapper/isOwnedByCurrentUser">
+                      <input type="text" size="3" name="torp[${ship/getId}]"
+                        tal:attributes="value ship/getTorpedoCount" />
+                      <span>Max.</span> ${ship/getMaxTorpedos}
+                    </tal:block>
+                    <input tal:condition="not:wrapper/isOwnedByCurrentUser" type="text" size="3"
+                      name="torp[${ship/getId}]" />
+                    <tal:block tal:condition="not:ship/getTorpedoCount">
+                      <tal:block tal:repeat="data wrapper/getPossibleTorpedoTypes">
+                        <img class="center" src="assets/commodities/${data/getCommodityId}.png"
+                          tal:attributes="title data/getName" />
+                        <input type="radio" name="torp_type[${ship/getId}]"
+                          tal:attributes="checked repeat/data/start; value data/getId" />
+                      </tal:block>
+                    </tal:block>
+                  </div>
+                </td>
+                <td>
+                  <tal:block tal:condition="ship/hasShuttleRamp">
+                    <div tal:condition="ship/isShuttleRampHealthy">
+                      <a href="javascript:void(0);"
+                        onclick="openShuttleManagement(this, ${ship/getId}, ${COLONY/getId});">
+                        Shuttle-Management öffnen
+                      </a>
+                    </div>
+                    <div tal:condition="not:ship/isShuttleRampHealthy">
+                      <span>Shuttle-Rampe ist defekt</span>
+                    </div>
+                  </tal:block>
+                </td>
+              </tal:block>
             </tal:block>
           </tr>
         </tal:block>
