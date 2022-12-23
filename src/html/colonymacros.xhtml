@@ -739,7 +739,7 @@
         <td colspan="2" tal:condition="data/getIsDestroyed"></td>
         <tal:block tal:condition="not:data/getIsDestroyed">
           <td style="width: 150px;" tal:define="shields wrapper/getShieldShipSystem">
-            <table class="tcal">
+            <table class="tcal" tal:condition="shields">
               <tr>
                 <th style="width: 20px; text-align: center;">
                   <img src="assets/buttons/modul_2.png" />
