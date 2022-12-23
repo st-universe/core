@@ -205,7 +205,8 @@
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shiplist_body">
-  <tr tal:define="ship wrapper/get" tal:attributes="class string:row${repeat/wrapper/odd}">
+  <tr tal:define="ship wrapper/get; epssystem wrapper/getEpsShipSystem;"
+    tal:attributes="class string:row${repeat/wrapper/odd}">
     <td style="background-color: #000000 ! important">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
         onmouseout="closeStorage();">
@@ -253,13 +254,11 @@
       <span tal:condition="not:ship/getShieldState">${ship/getShield}/${ship/getMaxShield}</span>
       (+<span tal:replace="ship/getShieldRegenerationRate">REGENERATIONRATE</span>)
     </td>
-    <td tal:define="eps wrapper/getEpsShipSystem">
-      <tal:block tal:condition="eps">
-        ${eps/getEps}/${eps/getMaxEps}
-        <span>${addPlusCharacter:wrapper/getEffectiveEpsProduction}</span>
-        (<span tal:content="wrapper/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
-          tal:content="wrapper/getWarpcoreUsage">CORE</span>)
-      </tal:block>
+    <td tal:condition="epssystem">
+      ${epssystem/getEps}/${epssystem/getMaxEps}
+      <span>${addPlusCharacter:wrapper/getEffectiveEpsProduction}</span>
+      (<span tal:content="wrapper/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
+        tal:content="wrapper/getWarpcoreUsage">CORE</span>)
     </td>
     <td>
       <div style="float: left; width: 50%">
@@ -272,9 +271,9 @@
             tal:replace="ship/getReactorLoad">Fusioncore</span>
         </tal:block>
       </div>
-      <div style="float: left; width: 50%" tal:define="eps wrapper/getEpsShipSystem">
+      <div tal:conditon="epssystem" style="float: left; width: 50%">
         <img tal:condition="eps" src="assets/buttons/batt.png" title="Ersatzbatterie" /> <span
-          tal:replace="eps/getBattery">BATTERY</span>
+          tal:replace="epssystem/getBattery">BATTERY</span>
       </div>
     </td>
     <td tal:content="ship/getCrewCount" style="text-align: center;">CREW</td>
