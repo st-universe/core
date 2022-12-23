@@ -17,6 +17,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -74,9 +75,9 @@ final class ShipTick implements ShipTickInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
-    public function work(ShipInterface $ship): void
+    public function work(ShipWrapperInterface $wrapper): void
     {
-        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+        $ship = $wrapper->get();
 
         // do construction stuff
         if ($this->doConstructionStuff($ship)) {

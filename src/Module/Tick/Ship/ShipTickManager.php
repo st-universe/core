@@ -155,7 +155,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
             //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
 
-            $this->shipTick->work($ship);
+            $this->shipTick->work($this->shipWrapperFactory->wrapShip($ship));
         }
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
