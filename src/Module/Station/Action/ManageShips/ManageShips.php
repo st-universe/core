@@ -24,6 +24,7 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -57,6 +58,8 @@ final class ManageShips implements ActionControllerInterface
 
     private ShipTorpedoManagerInterface $shipTorpedoManager;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
@@ -70,7 +73,8 @@ final class ManageShips implements ActionControllerInterface
         InteractionCheckerInterface $interactionChecker,
         ReactorUtilInterface $reactorUtil,
         StationUtilityInterface $stationUtility,
-        ShipTorpedoManagerInterface $shipTorpedoManager
+        ShipTorpedoManagerInterface $shipTorpedoManager,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -85,6 +89,7 @@ final class ManageShips implements ActionControllerInterface
         $this->reactorUtil = $reactorUtil;
         $this->stationUtility = $stationUtility;
         $this->shipTorpedoManager = $shipTorpedoManager;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -119,6 +124,8 @@ final class ManageShips implements ActionControllerInterface
 
         $sectorString = $station->getSectorString();
 
+        $stationEps = $this->shipWrapperFactory->wrapShip($station)->getEpsShipSystem();
+
         foreach ($ships as $ship) {
             $shipobj = $this->shipRepository->find((int) $ship);
             if ($shipobj === null) {
@@ -133,24 +140,29 @@ final class ManageShips implements ActionControllerInterface
             if ($shipobj->getIsDestroyed()) {
                 continue;
             }
-            if ($station->getEps() > 0 && $shipobj->getEBatt() < $shipobj->getMaxEbatt() && array_key_exists(
+
+
+            $wrapper = $this->shipWrapperFactory->wrapShip($shipobj);
+            $shipEps = $wrapper->getEpsShipSystem();
+
+            if ($stationEps->getEps() > 0 && $shipEps->getBattery() < $shipEps->getMaxBattery() && array_key_exists(
                 $ship,
                 $batt
             )) {
                 if ($batt[$ship] == 'm') {
-                    $load = $shipobj->getMaxEbatt() - $shipobj->getEBatt();
+                    $load = $shipEps->getMaxBattery() - $shipEps->getBattery();
                 } else {
                     $load = (int) $batt[$ship];
-                    if ($shipobj->getEBatt() + $load > $shipobj->getMaxEBatt()) {
-                        $load = $shipobj->getMaxEBatt() - $shipobj->getEBatt();
+                    if ($shipEps->getBattery() + $load > $shipEps->getMaxBattery()) {
+                        $load = $shipEps->getMaxBattery() - $shipEps->getBattery();
                     }
                 }
-                if ($load > $station->getEps()) {
-                    $load = $station->getEps();
+                if ($load > $stationEps->getEps()) {
+                    $load = $stationEps->getEps();
                 }
                 if ($load > 0) {
-                    $shipobj->setEBatt($shipobj->getEBatt() + $load);
-                    $station->setEps($station->getEps() - $load);
+                    $shipEps->setBattery($shipEps->getBattery() + $load)->update();
+                    $stationEps->setEps($stationEps->getEps() - $load)->update();
                     $msg[] = sprintf(
                         _('%s: Batterie um %d Einheiten aufgeladen'),
                         $shipobj->getName(),
@@ -196,7 +208,7 @@ final class ManageShips implements ActionControllerInterface
                         $shipobj->getName()
                     );
 
-                    $this->shipSystemManager->activate($shipobj, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+                    $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
                 }
             }
             if (

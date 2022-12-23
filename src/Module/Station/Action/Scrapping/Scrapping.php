@@ -140,8 +140,6 @@ final class Scrapping implements ActionControllerInterface
 
         //clear system values
         $station->setShield(0);
-        $station->setEps(0);
-        $station->setMaxEBatt(0);
         $station->setMaxShield(0);
 
         //delete trade post stuff

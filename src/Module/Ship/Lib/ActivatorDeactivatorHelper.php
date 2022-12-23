@@ -78,7 +78,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         $systemName = ShipSystemTypeEnum::getDescription($systemId);
 
         try {
-            $this->shipSystemManager->activate($ship, $systemId);
+            $this->shipSystemManager->activate($this->shipWrapperFactory->wrapShip($ship), $systemId);
             $game->addInformation(sprintf(_('%s: System %s aktiviert'), $ship->getName(), $systemName));
             return true;
         } catch (AlreadyActiveException $e) {

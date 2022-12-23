@@ -12,9 +12,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -52,10 +52,11 @@ final class BeamToColony implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         $target = $this->colonyRepository->find((int) request::postIntFatal('target'));
         if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, true)) {
@@ -83,21 +84,23 @@ final class BeamToColony implements ActionControllerInterface
         // check for fleet option
         if (request::postInt('isfleet') && $ship->getFleet() !== null) {
             foreach ($ship->getFleet()->getShips() as $ship) {
-                $this->beamToTarget($ship, $target, $game);
+                $this->beamToTarget($wrapper, $target, $game);
             }
         } else {
-            $this->beamToTarget($ship, $target, $game);
+            $this->beamToTarget($wrapper, $target, $game);
         }
     }
 
-    private function beamToTarget(ShipInterface $ship, ColonyInterface $target, GameControllerInterface $game): void
+    private function beamToTarget(ShipWrapperInterface $wrapper, ColonyInterface $target, GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+        $ship = $wrapper->get();
+        $epsSystem = $wrapper->getEpsShipSystem();
 
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
-        if ($ship->getEps() == 0) {
+        if ($epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -135,7 +138,7 @@ final class BeamToColony implements ActionControllerInterface
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
 
-            if ($ship->getEps() < 1) {
+            if ($epsSystem->getEps() < 1) {
                 break;
             }
             if (!array_key_exists($key, $gcount)) {
@@ -170,8 +173,8 @@ final class BeamToColony implements ActionControllerInterface
 
             $transferAmount = $commodity->getTransferCount() * $ship->getBeamFactor();
 
-            if (ceil($count / $transferAmount) > $ship->getEps()) {
-                $count = $ship->getEps() * $transferAmount;
+            if (ceil($count / $transferAmount) > $epsSystem->getEps()) {
+                $count = $epsSystem->getEps() * $transferAmount;
             }
             if ($target->getStorageSum() + $count > $target->getMaxStorage()) {
                 $count = $target->getMaxStorage() - $target->getStorageSum();
@@ -189,7 +192,7 @@ final class BeamToColony implements ActionControllerInterface
             $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
             $this->colonyStorageManager->upperStorage($target, $commodity, $count);
 
-            $ship->setEps($ship->getEps() - (int) ceil($count / $transferAmount));
+            $epsSystem->setEps($epsSystem->getEps() - (int) ceil($count / $transferAmount));
         }
         $game->sendInformation(
             $target->getUser()->getId(),
@@ -197,6 +200,8 @@ final class BeamToColony implements ActionControllerInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
             sprintf(_('colony.php?SHOW_COLONY=1&id=%d'), $target->getId())
         );
+
+        $epsSystem->update();
 
         $this->shipRepository->save($ship);
     }

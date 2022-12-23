@@ -19,6 +19,7 @@ use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
@@ -40,32 +41,24 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $this->stuTime = $stuTime;
     }
 
-    public function updateSystemData(ShipInterface $ship, int $systemId, $data): void
-    {
-        $shipSystem = $ship->getSystems()[$systemId] ?? null;
-        if ($shipSystem !== null) {
-            //$shipSystem->setData(serialize($data));
-            $shipSystem->setData(json_encode($data));
-        }
-    }
-
-    public function activate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
+    public function activate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void
     {
         $time = $this->stuTime->time();
         $system = $this->lookupSystem($shipSystemId);
 
         if (!$force) {
-            $this->checkActivationConditions($ship, $system, $shipSystemId, $time);
+            $this->checkActivationConditions($wrapper, $system, $shipSystemId, $time);
         }
-        $ship->setEps($ship->getEps() - $system->getEnergyUsageForActivation());
+        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem->setEps($epsSystem->getEps() - $system->getEnergyUsageForActivation())->update();
 
         //cooldown
-        $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
+        $shipSystem = $wrapper->get()->getSystems()[$shipSystemId] ?? null;
         if ($shipSystem !== null && $system->getCooldownSeconds() !== null) {
             $shipSystem->setCooldown($time + $system->getCooldownSeconds());
         }
 
-        $system->activate($ship, $this);
+        $system->activate($wrapper, $this);
     }
 
     public function deactivate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
@@ -108,11 +101,12 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     }
 
     private function checkActivationConditions(
-        ShipInterface $ship,
+        ShipWrapperInterface $wrapper,
         ShipSystemTypeInterface $system,
         int $shipSystemId,
         $time
     ): void {
+        $ship = $wrapper->get();
         $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
         if ($shipSystem === null) {
             throw new SystemNotFoundException();
@@ -138,7 +132,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new InsufficientCrewException();
         }
 
-        if ($ship->getEps() < $system->getEnergyUsageForActivation()) {
+        if ($wrapper->getEpsShipSystem()->getEps() < $system->getEnergyUsageForActivation()) {
             throw new InsufficientEnergyException($system->getEnergyUsageForActivation());
         }
 

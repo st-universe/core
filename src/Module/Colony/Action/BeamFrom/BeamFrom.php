@@ -64,10 +64,12 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        $target = $this->shipLoader->find(request::postIntFatal('target'));
-        if ($target === null) {
+        $wrapper = $this->shipLoader->find(request::postIntFatal('target'));
+        if ($wrapper === null) {
             return;
         }
+
+        $target = $wrapper->get();
 
         if (!$this->interactionChecker->checkColonyPosition($colony, $target)) {
             return;

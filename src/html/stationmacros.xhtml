@@ -254,7 +254,7 @@
   </tal:block>
   <tal:block tal:condition="not:ship/isTrumfield">
     <td style="width: 160px;">
-      <span tal:replace="ship/getHuell"></span>/<span tal:replace="ship/getMaxHuell"></span>
+      <span tal:replace="ship/getHull"></span>/<span tal:replace="ship/getMaxHuell"></span>
       <tal:block tal:condition="ship/getShieldState">
         (<span class="activeshield">${ship/getShield}</span>)
       </tal:block>
@@ -276,7 +276,7 @@
     </td>
   </tal:block>
   <tal:block tal:condition="ship/isTrumfield">
-    <td style="width: 160px;" tal:content="ship/getHuell">HULL</td>
+    <td style="width: 160px;" tal:content="ship/getHull">HULL</td>
     <td>
       <span tal:replace="structure bbcode:ship/getUserName">USERNAME</span>
     </td>
@@ -284,10 +284,8 @@
 </metal:block>
 <metal:block metal:define-macro="shiplist">
   <ul>
-    <tal:block tal:repeat="fleets SHIP_LIST">
-      <tal:block tal:repeat="data fleets/ships">
-        <metal:block metal:use-macro="html/colonymacros.xhtml/shipselector" />
-      </tal:block>
+    <tal:block tal:repeat="wrapper WRAPPERS">
+      <metal:block metal:use-macro="html/colonymacros.xhtml/shipselector" />
     </tal:block>
   </ul>
 </metal:block>
@@ -541,7 +539,7 @@
       </td>
       <td style="text-align: center; vertical-align: middle">
         <img src="assets/buttons/modul_1.png" title="Hülle" style="width: 12px; height: 12px;" />
-        ${wrapper/get/getHuell}/${wrapper/get/getMaxHuell}
+        ${wrapper/get/getHull}/${wrapper/get/getMaxHuell}
       </td>
       <td style="text-align: center; vertical-align: middle">
         <img tal:repeat="sys wrapper/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"

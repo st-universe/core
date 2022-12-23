@@ -62,17 +62,21 @@ final class OpenAdventDoor implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
-        if ($target === null) {
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
+
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
+
         if ($target->getRump()->getRoleId() !== ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR) {
             throw new SanityCheckException('target is not an advent door');
         }

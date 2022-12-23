@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 use Stu\Component\Ship\ShipRoleEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -14,21 +15,24 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 {
 
     public function fire(
-        $attacker,
+        ?ShipWrapperInterface $wrapper,
+        $attackingPhalanx,
         array $targetPool,
         bool $isAlertRed = false
     ): array {
         $msg = [];
+
+        $attacker = $wrapper !== null ? $wrapper->get() : $attackingPhalanx;
 
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
 
             if (count($targetPool) === 0) {
                 break;
             }
-            $target = $targetPool[array_rand($targetPool)];
+            $target = $targetPool[array_rand($targetPool)]->get();
             if (
                 !$attacker->getTorpedoState() ||
-                $attacker->getEps() < $this->getProjectileWeaponEnergyCosts() ||
+                $this->hasUnsufficientEnergy($wrapper, $attackingPhalanx) ||
                 $attacker->getTorpedoCount() === 0
             ) {
                 break;
@@ -43,7 +47,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
             }
 
-            $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
+            $this->reduceEps($wrapper, $attackingPhalanx);
 
             $msg[] = "Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName();
 
@@ -109,24 +113,44 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         return $msg;
     }
 
+    private function hasUnsufficientEnergy(?ShipWrapperInterface $wrapper, $attackingPhalanx): bool
+    {
+        if ($wrapper !== null) {
+            return $wrapper->getEpsShipSystem()->getEps() < $this->getProjectileWeaponEnergyCosts();
+        } else {
+            return $attackingPhalanx->getEps() < $this->getProjectileWeaponEnergyCosts();
+        }
+    }
+
+    private function reduceEps(?ShipWrapperInterface $wrapper, $attackingPhalanx): void
+    {
+        if ($wrapper !== null) {
+            $eps = $wrapper->getEpsShipSystem();
+            $eps->setEps($eps->getEps() - $this->getProjectileWeaponEnergyCosts())->update();
+        } else {
+            $attackingPhalanx->setEps($attackingPhalanx->getEps() - $this->getProjectileWeaponEnergyCosts());
+        }
+    }
+
     public function fireAtBuilding(
-        ShipInterface $attacker,
+        ShipWrapperInterface $attackerWrapper,
         PlanetFieldInterface $target,
         $isOrbitField,
         &$antiParticleCount
     ): array {
         $msg = [];
 
+        $attacker = $attackerWrapper->get();
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
 
-            if (!$attacker->getTorpedoState() || $attacker->getEps() < $this->getProjectileWeaponEnergyCosts()) {
+            if (!$attacker->getTorpedoState() || $this->hasUnsufficientEnergy($attackerWrapper, null)) {
                 break;
             }
 
             $torpedo = $attacker->getTorpedo();
             $this->shipTorpedoManager->changeTorpedo($attacker, -1);
 
-            $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
+            $this->reduceEps($attackerWrapper, null);
 
             $msg[] = sprintf(_("Die %s feuert einen %s auf das Gebäude %s auf Feld %d"), $attacker->getName(), $torpedo->getName(), $target->getBuilding()->getName(), $target->getFieldId());
 

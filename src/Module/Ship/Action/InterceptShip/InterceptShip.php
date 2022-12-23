@@ -59,18 +59,21 @@ final class InterceptShip implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::indInt('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
 
-        if ($target === null) {
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
+
         if (!$this->interactionChecker->checkPosition($target, $ship)) {
             return;
         }

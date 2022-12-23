@@ -19,7 +19,9 @@ use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
+use Stu\Component\Ship\System\Type\EpsShipSystem;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
@@ -31,6 +33,11 @@ class ShipSystemManagerTest extends StuTestCase
      * @var MockInterface|ShipInterface
      */
     private  $ship;
+
+    /**
+     * @var MockInterface|ShipWrapperInterface
+     */
+    private  $wrapper;
 
     /**
      * @var MockInterface|ShipSystemInterface
@@ -57,6 +64,7 @@ class ShipSystemManagerTest extends StuTestCase
     public function setUp(): void
     {
         $this->ship = $this->mock(ShipInterface::class);
+        $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->shipSystem = $this->mock(ShipSystemInterface::class);
         $this->systemType = $this->mock(ShipSystemTypeInterface::class);
 
@@ -81,7 +89,14 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+
+
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateFailsIfSystemDestroyed(): void
@@ -93,6 +108,12 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
 
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+
         $this->shipSystem->shouldReceive('getStatus')
             ->withNoArgs()
             ->once()
@@ -103,7 +124,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateFailsIfSystemNotActivatable(): void
@@ -114,6 +135,12 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
         $this->shipSystem->shouldReceive('getStatus')
             ->withNoArgs()
@@ -130,7 +157,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateFailsIfSystemAlreadyOn(): void
@@ -141,6 +168,12 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
+
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
         $this->shipSystem->shouldReceive('getStatus')
             ->withNoArgs()
@@ -157,7 +190,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateFailsOnInsufficientCrew(): void
@@ -172,6 +205,12 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
+
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
         $this->shipSystem->shouldReceive('getStatus')
             ->withNoArgs()
@@ -188,12 +227,13 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateFailsOnInsufficientEnergy(): void
     {
         $this->expectException(InsufficientEnergyException::class);
+        $epsSystem = $this->mock(EpsShipSystem::class);
 
         $energyCosts = 2;
 
@@ -201,10 +241,21 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->ship->shouldReceive('getEps')
+
+        //wrapper and eps
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getEpsShipSystem')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($epsSystem);
+        $epsSystem->shouldReceive('getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
+
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -230,12 +281,13 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateFailsIfSystemPreConditionsFail(): void
     {
         $this->expectException(ActivationConditionsNotMetException::class);
+        $epsSystem = $this->mock(EpsShipSystem::class);
 
         $energyCosts = 1;
 
@@ -243,10 +295,21 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->ship->shouldReceive('getEps')
+
+        //wrapper and eps
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getEpsShipSystem')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($epsSystem);
+        $epsSystem->shouldReceive('getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
+
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -284,24 +347,40 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateActivatesSystemNoCooldown(): void
     {
         $energyCosts = 1;
+        $epsSystem = $this->mock(EpsShipSystem::class);
 
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->twice()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->ship->shouldReceive('getEps')
+
+        //wrapper and eps
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getEpsShipSystem')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($epsSystem);
+        $epsSystem->shouldReceive('getEps')
             ->withNoArgs()
             ->twice()
             ->andReturn(1);
-        $this->ship->shouldReceive('setEps')
+        $epsSystem->shouldReceive('setEps')
             ->with(0)
+            ->once()
+            ->andReturnSelf();
+        $epsSystem->shouldReceive('update')
+            ->withNoArgs()
             ->once();
+
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -320,7 +399,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturnTrue();
         $this->systemType->shouldReceive('activate')
-            ->with($this->ship, $this->manager)
+            ->with($this->wrapper, $this->manager)
             ->once();
 
         $this->shipSystem->shouldReceive('getStatus')
@@ -341,24 +420,41 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateActivatesSystemOldCooldown(): void
     {
         $energyCosts = 1;
+        $epsSystem = $this->mock(EpsShipSystem::class);
 
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
             ->twice()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->ship->shouldReceive('getEps')
+
+        //wrapper and eps
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getEpsShipSystem')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($epsSystem);
+        $epsSystem->shouldReceive('getEps')
             ->withNoArgs()
             ->twice()
             ->andReturn(1);
-        $this->ship->shouldReceive('setEps')
+        $epsSystem->shouldReceive('setEps')
             ->with(0)
+            ->once()
+            ->andReturnSelf();
+        $epsSystem->shouldReceive('update')
+            ->withNoArgs()
             ->once();
+
+
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -377,7 +473,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturnTrue();
         $this->systemType->shouldReceive('activate')
-            ->with($this->ship, $this->manager)
+            ->with($this->wrapper, $this->manager)
             ->once();
 
         $this->shipSystem->shouldReceive('getStatus')
@@ -402,12 +498,13 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testActivateActivatesSystemLastingCooldown(): void
     {
         $this->expectException(SystemCooldownException::class);
+        $epsSystem = $this->mock(EpsShipSystem::class);
 
         $energyCosts = 1;
 
@@ -415,10 +512,21 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
-        $this->ship->shouldReceive('getEps')
+
+        //wrapper and eps
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getEpsShipSystem')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($epsSystem);
+        $epsSystem->shouldReceive('getEps')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
+
         $this->ship->shouldReceive('hasEnoughCrew')
             ->withNoArgs()
             ->once()
@@ -448,7 +556,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(42);
 
-        $this->manager->activate($this->ship, $this->system_id);
+        $this->manager->activate($this->wrapper, $this->system_id);
     }
 
     public function testDeactivateErrorsOnUnKnownSystem(): void

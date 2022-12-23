@@ -48,12 +48,12 @@ final class ApplyDamage implements ApplyDamageInterface
         }
         $disablemessage = false;
         $damage = (int) $damage_wrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_HULL);
-        if ($ship->getCanBeDisabled() && $ship->getHuell() - $damage < round($ship->getMaxHuell() / 100 * 10)) {
-            $damage = (int) round($ship->getHuell() - $ship->getMaxHuell() / 100 * 10);
+        if ($ship->getCanBeDisabled() && $ship->getHull() - $damage < round($ship->getMaxHuell() / 100 * 10)) {
+            $damage = (int) round($ship->getHull() - $ship->getMaxHuell() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
             $ship->setDisabled(true);
         }
-        if ($ship->getHuell() > $damage) {
+        if ($ship->getHull() > $damage) {
             if ($damage_wrapper->isCrit()) {
                 $systemName = $this->destroyRandomShipSystem($ship);
 
@@ -61,9 +61,9 @@ final class ApplyDamage implements ApplyDamageInterface
                     $msg[] = "- Kritischer Hüllen-Treffer zerstört System: " . $systemName;
                 }
             }
-            $huelleVorher = $ship->getHuell();
+            $huelleVorher = $ship->getHull();
             $ship->setHuell($huelleVorher - $damage);
-            $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $ship->getHuell();
+            $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $ship->getHull();
 
             if (!$this->checkForDamagedShipSystems($ship, $huelleVorher, $msg)) {
                 $this->damageRandomShipSystem($ship, $msg, (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHuell()));
@@ -123,7 +123,7 @@ final class ApplyDamage implements ApplyDamageInterface
     private function checkForDamagedShipSystems(ShipInterface $ship, int $huelleVorher, &$msg): bool
     {
         $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHuell()) -
-            ceil($ship->getHuell() * 6 / $ship->getMaxHuell());
+            ceil($ship->getHull() * 6 / $ship->getMaxHuell());
 
         if ($systemsToDamage == 0) {
             return false;

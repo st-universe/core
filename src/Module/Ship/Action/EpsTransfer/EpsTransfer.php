@@ -38,15 +38,20 @@ final class EpsTransfer implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
+        $wrapper = $shipArray[$shipId];
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
+            return;
+        }
+        $target = $targetWrapper->get();
 
+        $ship = $wrapper->get();
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
@@ -54,7 +59,9 @@ final class EpsTransfer implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getEps() == 0) {
+        $eps = $wrapper->getEpsShipSystem();
+
+        if ($eps->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -66,9 +73,7 @@ final class EpsTransfer implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        if ($target === null) {
-            return;
-        }
+
         if ($target->getIsDestroyed()) {
             return;
         }
@@ -81,21 +86,21 @@ final class EpsTransfer implements ActionControllerInterface
             $game->addInformation(_("Es wurde keine Energiemenge angegeben"));
             return;
         }
-        if ($target->getEBatt() >= $target->getMaxEBatt()) {
+
+        $targetEps = $targetWrapper->getEpsShipSystem();
+
+        if ($targetEps->getBattery() >= $targetEps->getMaxBattery()) {
             $game->addInformation(sprintf(_('Die Ersatzbatterie der %s ist bereits voll'), $target->getName()));
             return;
         }
-        if ($load * 3 > $ship->getEps()) {
-            $load = (int) floor($ship->getEps() / 3);
+        if ($load * 3 > $eps->getEps()) {
+            $load = (int) floor($eps->getEps() / 3);
         }
-        if ($load + $target->getEbatt() > $target->getMaxEbatt()) {
-            $load = $target->getMaxEbatt() - $target->getEbatt();
+        if ($load + $targetEps->getBattery() > $targetEps->getMaxBattery()) {
+            $load = $targetEps->getMaxBattery() - $targetEps->getBattery();
         }
-        $ship->setEps($ship->getEps() - $load * 3);
-        $target->setEBatt($target->getEBatt() + $load);
-
-        $this->shipLoader->save($target);
-        $this->shipLoader->save($ship);
+        $eps->setEps($eps->getEps() - $load * 3)->update();
+        $targetEps->setBattery($targetEps->getBattery() + $load)->update();
 
         $this->privateMessageSender->send(
             $userId,

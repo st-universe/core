@@ -36,6 +36,4 @@ interface StationUtilityInterface
     public function canManageShips(ShipInterface $ship): bool;
 
     public function canRepairShips(ShipInterface $ship): bool;
-
-    public function getManageableShipList(ShipInterface $station): array;
 }

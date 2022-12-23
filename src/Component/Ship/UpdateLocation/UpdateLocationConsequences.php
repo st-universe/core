@@ -6,9 +6,9 @@ namespace Stu\Component\Ship\UpdateLocation;
 
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
 use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactory;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class UpdateLocationConsequences implements UpdateLocationConsequencesInterface
@@ -33,7 +33,7 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
     }
 
     public function updateLocationWithConsequences(
-        ShipInterface $ship,
+        ShipWrapperInterface $wrapper,
         ?ShipInterface $tractoringShip,
         $nextField,
         array &$msgToPlayer = null
@@ -41,9 +41,10 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         $this->loggerUtil->init('mov2', LoggerEnum::LEVEL_ERROR);
 
         // preMove handler
-        $this->walkHandler($this->preMoveHandler, $ship, $tractoringShip, $msgToPlayer);
+        $this->walkHandler($this->preMoveHandler, $wrapper, $tractoringShip, $msgToPlayer);
 
         // update location
+        $ship = $wrapper->get();
         if ($ship->getSystem() === null) {
             $ship->updateLocation($nextField, null);
         } else {
@@ -51,20 +52,20 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         }
 
         // postMove handler
-        $this->walkHandler($this->postMoveHandler, $ship, $tractoringShip, $msgToPlayer);
+        $this->walkHandler($this->postMoveHandler, $wrapper, $tractoringShip, $msgToPlayer);
     }
 
-    private function walkHandler(array $handler, ShipInterface $ship, ?ShipInterface $tractoringShip, array &$msgToPlayer): void
+    private function walkHandler(array $handler, ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip, array &$msgToPlayer): void
     {
         array_walk(
             $handler,
-            function (UpdateLocationHandlerInterface $handler, string $key) use ($ship, $tractoringShip, &$msgToPlayer): void {
+            function (UpdateLocationHandlerInterface $handler, string $key) use ($wrapper, $tractoringShip, &$msgToPlayer): void {
                 $handler->clearMessages();
-                $handler->handle($ship, $tractoringShip);
+                $handler->handle($wrapper, $tractoringShip);
 
                 if (!empty($handler->getInternalMsg())) {
                     $this->loggerUtil->log(sprintf('handler: %s', $key));
-                    $this->scheduleMsgToOwnerOrPlayer($ship, $tractoringShip, $handler->getInternalMsg(), $msgToPlayer);
+                    $this->scheduleMsgToOwnerOrPlayer($wrapper->get(), $tractoringShip, $handler->getInternalMsg(), $msgToPlayer);
                 }
             }
         );

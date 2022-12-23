@@ -25,7 +25,7 @@ final class ShowShipDetails implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true
@@ -34,6 +34,6 @@ final class ShowShipDetails implements ViewControllerInterface
         $game->setPageTitle(_('Schiffsinformationen'));
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/shipdetails');
 
-        $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('WRAPPER', $wrapper);
     }
 }

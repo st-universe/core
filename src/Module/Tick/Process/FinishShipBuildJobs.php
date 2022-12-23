@@ -44,7 +44,7 @@ final class FinishShipBuildJobs implements ProcessTickInterface
                 (int) $obj->getRumpId(),
                 $obj->getShipBuildplan()->getId(),
                 $colony
-            );
+            )->get();
 
             $this->colonyShipQueueRepository->delete($obj);
 
@@ -66,7 +66,7 @@ final class FinishShipBuildJobs implements ProcessTickInterface
                 $obj->getUserId(),
                 $obj->getRumpId(),
                 $obj->getShipBuildplan()->getId()
-            );
+            )->get();
 
             $ship->updateLocation($shipyard->getMap(), $shipyard->getStarsystemMap());
 

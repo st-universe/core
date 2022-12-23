@@ -9,4 +9,6 @@ interface FleetWrapperInterface
     public function get(): FleetInterface;
 
     public function getShips(): array;
+
+    public function isForeignFleet(): bool;
 }

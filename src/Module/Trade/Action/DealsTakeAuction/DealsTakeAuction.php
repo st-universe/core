@@ -206,11 +206,14 @@ final class DealsTakeAuction implements ActionControllerInterface
 
     private function createShip(ShipBuildplanInterface $buildplan, TradePostInterface $tradePost, int $userId): void
     {
-        $ship = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
+        $wrapper = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
+        $ship = $wrapper->get();
 
-        $ship->setEps((int)floor($ship->getTheoreticalMaxEps() / 4));
         $ship->setReactorLoad((int)floor($ship->getReactorCapacity() / 4));
         $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());
+
+        $eps = $wrapper->getEpsShipSystem();
+        $eps->setEps((int)floor($eps->getTheoreticalMaxEps() / 4))->update();
 
         $this->shipRepository->save($ship);
     }

@@ -136,12 +136,13 @@ final class StartAirfieldShip implements ActionControllerInterface
             1
         );
 
-        $ship = $this->shipCreator->createBy(
+        $wrapper = $this->shipCreator->createBy(
             (int) $userId,
             (int) $rump_id,
             $hangar->getBuildplanId(),
             $colony
         );
+        $ship = $wrapper->get();
 
         $this->crewCreator->createShipCrew($ship, $colony);
 
@@ -160,12 +161,13 @@ final class StartAirfieldShip implements ActionControllerInterface
             }
         }
         if ($hangar->getBuildplan()->getCrew() > 0) {
-            $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
             $this->shipRepository->save($ship);
         }
 
         if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
-            $ship->setEps($ship->getTheoreticalMaxEps());
+            $eps = $wrapper->getEpsShipSystem();
+            $eps->setEps($eps->getTheoreticalMaxEps())->update();
             $ship->setReactorLoad($ship->getReactorCapacity());
             $this->shipRepository->save($ship);
         }

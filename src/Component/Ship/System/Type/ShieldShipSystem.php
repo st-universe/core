@@ -9,6 +9,8 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ShieldShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
@@ -46,8 +48,9 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         return true;
     }
 
-    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
+        $ship = $wrapper->get();
         $this->cancelRepair->cancelRepair($ship);
         $ship->setDockedTo(null);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_ON);
@@ -68,5 +71,28 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         if ($ship->getShield() > $ship->getMaxShield()) {
             $ship->setShield($ship->getMaxShield());
         }
+    }
+
+    public function getShieldStatusBar()
+    {
+        return $this->getTalStatusBar(
+            _('Schilde'),
+            $this->ship->getShield(),
+            $this->ship->getMaxShield(),
+            $this->ship->getShieldState() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF
+        )
+            ->render();
+    }
+
+    public function getShieldStatusBarBig()
+    {
+        return $this->getTalStatusBar(
+            _('Schilde'),
+            $this->ship->getShield(),
+            $this->ship->getMaxShield(),
+            $this->ship->getShieldState() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF
+        )
+            ->setSizeModifier(1.6)
+            ->render();
     }
 }

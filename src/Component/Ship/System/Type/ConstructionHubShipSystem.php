@@ -8,6 +8,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 
@@ -41,8 +42,9 @@ final class ConstructionHubShipSystem extends AbstractShipSystemType implements 
         return true;
     }
 
-    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
+        $ship = $wrapper->get();
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB)->setMode(ShipSystemModeEnum::MODE_ON);
         $this->shipyardShipQueueRepository->restartQueueByShipyard($ship->getId());
     }

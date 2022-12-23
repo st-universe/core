@@ -8,6 +8,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class UplinkShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
@@ -45,9 +46,9 @@ final class UplinkShipSystem extends AbstractShipSystemType implements ShipSyste
         return 5;
     }
 
-    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_ON);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
     public function deactivate(ShipInterface $ship): void

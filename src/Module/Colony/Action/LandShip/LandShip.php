@@ -13,7 +13,6 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -21,7 +20,6 @@ use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class LandShip implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_LAND_SHIP';
 
     private ColonyLoaderInterface $colonyLoader;
@@ -38,8 +36,6 @@ final class LandShip implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
@@ -47,8 +43,7 @@ final class LandShip implements ActionControllerInterface
         ShipRemoverInterface $shipRemover,
         ShipLoaderInterface $shipLoader,
         ShipTorpedoManagerInterface $shipTorpedoManager,
-        ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
@@ -57,7 +52,6 @@ final class LandShip implements ActionControllerInterface
         $this->shipLoader = $shipLoader;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->shipCrewRepository = $shipCrewRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -69,10 +63,17 @@ final class LandShip implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $ship = $this->shipLoader->find(request::getIntFatal('shipid'));
+        $wrapper = $this->shipLoader->find(request::getIntFatal('shipid'));
+
+        if ($wrapper === null) {
+            return;
+        }
+
+        $ship = $wrapper->get();
+
         if (
             $ship->getUser()->getId() !== $game->getUser()->getId()
-            || !$this->shipWrapperFactory->wrapShip($ship)->canLandOnCurrentColony()
+            || !$wrapper->canLandOnCurrentColony()
         ) {
             return;
         }

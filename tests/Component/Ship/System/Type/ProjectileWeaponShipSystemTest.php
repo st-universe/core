@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System\Type;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
@@ -18,96 +19,94 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
      */
     private $system;
 
+    private ShipWrapperInterface $wrapper;
+    private ShipInterface $ship;
+
     public function setUp(): void
     {
+        $this->ship = $this->mock(ShipInterface::class);
+        $this->wrapper = $this->mock(ShipWrapperInterface::class);
+
         $this->system = new ProjectileWeaponShipSystem();
     }
 
     public function testCheckActivationConditionsReturnsFalseIfNoTorpedosPresent(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getTorpedoCount')
+        $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->once()
             ->andReturn(0);
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship, $reason)
+            $this->system->checkActivationConditions($this->ship, $reason)
         );
         $this->assertEquals('keine Torpedos vorhanden sind', $reason);
     }
 
     public function testCheckActivationConditionsReturnsFalseIfCloaked(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getTorpedoCount')
+        $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
 
-        $ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship, $reason)
+            $this->system->checkActivationConditions($this->ship, $reason)
         );
         $this->assertEquals('die Tarnung aktiviert ist', $reason);
     }
 
     public function testCheckActivationConditionsReturnsFalseIfAlertGreen(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getTorpedoCount')
+        $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
 
-        $ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
 
-        $ship->shouldReceive('isAlertGreen')
+        $this->ship->shouldReceive('isAlertGreen')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
 
         $reason = null;
         $this->assertTrue(
-            $this->system->checkActivationConditions($ship, $reason)
+            $this->system->checkActivationConditions($this->ship, $reason)
         );
         $this->assertNull($reason);
     }
 
     public function testCheckActivationConditionsTrueIfActivateable(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getTorpedoCount')
+        $this->ship->shouldReceive('getTorpedoCount')
             ->withNoArgs()
             ->once()
             ->andReturn(1);
 
-        $ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
 
-        $ship->shouldReceive('isAlertGreen')
+        $this->ship->shouldReceive('isAlertGreen')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship, $reason)
+            $this->system->checkActivationConditions($this->ship, $reason)
         );
         $this->assertEquals('die Alarmstufe Grün ist', $reason);
     }
@@ -122,27 +121,30 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
 
     public function testActivateActivates(): void
     {
-        $ship = $this->mock(ShipInterface::class);
         $managerMock = $this->mock(ShipSystemManagerInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_TORPEDO)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->system->activate($ship, $managerMock);
+        $this->system->activate($this->wrapper, $managerMock);
     }
 
     public function testDectivateDectivates(): void
     {
-        $ship = $this->mock(ShipInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_TORPEDO)
             ->once()
             ->andReturn($system);
@@ -150,6 +152,6 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
 
-        $this->system->deactivate($ship);
+        $this->system->deactivate($this->ship);
     }
 }

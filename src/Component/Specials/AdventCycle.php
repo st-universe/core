@@ -93,14 +93,19 @@ final class AdventCycle implements AdventCycleInterface
         $plan = $this->shipBuildplanRepository->getAdventDoorBuildplan();
 
         for ($i = 0; $i < self::ADVENT_DOOR_AMOUNT; $i++) {
-            $adventDoor = $this->shipCreator->createBy(GameEnum::USER_NOONE, $plan->getRump()->getId(), $plan->getId());
-            $adventDoor->setEps($adventDoor->getMaxEps());
+            $shipWrapper = $this->shipCreator->createBy(GameEnum::USER_NOONE, $plan->getRump()->getId(), $plan->getId());
+
+            $adventDoor = $shipWrapper->get();
             $adventDoor->setReactorLoad($adventDoor->getReactorCapacity());
             $adventDoor->setShield($adventDoor->getMaxShield());
-            $adventDoor->setEBatt($adventDoor->getMaxEBatt());
             $adventDoor->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
             $adventDoor->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_ON);
             $adventDoor->setName('✨[b][color=red]Ad[/color][color=green]ve[/color][color=white]nt[/color][color=red]st[/color][color=green]ür[/color][color=white]ch[/color][color=red]en[/color][/b] 🎁🎄');
+
+            $eps = $shipWrapper->getEpsShipSystem();
+            $eps->setEps($eps->getMaxEps())
+                ->setBattery($eps->getMaxBattery())
+                ->update();
 
             $this->shipRepository->save($adventDoor);
             $result[] = $adventDoor;

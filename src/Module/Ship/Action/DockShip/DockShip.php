@@ -18,6 +18,8 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -35,13 +37,16 @@ final class DockShip implements ActionControllerInterface
 
     private CancelRepairInterface $cancelRepair;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipSystemManagerInterface $shipSystemManager,
         InteractionCheckerInterface $interactionChecker,
-        CancelRepairInterface $cancelRepair
+        CancelRepairInterface $cancelRepair,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
@@ -49,6 +54,7 @@ final class DockShip implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->interactionChecker = $interactionChecker;
         $this->cancelRepair = $cancelRepair;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -60,18 +66,21 @@ final class DockShip implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::indInt('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
 
-        if ($target === null) {
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
+
         if (!$this->interactionChecker->checkPosition($target, $ship)) {
             return;
         }
@@ -117,11 +126,12 @@ final class DockShip implements ActionControllerInterface
             return;
         }
         if ($ship->isFleetLeader()) {
-            $this->fleetDock($ship, $target, $game);
+            $this->fleetDock($wrapper, $target, $game);
             return;
         }
 
-        if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }
@@ -142,7 +152,7 @@ final class DockShip implements ActionControllerInterface
         if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
-        $ship->setEps($ship->getEps() - 1);
+        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
         $ship->setDockedTo($target);
 
         $this->shipLoader->save($ship);
@@ -159,47 +169,52 @@ final class DockShip implements ActionControllerInterface
         $game->addInformation('Andockvorgang abgeschlossen');
     }
 
-    private function fleetDock(ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): void
+    private function fleetDock(ShipWrapperInterface $wrapper, ShipInterface $target, GameControllerInterface $game): void
     {
+        $ship = $wrapper->get();
+
         $msg = [];
         $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();;
         $freeSlots = $target->getFreeDockingSlotCount();
-        foreach ($ship->getFleet()->getShips() as $ship) {
+        foreach ($ship->getFleet()->getShips() as $fleetShip) {
             if ($freeSlots <= 0) {
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
             }
-            if ($ship->getDockedTo()) {
+            if ($fleetShip->getDockedTo()) {
                 continue;
             }
-            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
-                $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
+
+            $epsSystem = $this->shipWrapperFactory->wrapShip($fleetShip)->getEpsShipSystem();
+
+            if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+                $msg[] = $fleetShip->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
-            if ($ship->getCloakState()) {
-                $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
+            if ($fleetShip->getCloakState()) {
+                $msg[] = $fleetShip->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }
-            if ($this->cancelRepair->cancelRepair($ship)) {
-                $msg[] = $ship->getName() . _(': Die Reparatur wurde abgebrochen');
+            if ($this->cancelRepair->cancelRepair($fleetShip)) {
+                $msg[] = $fleetShip->getName() . _(': Die Reparatur wurde abgebrochen');
                 continue;
             }
 
             try {
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_SHIELDS);
             } catch (ShipSystemException $e) {
             }
 
             try {
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
             } catch (ShipSystemException $e) {
             }
 
-            $ship->setDockedTo($target);
+            $fleetShip->setDockedTo($target);
 
-            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
+            $epsSystem->setEps($epsSystem->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK)->update();
 
-            $this->shipLoader->save($ship);
+            $this->shipLoader->save($fleetShip);
 
             $freeSlots--;
         }

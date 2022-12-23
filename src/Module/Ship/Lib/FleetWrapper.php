@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
 
 final class FleetWrapper implements FleetWrapperInterface
@@ -12,12 +13,16 @@ final class FleetWrapper implements FleetWrapperInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private GameControllerInterface $game;
+
     public function __construct(
         FleetInterface $fleet,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipWrapperFactoryInterface $shipWrapperFactory,
+        GameControllerInterface $game
     ) {
         $this->fleet = $fleet;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->game = $game;
     }
 
     public function get(): FleetInterface
@@ -28,5 +33,10 @@ final class FleetWrapper implements FleetWrapperInterface
     public function getShips(): array
     {
         return $this->shipWrapperFactory->wrapShips($this->get()->getShips()->toArray());
+    }
+
+    public function isForeignFleet(): bool
+    {
+        return $this->get()->getUser() !== $this->game->getUser();
     }
 }

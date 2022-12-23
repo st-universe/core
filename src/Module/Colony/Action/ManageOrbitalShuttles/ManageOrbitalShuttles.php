@@ -68,7 +68,12 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             $userId
         );
 
-        $ship = $this->shipLoader->find(request::indInt('sid'));
+        $wrapper = $this->shipLoader->find(request::indInt('sid'));
+        if ($wrapper === null) {
+            return;
+        }
+
+        $ship = $wrapper->get();
 
         if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
             return;

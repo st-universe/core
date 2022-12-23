@@ -12,6 +12,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -46,6 +47,8 @@ final class StationUtility implements StationUtilityInterface
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
@@ -56,7 +59,8 @@ final class StationUtility implements StationUtilityInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         TradePostRepositoryInterface $tradePostRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
@@ -68,6 +72,7 @@ final class StationUtility implements StationUtilityInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
@@ -173,7 +178,8 @@ final class StationUtility implements StationUtilityInterface
         $rump = $ship->getRump();
 
         // transform ship
-        $station = $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
+        $wrapper = $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
+        $station = $wrapper->get();
 
         // set influence area
         if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE) {
@@ -263,30 +269,5 @@ final class StationUtility implements StationUtilityInterface
             && ($ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_SHIPYARD
                 || $ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE)
             && $ship->hasEnoughCrew();
-    }
-
-    public function getManageableShipList(ShipInterface $station): array
-    {
-        $result = [];
-
-        $shiplist = $station->getDockedShips();
-
-        foreach ($shiplist as $obj) {
-            if ($obj === $station) {
-                continue;
-            }
-            if ($obj->getWarpState()) {
-                continue;
-            }
-            $result[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
-            if (!array_key_exists('name', $result[$obj->getFleetId()])) {
-                if ($obj->getFleetId() == 0) {
-                    $result[$obj->getFleetId()]['name'] = _('Einzelschiffe');
-                } else {
-                    $result[$obj->getFleetId()]['name'] = $obj->getFleet()->getName();
-                }
-            }
-        }
-        return $result;
     }
 }

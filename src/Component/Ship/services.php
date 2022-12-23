@@ -35,6 +35,7 @@ use Stu\Component\Ship\System\Type\ConstructionHubShipSystem;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Ship\System\Type\DeflectorShipSystem;
 use Stu\Component\Ship\System\Type\FusionReactorShipSystem;
+use Stu\Component\Ship\System\Type\HullShipSystem;
 use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Component\Ship\System\Type\ShuttleRampShipSystem;
 use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
@@ -64,6 +65,7 @@ return [
     TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
     ShipSystemManagerInterface::class => create(ShipSystemManager::class)->constructor(
         [
+            ShipSystemTypeEnum::SYSTEM_HULL => autowire(HullShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_CLOAK => autowire(CloakShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_SHIELDS => autowire(ShieldShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_WARPDRIVE => autowire(WarpdriveShipSystem::class),

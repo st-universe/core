@@ -530,7 +530,7 @@
         <div class="box_body">
           <ul id="shipselector">
             <metal:block tal:condition="FIRST_ORBIT_SHIP" metal:use-macro="shipselector"
-              tal:define="data FIRST_ORBIT_SHIP" />
+              tal:define="wrapper FIRST_ORBIT_SHIP" />
             <li tal:condition="not:FIRST_ORBIT_SHIP" style="text-align: center">Keine Schiffe im Orbit</li>
           </ul>
           <div style="width: 100%;" tal:condition="FIRST_ORBIT_SHIP">
@@ -696,20 +696,18 @@
 </metal:block>
 <metal:block metal:define-macro="orbitshiplist">
   <ul>
-    <tal:block tal:repeat="fleets ORBIT_SHIP_LIST">
-      <tal:block tal:repeat="data fleets/ships">
-        <metal:block metal:use-macro="shipselector" />
-      </tal:block>
+    <tal:block tal:repeat="wrapper WRAPPERS">
+      <metal:block metal:use-macro="shipselector" />
     </tal:block>
   </ul>
 </metal:block>
 <metal:block metal:define-macro="shipselector">
-  <li>
+  <li tal:define="data wrapper/get">
     <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this)"
       onmouseout="shipSelectorHoverEnd(this)" onclick="shipSelectorChoose(this);">
       <tr>
         <td class="darkbg" colspan="5">
-          <a tal:condition="data/ownedByUser" type="hidden" href="ship.php?SHOW_SHIP=1&id=${data/getId}" />
+          <a tal:condition="WRAPPER/isOwnedByCurrentUser" type="hidden" href="ship.php?SHOW_SHIP=1&id=${data/getId}" />
           <span tal:replace="structure bbcode:data/getName">SHIPNAME</span> | <span
             tal:replace="structure bbcode:data/getUserName">USERNAME</span>
         </td>
@@ -730,7 +728,7 @@
                 <img src="assets/buttons/modul_1.png" />
               </th>
               <td style="vertical-align: middle; text-align: center;">
-                <span tal:replace="structure data/getHullStatusBar">HULL</span>
+                <span tal:replace="structure WRAPPER/getHullShipSystem/getHullStatusBar">HULL</span>
               </td>
               <td style="text-align: center;">
                 ${data/getHull}
@@ -738,16 +736,16 @@
             </tr>
           </table>
         </td>
-        <td colspan="2" tal:condition="data/isDestroyed"></td>
-        <tal:block tal:condition="not:data/isDestroyed">
-          <td style="width: 150px;">
+        <td colspan="2" tal:condition="data/getIsDestroyed"></td>
+        <tal:block tal:condition="not:data/getIsDestroyed">
+          <td style="width: 150px;" tal:define="shields WRAPPER/getShieldShipSystem">
             <table class="tcal">
               <tr>
                 <th style="width: 20px; text-align: center;">
                   <img src="assets/buttons/modul_2.png" />
                 </th>
                 <td style="text-align: center; vertical-align: middle;">
-                  <span tal:replace="structure data/getShieldStatusBar">SCHILDE</span>
+                  <span tal:replace="structure shields/getShieldStatusBar">SCHILDE</span>
                 </td>
                 <td style="text-align: center;">
                   ${data/getShield}
@@ -755,17 +753,17 @@
               </tr>
             </table>
           </td>
-          <td style="width: 150px;">
-            <table class="tcal">
+          <td style="width: 150px;" tal:define="eps WRAPPER/getEpsShipSystem">
+            <table class="tcal" tal:condition="eps">
               <tr>
                 <th style="text-align: center; width: 20px;">
                   <img src="assets/buttons/modul_8.png" />
                 </th>
                 <td style="vertical-align: middle; text-align: center;">
-                  <span tal:replace="structure data/getEpsStatusBar">EPS</span>
+                  <span tal:replace="structure eps/getEpsStatusBar">EPS</span>
                 </td>
                 <td style="text-align: center;">
-                  ${data/getEps}
+                  ${eps/getEps}
                 </td>
               </tr>
             </table>
@@ -1792,7 +1790,7 @@
       </td>
       <td style="text-align: center; vertical-align: middle">
         <img src="assets/buttons/modul_1.png" title="Hülle" style="width: 12px; height: 12px;" />
-        ${wrapper/get/getHuell}/${wrapper/get/getMaxHuell}
+        ${wrapper/get/getHull}/${wrapper/get/getMaxHuell}
       </td>
       <td style="text-align: center; vertical-align: middle">
         <img tal:repeat="sys wrapper/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"

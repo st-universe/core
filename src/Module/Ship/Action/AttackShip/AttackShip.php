@@ -15,6 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -34,13 +35,16 @@ final class AttackShip implements ActionControllerInterface
 
     private NbsUtilityInterface $nbsUtility;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipAttackCycleInterface $shipAttackCycle,
         InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
-        NbsUtilityInterface $nbsUtility
+        NbsUtilityInterface $nbsUtility,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
@@ -48,6 +52,7 @@ final class AttackShip implements ActionControllerInterface
         $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
         $this->nbsUtility = $nbsUtility;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,18 +62,20 @@ final class AttackShip implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
 
-        if ($target === null) {
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
 
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
@@ -110,7 +117,7 @@ final class AttackShip implements ActionControllerInterface
         if ($target->getRump()->isTrumfield()) {
             return;
         }
-        if ($ship->getEps() == 0) {
+        if ($wrapper->getEpsShipSystem()->getEps() == 0) {
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
@@ -127,7 +134,10 @@ final class AttackShip implements ActionControllerInterface
 
         [$attacker, $defender, $fleet] = $this->getAttackerDefender($ship, $target);
 
-        $this->shipAttackCycle->init($attacker, $defender);
+        $this->shipAttackCycle->init(
+            $this->shipWrapperFactory->wrapShips($attacker),
+            $this->shipWrapperFactory->wrapShips($defender),
+        );
         $this->shipAttackCycle->cycle();
 
         $pm = sprintf(_('Kampf in Sektor %s') . "\n", $ship->getSectorString());

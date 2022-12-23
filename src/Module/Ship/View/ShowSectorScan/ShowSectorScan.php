@@ -40,11 +40,12 @@ final class ShowSectorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true
         );
+        $ship = $wrapper->get();
 
         $game->setPageTitle("Sektor Scan");
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/sectorscan');
@@ -56,12 +57,13 @@ final class ShowSectorScan implements ViewControllerInterface
             return;
         }
 
-        if ($ship->getEps() < 1) {
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() < 1) {
             $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
             return;
         }
 
-        $ship->setEps($ship->getEps() - 1);
+        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
         $this->shipRepository->save($ship);
 
         $mapField = $ship->getCurrentMapField();

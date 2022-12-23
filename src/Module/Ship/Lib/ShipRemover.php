@@ -142,7 +142,6 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setBuildplan(null);
         $ship->setIsBase(false);
         $ship->setShield(0);
-        $ship->setEps(0);
         $ship->setAlertStateGreen();
         $ship->setInfluenceArea(null);
         $ship->setDockedTo(null);

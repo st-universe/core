@@ -337,6 +337,9 @@ final class ShipMover2 implements ShipMover2Interface
         return false;
     }
 
+    /**
+     * @param ShipInterface[] $ships
+     */
     private function getReadyForFlight(ShipInterface $leadShip, array $ships, bool $isFixedFleetMode): void
     {
         foreach ($ships as $ship) {
@@ -351,10 +354,13 @@ final class ShipMover2 implements ShipMover2Interface
                 $this->addLostShip($ship, $leadShip, $isFixedFleetMode, sprintf(_('Die %s verfügt über keinen Warpantrieb'), $ship->getName()));
                 continue;
             }
+
+            $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
             //Impulsantrieb aktivieren falls innerhalb
             if ($ship->getSystem() !== null && !$ship->getImpulseState()) {
                 try {
-                    $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
+                    $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
 
                     $this->addInformation(sprintf(_('Die %s aktiviert den Impulsantrieb'), $ship->getName()));
                 } catch (ShipSystemException $e) {
@@ -371,7 +377,7 @@ final class ShipMover2 implements ShipMover2Interface
             //WA aktivieren falls außerhalb
             if ($ship->getSystem() === null && !$ship->getWarpState()) {
                 try {
-                    $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                    $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 
                     $this->addInformation(sprintf(_('Die %s aktiviert den Warpantrieb'), $ship->getName()));
                 } catch (ShipSystemException $e) {
@@ -449,8 +455,11 @@ final class ShipMover2 implements ShipMover2Interface
 
         $flight_ecost = $ship->getRump()->getFlightEcost();
 
+        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+        $epsSystem = $wrapper->getEpsShipSystem();
+
         //zu wenig E zum weiterfliegen
-        if ($ship->getEps() < $flight_ecost) {
+        if ($epsSystem->getEps() < $flight_ecost) {
             $this->addLostShip(
                 $ship,
                 $leadShip,
@@ -475,7 +484,7 @@ final class ShipMover2 implements ShipMover2Interface
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
         $msg = [];
-        $this->updateLocationConsequences->updateLocationWithConsequences($ship, null, $nextField, $msg);
+        $this->updateLocationConsequences->updateLocationWithConsequences($wrapper, null, $nextField, $msg);
         $this->addInformationMerge($msg);
         $this->hasTravelled = true;
 
@@ -487,12 +496,12 @@ final class ShipMover2 implements ShipMover2Interface
             $this->leaveFleet($ship);
         }
         //Flugkosten abziehen
-        $ship->setEps($ship->getEps() - $flight_ecost);
+        $epsSystem->setEps($epsSystem->getEps() - $flight_ecost);
 
         //Traktorstrahl Energie abziehen
         if ($ship->isTractoring()) {
             $tractoredShip = $ship->getTractoredShip();
-            $ship->setEps($ship->getEps() - $tractoredShip->getRump()->getFlightEcost());
+            $epsSystem->setEps($epsSystem->getEps() - $tractoredShip->getRump()->getFlightEcost());
             $this->$met($tractoredShip);
             if ($ship->getSystem() === null) {
                 //TODO msg[] rein und loggen
@@ -521,16 +530,18 @@ final class ShipMover2 implements ShipMover2Interface
         $notEnoughEnergyForDeflector = false;
         $deflectorDestroyed = false;
         if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)) {
-            $notEnoughEnergyForDeflector = $nextField->getFieldType()->getEnergyCosts() > $ship->getEps();
+            $notEnoughEnergyForDeflector = $nextField->getFieldType()->getEnergyCosts() > $epsSystem->getEps();
 
             if ($notEnoughEnergyForDeflector) {
-                $ship->setEps(0);
+                $epsSystem->setEps(0);
             } else {
-                $ship->setEps($ship->getEps() - $nextField->getFieldType()->getEnergyCosts());
+                $epsSystem->setEps($epsSystem->getEps() - $nextField->getFieldType()->getEnergyCosts());
             }
         } else {
             $deflectorDestroyed = true;
         }
+
+        $epsSystem->update();
 
         //Einflugschaden Energiemangel oder Deflektor zerstört
         if ($notEnoughEnergyForDeflector || $deflectorDestroyed) {

@@ -245,7 +245,7 @@
       (${ship/getCx}|${ship/getCy})
     </td>
     <td>
-      <span tal:attributes="style string:${ship/getHullColorStyle};">${ship/getHuell}</span>/${ship/getMaxHuell}
+      <span tal:attributes="style string:${ship/getHullColorStyle};">${ship/getHull}</span>/${ship/getMaxHuell}
     </td>
     <td>
       <span tal:condition="ship/getShieldState" class="activeshield"
@@ -253,11 +253,13 @@
       <span tal:condition="not:ship/getShieldState">${ship/getShield}/${ship/getMaxShield}</span>
       (+<span tal:replace="ship/getShieldRegenerationRate">REGENERATIONRATE</span>)
     </td>
-    <td>
-      ${ship/getEps}/${ship/getMaxEps}
-      <span>${addPlusCharacter:wrapper/getEffectiveEpsProduction}</span>
-      (<span tal:content="wrapper/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
-        tal:content="wrapper/getWarpcoreUsage">CORE</span>)
+    <td tal:define="eps wrapper/getEpsShipSystem">
+      <tal:block tal:condition="eps">
+        ${eps/getEps}/${eps/getMaxEps}
+        <span>${addPlusCharacter:wrapper/getEffectiveEpsProduction}</span>
+        (<span tal:content="wrapper/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
+          tal:content="wrapper/getWarpcoreUsage">CORE</span>)
+      </tal:block>
     </td>
     <td>
       <div style="float: left; width: 50%">
@@ -270,8 +272,9 @@
             tal:replace="ship/getReactorLoad">Fusioncore</span>
         </tal:block>
       </div>
-      <div style="float: left; width: 50%">
-        <img src="assets/buttons/batt.png" title="Ersatzbatterie" /> <span tal:replace="ship/getEBatt">BATTERY</span>
+      <div style="float: left; width: 50%" tal:define="eps wrapper/getEpsShipSystem">
+        <img tal:condition="eps" src="assets/buttons/batt.png" title="Ersatzbatterie" /> <span
+          tal:replace="eps/getBattery">BATTERY</span>
       </div>
     </td>
     <td tal:content="ship/getCrewCount" style="text-align: center;">CREW</td>
@@ -585,7 +588,7 @@
   </tal:block>
   <tal:block tal:condition="not:ship/isTrumfield">
     <td style="width: 160px;">
-      <span tal:replace="ship/getHuell"></span>/<span tal:replace="ship/getMaxHuell"></span>
+      <span tal:replace="ship/getHull"></span>/<span tal:replace="ship/getMaxHuell"></span>
       <tal:block tal:condition="ship/getShieldState">
         (<span class="activeshield">${ship/getShield}</span>)
       </tal:block>
@@ -619,7 +622,7 @@
     </td>
   </tal:block>
   <tal:block tal:condition="ship/isTrumfield">
-    <td style="width: 160px;" tal:content="ship/getHuell">HULL</td>
+    <td style="width: 160px;" tal:content="ship/getHull">HULL</td>
     <td>
       <span tal:replace="structure bbcode:ship/getUserName">USERNAME</span>
     </td>
@@ -660,16 +663,16 @@
   </table>
 </metal:block>
 <metal:block metal:define-macro="show_ship_etransfer">
-  <form action="ship.php" method="post">
+  <form action="ship.php" method="post" tal:define="SHIP WRAPPER/get">
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
     <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-    <table class="tcal">
+    <table class="tcal" tal:define="eps WRAPPER/getEpsShipSystem">
       <tr>
         <td>Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
       <tr>
-        <td>Verfügbare Energie: ${SHIP/getEps}/${SHIP/getMaxEps}</td>
+        <td>Verfügbare Energie: ${eps/getEps}/${eps/getMaxEps}</td>
       </tr>
       <tr>
         <td>
@@ -677,7 +680,7 @@
           <input type="text" size="4" name="ecount" id="etransfer_value" />
           <input type="submit" class="button" value="transferieren" name="B_ETRANSFER" id="etransfer_button" />
           <input type="button" class="button" value="max" name="B_MAX_ETRANSFER"
-            onclick="$('etransfer_value').value = '${SHIP/getEps}'; $('etransfer_button').click()" />
+            onclick="$('etransfer_value').value = '${eps/getEps}'; $('etransfer_button').click()" />
         </td>
       </tr>
     </table>
@@ -1130,100 +1133,108 @@
 </metal:block>
 <metal:block metal:define-macro="show_ship_scan">
   <metal:block tal:condition="THIS/getInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
-  <tal:block tal:condition="exists:SHIP">
-    <table class="tcal" tal:condition="php:SHIP.isMatrixScannerHealthy() AND NOT SHIP.getCloakState()">
-      <tr>
-        <th colspan="2">Details</th>
-      </tr>
-      <tr>
-        <td>Lebenszeichen</td>
-        <td>${targetShip/getCrewCount}</td>
-      </tr>
-      <tr>
-        <td>Alarmstufe</td>
-        <td style="text-align: center;">
-          <img src="assets/buttons/alert${targetShip/getAlertState}_1.png" title="Alarmstufe" />
-        </td>
-      </tr>
-      <tr>
-        <td>Schilde</td>
-        <td>${SHIELD_PERCENTAGE}%</td>
-      </tr>
-      <tr>
-        <td>Energie</td>
-        <td>${targetShip/getEps}</td>
-      </tr>
-      <tr>
-        <td>Ersatzbatterie</td>
-        <td>${targetShip/getEBatt}</td>
-      </tr>
-      <tr>
-        <td>Reaktor</td>
-        <td>${REACTOR_PERCENTAGE}%</td>
-      </tr>
-      <tr tal:condition="targetShip/getBuildplan">
-        <td>Verbaute Module</td>
-        <td><img tal:repeat="mod targetShip/getModules" style="margin-right: 5px;"
-            src="assets/commodities/${mod/getCommodityId}.png" title="${mod/getName}" /></td>
-      </tr>
-    </table>
-    <br />
-    <form action="ship.php" method="post">
-      <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
-      <br />
-      <table class="tcal" tal:condition="not:targetShip/getRump/isTrumfield">
-        <tr>
-          <th>Systemzustand</th>
-        </tr>
-        <tr>
-          <td style="width: 450px;">
-            <div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
-              <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
-              ${data/getStatus}%
-            </div>
-          </td>
-        </tr>
-      </table>
-      <table class="tcal" tal:condition="targetShip/hasEscapePods">
-        <tr>
-          <th>Rettungskapseln</th>
-        </tr>
-        <tr>
-          <td style="width: 450px;">
-            <span>Es befinden sich <span tal:replace="targetShip/getCrewCount" /> Crewman in den
-              Rettungskapseln</span><br /><br />
-            <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
-            <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" />
-          </td>
-        </tr>
-      </table>
-      <table class="tcal"
-        tal:condition="php: targetShip.getTradePost() AND targetShip.getTradePost().getCrewCountOfCurrentUser() > 0">
-        <tr>
-          <th>Eigene Crew bergen</th>
-        </tr>
-        <tr>
-          <td style="width: 450px;">
-            <span>Es befinden sich <span tal:replace="targetShip/getTradePost/getCrewCountOfCurrentUser" /> eigene
-              Crewman an Bord des Handelsposten</span><br /><br />
-            <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
-            <input type="submit" style="cursor: pointer;" name="B_SALVAGE_CREW" value="Crew bergen" />
-          </td>
-        </tr>
-      </table>
-      <table class="tcal" tal:condition="exists:ADVENT_DAY">
-        <tr>
-          <th>Adventstürchen</th>
-        </tr>
-        <tr>
-          <td style="width: 450px;">
-            <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
-            <input type="hidden" name="advent" tal:attributes="value ADVENT_DAY" />
-            <input type="submit" style="cursor: pointer;" name="B_ADVENT_DOOR" value="Türchen öffnen" />
-          </td>
-        </tr>
-      </table>
-    </form>
+  <tal:block tal:condition="exists:SHIP" tal:define="targetShip TARGETWRAPPER/get">
+    <tal:block tal:condition="not:targetShip/getIsDestroyed">
+      <tal:block tal:define="targetShipEps targetShip/getEpsShipSystem">
+        <table class="tcal" tal:condition="php:SHIP.isMatrixScannerHealthy() AND NOT SHIP.getCloakState()">
+          <tr>
+            <th colspan="2">Details</th>
+          </tr>
+          <tr>
+            <td>Lebenszeichen</td>
+            <td>${targetShip/getCrewCount}</td>
+          </tr>
+          <tr>
+            <td>Alarmstufe</td>
+            <td style="text-align: center;">
+              <img src="assets/buttons/alert${targetShip/getAlertState}_1.png" title="Alarmstufe" />
+            </td>
+          </tr>
+          <tr>
+            <td>Schilde</td>
+            <td>${SHIELD_PERCENTAGE}%</td>
+          </tr>
+          <tr>
+            <td>Energie</td>
+            <td>${targetShipEps/getEps}</td>
+          </tr>
+          <tr>
+            <td>Ersatzbatterie</td>
+            <td>${targetShipEps/getBattery}</td>
+          </tr>
+          <tr>
+            <td>Reaktor</td>
+            <td>${REACTOR_PERCENTAGE}%</td>
+          </tr>
+          <tr tal:condition="targetShip/getBuildplan">
+            <td>Verbaute Module</td>
+            <td><img tal:repeat="mod targetShip/getModules" style="margin-right: 5px;"
+                src="assets/commodities/${mod/getCommodityId}.png" title="${mod/getName}" /></td>
+          </tr>
+        </table>
+        <br />
+        <form action="ship.php" method="post">
+          <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+          <br />
+          <table class="tcal" tal:condition="not:targetShip/getRump/isTrumfield">
+            <tr>
+              <th>Systemzustand</th>
+            </tr>
+            <tr>
+              <td style="width: 450px;">
+                <div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
+                  <img title="${data/getName}" class="${data/getCssClass}"
+                    src="assets/system/${data/getSystemType}.png" />
+                  ${data/getStatus}%
+                </div>
+              </td>
+            </tr>
+          </table>
+          <table class="tcal" tal:condition="targetShip/hasEscapePods">
+            <tr>
+              <th>Rettungskapseln</th>
+            </tr>
+            <tr>
+              <td style="width: 450px;">
+                <span>Es befinden sich <span tal:replace="targetShip/getCrewCount" /> Crewman in den
+                  Rettungskapseln</span><br /><br />
+                <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
+                <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" />
+              </td>
+            </tr>
+          </table>
+          <table class="tcal"
+            tal:condition="php: targetShip.getTradePost() AND targetShip.getTradePost().getCrewCountOfCurrentUser() > 0">
+            <tr>
+              <th>Eigene Crew bergen</th>
+            </tr>
+            <tr>
+              <td style="width: 450px;">
+                <span>Es befinden sich <span tal:replace="targetShip/getTradePost/getCrewCountOfCurrentUser" /> eigene
+                  Crewman an Bord des Handelsposten</span><br /><br />
+                <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
+                <input type="submit" style="cursor: pointer;" name="B_SALVAGE_CREW" value="Crew bergen" />
+              </td>
+            </tr>
+          </table>
+          <table class="tcal" tal:condition="exists:ADVENT_DAY">
+            <tr>
+              <th>Adventstürchen</th>
+            </tr>
+            <tr>
+              <td style="width: 450px;">
+                <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
+                <input type="hidden" name="advent" tal:attributes="value ADVENT_DAY" />
+                <input type="submit" style="cursor: pointer;" name="B_ADVENT_DOOR" value="Türchen öffnen" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </tal:block>
+    </tal:block>
+    <tal:block tal:condition="targetShip/getIsDestroyed">
+      <span>Ziel ist zerstört</span>
+    </tal:block>
   </tal:block>
 </metal:block>
 <metal:macro metal:define-macro="crewslot">
@@ -1271,135 +1282,137 @@
   </table>
 </metal:block>
 <metal:block metal:define-macro="shipdetails">
-  <br />
-  <div style="width: 100%">
-    <div style="width: 33%; float: left;">
-      <table class="tcal">
-        <tr>
-          <th style="width: 20px; text-align: center;">
-            <img src="assets/buttons/modul_1.png" />
-          </th>
-          <td style="vertical-align: middle; text-align: center;">
-            <span tal:replace="structure SHIP/getHullStatusBar">EPS</span>
-          </td>
-          <td style="text-align: center; width: 60px;">
-            ${SHIP/getHuell}
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div style="width: 33%; float: left;">
-      <table class="tcal">
-        <tr>
-          <th style="width: 20px; text-align: center;">
-            <img src="assets/buttons/modul_2.png" />
-          </th>
-          <td style="text-align: center; vertical-align: middle;">
-            <span tal:replace="structure SHIP/getShieldStatusBar">SCHILDE</span>
-          </td>
-          <td style="text-align: center; width: 60px;">
-            ${SHIP/getShield}
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div style="width: 33%; float: left;">
-      <table class="tcal">
-        <tr>
-          <th style="text-align: center; width: 20px;">
-            <img src="assets/buttons/modul_8.png" />
-          </th>
-          <td style="vertical-align: middle; text-align: center;">
-            <span tal:replace="structure SHIP/getEpsStatusBar">EPS</span>
-          </td>
-          <td style="text-align: center; width: 60px;">
-            ${SHIP/getEps}
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <br style="clear: both;" />
-  <br />
-  <div style="float: left; width: 350px">
-    <table class="tcal">
-      <tr>
-        <th colspan="4">Crew</th>
-      </tr>
-      <tr>
-        <td colspan="3" class="darkbg">Minimal-Crew</td>
-        <td class="darkbg"><span tal:condition="SHIP/getBuildplan"
-            tal:replace="SHIP/getBuildplan/getCrew">CREW</span><span tal:condition="not:SHIP/getBuildplan">kA</span>
-        </td>
-      </tr>
-      <tr>
-        <td class="darkbg"></td>
-        <td class="darkbg"><strong>Position</strong></td>
-        <td class="darkbg"><strong>Name</strong></td>
-        <td class="darkbg"><strong>Rang</strong></td>
-      </tr>
-      <tr tal:repeat="data SHIP/getCrewlist">
-        <td tal:define="crewusername bbcode2txt:data/getCrew/getUser/getName">
-          <img
-            src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
-          <span tal:condition="data/isForeigner" style="vertical-align: top; color:red; cursor: default;"
-            title="von ${crewusername}">*</span>
-          <a tal:condition="data/isForeigner"
-            href="?B_DUMP_CREWMAN=1&id=${SHIP/getId}&scid=${data/getId}&sstr=${THIS/getSessionString}"
-            onmouseover="cp('dump_${data/getId}','buttons/x2')" onmouseout="cp('dump_${data/getId}','buttons/x1')">
-            <img src="/assets/buttons/x2.png" name="dump_${data/getId}" title="Crewman entfernen" />
-          </a>
-        </td>
-        <td>
-          <div tal:content="data/getPosition">POSITION</div>
-        </td>
-        <td style="vertical-align: middle;">
-          <metal:macro metal:use-macro="crewslot" tal:define="CREW data/getCrew" />
-        </td>
-        <td>
-          <div tal:content="data/getCrew/getTypeDescription">RANG</div>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div style="padding-left: 5px; float: left; width: 220px">
-    <div class="divhead">Informationen</div>
-    <div class="divbody">
-      <span>Ersatzbatterie:</span> ${SHIP/getEBatt}<br />
-      <span>Trefferchance (eff.):</span> ${SHIP/getHitChance}%<br />
-      <span>Ausweichchance (eff.):</span> ${SHIP/getEvadeChance}%<br />
-      <span>Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
-      <span>Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
-      <span>Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />
-      <tal:block tal:condition="SHIP/canMove">
-        <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
-      </tal:block>
-      <span>Beamfaktor</span>: ${SHIP/getRump/getBeamFactor}<br />
-      <span>Raumschiffmasse: </span><span
-        tal:content="numberWithThousandSeperator:SHIP/getRump/getTractorMass">TRACTORMASS</span><br />
-      <span>Traktortraglast: </span><span
-        tal:content="numberWithThousandSeperator:SHIP/getTractorPayload">TRACTORPAYLOAD</span><br />
-      <span>Energiewaffensalven</span>: ${SHIP/getRump/getPhaserVolleys}<br />
-      <span>Energiewaffenbasisschaden</span>: ${SHIP/getBaseDamage}<br />
-      <span>Torpedolevel</span>: ${SHIP/getRump/getTorpedoLevel}<br />
-      <span>Torpedosalven</span>: ${SHIP/getRump/getTorpedoVolleys}<br />
-      <tal:block tal:condition="SHIP/getTorpedo">
-        <span>Torpedobasisschaden</span>: ${SHIP/getTorpedo/getBaseDamage}<br />
-      </tal:block>
-      <span>Torpedokapazität</span>: ${SHIP/getMaxTorpedos}<br />
-      <tal:block tal:condition="SHIP/isBase">
-        <span>Dockplätze</span>: ${SHIP/getRump/getDockingSlots}<br />
-      </tal:block>
-    </div>
+  <tal:block tal:define="SHIP WRAPPER/get; eps WRAPPER/getEpsShipSystem">
     <br />
-    <div class="divhead">Systemstatus</div>
-    <div class="divbody">
-      <div tal:repeat="data SHIP/getSystems">
-        <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
-        ${data/getStatus}%
+    <div style="width: 100%">
+      <div style="width: 33%; float: left;">
+        <table class="tcal" tal:define="hull WRAPPER/getHullShipSystem">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="assets/buttons/modul_1.png" />
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+              <span tal:replace="structure hull/getHullStatusBarBig">HULL</span>
+            </td>
+            <td style="text-align: center; width: 60px;">
+              ${SHIP/getHull}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div style="width: 33%; float: left;" tal:define="shields WRAPPER/getShieldShipSystem">
+        <table class="tcal" tal:condition="shields">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="assets/buttons/modul_2.png" />
+            </th>
+            <td style="text-align: center; vertical-align: middle;">
+              <span tal:replace="structure shields/getShieldStatusBarBig">SCHILDE</span>
+            </td>
+            <td style="text-align: center; width: 60px;">
+              ${SHIP/getShield}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div style="width: 33%; float: left;">
+        <table class="tcal" tal:condition="eps">
+          <tr>
+            <th style="text-align: center; width: 20px;">
+              <img src="assets/buttons/modul_8.png" />
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+              <span tal:replace="structure eps/getEpsStatusBarBig">EPS</span>
+            </td>
+            <td style="text-align: center; width: 60px;">
+              ${eps/getEps}
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
-  </div>
+    <br style="clear: both;" />
+    <br />
+    <div style="float: left; width: 350px">
+      <table class="tcal">
+        <tr>
+          <th colspan="4">Crew</th>
+        </tr>
+        <tr>
+          <td colspan="3" class="darkbg">Minimal-Crew</td>
+          <td class="darkbg"><span tal:condition="SHIP/getBuildplan"
+              tal:replace="SHIP/getBuildplan/getCrew">CREW</span><span tal:condition="not:SHIP/getBuildplan">kA</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="darkbg"></td>
+          <td class="darkbg"><strong>Position</strong></td>
+          <td class="darkbg"><strong>Name</strong></td>
+          <td class="darkbg"><strong>Rang</strong></td>
+        </tr>
+        <tr tal:repeat="data SHIP/getCrewlist">
+          <td tal:define="crewusername bbcode2txt:data/getCrew/getUser/getName">
+            <img
+              src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
+            <span tal:condition="data/isForeigner" style="vertical-align: top; color:red; cursor: default;"
+              title="von ${crewusername}">*</span>
+            <a tal:condition="data/isForeigner"
+              href="?B_DUMP_CREWMAN=1&id=${SHIP/getId}&scid=${data/getId}&sstr=${THIS/getSessionString}"
+              onmouseover="cp('dump_${data/getId}','buttons/x2')" onmouseout="cp('dump_${data/getId}','buttons/x1')">
+              <img src="/assets/buttons/x2.png" name="dump_${data/getId}" title="Crewman entfernen" />
+            </a>
+          </td>
+          <td>
+            <div tal:content="data/getPosition">POSITION</div>
+          </td>
+          <td style="vertical-align: middle;">
+            <metal:macro metal:use-macro="crewslot" tal:define="CREW data/getCrew" />
+          </td>
+          <td>
+            <div tal:content="data/getCrew/getTypeDescription">RANG</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div style="padding-left: 5px; float: left; width: 220px">
+      <div class="divhead">Informationen</div>
+      <div class="divbody">
+        <span>Ersatzbatterie:</span> ${eps/getMaxBattery}<br />
+        <span>Trefferchance (eff.):</span> ${SHIP/getHitChance}%<br />
+        <span>Ausweichchance (eff.):</span> ${SHIP/getEvadeChance}%<br />
+        <span>Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
+        <span>Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
+        <span>Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />
+        <tal:block tal:condition="SHIP/canMove">
+          <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
+        </tal:block>
+        <span>Beamfaktor</span>: ${SHIP/getRump/getBeamFactor}<br />
+        <span>Raumschiffmasse: </span><span
+          tal:content="numberWithThousandSeperator:SHIP/getRump/getTractorMass">TRACTORMASS</span><br />
+        <span>Traktortraglast: </span><span
+          tal:content="numberWithThousandSeperator:SHIP/getTractorPayload">TRACTORPAYLOAD</span><br />
+        <span>Energiewaffensalven</span>: ${SHIP/getRump/getPhaserVolleys}<br />
+        <span>Energiewaffenbasisschaden</span>: ${SHIP/getBaseDamage}<br />
+        <span>Torpedolevel</span>: ${SHIP/getRump/getTorpedoLevel}<br />
+        <span>Torpedosalven</span>: ${SHIP/getRump/getTorpedoVolleys}<br />
+        <tal:block tal:condition="SHIP/getTorpedo">
+          <span>Torpedobasisschaden</span>: ${SHIP/getTorpedo/getBaseDamage}<br />
+        </tal:block>
+        <span>Torpedokapazität</span>: ${SHIP/getMaxTorpedos}<br />
+        <tal:block tal:condition="SHIP/isBase">
+          <span>Dockplätze</span>: ${SHIP/getRump/getDockingSlots}<br />
+        </tal:block>
+      </div>
+      <br />
+      <div class="divhead">Systemstatus</div>
+      <div class="divbody">
+        <div tal:repeat="data SHIP/getSystems">
+          <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
+          ${data/getStatus}%
+        </div>
+      </div>
+    </div>
+  </tal:block>
 </metal:block>
 <metal:macro metal:define-macro="trademenu">
   <div id="trademenucontent" style="width: 400px;">

@@ -28,6 +28,8 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -62,6 +64,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private ShipTorpedoManagerInterface $shipTorpedoManager;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -78,6 +82,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         InteractionCheckerInterface $interactionChecker,
         ReactorUtilInterface $reactorUtil,
         ShipTorpedoManagerInterface $shipTorpedoManager,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -93,6 +98,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->interactionChecker = $interactionChecker;
         $this->reactorUtil = $reactorUtil;
         $this->shipTorpedoManager = $shipTorpedoManager;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -146,8 +152,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
             return;
         }
 
-        $this->batteryShip($ship, $user, $colony, $msg);
-        $this->manShip($ship, $user, $colony, $msg);
+        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
+        $this->batteryShip($wrapper, $user, $colony, $msg);
+        $this->manShip($wrapper, $user, $colony, $msg);
         $this->unmanShip($ship, $user, $colony, $msg);
         $this->reactorShip($ship, $colony, $msg);
         $this->torpedoShip($ship, $user, $colony, $msg);
@@ -156,34 +164,39 @@ final class ManageOrbitalShips implements ActionControllerInterface
     }
 
 
-    private function batteryShip(ShipInterface $ship, UserInterface $user, ColonyInterface $colony, &$msg): void
+    private function batteryShip(ShipWrapperInterface $wrapper, UserInterface $user, ColonyInterface $colony, &$msg): void
     {
         $batt = request::postArrayFatal('batt');
+        $ship = $wrapper->get();
         $shipId = $ship->getId();
         $userId = $user->getId();
+        $epsSystem = $wrapper->getEpsShipSystem();
 
         $sectorString = $colony->getSX() . '|' . $colony->getSY();
         if ($colony->isInSystem()) {
             $sectorString .= ' (' . $colony->getSystem()->getName() . '-System)';
         }
 
-        if ($colony->getEps() > 0 && $ship->getEBatt() < $ship->getMaxEbatt() && array_key_exists(
-            $shipId,
-            $batt
-        )) {
+        if (
+            $colony->getEps() > 0 && $epsSystem->getBattery() < $epsSystem->getMaxBattery()
+            && array_key_exists(
+                $shipId,
+                $batt
+            )
+        ) {
             if ($batt[$shipId] == 'm') {
-                $load = $ship->getMaxEbatt() - $ship->getEBatt();
+                $load = $epsSystem->getMaxBattery() - $epsSystem->getBattery();
             } else {
                 $load = (int) $batt[$shipId];
-                if ($ship->getEBatt() + $load > $ship->getMaxEBatt()) {
-                    $load = $ship->getMaxEBatt() - $ship->getEBatt();
+                if ($epsSystem->getBattery() + $load > $epsSystem->getMaxBattery()) {
+                    $load = $epsSystem->getMaxBattery() - $epsSystem->getBattery();
                 }
             }
             if ($load > $colony->getEps()) {
                 $load = $colony->getEps();
             }
             if ($load > 0) {
-                $ship->setEBatt($ship->getEBatt() + $load);
+                $epsSystem->setBattery($epsSystem->getBattery() + $load)->update();
                 $colony->lowerEps($load);
                 $msg[] = sprintf(
                     _('%s: Batterie um %d Einheiten aufgeladen'),
@@ -212,9 +225,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
         }
     }
 
-    private function manShip(ShipInterface $ship, UserInterface $user, ColonyInterface $colony, &$msg): void
+    private function manShip(ShipWrapperInterface $wrapper, UserInterface $user, ColonyInterface $colony, &$msg): void
     {
         $man = request::postArray('man');
+        $ship = $wrapper->get();
 
         if (
             isset($man[$ship->getId()])
@@ -236,7 +250,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 );
 
                 if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
-                    $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+                    $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
                 }
             }
         }

@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
 
 final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeaponPhaseInterface
@@ -16,22 +16,24 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     public const FIRINGMODE_FOCUS = 2;
 
     public function fire(
-        $attacker,
+        ?ShipWrapperInterface $wrapper,
+        $attackingPhalanx,
         array $targetPool,
         bool $isAlertRed = false
     ): array {
         $msg = [];
 
-        $target = $targetPool[array_rand($targetPool)];
+        $attacker = $wrapper !== null ? $wrapper->get() : $attackingPhalanx;
+        $target = $targetPool[array_rand($targetPool)]->get();
 
         for ($i = 1; $i <= $attacker->getRump()->getPhaserVolleys(); $i++) {
             if (count($targetPool) === 0) {
                 break;
             }
-            if (!$attacker->getPhaserState() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
+            if (!$attacker->getPhaserState() || $this->hasUnsufficientEnergy($wrapper, $attackingPhalanx)) {
                 break;
             }
-            $attacker->setEps($attacker->getEps() - $this->getEnergyWeaponEnergyCosts());
+            $this->reduceEps($wrapper, $attackingPhalanx);
             if ($this->getEnergyWeapon($attacker)->getFiringMode() === self::FIRINGMODE_RANDOM) {
                 $target = $targetPool[array_rand($targetPool)];
             }
@@ -102,18 +104,38 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         return $msg;
     }
 
+    private function hasUnsufficientEnergy(?ShipWrapperInterface $wrapper, $attackingPhalanx): bool
+    {
+        if ($wrapper !== null) {
+            return $wrapper->getEpsShipSystem()->getEps() < $this->getEnergyWeaponEnergyCosts();
+        } else {
+            return $attackingPhalanx->getEps() < $this->getEnergyWeaponEnergyCosts();
+        }
+    }
+
+    private function reduceEps(?ShipWrapperInterface $wrapper, $attackingPhalanx): void
+    {
+        if ($wrapper !== null) {
+            $eps = $wrapper->getEpsShipSystem();
+            $eps->setEps($eps->getEps() - $this->getEnergyWeaponEnergyCosts())->update();
+        } else {
+            $attackingPhalanx->setEps($attackingPhalanx->getEps() - $this->getEnergyWeaponEnergyCosts());
+        }
+    }
+
     public function fireAtBuilding(
-        ShipInterface $attacker,
+        ShipWrapperInterface $attackerWrapper,
         PlanetFieldInterface $target,
         $isOrbitField
     ): array {
         $msg = [];
 
+        $attacker = $attackerWrapper->get();
         for ($i = 1; $i <= $attacker->getRump()->getPhaserVolleys(); $i++) {
-            if (!$attacker->getPhaserState() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
+            if (!$attacker->getPhaserState() || $this->hasUnsufficientEnergy($attackerWrapper, null)) {
                 break;
             }
-            $attacker->setEps($attacker->getEps() - $this->getEnergyWeaponEnergyCosts());
+            $this->reduceEps($attackerWrapper, null);
 
             $msg[] = sprintf(_("Die %s feuert mit einem %s auf das Gebäude %s auf Feld %d"), $attacker->getName(), $this->getEnergyWeapon($attacker)->getName(), $target->getBuilding()->getName(), $target->getFieldId());
 

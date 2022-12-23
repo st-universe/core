@@ -55,10 +55,11 @@ final class ShowColonyScan implements ViewControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         if ($ship->getCloakState()) {
             return;
@@ -76,12 +77,13 @@ final class ShowColonyScan implements ViewControllerInterface
             return;
         }
 
-        if ($ship->getEps() < MatrixScannerShipSystem::SCAN_EPS_COST) {
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() < MatrixScannerShipSystem::SCAN_EPS_COST) {
             $game->addInformation(sprintf(_('Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE'), MatrixScannerShipSystem::SCAN_EPS_COST));
             return;
         }
 
-        $ship->setEps($ship->getEps() - MatrixScannerShipSystem::SCAN_EPS_COST);
+        $epsSystem->setEps($epsSystem->getEps() - MatrixScannerShipSystem::SCAN_EPS_COST)->update();
         $this->shipRepository->save($ship);
 
         $this->privateMessageSender->send(

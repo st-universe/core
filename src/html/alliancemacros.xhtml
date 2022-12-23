@@ -56,7 +56,7 @@
 </metal:block>
 <metal:block metal:define-macro="memberrumpinfo">
 	<table class="tcal" tal:condition="not:ERROR">
-		<tal:block tal:repeat="ship SHIPS">
+		<tal:block tal:repeat="wrapper SHIPS" tal:define="ship wrapper/get">
 			<tr>
 				<td>
 					<span tal:replace="ship/getSectorString">COORDS</span>
@@ -70,22 +70,23 @@
 										<img src="assets/buttons/modul_1.png" />
 									</th>
 									<td style="vertical-align: middle; text-align: center;">
-										<span tal:replace="structure ship/getHullStatusBar">HULL</span>
+										<span
+											tal:replace="structure wrapper/getHullShipSystem/getHullStatusBarBig">HULL</span>
 									</td>
 									<td style="text-align: center; width: 60px;">
-										${ship/getHuell}
+										${ship/getHull}
 									</td>
 								</tr>
 							</table>
 						</div>
-						<div style="width: 33%; float: left;">
-							<table class="tcal">
+						<div style="width: 33%; float: left;" tal:define="shields wrapper/getShieldShipSystem">
+							<table class="tcal" tal:condition="shields">
 								<tr>
 									<th style="width: 20px; text-align: center;">
 										<img src="assets/buttons/modul_2.png" />
 									</th>
 									<td style="text-align: center; vertical-align: middle;">
-										<span tal:replace="structure ship/getShieldStatusBar">SHIELDS</span>
+										<span tal:replace="structure shields/getShieldStatusBarBig">SHIELDS</span>
 									</td>
 									<td style="text-align: center; width: 60px;">
 										${ship/getShield}
@@ -93,17 +94,17 @@
 								</tr>
 							</table>
 						</div>
-						<div style="width: 33%; float: left;">
-							<table class="tcal">
+						<div style="width: 33%; float: left;" tal:define="eps wrapper/getEpsShipSystem">
+							<table class="tcal" tal:condition="eps">
 								<tr>
 									<th style="text-align: center; width: 20px;">
 										<img src="assets/buttons/modul_8.png" />
 									</th>
 									<td style="vertical-align: middle; text-align: center;">
-										<span tal:replace="structure ship/getEpsStatusBar">EPS</span>
+										<span tal:replace="structure eps/getEpsStatusBarBig">EPS</span>
 									</td>
 									<td style="text-align: center; width: 60px;">
-										${ship/getEps}
+										${eps/getEps}
 									</td>
 								</tr>
 							</table>

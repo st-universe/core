@@ -15,7 +15,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
-use Stu\Module\Tal\OrbitShipItem;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowManagement implements ViewControllerInterface
@@ -34,13 +34,16 @@ final class ShowManagement implements ViewControllerInterface
 
     private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
         ShowManagementRequestInterface $showManagementRequest,
         ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory
+        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
@@ -48,6 +51,7 @@ final class ShowManagement implements ViewControllerInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -96,7 +100,7 @@ final class ShowManagement implements ViewControllerInterface
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_INFO));
         $game->setTemplateVar(
             'FIRST_ORBIT_SHIP',
-            $firstOrbitShip === null ? null : new OrbitShipItem($firstOrbitShip, $game)
+            $firstOrbitShip === null ? null : $this->shipWrapperFactory->wrapShip($firstOrbitShip)
         );
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);

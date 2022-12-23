@@ -12,13 +12,13 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
@@ -65,10 +65,12 @@ final class DockFleet implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $station = $wrapper->get();
+
         $this->loggerUtil->log('A');
         $targetFleet = $this->fleetRepository->find(request::getIntFatal('fid'));
         if ($targetFleet === null) {
@@ -97,13 +99,16 @@ final class DockFleet implements ActionControllerInterface
             return;
         }
 
-        $this->fleetDock($station, $targetFleet, $game);
+        $this->fleetDock($wrapper, $targetFleet, $game);
 
         //$game->addInformation('Andockvorgang abgeschlossen');
     }
 
-    private function fleetDock(ShipInterface $station, FleetInterface $targetFleet, GameControllerInterface $game): void
+    private function fleetDock(ShipWrapperInterface $stationWrapper, FleetInterface $targetFleet, GameControllerInterface $game): void
     {
+        $station = $stationWrapper->get();
+        $epsSystem = $stationWrapper->getEpsShipSystem();
+
         $this->loggerUtil->log('F');
         $msg = [];
         $msg[] = _("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName();;
@@ -117,7 +122,8 @@ final class DockFleet implements ActionControllerInterface
             if ($ship->getDockedTo()) {
                 continue;
             }
-            if ($station->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+
+            if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $station->getName() . _(": Nicht genügend Energie vorhanden");
                 break;
             }
@@ -141,12 +147,14 @@ final class DockFleet implements ActionControllerInterface
 
             $ship->setDockedTo($station);
 
-            $station->setEps($station->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
+            $epsSystem->setEps($epsSystem->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
             $this->shipRepository->save($ship);
 
             $freeSlots--;
         }
+
+        $epsSystem->update();
 
         $game->addInformationMerge($msg);
     }

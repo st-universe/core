@@ -865,29 +865,32 @@
 			</td>
 		</tr>
 	</table>
-	<table class="tcal" tal:condition="SHIP/getMaxEbatt">
-		<tr>
-			<th>
-				<img src="assets/buttons/batt.png" title="Ersatzbatterie" /> Ersatzbatterie
-				${SHIP/getEBatt} / ${SHIP/getMaxEBatt}
-			</th>
-		</tr>
-		<tr>
-			<td tal:condition="SHIP/isEBattUseable">
-				Einheiten
-				<input type="text" size="5" name="ebattload" id="ebattload"
-					onkeydown="event.key == 'Enter' && $('unloadBatteryButton').click()" />
-				<input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton" />
-				<input type="button" class="button"
-					onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max" />
-				<span tal:condition="SHIP/isFleetLeader"><input type="checkbox" name="fleet" />
-					Flotte</span>
-			</td>
-			<td tal:condition="not:SHIP/isEBattUseable">
-				Gesperrt bis ${datetime:SHIP/getEBattWaitingTime}
-			</td>
-		</tr>
-	</table>
+	<tal:block tal:define="eps WRAPPER/getEpsShipSystem">
+		<table class="tcal" tal:condition="php: eps && eps.getMaxBattery()">
+			<tr>
+				<th>
+					<img src="assets/buttons/batt.png" title="Ersatzbatterie" /> Ersatzbatterie
+					${eps/getBattery} / ${eps/getMaxBattery}
+				</th>
+			</tr>
+			<tr>
+				<td tal:condition="eps/isEBattUseable">
+					Einheiten
+					<input type="text" size="5" name="ebattload" id="ebattload"
+						onkeydown="event.key == 'Enter' && $('unloadBatteryButton').click()" />
+					<input type="submit" class="button" name="B_USE_BATTERY" value="entladen"
+						id="unloadBatteryButton" />
+					<input type="button" class="button"
+						onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max" />
+					<span tal:condition="SHIP/isFleetLeader"><input type="checkbox" name="fleet" />
+						Flotte</span>
+				</td>
+				<td tal:condition="not:eps/isEBattUseable">
+					Gesperrt bis ${datetime:eps/getBatteryCooldown}
+				</td>
+			</tr>
+		</table>
+	</tal:block>
 	<tal:block tal:condition="SHIP/isConstruction">
 		<table class="tcal" tal:condition="not: PROGRESS">
 			<tr>
@@ -1029,7 +1032,7 @@
 				</div>
 			</th>
 		</tr>
-		<tal:block tal:repeat="ship SHIP/getFleet/getShips">
+		<tal:block tal:repeat="wrapper FLEETWRAPPER/getShips" tal:define="ship wrapper/get">
 			<tr tal:condition="php:SHIP.getId() != ship.getId()">
 				<td style="background-color: #000000 ! important">
 					<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
@@ -1045,22 +1048,23 @@
 										<img src="assets/buttons/modul_1.png" />
 									</th>
 									<td style="vertical-align: middle; text-align: center;">
-										<span tal:replace="structure ship/getHullStatusBar">HULL</span>
+										<span
+											tal:replace="structure wrapper/getHullShipSystem/getHullStatusBar">HULL</span>
 									</td>
 									<td style="text-align: center; width: 60px;">
-										${ship/getHuell}
+										${ship/getHull}
 									</td>
 								</tr>
 							</table>
 						</div>
-						<div style="width: 33%; float: left;">
-							<table class="tcal">
+						<div style="width: 33%; float: left;" tal:define="shields wrapper/getShieldShipSystem">
+							<table class="tcal" tal:condition="shields">
 								<tr>
 									<th style="width: 20px; text-align: center;">
 										<img src="assets/buttons/modul_2.png" />
 									</th>
 									<td style="text-align: center; vertical-align: middle;">
-										<span tal:replace="structure ship/getShieldStatusBar">SHIELDS</span>
+										<span tal:replace="structure shields/getShieldStatusBar">SHIELDS</span>
 									</td>
 									<td style="text-align: center; width: 60px;">
 										${ship/getShield}
@@ -1068,17 +1072,17 @@
 								</tr>
 							</table>
 						</div>
-						<div style="width: 33%; float: left;">
-							<table class="tcal">
+						<div style="width: 33%; float: left;" tal:define="eps wrapper/getEpsShipSystem">
+							<table class="tcal" tal:condition="eps">
 								<tr>
 									<th style="text-align: center; width: 20px;">
 										<img src="assets/buttons/modul_8.png" />
 									</th>
 									<td style="vertical-align: middle; text-align: center;">
-										<span tal:replace="structure ship/getEpsStatusBar">EPS</span>
+										<span tal:replace="structure eps/getEpsStatusBar">EPS</span>
 									</td>
 									<td style="text-align: center; width: 60px;">
-										${ship/getEps}
+										${eps/getEps}
 									</td>
 								</tr>
 							</table>
@@ -1185,7 +1189,7 @@
 								${SHIP/getPosX}|${SHIP/getPosY}
 							</td>
 							<td style="text-align: center;">
-								${SHIP/getHuell}/${SHIP/getMaxHuell}
+								${SHIP/getHull}/${SHIP/getMaxHuell}
 							</td>
 							<td style="text-align: center;">
 								<span tal:condition="SHIP/getShieldState" class="activeshield"
@@ -1194,14 +1198,16 @@
 									tal:condition="not:SHIP/getShieldState">${SHIP/getShield}/${SHIP/getMaxShield}</span>
 								(+<span tal:replace="SHIP/getShieldRegenerationRate">REGENERATIONRATE</span>)
 							</td>
-							<td style="text-align: center;">
-								${SHIP/getEps}/${SHIP/getMaxEps}
-								<span>${addPlusCharacter:WRAPPER/getEffectiveEpsProduction}</span>
-								(<span tal:content="WRAPPER/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
-									tal:content="WRAPPER/getWarpcoreUsage">CORE</span>)
+							<td style="text-align: center;" tal:define="eps WRAPPER/getEpsShipSystem">
+								<tal:block tal:condition="eps">
+									${eps/getEps}/${eps/getMaxEps}
+									<span>${addPlusCharacter:WRAPPER/getEffectiveEpsProduction}</span>
+									(<span tal:content="WRAPPER/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
+										tal:content="WRAPPER/getWarpcoreUsage">CORE</span>)
+								</tal:block>
 							</td>
 							<td style="text-align: center;">
-								${SHIP/getEBatt}
+								${WRAPPER/getEpsShipSystem/getBattery}
 							</td>
 							<td style="text-align: center;">
 								<span tal:replace="SHIP/getCrewCount">CURRENT</span>&nbsp;(<span
@@ -1304,7 +1310,7 @@
 										<ul id="shipselector">
 											<metal:block tal:condition="FIRST_MANAGE_SHIP"
 												metal:use-macro="html/colonymacros.xhtml/shipselector"
-												tal:define="data FIRST_MANAGE_SHIP" />
+												tal:define="wrapper FIRST_MANAGE_SHIP" />
 											<li tal:condition="not:FIRST_MANAGE_SHIP" style="text-align: center">Keine
 												Schiffe angedockt</li>
 										</ul>

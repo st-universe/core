@@ -14,6 +14,11 @@ interface ShipWrapperFactoryInterface
      */
     public function wrapShips(array $ships): array;
 
+    /**
+     * @param ShipInterface[] $ships
+     */
+    public function wrapShipsAsFleet(array $ships, bool $isSingleShips = false): FleetWrapperInterface;
+
     public function wrapFleet(FleetInterface $fleet): FleetWrapperInterface;
 
     /**

@@ -33,22 +33,24 @@ final class ChangeFleetFleader implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
 
         if ($ship->getFleetId() === null) {
             return;
         }
 
-        if ($target === null) {
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
 
         if ($target->getUser() !== $ship->getUser()) {
             return;

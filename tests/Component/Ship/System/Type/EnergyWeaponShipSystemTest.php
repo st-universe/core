@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System\Type;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
@@ -19,63 +20,62 @@ class EnergyWeaponShipSystemTest extends StuTestCase
      */
     private $system;
 
+    private ShipInterface $ship;
+    private ShipWrapperInterface $wrapper;
+
     public function setUp(): void
     {
+        $this->ship = $this->mock(ShipInterface::class);
+        $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->system = new EnergyWeaponShipSystem();
     }
 
     public function testCheckActivationConditionsReturnFalseIfCloaked(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship, $reason)
+            $this->system->checkActivationConditions($this->ship, $reason)
         );
         $this->assertEquals('die Tarnung aktiviert ist', $reason);
     }
 
     public function testCheckActivationConditionsReturnFalseIfAlertGreen(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('isAlertGreen')
+        $this->ship->shouldReceive('isAlertGreen')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkActivationConditions($ship, $reason)
+            $this->system->checkActivationConditions($this->ship, $reason)
         );
         $this->assertEquals('die Alarmstufe Grün ist', $reason);
     }
 
     public function testCheckActivationConditionsReturnTrueIfActivateable(): void
     {
-        $ship = $this->mock(ShipInterface::class);
-
-        $ship->shouldReceive('getCloakState')
+        $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('isAlertGreen')
+        $this->ship->shouldReceive('isAlertGreen')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
 
         $reason = null;
         $this->assertTrue(
-            $this->system->checkActivationConditions($ship, $reason)
+            $this->system->checkActivationConditions($this->ship, $reason)
         );
         $this->assertNull($reason);
     }
@@ -90,27 +90,30 @@ class EnergyWeaponShipSystemTest extends StuTestCase
 
     public function testActivateActivates(): void
     {
-        $ship = $this->mock(ShipInterface::class);
         $managerMock = $this->mock(ShipSystemManagerInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_PHASER)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->system->activate($ship, $managerMock);
+        $this->system->activate($this->wrapper, $managerMock);
     }
 
     public function testDeactivateDeactivates(): void
     {
-        $ship = $this->mock(ShipInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_PHASER)
             ->once()
             ->andReturn($system);
@@ -118,6 +121,6 @@ class EnergyWeaponShipSystemTest extends StuTestCase
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
 
-        $this->system->deactivate($ship);
+        $this->system->deactivate($this->ship);
     }
 }

@@ -9,10 +9,12 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 {
@@ -26,6 +28,8 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     private CancelRepairInterface $cancelRepair;
 
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
+
     private GameControllerInterface $game;
 
     private JsonMapperInterface $jsonMapper;
@@ -36,6 +40,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         ShipSystemRepositoryInterface $shipSystemRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         GameControllerInterface $game,
         JsonMapperInterface $jsonMapper
     ) {
@@ -44,6 +49,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         $this->shipSystemRepository = $shipSystemRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->cancelRepair = $cancelRepair;
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->game = $game;
         $this->jsonMapper = $jsonMapper;
     }
@@ -57,6 +63,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $this->shipSystemRepository,
             $this->colonyLibFactory,
             $this->cancelRepair,
+            $this->torpedoTypeRepository,
             $this->game,
             $this->jsonMapper
         );
@@ -64,17 +71,35 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     public function wrapShips(array $ships): array
     {
-        return array_map(
-            function (ShipInterface $ship): ShipWrapperInterface {
-                return $this->wrapShip($ship);
-            },
-            $ships
-        );
+        array_walk($ships, function ($ship, &$key) {
+            $key = $this->wrapShip($ship);
+        });
+
+        return $ships;
+    }
+
+    public function wrapShipsAsFleet(array $ships, bool $isSingleShips = false): FleetWrapperInterface
+    {
+        $fleet = new Fleet();
+        foreach ($ships as $key => $value) {
+            $fleet->getShips()->set($key, $value);
+        }
+
+        if ($isSingleShips) {
+            $fleet->setSort(PHP_INT_MAX);
+            $fleet->setName(_('Einzelschiffe'));
+        } else {
+            $fleet->setName(current($ships)->getFleet()->getName());
+            $fleet->setUser(current($ships)->getUser());
+            $fleet->setSort(current($ships)->getFleet()->getSort());
+        }
+
+        return new FleetWrapper($fleet, $this, $this->game);
     }
 
     public function wrapFleet(FleetInterface $fleet): FleetWrapperInterface
     {
-        return new FleetWrapper($fleet, $this);
+        return new FleetWrapper($fleet, $this, $this->game);
     }
 
     public function wrapFleets(array $fleets): array

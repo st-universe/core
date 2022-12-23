@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\UnloadBattery;
 
 use request;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,17 +16,12 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class UnloadBattery implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_USE_BATTERY';
 
     private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
@@ -37,15 +31,11 @@ final class UnloadBattery implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         StuTime $stuTime,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->stuTime = $stuTime;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -91,27 +81,16 @@ final class UnloadBattery implements ActionControllerInterface
 
         $eps = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
 
-        //experimetal
-
-        if ($ship->getUser()->getId() === 126) {
-            $epsWithData = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
-
-            $this->loggerUtil->init('JSON', LoggerEnum::LEVEL_ERROR);
-
-            $this->loggerUtil->log(sprintf('battery: %d', $epsWithData->getBattery()));
-        }
-
-
         if ($eps === null) {
             return sprintf(_('%s: Kein Energiesystem installiert'), $ship->getName());
         }
-        if (!$ship->getEBatt()) {
+        if (!$eps->getBattery()) {
             return sprintf(_('%s: Die Ersatzbatterie ist leer'), $ship->getName());
         }
-        if (!$ship->isEBattUseable()) {
-            return sprintf(_('%s: Die Batterie kann erst wieder am ' . date('d.m.Y H:i', $ship->getEBattWaitingTime()) . ' genutzt werden'), $ship->getName());
+        if (!$eps->isEBattUseable()) {
+            return sprintf(_('%s: Die Batterie kann erst wieder am ' . date('d.m.Y H:i', $eps->getBatteryCooldown()) . ' genutzt werden'), $ship->getName());
         }
-        if ($ship->getEps() >= $ship->getMaxEps()) {
+        if ($eps->getEps() >= $eps->getMaxEps()) {
             return sprintf(_('%s: Der Energiespeicher ist voll'), $ship->getName());
         }
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_EPS)) {
@@ -119,22 +98,17 @@ final class UnloadBattery implements ActionControllerInterface
         }
 
         // unload following
-        if ($load > $ship->getEBatt()) {
-            $load = $ship->getEBatt();
+        if ($load > $eps->getBattery()) {
+            $load = $eps->getBattery();
         }
-        if ($load + $ship->getEps() > $ship->getMaxEps()) {
-            $load = $ship->getMaxEps() - $ship->getEps();
+        if ($load + $eps->getEps() > $eps->getMaxEps()) {
+            $load = $eps->getMaxEps() - $eps->getEps();
         }
-        $ship->setEBatt($ship->getEBatt() - $load);
-        $ship->setEps($ship->getEps() + $load);
-        $ship->setEBattWaitingTime($this->stuTime->time() + $load * 60);
 
-        //experimental
-        $eps->setBattery($ship->getEBatt() - $load)
+        $eps->setBattery($eps->getBattery() - $load)
             ->setBatteryCooldown($this->stuTime->time() + $load * 60)
-            ->update($ship);
-
-        $this->shipRepository->save($ship);
+            ->setEps($eps->getEps() + $load)
+            ->update();
 
         return sprintf(
             _('%s: Die Ersatzbatterie wurde um %d Einheiten entladen'),

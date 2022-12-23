@@ -2,11 +2,16 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface FightLibInterface
 {
-    public function ready(ShipInterface $ship): array;
+    public function ready(ShipWrapperInterface $wrapper): array;
 
+    /**
+     * @param ShipWrapperInterface[] $base
+     * 
+     * @return ShipWrapperInterface[]
+     */
     public function filterInactiveShips(array $base): array;
 }

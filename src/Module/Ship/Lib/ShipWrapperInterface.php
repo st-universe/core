@@ -3,6 +3,9 @@
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\System\Type\EpsShipSystem;
+use Stu\Component\Ship\System\Type\HullShipSystem;
+use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
+use Stu\Component\Ship\System\Type\ShieldShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
@@ -39,5 +42,13 @@ interface ShipWrapperInterface
 
     public function getRepairCosts(): array;
 
+    public function getPossibleTorpedoTypes(): array;
+
+    public function getHullShipSystem(): HullShipSystem;
+
+    public function getShieldShipSystem(): ?ShieldShipSystem;
+
     public function getEpsShipSystem(): ?EpsShipSystem;
+
+    public function getProjectileWeaponShipSystem(): ?ProjectileWeaponShipSystem;
 }

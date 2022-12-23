@@ -9,6 +9,7 @@ use JBBCode\Parser;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -27,18 +28,22 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager,
         UserRepositoryInterface $userRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         Parser $bbcodeParser,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->allianceActionManager = $allianceActionManager;
         $this->userRepository = $userRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->bbcodeParser = $bbcodeParser;
         $this->shipRepository = $shipRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -74,7 +79,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
 
         $ships = $this->shipRepository->getByUserAndRump($memberId, $rumpId);
 
-        $game->setTemplateVar('SHIPS', $ships);
+        $game->setTemplateVar('SHIPS', $this->shipWrapperFactory->wrapShips($ships));
         $game->setTemplateVar('ERROR', false);
     }
 }

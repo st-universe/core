@@ -7,21 +7,27 @@ namespace Stu\Component\Ship\System\Type;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    protected ShipInterface $ship;
+
+    public function setShip(ShipInterface $ship): void
+    {
+        $this->ship = $ship;
+    }
     /**
      * updates the system metadata for this specific ship system
      */
     protected function updateSystemData(
-        ShipInterface $ship,
         int $systemType,
         $data,
         ShipSystemRepositoryInterface $shipSystemRepository
     ): void {
-        $system = $ship->getShipSystem($systemType);
+        $system = $this->ship->getShipSystem($systemType);
         $system->setData(json_encode($data));
         $shipSystemRepository->save($system);
     }
@@ -69,5 +75,14 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
     public function getCooldownSeconds(): ?int
     {
         return null;
+    }
+
+    protected function getTalStatusBar(string $label, int $value, int $maxValue, $color): TalStatusBar
+    {
+        return (new TalStatusBar())
+            ->setColor($color)
+            ->setLabel($label)
+            ->setMaxValue($maxValue)
+            ->setValue($value);
     }
 }

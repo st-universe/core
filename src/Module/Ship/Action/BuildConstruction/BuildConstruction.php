@@ -18,6 +18,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -93,10 +94,11 @@ final class BuildConstruction implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         if (!$ship->canBuildConstruction()) {
             return;
@@ -134,7 +136,9 @@ final class BuildConstruction implements ActionControllerInterface
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
-        if ($ship->getEps() == 0) {
+
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -193,7 +197,7 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         // check if ship got enough energy
-        if ($ship->getEps() < $neededEps) {
+        if ($epsSystem->getEps() < $neededEps) {
             $game->addInformation(sprintf(
                 _('Es wird insgesamt %d Energie für den Start der %d Workbees benötigt'),
                 $neededEps,
@@ -215,7 +219,7 @@ final class BuildConstruction implements ActionControllerInterface
             );
 
             // start workbee and transfer crew
-            $workbees[] = $this->startWorkbee($ship, $plan);
+            $workbees[] = $this->startWorkbee($wrapper, $plan);
             $game->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
         }
 
@@ -246,22 +250,20 @@ final class BuildConstruction implements ActionControllerInterface
         $game->addInformation('Die gestarteten Workbees haben an das Konstrukt angedockt');
     }
 
-    private function startWorkbee(ShipInterface $ship, ShipBuildplanInterface $plan): ShipInterface
+    private function startWorkbee(ShipWrapperInterface $wrapper, ShipBuildplanInterface $plan): ShipInterface
     {
+        $ship = $wrapper->get();
         $rump = $plan->getRump();
 
-        $workbee = $this->shipCreator->createBy(
+        $workbeeWrapper = $this->shipCreator->createBy(
             $ship->getUser()->getId(),
             $rump->getId(),
             $plan->getId()
         );
+        $workbee = $workbeeWrapper->get();
+        $workbeeEps = $workbeeWrapper->getEpsShipSystem();
 
-        $this->entityManager->flush();
-
-        //reload ship with systems
-        $workbee = $this->shipRepository->find($workbee->getId());
-
-        $workbee->setEps($workbee->getMaxEps());
+        $workbeeEps->setEps($workbeeEps->getMaxEps())->update();
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_ON);
 
@@ -278,7 +280,8 @@ final class BuildConstruction implements ActionControllerInterface
 
         $this->shipRepository->save($workbee);
 
-        $ship->setEps($ship->getEps() - $workbee->getMaxEps());
+        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem->setEps($epsSystem->getEps() - $workbeeEps->getMaxEps())->update();
         $this->shipRepository->save($ship);
 
         return $workbee;

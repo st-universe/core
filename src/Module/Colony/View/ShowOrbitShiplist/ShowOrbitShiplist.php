@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\View\ShowOrbitShiplist;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Tal\OrbitShipItem;
-use Stu\Module\Tal\OrbitShipItemInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ShowOrbitShiplist implements ViewControllerInterface
@@ -19,12 +19,16 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 
     private ShowOrbitShiplistRequestInterface $showOrbitShiplistRequest;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowOrbitShiplistRequestInterface $showOrbitShiplistRequest
+        ShowOrbitShiplistRequestInterface $showOrbitShiplistRequest,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showOrbitShiplistRequest = $showOrbitShiplistRequest;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,23 +40,18 @@ final class ShowOrbitShiplist implements ViewControllerInterface
             $userId
         );
 
-        $orbitShipList = [];
-
-        foreach ($colony->getOrbitShipList($userId) as $entry) {
-            $entry['ships'] = array_map(
-                function (ShipInterface $ship) use ($game): OrbitShipItemInterface {
-                    return new OrbitShipItem($ship, $game);
-                },
-                $entry['ships']
-            );
-            $orbitShipList[] = $entry;
-        }
+        $orbitShipList = array_map(
+            function (ShipInterface $ship): ShipWrapperInterface {
+                return $this->shipWrapperFactory->wrapShip($ship);
+            },
+            $colony->getOrbitShipList($userId)
+        );
 
         $game->setPageTitle(_('Schiffe im Orbit'));
         $game->setMacroInAjaxWindow('html/colonymacros.xhtml/orbitshiplist');
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar(
-            'ORBIT_SHIP_LIST',
+            'WRAPPERS',
             $orbitShipList
         );
     }

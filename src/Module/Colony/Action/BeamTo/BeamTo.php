@@ -63,11 +63,13 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        $target = $this->shipLoader->find(request::postIntFatal('target'));
+        $wrapper = $this->shipLoader->find(request::postIntFatal('target'));
 
-        if ($target === null) {
+        if ($wrapper === null) {
             return;
         }
+
+        $target = $wrapper->get();
 
         if (!$this->interactionChecker->checkColonyPosition($colony, $target)) {
             return;

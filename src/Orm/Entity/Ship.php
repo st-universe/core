@@ -20,8 +20,6 @@ use Stu\Component\Station\StationUtility;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
-use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalStatusBar;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
@@ -78,16 +76,16 @@ class Ship implements ShipInterface
     /** @Column(type="integer", length=5) */
     private $warpcore = 0;
 
-    /** @Column(type="integer", length=6) */
+    /** @Column(type="integer", length=6, nullable=true) */
     private $eps = 0;
 
-    /** @Column(type="integer", length=6) */
+    /** @Column(type="integer", length=6, nullable=true) */
     private $max_eps = 0;
 
-    /** @Column(type="integer", length=6) */
+    /** @Column(type="integer", length=6, nullable=true) */
     private $batt = 0;
 
-    /** @Column(type="integer", length=6) */
+    /** @Column(type="integer", length=6, nullable=true) */
     private $max_batt = 0;
 
     /** @Column(type="integer", length=6) */
@@ -111,7 +109,7 @@ class Ship implements ShipInterface
     /** @Column(type="integer") */
     private $former_rumps_id = 0;
 
-    /** @Column(type="integer") */
+    /** @Column(type="integer", nullable=true) */
     private $batt_wait = 0;
 
     /** @Column(type="boolean") */
@@ -184,6 +182,7 @@ class Ship implements ShipInterface
 
     /**
      * @OneToMany(targetEntity="Ship", mappedBy="dockedTo", indexBy="id")
+     * @OrderBy({"fleets_id" = "DESC", "is_fleet_leader" = "DESC"})
      */
     private $dockedShips;
 
@@ -458,64 +457,7 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB);
     }
 
-    public function getEps(): int
-    {
-        return $this->eps;
-    }
-
-    public function setEps(int $eps): ShipInterface
-    {
-        $this->eps = $eps;
-        return $this;
-    }
-
-    /**
-     * proportional to eps system status
-     */
-    public function getMaxEps(): int
-    {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)) {
-            return $this->max_eps;
-        }
-
-        return (int) (ceil($this->max_eps
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100));
-    }
-
-    public function getTheoreticalMaxEps(): int
-    {
-        return $this->max_eps;
-    }
-
-    public function setMaxEps(int $maxEps): ShipInterface
-    {
-        $this->max_eps = $maxEps;
-        return $this;
-    }
-
-    public function getEBatt(): int
-    {
-        return $this->batt;
-    }
-
-    public function setEBatt(int $batt): ShipInterface
-    {
-        $this->batt = $batt;
-        return $this;
-    }
-
-    public function getMaxEBatt(): int
-    {
-        return $this->max_batt;
-    }
-
-    public function setMaxEBatt(): ShipInterface
-    {
-        $this->max_batt = (int) round($this->max_eps / 3);
-        return $this;
-    }
-
-    public function getHuell(): int
+    public function getHull(): int
     {
         return $this->huelle;
     }
@@ -615,17 +557,6 @@ class Ship implements ShipInterface
         }
 
         return $this->getTorpedoStorage()->getStorage()->getAmount();
-    }
-
-    public function getEBattWaitingTime(): int
-    {
-        return $this->batt_wait;
-    }
-
-    public function setEBattWaitingTime(int $batteryCooldown): ShipInterface
-    {
-        $this->batt_wait = $batteryCooldown;
-        return $this;
     }
 
     public function isBase(): bool
@@ -1031,11 +962,6 @@ class Ship implements ShipInterface
     public function isShuttleRampHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP);
-    }
-
-    public function isEBattUseable(): bool
-    {
-        return $this->getEBattWaitingTime() < time();
     }
 
     public function isWarpAble(): bool
@@ -1531,9 +1457,28 @@ class Ship implements ShipInterface
         return $count;
     }
 
+    public function canMan(): bool
+    {
+        return $this->getCrewCount() === 0
+            && $this->getBuildplan() !== null
+            && $this->getBuildplan()->getCrew() > 0
+            && $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT);
+    }
+
     public function canBuildConstruction(): bool
     {
         return StationUtility::canShipBuildConstruction($this);
+    }
+
+    public function hasCrewmanOfUser(int $userId): bool
+    {
+        foreach ($this->getCrewlist() as $shipCrew) {
+            if ($shipCrew->getCrew()->getUser()->getId() === $userId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function __toString()
@@ -1541,42 +1486,9 @@ class Ship implements ShipInterface
         return $this->getName();
     }
 
-    public function getHullStatusBar()
-    {
-        return (new TalStatusBar())
-            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
-            ->setLabel(_('Hülle'))
-            ->setMaxValue($this->getMaxHuell())
-            ->setValue($this->getHuell())
-            ->setSizeModifier(1.6)
-            ->render();
-    }
-
-    public function getShieldStatusBar()
-    {
-        return (new TalStatusBar())
-            ->setColor($this->getShieldState() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF)
-            ->setLabel(_('Schilde'))
-            ->setMaxValue($this->getMaxShield())
-            ->setValue($this->getShield())
-            ->setSizeModifier(1.6)
-            ->render();
-    }
-
-    public function getEpsStatusBar()
-    {
-        return (new TalStatusBar())
-            ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
-            ->setLabel(_('Energie'))
-            ->setMaxValue($this->getMaxEps())
-            ->setValue($this->getEps())
-            ->setSizeModifier(1.6)
-            ->render();
-    }
-
     public function getHullColorStyle(): string
     {
-        return $this->getColorStyle($this->getHuell(), $this->getMaxHuell());
+        return $this->getColorStyle($this->getHull(), $this->getMaxHuell());
     }
 
     private function getColorStyle(int $actual, int $max): string

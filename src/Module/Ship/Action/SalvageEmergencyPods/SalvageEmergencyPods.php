@@ -78,17 +78,20 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
-        if ($target === null) {
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
+
         if (!InteractionChecker::canInteractWith($ship, $target, $game)) {
             throw new SanityCheckException('can not interact with target');
         }
@@ -101,7 +104,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $game->addInformation(_('Keine Rettungskapseln vorhanden'));
             return;
         }
-        if ($ship->getEps() < 1) {
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() < 1) {
             $game->addInformation(sprintf(_('Zum Bergen der Rettungskapseln wird %d Energie benötigt'), 1));
             return;
         }
@@ -126,7 +130,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             }
          */
 
-        $ship->setEps($ship->getEps() - 1);
+        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
 
         $this->shipLoader->save($ship);
     }

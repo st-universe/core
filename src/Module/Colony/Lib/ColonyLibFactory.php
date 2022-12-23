@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -72,29 +71,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->planetGenerator = $planetGenerator;
         $this->entityManager = $entityManager;
         $this->loggerUtilFactory = $loggerUtilFactory;
-    }
-
-    public function createOrbitManagementShipItem(
-        ShipInterface $ship,
-        int $ownerUserId
-    ): OrbitManagementShipItem {
-        return new OrbitManagementShipItem(
-            $this->torpedoTypeRepository,
-            $ship,
-            $ownerUserId
-        );
-    }
-
-    public function createOrbitFleetItem(
-        int $fleetId,
-        array $shipList,
-        int $ownerUserId
-    ): OrbitFleetItemInterface {
-        return new OrbitFleetItem(
-            $fleetId,
-            $shipList,
-            $ownerUserId
-        );
     }
 
     public function createBuildingFunctionTal(

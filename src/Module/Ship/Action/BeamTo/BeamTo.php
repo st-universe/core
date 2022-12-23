@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -44,22 +45,26 @@ final class BeamTo implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
 
         //bad request
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
-        if ($target === null) {
+
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
+
         if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
             return;
         }
@@ -67,20 +72,22 @@ final class BeamTo implements ActionControllerInterface
         // check for fleet option
         if (request::postInt('isfleet') && $ship->getFleet() !== null) {
             foreach ($ship->getFleet()->getShips() as $ship) {
-                $this->beamToTarget($ship, $target, $game);
+                $this->beamToTarget($wrapper, $target, $game);
             }
         } else {
-            $this->beamToTarget($ship, $target, $game);
+            $this->beamToTarget($wrapper, $target, $game);
         }
     }
 
-    private function beamToTarget(ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): void
+    private function beamToTarget(ShipWrapperInterface $wrapper, ShipInterface $target, GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+        $ship = $wrapper->get();
+        $epsSystem = $wrapper->getEpsShipSystem();
 
         //sanity checks
         $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
-        if (!$isDockTransfer && $ship->getEps() == 0) {
+        if (!$isDockTransfer && $epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -123,7 +130,7 @@ final class BeamTo implements ActionControllerInterface
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
 
-            if (!$isDockTransfer && $ship->getEps() < 1) {
+            if (!$isDockTransfer && $epsSystem->getEps() < 1) {
                 break;
             }
             if (!array_key_exists($key, $gcount)) {
@@ -158,8 +165,8 @@ final class BeamTo implements ActionControllerInterface
 
             $transferAmount = $commodity->getTransferCount() * $ship->getBeamFactor();
 
-            if (!$isDockTransfer && ceil($count / $transferAmount) > $ship->getEps()) {
-                $count = $ship->getEps() * $transferAmount;
+            if (!$isDockTransfer && ceil($count / $transferAmount) > $epsSystem->getEps()) {
+                $count = $epsSystem->getEps() * $transferAmount;
             }
             if ($target->getStorageSum() + $count > $target->getMaxStorage()) {
                 $count = $target->getMaxStorage() - $target->getStorageSum();
@@ -177,9 +184,11 @@ final class BeamTo implements ActionControllerInterface
             $this->shipStorageManager->upperStorage($target, $commodity, $count);
 
             if (!$isDockTransfer) {
-                $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
+                $epsSystem->setEps($epsSystem->getEps() - (int)ceil($count / $transferAmount));
             }
         }
+
+        $epsSystem->update();
 
         $game->sendInformation(
             $target->getUser()->getId(),

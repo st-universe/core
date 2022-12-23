@@ -229,9 +229,11 @@ final class DealsTakeOffer implements ActionControllerInterface
 
     private function createShip(ShipBuildplanInterface $buildplan, TradePostInterface $tradePost, int $userId): void
     {
-        $ship = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
+        $wrapper = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
 
-        $ship->setEps((int)floor($ship->getTheoreticalMaxEps() / 4));
+        $ship = $wrapper->get();
+        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem->setEps((int)floor($epsSystem->getTheoreticalMaxEps() / 4))->update();
         $ship->setReactorLoad((int)floor($ship->getReactorCapacity() / 4));
         $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());
 

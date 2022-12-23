@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -46,19 +47,21 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         return true;
     }
 
-    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
+        $ship = $wrapper->get();
         $this->cancelRepair->cancelRepair($ship);
         $this->undock($ship);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_ON);
 
         if ($ship->isTractoring()) {
-            if ($ship->getEps() > $this->getEnergyUsageForActivation()) {
+            $eps = $wrapper->getEpsShipSystem();
+            if ($eps->getEps() > $this->getEnergyUsageForActivation()) {
                 $traktorShip = $ship->getTractoredShip();
 
                 $this->cancelRepair->cancelRepair($traktorShip);
 
-                $ship->setEps($ship->getEps() - $this->getEnergyUsageForActivation());
+                $eps->setEps($eps->getEps() - $this->getEnergyUsageForActivation())->update();
 
                 $this->shipRepository->save($traktorShip);
             } else {

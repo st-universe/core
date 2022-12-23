@@ -4,7 +4,6 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ConstructionProgressInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 interface ShipCreatorInterface
 {
@@ -14,5 +13,5 @@ interface ShipCreatorInterface
         int $shipBuildplanId,
         ?ColonyInterface $colony = null,
         ?ConstructionProgressInterface $progress = null
-    ): ShipInterface;
+    ): ShipWrapperInterface;
 }

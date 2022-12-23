@@ -25,13 +25,13 @@ use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -49,13 +49,13 @@ final class TroopTransfer implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private CrewRepositoryInterface $crewRepository;
-
     private ActivatorDeactivatorHelperInterface $helper;
 
     private ShipSystemManagerInterface $shipSystemManager;
 
     private DockPrivilegeUtilityInterface $dockPrivilegeUtility;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -67,10 +67,10 @@ final class TroopTransfer implements ActionControllerInterface
         ColonyRepositoryInterface $colonyRepository,
         TroopTransferUtilityInterface $transferUtility,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        CrewRepositoryInterface $crewRepository,
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -79,10 +79,10 @@ final class TroopTransfer implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->transferUtility = $transferUtility;
         $this->shipCrewRepository = $shipCrewRepository;
-        $this->crewRepository = $crewRepository;
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->privateMessageSender = $privateMessageSender;
     }
@@ -95,10 +95,12 @@ final class TroopTransfer implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
+
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
@@ -120,7 +122,9 @@ final class TroopTransfer implements ActionControllerInterface
             $game->addInformation(_("Die Truppenquartiere sind zerstört"));
             return;
         }
-        if ($ship->getEps() == 0) {
+
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -317,7 +321,7 @@ final class TroopTransfer implements ActionControllerInterface
                 $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
                 && $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
             ) {
-                $this->shipSystemManager->activate($target, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+                $this->shipSystemManager->activate($this->shipWrapperFactory->wrapShip($target), ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
             }
 
             if ($isUplinkSituation) {

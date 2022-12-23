@@ -36,10 +36,11 @@ final class MoveShip implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         if ($ship->getId() === 7396) {
             $this->shipMover2->checkAndMove(
@@ -50,7 +51,7 @@ final class MoveShip implements ActionControllerInterface
             $game->addInformationMerge($this->shipMover2->getInformations());
         } else {
             $this->shipMover->checkAndMove(
-                $ship,
+                $wrapper,
                 request::getIntFatal('posx'),
                 request::getIntFatal('posy')
             );

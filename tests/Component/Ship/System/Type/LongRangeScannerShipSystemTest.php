@@ -10,6 +10,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\StuTestCase;
@@ -27,8 +28,13 @@ class LongRangeScannerShipSystemTest extends StuTestCase
      */
     private $astroEntryLib;
 
+    private ShipInterface $ship;
+    private ShipWrapperInterface $wrapper;
+
     public function setUp(): void
     {
+        $this->ship = $this->mock(ShipInterface::class);
+        $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
 
         $this->system = new LongRangeScannerShipSystem($this->astroEntryLib);
@@ -44,28 +50,31 @@ class LongRangeScannerShipSystemTest extends StuTestCase
 
     public function testActivateActivates(): void
     {
-        $ship = $this->mock(ShipInterface::class);
         $managerMock = $this->mock(ShipSystemManagerInterface::class);
         $system = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_LSS)
             ->once()
             ->andReturn($system);
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->system->activate($ship, $managerMock);
+        $this->system->activate($this->wrapper, $managerMock);
     }
 
     public function testDeactivateDeactivates(): void
     {
-        $ship = $this->mock(ShipInterface::class);
         $systemNbs = $this->mock(ShipSystemInterface::class);
         $systemAstro = $this->mock(ShipSystemInterface::class);
 
-        $ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_LSS)
             ->once()
             ->andReturn($systemNbs);
@@ -74,53 +83,52 @@ class LongRangeScannerShipSystemTest extends StuTestCase
             ->once();
 
         //ASTRO STUFF
-        $ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
-        $ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);
         $systemAstro->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
-        $ship->shouldReceive('getState')
+        $this->ship->shouldReceive('getState')
             ->with()
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
-            ->with($ship)
+            ->with($this->ship)
             ->once();
 
-        $this->system->deactivate($ship);
+        $this->system->deactivate($this->ship);
     }
 
     public function testHandleDestruction(): void
     {
-        $ship = $this->mock(ShipInterface::class);
         $systemAstro = $this->mock(ShipSystemInterface::class);
 
         //ASTRO STUFF
-        $ship->shouldReceive('hasShipSystem')
+        $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
-        $ship->shouldReceive('getShipSystem')
+        $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);
         $systemAstro->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
-        $ship->shouldReceive('getState')
+        $this->ship->shouldReceive('getState')
             ->with()
             ->once()
             ->andReturn(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
-            ->with($ship)
+            ->with($this->ship)
             ->once();
 
-        $this->system->handleDestruction($ship);
+        $this->system->handleDestruction($this->ship);
     }
 }

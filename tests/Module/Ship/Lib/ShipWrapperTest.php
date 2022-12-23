@@ -15,6 +15,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipWrapperTest extends StuTestCase
@@ -30,6 +31,8 @@ class ShipWrapperTest extends StuTestCase
     private ColonyLibFactoryInterface $colonyLibFactory;
 
     private CancelRepairInterface $cancelRepair;
+
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
     private GameControllerInterface $game;
 
@@ -48,8 +51,9 @@ class ShipWrapperTest extends StuTestCase
         $this->shipSystemRepository = $this->mock(ShipSystemRepositoryInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
+        $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
-        $this->jsonMapper = (new JsonMapperFactory())->bestFit();;
+        $this->jsonMapper = (new JsonMapperFactory())->bestFit();
 
         $this->shipSystem = $this->mock(ShipSystemInterface::class);
 
@@ -60,6 +64,7 @@ class ShipWrapperTest extends StuTestCase
             $this->shipSystemRepository,
             $this->colonyLibFactory,
             $this->cancelRepair,
+            $this->torpedoTypeRepository,
             $this->game,
             $this->jsonMapper
         );
@@ -102,14 +107,20 @@ class ShipWrapperTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn('{
+                "eps": 13,
+                "maxEps": 27,
                 "battery": 1,
                 "maxBattery": 55,
                 "batteryCooldown": 42,
                 "reloadBattery": true }
             ');
 
+        // call two times to check if cache works
+        $eps = $this->shipWrapper->getEpsShipSystem();
         $eps = $this->shipWrapper->getEpsShipSystem();
 
+        $this->assertEquals(13, $eps->getEps());
+        $this->assertEquals(27, $eps->getTheoreticalMaxEps());
         $this->assertEquals(1, $eps->getBattery());
         $this->assertEquals(55, $eps->getMaxBattery());
         $this->assertEquals(42, $eps->getBatteryCooldown());

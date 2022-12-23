@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Component\Ship\UpdateLocation\Handler\AbstractUpdateLocationHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implements UpdateLocationHandlerInterface
@@ -25,8 +26,9 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
         $this->shipSystemManager = $shipSystemManager;
     }
 
-    public function handle(ShipInterface $ship, ?ShipInterface $tractoringShip): void
+    public function handle(ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip): void
     {
+        $ship = $wrapper->get();
         if (!$ship->isTractoring()) {
             return;
         }
@@ -54,8 +56,9 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
         $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($ship, $tractoredShip);
 
         if ($abortionMsg === null) {
+
             //Traktorstrahl Kosten
-            if ($ship->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
+            if ($wrapper->getEpsShipSystem()->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
                 $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
                 $this->addMessageInternal(sprintf(
                     _('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'),

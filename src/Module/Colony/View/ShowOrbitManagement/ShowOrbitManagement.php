@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitManagement;
 
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\OrbitFleetItemInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowOrbitManagement implements ViewControllerInterface
@@ -20,20 +19,20 @@ final class ShowOrbitManagement implements ViewControllerInterface
 
     private ShowOrbitManagementRequestInterface $showOrbitManagementRequest;
 
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
     private ShipRepositoryInterface $shipRepository;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowOrbitManagementRequestInterface $showOrbitManagementRequest,
-        ColonyLibFactoryInterface $colonyLibFactory,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showOrbitManagementRequest = $showOrbitManagementRequest;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->shipRepository = $shipRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -61,25 +60,15 @@ final class ShowOrbitManagement implements ViewControllerInterface
                 $groupedList[$fleetId] = [];
             }
 
-            $groupedList[$fleetId][] = $this->colonyLibFactory->createOrbitManagementShipItem($ship, $userId);
+            $groupedList[$fleetId][] = $ship;
         }
 
         $list = [];
 
         foreach ($groupedList as $fleetId => $shipList) {
-            $list[] = $this->colonyLibFactory->createOrbitFleetItem(
-                (int) $fleetId,
-                $shipList,
-                $userId
-            );
+            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList);
+            $list[$fleetWrapper->get()->getSort()] = $fleetWrapper;
         }
-
-        usort(
-            $list,
-            function (OrbitFleetItemInterface $a, OrbitFleetItemInterface $b): int {
-                return $b->getSort() <=> $a->getSort();
-            }
-        );
 
         $game->appendNavigationPart(
             'colony.php',
@@ -105,6 +94,6 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $game->setTemplateFile('html/orbitalmanagement.xhtml');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('ORBIT_SHIP_LIST', $list);
+        $game->setTemplateVar('WRAPPERS', $list);
     }
 }

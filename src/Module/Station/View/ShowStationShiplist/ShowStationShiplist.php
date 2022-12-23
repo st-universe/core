@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowStationShiplist;
 
-use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Tal\OrbitShipItem;
-use Stu\Module\Tal\OrbitShipItemInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ShowStationShiplist implements ViewControllerInterface
@@ -20,16 +19,16 @@ final class ShowStationShiplist implements ViewControllerInterface
 
     private ShowStationShiplistRequestInterface $showStationShiplistRequest;
 
-    private StationUtilityInterface $stationUtility;
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShowStationShiplistRequestInterface $showStationShiplistRequest,
-        StationUtilityInterface $stationUtility
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->showStationShiplistRequest = $showStationShiplistRequest;
-        $this->stationUtility = $stationUtility;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,22 +44,17 @@ final class ShowStationShiplist implements ViewControllerInterface
             return;
         }
 
-        $shipList = [];
-
-        foreach ($this->stationUtility->getManageableShipList($station) as $entry) {
-            $entry['ships'] = array_map(
-                function (ShipInterface $ship) use ($game): OrbitShipItemInterface {
-                    return new OrbitShipItem($ship, $game);
-                },
-                $entry['ships']
-            );
-            $shipList[] = $entry;
-        }
+        $shipList = array_map(
+            function (ShipInterface $ship): ShipWrapperInterface {
+                return $this->shipWrapperFactory->wrapShip($ship);
+            },
+            $station->getDockedShips()
+        );
 
         $game->setPageTitle(_('Angedockte Schiffe'));
         $game->setMacroInAjaxWindow('html/stationmacros.xhtml/shiplist');
         $game->setTemplateVar('SHIP', $station);
-        $game->setTemplateVar('SHIP_LIST', $shipList);
+        $game->setTemplateVar('WRAPPERS', $shipList);
         $game->setTemplateVar('CAN_UNDOCK', true);
     }
 }

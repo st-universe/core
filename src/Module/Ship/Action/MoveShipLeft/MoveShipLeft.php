@@ -31,17 +31,18 @@ final class MoveShipLeft implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         $fields = request::postString('navapp');
         if ($fields <= 0 || $fields > 9 || strlen($fields) > 1) {
             $fields = 1;
         }
         $this->shipMover->checkAndMove(
-            $ship,
+            $wrapper,
             $ship->getPosX() - $fields,
             $ship->getPosY()
         );

@@ -28,7 +28,7 @@ final class ShipNfsItem
     {
         return $this->values['shipname'];
     }
-    public function getHuell()
+    public function getHull()
     {
         return $this->values['hull'];
     }

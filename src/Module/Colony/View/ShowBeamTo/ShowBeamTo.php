@@ -47,10 +47,11 @@ final class ShowBeamTo implements ViewControllerInterface
         $game->setPageTitle(_('Zu Schiff beamen'));
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
-        $target = $this->shipLoader->find($this->showBeamToRequest->getShipId());
-        if ($target === null) {
+        $wrapper = $this->shipLoader->find($this->showBeamToRequest->getShipId());
+        if ($wrapper === null) {
             return;
         }
+        $target = $wrapper->get();
 
         if (!$this->interactionChecker->checkColonyPosition($colony, $target) || ($target->getCloakState() && $target->getUser() !== $user)) {
             return;

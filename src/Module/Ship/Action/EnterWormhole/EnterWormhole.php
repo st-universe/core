@@ -15,6 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -61,10 +62,11 @@ final class EnterWormhole implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         $map = $ship->getMap();
 
@@ -100,7 +102,7 @@ final class EnterWormhole implements ActionControllerInterface
         // @todo Beschädigung bei Systemeinflug
         $this->enterWormhole($ship, $starsystemMap);
         if ($ship->isTractoring()) {
-            $this->enterWormholeTraktor($ship, $starsystemMap, $game);
+            $this->enterWormholeTraktor($wrapper, $starsystemMap, $game);
         }
 
         $wormhole = $wormholeEntry->getSystem();
@@ -116,6 +118,8 @@ final class EnterWormhole implements ActionControllerInterface
                 }
             );
             foreach ($result as $fleetShip) {
+                $wrapper = $this->shipWrapperFactory->wrapShip($fleetShip);
+
                 if (!$fleetShip->hasEnoughCrew()) {
                     $msg[] = sprintf(
                         _("Die %s hat die Flotte verlassen. Grund: Zu wenig Crew"),
@@ -124,7 +128,10 @@ final class EnterWormhole implements ActionControllerInterface
                     $this->shipWrapperFactory->wrapShip($fleetShip)->leaveFleet();
                     continue;
                 }
-                if ($fleetShip->getEps() === 0) {
+
+                $epsSystem = $wrapper->getEpsShipSystem();
+
+                if ($epsSystem->getEps() === 0) {
                     $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: Energiemangel";
                     $this->shipWrapperFactory->wrapShip($fleetShip)->leaveFleet();
                     continue;
@@ -137,10 +144,10 @@ final class EnterWormhole implements ActionControllerInterface
 
                 $this->enterWormhole($fleetShip, $starsystemMap);
                 if ($fleetShip->isTractoring()) {
-                    $this->enterWormholeTraktor($fleetShip, $starsystemMap, $game);
+                    $this->enterWormholeTraktor($wrapper, $starsystemMap, $game);
                 }
 
-                $fleetShip->setEps($fleetShip->getEps() - 1);
+                $epsSystem->setEps($epsSystem->getEps() - 1)->update();
 
                 $this->shipRepository->save($fleetShip);
             }
@@ -169,8 +176,9 @@ final class EnterWormhole implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function enterWormholeTraktor(ShipInterface $ship, StarSystemMapInterface $starsystemMap, GameControllerInterface $game): void
+    private function enterWormholeTraktor(ShipWrapperInterface $wrapper, StarSystemMapInterface $starsystemMap, GameControllerInterface $game): void
     {
+        $ship = $wrapper->get();
         $tractoredShip = $ship->getTractoredShip();
 
         if (
@@ -193,7 +201,9 @@ final class EnterWormhole implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getEps() < 1) {
+        $epsSystem = $wrapper->getEpsShipSystem();
+
+        if ($epsSystem->getEps() < 1) {
             $name = $tractoredShip->getName();
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Wurmlocheinflug aufgrund Energiemangels deaktiviert");
@@ -204,7 +214,7 @@ final class EnterWormhole implements ActionControllerInterface
             $starsystemMap
         );
         // @todo Beschädigung bei Systemeinflug
-        $ship->setEps($ship->getEps() - 1);
+        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
         $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit in das Wurmloch gezogen");
 
         //check for tractor system health

@@ -75,25 +75,7 @@ interface ShipInterface
 
     public function getConstructionHubState(): bool;
 
-    public function getEps(): int;
-
-    public function setEps(int $eps): ShipInterface;
-
-    public function getMaxEps(): int;
-
-    public function getTheoreticalMaxEps(): int;
-
-    public function setMaxEps(int $maxEps): ShipInterface;
-
-    public function getEBatt(): int;
-
-    public function setEBatt(int $batt): ShipInterface;
-
-    public function getMaxEBatt(): int;
-
-    public function setMaxEBatt(): ShipInterface;
-
-    public function getHuell(): int;
+    public function getHull(): int;
 
     public function setHuell(int $hull): ShipInterface;
 
@@ -126,10 +108,6 @@ interface ShipInterface
     public function setFormerRumpId(int $formerShipRumpId): ShipInterface;
 
     public function getTorpedoCount(): int;
-
-    public function getEBattWaitingTime(): int;
-
-    public function setEBattWaitingTime(int $batteryCooldown): ShipInterface;
 
     public function isBase(): bool;
 
@@ -241,8 +219,6 @@ interface ShipInterface
     public function isTorpedoStorageHealthy(): bool;
 
     public function isShuttleRampHealthy(): bool;
-
-    public function isEBattUseable(): bool;
 
     public function isWarpAble(): bool;
 
@@ -428,13 +404,11 @@ interface ShipInterface
 
     public function getStoredShuttleCount(): int;
 
+    public function canMan(): bool;
+
     public function canBuildConstruction(): bool;
 
-    public function getHullStatusBar();
-
-    public function getShieldStatusBar();
-
-    public function getEpsStatusBar();
+    public function hasCrewmanOfUser(int $userId): bool;
 
     public function getHullColorStyle(): string;
 }

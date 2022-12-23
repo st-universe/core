@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -48,6 +49,8 @@ final class AttackBuilding implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private array $messages = [];
 
     public function __construct(
@@ -61,7 +64,8 @@ final class AttackBuilding implements ActionControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ModuleRepositoryInterface $moduleRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
-        AlertRedHelperInterface $alertRedHelper
+        AlertRedHelperInterface $alertRedHelper,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->planetFieldRepository = $planetFieldRepository;
@@ -74,6 +78,7 @@ final class AttackBuilding implements ActionControllerInterface
         $this->moduleRepository = $moduleRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->alertRedHelper = $alertRedHelper;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -81,7 +86,7 @@ final class AttackBuilding implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
@@ -102,6 +107,8 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
+        $ship = $wrapper->get();
+
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
@@ -111,7 +118,9 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getEps() == 0) {
+        $epsSystem = $wrapper->getEpsShipSystem();
+
+        if ($epsSystem->getEps() == 0) {
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
@@ -129,10 +138,10 @@ final class AttackBuilding implements ActionControllerInterface
 
         $fleet = false;
         if ($ship->isFleetLeader()) {
-            $attacker = $ship->getFleet()->getShips()->toArray();
+            $attacker = $this->shipWrapperFactory->wrapShips($ship->getFleet()->getShips()->toArray());
             $fleet = true;
         } else {
-            $attacker = [$ship->getId() => $ship];
+            $attacker = $this->shipWrapperFactory->wrapShips([$ship->getId() => $ship]);
         }
 
         foreach ($attacker as $attackship) {
@@ -156,7 +165,7 @@ final class AttackBuilding implements ActionControllerInterface
             if (count($attackerPool) === 0) {
                 break;
             }
-            $this->addMessageMerge($this->energyWeaponPhase->fire($defendingPhalanx, $attackerPool));
+            $this->addMessageMerge($this->energyWeaponPhase->fire(null, $defendingPhalanx, $attackerPool));
         }
 
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
@@ -168,7 +177,7 @@ final class AttackBuilding implements ActionControllerInterface
             if (count($attackerPool) === 0) {
                 break;
             }
-            $this->addMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool));
+            $this->addMessageMerge($this->projectileWeaponPhase->fire(null, $defendingPhalanx, $attackerPool));
         }
 
         // OFFENSE OF ATTACKING SHIPS

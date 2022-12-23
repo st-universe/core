@@ -2,15 +2,23 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 interface ProjectileWeaponPhaseInterface
 {
-    public function fire($attacker, array $targetPool, bool $isAlertRed = false): array;
+    /**
+     * @param ShipWrapperInterface[] $targetPool
+     */
+    public function fire(
+        ?ShipWrapperInterface $wrapper,
+        $attackingPhalanx,
+        array $targetPool,
+        bool $isAlertRed = false
+    ): array;
 
     public function fireAtBuilding(
-        ShipInterface $attacker,
+        ShipWrapperInterface $attackerWrapper,
         PlanetFieldInterface $target,
         $isOrbitField,
         &$antiParticleCount

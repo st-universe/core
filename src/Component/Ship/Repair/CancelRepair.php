@@ -13,7 +13,6 @@ use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 final class CancelRepair implements CancelRepairInterface
 {
-    //TODO Unit-Tests!
     private ShipRepositoryInterface $shipRepository;
 
     private RepairTaskRepositoryInterface $repairTaskRepository;
@@ -38,14 +37,15 @@ final class CancelRepair implements CancelRepairInterface
 
     public function cancelRepair(ShipInterface $ship): bool
     {
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+        $state = $ship->getState();
+        if ($state === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
             $this->setStateNoneAndSave($ship);
 
             $this->colonyShipRepairRepository->truncateByShipId($ship->getId());
             $this->stationShipRepairRepository->truncateByShipId($ship->getId());
 
             return true;
-        } else if ($ship->getState() === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
+        } else if ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
             $this->setStateNoneAndSave($ship);
 
             $this->repairTaskRepository->truncateByShipId($ship->getId());

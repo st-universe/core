@@ -61,17 +61,20 @@ final class SalvageCrew implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
-        if ($target === null) {
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
+
         $tradepost = $target->getTradePost();
         if ($tradepost === null) {
             throw new SanityCheckException('target is not a tradepost');
@@ -87,7 +90,8 @@ final class SalvageCrew implements ActionControllerInterface
         if ($tradepost->getCrewCountOfCurrentUser() === 0) {
             throw new SanityCheckException('no crew to rescue');
         }
-        if ($ship->getEps() < 1) {
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() < 1) {
             $game->addInformation(sprintf(_('Zum Bergen der Crew wird %d Energie benötigt'), 1));
             return;
         }
@@ -120,7 +124,7 @@ final class SalvageCrew implements ActionControllerInterface
             }
         }
 
-        $ship->setEps($ship->getEps() - 1);
+        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
 
         $this->shipLoader->save($ship);
     }

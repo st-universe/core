@@ -26,7 +26,6 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Tal\OrbitShipItem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationShipRepairInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
@@ -177,6 +176,10 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateFile('html/ship.xhtml');
 
         $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
+
+        if ($ship->isFleetLeader()) {
+            $game->setTemplateVar('FLEETWRAPPER', $this->shipWrapperFactory->wrapFleet($ship->getFleet()));
+        }
         if ($starsystem !== null) {
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
@@ -342,26 +345,24 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->shipyardShipQueueRepository->getByShipyard($ship->getId()));
         }
 
-        $shipList = $this->stationUtility->getManageableShipList($ship);
-        if ($shipList !== []) {
+        $shipList = $ship->getDockedShips();
+        if (!empty($shipList)) {
             // if selected, return the current target
             $target = request::postInt('target');
 
             if ($target) {
-                foreach ($shipList as $fleet) {
-                    foreach ($fleet['ships'] as $idx => $fleetship) {
-                        if ($idx == $target) {
-                            $firstOrbitShip = $fleetship;
-                        }
+                foreach ($shipList as $ship) {
+                    if ($ship->getId() === $target) {
+                        $firstOrbitShip = $ship;
                     }
                 }
             }
             if ($firstOrbitShip === null) {
-                $firstOrbitShip = current(current($shipList)['ships']);
+                $firstOrbitShip = current($shipList);
             }
         }
 
-        $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip, $game) : null);
+        $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
         $game->setTemplateVar('CAN_UNDOCK', true);
 
         if ($ship->getRump()->isShipyard()) {

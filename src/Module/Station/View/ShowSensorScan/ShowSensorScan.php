@@ -15,7 +15,6 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -39,8 +38,6 @@ final class ShowSensorScan implements ViewControllerInterface
 
     private NbsUtilityInterface $nbsUtility;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private LoggerUtilInterface $loggerUtil;
 
     private $fadedSignaturesUncloaked = [];
@@ -53,7 +50,6 @@ final class ShowSensorScan implements ViewControllerInterface
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         NbsUtilityInterface $nbsUtility,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -62,7 +58,6 @@ final class ShowSensorScan implements ViewControllerInterface
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->nbsUtility = $nbsUtility;
-        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -72,11 +67,12 @@ final class ShowSensorScan implements ViewControllerInterface
 
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true
         );
+        $station = $wrapper->get();
 
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
@@ -89,10 +85,10 @@ final class ShowSensorScan implements ViewControllerInterface
         if ($sysid === 0) {
 
             if (
-                $cx < $ship->getCx() - $ship->getSensorRange()
-                || $cx > $ship->getCx() + $ship->getSensorRange()
-                || $cy < $ship->getCy() - $ship->getSensorRange()
-                || $cy > $ship->getCy() + $ship->getSensorRange()
+                $cx < $station->getCx() - $station->getSensorRange()
+                || $cx > $station->getCx() + $station->getSensorRange()
+                || $cy < $station->getCy() - $station->getSensorRange()
+                || $cy > $station->getCy() + $station->getSensorRange()
             ) {
                 return;
             }
@@ -104,10 +100,10 @@ final class ShowSensorScan implements ViewControllerInterface
             $system = $mapField->getSystem();
 
             if (
-                $system->getCx() < $ship->getCx() - $ship->getSensorRange()
-                || $system->getCx() > $ship->getCx() + $ship->getSensorRange()
-                || $system->getCy() < $ship->getCy() - $ship->getSensorRange()
-                || $system->getCy() > $ship->getCy() + $ship->getSensorRange()
+                $system->getCx() < $station->getCx() - $station->getSensorRange()
+                || $system->getCx() > $station->getCx() + $station->getSensorRange()
+                || $system->getCy() < $station->getCy() - $station->getSensorRange()
+                || $system->getCy() > $station->getCy() + $station->getSensorRange()
             ) {
                 return;
             }
@@ -120,35 +116,36 @@ final class ShowSensorScan implements ViewControllerInterface
             return;
         }
 
-        if (!$ship->getLss()) {
+        if (!$station->getLss()) {
             return;
         }
 
-        if ($ship->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
             $game->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
             return;
         }
 
-        $ship->setEps($ship->getEps() - self::ENERGY_COST_SECTOR_SCAN);
-        $this->shipRepository->save($ship);
+        $epsSystem->setEps($epsSystem->getEps() - self::ENERGY_COST_SECTOR_SCAN)->update();
+        $this->shipRepository->save($station);
 
         //$tachyonActive = $this->nbsUtility->isTachyonActive($ship);
-        $tachyonActive = $ship->getSystemState(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
+        $tachyonActive = $station->getSystemState(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
 
         if ($sysid !== 0) {
             $this->loggerUtil->log('system!');
             $game->setTemplateVar('SYSTEM_INTERN', true);
-            $this->nbsUtility->setNbsTemplateVars($ship, $game, null, $tachyonActive, null, $mapField->getId());
+            $this->nbsUtility->setNbsTemplateVars($station, $game, null, $tachyonActive, null, $mapField->getId());
         } else {
             $this->loggerUtil->log('not:system!');
-            $this->nbsUtility->setNbsTemplateVars($ship, $game, null, $tachyonActive, $mapField->getId(), null);
+            $this->nbsUtility->setNbsTemplateVars($station, $game, null, $tachyonActive, $mapField->getId(), null);
         }
 
         $game->setTemplateVar('MAPFIELD', $mapField);
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $userId, $sysid !== 0));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
-        $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
+        $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('ERROR', false);
     }
 

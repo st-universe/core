@@ -76,17 +76,21 @@ final class StoreShuttle implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
-        if ($target === null) {
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
+
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
+
         if (!$this->interactionChecker->checkPosition($ship, $target)) {
             return;
         }

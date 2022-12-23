@@ -19,6 +19,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
@@ -38,6 +39,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
@@ -45,7 +48,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         ShipAttackCycleInterface $shipAttackCycle,
         InteractionCheckerInterface $interactionChecker,
         ActivatorDeactivatorHelperInterface $helper,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
@@ -54,6 +58,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->interactionChecker = $interactionChecker;
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -63,20 +68,23 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
+
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
+            return;
+        }
+        $target = $targetWrapper->get();
 
         $shipName = $ship->getName();
 
-        if ($target === null) {
-            return;
-        }
         if (!$this->interactionChecker->checkPosition($ship, $target)) {
             throw new SanityCheckException('InteractionChecker->checkPosition failed');
         }
@@ -126,7 +134,11 @@ final class ActivateTractorBeam implements ActionControllerInterface
                 $attacker = [$target->getId() => $target];
             }
 
-            $this->shipAttackCycle->init($attacker, $defender, true);
+            $this->shipAttackCycle->init(
+                $this->shipWrapperFactory->wrapShips($attacker),
+                $this->shipWrapperFactory->wrapShips($defender),
+                true
+            );
             $this->shipAttackCycle->cycle();
 
             $game->addInformationMergeDown($this->shipAttackCycle->getMessages());

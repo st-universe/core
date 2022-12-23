@@ -65,10 +65,11 @@ final class EscapeTractorBeam implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         // is ship trapped in tractor beam?
         if (!$ship->isTractored()) {
@@ -84,15 +85,17 @@ final class EscapeTractorBeam implements ActionControllerInterface
             return;
         }
 
+        $epsSystem = $wrapper->getEpsShipSystem();
+
         //enough energy?
-        if ($ship->getEps() < 20) {
+        if ($epsSystem->getEps() < 20) {
             $game->addInformation(sprintf(_('Nicht genug Energie für Fluchtversuch (%d benötigt)'), 20));
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;
         }
 
         //eps cost
-        $ship->setEps($ship->getEps() - 20);
+        $epsSystem->setEps($epsSystem->getEps() - 20)->update();
 
         //parameters
         $ownMass = $ship->getRump()->getTractorMass();

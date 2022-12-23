@@ -431,11 +431,11 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         foreach ($this->shipRepository->getDebrisFields() as $ship) {
             $lower = rand(5, 15);
-            if ($ship->getHuell() <= $lower) {
+            if ($ship->getHull() <= $lower) {
                 $this->shipRemover->remove($ship);
                 continue;
             }
-            $ship->setHuell($ship->getHuell() - $lower);
+            $ship->setHuell($ship->getHull() - $lower);
 
             $this->shipRepository->save($ship);
         }
@@ -448,7 +448,7 @@ final class ShipTickManager implements ShipTickManagerInterface
 
             $lower = (int)ceil($ship->getMaxHuell() / 100);
 
-            if ($ship->getHuell() <= $lower) {
+            if ($ship->getHull() <= $lower) {
                 $this->shipRemover->destroy($ship);
 
                 $this->entryCreator->addStationEntry(
@@ -457,7 +457,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                 );
                 continue;
             }
-            $ship->setHuell($ship->getHuell() - $lower);
+            $ship->setHuell($ship->getHull() - $lower);
 
             $this->shipRepository->save($ship);
         }
@@ -467,7 +467,7 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         foreach ($this->shipRepository->getStationConstructions() as $ship) {
             $lower = rand(5, 15);
-            if ($ship->getHuell() <= $lower) {
+            if ($ship->getHull() <= $lower) {
 
                 $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $ship->getSectorString());
                 $this->privateMessageSender->send(
@@ -480,7 +480,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                 $this->shipRemover->remove($ship);
                 continue;
             }
-            $ship->setHuell($ship->getHuell() - $lower);
+            $ship->setHuell($ship->getHull() - $lower);
 
             $this->shipRepository->save($ship);
         }
@@ -491,22 +491,21 @@ final class ShipTickManager implements ShipTickManagerInterface
         // @todo
         foreach ($this->shipRepository->getNpcShipsForTick() as $ship) {
             $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+            $epsSystem = $wrapper->getEpsShipSystem();
 
             if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)) {
                 $eps = (int) ceil($ship->getReactorOutput() - $wrapper->getEpsUsage());
-                if ($eps + $ship->getEps() > $ship->getMaxEps()) {
-                    $eps = $ship->getMaxEps() - $ship->getEps();
+                if ($eps + $epsSystem->getEps() > $epsSystem->getMaxEps()) {
+                    $eps = $epsSystem->getMaxEps() - $epsSystem->getEps();
                 }
-                $ship->setEps($ship->getEps() + $eps);
+                $epsSystem->setEps($epsSystem->getEps() + $eps)->update();
             } else {
-                $eps = (int) ceil($ship->getTheoreticalMaxEps() / 10);
-                if ($eps + $ship->getEps() > $ship->getTheoreticalMaxEps()) {
-                    $eps = $ship->getTheoreticalMaxEps() - $ship->getEps();
+                $eps = (int) ceil($epsSystem->getTheoreticalMaxEps() / 10);
+                if ($eps + $epsSystem->getEps() > $epsSystem->getTheoreticalMaxEps()) {
+                    $eps = $epsSystem->getTheoreticalMaxEps() - $epsSystem->getEps();
                 }
-                $ship->setEps($ship->getEps() + $eps);
+                $epsSystem->setEps($epsSystem->getEps() + $eps)->update();
             }
-
-            $this->shipRepository->save($ship);
         }
     }
 
@@ -604,8 +603,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
         $repairFinished = false;
 
-        $ship->setHuell($ship->getHuell() + $ship->getRepairRate());
-        if ($ship->getHuell() > $ship->getMaxHuell()) {
+        $ship->setHuell($ship->getHull() + $ship->getRepairRate());
+        if ($ship->getHull() > $ship->getMaxHuell()) {
             $ship->setHuell($ship->getMaxHuell());
         }
 

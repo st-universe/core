@@ -45,19 +45,21 @@ final class TorpedoTransfer implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
-
-        if (!$ship->hasEnoughCrew($game)) {
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
-        if ($target === null) {
+        $target = $targetWrapper->get();
+
+        if (!$ship->hasEnoughCrew($game)) {
             return;
         }
         if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
@@ -68,10 +70,15 @@ final class TorpedoTransfer implements ActionControllerInterface
             $game->addInformation(_("Das Torpedolager ist zerstört"));
             return;
         }
-        if ($ship->getEps() == 0) {
+
+        $epsSystem = $wrapper->getEpsShipSystem();
+        if ($epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
+        //TODO use energy to transfer
+
+
         if ($ship->getCloakState()) {
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;

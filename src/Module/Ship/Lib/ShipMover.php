@@ -53,8 +53,6 @@ final class ShipMover implements ShipMoverInterface
 
     private CancelRepairInterface $cancelRepair;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -81,8 +79,7 @@ final class ShipMover implements ShipMoverInterface
         AstroEntryRepositoryInterface $astroEntryRepository,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface  $tractorMassPayloadUtil,
-        CancelRepairInterface $cancelRepair,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        CancelRepairInterface $cancelRepair
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -97,7 +94,6 @@ final class ShipMover implements ShipMoverInterface
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->cancelRepair = $cancelRepair;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     private function setDestination(
@@ -207,12 +203,13 @@ final class ShipMover implements ShipMoverInterface
     }
 
     public function checkAndMove(
-        ShipInterface $leadShip,
+        ShipWrapperInterface $leadShipWrapper,
         int $destinationX,
         int $destinationY
     ) {
         //echo "- CAP: ".$leadShip->foobar()."\n";
 
+        $leadShip = $leadShipWrapper->get();
         if ($leadShip->isFleetLeader() && $leadShip->getFleet()->getDefendedColony() !== null) {
             $this->addInformation(_('Flug während Kolonie-Verteidigung nicht möglich'));
             return;
@@ -360,9 +357,13 @@ final class ShipMover implements ShipMoverInterface
         return false;
     }
 
-    private function getReadyForFlight(ShipInterface $leadShip, array $ships, bool $isFixedFleetMode): void
+    /**
+     * @param ShipWrapperInterface[] $wrappers
+     */
+    private function getReadyForFlight(ShipInterface $leadShip, array $wrappers, bool $isFixedFleetMode): void
     {
-        foreach ($ships as $ship) {
+        foreach ($wrappers as $wrapper) {
+            $ship = $wrapper->get();
             $ship->setDockedTo(null);
 
             if ($this->cancelRepair->cancelRepair($ship)) {
@@ -370,22 +371,23 @@ final class ShipMover implements ShipMoverInterface
             }
 
             if ($ship->isTractored()) {
-                $this->addLostShip($ship, $leadShip, $isFixedFleetMode, sprintf(_('Die %s wird von einem Traktorstrahl gehalten'), $ship->getName()));
+                $this->addLostShip($wrapper, $leadShip, $isFixedFleetMode, sprintf(_('Die %s wird von einem Traktorstrahl gehalten'), $ship->getName()));
                 continue;
             }
             // WA vorhanden?
             if ($ship->getSystem() === null && !$ship->isWarpAble()) {
-                $this->addLostShip($ship, $leadShip, $isFixedFleetMode, sprintf(_('Die %s verfügt über keinen Warpantrieb'), $ship->getName()));
+                $this->addLostShip($wrapper, $leadShip, $isFixedFleetMode, sprintf(_('Die %s verfügt über keinen Warpantrieb'), $ship->getName()));
                 continue;
             }
+
             //Impulsantrieb aktivieren falls innerhalb
             if ($ship->getSystem() !== null && !$ship->getImpulseState()) {
                 try {
-                    $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
+                    $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
 
                     $this->addInformation(sprintf(_('Die %s aktiviert den Impulsantrieb'), $ship->getName()));
                 } catch (ShipSystemException $e) {
-                    $this->addLostShip($ship, $leadShip, $isFixedFleetMode, sprintf(
+                    $this->addLostShip($wrapper, $leadShip, $isFixedFleetMode, sprintf(
                         _('Die %s kann den Impulsantrieb nicht aktivieren (%s|%s)'),
                         $ship->getName(),
                         $ship->getPosX(),
@@ -398,11 +400,11 @@ final class ShipMover implements ShipMoverInterface
             //WA aktivieren falls außerhalb
             if ($ship->getSystem() === null && !$ship->getWarpState()) {
                 try {
-                    $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                    $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 
                     $this->addInformation(sprintf(_('Die %s aktiviert den Warpantrieb'), $ship->getName()));
                 } catch (ShipSystemException $e) {
-                    $this->addLostShip($ship, $leadShip, $isFixedFleetMode, sprintf(
+                    $this->addLostShip($wrapper, $leadShip, $isFixedFleetMode, sprintf(
                         _('Die %s kann den Warpantrieb nicht aktivieren (%s|%s)'),
                         $ship->getName(),
                         $ship->getPosX(),
@@ -454,16 +456,18 @@ final class ShipMover implements ShipMoverInterface
 
     private function moveOneField(
         ShipInterface $leadShip,
-        ShipInterface $ship,
+        ShipWrapperInterface $wrapper,
         $flightMethod,
         $currentField,
         $nextField,
         bool $isFixedFleetMode
     ) {
+        $ship = $wrapper->get();
+
         // zu wenig Crew
         if (!$ship->hasEnoughCrew()) {
             $this->addLostShip(
-                $ship,
+                $wrapper,
                 $leadShip,
                 $isFixedFleetMode,
                 sprintf(
@@ -476,10 +480,12 @@ final class ShipMover implements ShipMoverInterface
 
         $flight_ecost = $ship->getRump()->getFlightEcost();
 
+        $epsSystem = $wrapper->getEpsShipSystem();
+
         //zu wenig E zum weiterfliegen
-        if ($ship->getEps() < $flight_ecost) {
+        if ($epsSystem->getEps() < $flight_ecost) {
             $this->addLostShip(
-                $ship,
+                $wrapper,
                 $leadShip,
                 $isFixedFleetMode,
                 sprintf(
@@ -493,7 +499,7 @@ final class ShipMover implements ShipMoverInterface
 
         //nächstes Feld nicht passierbar
         if (!$nextField->getFieldType()->getPassable()) {
-            $this->addLostShip($ship, $leadShip, $isFixedFleetMode, _('Das nächste Feld kann nicht passiert werden'));
+            $this->addLostShip($wrapper, $leadShip, $isFixedFleetMode, _('Das nächste Feld kann nicht passiert werden'));
             return;
         }
 
@@ -506,7 +512,7 @@ final class ShipMover implements ShipMoverInterface
 
             if ($abortionMsg === null) {
                 //Traktorstrahl Kosten
-                if ($ship->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
+                if ($epsSystem->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
                     $this->deactivateTractorBeam($ship, sprintf(
                         _('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'),
                         $tractoredShip->getName(),
@@ -534,15 +540,15 @@ final class ShipMover implements ShipMoverInterface
 
 
         if (!$this->isFleetMode() && $ship->getFleetId()) {
-            $this->leaveFleet($ship);
+            $this->leaveFleet($wrapper);
         }
         //Flugkosten abziehen
-        $ship->setEps($ship->getEps() - $flight_ecost);
+        $epsSystem->setEps($epsSystem->getEps() - $flight_ecost);
 
         //Traktorstrahl Energie abziehen
         if ($ship->isTractoring()) {
             $tractoredShip = $ship->getTractoredShip();
-            $ship->setEps($ship->getEps() - $tractoredShip->getRump()->getFlightEcost());
+            $epsSystem->setEps($epsSystem->getEps() - $tractoredShip->getRump()->getFlightEcost());
             $this->$met($tractoredShip);
             if ($ship->getSystem() === null) {
                 $tractoredShip->updateLocation($nextField, null);
@@ -582,7 +588,7 @@ final class ShipMover implements ShipMoverInterface
         ) {
             $this->addInformation(sprintf(_('%s in Sektor %d|%d'), $nextField->getFieldType()->getName(), $ship->getPosX(), $ship->getPosY()));
 
-            $this->applyFieldDamage($ship, $leadShip, $nextField->getFieldType()->getSpecialDamage(), true, '');
+            $this->applyFieldDamage($wrapper, $leadShip, $nextField->getFieldType()->getSpecialDamage(), true, '');
 
             if ($ship->getIsDestroyed()) {
                 return;
@@ -593,16 +599,18 @@ final class ShipMover implements ShipMoverInterface
         $notEnoughEnergyForDeflector = false;
         $deflectorDestroyed = false;
         if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)) {
-            $notEnoughEnergyForDeflector = $nextField->getFieldType()->getEnergyCosts() > $ship->getEps();
+            $notEnoughEnergyForDeflector = $nextField->getFieldType()->getEnergyCosts() > $epsSystem->getEps();
 
             if ($notEnoughEnergyForDeflector) {
-                $ship->setEps(0);
+                $epsSystem->setEps(0);
             } else {
-                $ship->setEps($ship->getEps() - $nextField->getFieldType()->getEnergyCosts());
+                $epsSystem->setEps($epsSystem->getEps() - $nextField->getFieldType()->getEnergyCosts());
             }
         } else {
             $deflectorDestroyed = true;
         }
+
+        $epsSystem->update();
 
         //Einflugschaden Energiemangel oder Deflektor zerstört
         if ($notEnoughEnergyForDeflector || $deflectorDestroyed) {
@@ -610,12 +618,14 @@ final class ShipMover implements ShipMoverInterface
                 'Nicht genug Energie für den Deflektor.' :
                 'Deflektor außer Funktion.';
 
-            $this->applyFieldDamage($ship, $leadShip, $nextField->getFieldType()->getDamage(), false, $dmgCause);
+            $this->applyFieldDamage($wrapper, $leadShip, $nextField->getFieldType()->getDamage(), false, $dmgCause);
         }
     }
 
-    private function applyFieldDamage(ShipInterface $ship, $leadShip, $damage, $isAbsolutDmg, $cause): void
+    private function applyFieldDamage(ShipWrapperInterface $wrapper, ShipInterface $leadShip, $damage, $isAbsolutDmg, $cause): void
     {
+        $ship = $wrapper->get();
+
         //tractored ship
         if ($ship->isTractoring()) {
             $tractoredShip = $ship->getTractoredShip();
@@ -652,7 +662,7 @@ final class ShipMover implements ShipMoverInterface
             ));
 
             $this->shipRemover->destroy($ship);
-            $this->addLostShip($ship, $leadShip, false, null);
+            $this->addLostShip($wrapper, $leadShip, false, null);
         }
     }
 
@@ -663,27 +673,28 @@ final class ShipMover implements ShipMoverInterface
         $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
     }
 
-    private function addLostShip(ShipInterface $ship, ShipInterface $leadShip, bool $isFixedFleetMode, ?string $msg)
+    private function addLostShip(ShipWrapperInterface $wrapper, ShipInterface $leadShip, bool $isFixedFleetMode, ?string $msg)
     {
         if ($msg !== null) {
             $this->addInformation($msg);
         }
 
+        $ship = $wrapper->get();
         $this->lostShips[$ship->getId()] = $ship;
 
         if ($ship === $leadShip) {
             $this->updateDestination($ship->getPosX(), $ship->getPosY());
         } else if (!$isFixedFleetMode) {
-            $this->leaveFleet($ship, $msg !== null);
+            $this->leaveFleet($wrapper, $msg !== null);
         }
     }
 
-    private function leaveFleet(ShipInterface $ship, bool $addLeaveInfo = true)
+    private function leaveFleet(ShipWrapperInterface $wrapper, bool $addLeaveInfo = true)
     {
-        $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
+        $wrapper->leaveFleet();
 
         if ($addLeaveInfo) {
-
+            $ship = $wrapper->get();
             $this->addInformation(sprintf(_('Die %s hat die Flotte verlassen (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
         }
     }

@@ -12,6 +12,9 @@ use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\EpsShipSystem;
+use Stu\Component\Ship\System\Type\HullShipSystem;
+use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
+use Stu\Component\Ship\System\Type\ShieldShipSystem;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,6 +22,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShipWrapper implements ShipWrapperInterface
 {
@@ -34,9 +38,13 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private CancelRepairInterface $cancelRepair;
 
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
+
     private GameControllerInterface $game;
 
     private JsonMapperInterface $jsonMapper;
+
+    private $shipSystemCache = [];
 
     private $epsUsage;
 
@@ -49,6 +57,7 @@ final class ShipWrapper implements ShipWrapperInterface
         ShipSystemRepositoryInterface $shipSystemRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         GameControllerInterface $game,
         JsonMapperInterface $jsonMapper
     ) {
@@ -58,6 +67,7 @@ final class ShipWrapper implements ShipWrapperInterface
         $this->shipSystemRepository = $shipSystemRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->cancelRepair = $cancelRepair;
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->game = $game;
         $this->jsonMapper = $jsonMapper;
     }
@@ -101,12 +111,14 @@ final class ShipWrapper implements ShipWrapperInterface
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
+            $eps = $this->getEpsShipSystem();
+
             $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
             if ($prod <= 0) {
                 return $prod;
             }
-            if ($this->get()->getEps() + $prod > $this->get()->getMaxEps()) {
-                return $this->get()->getMaxEps() - $this->get()->getEps();
+            if ($eps->getEps() + $prod > $eps->getMaxEps()) {
+                return $eps->getMaxEps() - $eps->getEps();
             }
             $this->effectiveEpsProduction = $prod;
         }
@@ -120,24 +132,26 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function setAlertState(int $alertState, &$msg): void
     {
+        $eps = $this->getEpsShipSystem();
+
         //check if enough energy
         if (
             $alertState == ShipAlertStateEnum::ALERT_YELLOW
             && $this->get()->getAlertState() == ShipAlertStateEnum::ALERT_GREEN
         ) {
-            if ($this->get()->getEps() < 1) {
+            if ($eps->getEps() < 1) {
                 throw new InsufficientEnergyException(1);
             }
-            $this->get()->setEps($this->get()->getEps() - 1);
+            $eps->setEps($eps->getEps() - 1)->update();
         }
         if (
             $alertState == ShipAlertStateEnum::ALERT_RED
             && $this->get()->getAlertState() !== ShipAlertStateEnum::ALERT_RED
         ) {
-            if ($this->get()->getEps() < 2) {
+            if ($eps->getEps() < 2) {
                 throw new InsufficientEnergyException(2);
             }
-            $this->get()->setEps($this->get()->getEps() - 2);
+            $eps->setEps($eps->getEps() - 2)->update();
         }
 
         // cancel repair if not on alert green
@@ -198,10 +212,7 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function isOwnedByCurrentUser(): bool
     {
-        if ($this->game->getUser() !== $this->get()->getUser()) {
-            return false;
-        }
-        return true;
+        return $this->game->getUser() === $this->get()->getUser();
     }
 
     public function canLandOnCurrentColony(): bool
@@ -245,12 +256,12 @@ final class ShipWrapper implements ShipWrapperInterface
             return true;
         }
 
-        return $this->get()->getHuell() < $this->get()->getMaxHuell();
+        return $this->get()->getHull() < $this->get()->getMaxHuell();
     }
 
     public function getRepairDuration(): int
     {
-        $ticks = (int) ceil(($this->get()->getMaxHuell() - $this->get()->getHuell()) / $this->get()->getRepairRate());
+        $ticks = (int) ceil(($this->get()->getMaxHuell() - $this->get()->getHull()) / $this->get()->getRepairRate());
         $ticks = max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
 
         return $ticks;
@@ -261,11 +272,11 @@ final class ShipWrapper implements ShipWrapperInterface
         $neededSpareParts = 0;
         $neededSystemComponents = 0;
 
-        $hull = $this->get()->getHuell();
+        $hull = $this->get()->getHull();
         $maxHull = $this->get()->getMaxHuell();
 
         if ($hull < $maxHull) {
-            $ticks = (int) ceil(($this->get()->getMaxHuell() - $this->get()->getHuell()) / $this->get()->getRepairRate());
+            $ticks = (int) ceil(($this->get()->getMaxHuell() - $this->get()->getHull()) / $this->get()->getRepairRate());
             $neededSpareParts += ((int)($this->get()->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
         }
 
@@ -295,6 +306,31 @@ final class ShipWrapper implements ShipWrapperInterface
         }
     }
 
+    public function getPossibleTorpedoTypes(): array
+    {
+        if ($this->ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
+            return $this->torpedoTypeRepository->getAll();
+        }
+
+        return $this->torpedoTypeRepository->getByLevel($this->ship->getRump()->getTorpedoLevel());
+    }
+
+    public function getHullShipSystem(): HullShipSystem
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_HULL,
+            new HullShipSystem($this->shipSystemRepository)
+        );
+    }
+
+    public function getShieldShipSystem(): ?ShieldShipSystem
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            new ShieldShipSystem($this->cancelRepair)
+        );
+    }
+
     public function getEpsShipSystem(): ?EpsShipSystem
     {
         return $this->getSpecificShipSystem(
@@ -303,17 +339,47 @@ final class ShipWrapper implements ShipWrapperInterface
         );
     }
 
+    public function getProjectileWeaponShipSystem(): ?ProjectileWeaponShipSystem
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_TORPEDO,
+            new ProjectileWeaponShipSystem()
+        );
+    }
+
+    /**
+     * @param ShipSystemInterface $object
+     */
     private function getSpecificShipSystem(int $systemId, $object)
     {
-        if (!$this->get()->hasShipSystem($systemId)) {
-            return null;
+        //add system to cache if not already deserialized
+        if (!array_key_exists($systemId, $this->shipSystemCache)) {
+            if ($systemId === ShipSystemTypeEnum::SYSTEM_HULL) {
+                $data = null;
+            } else {
+
+                if (!$this->get()->hasShipSystem($systemId)) {
+                    return null;
+                }
+
+
+                $data = $this->get()->getShipSystem($systemId)->getData();
+            }
+
+            if ($data === null) {
+                $this->shipSystemCache[$systemId] = $object;
+            } else {
+                $object->setShip($this->get());
+
+                $this->shipSystemCache[$systemId] =
+                    $this->jsonMapper->mapObjectFromString(
+                        $data,
+                        $object
+                    );
+            }
         }
 
-        $data = $this->get()->getShipSystem($systemId)->getData();
-
-        return $data === null ? $object : $this->jsonMapper->mapObject(
-            json_decode($data),
-            $object
-        );
+        //return deserialized system
+        return $this->shipSystemCache[$systemId];
     }
 }

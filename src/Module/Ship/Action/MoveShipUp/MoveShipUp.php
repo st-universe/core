@@ -31,10 +31,11 @@ final class MoveShipUp implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         $fields = request::postString('navapp');
         if ($fields <= 0 || $fields > 9 || strlen($fields) > 1) {
@@ -42,7 +43,7 @@ final class MoveShipUp implements ActionControllerInterface
         }
 
         $this->shipMover->checkAndMove(
-            $ship,
+            $wrapper,
             $ship->getPosX(),
             $ship->getPosY() - $fields
         );

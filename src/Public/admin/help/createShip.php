@@ -7,6 +7,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -47,13 +48,20 @@ if ($torptypeId > 0 || $noTorps) {
     $shipcount = request::postIntFatal('shipcount');
 
     for ($i = 0; $i < $shipcount; $i++) {
-        $ship = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
-        $outerMap = $mapRepo->getByCoordinates($cx, $cy);
-        $ship->setMap($outerMap);
-        $ship->setEps($ship->getMaxEps());
+        /**
+         * @var ShipWrapperInterface
+         */
+        $wrapper = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
+        $ship = $wrapper->get();
+
+        $ship->setMap($mapRepo->getByCoordinates($cx, $cy));
         $ship->setReactorLoad($ship->getReactorCapacity());
         $ship->setShield($ship->getMaxShield());
-        $ship->setEBatt($ship->getMaxEBatt());
+
+        $wrapper->getEpsShipSystem()
+            ->setEps($eps->getMaxEps())
+            ->setBattery($eps->getMaxBattery())
+            ->update();
 
         if ($torptypeId > 0) {
             $torp_obj = $torpedoTypeRepo->find($torptypeId);

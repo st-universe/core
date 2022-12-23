@@ -98,6 +98,8 @@ final class ShipTick implements ShipTickInterface
             return;
         }
 
+        $eps = $wrapper->getEpsShipSystem();
+
         // not enough crew
         if (!$ship->hasEnoughCrew()) {
             $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig! Systeme werden deaktiviert!');
@@ -109,9 +111,9 @@ final class ShipTick implements ShipTickInterface
                 }
             }
 
-            $availableEps = $ship->getEps();
+            $availableEps = $eps->getEps();
         } else {
-            $availableEps = $ship->getEps() + $ship->getReactorOutputCappedByReactorLoad();
+            $availableEps = $eps->getEps() + $ship->getReactorOutputCappedByReactorLoad();
         }
 
         //try to save energy by reducing alert state
@@ -165,12 +167,12 @@ final class ShipTick implements ShipTickInterface
             }
         }
         $newEps = $availableEps - $wrapper->getEpsUsage();
-        if ($newEps > $ship->getMaxEps()) {
-            $newEps = $ship->getMaxEps();
+        if ($newEps > $eps->getMaxEps()) {
+            $newEps = $eps->getMaxEps();
         }
-        $usedEnergy = $wrapper->getEpsUsage() + ($newEps - $ship->getEps());
+        $usedEnergy = $wrapper->getEpsUsage() + ($newEps - $eps->getEps());
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$wrapper->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
-        $ship->setEps($newEps);
+        $eps->setEps($newEps)->update();
 
         //core OR fusion
         $ship->setReactorLoad($ship->getReactorLoad() - $usedEnergy);
@@ -228,7 +230,7 @@ final class ShipTick implements ShipTickInterface
             if ($isUnderConstruction) {
                 // raise hull
                 $increase = intdiv($ship->getMaxHuell(), 2 * $ship->getRump()->getBuildtime());
-                $ship->setHuell($ship->getHuell() + $increase);
+                $ship->setHuell($ship->getHull() + $increase);
             }
         }
 
@@ -257,8 +259,8 @@ final class ShipTick implements ShipTickInterface
         }
 
         //repair hull
-        $station->setHuell($station->getHuell() + $station->getRepairRate());
-        if ($station->getHuell() > $station->getMaxHuell()) {
+        $station->setHuell($station->getHull() + $station->getRepairRate());
+        if ($station->getHull() > $station->getMaxHuell()) {
             $station->setHuell($station->getMaxHuell());
         }
 

@@ -40,11 +40,12 @@ final class DoTachyonScan implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true
         );
+        $ship = $wrapper->get();
 
         if (!$ship->hasEnoughCrew($game)) {
             return;
@@ -62,8 +63,10 @@ final class DoTachyonScan implements ActionControllerInterface
             return;
         }
 
+        $epsSystem = $wrapper->getEpsShipSystem();
+
         // scanner needs to be active
-        if ($ship->getEps() < TachyonScannerShipSystem::SCAN_EPS_COST) {
+        if ($epsSystem->getEps() < TachyonScannerShipSystem::SCAN_EPS_COST) {
             $game->addInformation(sprintf(_('[b][color=FF2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), TachyonScannerShipSystem::SCAN_EPS_COST));
             return;
         }
@@ -76,7 +79,7 @@ final class DoTachyonScan implements ActionControllerInterface
 
         $this->tachyonScanRepository->save($tachyonScan);
 
-        $ship->setEps($ship->getEps() - TachyonScannerShipSystem::SCAN_EPS_COST);
+        $epsSystem->setEps($epsSystem->getEps() - TachyonScannerShipSystem::SCAN_EPS_COST)->update();
         $this->shipRepository->save($ship);
 
         $game->setView(ShowShip::VIEW_IDENTIFIER, ['TACHYON_SCAN_JUST_HAPPENED' => true]);

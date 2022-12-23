@@ -41,17 +41,20 @@ final class ShowScan implements ViewControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
-        if ($target === null) {
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
+
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
         $game->setPageTitle(_('Scan'));
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_ship_scan');
         if (!$this->interactionChecker->checkPosition($ship, $target)) {
@@ -87,7 +90,7 @@ final class ShowScan implements ViewControllerInterface
             $href
         );
 
-        $game->setTemplateVar('targetShip', $target);
+        $game->setTemplateVar('TARGETWRAPPER', $targetWrapper);
         $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
         $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($target));
         $game->setTemplateVar('SHIP', $ship);

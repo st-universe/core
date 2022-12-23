@@ -12,6 +12,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -45,22 +46,27 @@ final class BeamFrom implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $ship = $shipArray[$shipId];
-        $target = $shipArray[$targetId];
+        $wrapper = $shipArray[$shipId];
+        $ship = $wrapper->get();
+
 
         //bad request
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
-        if ($target === null) {
+
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
             return;
         }
+        $target = $targetWrapper->get();
+
         if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
             return;
         }
@@ -73,20 +79,22 @@ final class BeamFrom implements ActionControllerInterface
         // check for fleet option
         if (request::postInt('isfleet') && $ship->getFleet() !== null) {
             foreach ($ship->getFleet()->getShips() as $ship) {
-                $this->beamFromTarget($ship, $target, $game);
+                $this->beamFromTarget($wrapper, $target, $game);
             }
         } else {
-            $this->beamFromTarget($ship, $target, $game);
+            $this->beamFromTarget($wrapper, $target, $game);
         }
     }
 
-    private function beamFromTarget(ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): void
+    private function beamFromTarget(ShipWrapperInterface $wrapper, ShipInterface $target, GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+        $ship = $wrapper->get();
+        $epsSystem = $wrapper->getEpsShipSystem();
 
         //sanity checks
         $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
-        if (!$isDockTransfer && $ship->getEps() == 0) {
+        if (!$isDockTransfer && $epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -133,7 +141,7 @@ final class BeamFrom implements ActionControllerInterface
         );
         foreach ($commodities as $key => $value) {
             $commodityId = (int) $value;
-            if (!$isDockTransfer && $ship->getEps() < 1) {
+            if (!$isDockTransfer && $epsSystem->getEps() < 1) {
                 break;
             }
             if (!array_key_exists($key, $gcount)) {
@@ -166,8 +174,8 @@ final class BeamFrom implements ActionControllerInterface
 
             $transferAmount = $commodity->getTransferCount() * $ship->getBeamFactor();
 
-            if (!$isDockTransfer && ceil($count / $transferAmount) > $ship->getEps()) {
-                $count = $ship->getEps() * $transferAmount;
+            if (!$isDockTransfer && ceil($count / $transferAmount) > $epsSystem->getEps()) {
+                $count = $epsSystem->getEps() * $transferAmount;
             }
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
@@ -185,7 +193,7 @@ final class BeamFrom implements ActionControllerInterface
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);
 
             if (!$isDockTransfer) {
-                $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
+                $epsSystem->setEps($epsSystem->getEps() - (int)ceil($count / $transferAmount));
             }
         }
         $game->sendInformation(
@@ -194,6 +202,8 @@ final class BeamFrom implements ActionControllerInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
             sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId())
         );
+
+        $epsSystem->update();
 
         $this->shipRepository->save($ship);
     }

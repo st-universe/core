@@ -9,12 +9,11 @@ use Stu\Component\Ship\System\Exception\SystemCooldownException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface ShipSystemManagerInterface
 {
-    public function updateSystemData(ShipInterface $ship, int $systemId, $data): void;
-
     /**
      * @throws InsufficientEnergyException
      * @throws ActivationConditionsNotMetException
@@ -23,7 +22,7 @@ interface ShipSystemManagerInterface
      * @throws SystemNotFoundException
      * @throws SystemCooldownException
      */
-    public function activate(ShipInterface $ship, int $shipSystemId, bool $force = false): void;
+    public function activate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void;
 
     /**
      * @throws InvalidSystemException

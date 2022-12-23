@@ -8,19 +8,11 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LifeSupportShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
-    public function __construct(
-        ShipRepositoryInterface $shipRepository
-    ) {
-        $this->shipRepository = $shipRepository;
-    }
-
     public function getEnergyUsageForActivation(): int
     {
         return 0;
@@ -41,9 +33,9 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
         return true;
     }
 
-    public function activate(ShipInterface $ship, ShipSystemManagerInterface $manager): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     public function deactivate(ShipInterface $ship): void

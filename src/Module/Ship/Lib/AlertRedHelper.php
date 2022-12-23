@@ -21,6 +21,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     private ShipAttackCycleInterface $shipAttackCycle;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private LoggerUtilInterface $loggerUtil;
@@ -29,11 +31,13 @@ final class AlertRedHelper implements AlertRedHelperInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipAttackCycleInterface $shipAttackCycle,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -93,20 +97,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     public function getShips(ShipInterface $leadShip): array
     {
-        $ships[] = $leadShip;
         if ($leadShip->getFleet() !== null) {
-            $ships = array_merge(
-                $ships,
-                array_filter(
-                    $leadShip->getFleet()->getShips()->toArray(),
-                    function (ShipInterface $ship) use ($leadShip): bool {
-                        return $ship !== $leadShip;
-                    }
-                )
-            );
+            return $leadShip->getFleet()->getShips()->toArray();
+        } else {
+            return [$leadShip];
         }
-
-        return $ships;
     }
 
     public function checkForAlertRedShips(ShipInterface $leadShip, &$informations, ?ShipInterface $tractoringShip = null): array
@@ -282,7 +277,10 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
         //$this->loggerUtil->log(sprintf('before_shipAttackCycle, attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
 
-        $this->shipAttackCycle->init($attacker, $defender);
+        $this->shipAttackCycle->init(
+            $this->shipWrapperFactory->wrapShips($attacker),
+            $this->shipWrapperFactory->wrapShips($defender),
+        );
         $this->shipAttackCycle->cycle(true);
         $messages = $this->shipAttackCycle->getMessages();
 

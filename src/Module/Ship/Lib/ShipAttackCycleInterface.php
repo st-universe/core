@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipWrapperInterface;
 
 interface ShipAttackCycleInterface
 {
     /**
-     * @param ShipInterface[] $attackingShips indexed by ship id
-     * @param ShipInterface $defendingShips indexed by ship id
+     * @param ShipWrapperInterface[] $attackingShips indexed by ship id
+     * @param ShipWrapperInterface[] $defendingShips indexed by ship id
      * @param bool $oneWay only attackers fire
      */
     public function init(

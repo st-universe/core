@@ -41,10 +41,12 @@ final class StartAstroMapping implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+
+        $ship = $wrapper->get();
 
         if ($ship->getSystem() === null) {
             return;
@@ -74,8 +76,10 @@ final class StartAstroMapping implements ActionControllerInterface
             return;
         }
 
+        $epsSystem = $wrapper->getEpsShipSystem();
+
         // check for energy
-        if ($ship->getEps() < AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST) {
+        if ($epsSystem->getEps() < AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST) {
             $game->addInformation(sprintf(_('[b][color=FF2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST));
             return;
         }
@@ -84,7 +88,7 @@ final class StartAstroMapping implements ActionControllerInterface
         $entry->setAstroStartTurn($game->getCurrentRound()->getTurn());
         $this->astroEntryRepository->save($entry);
 
-        $ship->setEps($ship->getEps() - AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST);
+        $epsSystem->setEps($epsSystem->getEps() - AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST)->update();
         $ship->setState(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
         $ship->setAstroStartTurn($game->getCurrentRound()->getTurn());
         $this->shipRepository->save($ship);
