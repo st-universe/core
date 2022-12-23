@@ -9,6 +9,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowOrbitManagement implements ViewControllerInterface
@@ -50,6 +51,9 @@ final class ShowOrbitManagement implements ViewControllerInterface
             $colony->getSY()
         );
 
+        /**
+         * @var ShipInterface[]
+         */
         $groupedList = [];
 
         foreach ($shipList as $ship) {
@@ -66,7 +70,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $list = [];
 
         foreach ($groupedList as $fleetId => $shipList) {
-            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList);
+            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList, $fleetId === null);
             $list[$fleetWrapper->get()->getSort()] = $fleetWrapper;
         }
 
