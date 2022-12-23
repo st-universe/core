@@ -355,6 +355,7 @@ final class ShipWrapper implements ShipWrapperInterface
         //add system to cache if not already deserialized
         if (!array_key_exists($systemId, $this->shipSystemCache)) {
             if ($systemId === ShipSystemTypeEnum::SYSTEM_HULL) {
+                $object->setShip($this->get());
                 $data = null;
             } else {
 
