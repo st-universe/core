@@ -16,8 +16,8 @@ use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
     // eps fields
-    public int $eps;
-    public int $maxEps;
+    public int $eps = 0;
+    public int $maxEps = 0;
 
     // battery fields
     public int $maxBattery = 0;
