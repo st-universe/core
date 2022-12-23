@@ -253,7 +253,7 @@
       <span tal:condition="not:ship/getShieldState">${ship/getShield}/${ship/getMaxShield}</span>
       (+<span tal:replace="ship/getShieldRegenerationRate">REGENERATIONRATE</span>)
     </td>
-    <td tal:define="eps wrapper/getEpsShipSystem">
+    <td tal:define="eps wrapper/getEpsShipSystem1">
       <tal:block tal:condition="eps">
         ${eps/getEps}/${eps/getMaxEps}
         <span>${addPlusCharacter:wrapper/getEffectiveEpsProduction}</span>
@@ -375,7 +375,7 @@
       </table>
       <table tal:attributes="style string:${fleet/getHiddenStyle};" class="tcal" id="fleetbody_${fleetid}">
         <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
-        <tal:block tal:repeat="wrapper fleetwrapper/getShipsWrappers">
+        <tal:block tal:repeat="wrapper fleetwrapper/getShipWrappers">
           <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
         </tal:block>
       </table>

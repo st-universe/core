@@ -30,7 +30,7 @@ final class FleetWrapper implements FleetWrapperInterface
         return $this->fleet;
     }
 
-    public function getShipsWrappers(): array
+    public function getShipWrappers(): array
     {
         return $this->shipWrapperFactory->wrapShips($this->get()->getShips()->toArray());
     }

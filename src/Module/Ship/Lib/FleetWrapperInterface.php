@@ -8,7 +8,7 @@ interface FleetWrapperInterface
 {
     public function get(): FleetInterface;
 
-    public function getShipsWrappers(): array;
+    public function getShipWrappers(): array;
 
     public function isForeignFleet(): bool;
 }
