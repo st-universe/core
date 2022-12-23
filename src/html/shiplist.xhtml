@@ -20,7 +20,7 @@
 			<tal:block tal:condition="SINGLESHIPWRAPPERS">
 				<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_singles" />
 			</tal:block>
-			<tal:block tal:condition="not:SHIPS">
+			<tal:block tal:condition="not:SINGLESHIPWRAPPERS">
 				<table class="tcal" id="shiplist_singles_table" style="display: none;"></table>
 			</tal:block>
 		</tal:block>
