@@ -388,7 +388,7 @@
       <td colspan="11">Einzelschiffe</td>
     </tr>
     <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
-    <tal:block tal:repeat="wrapper SHIPS">
+    <tal:block tal:repeat="wrapper SINGLESHIPWRAPPERS">
       <metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
     </tal:block>
   </table>
