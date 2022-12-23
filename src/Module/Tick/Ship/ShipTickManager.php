@@ -493,16 +493,10 @@ final class ShipTickManager implements ShipTickManagerInterface
             $wrapper = $this->shipWrapperFactory->wrapShip($ship);
             $epsSystem = $wrapper->getEpsShipSystem();
 
-            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)) {
+            if ($epsSystem !== null) {
                 $eps = (int) ceil($ship->getReactorOutput() - $wrapper->getEpsUsage());
                 if ($eps + $epsSystem->getEps() > $epsSystem->getMaxEps()) {
                     $eps = $epsSystem->getMaxEps() - $epsSystem->getEps();
-                }
-                $epsSystem->setEps($epsSystem->getEps() + $eps)->update();
-            } else {
-                $eps = (int) ceil($epsSystem->getTheoreticalMaxEps() / 10);
-                if ($eps + $epsSystem->getEps() > $epsSystem->getTheoreticalMaxEps()) {
-                    $eps = $epsSystem->getTheoreticalMaxEps() - $epsSystem->getEps();
                 }
                 $epsSystem->setEps($epsSystem->getEps() + $eps)->update();
             }
