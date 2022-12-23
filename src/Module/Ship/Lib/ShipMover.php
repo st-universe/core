@@ -224,7 +224,7 @@ final class ShipMover implements ShipMoverInterface
         $this->determineFleetMode($leadShip);
         $flightMethod = $this->determineFlightMethod($leadShip);
 
-        $ships = $this->isFleetMode() ? $this->alertRedHelper->getShips($leadShip) : [$leadShip];
+        $ships = $this->isFleetMode() ? $this->alertRedHelper->getShips($leadShip) : [$leadShipWrapper];
 
         $isFixedFleetMode = $this->isFleetMode() && $leadShip->getFleet()->isFleetFixed();
         $this->getReadyForFlight($leadShip, $ships, $isFixedFleetMode);
