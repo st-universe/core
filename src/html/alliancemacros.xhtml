@@ -56,8 +56,8 @@
 </metal:block>
 <metal:block metal:define-macro="memberrumpinfo">
 	<table class="tcal" tal:condition="not:ERROR">
-		<tal:block tal:repeat="wrapper WRAPPERS" tal:define="ship wrapper/get">
-			<tr>
+		<tal:block tal:repeat="wrapper WRAPPERS">
+			<tr tal:define="ship wrapper/get">
 				<td>
 					<span tal:replace="ship/getSectorString">COORDS</span>
 				</td>
