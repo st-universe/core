@@ -76,18 +76,6 @@ class Ship implements ShipInterface
     /** @Column(type="integer", length=5) */
     private $warpcore = 0;
 
-    /** @Column(type="integer", length=6, nullable=true) */
-    private $eps = 0;
-
-    /** @Column(type="integer", length=6, nullable=true) */
-    private $max_eps = 0;
-
-    /** @Column(type="integer", length=6, nullable=true) */
-    private $batt = 0;
-
-    /** @Column(type="integer", length=6, nullable=true) */
-    private $max_batt = 0;
-
     /** @Column(type="integer", length=6) */
     private $huelle = 0;
 
@@ -108,9 +96,6 @@ class Ship implements ShipInterface
 
     /** @Column(type="integer") */
     private $former_rumps_id = 0;
-
-    /** @Column(type="integer", nullable=true) */
-    private $batt_wait = 0;
 
     /** @Column(type="boolean") */
     private $is_base = false;
