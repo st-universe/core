@@ -15,14 +15,18 @@ final class FleetWrapper implements FleetWrapperInterface
 
     private GameControllerInterface $game;
 
+    private bool $isSingleShips;
+
     public function __construct(
         FleetInterface $fleet,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        GameControllerInterface $game
+        GameControllerInterface $game,
+        bool $isSingleShips
     ) {
         $this->fleet = $fleet;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->game = $game;
+        $this->isSingleShips = $isSingleShips;
     }
 
     public function get(): FleetInterface
@@ -37,6 +41,6 @@ final class FleetWrapper implements FleetWrapperInterface
 
     public function isForeignFleet(): bool
     {
-        return $this->get()->getUser() !== $this->game->getUser();
+        return !$this->isSingleShips && $this->get()->getUser() !== $this->game->getUser();
     }
 }

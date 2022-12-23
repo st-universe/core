@@ -96,12 +96,12 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $fleet->setSort(current($ships)->getFleet()->getSort());
         }
 
-        return new FleetWrapper($fleet, $this, $this->game);
+        return new FleetWrapper($fleet, $this, $this->game, $isSingleShips);
     }
 
     public function wrapFleet(FleetInterface $fleet): FleetWrapperInterface
     {
-        return new FleetWrapper($fleet, $this, $this->game);
+        return new FleetWrapper($fleet, $this, $this->game, false);
     }
 
     public function wrapFleets(array $fleets): array
