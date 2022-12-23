@@ -98,9 +98,9 @@ final class AlertRedHelper implements AlertRedHelperInterface
     public function getShips(ShipInterface $leadShip): array
     {
         if ($leadShip->getFleet() !== null) {
-            return $leadShip->getFleet()->getShips()->toArray();
+            return $this->shipWrapperFactory->wrapShips($leadShip->getFleet()->getShips()->toArray());
         } else {
-            return [$leadShip];
+            return $this->shipWrapperFactory->wrapShips([$leadShip]);
         }
     }
 

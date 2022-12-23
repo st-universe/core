@@ -224,16 +224,16 @@ final class ShipMover implements ShipMoverInterface
         $this->determineFleetMode($leadShip);
         $flightMethod = $this->determineFlightMethod($leadShip);
 
-        $ships = $this->isFleetMode() ? $this->alertRedHelper->getShips($leadShip) : [$leadShipWrapper];
+        $wrappers = $this->isFleetMode() ? $this->alertRedHelper->getShips($leadShip) : [$leadShipWrapper];
 
         $isFixedFleetMode = $this->isFleetMode() && $leadShip->getFleet()->isFleetFixed();
-        $this->getReadyForFlight($leadShip, $ships, $isFixedFleetMode);
+        $this->getReadyForFlight($leadShip, $wrappers, $isFixedFleetMode);
         if (!empty($this->lostShips)) {
             $this->addInformation(_('Der Weiterflug wurde abgebrochen!'));
             return;
         }
 
-        $this->initTractoredShips($ships);
+        $this->initTractoredShips($wrappers);
 
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
@@ -244,7 +244,7 @@ final class ShipMover implements ShipMoverInterface
             $nextField = $this->getNextField($leadShip, $flightMethod);
 
             if ($isFixedFleetMode) {
-                $reasons =  $this->reasonsNotAllShipsCanFly($ships);
+                $reasons =  $this->reasonsNotAllShipsCanFly($wrappers);
 
                 if (!empty($reasons)) {
                     $this->updateDestination($leadShip->getPosX(), $leadShip->getPosY());
@@ -255,12 +255,12 @@ final class ShipMover implements ShipMoverInterface
             }
 
             // move every ship by one field
-            foreach ($ships as $ship) {
+            foreach ($wrappers as $wrapper) {
                 if (
-                    !array_key_exists($ship->getId(), $this->lostShips)
-                    && ($ship === $leadShip || $this->leaderMovedToNextField)
+                    !array_key_exists($wrapper->get()->getId(), $this->lostShips)
+                    && ($wrapper->get() === $leadShip || $this->leaderMovedToNextField)
                 ) {
-                    $this->moveOneField($leadShip, $ship, $flightMethod, $currentField, $nextField, $isFixedFleetMode);
+                    $this->moveOneField($leadShip, $wrapper, $flightMethod, $currentField, $nextField, $isFixedFleetMode);
                 }
             }
 
@@ -269,7 +269,7 @@ final class ShipMover implements ShipMoverInterface
                 continue;
             }
 
-            if (!$this->areShipsLeft($ships)) {
+            if (!$this->areShipsLeft($wrappers)) {
                 continue;
             }
 
@@ -278,16 +278,16 @@ final class ShipMover implements ShipMoverInterface
             shuffle($shipsToShuffle);
             foreach ($shipsToShuffle as $alertShip) {
                 // if there are ships left
-                if ($this->areShipsLeft($ships)) {
+                if ($this->areShipsLeft($wrappers)) {
                     $this->alertRedHelper->performAttackCycle($alertShip, $leadShip, $this->informations);
                 } else {
                     break;
                 }
 
                 // check for destroyed ships
-                foreach ($ships as $ship) {
-                    if ($ship->getIsDestroyed()) {
-                        $this->addLostShip($ship, $leadShip, false, null);
+                foreach ($wrappers as $wrapper) {
+                    if ($wrapper->get()->getIsDestroyed()) {
+                        $this->addLostShip($wrapper, $leadShip, false, null);
                     }
                 }
             }
@@ -309,7 +309,8 @@ final class ShipMover implements ShipMoverInterface
         }
 
         // save all ships
-        foreach ($ships as $ship) {
+        foreach ($wrappers as $wrapper) {
+            $ship = $wrapper->get();
             if (!$ship->getIsDestroyed()) {
                 $this->shipRepository->save($ship);
             }
@@ -334,9 +335,13 @@ final class ShipMover implements ShipMoverInterface
         $this->saveFlightSignatures();
     }
 
-    private function initTractoredShips(array $ships): void
+    /**
+     * @param ShipWrapperInterface[] $wrappers
+     */
+    private function initTractoredShips(array $wrappers): void
     {
-        foreach ($ships as $fleetShip) {
+        foreach ($wrappers as $fleetShipWrapper) {
+            $fleetShip = $fleetShipWrapper->get();
             if (
                 $fleetShip->isTractoring() &&
                 !array_key_exists($fleetShip->getId(), $this->lostShips)
@@ -346,10 +351,13 @@ final class ShipMover implements ShipMoverInterface
         }
     }
 
-    private function areShipsLeft(array $ships): bool
+    /**
+     * @param ShipWrapperInterface[] $wrappers
+     */
+    private function areShipsLeft(array $wrappers): bool
     {
-        foreach ($ships as $ship) {
-            if (!array_key_exists($ship->getId(), $this->lostShips)) {
+        foreach ($wrappers as $wrapper) {
+            if (!array_key_exists($wrapper->get()->getId(), $this->lostShips)) {
                 return true;
             }
         }
@@ -713,11 +721,16 @@ final class ShipMover implements ShipMoverInterface
         }
     }
 
-    private function reasonsNotAllShipsCanFly(array $ships): array
+    /**
+     * @param ShipWrapperInterface[] $wrappers
+     */
+    private function reasonsNotAllShipsCanFly(array $wrappers): array
     {
         $reasons = [];
 
-        foreach ($ships as $ship) {
+        foreach ($wrappers as $wrapper) {
+            $ship = $wrapper->get();
+
             // zu wenig Crew
             if (!$ship->hasEnoughCrew()) {
                 $reasons[] = sprintf(
@@ -731,7 +744,8 @@ final class ShipMover implements ShipMoverInterface
             $flight_ecost = $ship->getRump()->getFlightEcost();
 
             //Traktorstrahl Kosten
-            if ($ship->isTractoring() && $ship->getEps() < ($ship->getTractoredShip()->getRump()->getFlightEcost() + $flight_ecost)) {
+            $epsSystem = $wrapper->getEpsShipSystem();
+            if ($ship->isTractoring() && $epsSystem->getEps() < ($ship->getTractoredShip()->getRump()->getFlightEcost() + $flight_ecost)) {
                 $reasons[] = sprintf(
                     _('Die %s hat nicht genug Energie für den Traktor-Flug (%d benötigt)'),
                     $ship->getName(),
@@ -742,7 +756,7 @@ final class ShipMover implements ShipMoverInterface
             }
 
             //zu wenig E zum weiterfliegen
-            if ($ship->getEps() < $flight_ecost) {
+            if ($epsSystem->getEps() < $flight_ecost) {
                 $reasons[] = sprintf(
                     _('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),
                     $ship->getName(),

@@ -9,6 +9,9 @@ interface AlertRedHelperInterface
 {
     public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): array;
 
+    /**
+     * @return ShipWrapperInterface[]
+     */
     public function getShips(ShipInterface $leadShip): array;
 
     public function checkForAlertRedShips(ShipInterface $leadShip, &$informations, ?ShipInterface $tractoringShip = null): array;
