@@ -254,11 +254,13 @@
       <span tal:condition="not:ship/getShieldState">${ship/getShield}/${ship/getMaxShield}</span>
       (+<span tal:replace="ship/getShieldRegenerationRate">REGENERATIONRATE</span>)
     </td>
-    <td tal:condition="epssystem">
-      ${epssystem/getEps}/${epssystem/getMaxEps}
-      <span>${addPlusCharacter:wrapper/getEffectiveEpsProduction}</span>
-      (<span tal:content="wrapper/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
-        tal:content="wrapper/getWarpcoreUsage">CORE</span>)
+    <td>
+      <tal:block tal:condition="epssystem">
+        ${epssystem/getEps}/${epssystem/getMaxEps}
+        <span>${addPlusCharacter:wrapper/getEffectiveEpsProduction}</span>
+        (<span tal:content="wrapper/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
+          tal:content="wrapper/getWarpcoreUsage">CORE</span>)
+      </tal:block>
     </td>
     <td>
       <div style="float: left; width: 50%">
