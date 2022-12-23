@@ -17,7 +17,7 @@
           <th>Torpedo-Transfer</th>
           <th>Shuttle-Transfer</th>
         </tr>
-        <tal:block tal:repeat="fleet SHIP_LIST">
+        <tal:block tal:repeat="fleetwrapper FLEET_WRAPPERS" tal:define="fleet fleetwrapper/get">
           <tr>
             <td colspan="7">
               <span tal:replace="structure bbcode:fleet/getName">FLEETNAME</span>
@@ -27,7 +27,7 @@
               </tal:block>
             </td>
           </tr>
-          <tr tal:repeat="wrapper fleet/getShips" tal:attributes="class string:row${repeat/wrapper/odd}"
+          <tr tal:repeat="wrapper fleetwrapper/getShips" tal:attributes="class string:row${repeat/wrapper/odd}"
             tal:define="ship wrapper/get">
             <td>
               <input type="hidden" name="ships[]" tal:attributes="value ship/getId" />

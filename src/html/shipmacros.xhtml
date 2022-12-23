@@ -1135,7 +1135,7 @@
   <metal:block tal:condition="THIS/getInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
   <tal:block tal:condition="exists:SHIP" tal:define="targetShip TARGETWRAPPER/get">
     <tal:block tal:condition="not:targetShip/getIsDestroyed">
-      <tal:block tal:define="targetShipEps targetShip/getEpsShipSystem">
+      <tal:block tal:define="targetShipEps TARGETWRAPPER/getEpsShipSystem">
         <table class="tcal" tal:condition="php:SHIP.isMatrixScannerHealthy() AND NOT SHIP.getCloakState()">
           <tr>
             <th colspan="2">Details</th>

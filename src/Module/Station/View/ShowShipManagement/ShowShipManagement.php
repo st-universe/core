@@ -71,6 +71,9 @@ final class ShowShipManagement implements ViewControllerInterface
             $groupedList[$fleetId][] = $ship;
         }
 
+        /**
+         * @var FleetWrapperInterface[]
+         */
         $list = [];
 
         foreach ($groupedList as $fleetId => $shipList) {
@@ -128,6 +131,6 @@ final class ShowShipManagement implements ViewControllerInterface
         $game->setTemplateFile('html/stationshipmanagement.xhtml');
 
         $game->setTemplateVar('STATION', $station);
-        $game->setTemplateVar('SHIP_LIST', $list);
+        $game->setTemplateVar('FLEET_WRAPPERS', $list);
     }
 }

@@ -27,7 +27,7 @@
               </tal:block>
             </td>
           </tr>
-          <tr tal:repeat="wrapper fleet/getShips" tal:attributes="class string:row${repeat/wrapper/odd}"
+          <tr tal:repeat="wrapper fleetwrapper/getShips" tal:attributes="class string:row${repeat/wrapper/odd}"
             tal:define="ship wrapper/get">
             <td>
               <input type="hidden" name="ships[]" tal:attributes="value ship/getId" />

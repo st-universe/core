@@ -79,7 +79,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
 
         $ships = $this->shipRepository->getByUserAndRump($memberId, $rumpId);
 
-        $game->setTemplateVar('SHIPS', $this->shipWrapperFactory->wrapShips($ships));
+        $game->setTemplateVar('WRAPPERS', $this->shipWrapperFactory->wrapShips($ships));
         $game->setTemplateVar('ERROR', false);
     }
 }
