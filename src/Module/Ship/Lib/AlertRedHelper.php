@@ -75,11 +75,16 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
     }
 
-    private function getLeader(array $ships): ?ShipInterface
+    /**
+     * @param ShipWrapperInterface[] $wrappers
+     */
+    private function getLeader(array $wrappers): ?ShipInterface
     {
         $nonDestroyedShips = [];
 
-        foreach ($ships as $ship) {
+        foreach ($wrappers as $wrapper) {
+            $ship = $wrapper->get();
+
             if (!$ship->getIsDestroyed()) {
                 if ($ship->isFleetLeader()) {
                     return $ship;
@@ -95,6 +100,9 @@ final class AlertRedHelper implements AlertRedHelperInterface
         return null;
     }
 
+    /**
+     * @return ShipWrapperInterface[]
+     */
     public function getShips(ShipInterface $leadShip): array
     {
         if ($leadShip->getFleet() !== null) {
