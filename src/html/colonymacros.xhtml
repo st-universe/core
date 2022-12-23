@@ -707,7 +707,7 @@
       onmouseout="shipSelectorHoverEnd(this)" onclick="shipSelectorChoose(this);">
       <tr>
         <td class="darkbg" colspan="5">
-          <a tal:condition="WRAPPER/isOwnedByCurrentUser" type="hidden" href="ship.php?SHOW_SHIP=1&id=${data/getId}" />
+          <a tal:condition="wrapper/isOwnedByCurrentUser" type="hidden" href="ship.php?SHOW_SHIP=1&id=${data/getId}" />
           <span tal:replace="structure bbcode:data/getName">SHIPNAME</span> | <span
             tal:replace="structure bbcode:data/getUserName">USERNAME</span>
         </td>
@@ -728,7 +728,7 @@
                 <img src="assets/buttons/modul_1.png" />
               </th>
               <td style="vertical-align: middle; text-align: center;">
-                <span tal:replace="structure WRAPPER/getHullShipSystem/getHullStatusBar">HULL</span>
+                <span tal:replace="structure wrapper/getHullShipSystem/getHullStatusBar">HULL</span>
               </td>
               <td style="text-align: center;">
                 ${data/getHull}
@@ -738,7 +738,7 @@
         </td>
         <td colspan="2" tal:condition="data/getIsDestroyed"></td>
         <tal:block tal:condition="not:data/getIsDestroyed">
-          <td style="width: 150px;" tal:define="shields WRAPPER/getShieldShipSystem">
+          <td style="width: 150px;" tal:define="shields wrapper/getShieldShipSystem">
             <table class="tcal">
               <tr>
                 <th style="width: 20px; text-align: center;">
@@ -753,7 +753,7 @@
               </tr>
             </table>
           </td>
-          <td style="width: 150px;" tal:define="eps WRAPPER/getEpsShipSystem">
+          <td style="width: 150px;" tal:define="eps wrapper/getEpsShipSystem">
             <table class="tcal" tal:condition="eps">
               <tr>
                 <th style="text-align: center; width: 20px;">
