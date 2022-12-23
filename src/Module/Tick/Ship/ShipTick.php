@@ -167,13 +167,22 @@ final class ShipTick implements ShipTickInterface
                 }
             }
         }
+
         $newEps = $availableEps - $wrapper->getEpsUsage();
+        $batteryReload = $ship->isBase()
+            && $eps->reloadBattery()
+            && $newEps > $eps->getEps()
+            ? min((int) ceil($eps->getMaxBattery() / 10), $newEps - $eps->getEps()) : 0;
+
+        $newEps -= $batteryReload;
         if ($newEps > $eps->getMaxEps()) {
             $newEps = $eps->getMaxEps();
         }
-        $usedEnergy = $wrapper->getEpsUsage() + ($newEps - $eps->getEps());
+        $usedEnergy = $wrapper->getEpsUsage() + $batteryReload + ($newEps - $eps->getEps());
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$wrapper->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
-        $eps->setEps($newEps)->update();
+        $eps->setEps($newEps)
+            ->setBattery($eps->getBattery() + $batteryReload)
+            ->update();
 
         //core OR fusion
         $ship->setReactorLoad($ship->getReactorLoad() - $usedEnergy);
