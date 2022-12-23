@@ -270,6 +270,11 @@ class Ship implements ShipInterface
         $this->storage = new ArrayCollection();
     }
 
+    public function get(): ShipInterface
+    {
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

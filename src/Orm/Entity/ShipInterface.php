@@ -10,6 +10,9 @@ interface ShipInterface
 {
     public function getId(): ?int;
 
+    //TODO REMOVE ASAP! FIND Error location
+    public function get(): ShipInterface;
+
     /**
      * @deprecated
      */
