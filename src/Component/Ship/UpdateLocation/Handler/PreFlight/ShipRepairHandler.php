@@ -11,6 +11,7 @@ use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ShipRepairHandler extends AbstractUpdateLocationHandler implements UpdateLocationHandlerInterface
@@ -27,11 +28,13 @@ final class ShipRepairHandler extends AbstractUpdateLocationHandler implements U
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function handle(ShipInterface $ship, ?ShipInterface $tractoringShip): void
+    public function handle(ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip): void
     {
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        $ship = $wrapper->get();
 
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
         $this->loggerUtil->log(sprintf('     handle, shipState: %s', ShipStateEnum::getDescription($ship->getState())));
+
         if ($this->cancelRepair->cancelRepair($ship)) {
             $this->loggerUtil->log('     canceledRepair');
             $this->addMessageInternal(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getName()));

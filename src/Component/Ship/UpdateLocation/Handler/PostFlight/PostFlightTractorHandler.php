@@ -8,6 +8,7 @@ use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Component\Ship\UpdateLocation\Handler\AbstractUpdateLocationHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class PostFlightTractorHandler extends AbstractUpdateLocationHandler implements UpdateLocationHandlerInterface
@@ -24,8 +25,9 @@ final class PostFlightTractorHandler extends AbstractUpdateLocationHandler imple
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
     }
 
-    public function handle(ShipInterface $ship, ?ShipInterface $tractoringShip): void
+    public function handle(ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip): void
     {
+        $ship = $wrapper->get();
         if (!$ship->isTractoring()) {
             return;
         }

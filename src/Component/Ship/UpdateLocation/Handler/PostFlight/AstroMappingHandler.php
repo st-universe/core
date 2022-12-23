@@ -9,6 +9,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\UpdateLocation\Handler\AbstractUpdateLocationHandler;
 use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
@@ -26,8 +27,10 @@ final class AstroMappingHandler extends AbstractUpdateLocationHandler implements
         $this->astroEntryLib = $astroEntryLib;
     }
 
-    public function handle(ShipInterface $ship, ?ShipInterface $tractoringShip): void
+    public function handle(ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip): void
     {
+        $ship = $wrapper->get();
+
         if ($ship->getSystem() === null) {
             return;
         }
