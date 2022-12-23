@@ -100,6 +100,9 @@ final class ShipTick implements ShipTickInterface
         }
 
         $eps = $wrapper->getEpsShipSystem();
+        if ($eps === null) {
+            return;
+        }
 
         // not enough crew
         if (!$ship->hasEnoughCrew()) {
