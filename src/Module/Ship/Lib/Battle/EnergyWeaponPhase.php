@@ -8,6 +8,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
 
 final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeaponPhaseInterface
@@ -23,7 +24,13 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     ): array {
         $msg = [];
 
+        /**
+         * @var ShipInterface
+         */
         $attacker = $wrapper !== null ? $wrapper->get() : $attackingPhalanx;
+        /**
+         * @var ShipInterface
+         */
         $target = $targetPool[array_rand($targetPool)]->get();
 
         for ($i = 1; $i <= $attacker->getRump()->getPhaserVolleys(); $i++) {
@@ -38,7 +45,12 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 $target = $targetPool[array_rand($targetPool)];
             }
 
-            $msg[] = "Die " . $attacker->getName() . " feuert mit einem " . $this->getEnergyWeapon($attacker)->getName() . " auf die " . $target->getName();
+            $msg[] = sprintf(
+                "Die %s feuert mit einem %s auf die %s",
+                $attacker->getName(),
+                $this->getEnergyWeapon($attacker)->getName(),
+                $target->getName()
+            );
 
             if (
                 $attacker->getHitChance() * (100 - $target->getEvadeChance()) < rand(1, 10000)
