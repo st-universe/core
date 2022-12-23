@@ -888,7 +888,7 @@
 				<td tal:condition="not:eps/isEBattUseable" style="width: 70%;">
 					Gesperrt bis ${datetime:eps/getBatteryCooldown}
 				</td>
-				<td style="text-align: right;" style="width: 30%;"><input tal:condition="SHIP/isBase" type="checkbox"
+				<td style="text-align: right; width: 30%;"><input tal:condition="SHIP/isBase" type="checkbox"
 						onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}'" />
 					<img title="" src="assets/buttons/info2.png" style="height:16px;" />
 				</td>
