@@ -51,7 +51,7 @@ final class ShowShiplistFleet implements ViewControllerInterface
 
         $game->showMacro('html/shipmacros.xhtml/shiplist_fleetform');
 
-        $game->setTemplateVar('wrapper', $this->shipWrapperFactory->wrapFleet($fleet));
+        $game->setTemplateVar('fleetwrapper', $this->shipWrapperFactory->wrapFleet($fleet));
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
     }
 }
