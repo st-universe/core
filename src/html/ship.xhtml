@@ -1032,8 +1032,8 @@
 				</div>
 			</th>
 		</tr>
-		<tal:block tal:repeat="wrapper FLEETWRAPPER/getShipWrappers" tal:define="ship wrapper/get">
-			<tr tal:condition="php:SHIP.getId() != ship.getId()">
+		<tal:block tal:repeat="wrapper FLEETWRAPPER/getShipWrappers">
+			<tr tal:define="ship wrapper/get" tal:condition="php:SHIP.getId() != ship.getId()">
 				<td style="background-color: #000000 ! important">
 					<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagenameastitle" />
