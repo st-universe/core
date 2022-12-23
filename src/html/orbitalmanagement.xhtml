@@ -21,7 +21,7 @@
           <tr tal:define="fleet fleetwrapper/get">
             <td colspan="7">
               <span tal:replace="structure bbcode:fleet/getName">FLEETNAME</span>
-              <tal:block tal:condition="fleetwrapper/isForeignFleet">
+              <tal:block tal:condition="php: fleetwrapper.isForeignFleet() && fleet.getUser()">
                 <span> von </span>
                 <span tal:replace="structure bbcode:fleet/getUser/getName">USERNAME</span>
               </tal:block>
