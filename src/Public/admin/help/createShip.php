@@ -58,9 +58,10 @@ if ($torptypeId > 0 || $noTorps) {
         $ship->setReactorLoad($ship->getReactorCapacity());
         $ship->setShield($ship->getMaxShield());
 
-        $wrapper->getEpsShipSystem()
-            ->setEps($eps->getMaxEps())
-            ->setBattery($eps->getMaxBattery())
+        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem
+            ->setEps($epsSystem->getMaxEps())
+            ->setBattery($epsSystem->getMaxBattery())
             ->update();
 
         if ($torptypeId > 0) {
