@@ -1174,7 +1174,7 @@
 								</tal:block>
 							</td>
 						</tr>
-						<tr>
+						<tr tal:define="epssystem WRAPPER/getEpsShipSystem">
 							<td rowspan="2" tal:define="ship SHIP" style="vertical-align: middle; text-align: center;">
 								<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
 									<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
@@ -1198,16 +1198,16 @@
 									tal:condition="not:SHIP/getShieldState">${SHIP/getShield}/${SHIP/getMaxShield}</span>
 								(+<span tal:replace="SHIP/getShieldRegenerationRate">REGENERATIONRATE</span>)
 							</td>
-							<td style="text-align: center;" tal:define="eps WRAPPER/getEpsShipSystem">
-								<tal:block tal:condition="eps">
-									${eps/getEps}/${eps/getMaxEps}
+							<td style="text-align: center;">
+								<tal:block tal:condition="epssystem">
+									${epssystem/getEps}/${epssystem/getMaxEps}
 									<span>${addPlusCharacter:WRAPPER/getEffectiveEpsProduction}</span>
 									(<span tal:content="WRAPPER/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
 										tal:content="WRAPPER/getWarpcoreUsage">CORE</span>)
 								</tal:block>
 							</td>
 							<td style="text-align: center;">
-								${WRAPPER/getEpsShipSystem/getBattery}
+								<span tal:condition="epssystem">${epssystem/getBattery}</span>
 							</td>
 							<td style="text-align: center;">
 								<span tal:replace="SHIP/getCrewCount">CURRENT</span>&nbsp;(<span
