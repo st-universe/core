@@ -354,8 +354,9 @@ final class ShipWrapper implements ShipWrapperInterface
     {
         //add system to cache if not already deserialized
         if (!array_key_exists($systemId, $this->shipSystemCache)) {
+            $object->setShip($this->get());
+
             if ($systemId === ShipSystemTypeEnum::SYSTEM_HULL) {
-                $object->setShip($this->get());
                 $data = null;
             } else {
 
@@ -370,8 +371,6 @@ final class ShipWrapper implements ShipWrapperInterface
             if ($data === null) {
                 $this->shipSystemCache[$systemId] = $object;
             } else {
-                $object->setShip($this->get());
-
                 $this->shipSystemCache[$systemId] =
                     $this->jsonMapper->mapObjectFromString(
                         $data,
