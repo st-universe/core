@@ -868,13 +868,13 @@
 	<tal:block tal:define="eps WRAPPER/getEpsShipSystem">
 		<table class="tcal" tal:condition="php: eps && eps.getMaxBattery()">
 			<tr>
-				<th>
+				<th colspan="2">
 					<img src="assets/buttons/batt.png" title="Ersatzbatterie" /> Ersatzbatterie
 					${eps/getBattery} / ${eps/getMaxBattery}
 				</th>
 			</tr>
 			<tr>
-				<td tal:condition="eps/isEBattUseable">
+				<td tal:condition="eps/isEBattUseable" style="width: 70%;">
 					Einheiten
 					<input type="text" size="5" name="ebattload" id="ebattload"
 						onkeydown="event.key == 'Enter' && $('unloadBatteryButton').click()" />
@@ -885,8 +885,12 @@
 					<span tal:condition="SHIP/isFleetLeader"><input type="checkbox" name="fleet" />
 						Flotte</span>
 				</td>
-				<td tal:condition="not:eps/isEBattUseable">
+				<td tal:condition="not:eps/isEBattUseable" style="width: 70%;">
 					Gesperrt bis ${datetime:eps/getBatteryCooldown}
+				</td>
+				<td style="text-align: right;" style="width: 30%;"><input tal:condition="SHIP/isBase" type="checkbox"
+						onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}'" />
+					<img title="" src="assets/buttons/info2.png" style="height:16px;" />
 				</td>
 			</tr>
 		</table>

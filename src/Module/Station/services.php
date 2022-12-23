@@ -20,6 +20,7 @@ use Stu\Module\Station\Action\ManageShuttles\ManageShuttles;
 use Stu\Module\Station\Action\RepairShip\RepairShip;
 use Stu\Module\Station\Action\Scrapping\Scrapping;
 use Stu\Module\Station\Action\StationRepair\StationRepair;
+use Stu\Module\Station\Action\ToggleBatteryReload\ToggleBatteryReload;
 use Stu\Module\Station\Action\UndockStationShip\UndockStationShip;
 use Stu\Module\Station\View\Overview\Overview;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
@@ -61,7 +62,8 @@ return [
         DockFleet::ACTION_IDENTIFIER => autowire(DockFleet::class),
         DockTractoredShip::ACTION_IDENTIFIER => autowire(DockTractoredShip::class),
         Scrapping::ACTION_IDENTIFIER => autowire(Scrapping::class),
-        StationRepair::ACTION_IDENTIFIER => autowire(StationRepair::class)
+        StationRepair::ACTION_IDENTIFIER => autowire(StationRepair::class),
+        ToggleBatteryReload::ACTION_IDENTIFIER => autowire(ToggleBatteryReload::class)
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
