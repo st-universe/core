@@ -61,7 +61,7 @@ final class ShowShipManagement implements ViewControllerInterface
             if ($ship->getWarpState()) {
                 continue;
             }
-            $fleetId = $ship->getFleetId();
+            $fleetId = $ship->getFleetId() === null ? 0 : $ship->getFleetId();
 
             $fleet = $groupedList[$fleetId] ?? null;
             if ($fleet === null) {
@@ -103,7 +103,7 @@ final class ShowShipManagement implements ViewControllerInterface
                 }
             );
 
-            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList);
+            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList, $fleetId === 0);
             $list[$fleetWrapper->get()->getSort()] = $fleetWrapper;
         }
 
