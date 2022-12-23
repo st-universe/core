@@ -42,7 +42,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             }
             $this->reduceEps($wrapper, $attackingPhalanx);
             if ($this->getEnergyWeapon($attacker)->getFiringMode() === self::FIRINGMODE_RANDOM) {
-                $target = $targetPool[array_rand($targetPool)];
+                $target = $targetPool[array_rand($targetPool)]->get();
             }
 
             $msg[] = sprintf(
