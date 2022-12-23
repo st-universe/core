@@ -71,11 +71,13 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     public function wrapShips(array $ships): array
     {
-        array_walk($ships, function ($ship, &$key) {
-            $key = $this->wrapShip($ship);
-        });
+        $result = [];
 
-        return $ships;
+        foreach ($ships as $key => $ship) {
+            $result[$key] = $this->wrapShip($ship);
+        }
+
+        return $result;
     }
 
     public function wrapShipsAsFleet(array $ships, bool $isSingleShips = false): FleetWrapperInterface
