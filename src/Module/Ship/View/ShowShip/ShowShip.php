@@ -345,7 +345,10 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->shipyardShipQueueRepository->getByShipyard($ship->getId()));
         }
 
-        $shipList = $ship->getDockedShips();
+        /**
+         * @var ShipInterface[] $shipList
+         */
+        $shipList = $ship->getDockedShips()->toArray();
         if (!empty($shipList)) {
             // if selected, return the current target
             $target = request::postInt('target');
