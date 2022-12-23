@@ -98,6 +98,6 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $game->setTemplateFile('html/orbitalmanagement.xhtml');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('WRAPPERS', $list);
+        $game->setTemplateVar('FLEETWRAPPERS', $list);
     }
 }

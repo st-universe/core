@@ -17,7 +17,7 @@
           <th>Torpedo-Transfer</th>
           <th>Shuttle-Transfer</th>
         </tr>
-        <tal:block tal:repeat="fleetwrapper WRAPPERS">
+        <tal:block tal:repeat="fleetwrapper FLEETWRAPPERS" tal:define="fleet fleetwrapper/get">
           <tr>
             <td colspan="7">
               <span tal:replace="structure bbcode:fleet/getName">FLEETNAME</span>
