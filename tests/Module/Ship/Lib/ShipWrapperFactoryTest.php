@@ -85,9 +85,9 @@ class ShipWrapperFactoryTest extends StuTestCase
 
         $fleetwrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipArray, true);
 
-        $this->assertEquals(2, count($fleetwrapper->getShips()));
-        $this->assertEquals($shipA, $fleetwrapper->getShips()[12]);
-        $this->assertEquals($shipB, $fleetwrapper->getShips()[27]);
+        $this->assertEquals(2, count($fleetwrapper->getShipsWrappers()));
+        $this->assertEquals($shipA, $fleetwrapper->getShipsWrappers()[12]);
+        $this->assertEquals($shipB, $fleetwrapper->getShipsWrappers()[27]);
         $this->assertEquals('Einzelschiffe', $fleetwrapper->get()->getName());
         $this->assertEquals(PHP_INT_MAX, $fleetwrapper->get()->getSort());
     }
@@ -120,9 +120,9 @@ class ShipWrapperFactoryTest extends StuTestCase
 
         $fleet = $this->shipWrapperFactory->wrapShipsAsFleet($shipArray);
 
-        $this->assertEquals(2, count($fleet->getShips()));
-        $this->assertEquals($shipA, $fleet->getShips()[12]);
-        $this->assertEquals($shipB, $fleet->getShips()[27]);
+        $this->assertEquals(2, count($fleet->getShipsWrappers()));
+        $this->assertEquals($shipA, $fleet->getShipsWrappers()[12]);
+        $this->assertEquals($shipB, $fleet->getShipsWrappers()[27]);
         $this->assertEquals('foo', $fleet->get()->getName());
         $this->assertEquals($user, $fleet->get()->getUser());
         $this->assertEquals(42, $fleet->get()->getSort());
