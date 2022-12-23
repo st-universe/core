@@ -8,8 +8,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class ShowOrbitShiplist implements ViewControllerInterface
 {
@@ -40,12 +38,14 @@ final class ShowOrbitShiplist implements ViewControllerInterface
             $userId
         );
 
-        $orbitShipList = array_map(
-            function (ShipInterface $ship): ShipWrapperInterface {
-                return $this->shipWrapperFactory->wrapShip($ship);
-            },
-            $colony->getOrbitShipList($userId)
-        );
+        $orbitShipList = [];
+
+        foreach ($colony->getOrbitShipList($userId) as $array) {
+            foreach ($array['ships'] as $ship) {
+                $orbitShipList[] = $this->shipWrapperFactory->wrapShip($ship);
+            }
+        }
+
 
         $game->setPageTitle(_('Schiffe im Orbit'));
         $game->setMacroInAjaxWindow('html/colonymacros.xhtml/orbitshiplist');
