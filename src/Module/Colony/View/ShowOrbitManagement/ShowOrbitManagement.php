@@ -57,7 +57,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $groupedList = [];
 
         foreach ($shipList as $ship) {
-            $fleetId = $ship->getFleetId();
+            $fleetId = $ship->getFleetId() === null ? 0 : $ship->getFleetId();
 
             $fleet = $groupedList[$fleetId] ?? null;
             if ($fleet === null) {
@@ -70,7 +70,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $list = [];
 
         foreach ($groupedList as $fleetId => $shipList) {
-            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList, $fleetId === null);
+            $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList, $fleetId === 0);
             $list[$fleetWrapper->get()->getSort()] = $fleetWrapper;
         }
 
