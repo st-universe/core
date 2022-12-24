@@ -888,11 +888,13 @@
 				<td tal:condition="not:eps/isEBattUseable" style="width: 70%;">
 					Gesperrt bis ${datetime:eps/getBatteryCooldown}
 				</td>
-				<td style="text-align: right; width: 30%;"><input tal:condition="SHIP/isBase" type="checkbox"
-						tal:attributes="checked eps/reloadBattery"
-						onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}'" />
-					reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="assets/buttons/info2.png"
-						style="height:16px;" />
+				<td style="text-align: right; width: 30%;">
+					<tal:block tal:condition="SHIP/isBase">
+						<input type="checkbox" tal:attributes="checked eps/reloadBattery"
+							onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}'" />
+						reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="assets/buttons/info2.png"
+							style="height:16px;" />
+					</tal:block>
 				</td>
 			</tr>
 		</table>
