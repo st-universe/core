@@ -292,6 +292,12 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL:
                     $systems[ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL] = $module;
                     break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER:
+                    $systems[ShipSystemTypeEnum::SYSTEM_TRACKER] = $module;
+                    break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB:
+                    $systems[ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB] = $module;
+                    break;
             }
         }
     }
