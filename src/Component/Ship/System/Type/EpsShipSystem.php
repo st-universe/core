@@ -122,7 +122,7 @@ class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTypeInte
 
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
-        $$wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     public function deactivate(ShipInterface $ship): void
