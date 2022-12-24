@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -16,7 +17,6 @@ use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
     public ?int $targetId = null;
-    public int $cooldown = 0;
     public int $start = 0;
 
     private ShipRepositoryInterface $shipRepository;
@@ -51,15 +51,16 @@ class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemType
         return $this;
     }
 
-    public function setCooldown(int $cooldown): TrackerShipSystem
+    public function getCooldownSeconds(): ?int
     {
-        $this->cooldown = $cooldown;
-        return $this;
+        return TimeConstants::ONE_HOUR_IN_SECONDS;
     }
 
     public function isUseable(): bool
     {
-        return $this->cooldown < time();
+        $cooldown = $this->ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->getCooldown();
+
+        return $cooldown === null ? true : $cooldown < time();
     }
 
     public function getStart(): int
