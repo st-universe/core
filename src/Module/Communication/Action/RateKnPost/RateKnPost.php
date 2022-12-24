@@ -72,7 +72,7 @@ final class RateKnPost implements ActionControllerInterface
         $description = sprintf(
             '%d Prestige erhalten für einen positiven Vote deines KN-Beitrags "%s" mit der ID %d',
             self::PRESTIGE_PER_POSITIVE_VOTE,
-            $post->getTitle() ? $post->getTitle() : $post->getRpgPlot()->getTitle(),
+            $post->getTitle() ? $post->getTitle() : ($post->getRpgPlot()->getTitle() !== null ? $post->getRpgPlot()->getTitle() : ''),
             $post->getId()
         );
         $this->createPrestigeLog->createLog(self::PRESTIGE_PER_POSITIVE_VOTE, $description, $post->getUser(), time());
