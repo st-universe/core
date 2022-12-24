@@ -1,0 +1,108 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Ship\Action\TrackShip;
+
+use request;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
+
+final class TrackShip implements ActionControllerInterface
+{
+    public const ACTION_IDENTIFIER = 'B_TRACK';
+
+    private ShipLoaderInterface $shipLoader;
+
+    private ActivatorDeactivatorHelperInterface $helper;
+
+    private StuTime $stuTime;
+
+    public function __construct(
+        ShipLoaderInterface $shipLoader,
+        ActivatorDeactivatorHelperInterface $helper,
+        StuTime $stuTime
+    ) {
+        $this->shipLoader = $shipLoader;
+        $this->helper = $helper;
+        $this->stuTime = $stuTime;
+    }
+
+    public function handle(GameControllerInterface $game): void
+    {
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
+
+        $userId = $game->getUser()->getId();
+
+        $shipId = request::getIntFatal('id');
+        $targetId = request::getIntFatal('target');
+
+        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+            $shipId,
+            $userId,
+            $targetId
+        );
+
+        $wrapper = $shipArray[$shipId];
+        $targetWrapper = $shipArray[$targetId];
+        if ($targetWrapper === null) {
+            return;
+        }
+        $target = $targetWrapper->get();
+
+        $ship = $wrapper->get();
+        if (!$ship->hasEnoughCrew($game)) {
+            return;
+        }
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+            return;
+        }
+
+        $eps = $wrapper->getEpsShipSystem();
+
+        if ($eps->getEps() === 0) {
+            $game->addInformation(_("Keine Energie vorhanden"));
+            return;
+        }
+        if ($ship->getCloakState()) {
+            $game->addInformation(_("Die Tarnung ist aktiviert"));
+            return;
+        }
+        if ($ship->getWarpState()) {
+            $game->addInformation(_("Der Warpantrieb ist aktiviert"));
+            return;
+        }
+
+        if ($target->getIsDestroyed()) {
+            return;
+        }
+        if ($target->getWarpState()) {
+            $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
+            return;
+        }
+
+        // activate system
+        if (!$this->helper->activate($ship->getId(), ShipSystemTypeEnum::SYSTEM_TRACKER, $game)) {
+            $game->setView(ShowShip::VIEW_IDENTIFIER);
+            return;
+        }
+
+        $wrapper->getTrackerShipSystem()->setTarget($target->getId())
+            ->setStart($this->stuTime->time())
+            ->update();
+
+
+        $game->addInformation(sprintf(_('Die %s ist nun mit einem verborgenen Tracker markiert'), $target->getName()));
+    }
+
+    public function performSessionCheck(): bool
+    {
+        return true;
+    }
+}
