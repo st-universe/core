@@ -35,19 +35,19 @@ final class ShowSingleKn implements ViewControllerInterface
         $user = $game->getUser();
         $post = $this->knPostRepository->find($this->showSingleKnRequest->getPostId());
 
-        if ($post === null) {
-            return;
-        }
-
-        $game->setPageTitle(_('Kommunikationsnetzwerk'));
-        $game->setTemplateFile('html/comm.xhtml');
-        $game->appendNavigationPart('comm.php', _('KommNet'));
-
         $knPostings = [];
-        $knPostings[] = $this->knFactory->createKnItem(
-            $post,
-            $user
-        );
+        if ($post !== null) {
+            $game->setPageTitle(_('Kommunikationsnetzwerk'));
+            $game->setTemplateFile('html/comm.xhtml');
+            $game->appendNavigationPart('comm.php', _('KommNet'));
+
+            $knPostings[] = $this->knFactory->createKnItem(
+                $post,
+                $user
+            );
+        } else {
+            $game->addInformation('Dieser Beitrag existiert nicht mehr');
+        }
 
         $game->setTemplateVar('KN_POSTINGS', $knPostings);
     }
