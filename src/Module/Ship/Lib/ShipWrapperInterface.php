@@ -2,11 +2,10 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Ship\System\Type\EpsShipSystem;
-use Stu\Component\Ship\System\Type\HullShipSystem;
-use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
-use Stu\Component\Ship\System\Type\ShieldShipSystem;
-use Stu\Component\Ship\System\Type\TrackerShipSystem;
+use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Ship\System\Data\HullSystemData;
+use Stu\Component\Ship\System\Data\ShieldSystemData;
+use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
@@ -45,13 +44,11 @@ interface ShipWrapperInterface
 
     public function getPossibleTorpedoTypes(): array;
 
-    public function getHullShipSystem(): HullShipSystem;
+    public function getHullSystemData(): HullSystemData;
 
-    public function getShieldShipSystem(): ?ShieldShipSystem;
+    public function getShieldSystemData(): ?ShieldSystemData;
 
-    public function getEpsShipSystem(): ?EpsShipSystem;
+    public function getEpsSystemData(): ?EpsSystemData;
 
-    public function getProjectileWeaponShipSystem(): ?ProjectileWeaponShipSystem;
-
-    public function getTrackerShipSystem(): ?TrackerShipSystem;
+    public function getTrackerSystemData(): ?TrackerSystemData;
 }

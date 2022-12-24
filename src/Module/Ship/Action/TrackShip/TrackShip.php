@@ -8,7 +8,6 @@ use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -18,20 +17,18 @@ final class TrackShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TRACK';
 
+    private const MAXIMUM_TICKS = 70;
+
     private ShipLoaderInterface $shipLoader;
 
     private ActivatorDeactivatorHelperInterface $helper;
 
-    private StuTime $stuTime;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ActivatorDeactivatorHelperInterface $helper,
-        StuTime $stuTime
+        ActivatorDeactivatorHelperInterface $helper
     ) {
         $this->shipLoader = $shipLoader;
         $this->helper = $helper;
-        $this->stuTime = $stuTime;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,7 +61,12 @@ final class TrackShip implements ActionControllerInterface
             return;
         }
 
-        $eps = $wrapper->getEpsShipSystem();
+        $eps = $wrapper->getEpsSystemData();
+        $tracker = $wrapper->getTrackerSystemData();
+
+        if ($tracker === null || $tracker->getTarget() !== null) {
+            return;
+        }
 
         if ($eps->getEps() === 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
@@ -93,8 +95,8 @@ final class TrackShip implements ActionControllerInterface
             return;
         }
 
-        $wrapper->getTrackerShipSystem()->setTarget($target->getId())
-            ->setStart($this->stuTime->time())
+        $tracker->setTarget($target->getId())
+            ->setRemainingTicks(self::MAXIMUM_TICKS)
             ->update();
 
 

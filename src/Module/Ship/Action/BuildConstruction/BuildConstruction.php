@@ -137,7 +137,7 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
@@ -261,7 +261,7 @@ final class BuildConstruction implements ActionControllerInterface
             $plan->getId()
         );
         $workbee = $workbeeWrapper->get();
-        $workbeeEps = $workbeeWrapper->getEpsShipSystem();
+        $workbeeEps = $workbeeWrapper->getEpsSystemData();
 
         $workbeeEps->setEps($workbeeEps->getMaxEps())->update();
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
@@ -280,7 +280,7 @@ final class BuildConstruction implements ActionControllerInterface
 
         $this->shipRepository->save($workbee);
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         $epsSystem->setEps($epsSystem->getEps() - $workbeeEps->getMaxEps())->update();
         $this->shipRepository->save($ship);
 

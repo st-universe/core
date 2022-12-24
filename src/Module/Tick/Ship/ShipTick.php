@@ -99,7 +99,7 @@ final class ShipTick implements ShipTickInterface
             return;
         }
 
-        $eps = $wrapper->getEpsShipSystem();
+        $eps = $wrapper->getEpsSystemData();
         if ($eps === null) {
             return;
         }

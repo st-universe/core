@@ -181,7 +181,7 @@ final class LeaveWormhole implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem->getEps() < 1) {
             $name = $tractoredShip->getName();
@@ -197,7 +197,7 @@ final class LeaveWormhole implements ActionControllerInterface
 
         //check for tractor system health
         $msg = [];
-        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($ship, $tractoredShip, $msg);
+        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($wrapper, $tractoredShip, $msg);
         $game->addInformationMergeDown($msg);
 
         $this->shipRepository->save($tractoredShip);

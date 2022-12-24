@@ -141,7 +141,7 @@ final class EnterStarSystem implements ActionControllerInterface
                     continue;
                 }
 
-                $epsSystem = $wrapper->getEpsShipSystem();
+                $epsSystem = $wrapper->getEpsSystemData();
 
                 if ($epsSystem->getEps() === 0) {
                     $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: Energiemangel";
@@ -203,7 +203,7 @@ final class EnterStarSystem implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem->getEps() < 1) {
             $name = $tractoredShip->getName();
@@ -221,7 +221,7 @@ final class EnterStarSystem implements ActionControllerInterface
 
         //check for tractor system health
         $msg = [];
-        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($ship, $tractoredShip, $msg);
+        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($wrapper, $tractoredShip, $msg);
         $game->addInformationMergeDown($msg);
 
 

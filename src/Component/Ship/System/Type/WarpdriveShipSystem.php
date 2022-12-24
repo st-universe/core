@@ -55,7 +55,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_ON);
 
         if ($ship->isTractoring()) {
-            $eps = $wrapper->getEpsShipSystem();
+            $eps = $wrapper->getEpsSystemData();
             if ($eps->getEps() > $this->getEnergyUsageForActivation()) {
                 $traktorShip = $ship->getTractoredShip();
 

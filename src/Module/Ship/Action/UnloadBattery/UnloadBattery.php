@@ -79,7 +79,7 @@ final class UnloadBattery implements ActionControllerInterface
             return sprintf(_('%s: Das Schiff hat zu wenig Crew'), $ship->getName());
         }
 
-        $eps = $this->shipWrapperFactory->wrapShip($ship)->getEpsShipSystem();
+        $eps = $this->shipWrapperFactory->wrapShip($ship)->getEpsSystemData();
 
         if ($eps === null) {
             return sprintf(_('%s: Kein Energiesystem installiert'), $ship->getName());

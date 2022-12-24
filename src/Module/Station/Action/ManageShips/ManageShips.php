@@ -124,7 +124,7 @@ final class ManageShips implements ActionControllerInterface
 
         $sectorString = $station->getSectorString();
 
-        $stationEps = $this->shipWrapperFactory->wrapShip($station)->getEpsShipSystem();
+        $stationEps = $this->shipWrapperFactory->wrapShip($station)->getEpsSystemData();
 
         foreach ($ships as $ship) {
             $shipobj = $this->shipRepository->find((int) $ship);
@@ -143,7 +143,7 @@ final class ManageShips implements ActionControllerInterface
 
 
             $wrapper = $this->shipWrapperFactory->wrapShip($shipobj);
-            $shipEps = $wrapper->getEpsShipSystem();
+            $shipEps = $wrapper->getEpsSystemData();
 
             if ($stationEps->getEps() > 0 && $shipEps->getBattery() < $shipEps->getMaxBattery() && array_key_exists(
                 $ship,

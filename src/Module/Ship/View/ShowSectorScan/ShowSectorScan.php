@@ -57,7 +57,7 @@ final class ShowSectorScan implements ViewControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() < 1) {
             $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
             return;

@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -85,7 +86,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         //enough energy?
         if ($epsSystem->getEps() < 20) {
@@ -107,10 +108,10 @@ final class EscapeTractorBeam implements ActionControllerInterface
         if ($chance < (int)ceil(11 * $ratio)) {
             $this->escape($ship, $game);
         } elseif ($chance < 55) {
-            $this->sufferDeflectorDamage($ship, $game);
+            $this->sufferDeflectorDamage($wrapper, $game);
         } else {
 
-            $this->sufferHullDamage($ship, $game);
+            $this->sufferHullDamage($wrapper, $game);
         }
 
         if ($ship->getIsDestroyed()) {
@@ -147,13 +148,14 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $this->alertRedHelper->doItAll($ship, $game);
     }
 
-    private function sufferDeflectorDamage(ShipInterface $ship, GameControllerInterface $game): void
+    private function sufferDeflectorDamage(ShipWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         $msg = [];
         $msg[] = _('Der Fluchtversuch ist fehlgeschlagen:');
 
+        $ship = $wrapper->get();
         $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR);
-        $this->applyDamage->damageShipSystem($ship, $system, rand(5, 25), $msg);
+        $this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $msg);
 
         $game->addInformationMergeDown($msg);
 
@@ -169,15 +171,16 @@ final class EscapeTractorBeam implements ActionControllerInterface
         );
     }
 
-    private function sufferHullDamage(ShipInterface $ship, $game): void
+    private function sufferHullDamage(ShipWrapperInterface $wrapper, $game): void
     {
+        $ship = $wrapper->get();
         $tractoringShip = $ship->getTractoringShip();
         $otherUserId = $tractoringShip->getUser()->getId();
         $shipName = $ship->getName();
 
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
-        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHuell() * rand(10, 25) / 100)), $ship);
+        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHuell() * rand(10, 25) / 100)), $wrapper);
         $game->addInformationMergeDown($damageMsg);
 
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());

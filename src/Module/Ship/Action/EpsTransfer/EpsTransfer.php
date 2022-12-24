@@ -59,7 +59,7 @@ final class EpsTransfer implements ActionControllerInterface
             return;
         }
 
-        $eps = $wrapper->getEpsShipSystem();
+        $eps = $wrapper->getEpsSystemData();
 
         if ($eps->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
@@ -87,7 +87,7 @@ final class EpsTransfer implements ActionControllerInterface
             return;
         }
 
-        $targetEps = $targetWrapper->getEpsShipSystem();
+        $targetEps = $targetWrapper->getEpsSystemData();
 
         if ($targetEps->getBattery() >= $targetEps->getMaxBattery()) {
             $game->addInformation(sprintf(_('Die Ersatzbatterie der %s ist bereits voll'), $target->getName()));

@@ -456,7 +456,7 @@ final class ShipMover2 implements ShipMover2Interface
         $flight_ecost = $ship->getRump()->getFlightEcost();
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         //zu wenig E zum weiterfliegen
         if ($epsSystem->getEps() < $flight_ecost) {
@@ -561,7 +561,10 @@ final class ShipMover2 implements ShipMover2Interface
             $dmg = $isAbsolutDmg ? $damage : $tractoredShip->getMaxHuell() * $damage / 100;
 
             $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $tractoredShip->getName(), $ship->getPosX(), $ship->getPosY()));
-            $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $tractoredShip);
+            $damageMsg = $this->applyDamage->damage(
+                new DamageWrapper((int) ceil($dmg)),
+                $this->shipWrapperFactory->wrapShip($tractoredShip)
+            );
             $this->addInformationMerge($damageMsg);
 
             if ($tractoredShip->getIsDestroyed()) {
@@ -574,7 +577,10 @@ final class ShipMover2 implements ShipMover2Interface
         //ship itself
         $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $ship->getName(), $ship->getPosX(), $ship->getPosY()));
         $dmg = $isAbsolutDmg ? $damage : $ship->getMaxHuell() * $damage / 100;
-        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $ship);
+        $damageMsg = $this->applyDamage->damage(
+            new DamageWrapper((int) ceil($dmg)),
+            $this->shipWrapperFactory->wrapShip($ship)
+        );
         $this->addInformationMerge($damageMsg);
 
         if ($ship->getIsDestroyed()) {

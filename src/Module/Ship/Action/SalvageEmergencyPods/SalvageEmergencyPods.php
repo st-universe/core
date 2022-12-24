@@ -104,7 +104,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $game->addInformation(_('Keine Rettungskapseln vorhanden'));
             return;
         }
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() < 1) {
             $game->addInformation(sprintf(_('Zum Bergen der Rettungskapseln wird %d Energie benötigt'), 1));
             return;

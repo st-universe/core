@@ -95,7 +95,7 @@ final class BeamToColony implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
         $ship = $wrapper->get();
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         if (!$ship->hasEnoughCrew($game)) {
             return;

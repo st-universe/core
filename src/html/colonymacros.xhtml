@@ -728,7 +728,7 @@
                 <img src="assets/buttons/modul_1.png" />
               </th>
               <td style="vertical-align: middle; text-align: center;">
-                <span tal:replace="structure wrapper/getHullShipSystem/getHullStatusBar">HULL</span>
+                <span tal:replace="structure wrapper/getHullSystemData/getHullStatusBar">HULL</span>
               </td>
               <td style="text-align: center;">
                 ${data/getHull}
@@ -738,7 +738,7 @@
         </td>
         <td colspan="2" tal:condition="data/getIsDestroyed"></td>
         <tal:block tal:condition="not:data/getIsDestroyed">
-          <td style="width: 150px;" tal:define="shields wrapper/getShieldShipSystem">
+          <td style="width: 150px;" tal:define="shields wrapper/getShieldSystemData">
             <table class="tcal" tal:condition="shields">
               <tr>
                 <th style="width: 20px; text-align: center;">
@@ -753,7 +753,7 @@
               </tr>
             </table>
           </td>
-          <td style="width: 150px;" tal:define="eps wrapper/getEpsShipSystem">
+          <td style="width: 150px;" tal:define="eps wrapper/getEpsSystemData">
             <table class="tcal" tal:condition="eps">
               <tr>
                 <th style="text-align: center; width: 20px;">

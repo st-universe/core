@@ -166,7 +166,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         }
 
         if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
-            $eps = $wrapper->getEpsShipSystem();
+            $eps = $wrapper->getEpsSystemData();
             $eps->setEps($eps->getTheoreticalMaxEps())->update();
             $ship->setReactorLoad($ship->getReactorCapacity());
             $this->shipRepository->save($ship);

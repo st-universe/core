@@ -59,8 +59,9 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
-    public function handleDestruction(ShipInterface $ship): void
+    public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }

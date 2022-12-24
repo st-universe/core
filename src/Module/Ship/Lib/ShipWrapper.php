@@ -8,14 +8,14 @@ use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\Data\AbstractSystemData;
+use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Ship\System\Data\HullSystemData;
+use Stu\Component\Ship\System\Data\ShieldSystemData;
+use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Type\EpsShipSystem;
-use Stu\Component\Ship\System\Type\HullShipSystem;
-use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
-use Stu\Component\Ship\System\Type\ShieldShipSystem;
-use Stu\Component\Ship\System\Type\TrackerShipSystem;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -112,7 +112,7 @@ final class ShipWrapper implements ShipWrapperInterface
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
-            $eps = $this->getEpsShipSystem();
+            $eps = $this->getEpsSystemData();
 
             $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
             if ($prod <= 0) {
@@ -133,7 +133,7 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function setAlertState(int $alertState, &$msg): void
     {
-        $eps = $this->getEpsShipSystem();
+        $eps = $this->getEpsSystemData();
 
         //check if enough energy
         if (
@@ -316,48 +316,40 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->torpedoTypeRepository->getByLevel($this->ship->getRump()->getTorpedoLevel());
     }
 
-    public function getHullShipSystem(): HullShipSystem
+    public function getHullSystemData(): HullSystemData
     {
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_HULL,
-            new HullShipSystem($this->shipSystemRepository)
+            new HullSystemData()
         );
     }
 
-    public function getShieldShipSystem(): ?ShieldShipSystem
+    public function getShieldSystemData(): ?ShieldSystemData
     {
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_SHIELDS,
-            new ShieldShipSystem($this->cancelRepair)
+            new ShieldSystemData()
         );
     }
 
-    public function getEpsShipSystem(): ?EpsShipSystem
+    public function getEpsSystemData(): ?EpsSystemData
     {
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_EPS,
-            new EpsShipSystem($this->shipSystemRepository)
+            new EpsSystemData($this->shipSystemRepository)
         );
     }
 
-    public function getProjectileWeaponShipSystem(): ?ProjectileWeaponShipSystem
-    {
-        return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_TORPEDO,
-            new ProjectileWeaponShipSystem()
-        );
-    }
-
-    public function getTrackerShipSystem(): ?TrackerShipSystem
+    public function getTrackerSystemData(): ?TrackerSystemData
     {
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_TRACKER,
-            new TrackerShipSystem($this->shipRepository, $this->shipSystemRepository)
+            new TrackerSystemData($this->shipRepository, $this->shipSystemRepository)
         );
     }
 
     /**
-     * @param ShipSystemInterface $object
+     * @param AbstractSystemData $object
      */
     private function getSpecificShipSystem(int $systemId, $object)
     {

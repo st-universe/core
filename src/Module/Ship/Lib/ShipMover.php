@@ -53,6 +53,8 @@ final class ShipMover implements ShipMoverInterface
 
     private CancelRepairInterface $cancelRepair;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -79,7 +81,8 @@ final class ShipMover implements ShipMoverInterface
         AstroEntryRepositoryInterface $astroEntryRepository,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface  $tractorMassPayloadUtil,
-        CancelRepairInterface $cancelRepair
+        CancelRepairInterface $cancelRepair,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -94,6 +97,7 @@ final class ShipMover implements ShipMoverInterface
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->cancelRepair = $cancelRepair;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     private function setDestination(
@@ -488,7 +492,7 @@ final class ShipMover implements ShipMoverInterface
 
         $flight_ecost = $ship->getRump()->getFlightEcost();
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         //zu wenig E zum weiterfliegen
         if ($epsSystem->getEps() < $flight_ecost) {
@@ -566,7 +570,7 @@ final class ShipMover implements ShipMoverInterface
 
             //check for tractor system health
             $msg = [];
-            $tractorSystemSurvived = $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($ship, $tractoredShip, $msg);
+            $tractorSystemSurvived = $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($wrapper, $tractoredShip, $msg);
             if (!$tractorSystemSurvived) {
                 $this->deactivateTractorBeam($ship, current($msg));
             } else {
@@ -640,7 +644,10 @@ final class ShipMover implements ShipMoverInterface
             $dmg = $isAbsolutDmg ? $damage : $tractoredShip->getMaxHuell() * $damage / 100;
 
             $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $tractoredShip->getName(), $ship->getPosX(), $ship->getPosY()));
-            $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $tractoredShip);
+            $damageMsg = $this->applyDamage->damage(
+                new DamageWrapper((int) ceil($dmg)),
+                $this->shipWrapperFactory->wrapShip($tractoredShip)
+            );
             $this->addInformationMerge($damageMsg);
 
             if ($tractoredShip->getIsDestroyed()) {
@@ -658,7 +665,7 @@ final class ShipMover implements ShipMoverInterface
         //ship itself
         $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $ship->getName(), $ship->getPosX(), $ship->getPosY()));
         $dmg = $isAbsolutDmg ? $damage : $ship->getMaxHuell() * $damage / 100;
-        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $ship);
+        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $wrapper);
         $this->addInformationMerge($damageMsg);
 
         if ($ship->getIsDestroyed()) {
@@ -744,7 +751,7 @@ final class ShipMover implements ShipMoverInterface
             $flight_ecost = $ship->getRump()->getFlightEcost();
 
             //Traktorstrahl Kosten
-            $epsSystem = $wrapper->getEpsShipSystem();
+            $epsSystem = $wrapper->getEpsSystemData();
             if ($ship->isTractoring() && $epsSystem->getEps() < ($ship->getTractoredShip()->getRump()->getFlightEcost() + $flight_ecost)) {
                 $reasons[] = sprintf(
                     _('Die %s hat nicht genug Energie für den Traktor-Flug (%d benötigt)'),

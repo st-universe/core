@@ -36,7 +36,7 @@ final class PostFlightTractorHandler extends AbstractUpdateLocationHandler imple
 
         //check for tractor system health
         $msg = [];
-        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($ship, $tractoredShip, $msg);
+        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($wrapper, $tractoredShip, $msg);
         $this->addMessagesInternal($msg);
 
         // colony stuff

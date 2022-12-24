@@ -53,8 +53,9 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         }
     }
 
-    public function handleDestruction(ShipInterface $ship): void
+    public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)) {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
 

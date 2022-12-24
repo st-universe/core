@@ -118,7 +118,7 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         if ($epsSystem->getEps() == 0) {
             $game->addInformation(_('Keine Energie vorhanden'));

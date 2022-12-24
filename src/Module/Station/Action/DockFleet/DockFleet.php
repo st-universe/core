@@ -107,7 +107,7 @@ final class DockFleet implements ActionControllerInterface
     private function fleetDock(ShipWrapperInterface $stationWrapper, FleetInterface $targetFleet, GameControllerInterface $game): void
     {
         $station = $stationWrapper->get();
-        $epsSystem = $stationWrapper->getEpsShipSystem();
+        $epsSystem = $stationWrapper->getEpsSystemData();
 
         $this->loggerUtil->log('F');
         $msg = [];

@@ -90,7 +90,7 @@ final class BeamFrom implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
         $ship = $wrapper->get();
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         //sanity checks
         $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;

@@ -113,8 +113,9 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         }
     }
 
-    public function handleDestruction(ShipInterface $ship): void
+    public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
         if ($ship->isTractoring()) {
             $this->deactivate($ship);
         }

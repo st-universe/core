@@ -212,7 +212,7 @@ final class DealsTakeAuction implements ActionControllerInterface
         $ship->setReactorLoad((int)floor($ship->getReactorCapacity() / 4));
         $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());
 
-        $eps = $wrapper->getEpsShipSystem();
+        $eps = $wrapper->getEpsSystemData();
         $eps->setEps((int)floor($eps->getTheoreticalMaxEps() / 4))->update();
 
         $this->shipRepository->save($ship);

@@ -130,7 +130,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
@@ -185,7 +185,7 @@ final class DockShip implements ActionControllerInterface
                 continue;
             }
 
-            $epsSystem = $this->shipWrapperFactory->wrapShip($fleetShip)->getEpsShipSystem();
+            $epsSystem = $this->shipWrapperFactory->wrapShip($fleetShip)->getEpsSystemData();
 
             if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $fleetShip->getName() . _(": Nicht genügend Energie vorhanden");

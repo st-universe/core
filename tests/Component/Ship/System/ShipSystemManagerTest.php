@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
+use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
@@ -19,7 +20,6 @@ use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
-use Stu\Component\Ship\System\Type\EpsShipSystem;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -233,7 +233,7 @@ class ShipSystemManagerTest extends StuTestCase
     public function testActivateFailsOnInsufficientEnergy(): void
     {
         $this->expectException(InsufficientEnergyException::class);
-        $epsSystem = $this->mock(EpsShipSystem::class);
+        $epsSystem = $this->mock(EpsSystemData::class);
 
         $energyCosts = 2;
 
@@ -247,7 +247,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsShipSystem')
+        $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
             ->andReturn($epsSystem);
@@ -287,7 +287,7 @@ class ShipSystemManagerTest extends StuTestCase
     public function testActivateFailsIfSystemPreConditionsFail(): void
     {
         $this->expectException(ActivationConditionsNotMetException::class);
-        $epsSystem = $this->mock(EpsShipSystem::class);
+        $epsSystem = $this->mock(EpsSystemData::class);
 
         $energyCosts = 1;
 
@@ -301,7 +301,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsShipSystem')
+        $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
             ->andReturn($epsSystem);
@@ -353,7 +353,7 @@ class ShipSystemManagerTest extends StuTestCase
     public function testActivateActivatesSystemNoCooldown(): void
     {
         $energyCosts = 1;
-        $epsSystem = $this->mock(EpsShipSystem::class);
+        $epsSystem = $this->mock(EpsSystemData::class);
 
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
@@ -365,7 +365,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsShipSystem')
+        $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->twice()
             ->andReturn($epsSystem);
@@ -426,7 +426,7 @@ class ShipSystemManagerTest extends StuTestCase
     public function testActivateActivatesSystemOldCooldown(): void
     {
         $energyCosts = 1;
-        $epsSystem = $this->mock(EpsShipSystem::class);
+        $epsSystem = $this->mock(EpsSystemData::class);
 
         $this->ship->shouldReceive('getSystems')
             ->withNoArgs()
@@ -438,7 +438,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsShipSystem')
+        $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->twice()
             ->andReturn($epsSystem);
@@ -504,7 +504,7 @@ class ShipSystemManagerTest extends StuTestCase
     public function testActivateActivatesSystemLastingCooldown(): void
     {
         $this->expectException(SystemCooldownException::class);
-        $epsSystem = $this->mock(EpsShipSystem::class);
+        $epsSystem = $this->mock(EpsSystemData::class);
 
         $energyCosts = 1;
 
@@ -518,7 +518,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsShipSystem')
+        $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
             ->andReturn($epsSystem);

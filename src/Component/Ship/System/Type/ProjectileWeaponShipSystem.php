@@ -10,7 +10,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ProjectileWeaponShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {

@@ -63,7 +63,7 @@ final class DoTachyonScan implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         // scanner needs to be active
         if ($epsSystem->getEps() < TachyonScannerShipSystem::SCAN_EPS_COST) {

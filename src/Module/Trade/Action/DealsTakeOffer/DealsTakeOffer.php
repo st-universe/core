@@ -232,7 +232,7 @@ final class DealsTakeOffer implements ActionControllerInterface
         $wrapper = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
 
         $ship = $wrapper->get();
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         $epsSystem->setEps((int)floor($epsSystem->getTheoreticalMaxEps() / 4))->update();
         $ship->setReactorLoad((int)floor($ship->getReactorCapacity() / 4));
         $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());

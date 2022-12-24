@@ -9,8 +9,8 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class ApplyDamage implements ApplyDamageInterface
 {
@@ -25,8 +25,9 @@ final class ApplyDamage implements ApplyDamageInterface
 
     public function damage(
         DamageWrapper $damage_wrapper,
-        ShipInterface $ship
+        ShipWrapperInterface $shipWrapper
     ): array {
+        $ship = $shipWrapper->get();
         $ship->setShieldRegenerationTimer(time());
         $msg = [];
         if ($ship->getShieldState()) {
@@ -55,7 +56,7 @@ final class ApplyDamage implements ApplyDamageInterface
         }
         if ($ship->getHull() > $damage) {
             if ($damage_wrapper->isCrit()) {
-                $systemName = $this->destroyRandomShipSystem($ship);
+                $systemName = $this->destroyRandomShipSystem($shipWrapper);
 
                 if ($systemName !== null) {
                     $msg[] = "- Kritischer Hüllen-Treffer zerstört System: " . $systemName;
@@ -65,8 +66,8 @@ final class ApplyDamage implements ApplyDamageInterface
             $ship->setHuell($huelleVorher - $damage);
             $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $ship->getHull();
 
-            if (!$this->checkForDamagedShipSystems($ship, $huelleVorher, $msg)) {
-                $this->damageRandomShipSystem($ship, $msg, (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHuell()));
+            if (!$this->checkForDamagedShipSystems($shipWrapper, $huelleVorher, $msg)) {
+                $this->damageRandomShipSystem($shipWrapper, $msg, (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHuell()));
             }
 
             if ($disablemessage) {
@@ -120,8 +121,9 @@ final class ApplyDamage implements ApplyDamageInterface
         return $msg;
     }
 
-    private function checkForDamagedShipSystems(ShipInterface $ship, int $huelleVorher, &$msg): bool
+    private function checkForDamagedShipSystems(ShipWrapperInterface $wrapper, int $huelleVorher, &$msg): bool
     {
+        $ship = $wrapper->get();
         $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHuell()) -
             ceil($ship->getHull() * 6 / $ship->getMaxHuell());
 
@@ -130,15 +132,15 @@ final class ApplyDamage implements ApplyDamageInterface
         }
 
         for ($i = 1; $i <= $systemsToDamage; $i++) {
-            $this->damageRandomShipSystem($ship, $msg);
+            $this->damageRandomShipSystem($wrapper, $msg);
         }
 
         return true;
     }
 
-    private function destroyRandomShipSystem(ShipInterface $ship): ?string
+    private function destroyRandomShipSystem(ShipWrapperInterface $wrapper): ?string
     {
-        $healthySystems = $ship->getHealthySystems();
+        $healthySystems = $wrapper->get()->getHealthySystems();
         shuffle($healthySystems);
 
         if (empty($healthySystems)) {
@@ -147,40 +149,43 @@ final class ApplyDamage implements ApplyDamageInterface
         $system = $healthySystems[0];
         $system->setStatus(0);
         $system->setMode(ShipSystemModeEnum::MODE_OFF);
-        $this->shipSystemManager->handleDestroyedSystem($ship, $healthySystems[0]->getSystemType());
+        $this->shipSystemManager->handleDestroyedSystem($wrapper, $healthySystems[0]->getSystemType());
         //catch invalidsystemexception
 
         return ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
     }
 
-    private function damageRandomShipSystem(ShipInterface $ship, &$msg, $percent = null): void
+    private function damageRandomShipSystem(ShipWrapperInterface $wrapper, &$msg, $percent = null): void
     {
-        $healthySystems = $ship->getHealthySystems();
+        $healthySystems = $wrapper->get()->getHealthySystems();
         shuffle($healthySystems);
 
         if (count($healthySystems) > 0) {
             $system = $healthySystems[0];
 
-            $this->damageShipSystem($ship, $system, $percent ?? rand(1, 70), $msg);
-            //catch invalidsystemexception
+            $this->damageShipSystem($wrapper, $system, $percent ?? rand(1, 70), $msg);
         }
     }
 
-    public function damageShipSystem($ship, $system, $dmg, &$msg): bool
-    {
+    public function damageShipSystem(
+        ShipWrapperInterface $wrapper,
+        $system,
+        $dmg,
+        &$msg
+    ): bool {
         $status = $system->getStatus();
         $systemName = ShipSystemTypeEnum::getDescription($system->getSystemType());
 
         if ($status > $dmg) {
             $system->setStatus($status - $dmg);
-            $this->shipSystemManager->handleDamagedSystem($ship, $system->getSystemType());
+            $this->shipSystemManager->handleDamagedSystem($wrapper, $system->getSystemType());
             $msg[] = "- Folgendes System wurde beschädigt: " . $systemName;
 
             return false;
         } else {
             $system->setStatus(0);
             $system->setMode(ShipSystemModeEnum::MODE_OFF);
-            $this->shipSystemManager->handleDestroyedSystem($ship, $system->getSystemType());
+            $this->shipSystemManager->handleDestroyedSystem($wrapper, $system->getSystemType());
             $msg[] = "- Der Schaden zerstört folgendes System: " . $systemName;
 
             return true;

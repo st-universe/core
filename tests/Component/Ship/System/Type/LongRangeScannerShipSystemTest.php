@@ -128,7 +128,12 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->ship)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->system->handleDestruction($this->ship);
+        $this->system->handleDestruction($this->wrapper);
     }
 }

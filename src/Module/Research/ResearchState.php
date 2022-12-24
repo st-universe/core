@@ -114,7 +114,7 @@ final class ResearchState implements ResearchStateInterface
 
         $ship->setReactorLoad($ship->getReactorCapacity());
 
-        $eps = $wrapper->getEpsShipSystem();
+        $eps = $wrapper->getEpsSystemData();
         $eps->setEps($eps->getTheoreticalMaxEps())
             ->setBattery($eps->getMaxBattery())->update();
 

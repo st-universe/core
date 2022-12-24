@@ -102,7 +102,7 @@ final class AdventCycle implements AdventCycleInterface
             $adventDoor->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_ON);
             $adventDoor->setName('✨[b][color=red]Ad[/color][color=green]ve[/color][color=white]nt[/color][color=red]st[/color][color=green]ür[/color][color=white]ch[/color][color=red]en[/color][/b] 🎁🎄');
 
-            $eps = $shipWrapper->getEpsShipSystem();
+            $eps = $shipWrapper->getEpsSystemData();
             $eps->setEps($eps->getMaxEps())
                 ->setBattery($eps->getMaxBattery())
                 ->update();

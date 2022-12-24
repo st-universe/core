@@ -205,7 +205,7 @@
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shiplist_body">
-  <tr tal:define="ship wrapper/get; epssystem wrapper/getEpsShipSystem;"
+  <tr tal:define="ship wrapper/get; epssystem wrapper/getEpsSystemData;"
     tal:attributes="class string:row${repeat/wrapper/odd}">
     <td style="background-color: #000000 ! important">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
@@ -668,7 +668,7 @@
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
     <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-    <table class="tcal" tal:define="eps WRAPPER/getEpsShipSystem">
+    <table class="tcal" tal:define="eps WRAPPER/getEpsSystemData">
       <tr>
         <td>Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
@@ -1137,7 +1137,7 @@
   <tal:block tal:condition="exists:TARGETWRAPPER">
     <tal:block tal:define="targetShip TARGETWRAPPER/get">
       <tal:block tal:condition="not:targetShip/getIsDestroyed">
-        <tal:block tal:define="targetShipEps TARGETWRAPPER/getEpsShipSystem">
+        <tal:block tal:define="targetShipEps TARGETWRAPPER/getEpsSystemData">
           <table class="tcal" tal:condition="php:SHIP.isMatrixScannerHealthy() AND NOT SHIP.getCloakState()">
             <tr>
               <th colspan="2">Details</th>
@@ -1287,11 +1287,11 @@
   </table>
 </metal:block>
 <metal:block metal:define-macro="shipdetails">
-  <tal:block tal:define="SHIP WRAPPER/get; eps WRAPPER/getEpsShipSystem">
+  <tal:block tal:define="SHIP WRAPPER/get; eps WRAPPER/getEpsSystemData">
     <br />
     <div style="width: 100%">
       <div style="width: 33%; float: left;">
-        <table class="tcal" tal:define="hull WRAPPER/getHullShipSystem">
+        <table class="tcal" tal:define="hull WRAPPER/getHullSystemData">
           <tr>
             <th style="width: 20px; text-align: center;">
               <img src="assets/buttons/modul_1.png" />
@@ -1305,7 +1305,7 @@
           </tr>
         </table>
       </div>
-      <div style="width: 33%; float: left;" tal:define="shields WRAPPER/getShieldShipSystem">
+      <div style="width: 33%; float: left;" tal:define="shields WRAPPER/getShieldSystemData">
         <table class="tcal" tal:condition="shields">
           <tr>
             <th style="width: 20px; text-align: center;">

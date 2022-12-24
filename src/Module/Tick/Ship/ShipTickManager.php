@@ -491,7 +491,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         // @todo
         foreach ($this->shipRepository->getNpcShipsForTick() as $ship) {
             $wrapper = $this->shipWrapperFactory->wrapShip($ship);
-            $epsSystem = $wrapper->getEpsShipSystem();
+            $epsSystem = $wrapper->getEpsSystemData();
 
             if ($epsSystem !== null) {
                 $eps = (int) ceil($ship->getReactorOutput() - $wrapper->getEpsUsage());

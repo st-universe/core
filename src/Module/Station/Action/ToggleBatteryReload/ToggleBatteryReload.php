@@ -29,7 +29,7 @@ final class ToggleBatteryReload implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         $epsSystem->setReloadBattery(!$epsSystem->reloadBattery())->update();
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);

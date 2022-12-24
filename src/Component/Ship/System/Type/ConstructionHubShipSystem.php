@@ -55,9 +55,9 @@ final class ConstructionHubShipSystem extends AbstractShipSystemType implements 
         $this->stopShipyardQeue($ship);
     }
 
-    public function handleDestruction(ShipInterface $ship): void
+    public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
-        $this->stopShipyardQeue($ship);
+        $this->stopShipyardQeue($wrapper->get());
     }
 
     private function stopShipyardQeue(ShipInterface $ship): void

@@ -26,9 +26,9 @@ interface ShipSystemTypeInterface
 
     public function deactivate(ShipInterface $ship): void;
 
-    public function handleDestruction(ShipInterface $ship): void;
+    public function handleDestruction(ShipWrapperInterface $wrapper): void;
 
-    public function handleDamage(ShipInterface $ship): void;
+    public function handleDamage(ShipWrapperInterface $wrapper): void;
 
     public function getDefaultMode(): int;
 

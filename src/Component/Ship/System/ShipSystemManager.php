@@ -49,7 +49,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         if (!$force) {
             $this->checkActivationConditions($wrapper, $system, $shipSystemId, $time);
         }
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         $epsSystem->setEps($epsSystem->getEps() - $system->getEnergyUsageForActivation())->update();
 
         //cooldown
@@ -132,7 +132,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new InsufficientCrewException();
         }
 
-        if ($wrapper->getEpsShipSystem()->getEps() < $system->getEnergyUsageForActivation()) {
+        if ($wrapper->getEpsSystemData()->getEps() < $system->getEnergyUsageForActivation()) {
             throw new InsufficientEnergyException($system->getEnergyUsageForActivation());
         }
 
@@ -175,18 +175,18 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
     }
 
-    public function handleDestroyedSystem(ShipInterface $ship, int $shipSystemId): void
+    public function handleDestroyedSystem(ShipWrapperInterface $wrapper, int $shipSystemId): void
     {
         $system = $this->lookupSystem($shipSystemId);
 
-        $system->handleDestruction($ship);
+        $system->handleDestruction($wrapper);
     }
 
-    public function handleDamagedSystem(ShipInterface $ship, int $shipSystemId): void
+    public function handleDamagedSystem(ShipWrapperInterface $wrapper, int $shipSystemId): void
     {
         $system = $this->lookupSystem($shipSystemId);
 
-        $system->handleDamage($ship);
+        $system->handleDamage($wrapper);
     }
 
     public function getActiveSystems(ShipInterface $ship, bool $sort = false): array

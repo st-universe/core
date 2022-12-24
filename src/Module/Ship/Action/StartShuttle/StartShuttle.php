@@ -91,7 +91,7 @@ final class StartShuttle implements ActionControllerInterface
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
         }
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
@@ -157,7 +157,7 @@ final class StartShuttle implements ActionControllerInterface
             $plan->getId()
         );
 
-        $shuttleEps = $shuttleWrapper->getEpsShipSystem();
+        $shuttleEps = $shuttleWrapper->getEpsSystemData();
         $shuttleEps->setEps($shuttleEps->getMaxEps())->update();
 
         $shuttle = $shuttleWrapper->get();
@@ -176,7 +176,7 @@ final class StartShuttle implements ActionControllerInterface
 
         $this->shipRepository->save($shuttle);
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         $epsSystem->setEps($epsSystem->getEps() - $shuttleEps->getMaxEps())->update();
         if (
             $ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)

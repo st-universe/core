@@ -29,7 +29,9 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             if (count($targetPool) === 0) {
                 break;
             }
-            $target = $targetPool[array_rand($targetPool)]->get();
+
+            $targetWrapper = $targetPool[array_rand($targetPool)];
+            $target = $targetWrapper->get();
             if (
                 !$attacker->getTorpedoState() ||
                 $this->hasUnsufficientEnergy($wrapper, $attackingPhalanx) ||
@@ -72,7 +74,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
 
-            $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $target));
+            $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
             if ($target->getIsDestroyed()) {
                 unset($targetPool[$target->getId()]);
@@ -116,7 +118,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
     private function hasUnsufficientEnergy(?ShipWrapperInterface $wrapper, $attackingPhalanx): bool
     {
         if ($wrapper !== null) {
-            return $wrapper->getEpsShipSystem()->getEps() < $this->getProjectileWeaponEnergyCosts();
+            return $wrapper->getEpsSystemData()->getEps() < $this->getProjectileWeaponEnergyCosts();
         } else {
             return $attackingPhalanx->getEps() < $this->getProjectileWeaponEnergyCosts();
         }
@@ -125,7 +127,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
     private function reduceEps(?ShipWrapperInterface $wrapper, $attackingPhalanx): void
     {
         if ($wrapper !== null) {
-            $eps = $wrapper->getEpsShipSystem();
+            $eps = $wrapper->getEpsSystemData();
             $eps->setEps($eps->getEps() - $this->getProjectileWeaponEnergyCosts())->update();
         } else {
             $attackingPhalanx->setEps($attackingPhalanx->getEps() - $this->getProjectileWeaponEnergyCosts());

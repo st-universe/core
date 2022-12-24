@@ -865,7 +865,7 @@
 			</td>
 		</tr>
 	</table>
-	<tal:block tal:define="eps WRAPPER/getEpsShipSystem">
+	<tal:block tal:define="eps WRAPPER/getEpsSystemData">
 		<table class="tcal" tal:condition="php: eps && eps.getMaxBattery()">
 			<tr>
 				<th colspan="2">
@@ -1057,7 +1057,7 @@
 									</th>
 									<td style="vertical-align: middle; text-align: center;">
 										<span
-											tal:replace="structure wrapper/getHullShipSystem/getHullStatusBar">HULL</span>
+											tal:replace="structure wrapper/getHullSystemData/getHullStatusBar">HULL</span>
 									</td>
 									<td style="text-align: center; width: 60px;">
 										${ship/getHull}
@@ -1065,7 +1065,7 @@
 								</tr>
 							</table>
 						</div>
-						<div style="width: 33%; float: left;" tal:define="shields wrapper/getShieldShipSystem">
+						<div style="width: 33%; float: left;" tal:define="shields wrapper/getShieldSystemData">
 							<table class="tcal" tal:condition="shields">
 								<tr>
 									<th style="width: 20px; text-align: center;">
@@ -1080,7 +1080,7 @@
 								</tr>
 							</table>
 						</div>
-						<div style="width: 33%; float: left;" tal:define="eps wrapper/getEpsShipSystem">
+						<div style="width: 33%; float: left;" tal:define="eps wrapper/getEpsSystemData">
 							<table class="tcal" tal:condition="eps">
 								<tr>
 									<th style="text-align: center; width: 20px;">
@@ -1182,7 +1182,7 @@
 								</tal:block>
 							</td>
 						</tr>
-						<tr tal:define="epssystem WRAPPER/getEpsShipSystem">
+						<tr tal:define="epssystem WRAPPER/getEpsSystemData">
 							<td rowspan="2" tal:define="ship SHIP" style="vertical-align: middle; text-align: center;">
 								<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
 									<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />

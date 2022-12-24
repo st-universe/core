@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -178,7 +179,7 @@ class WarpdriveShipSystemTest extends StuTestCase
     public function testActivateActivatesAndDisablesTraktorbeamOnEnergyShortage(): void
     {
         $system = $this->mock(ShipSystemInterface::class);
-        $epsSystem = $this->mock(EpsShipSystem::class);
+        $epsSystem = $this->mock(EpsSystemData::class);
 
         $this->ship->shouldReceive('setDockedTo')
             ->with(null)
@@ -200,7 +201,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsShipSystem')
+        $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
             ->andReturn($epsSystem);
@@ -238,7 +239,7 @@ class WarpdriveShipSystemTest extends StuTestCase
     {
         $system = $this->mock(ShipSystemInterface::class);
         $traktorBeamShip = $this->mock(ShipInterface::class);
-        $epsSystem = $this->mock(EpsShipSystem::class);
+        $epsSystem = $this->mock(EpsSystemData::class);
 
         //DOCKING STUFF
         $this->ship->shouldReceive('setDockedTo')
@@ -268,7 +269,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
-        $this->wrapper->shouldReceive('getEpsShipSystem')
+        $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
             ->andReturn($epsSystem);

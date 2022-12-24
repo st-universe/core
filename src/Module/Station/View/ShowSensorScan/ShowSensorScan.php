@@ -120,7 +120,7 @@ final class ShowSensorScan implements ViewControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
             $game->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
             return;

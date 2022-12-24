@@ -44,9 +44,10 @@ final class ShuttleRampShipSystem extends AbstractShipSystemType implements Ship
         return 0;
     }
 
-    public function handleDestruction(ShipInterface $ship): void
+    public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         // delete shuttles
+        $ship = $wrapper->get();
         foreach ($ship->getStorage() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 $this->shipStorageManager->lowerStorage($ship, $stor->getCommodity(), $stor->getAmount());

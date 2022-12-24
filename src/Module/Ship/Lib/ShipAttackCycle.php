@@ -192,7 +192,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
             return false;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() === 0) {
             return false;
         }

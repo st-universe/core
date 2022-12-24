@@ -70,7 +70,7 @@ class ShipWrapperTest extends StuTestCase
         );
     }
 
-    public function testGetEpsShipSystemDataNotEmptyExpectDefaultValues(): void
+    public function testgetEpsSystemDataDataNotEmptyExpectDefaultValues(): void
     {
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_EPS)
@@ -85,7 +85,7 @@ class ShipWrapperTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $eps = $this->shipWrapper->getEpsShipSystem();
+        $eps = $this->shipWrapper->getEpsSystemData();
 
         $this->assertEquals(0, $eps->getBattery());
         $this->assertEquals(0, $eps->getMaxBattery());
@@ -93,7 +93,7 @@ class ShipWrapperTest extends StuTestCase
         $this->assertEquals(false, $eps->reloadBattery());
     }
 
-    public function testGetEpsShipSystemDataNotEmptyExpectCorrectValues(): void
+    public function testgetEpsSystemDataDataNotEmptyExpectCorrectValues(): void
     {
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_EPS)
@@ -116,8 +116,8 @@ class ShipWrapperTest extends StuTestCase
             ');
 
         // call two times to check if cache works
-        $eps = $this->shipWrapper->getEpsShipSystem();
-        $eps = $this->shipWrapper->getEpsShipSystem();
+        $eps = $this->shipWrapper->getEpsSystemData();
+        $eps = $this->shipWrapper->getEpsSystemData();
 
         $this->assertEquals(13, $eps->getEps());
         $this->assertEquals(27, $eps->getTheoreticalMaxEps());

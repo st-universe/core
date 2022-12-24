@@ -3,12 +3,15 @@
 namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Lib\DamageWrapper;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetField;
-use Stu\Orm\Entity\ShipInterface;
 
 interface ApplyDamageInterface
 {
-    public function damage(DamageWrapper $damage_wrapper, ShipInterface $ship): array;
+    public function damage(
+        DamageWrapper $damage_wrapper,
+        ShipWrapperInterface $shipWrapper
+    ): array;
 
     public function damageBuilding(
         DamageWrapper $damage_wrapper,
@@ -16,5 +19,10 @@ interface ApplyDamageInterface
         $isOrbitField
     ): array;
 
-    public function damageShipSystem($ship, $system, $dmg, &$msg): bool;
+    public function damageShipSystem(
+        ShipWrapperInterface $wrapper,
+        $system,
+        $dmg,
+        &$msg
+    ): bool;
 }

@@ -68,7 +68,7 @@ final class UndockShip implements ActionControllerInterface
                     continue;
                 }
 
-                $epsSystem = $wrapper->getEpsShipSystem();
+                $epsSystem = $wrapper->getEpsSystemData();
                 if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                     $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                     continue;
@@ -93,7 +93,7 @@ final class UndockShip implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() == 0) {
             $game->addInformation('Zum Abdocken wird 1 Energie benötigt');
             return;

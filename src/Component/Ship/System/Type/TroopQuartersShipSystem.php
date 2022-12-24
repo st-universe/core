@@ -34,9 +34,9 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
-    public function handleDestruction(ShipInterface $ship): void
+    public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
-        foreach ($ship->getCrewlist() as $crewAssignment) {
+        foreach ($wrapper->get()->getCrewlist() as $crewAssignment) {
             if ($crewAssignment->getSlot() === null) {
                 $this->crewRepository->delete($crewAssignment->getCrew());
             }

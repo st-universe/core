@@ -90,7 +90,7 @@ final class SalvageCrew implements ActionControllerInterface
         if ($tradepost->getCrewCountOfCurrentUser() === 0) {
             throw new SanityCheckException('no crew to rescue');
         }
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() < 1) {
             $game->addInformation(sprintf(_('Zum Bergen der Crew wird %d Energie benötigt'), 1));
             return;

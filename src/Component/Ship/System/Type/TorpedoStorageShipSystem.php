@@ -23,8 +23,9 @@ final class TorpedoStorageShipSystem extends AbstractShipSystemType implements S
         //passive system
     }
 
-    public function handleDestruction(ShipInterface $ship): void
+    public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
         if ($ship->getTorpedoCount() > 0) {
             $ship->setIsDestroyed(true);
         }

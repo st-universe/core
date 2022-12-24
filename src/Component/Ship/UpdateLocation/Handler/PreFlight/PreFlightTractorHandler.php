@@ -58,7 +58,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
         if ($abortionMsg === null) {
 
             //Traktorstrahl Kosten
-            if ($wrapper->getEpsShipSystem()->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
+            if ($wrapper->getEpsSystemData()->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
                 $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
                 $this->addMessageInternal(sprintf(
                     _('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'),

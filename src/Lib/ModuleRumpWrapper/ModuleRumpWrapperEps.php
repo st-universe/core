@@ -22,6 +22,6 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
 
     public function apply(ShipInterface $ship): void
     {
-        $this->wrapper->getEpsShipSystem()->setMaxEps($this->getValue())->update();
+        $this->wrapper->getEpsSystemData()->setMaxEps($this->getValue())->update();
     }
 }

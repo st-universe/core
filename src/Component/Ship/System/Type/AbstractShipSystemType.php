@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System\Type;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
@@ -57,12 +58,12 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         return 1;
     }
 
-    public function handleDestruction(ShipInterface $ship): void
+    public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
         //nothing to do here
     }
 
-    public function handleDamage(ShipInterface $ship): void
+    public function handleDamage(ShipWrapperInterface $wrapper): void
     {
         //nothing to do here
     }

@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System\Utility;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
@@ -43,8 +44,9 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return null;
     }
 
-    public function tractorSystemSurvivedTowing(ShipInterface $ship, ShipInterface $tractoredShip, &$informations): bool
+    public function tractorSystemSurvivedTowing(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip, &$informations): bool
     {
+        $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();
         $payload = $ship->getTractorPayload();
 
@@ -52,7 +54,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         if (($mass > 0.9 * $payload) && rand(1, 10) === 1) {
             $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM);
 
-            if ($this->applyDamage->damageShipSystem($ship, $system, rand(5, 25), $msg)) {
+            if ($this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $msg)) {
                 //tractor destroyed
                 $informations[] = sprintf(
                     _('Traktoremitter der %s wurde zerstört. Die %s wird nicht weiter gezogen'),

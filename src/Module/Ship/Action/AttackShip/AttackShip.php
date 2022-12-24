@@ -117,7 +117,7 @@ final class AttackShip implements ActionControllerInterface
         if ($target->getRump()->isTrumfield()) {
             return;
         }
-        if ($wrapper->getEpsShipSystem()->getEps() == 0) {
+        if ($wrapper->getEpsSystemData()->getEps() == 0) {
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }

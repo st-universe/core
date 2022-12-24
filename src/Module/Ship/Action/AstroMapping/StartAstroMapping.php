@@ -76,7 +76,7 @@ final class StartAstroMapping implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
 
         // check for energy
         if ($epsSystem->getEps() < AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST) {

@@ -28,10 +28,8 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
          * @var ShipInterface
          */
         $attacker = $wrapper !== null ? $wrapper->get() : $attackingPhalanx;
-        /**
-         * @var ShipInterface
-         */
-        $target = $targetPool[array_rand($targetPool)]->get();
+
+        $targetWrapper = $targetPool[array_rand($targetPool)];
 
         for ($i = 1; $i <= $attacker->getRump()->getPhaserVolleys(); $i++) {
             if (count($targetPool) === 0) {
@@ -42,8 +40,13 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             }
             $this->reduceEps($wrapper, $attackingPhalanx);
             if ($this->getEnergyWeapon($attacker)->getFiringMode() === self::FIRINGMODE_RANDOM) {
-                $target = $targetPool[array_rand($targetPool)]->get();
+                $targetWrapper = $targetPool[array_rand($targetPool)];
             }
+
+            /**
+             * @var ShipInterface
+             */
+            $target = $targetWrapper->get();
 
             $msg[] = sprintf(
                 "Die %s feuert mit einem %s auf die %s",
@@ -68,7 +71,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setHullDamageFactor($attacker->getRump()->getPhaserHullDamageFactor());
             $damage_wrapper->setIsPhaserDamage(true);
 
-            $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $target));
+            $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
             if ($target->getIsDestroyed()) {
                 if ($isAlertRed) {
@@ -119,7 +122,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     private function hasUnsufficientEnergy(?ShipWrapperInterface $wrapper, $attackingPhalanx): bool
     {
         if ($wrapper !== null) {
-            return $wrapper->getEpsShipSystem()->getEps() < $this->getEnergyWeaponEnergyCosts();
+            return $wrapper->getEpsSystemData()->getEps() < $this->getEnergyWeaponEnergyCosts();
         } else {
             return $attackingPhalanx->getEps() < $this->getEnergyWeaponEnergyCosts();
         }
@@ -128,7 +131,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     private function reduceEps(?ShipWrapperInterface $wrapper, $attackingPhalanx): void
     {
         if ($wrapper !== null) {
-            $eps = $wrapper->getEpsShipSystem();
+            $eps = $wrapper->getEpsSystemData();
             $eps->setEps($eps->getEps() - $this->getEnergyWeaponEnergyCosts())->update();
         } else {
             $attackingPhalanx->setEps($attackingPhalanx->getEps() - $this->getEnergyWeaponEnergyCosts());

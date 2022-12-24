@@ -170,7 +170,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $ship = $wrapper->get();
         $shipId = $ship->getId();
         $userId = $user->getId();
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
+
+        if ($epsSystem === null) {
+            return;
+        }
 
         $sectorString = $colony->getSX() . '|' . $colony->getSY();
         if ($colony->isInSystem()) {

@@ -76,7 +76,7 @@ final class BuildShipyardShip implements ActionControllerInterface
             return;
         }
 
-        $epsSystem = $wrapper->getEpsShipSystem();
+        $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() < $rump->getEpsCost()) {
             $game->addInformationf(
                 _('Zum Bau wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
