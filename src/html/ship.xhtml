@@ -1324,7 +1324,7 @@
 										</ul>
 										<br />
 										<div style="display: flex;">
-											<div style="width: 50%; float: left;" tal:condition="FIRST_MANAGE_SHIP">
+											<div style="width: 70%; float: left;" tal:condition="FIRST_MANAGE_SHIP">
 												<a href="javascript:void(0);" onclick="showBeamFromWindow();"
 													onmouseover="cp('beamfrom','buttons/b_down2')"
 													onmouseout="cp('beamfrom','buttons/b_down1')"><img
@@ -1343,12 +1343,13 @@
 														href="station.php?SHOW_SHIP_REPAIR=1&id=${SHIP/getId}">Reparatur</a>
 												</tal:block>
 											</div>
-											<div style="width: 50%; float: left;">
+											<div style="width: 30%; float: left;">
 												<a href="javascript:void(0);" onclick="editDockPrivileges()"
 													onmouseover="cp('dockPrivButton','buttons/dock2')"
-													onmouseout="cp('dockPrivButton','buttons/dock1')">
-													<img src="/assets/buttons/dock1.png" name="dockPrivButton"
-														title="Dockrechte bearbeiten" />Dockrechte</a>
+													onmouseout="cp('dockPrivButton','buttons/dock1')"
+													title="Dockrechte bearbeiten">
+													<img src="/assets/buttons/dock1.png"
+														name="dockPrivButton" />Dockrechte</a>
 											</div>
 										</div>
 									</div>
