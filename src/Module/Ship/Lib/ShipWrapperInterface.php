@@ -6,6 +6,7 @@ use Stu\Component\Ship\System\Type\EpsShipSystem;
 use Stu\Component\Ship\System\Type\HullShipSystem;
 use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
 use Stu\Component\Ship\System\Type\ShieldShipSystem;
+use Stu\Component\Ship\System\Type\TrackerShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
@@ -51,4 +52,6 @@ interface ShipWrapperInterface
     public function getEpsShipSystem(): ?EpsShipSystem;
 
     public function getProjectileWeaponShipSystem(): ?ProjectileWeaponShipSystem;
+
+    public function getTrackerShipSystem(): ?TrackerShipSystem;
 }

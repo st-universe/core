@@ -15,6 +15,7 @@ use Stu\Component\Ship\System\Type\EpsShipSystem;
 use Stu\Component\Ship\System\Type\HullShipSystem;
 use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
 use Stu\Component\Ship\System\Type\ShieldShipSystem;
+use Stu\Component\Ship\System\Type\TrackerShipSystem;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -344,6 +345,14 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_TORPEDO,
             new ProjectileWeaponShipSystem()
+        );
+    }
+
+    public function getTrackerShipSystem(): ?TrackerShipSystem
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_TRACKER,
+            new TrackerShipSystem($this->shipRepository, $this->shipSystemRepository)
         );
     }
 

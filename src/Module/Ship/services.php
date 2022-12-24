@@ -139,6 +139,7 @@ use Stu\Module\Ship\Action\StartShuttle\StartShuttle;
 use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\ToggleFleetVisibility\ToggleFleetVisibility;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
+use Stu\Module\Ship\Action\TrackShip\TrackShip;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Ship\Action\Transwarp\Transwarp;
@@ -335,7 +336,8 @@ return [
         Transwarp::ACTION_IDENTIFIER => autowire(Transwarp::class),
         ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class),
         SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class),
-        OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class)
+        OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
+        TrackShip::ACTION_IDENTIFIER => autowire(TrackShip::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
