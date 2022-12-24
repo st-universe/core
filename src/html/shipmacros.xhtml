@@ -1155,14 +1155,16 @@
             <td>Schilde</td>
             <td>${SHIELD_PERCENTAGE}%</td>
           </tr>
-          <tr>
-            <td>Energie</td>
-            <td>${targetShipEps/getEps}</td>
-          </tr>
-          <tr>
-            <td>Ersatzbatterie</td>
-            <td>${targetShipEps/getBattery}</td>
-          </tr>
+          <tal:block tal:condition="targetShipEps">
+            <tr>
+              <td>Energie</td>
+              <td>${targetShipEps/getEps}</td>
+            </tr>
+            <tr>
+              <td>Ersatzbatterie</td>
+              <td>${targetShipEps/getBattery}</td>
+            </tr>
+          </tal:block>
           <tr>
             <td>Reaktor</td>
             <td>${REACTOR_PERCENTAGE}%</td>
