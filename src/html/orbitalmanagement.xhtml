@@ -58,8 +58,8 @@
                   </div>
                 </td>
                 <td tal:condition="not:wrapper/isOwnedByCurrentUser"> </td>
-                <td>
-                  <div tal:define="eps wrapper/getEpsShipSystem">
+                <td tal:define="eps wrapper/getEpsShipSystem">
+                  <div tal:condition="eps">
                     <img class="center" onclick="this.up('div').down('input').value=${eps/getMaxBattery}"
                       src="assets/buttons/batt.png" title="Ersatzbatterie" />
                     <input type="text" size="3" name="batt[${ship/getId}]" />
