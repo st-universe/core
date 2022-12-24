@@ -175,7 +175,11 @@ final class ShipTick implements ShipTickInterface
         $batteryReload = $ship->isBase()
             && $eps->reloadBattery()
             && $newEps > $eps->getEps()
-            ? min((int) ceil($eps->getMaxBattery() / 10), $newEps - $eps->getEps()) : 0;
+            ? min(
+                (int) ceil($eps->getMaxBattery() / 10),
+                $newEps - $eps->getEps(),
+                $eps->getMaxBattery() - $eps->getBattery()
+            ) : 0;
 
         $newEps -= $batteryReload;
         if ($newEps > $eps->getMaxEps()) {
