@@ -35,11 +35,12 @@ final class ShowSingleKn implements ViewControllerInterface
         $user = $game->getUser();
         $post = $this->knPostRepository->find($this->showSingleKnRequest->getPostId());
 
+        $game->setPageTitle(_('Kommunikationsnetzwerk'));
+        $game->setTemplateFile('html/comm.xhtml');
+        $game->appendNavigationPart('comm.php', _('KommNet'));
+
         $knPostings = [];
         if ($post !== null) {
-            $game->setPageTitle(_('Kommunikationsnetzwerk'));
-            $game->setTemplateFile('html/comm.xhtml');
-            $game->appendNavigationPart('comm.php', _('KommNet'));
 
             $knPostings[] = $this->knFactory->createKnItem(
                 $post,
