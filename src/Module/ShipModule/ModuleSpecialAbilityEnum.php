@@ -16,6 +16,8 @@ final class ModuleSpecialAbilityEnum
     public const MODULE_SPECIAL_TORPEDO_STORAGE = 9;
     public const MODULE_SPECIAL_SHUTTLE_RAMP = 10;
     public const MODULE_SPECIAL_TRANSWARP_COIL = 11;
+    public const MODULE_SPECIAL_HIROGEN_TRACKER = 12;
+    public const MODULE_SPECIAL_THOLIAN_WEB = 13;
 
     public static function getDescription(int $specialId): string
     {
@@ -40,6 +42,10 @@ final class ModuleSpecialAbilityEnum
                 return _('Shuttle-Rampe');
             case static::MODULE_SPECIAL_TRANSWARP_COIL:
                 return _('Transwarpspule');
+            case static::MODULE_SPECIAL_HIROGEN_TRACKER:
+                return _('Tracker-Device');
+            case static::MODULE_SPECIAL_THOLIAN_WEB:
+                return _('Tholianischer Netzemitter');
         }
         return '';
     }

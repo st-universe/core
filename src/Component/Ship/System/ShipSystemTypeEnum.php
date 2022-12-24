@@ -34,6 +34,8 @@ final class ShipSystemTypeEnum
     public const SYSTEM_UPLINK = 24;
     public const SYSTEM_FUSION_REACTOR = 25;
     public const SYSTEM_TRANSWARP_COIL = 26;
+    public const SYSTEM_TRACKER = 27;
+    public const SYSTEM_THOLIAN_WEB = 28;
 
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
@@ -109,6 +111,10 @@ final class ShipSystemTypeEnum
                 return _('Fusionsreaktor');
             case ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL:
                 return _('Transwarpspule');
+            case ShipSystemTypeEnum::SYSTEM_TRACKER:
+                return _('Tracker');
+            case ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB:
+                return _('Netzemitter');
         }
         return '';
     }
