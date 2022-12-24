@@ -59,14 +59,12 @@ final class EditKnPost implements ActionControllerInterface
         if ($plotId > 0) {
             $plot = $this->rpgPlotRepository->find($plotId);
             if ($plot !== null && $this->rpgPlotMemberRepository->getByPlotAndUser($plotId, $userId) !== null) {
-                $post->setPlotId($plot->getId());
+                $post->setRpgPlot($plot);
             }
         } else {
-            if ($post->getPlotId() > 0) {
-                $post->setPlotId(0);
-            }
-            $post->setTitle($title);
+            $post->setRpgPlot(null);
         }
+        $post->setTitle($title);
         $post->setText($text);
 
         if (mb_strlen($text) < 10) {

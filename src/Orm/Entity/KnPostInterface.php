@@ -36,8 +36,6 @@ interface KnPostInterface
 
     public function getPlotId(): ?int;
 
-    public function setPlotId(int $plotId): KnPostInterface;
-
     public function getRpgPlot(): ?RpgPlotInterface;
 
     public function setRpgPlot(?RpgPlotInterface $rpgPlot): KnPostInterface;

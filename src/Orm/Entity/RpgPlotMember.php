@@ -48,13 +48,6 @@ class RpgPlotMember implements RpgPlotMemberInterface
         return $this->plot_id;
     }
 
-    public function setPlotId(int $plotId): RpgPlotMemberInterface
-    {
-        $this->plot_id = $plotId;
-
-        return $this;
-    }
-
     public function getUserId(): int
     {
         return $this->user_id;

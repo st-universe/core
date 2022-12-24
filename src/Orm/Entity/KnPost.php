@@ -160,13 +160,6 @@ class KnPost implements KnPostInterface
         return $this->plot_id;
     }
 
-    public function setPlotId(int $plotId): KnPostInterface
-    {
-        $this->plot_id = $plotId;
-
-        return $this;
-    }
-
     public function getRpgPlot(): ?RpgPlotInterface
     {
         return $this->rpgPlot;
@@ -175,10 +168,6 @@ class KnPost implements KnPostInterface
     public function setRpgPlot(?RpgPlotInterface $rpgPlot): KnPostInterface
     {
         $this->rpgPlot = $rpgPlot;
-
-        if ($rpgPlot !== null) {
-            $this->setPlotId($rpgPlot->getId());
-        }
 
         return $this;
     }

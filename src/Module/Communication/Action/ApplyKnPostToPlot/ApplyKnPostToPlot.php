@@ -75,7 +75,7 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
         $isOwnPost = $post->getUserId() === $userId;
 
         if ($isOwnPost) {
-            $post->setPlotId($plot->getId());
+            $post->setRpgPlot($plot);
             $this->knPostRepository->save($post);
 
             $this->notifyPlotMembers($post, $plot);

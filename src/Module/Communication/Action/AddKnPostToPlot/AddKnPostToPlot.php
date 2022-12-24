@@ -72,7 +72,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
             return;
         }
 
-        $post->setPlotId($plotId);
+        $post->setRpgPlot($plot);
         $this->knPostRepository->save($post);
         $this->knPostToPlotApplicationRepository->delete($application);
 

@@ -8,8 +8,6 @@ interface RpgPlotMemberInterface
 
     public function getPlotId(): int;
 
-    public function setPlotId(int $plotId): RpgPlotMemberInterface;
-
     public function getUserId(): int;
 
     public function getRpgPlot(): RpgPlotInterface;
