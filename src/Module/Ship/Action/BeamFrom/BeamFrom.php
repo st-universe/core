@@ -12,6 +12,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -27,14 +28,18 @@ final class BeamFrom implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipRepository = $shipRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -79,7 +84,11 @@ final class BeamFrom implements ActionControllerInterface
         // check for fleet option
         if (request::postInt('isfleet') && $ship->getFleet() !== null) {
             foreach ($ship->getFleet()->getShips() as $ship) {
-                $this->beamFromTarget($wrapper, $target, $game);
+                $this->beamFromTarget(
+                    $this->shipWrapperFactory->wrapShip($ship),
+                    $target,
+                    $game
+                );
             }
         } else {
             $this->beamFromTarget($wrapper, $target, $game);

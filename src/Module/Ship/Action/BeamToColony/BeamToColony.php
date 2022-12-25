@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
@@ -32,18 +33,22 @@ final class BeamToColony implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipRepository = $shipRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -84,7 +89,11 @@ final class BeamToColony implements ActionControllerInterface
         // check for fleet option
         if (request::postInt('isfleet') && $ship->getFleet() !== null) {
             foreach ($ship->getFleet()->getShips() as $ship) {
-                $this->beamToTarget($wrapper, $target, $game);
+                $this->beamToTarget(
+                    $this->shipWrapperFactory->wrapShip($ship),
+                    $target,
+                    $game
+                );
             }
         } else {
             $this->beamToTarget($wrapper, $target, $game);
