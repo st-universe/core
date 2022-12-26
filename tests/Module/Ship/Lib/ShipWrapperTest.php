@@ -8,6 +8,7 @@ use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
+use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -74,6 +75,20 @@ class ShipWrapperTest extends StuTestCase
             $this->shipWrapperFactory,
             $this->shipSystemDataFactory
         );
+    }
+
+    public function testgetHullSystemData(): void
+    {
+        $hullSystemData = new HullSystemData();
+
+        $this->shipSystemDataFactory->shouldReceive('createSystemData')
+            ->with(ShipSystemTypeEnum::SYSTEM_HULL, $this->shipWrapperFactory)
+            ->once()
+            ->andReturn($hullSystemData);
+
+        $hull = $this->shipWrapper->getHullSystemData();
+
+        $this->assertEquals($hullSystemData, $hull);
     }
 
     public function testgetEpsSystemDataReturnNullIfSystemNotFound(): void
