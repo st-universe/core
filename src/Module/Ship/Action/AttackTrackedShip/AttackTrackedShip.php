@@ -82,6 +82,11 @@ final class AttackTrackedShip implements ActionControllerInterface
             return;
         }
 
+        if (!$ship->canAttack()) {
+            $game->addInformation(_('Waffen sind offline'));
+            return;
+        }
+
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
@@ -107,6 +112,8 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
 
         $isTargetBase = $target->isBase();
+        $isShipWarped = $ship->getWarpState();
+        $isTargetWarped = $target->getWarpState();
 
         [$attacker, $defender, $fleet] = $this->getAttackerDefender($ship, $target);
 
@@ -129,16 +136,14 @@ final class AttackTrackedShip implements ActionControllerInterface
 
         $msg = $this->shipAttackCycle->getMessages();
 
-        if ($isActiveTractorShipWarped) {
-            //Alarm-Rot check for ship
-            if (!$ship->getIsDestroyed()) {
-                $msg = array_merge($msg, $this->alertRedHelper->doItAll($ship, null));
-            }
+        //Alarm-Rot check for ship
+        if ($isShipWarped && !$ship->getIsDestroyed()) {
+            $msg = array_merge($msg, $this->alertRedHelper->doItAll($ship, null));
+        }
 
-            //Alarm-Rot check for traktor ship
-            if (!$target->getIsDestroyed()) {
-                $msg = array_merge($msg, $this->alertRedHelper->doItAll($target, null));
-            }
+        //Alarm-Rot check for traktor ship
+        if ($isTargetWarped && !$target->getIsDestroyed()) {
+            $msg = array_merge($msg, $this->alertRedHelper->doItAll($target, null));
         }
 
         if ($ship->getIsDestroyed()) {
