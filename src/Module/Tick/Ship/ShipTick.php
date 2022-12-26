@@ -417,9 +417,9 @@ final class ShipTick implements ShipTickInterface
             case 0:
                 return _('Der Ursprung kann nicht identifiziert werden');
             case 1:
-                return sprintf(_('Der Ursprung lässt auf %s schließen', $user->getName()));
+                return sprintf(_('Der Ursprung lässt auf %s schließen'), $user->getName());
             case 2:
-                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist', $user->getFaction()->getName()));
+                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction()->getName());
         }
     }
 
