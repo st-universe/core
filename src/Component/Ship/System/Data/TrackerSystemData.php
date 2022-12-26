@@ -60,7 +60,7 @@ class TrackerSystemData extends AbstractSystemData
 
     public function isUseable(): bool
     {
-        if ($this->getTargetWrapper() !== null) {
+        if ($this->targetId !== null) {
             return false;
         }
 

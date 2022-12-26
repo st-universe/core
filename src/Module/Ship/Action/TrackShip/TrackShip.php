@@ -64,7 +64,7 @@ final class TrackShip implements ActionControllerInterface
         $eps = $wrapper->getEpsSystemData();
         $tracker = $wrapper->getTrackerSystemData();
 
-        if ($tracker === null || $tracker->getTargetWrapper() !== null) {
+        if ($tracker === null || $tracker->targetId !== null) {
             return;
         }
 

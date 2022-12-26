@@ -27,7 +27,7 @@ final class LongRangeScannerShipSystem extends AbstractShipSystemType implements
         $trackerData = $wrapper->getTrackerSystemData();
 
         //not possible if tracker active
-        if ($trackerData !== null && $trackerData->getTargetWrapper() !== null) {
+        if ($trackerData !== null && $trackerData->targetId !== null) {
             $reason = _('der Tracker aktiv ist');
             return false;
         }

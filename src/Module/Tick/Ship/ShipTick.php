@@ -20,6 +20,7 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -196,6 +197,9 @@ final class ShipTick implements ShipTickInterface
 
         $this->checkForFinishedAstroMapping($ship);
 
+        //update tracker status
+        $this->doTrackerDeviceStuff($wrapper);
+
         $this->shipRepository->save($ship);
 
         $this->sendMessages($ship);
@@ -356,6 +360,66 @@ final class ShipTick implements ShipTickInterface
                     }
                 }
             }
+        }
+    }
+
+    private function doTrackerDeviceStuff(ShipWrapperInterface $wrapper): void
+    {
+        $ship = $wrapper->get();
+        $tracker = $wrapper->getTrackerSystemData();
+
+        if ($tracker === null || $tracker->targetId === null) {
+            return;
+        }
+
+        $target = $tracker->getTargetWrapper()->get();
+        $remainingTicks = $tracker->getRemainingTicks();
+
+        $reduceByTicks = (int)ceil((abs($ship->getCx() - $target->getCx()) +  abs($ship->getCy() - $target->getCy())) / 50);
+
+        //reduce remaining ticks
+        if ($remainingTicks > $reduceByTicks) {
+            $tracker->setRemainingTicks($remainingTicks - $reduceByTicks)->update();
+        } else {
+            $tracker->setTarget(null)->update();
+
+            if ($target->getUser() !== $ship->getUser()) {
+
+                //send pm to target owner
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $target->getUser()->getId(),
+                    sprintf(
+                        'Die Crew der %s hat einen Transponder gefunden und deaktiviert. %s',
+                        $target->getName(),
+                        $this->getTrackerSource($ship->getUser())
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+
+                //send pm to tracker owner
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $ship->getUser()->getId(),
+                    sprintf(
+                        'Die %s hat die Verbindung zum Tracker verloren',
+                        $ship->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+            }
+        }
+    }
+
+    private function getTrackerSource(UserInterface $user): string
+    {
+        switch (rand(0, 2)) {
+            case 0:
+                return _('Der Ursprung kann nicht identifiziert werden');
+            case 1:
+                return sprintf(_('Der Ursprung lässt auf %s schließen', $user->getName()));
+            case 2:
+                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist', $user->getFaction()->getName()));
         }
     }
 

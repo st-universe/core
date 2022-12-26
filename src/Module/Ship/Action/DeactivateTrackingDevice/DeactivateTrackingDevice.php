@@ -42,7 +42,7 @@ final class DeactivateTrackingDevice implements ActionControllerInterface
 
         $tracker = $wrapper->getTrackerSystemData();
 
-        if ($tracker === null || $tracker->getTargetWrapper() === null) {
+        if ($tracker === null || $tracker->targetId === null) {
             return;
         }
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACKER, $game);

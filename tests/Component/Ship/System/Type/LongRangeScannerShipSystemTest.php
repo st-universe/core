@@ -11,9 +11,12 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\StuTestCase;
 
 class LongRangeScannerShipSystemTest extends StuTestCase
@@ -113,18 +116,18 @@ class LongRangeScannerShipSystemTest extends StuTestCase
 
     public function testCheckDeactivationConditionsReturnsFalseIfTrackerActive(): void
     {
-        $trackerSystemData = $this->mock(TrackerSystemData::class);
-        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+        $trackerSystemData = new TrackerSystemData(
+            $this->mock(ShipRepositoryInterface::class),
+            $this->mock(ShipSystemRepositoryInterface::class),
+            $this->mock(ShipWrapperFactoryInterface::class)
+        );
+        $trackerSystemData->setTarget(42);
 
         //wrapper
         $this->wrapper->shouldReceive('getTrackerSystemData')
             ->withNoArgs()
             ->once()
             ->andReturn($trackerSystemData);
-        $trackerSystemData->shouldReceive('getTargetWrapper')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($targetWrapper);
 
         $reason = null;
         $this->assertFalse(

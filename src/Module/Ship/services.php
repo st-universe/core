@@ -45,6 +45,7 @@ use Stu\Module\Ship\Action\AstroMapping\PlanAstroMapping;
 use Stu\Module\Ship\Action\AstroMapping\StartAstroMapping;
 use Stu\Module\Ship\Action\AttackShip\AttackShip;
 use Stu\Module\Ship\Action\AttackBuilding\AttackBuilding;
+use Stu\Module\Ship\Action\AttackTrackedShip\AttackTrackedShip;
 use Stu\Module\Ship\Action\BeamFrom\BeamFrom;
 use Stu\Module\Ship\Action\BeamFromColony\BeamFromColony;
 use Stu\Module\Ship\Action\BeamTo\BeamTo;
@@ -289,6 +290,7 @@ return [
         SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
         AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
         AttackShip::ACTION_IDENTIFIER => autowire(AttackShip::class),
+        AttackTrackedShip::ACTION_IDENTIFIER => autowire(AttackTrackedShip::class),
         InterceptShip::ACTION_IDENTIFIER => autowire(InterceptShip::class),
         DockShip::ACTION_IDENTIFIER => autowire(DockShip::class),
         DoTachyonScan::ACTION_IDENTIFIER => autowire(DoTachyonScan::class),
