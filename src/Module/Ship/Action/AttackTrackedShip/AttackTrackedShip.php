@@ -59,8 +59,8 @@ final class AttackTrackedShip implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $shipId = request::indInt('id');
-        $targetId = request::postIntFatal('target');
+        $shipId = request::getIntFatal('id');
+        $targetId = request::getIntFatal('target');
 
         $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
