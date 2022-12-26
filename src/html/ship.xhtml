@@ -1045,7 +1045,7 @@
 									</th>
 									<td style="vertical-align: middle; text-align: center;">
 										<span
-											tal:replace="structure wrapper/getHullSystemData/getHullStatusBar">HULL</span>
+											tal:replace="structure targetwrapper/getHullSystemData/getHullStatusBar">HULL</span>
 									</td>
 									<td style="text-align: center; width: 60px;">
 										${ship/getHull}
@@ -1053,7 +1053,7 @@
 								</tr>
 							</table>
 						</div>
-						<div style="width: 33%; float: left;" tal:define="shields wrapper/getShieldSystemData">
+						<div style="width: 33%; float: left;" tal:define="shields targetwrapper/getShieldSystemData">
 							<table class="tcal" tal:condition="shields">
 								<tr>
 									<th style="width: 20px; text-align: center;">
@@ -1068,7 +1068,7 @@
 								</tr>
 							</table>
 						</div>
-						<div style="width: 33%; float: left;" tal:define="eps wrapper/getEpsSystemData">
+						<div style="width: 33%; float: left;" tal:define="eps targetwrapper/getEpsSystemData">
 							<table class="tcal" tal:condition="eps">
 								<tr>
 									<th style="text-align: center; width: 20px;">
