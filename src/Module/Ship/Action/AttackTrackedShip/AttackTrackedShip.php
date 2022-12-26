@@ -122,7 +122,7 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
         $this->privateMessageSender->send(
             $userId,
-            $$target->getUser()->getId(),
+            $target->getUser()->getId(),
             $pm,
             $isTargetBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
