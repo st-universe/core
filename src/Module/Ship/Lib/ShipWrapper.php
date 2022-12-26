@@ -376,7 +376,10 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private function getSpecificShipSystem(int $systemType)
     {
-        if (!$this->get()->hasShipSystem($systemType)) {
+        if (
+            $systemType !== ShipSystemTypeEnum::SYSTEM_HULL
+            && !$this->get()->hasShipSystem($systemType)
+        ) {
             return null;
         }
 
