@@ -45,6 +45,7 @@ use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Ship\System\Type\TrackerShipSystem;
 use Stu\Component\Ship\System\Type\TranswarpCoilShipSystem;
 use Stu\Component\Ship\System\Type\UplinkShipSystem;
+use Stu\Component\Ship\System\Type\WebEmitterShipSystem;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Component\Ship\UpdateLocation\Handler\PostFlight\AstroMappingHandler;
@@ -96,7 +97,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_UPLINK => autowire(UplinkShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => autowire(FusionReactorShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL => autowire(TranswarpCoilShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_TRACKER => autowire(TrackerShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_TRACKER => autowire(TrackerShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB => autowire(WebEmitterShipSystem::class)
         ],
         autowire(StuTime::class)
     ),

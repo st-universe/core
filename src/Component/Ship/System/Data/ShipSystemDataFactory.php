@@ -42,6 +42,12 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                     $this->shipSystemRepository,
                     $shipWrapperFactory
                 );
+            case ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB:
+                return  new WebEmitterSystemData(
+                    $this->shipRepository,
+                    $this->shipSystemRepository,
+                    $shipWrapperFactory
+                );
         }
 
         throw new InvalidSystemException(sprintf('no system data present for systemType: %d', $systemType));

@@ -13,6 +13,7 @@ use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
+use Stu\Component\Ship\System\Data\WebEmitterSystemData;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -371,6 +372,13 @@ final class ShipWrapper implements ShipWrapperInterface
     {
         return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_TRACKER
+        );
+    }
+
+    public function getWebEmitterSystemData(): ?WebEmitterSystemData
+    {
+        return $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB
         );
     }
 

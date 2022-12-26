@@ -6,6 +6,7 @@ use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
+use Stu\Component\Ship\System\Data\WebEmitterSystemData;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
@@ -57,4 +58,6 @@ interface ShipWrapperInterface
     public function getEpsSystemData(): ?EpsSystemData;
 
     public function getTrackerSystemData(): ?TrackerSystemData;
+
+    public function getWebEmitterSystemData(): ?WebEmitterSystemData;
 }
