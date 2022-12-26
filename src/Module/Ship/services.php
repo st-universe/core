@@ -71,6 +71,7 @@ use Stu\Module\Ship\Action\DeactivateNbs\DeactivateNbs;
 use Stu\Module\Ship\Action\DeactivatePhaser\DeactivatePhaser;
 use Stu\Module\Ship\Action\DeactivateShields\DeactivateShields;
 use Stu\Module\Ship\Action\DeactivateTorpedo\DeactivateTorpedo;
+use Stu\Module\Ship\Action\DeactivateTrackingDevice\DeactivateTrackingDevice;
 use Stu\Module\Ship\Action\DeactivateTractorBeam\DeactivateTractorBeam;
 use Stu\Module\Ship\Action\DeactivateWarp\DeactivateWarp;
 use Stu\Module\Ship\Action\DeleteFleet\DeleteFleet;
@@ -275,6 +276,7 @@ return [
         UnloadBattery::ACTION_IDENTIFIER => autowire(UnloadBattery::class),
         ActivateTractorBeam::ACTION_IDENTIFIER => autowire(ActivateTractorBeam::class),
         DeactivateTractorBeam::ACTION_IDENTIFIER => autowire(DeactivateTractorBeam::class),
+        DeactivateTrackingDevice::ACTION_IDENTIFIER => autowire(DeactivateTrackingDevice::class),
         SetGreenAlert::ACTION_IDENTIFIER => autowire(SetGreenAlert::class),
         SetYellowAlert::ACTION_IDENTIFIER => autowire(SetYellowAlert::class),
         SetRedAlert::ACTION_IDENTIFIER => autowire(SetRedAlert::class),
