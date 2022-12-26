@@ -1022,7 +1022,7 @@
 			<tr>
 				<td>
 					<a tal:condition="WRAPPER/getTrackerSystemData/canAttackCloakedTarget"
-						href="?B_ATTACK_TRACKED=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+						href="?B_ATTACK_TRACKED=1&id=${SHIP/getId}&target=${targetwrapper/get/getId}&sstr=${THIS/getSessionString}"
 						onmouseover="cp('attacktracked','buttons/phaser2')"
 						onmouseout="cp('attacktracked','buttons/phaser1')" title="Getarntes Ziel angreifen">
 						<img src="assets/buttons/phaser1.png" name="attacktracked" />

@@ -77,6 +77,11 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
         $target = $targetWrapper->get();
 
+        $tracker = $wrapper->getTrackerSystemData();
+        if ($tracker === null || $tracker->targetId !== $target->getId()) {
+            return;
+        }
+
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
