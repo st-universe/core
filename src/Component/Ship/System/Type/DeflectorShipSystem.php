@@ -25,7 +25,7 @@ final class DeflectorShipSystem extends AbstractShipSystemType implements ShipSy
 
     public function getDefaultMode(): int
     {
-        return ShipSystemModeEnum::MODE_ALWAYS_ON;
+        return ShipSystemModeEnum::MODE_ALWAYS_OFF;
     }
 
     public function getEnergyUsageForActivation(): int
