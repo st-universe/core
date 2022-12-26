@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipSystemInterface;
 
@@ -37,6 +38,24 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
             ['ship_id' => $shipId],
             ['system_type' => 'asc']
         );
+    }
+
+    public function getTrackingShipSystems(int $targetId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ss FROM %s ss
+                    WHERE ss.system_type = :systemType
+                    AND ss.data LIKE :target',
+                    ShipSystem::class
+                )
+            )
+            ->setParameters([
+                'systemType' => ShipSystemTypeEnum::SYSTEM_TRACKER,
+                'target' => sprintf('"targetId":%d', $targetId)
+            ])
+            ->getResult();
     }
 
     public function truncateByShip(int $shipId): void

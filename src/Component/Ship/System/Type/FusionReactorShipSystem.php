@@ -9,7 +9,6 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class FusionReactorShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -18,9 +17,9 @@ final class FusionReactorShipSystem extends AbstractShipSystemType implements Sh
         $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
     public function getEnergyUsageForActivation(): int

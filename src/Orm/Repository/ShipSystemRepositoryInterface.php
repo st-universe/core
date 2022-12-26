@@ -18,5 +18,10 @@ interface ShipSystemRepositoryInterface extends ObjectRepository
      */
     public function getByShip(int $shipId): array;
 
+    /**
+     * @return ShipSystemInterface[]
+     */
+    public function getTrackingShipSystems(int $targetId): array;
+
     public function truncateByShip(int $shipId): void;
 }

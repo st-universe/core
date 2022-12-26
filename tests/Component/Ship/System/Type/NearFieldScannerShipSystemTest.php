@@ -8,6 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -49,12 +50,47 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipAlertStateEnum::ALERT_RED);
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
         $reason = null;
         $this->assertFalse(
-            $this->system->checkDeactivationConditions($this->ship, $reason)
+            $this->system->checkDeactivationConditions($this->wrapper, $reason)
         );
         $this->assertEquals('die Alarmstufe Rot ist', $reason);
+    }
+
+    public function testCheckDeactivationConditionsReturnsFalseIfTrackerActive(): void
+    {
+        $trackerSystemData = $this->mock(TrackerSystemData::class);
+        $targetWrapper = $this->mock(ShipWrapperInterface::class);
+
+        $this->ship->shouldReceive('getAlertState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(ShipAlertStateEnum::ALERT_YELLOW);
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getTrackerSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($trackerSystemData);
+        $trackerSystemData->shouldReceive('getTargetWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($targetWrapper);
+
+        $reason = null;
+        $this->assertFalse(
+            $this->system->checkDeactivationConditions($this->wrapper, $reason)
+        );
+        $this->assertEquals('der Tracker aktiv ist', $reason);
     }
 
     public function testCheckDeactivationConditionsReturnsTrueIfDeactivatable(): void
@@ -63,10 +99,19 @@ class NearFieldScannerShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipAlertStateEnum::ALERT_YELLOW);
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getTrackerSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $reason = null;
         $this->assertTrue(
-            $this->system->checkDeactivationConditions($this->ship, $reason)
+            $this->system->checkDeactivationConditions($this->wrapper, $reason)
         );
         $this->assertNull($reason);
     }
@@ -132,8 +177,13 @@ class NearFieldScannerShipSystemTest extends StuTestCase
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->ship)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->system->deactivate($this->ship);
+        $this->system->deactivate($this->wrapper);
     }
 
     public function testHandleDestruction(): void

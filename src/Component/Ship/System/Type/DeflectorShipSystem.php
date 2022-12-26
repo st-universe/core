@@ -9,7 +9,6 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class DeflectorShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -18,14 +17,9 @@ final class DeflectorShipSystem extends AbstractShipSystemType implements ShipSy
         $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)->setMode(ShipSystemModeEnum::MODE_OFF);
-    }
-
-    public function getDefaultMode(): int
-    {
-        return ShipSystemModeEnum::MODE_ALWAYS_OFF;
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
     public function getEnergyUsageForActivation(): int

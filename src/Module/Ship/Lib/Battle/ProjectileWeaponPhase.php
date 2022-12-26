@@ -44,7 +44,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $torpedoName =  $torpedo->getName();
 
             if ($attacker instanceof ShipInterface) {
-                $this->shipTorpedoManager->changeTorpedo($attacker, -1);
+                $this->shipTorpedoManager->changeTorpedo($wrapper, -1);
             } else {
                 $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
             }
@@ -105,7 +105,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                     }
                 }
                 $this->checkForPrestige($attacker->getUser(), $target);
-                $destroyMsg = $this->shipRemover->destroy($target);
+                $destroyMsg = $this->shipRemover->destroy($targetWrapper);
                 if ($destroyMsg !== null) {
                     $msg[] = $destroyMsg;
                 }
@@ -150,7 +150,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             }
 
             $torpedo = $attacker->getTorpedo();
-            $this->shipTorpedoManager->changeTorpedo($attacker, -1);
+            $this->shipTorpedoManager->changeTorpedo($attackerWrapper, -1);
 
             $this->reduceEps($attackerWrapper, null);
 

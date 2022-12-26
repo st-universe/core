@@ -28,9 +28,9 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
         $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
     public function getEnergyUsageForActivation(): int

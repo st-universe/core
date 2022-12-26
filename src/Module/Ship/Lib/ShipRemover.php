@@ -57,6 +57,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private CancelRepairInterface $cancelRepair;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -75,6 +77,7 @@ final class ShipRemover implements ShipRemoverInterface
         ShipTorpedoManagerInterface $shipTorpedoManager,
         TradePostRepositoryInterface $tradePostRepository,
         CancelRepairInterface $cancelRepair,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
@@ -92,14 +95,16 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->tradePostRepository = $tradePostRepository;
         $this->cancelRepair = $cancelRepair;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
     }
 
-    public function destroy(ShipInterface $ship): ?string
+    public function destroy(ShipWrapperInterface $wrapper): ?string
     {
         $msg = null;
 
-        $this->shipSystemManager->deactivateAll($ship);
+        $ship = $wrapper->get();
+        $this->shipSystemManager->deactivateAll($wrapper);
 
         $fleet = $ship->getFleet();
 
@@ -119,7 +124,7 @@ final class ShipRemover implements ShipRemoverInterface
 
         //leave ship if there is crew
         if ($ship->getCrewCount() > 0) {
-            $msg = $this->shipLeaver->evacuate($ship);
+            $msg = $this->shipLeaver->evacuate($wrapper);
         }
 
         /**
@@ -155,7 +160,7 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->getSystems()->clear();
 
         // delete torpedo storage
-        $this->shipTorpedoManager->removeTorpedo($ship);
+        $this->shipTorpedoManager->removeTorpedo($wrapper);
 
         //delete trade post stuff
         if ($ship->getTradePost() !== null) {
@@ -176,8 +181,9 @@ final class ShipRemover implements ShipRemoverInterface
 
         // clear tractor status
         if ($ship->isTractored()) {
-            $tractoringShip = $ship->getTractoringShip();
-            $this->shipSystemManager->deactivate($tractoringShip, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
+            $tractoringShip = $tractoringShipWrapper->get();
+            $this->shipSystemManager->deactivate($tractoringShipWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
 
@@ -190,7 +196,19 @@ final class ShipRemover implements ShipRemoverInterface
             );
         }
 
+        // reset tracker devices
+        $this->resetTrackerDevices($ship->getId());
+
         return $msg;
+    }
+
+    private function resetTrackerDevices(int $shipId): void
+    {
+        foreach ($this->shipSystemRepository->getTrackingShipSystems($shipId) as $system) {
+            $wrapper = $this->shipWrapperFactory->wrapShip($system->getShip());
+
+            $wrapper->getTrackerSystemData()->setTarget(null)->update();
+        }
     }
 
     private function leaveSomeIntactModules(ShipInterface $ship): void
@@ -280,11 +298,13 @@ final class ShipRemover implements ShipRemoverInterface
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
+        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
         //both sides have to be cleared, foreign key violation
         if ($ship->isTractoring()) {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
         } else if ($ship->isTractored()) {
-            $this->shipSystemManager->deactivate($ship->getTractoringShip(), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $this->shipSystemManager->deactivate($wrapper->getTractoringShipWrapper(), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
         }
 
         foreach ($ship->getStorage() as $item) {
@@ -297,11 +317,14 @@ final class ShipRemover implements ShipRemoverInterface
         }
 
         // delete torpedo storage
-        $this->shipTorpedoManager->removeTorpedo($ship);
+        $this->shipTorpedoManager->removeTorpedo($wrapper);
 
         if ($truncateCrew) {
             $this->shipCrewRepository->truncateByShip($ship->getId());
         }
+
+        // reset tracker devices
+        $this->resetTrackerDevices($ship->getId());
 
         $this->shipRepository->delete($ship);
     }

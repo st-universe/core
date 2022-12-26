@@ -25,14 +25,15 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         $this->shipSystemManager = $shipSystemManager;
     }
 
-    public function tryToTow(ShipInterface $ship, ShipInterface $tractoredShip): ?string
+    public function tryToTow(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip): ?string
     {
+        $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();
         $payload = $ship->getTractorPayload();
 
         // ship to heavy?
         if ($mass > $payload) {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
             return sprintf(
                 _('Traktoremitter der %s war nicht stark genug um die %s zu ziehen und wurde daher deaktiviert'),
@@ -61,7 +62,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
                     $ship->getName(),
                     $tractoredShip->getName()
                 );
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
                 return false;
             } else {

@@ -65,9 +65,9 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         return true;
     }
 
-    public function checkDeactivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, &$reason): bool
     {
-        if ($ship->getWarpState()) {
+        if ($wrapper->get()->getWarpState()) {
             $reason = _('der Warpantrieb aktiviert ist');
             return false;
         }
@@ -90,8 +90,10 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
+
         if ($ship->isTractoring()) {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
 
@@ -117,7 +119,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
     {
         $ship = $wrapper->get();
         if ($ship->isTractoring()) {
-            $this->deactivate($ship);
+            $this->deactivate($wrapper);
         }
     }
 }

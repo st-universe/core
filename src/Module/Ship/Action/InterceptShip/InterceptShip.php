@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class InterceptShip implements ActionControllerInterface
 {
@@ -32,6 +33,8 @@ final class InterceptShip implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -40,6 +43,7 @@ final class InterceptShip implements ActionControllerInterface
         ShipSystemManagerInterface $shipSystemManager,
         InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
@@ -47,6 +51,7 @@ final class InterceptShip implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->entityManager = $entityManager;
     }
 
@@ -95,7 +100,7 @@ final class InterceptShip implements ActionControllerInterface
         if ($target->getFleetId()) {
             foreach ($target->getFleet()->getShips() as $fleetShip) {
                 try {
-                    $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                    $this->shipSystemManager->deactivate($this->shipWrapperFactory->wrapShip($fleetShip), ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
                 } catch (AlreadyOffException $e) {
                 }
                 $this->shipLoader->save($fleetShip);
@@ -104,7 +109,7 @@ final class InterceptShip implements ActionControllerInterface
             $game->addInformation("Die Flotte " . $target->getFleet()->getName() . " wurde abgefangen");
             $pm = "Die Flotte " . $target->getFleet()->getName() . " wurde von der " . $ship->getName() . " abgefangen";
         } else {
-            $this->shipSystemManager->deactivate($target, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            $this->shipSystemManager->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 
             $game->addInformation("Die " . $target->getName() . "  wurde abgefangen");
             $pm = "Die " . $target->getName() . " wurde von der " . $ship->getName() . " abgefangen";
@@ -125,7 +130,7 @@ final class InterceptShip implements ActionControllerInterface
         if ($ship->getFleetId()) {
             foreach ($ship->getFleet()->getShips() as $fleetShip) {
                 try {
-                    $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                    $this->shipSystemManager->deactivate($this->shipWrapperFactory->wrapShip($fleetShip), ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
                     $interceptorLeftWarp = true;
                 } catch (AlreadyOffException $e) {
                 }
@@ -133,7 +138,7 @@ final class InterceptShip implements ActionControllerInterface
             }
         } else {
             try {
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
                 $interceptorLeftWarp = true;
             } catch (AlreadyOffException $e) {
             }

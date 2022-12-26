@@ -29,11 +29,11 @@ final class FightLib implements FightLibInterface
     {
         $ship = $wrapper->get();
         try {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
         } catch (ShipSystemException $e) {
         }
         try {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_CLOAK);
         } catch (ShipSystemException $e) {
         }
 
@@ -81,7 +81,7 @@ final class FightLib implements FightLibInterface
         }
         if ($ship->getCloakState() && $ship->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
             try {
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
+                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_CLOAK);
                 $msg[] = "- Die Tarnung wurde deaktiviert";
                 return $msg;
             } catch (ShipSystemException $e) {

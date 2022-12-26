@@ -33,6 +33,9 @@ $shipRepo = $container->get(ShipRepositoryInterface::class);
 $crewCreator = $container->get(CrewCreatorInterface::class);
 $shipCrewRepo = $container->get(ShipCrewRepositoryInterface::class);
 $mapRepo = $container->get(MapRepositoryInterface::class);
+/**
+ * @var ShipTorpedoManagerInterface
+ */
 $torpedoManager = $container->get(ShipTorpedoManagerInterface::class);
 
 $userId = request::indInt('userId');
@@ -66,7 +69,7 @@ if ($torptypeId > 0 || $noTorps) {
 
         if ($torptypeId > 0) {
             $torp_obj = $torpedoTypeRepo->find($torptypeId);
-            $torpedoManager->changeTorpedo($ship, $ship->getMaxTorpedos(), $torp_obj);
+            $torpedoManager->changeTorpedo($wrapper, $ship->getMaxTorpedos(), $torp_obj);
         }
 
         $shipRepo->save($ship);

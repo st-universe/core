@@ -65,7 +65,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
                 $this->shipRepository->save($traktorShip);
             } else {
-                $manager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
+                $manager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             }
         }
     }
@@ -80,8 +80,8 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $ship->getDockedShips()->clear();
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 }

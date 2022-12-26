@@ -12,7 +12,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class NearFieldScannerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -24,10 +23,18 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         $this->astroEntryLib = $astroEntryLib;
     }
 
-    public function checkDeactivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, &$reason): bool
     {
-        if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_RED) {
+        if ($wrapper->get()->getAlertState() === ShipAlertStateEnum::ALERT_RED) {
             $reason = _('die Alarmstufe Rot ist');
+            return false;
+        }
+
+        $trackerData = $wrapper->getTrackerSystemData();
+
+        //not possible if tracker active
+        if ($trackerData !== null && $trackerData->getTargetWrapper() !== null) {
+            $reason = _('der Tracker aktiv ist');
             return false;
         }
 
@@ -39,8 +46,9 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_OFF);
 
         //other consequences

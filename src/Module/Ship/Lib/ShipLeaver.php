@@ -6,10 +6,8 @@ namespace Stu\Module\Ship\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -75,10 +73,11 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->entityManager = $entityManager;
     }
 
-    public function evacuate(ShipInterface $ship): string
+    public function evacuate(ShipWrapperInterface $wrapper): string
     {
-        $this->shipSystemManager->deactivateAll($ship);
+        $this->shipSystemManager->deactivateAll($wrapper);
 
+        $ship = $wrapper->get();
         if ($ship->isFleetLeader()) {
             $this->changeFleetLeader($ship);
         }

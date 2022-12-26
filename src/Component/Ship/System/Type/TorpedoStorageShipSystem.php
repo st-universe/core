@@ -7,7 +7,6 @@ namespace Stu\Component\Ship\System\Type;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class TorpedoStorageShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -18,7 +17,7 @@ final class TorpedoStorageShipSystem extends AbstractShipSystemType implements S
         //passive system
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
         //passive system
     }

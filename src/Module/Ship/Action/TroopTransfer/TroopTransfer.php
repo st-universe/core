@@ -387,7 +387,7 @@ final class TroopTransfer implements ActionControllerInterface
 
         // no crew left
         if ($amount == $targetCrewCount) {
-            $this->shipSystemManager->deactivateAll($target);
+            $this->shipSystemManager->deactivateAll($this->shipWrapperFactory->wrapShip($target));
 
             $target->setAlertStateGreen();
 

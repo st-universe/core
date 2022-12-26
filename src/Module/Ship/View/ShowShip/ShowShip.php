@@ -26,10 +26,10 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationShipRepairInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
@@ -46,8 +46,6 @@ final class ShowShip implements ViewControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     private ShipLoaderInterface $shipLoader;
-
-    private ColonyRepositoryInterface $colonyRepository;
 
     private ColonizationCheckerInterface $colonizationChecker;
 
@@ -70,7 +68,6 @@ final class ShowShip implements ViewControllerInterface
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
-        ColonyRepositoryInterface $colonyRepository,
         ColonizationCheckerInterface $colonizationChecker,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
         AstroEntryRepositoryInterface $astroEntryRepository,
@@ -84,7 +81,6 @@ final class ShowShip implements ViewControllerInterface
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
-        $this->colonyRepository = $colonyRepository;
         $this->colonizationChecker = $colonizationChecker;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
         $this->astroEntryRepository = $astroEntryRepository;
@@ -124,13 +120,6 @@ final class ShowShip implements ViewControllerInterface
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-
-        $colony = $ship->getStarsystemMap() ? $this->colonyRepository->getByPosition(
-            $ship->getStarsystemMap()
-        ) : null;
-
-        $shipId = $ship->getId();
-
         $tachyonFresh = $game->getViewContext()['TACHYON_SCAN_JUST_HAPPENED'] ?? false;
         $tachyonActive = $tachyonFresh;
 
@@ -139,6 +128,7 @@ final class ShowShip implements ViewControllerInterface
             $tachyonActive = $this->nbsUtility->isTachyonActive($ship);
         }
 
+        $colony = $this->getColony($ship);
         $canColonize = false;
         if ($colony) {
             if ($ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
@@ -169,7 +159,7 @@ final class ShowShip implements ViewControllerInterface
         );
 
         $game->appendNavigationPart(
-            sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $shipId),
+            sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $ship->getId()),
             $ship->getName()
         );
         $game->setPagetitle($ship->getName());
@@ -238,6 +228,15 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('CURRENT_COLONY', $colony);
 
         $this->loggerUtil->log(sprintf('ShowShip.php-end, timestamp: %F', microtime(true)));
+    }
+
+    private function getColony(ShipInterface $ship): ?ColonyInterface
+    {
+        if ($ship->getStarsystemMap() === null) {
+            return null;
+        }
+
+        return $ship->getStarsystemMap()->getColony();
     }
 
     private function getAstroState(ShipInterface $ship, GameControllerInterface $game)

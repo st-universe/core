@@ -145,7 +145,7 @@ final class DockShip implements ActionControllerInterface
         }
 
         try {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
         } catch (ShipSystemException $e) {
         }
 
@@ -185,7 +185,8 @@ final class DockShip implements ActionControllerInterface
                 continue;
             }
 
-            $epsSystem = $this->shipWrapperFactory->wrapShip($fleetShip)->getEpsSystemData();
+            $fleetShipWrapper = $this->shipWrapperFactory->wrapShip($fleetShip);
+            $epsSystem = $fleetShipWrapper->getEpsSystemData();
 
             if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $fleetShip->getName() . _(": Nicht genügend Energie vorhanden");
@@ -201,12 +202,12 @@ final class DockShip implements ActionControllerInterface
             }
 
             try {
-                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+                $this->shipSystemManager->deactivate($fleetShipWrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
             } catch (ShipSystemException $e) {
             }
 
             try {
-                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                $this->shipSystemManager->deactivate($fleetShipWrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
             } catch (ShipSystemException $e) {
             }
 

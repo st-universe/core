@@ -36,13 +36,15 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function changeTorpedo(ShipInterface $ship, int $changeAmount, TorpedoTypeInterface $type = null)
+    public function changeTorpedo(ShipWrapperInterface $wrapper, int $changeAmount, TorpedoTypeInterface $type = null)
     {
+        $ship = $wrapper->get();
+
         if ($ship->getTorpedoStorage() === null && $type !== null) {
             $this->createTorpedoStorage($ship, $changeAmount, $type);
         } else if ($ship->getTorpedoStorage()->getStorage()->getAmount() + $changeAmount === 0) {
             $this->loggerUtil->log('clear');
-            $this->clearTorpedoStorage($ship);
+            $this->clearTorpedoStorage($wrapper);
         } else {
             $storage = $ship->getTorpedoStorage()->getStorage();
             $this->loggerUtil->log(sprintf('change, current: %d, change: %d',  $storage->getAmount(), $changeAmount));
@@ -51,9 +53,9 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         }
     }
 
-    public function removeTorpedo(ShipInterface $ship)
+    public function removeTorpedo(ShipWrapperInterface $wrapper)
     {
-        $this->clearTorpedoStorage($ship);
+        $this->clearTorpedoStorage($wrapper);
     }
 
     private function createTorpedoStorage(ShipInterface $ship, int $amount, TorpedoTypeInterface $type): void
@@ -73,8 +75,9 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $torpedoStorage->setStorage($storage);
     }
 
-    private function clearTorpedoStorage(ShipInterface $ship): void
+    private function clearTorpedoStorage(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
         $torpedoStorage = $ship->getTorpedoStorage();
 
         if ($torpedoStorage === null) {
@@ -89,7 +92,7 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $this->torpedoStorageRepository->delete($torpedoStorage);
 
         if ($ship->getTorpedoState()) {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
         }
     }
 }

@@ -240,7 +240,7 @@ final class ManageShips implements ActionControllerInterface
                     }
                     $shipobj->getDockedShips()->clear();
 
-                    $this->shipSystemManager->deactivateAll($shipobj);
+                    $this->shipSystemManager->deactivateAll($wrapper);
                     $shipobj->setAlertStateGreen();
                 }
             }
@@ -319,7 +319,7 @@ final class ManageShips implements ActionControllerInterface
                                 $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                             }
                         }
-                        $this->shipTorpedoManager->changeTorpedo($shipobj, $load);
+                        $this->shipTorpedoManager->changeTorpedo($wrapper, $load);
                         if ($load < 0) {
                             $this->shipStorageManager->upperStorage($station, $torp_obj->getCommodity(), abs($load));
                             $torpName = $torp_obj->getName();
@@ -356,7 +356,7 @@ final class ManageShips implements ActionControllerInterface
                         if ($count > $shipobj->getMaxTorpedos()) {
                             $count = $shipobj->getMaxTorpedos();
                         }
-                        $this->shipTorpedoManager->changeTorpedo($shipobj, $count, $torp_obj);
+                        $this->shipTorpedoManager->changeTorpedo($wrapper, $count, $torp_obj);
 
                         $this->shipStorageManager->lowerStorage(
                             $station,

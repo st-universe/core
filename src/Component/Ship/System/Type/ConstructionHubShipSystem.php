@@ -49,8 +49,9 @@ final class ConstructionHubShipSystem extends AbstractShipSystemType implements 
         $this->shipyardShipQueueRepository->restartQueueByShipyard($ship->getId());
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
+        $ship = $wrapper->get();
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB)->setMode(ShipSystemModeEnum::MODE_OFF);
         $this->stopShipyardQeue($ship);
     }

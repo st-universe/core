@@ -11,7 +11,7 @@ interface ShipSystemTypeInterface
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool;
 
-    public function checkDeactivationConditions(ShipInterface $ship, &$reason): bool;
+    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, &$reason): bool;
 
     public function getEnergyUsageForActivation(): int;
 
@@ -24,7 +24,7 @@ interface ShipSystemTypeInterface
 
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void;
 
-    public function deactivate(ShipInterface $ship): void;
+    public function deactivate(ShipWrapperInterface $wrapper): void;
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void;
 

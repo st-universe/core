@@ -2,11 +2,15 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 
 interface ShipTorpedoManagerInterface
 {
-    public function changeTorpedo(ShipInterface $ship, int $changeAmount, TorpedoTypeInterface $type = null);
-    public function removeTorpedo(ShipInterface $ship);
+    public function changeTorpedo(
+        ShipWrapperInterface $wrapper,
+        int $changeAmount,
+        TorpedoTypeInterface $type = null
+    );
+
+    public function removeTorpedo(ShipWrapperInterface $wrapper);
 }

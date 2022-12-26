@@ -394,7 +394,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $randomShip = $this->shipRepository->find($randomShipId);
         $doAlertRedCheck = $randomShip->getWarpState() || $randomShip->getCloakState();
         //deactivate ship
-        $this->shipSystemManager->deactivateAll($randomShip);
+        $this->shipSystemManager->deactivateAll($this->shipWrapperFactory->wrapShip($randomShip));
         $randomShip->setAlertStateGreen();
 
         $this->shipRepository->save($randomShip);
@@ -449,7 +449,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             $lower = (int)ceil($ship->getMaxHuell() / 100);
 
             if ($ship->getHull() <= $lower) {
-                $this->shipRemover->destroy($ship);
+                $this->shipRemover->destroy($this->shipWrapperFactory->wrapShip($ship));
 
                 $this->entryCreator->addStationEntry(
                     'Der verlassene Handelsposten in Sektor ' . $ship->getSectorString() . ' ist zerfallen',

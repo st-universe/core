@@ -61,22 +61,22 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $system->activate($wrapper, $this);
     }
 
-    public function deactivate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
+    public function deactivate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void
     {
         $system = $this->lookupSystem($shipSystemId);
 
         if (!$force) {
-            $this->checkDeactivationConditions($ship, $system, $shipSystemId);
+            $this->checkDeactivationConditions($wrapper, $system, $shipSystemId);
         }
 
-        $system->deactivate($ship);
+        $system->deactivate($wrapper);
     }
 
-    public function deactivateAll(ShipInterface $ship): void
+    public function deactivateAll(ShipWrapperInterface $wrapper): void
     {
-        foreach ($ship->getSystems() as $shipSystem) {
+        foreach ($wrapper->get()->getSystems() as $shipSystem) {
             try {
-                $this->deactivate($ship, $shipSystem->getSystemType(), true);
+                $this->deactivate($wrapper, $shipSystem->getSystemType(), true);
             } catch (ShipSystemException $e) {
                 continue;
             }
@@ -148,10 +148,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     }
 
     private function checkDeactivationConditions(
-        ShipInterface $ship,
+        ShipWrapperInterface $wrapper,
         ShipSystemTypeInterface $system,
         int $shipSystemId
     ): void {
+        $ship = $wrapper->get();
         $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
         if ($shipSystem === null) {
             throw new SystemNotFoundException();
@@ -170,7 +171,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
 
         $reason = null;
-        if (!$system->checkDeactivationConditions($ship, $reason)) {
+        if (!$system->checkDeactivationConditions($wrapper, $reason)) {
             throw new DeactivationConditionsNotMetException($reason);
         }
     }

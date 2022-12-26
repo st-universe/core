@@ -36,7 +36,7 @@ final class ApplyDamage implements ApplyDamageInterface
                 $msg[] = "- Schildschaden: " . $ship->getShield();
                 $msg[] = "-- Schilde brechen zusammen!";
 
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+                $this->shipSystemManager->deactivate($shipWrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
 
                 $ship->setShield(0);
             } else {

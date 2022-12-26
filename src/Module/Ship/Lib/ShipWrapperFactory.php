@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,7 +14,6 @@ use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShipWrapperFactory implements ShipWrapperFactoryInterface
@@ -21,8 +21,6 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -34,24 +32,26 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     private JsonMapperInterface $jsonMapper;
 
+    private ShipSystemDataFactoryInterface $shipSystemDataFactory;
+
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         GameControllerInterface $game,
-        JsonMapperInterface $jsonMapper
+        JsonMapperInterface $jsonMapper,
+        ShipSystemDataFactoryInterface $shipSystemDataFactory
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->cancelRepair = $cancelRepair;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->game = $game;
         $this->jsonMapper = $jsonMapper;
+        $this->shipSystemDataFactory = $shipSystemDataFactory;
     }
 
     public function wrapShip(ShipInterface $ship): ShipWrapperInterface
@@ -60,12 +60,13 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $ship,
             $this->shipSystemManager,
             $this->shipRepository,
-            $this->shipSystemRepository,
             $this->colonyLibFactory,
             $this->cancelRepair,
             $this->torpedoTypeRepository,
             $this->game,
-            $this->jsonMapper
+            $this->jsonMapper,
+            $this,
+            $this->shipSystemDataFactory
         );
     }
 

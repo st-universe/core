@@ -73,7 +73,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
     {
         $ship = $wrapper->get();
         if ($ship->isTractoring()) {
-            $manager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $manager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
         }
 
         $ship->setDockedTo(null);
@@ -99,8 +99,8 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK)->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 }

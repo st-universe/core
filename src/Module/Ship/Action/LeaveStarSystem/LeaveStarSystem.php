@@ -127,7 +127,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         //the destination map field
         $outerMap = $this->mapRepository->getByCoordinates($ship->getSystem()->getCx(), $ship->getSystem()->getCy());
 
-        $this->leaveStarSystem($ship, $outerMap, $game);
+        $this->leaveStarSystem($wrapper, $outerMap, $game);
         if ($ship->isTractoring()) {
             $this->leaveStarSystemTraktor($wrapper, $outerMap, $game);
         }
@@ -150,12 +150,14 @@ final class LeaveStarSystem implements ActionControllerInterface
                     $this->shipRepository->save($fleetShip);
                 } else {
                     //reload ship because it got saved in helper class
-                    $reloadedShip = $this->shipLoader->getByIdAndUser(
+                    $reloadedShipWrapper = $this->shipLoader->getWrapperByIdAndUser(
                         $fleetShip->getId(),
                         $userId
                     );
 
-                    $this->leaveStarSystem($reloadedShip, $outerMap, $game);
+                    $this->leaveStarSystem($reloadedShipWrapper, $outerMap, $game);
+
+                    $reloadedShip = $reloadedShipWrapper->get();
                     if ($reloadedShip->isTractoring()) {
                         $this->leaveStarSystemTraktor($wrapper, $outerMap, $game);
                     }
@@ -178,6 +180,7 @@ final class LeaveStarSystem implements ActionControllerInterface
     private function leaveStarSystemTraktor(ShipWrapperInterface $wrapper, MapInterface $map, GameControllerInterface $game): void
     {
         $ship = $wrapper->get();
+        $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
         $tractoredShip = $ship->getTractoredShip();
 
         if (
@@ -185,7 +188,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Verlassen des Systems deaktiviert'),
@@ -194,7 +197,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
 
-        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($ship, $tractoredShip);
+        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShip);
         if ($abortionMsg !== null) {
             $game->addInformation($abortionMsg);
             return;
@@ -204,12 +207,12 @@ final class LeaveStarSystem implements ActionControllerInterface
 
         if ($epsSystem->getEps() < 1) {
             $name = $tractoredShip->getName();
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
         $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship, true));
-        $this->leaveStarSystem($tractoredShip, $map, $game);
+        $this->leaveStarSystem($tractoredShipWrapper, $map, $game);
         $epsSystem->setEps($epsSystem->getEps() - 1)->update();
 
         $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit aus dem System gezogen");
@@ -223,14 +226,15 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function leaveStarSystem(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
+    private function leaveStarSystem(ShipWrapperInterface $wrapper, MapInterface $map, GameControllerInterface $game): void
     {
+        $ship = $wrapper->get();
         $ship->setFlightDirection($this->getNewDirection($ship));
 
         $this->loggerUtil->log(sprintf('newDirection: %d', $ship->getFlightDirection()));
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
         }
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {

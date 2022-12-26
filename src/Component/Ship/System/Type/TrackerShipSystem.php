@@ -14,14 +14,30 @@ use Stu\Orm\Entity\ShipInterface;
 
 class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    {
+        if (!$ship->getLss()) {
+            $reason = _('die Langstreckensensoren nicht aktiv sind');
+            return false;
+        }
+
+        if (!$ship->getNbs()) {
+            $reason = _('die Nahbereichssensoren nicht aktiv sind');
+            return false;
+        }
+
+        return true;
+    }
+
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $this->reset($wrapper);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
     public function getCooldownSeconds(): ?int
@@ -40,6 +56,11 @@ class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemType
     }
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void
+    {
+        $this->reset($wrapper);
+    }
+
+    private function reset(ShipWrapperInterface $wrapper): void
     {
         $wrapper->getTrackerSystemData()->setTarget(null)->update();
     }

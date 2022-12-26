@@ -7,7 +7,6 @@ namespace Stu\Component\Ship\System\Type;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class HullShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -16,7 +15,7 @@ final class HullShipSystem extends AbstractShipSystemType implements ShipSystemT
         //nothing to do here
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
         //nothing to do here
     }

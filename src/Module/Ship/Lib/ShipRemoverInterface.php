@@ -11,7 +11,7 @@ interface ShipRemoverInterface
      * Destroys a ship and replaces it by a nice debrisfield,
      * also starts escape pods if present
      */
-    public function destroy(ShipInterface $ship): ?string;
+    public function destroy(ShipWrapperInterface $wrapper): ?string;
 
     /**
      * Actually removes the ship entity including all references

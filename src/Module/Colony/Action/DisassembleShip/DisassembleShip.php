@@ -16,6 +16,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -79,7 +80,8 @@ final class DisassembleShip implements ActionControllerInterface
         }
 
         $ship_id = request::getIntFatal('ship_id');
-        $ship = $this->shipLoader->getByIdAndUser((int) $ship_id, $userId);
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser((int) $ship_id, $userId);
+        $ship = $wrapper->get();
         if ($ship->getCrewCount() > $colony->getFreeAssignmentCount()) {
             $game->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
             return;
@@ -91,7 +93,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         $this->retrieveSomeIntactModules($ship, $colony, $game);
         $this->retrieveWarpcoreLoad($ship, $colony, $game);
-        $this->retrieveLoadedTorpedos($ship, $colony, $game);
+        $this->retrieveLoadedTorpedos($wrapper, $colony, $game);
 
         $this->transferCrewToColony($ship, $colony);
 
@@ -188,8 +190,9 @@ final class DisassembleShip implements ActionControllerInterface
         }
     }
 
-    private function retrieveLoadedTorpedos(ShipInterface $ship, $colony, $game): void
+    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, $colony, $game): void
     {
+        $ship = $wrapper->get();
         $torpedoStorage = $ship->getTorpedoStorage();
 
         if ($torpedoStorage === null) {
@@ -215,7 +218,7 @@ final class DisassembleShip implements ActionControllerInterface
             $amount
         );
 
-        $this->shipTorpedoManager->removeTorpedo($ship);
+        $this->shipTorpedoManager->removeTorpedo($wrapper);
 
         $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }

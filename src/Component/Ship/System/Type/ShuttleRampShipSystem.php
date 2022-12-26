@@ -9,7 +9,6 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class ShuttleRampShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -24,7 +23,7 @@ final class ShuttleRampShipSystem extends AbstractShipSystemType implements Ship
         //nothing to do here
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
         //nothing to do here
     }

@@ -42,10 +42,11 @@ final class SelfDestruct implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
         );
+        $ship = $wrapper->get();
 
         if ($ship->isConstruction()) {
             return;
@@ -86,7 +87,7 @@ final class SelfDestruct implements ActionControllerInterface
             );
         }
 
-        $destroyMsg = $this->shipRemover->destroy($ship);
+        $destroyMsg = $this->shipRemover->destroy($wrapper);
         if ($destroyMsg !== null) {
             $game->addInformation($destroyMsg);
         }

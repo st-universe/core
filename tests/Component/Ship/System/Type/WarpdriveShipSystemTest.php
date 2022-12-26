@@ -228,7 +228,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->with($this->ship)
             ->once();
         $this->managerMock->shouldReceive('deactivate')
-            ->with($this->ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
+            ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
             ->once();
 
         $this->system->activate($this->wrapper, $this->managerMock);
@@ -315,7 +315,12 @@ class WarpdriveShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->system->deactivate($this->ship);
+        $this->system->deactivate($this->wrapper);
     }
 }

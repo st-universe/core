@@ -138,7 +138,7 @@ final class EnterWormhole implements ActionControllerInterface
                 }
 
                 try {
-                    $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                    $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
                 } catch (AlreadyOffException $e) {
                 }
 
@@ -186,7 +186,7 @@ final class EnterWormhole implements ActionControllerInterface
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Wurmlocheinflug deaktiviert'),
@@ -195,7 +195,7 @@ final class EnterWormhole implements ActionControllerInterface
             return;
         }
 
-        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($ship, $tractoredShip);
+        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShip);
         if ($abortionMsg !== null) {
             $game->addInformation($abortionMsg);
             return;
@@ -205,7 +205,7 @@ final class EnterWormhole implements ActionControllerInterface
 
         if ($epsSystem->getEps() < 1) {
             $name = $tractoredShip->getName();
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Wurmlocheinflug aufgrund Energiemangels deaktiviert");
             return;
         }

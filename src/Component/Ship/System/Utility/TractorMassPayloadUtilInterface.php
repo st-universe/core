@@ -7,7 +7,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface TractorMassPayloadUtilInterface
 {
-    public function tryToTow(ShipInterface $ship, ShipInterface $tractoredShip): ?string;
+    public function tryToTow(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip): ?string;
 
     public function tractorSystemSurvivedTowing(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip, &$informations): bool;
 }

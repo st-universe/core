@@ -7,16 +7,14 @@ namespace Stu\Module\Ship\Lib;
 use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -25,8 +23,6 @@ class ShipWrapperFactoryTest extends StuTestCase
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -38,6 +34,8 @@ class ShipWrapperFactoryTest extends StuTestCase
 
     private JsonMapperInterface $jsonMapper;
 
+    private ShipSystemDataFactoryInterface $shipSystemDataFactory;
+
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function setUp(): void
@@ -45,22 +43,22 @@ class ShipWrapperFactoryTest extends StuTestCase
         //injected
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
-        $this->shipSystemRepository = $this->mock(ShipSystemRepositoryInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->jsonMapper = (new JsonMapperFactory())->bestFit();
+        $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
 
         $this->shipWrapperFactory = new ShipWrapperFactory(
             $this->shipSystemManager,
             $this->shipRepository,
-            $this->shipSystemRepository,
             $this->colonyLibFactory,
             $this->cancelRepair,
             $this->torpedoTypeRepository,
             $this->game,
-            $this->jsonMapper
+            $this->jsonMapper,
+            $this->shipSystemDataFactory
         );
     }
 

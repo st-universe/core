@@ -43,8 +43,8 @@ final class SubspaceSensorShipSystem extends AbstractShipSystemType implements S
         $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER)->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 }

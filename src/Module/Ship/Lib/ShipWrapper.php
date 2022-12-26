@@ -8,10 +8,10 @@ use JsonMapper\JsonMapperInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\System\Data\AbstractSystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
+use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -22,7 +22,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShipWrapper implements ShipWrapperInterface
@@ -32,8 +31,6 @@ final class ShipWrapper implements ShipWrapperInterface
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -45,7 +42,11 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private JsonMapperInterface $jsonMapper;
 
-    private $shipSystemCache = [];
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
+    private ShipSystemDataFactoryInterface $shipSystemDataFactory;
+
+    private $shipSystemDataCache = [];
 
     private $epsUsage;
 
@@ -55,27 +56,38 @@ final class ShipWrapper implements ShipWrapperInterface
         ShipInterface $ship,
         ShipSystemManagerInterface $shipSystemManager,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         GameControllerInterface $game,
-        JsonMapperInterface $jsonMapper
+        JsonMapperInterface $jsonMapper,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
+        ShipSystemDataFactoryInterface $shipSystemDataFactory
     ) {
         $this->ship = $ship;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->cancelRepair = $cancelRepair;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->game = $game;
         $this->jsonMapper = $jsonMapper;
+        $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->shipSystemDataFactory = $shipSystemDataFactory;
     }
 
     public function get(): ShipInterface
     {
         return $this->ship;
+    }
+
+    public function getFleetWrapper(): ?FleetWrapperInterface
+    {
+        if ($this->get()->getFleet() === null) {
+            return null;
+        }
+
+        return $this->shipWrapperFactory->wrapFleet($this->get()->getFleet());
     }
 
     public function getEpsUsage(): int
@@ -316,71 +328,81 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->torpedoTypeRepository->getByLevel($this->ship->getRump()->getTorpedoLevel());
     }
 
+    public function getTractoredShipWrapper(): ?ShipWrapperInterface
+    {
+        if (!$this->get()->isTractoring()) {
+            return null;
+        }
+
+        return $this->shipWrapperFactory->wrapShip($this->get()->getTractoredShip());
+    }
+
+    public function getTractoringShipWrapper(): ?ShipWrapperInterface
+    {
+        if (!$this->get()->isTractored()) {
+            return null;
+        }
+
+        return $this->shipWrapperFactory->wrapShip($this->get()->getTractoringShip());
+    }
+
     public function getHullSystemData(): HullSystemData
     {
         return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_HULL,
-            new HullSystemData()
+            ShipSystemTypeEnum::SYSTEM_HULL
         );
     }
 
     public function getShieldSystemData(): ?ShieldSystemData
     {
         return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_SHIELDS,
-            new ShieldSystemData()
+            ShipSystemTypeEnum::SYSTEM_SHIELDS
         );
     }
 
     public function getEpsSystemData(): ?EpsSystemData
     {
         return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_EPS,
-            new EpsSystemData($this->shipSystemRepository)
+            ShipSystemTypeEnum::SYSTEM_EPS
         );
     }
 
     public function getTrackerSystemData(): ?TrackerSystemData
     {
         return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_TRACKER,
-            new TrackerSystemData($this->shipRepository, $this->shipSystemRepository)
+            ShipSystemTypeEnum::SYSTEM_TRACKER
         );
     }
 
-    /**
-     * @param AbstractSystemData $object
-     */
-    private function getSpecificShipSystem(int $systemId, $object)
+    private function getSpecificShipSystem(int $systemType)
     {
-        //add system to cache if not already deserialized
-        if (!array_key_exists($systemId, $this->shipSystemCache)) {
-            $object->setShip($this->get());
+        if (!$this->get()->hasShipSystem($systemType)) {
+            return null;
+        }
 
-            if ($systemId === ShipSystemTypeEnum::SYSTEM_HULL) {
+        //add system to cache if not already deserialized
+        if (!array_key_exists($systemType, $this->shipSystemDataCache)) {
+            $systemData = $this->shipSystemDataFactory->createSystemData($systemType, $this->shipWrapperFactory);
+            $systemData->setShip($this->get());
+
+            if ($systemType === ShipSystemTypeEnum::SYSTEM_HULL) {
                 $data = null;
             } else {
-
-                if (!$this->get()->hasShipSystem($systemId)) {
-                    return null;
-                }
-
-
-                $data = $this->get()->getShipSystem($systemId)->getData();
+                $data = $this->get()->getShipSystem($systemType)->getData();
             }
 
             if ($data === null) {
-                $this->shipSystemCache[$systemId] = $object;
+                $this->shipSystemDataCache[$systemType] = $systemData;
             } else {
-                $this->shipSystemCache[$systemId] =
+                $this->shipSystemDataCache[$systemType] =
                     $this->jsonMapper->mapObjectFromString(
                         $data,
-                        $object
+                        $systemData
                     );
             }
         }
 
         //return deserialized system
-        return $this->shipSystemCache[$systemId];
+        return $this->shipSystemDataCache[$systemType];
     }
 }

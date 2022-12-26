@@ -40,7 +40,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
-    private ShipSystemManagerInterface $shipSytemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -50,7 +50,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         ShipRemoverInterface $shipRemover,
         EntryCreatorInterface $entryCreator,
         AlertRedHelperInterface $alertRedHelper,
-        ShipSystemManagerInterface $shipSytemManager
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->applyDamage = $applyDamage;
@@ -59,7 +59,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $this->shipRemover = $shipRemover;
         $this->entryCreator = $entryCreator;
         $this->alertRedHelper = $alertRedHelper;
-        $this->shipSytemManager = $shipSytemManager;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -106,7 +106,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         // probabilities
         $chance = rand(1, 100);
         if ($chance < (int)ceil(11 * $ratio)) {
-            $this->escape($ship, $game);
+            $this->escape($wrapper, $game);
         } elseif ($chance < 55) {
             $this->sufferDeflectorDamage($wrapper, $game);
         } else {
@@ -123,12 +123,14 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function escape(ShipInterface $ship, $game): void
+    private function escape(ShipWrapperInterface $wrapper, $game): void
     {
-        $tractoringShip = $ship->getTractoringShip();
+        $ship = $wrapper->get();
+        $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
+        $tractoringShip = $tractoringShipWrapper->get();
 
         $tractoringShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setStatus(0);
-        $this->shipSystemManager->deactivate($tractoringShip, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); // forced active deactivation
+        $this->shipSystemManager->deactivate($tractoringShipWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); // forced active deactivation
 
         $this->shipRepository->save($tractoringShip);
 
@@ -191,7 +193,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $ship->getUser()->getId()
             );
 
-            $destroyMsg = $this->shipRemover->destroy($ship);
+            $destroyMsg = $this->shipRemover->destroy($wrapper);
             if ($destroyMsg !== null) {
                 $game->addInformation($destroyMsg);
             }

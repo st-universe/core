@@ -12,6 +12,8 @@ use Stu\Component\Ship\Repair\RepairUtil;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\Storage\ShipStorageManager;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\Data\ShipSystemDataFactory;
+use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManager;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -64,6 +66,7 @@ return [
     RepairUtilInterface::class => autowire(RepairUtil::class),
     CancelRepairInterface::class => autowire(CancelRepair::class),
     TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
+    ShipSystemDataFactoryInterface::class => autowire(ShipSystemDataFactory::class),
     ShipSystemManagerInterface::class => create(ShipSystemManager::class)->constructor(
         [
             ShipSystemTypeEnum::SYSTEM_HULL => autowire(HullShipSystem::class),

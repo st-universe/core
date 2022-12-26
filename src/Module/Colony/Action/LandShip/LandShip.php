@@ -13,6 +13,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -97,7 +98,7 @@ final class LandShip implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $this->retrieveLoadedTorpedos($ship, $colony, $game);
+        $this->retrieveLoadedTorpedos($wrapper, $colony, $game);
 
         $this->transferCrewToColony($ship, $colony);
 
@@ -119,8 +120,9 @@ final class LandShip implements ActionControllerInterface
         $ship->getCrewlist()->clear();
     }
 
-    private function retrieveLoadedTorpedos(ShipInterface $ship, $colony, $game): void
+    private function retrieveLoadedTorpedos(ShipWrapperInterface $wrapper, $colony, $game): void
     {
+        $ship = $wrapper->get();
         $torpedoStorage = $ship->getTorpedoStorage();
 
         if ($torpedoStorage === null) {
@@ -146,7 +148,7 @@ final class LandShip implements ActionControllerInterface
             $amount
         );
 
-        $this->shipTorpedoManager->removeTorpedo($ship);
+        $this->shipTorpedoManager->removeTorpedo($wrapper);
 
         $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
     }

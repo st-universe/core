@@ -118,8 +118,8 @@ final class TorpedoTransfer implements ActionControllerInterface
                     return;
                 }
 
-                $this->shipTorpedoManager->changeTorpedo($target, $amount, $ship->getTorpedo());
-                $this->shipTorpedoManager->changeTorpedo($ship, -$amount);
+                $this->shipTorpedoManager->changeTorpedo($targetWrapper, $amount, $ship->getTorpedo());
+                $this->shipTorpedoManager->changeTorpedo($wrapper, -$amount);
             }
         } else {
             $amount = min(
@@ -129,8 +129,8 @@ final class TorpedoTransfer implements ActionControllerInterface
             );
 
             if ($amount > 0) {
-                $this->shipTorpedoManager->changeTorpedo($ship, $amount, $target->getTorpedo());
-                $this->shipTorpedoManager->changeTorpedo($target, -$amount);
+                $this->shipTorpedoManager->changeTorpedo($wrapper, $amount, $target->getTorpedo());
+                $this->shipTorpedoManager->changeTorpedo($targetWrapper, -$amount);
             }
         }
 

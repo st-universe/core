@@ -151,7 +151,12 @@ class ProjectileWeaponShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->system->deactivate($this->ship);
+        $this->system->deactivate($this->wrapper);
     }
 }

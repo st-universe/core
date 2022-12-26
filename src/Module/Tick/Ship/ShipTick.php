@@ -94,7 +94,7 @@ final class ShipTick implements ShipTickInterface
         // leave ship
         if ($ship->getCrewCount() > 0 && !$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
             $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
-            $this->msg[] = $this->shipLeaver->evacuate($ship);
+            $this->msg[] = $this->shipLeaver->evacuate($wrapper);
             $this->sendMessages($ship);
             return;
         }
@@ -111,7 +111,7 @@ final class ShipTick implements ShipTickInterface
             //deactivate all systems except life support
             foreach ($this->shipSystemManager->getActiveSystems($ship) as $system) {
                 if ($system->getSystemType() != ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
-                    $this->shipSystemManager->deactivate($ship, $system->getSystemType(), true);
+                    $this->shipSystemManager->deactivate($wrapper, $system->getSystemType(), true);
                 }
             }
 
@@ -153,14 +153,14 @@ final class ShipTick implements ShipTickInterface
                 if ($availableEps - $wrapper->getEpsUsage() - $energyConsumption < 0) {
                     //echo "-- hit system: ".$system->getDescription()."\n";
 
-                    $this->shipSystemManager->deactivate($ship, $system->getSystemType(), true);
+                    $this->shipSystemManager->deactivate($wrapper, $system->getSystemType(), true);
 
                     $wrapper->lowerEpsUsage($energyConsumption);
                     $this->msg[] = $this->getSystemDescription($system) . ' deaktiviert wegen Energiemangel';
 
                     if ($ship->getCrewCount() > 0 && $system->getSystemType() == ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
                         $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
-                        $this->msg[] = $this->shipLeaver->evacuate($ship);
+                        $this->msg[] = $this->shipLeaver->evacuate($wrapper);
                         $this->sendMessages($ship);
                         return;
                     }

@@ -29,9 +29,9 @@ interface ShipSystemManagerInterface
      * @throws SystemNotFoundException
      * @throws DeactivationConditionsNotMetException
      */
-    public function deactivate(ShipInterface $ship, int $shipSystemId, bool $force = false): void;
+    public function deactivate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void;
 
-    public function deactivateAll(ShipInterface $ship): void;
+    public function deactivateAll(ShipWrapperInterface $wrapper): void;
 
     public function getEnergyConsumption(int $shipSystemId): int;
 

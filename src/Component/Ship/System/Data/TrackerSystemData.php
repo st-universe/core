@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Data;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
@@ -18,12 +19,16 @@ class TrackerSystemData extends AbstractSystemData
 
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository
+        ShipSystemRepositoryInterface $shipSystemRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipSystemRepository = $shipSystemRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function update(): void
@@ -35,9 +40,15 @@ class TrackerSystemData extends AbstractSystemData
         );
     }
 
-    public function getTarget(): ?ShipInterface
+    public function getTargetWrapper(): ?ShipWrapperInterface
     {
-        return $this->targetId === null ? null : $this->shipRepository->find($this->targetId);
+        if ($this->targetId === null) {
+            return null;
+        }
+
+        $target = $this->shipRepository->find($this->targetId);
+
+        return $this->shipWrapperFactory->wrapShip($target);
     }
 
     public function setTarget(?int $targetId): TrackerSystemData

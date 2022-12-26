@@ -570,7 +570,7 @@ final class ShipMover2 implements ShipMover2Interface
             if ($tractoredShip->getIsDestroyed()) {
                 $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $tractoredShip->getName(), $tractoredShip->getSectorString()));
 
-                $this->shipRemover->destroy($tractoredShip);
+                //$this->shipRemover->destroy($tractoredShip); //TODO uncomment and fix
             }
         }
 
@@ -586,7 +586,7 @@ final class ShipMover2 implements ShipMover2Interface
         if ($ship->getIsDestroyed()) {
             $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getName(), $ship->getSectorString()));
 
-            $this->shipRemover->destroy($ship);
+            //$this->shipRemover->destroy($ship); //TODO uncomment and fix
             $this->addLostShip($ship, $leadShip, false, null);
         }
     }
@@ -595,7 +595,8 @@ final class ShipMover2 implements ShipMover2Interface
     {
         $this->addInformation($msg);
         unset($this->tractoredShips[$ship->getId()]);
-        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
+        //TODO uncomment and fix
+        //   $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
     }
 
     private function addLostShip(ShipInterface $ship, ShipInterface $leadShip, bool $isFixedFleetMode, ?string $msg)

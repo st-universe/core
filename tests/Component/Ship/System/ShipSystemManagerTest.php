@@ -563,7 +563,7 @@ class ShipSystemManagerTest extends StuTestCase
     {
         $this->expectException(InvalidSystemException::class);
 
-        $this->manager->deactivate($this->ship, 42);
+        $this->manager->deactivate($this->wrapper, 42);
     }
 
     public function testDeactivateErrorsOnNotDeactivatable(): void
@@ -578,8 +578,13 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->manager->deactivate($this->ship, $this->system_id);
+        $this->manager->deactivate($this->wrapper, $this->system_id);
     }
 
     public function testDeactivateErrorsOnAlreadyOff(): void
@@ -594,8 +599,13 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_OFF);
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->manager->deactivate($this->ship, $this->system_id);
+        $this->manager->deactivate($this->wrapper, $this->system_id);
     }
 
     public function testDeactivateErrorsIfSystemPreConditionsFail(): void
@@ -610,9 +620,14 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(ShipSystemModeEnum::MODE_ON);
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
         $this->systemType->shouldReceive('checkDeactivationConditions')->with(
-            $this->ship,
+            $this->wrapper,
             Mockery::on(function (&$reason) {
                 $reason = 'reason';
                 return true;
@@ -620,7 +635,7 @@ class ShipSystemManagerTest extends StuTestCase
         )->once()
             ->andReturnFalse();
 
-        $this->manager->deactivate($this->ship, $this->system_id);
+        $this->manager->deactivate($this->wrapper, $this->system_id);
     }
 
     public function testDeactivateDeactivates(): void
@@ -630,7 +645,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(new ArrayCollection([$this->system_id =>  $this->shipSystem]));
         $this->systemType->shouldReceive('checkDeactivationConditions')
-            ->with($this->ship, Mockery::any())
+            ->with($this->wrapper, Mockery::any())
             ->once()
             ->andReturnTrue();
 
@@ -640,10 +655,15 @@ class ShipSystemManagerTest extends StuTestCase
             ->andReturn(ShipSystemModeEnum::MODE_ON);
 
         $this->systemType->shouldReceive('deactivate')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->manager->deactivate($this->ship, $this->system_id);
+        $this->manager->deactivate($this->wrapper, $this->system_id);
     }
 
     public function testDeactivateAllIgnoresDeactivationErrors(): void
@@ -659,11 +679,16 @@ class ShipSystemManagerTest extends StuTestCase
             ->andReturn(new ArrayCollection([$this->shipSystem]));
 
         $this->systemType->shouldReceive('deactivate')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once()
             ->andThrow(new InvalidSystemException());
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->manager->deactivateAll($this->ship);
+        $this->manager->deactivateAll($this->wrapper);
     }
 
     public function testDeactivateAllDeactivatesAllSystems(): void
@@ -678,9 +703,14 @@ class ShipSystemManagerTest extends StuTestCase
             ->once()
             ->andReturn(new ArrayCollection([$this->shipSystem]));
         $this->systemType->shouldReceive('deactivate')
-            ->with($this->ship)
+            ->with($this->wrapper)
             ->once();
+        //wrapper
+        $this->wrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->ship);
 
-        $this->manager->deactivateAll($this->ship);
+        $this->manager->deactivateAll($this->wrapper);
     }
 }

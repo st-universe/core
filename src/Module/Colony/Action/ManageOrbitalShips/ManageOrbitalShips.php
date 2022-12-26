@@ -156,9 +156,9 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
         $this->batteryShip($wrapper, $user, $colony, $msg);
         $this->manShip($wrapper, $user, $colony, $msg);
-        $this->unmanShip($ship, $user, $colony, $msg);
+        $this->unmanShip($wrapper, $user, $colony, $msg);
         $this->reactorShip($ship, $colony, $msg);
-        $this->torpedoShip($ship, $user, $colony, $msg);
+        $this->torpedoShip($wrapper, $user, $colony, $msg);
 
         $this->shipRepository->save($ship);
     }
@@ -260,9 +260,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
         }
     }
 
-    private function unmanShip(ShipInterface $ship, UserInterface $user, ColonyInterface $colony, &$msg): void
+    private function unmanShip(ShipWrapperInterface $wrapper, UserInterface $user, ColonyInterface $colony, &$msg): void
     {
         $unman = request::postArray('unman');
+        $ship = $wrapper->get();
 
         if (
             isset($unman[$ship->getId()]) && $ship->getUser() === $user && $ship->getCrewCount() > 0
@@ -297,7 +298,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
             }
             $ship->getDockedShips()->clear();
 
-            $this->shipSystemManager->deactivateAll($ship);
+            $this->shipSystemManager->deactivateAll($wrapper);
 
             $ship->setAlertStateGreen();
         }
@@ -337,11 +338,12 @@ final class ManageOrbitalShips implements ActionControllerInterface
         }
     }
 
-    private function torpedoShip(ShipInterface $ship, UserInterface $user, ColonyInterface $colony, &$msg): void
+    private function torpedoShip(ShipWrapperInterface $wrapper, UserInterface $user, ColonyInterface $colony, &$msg): void
     {
         $torp = request::postArray('torp');
         $torp_type = request::postArray('torp_type');
         $storage = $colony->getStorage();
+        $ship = $wrapper->get();
 
         if (isset($torp[$ship->getId()]) && $ship->getMaxTorpedos() > 0) {
             if ($torp[$ship->getId()] == 'm') {
@@ -402,7 +404,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $load = $storage[$torp_obj->getCommodityId()]->getAmount();
                     }
                 }
-                $this->shipTorpedoManager->changeTorpedo($ship, $load);
+                $this->shipTorpedoManager->changeTorpedo($wrapper, $load);
                 if ($load < 0) {
                     $this->colonyStorageManager->upperStorage($colony, $torp_obj->getCommodity(), abs($load));
                     $torpName = $torp_obj->getName();
@@ -439,7 +441,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 if ($count > $ship->getMaxTorpedos()) {
                     $count = $ship->getMaxTorpedos();
                 }
-                $this->shipTorpedoManager->changeTorpedo($ship, $count, $torp_obj);
+                $this->shipTorpedoManager->changeTorpedo($wrapper, $count, $torp_obj);
 
                 $this->colonyStorageManager->lowerStorage(
                     $colony,

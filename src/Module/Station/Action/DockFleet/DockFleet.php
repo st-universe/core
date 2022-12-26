@@ -18,6 +18,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -38,6 +39,8 @@ final class DockFleet implements ActionControllerInterface
 
     private CancelRepairInterface $cancelRepair;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -47,6 +50,7 @@ final class DockFleet implements ActionControllerInterface
         ShipSystemManagerInterface $shipSystemManager,
         InteractionCheckerInterface $interactionChecker,
         CancelRepairInterface $cancelRepair,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -55,6 +59,7 @@ final class DockFleet implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->interactionChecker = $interactionChecker;
         $this->cancelRepair = $cancelRepair;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -135,13 +140,15 @@ final class DockFleet implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(': Die Reparatur wurde abgebrochen');
             }
 
+            $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
             try {
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
             } catch (ShipSystemException $e) {
             }
 
             try {
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
             } catch (ShipSystemException $e) {
             }
 

@@ -40,7 +40,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
             $tractoredShip->getFleetId()
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);  //active deactivation
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);  //active deactivation
 
             $this->addMessageInternal(
                 sprintf(
@@ -53,13 +53,13 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
         }
 
         //can tow tractored ship?
-        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($ship, $tractoredShip);
+        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShip);
 
         if ($abortionMsg === null) {
 
             //Traktorstrahl Kosten
             if ($wrapper->getEpsSystemData()->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
                 $this->addMessageInternal(sprintf(
                     _('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'),
                     $tractoredShip->getName(),
@@ -68,7 +68,7 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
                 ));
             }
         } else {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
             $this->addMessageInternal($abortionMsg);
         }
     }

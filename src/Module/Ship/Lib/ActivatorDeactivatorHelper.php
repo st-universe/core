@@ -23,7 +23,6 @@ use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Tal\TalHelper;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInterface
@@ -34,18 +33,14 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function activate(
@@ -56,14 +51,14 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     ): bool {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
             $userId,
             $allowUplink
         );
 
-        if ($this->activateIntern($ship, $systemId, $game)) {
-            $this->shipRepository->save($ship);
+        if ($this->activateIntern($wrapper, $systemId, $game)) {
+            $this->shipRepository->save($wrapper->get());
             return true;
         } else {
             return false;
@@ -71,14 +66,15 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     }
 
     private function activateIntern(
-        ShipInterface $ship,
+        ShipWrapperInterface $wrapper,
         int $systemId,
         GameControllerInterface $game
     ): bool {
         $systemName = ShipSystemTypeEnum::getDescription($systemId);
+        $ship = $wrapper->get();
 
         try {
-            $this->shipSystemManager->activate($this->shipWrapperFactory->wrapShip($ship), $systemId);
+            $this->shipSystemManager->activate($wrapper, $systemId);
             $game->addInformation(sprintf(_('%s: System %s aktiviert'), $ship->getName(), $systemName));
             return true;
         } catch (AlreadyActiveException $e) {
@@ -121,16 +117,16 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     ): void {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
             $userId
         );
 
         $success = false;
-        foreach ($ship->getFleet()->getShips() as $ship) {
-            if ($this->activateIntern($ship, $systemId, $game)) {
+        foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $wrapper) {
+            if ($this->activateIntern($wrapper, $systemId, $game)) {
                 $success = true;
-                $this->shipRepository->save($ship);
+                $this->shipRepository->save($wrapper->get());
             }
         }
 
@@ -151,25 +147,26 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     ): void {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
             $userId,
             $allowUplink
         );
 
-        $this->deactivateIntern($ship, $systemId, $game);
-        $this->shipRepository->save($ship);
+        $this->deactivateIntern($wrapper, $systemId, $game);
+        $this->shipRepository->save($wrapper->get());
     }
 
     private function deactivateIntern(
-        ShipInterface $ship,
+        ShipWrapperInterface $wrapper,
         int $systemId,
         GameControllerInterface $game
     ): bool {
         $systemName = ShipSystemTypeEnum::getDescription($systemId);
+        $ship = $wrapper->get();
 
         try {
-            $this->shipSystemManager->deactivate($ship, $systemId);
+            $this->shipSystemManager->deactivate($wrapper, $systemId);
             $game->addInformation(sprintf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
             return true;
         } catch (AlreadyOffException $e) {
@@ -192,16 +189,16 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     ): void {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
             $userId
         );
 
         $success = false;
-        foreach ($ship->getFleet()->getShips() as $ship) {
-            if ($this->deactivateIntern($ship, $systemId, $game)) {
+        foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $wrapper) {
+            if ($this->deactivateIntern($wrapper, $systemId, $game)) {
                 $success = true;
-                $this->shipRepository->save($ship);
+                $this->shipRepository->save($wrapper->get());
             }
         }
 
@@ -243,12 +240,12 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     ): void {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
             $userId
         );
 
-        if (!$this->setAlertStateShip($ship, $alertState, $game)) {
+        if (!$this->setAlertStateShip($wrapper, $alertState, $game)) {
             return;
         }
 
@@ -268,14 +265,14 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     ): void {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
             $userId
         );
 
         $success = false;
-        foreach ($ship->getFleet()->getShips() as $ship) {
-            $success = $this->setAlertStateShip($ship, $alertState, $game) || $success;
+        foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $wrapper) {
+            $success = $this->setAlertStateShip($wrapper, $alertState, $game) || $success;
         }
 
         // only show info if at least one ship was able to change
@@ -292,8 +289,10 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
     }
 
-    private function setAlertStateShip(ShipInterface $ship, int $alertState, GameControllerInterface $game): bool
+    private function setAlertStateShip(ShipWrapperInterface $wrapper, int $alertState, GameControllerInterface $game): bool
     {
+        $ship = $wrapper->get();
+
         // station constructions can't change alert state
         if ($ship->isConstruction()) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]Konstrukte können die Alarmstufe nicht ändern[/color][/b]'), $ship->getName()));
@@ -313,7 +312,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         try {
             $alertMsg = null;
-            $this->shipWrapperFactory->wrapShip($ship)->setAlertState($alertState, $alertMsg);
+            $wrapper->setAlertState($alertState, $alertMsg);
             $this->shipRepository->save($ship);
 
             if ($alertMsg !== null) {
@@ -326,13 +325,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         switch ($alertState) {
             case ShipAlertStateEnum::ALERT_RED:
-                $this->setAlertRed($ship, $game);
+                $this->setAlertRed($wrapper, $game);
                 break;
             case ShipAlertStateEnum::ALERT_YELLOW:
-                $this->setAlertYellow($ship, $game);
+                $this->setAlertYellow($wrapper, $game);
                 break;
             case ShipAlertStateEnum::ALERT_GREEN:
-                $this->setAlertGreen($ship, $game);
+                $this->setAlertGreen($wrapper, $game);
                 break;
         }
 
@@ -341,7 +340,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         return true;
     }
 
-    private function setAlertRed(ShipInterface $ship, GameControllerInterface $game): void
+    private function setAlertRed(ShipWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         $alertSystems = [
             ShipSystemTypeEnum::SYSTEM_SHIELDS,
@@ -351,22 +350,22 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         ];
 
         foreach ($alertSystems as $systemId) {
-            $this->activateIntern($ship, $systemId, $game);
+            $this->activateIntern($wrapper, $systemId, $game);
         }
     }
 
-    private function setAlertYellow(ShipInterface $ship, GameControllerInterface $game): void
+    private function setAlertYellow(ShipWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         $alertSystems = [
             ShipSystemTypeEnum::SYSTEM_NBS
         ];
 
         foreach ($alertSystems as $systemId) {
-            $this->activateIntern($ship, $systemId, $game);
+            $this->activateIntern($wrapper, $systemId, $game);
         }
     }
 
-    private function setAlertGreen(ShipInterface $ship, GameControllerInterface $game): void
+    private function setAlertGreen(ShipWrapperInterface $wrapper, GameControllerInterface $game): void
     {
         $deactivateSystems = [
             ShipSystemTypeEnum::SYSTEM_PHASER,
@@ -375,8 +374,8 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         ];
 
         foreach ($deactivateSystems as $systemId) {
-            if ($ship->hasShipSystem($systemId)) {
-                $this->deactivateIntern($ship, $systemId, $game);
+            if ($wrapper->get()->hasShipSystem($systemId)) {
+                $this->deactivateIntern($wrapper, $systemId, $game);
             }
         }
     }

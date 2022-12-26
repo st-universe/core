@@ -110,7 +110,7 @@ final class LeaveWormhole implements ActionControllerInterface
         //the destination map field
         $outerMap = $wormholeEntry->getMap();
 
-        $this->leaveWormhole($ship, $outerMap);
+        $this->leaveWormhole($wrapper, $outerMap);
         if ($ship->isTractoring()) {
             $this->leaveWormholeTraktor($wrapper, $outerMap, $game);
         }
@@ -125,9 +125,10 @@ final class LeaveWormhole implements ActionControllerInterface
                 }
             );
             foreach ($result as $fleetShip) {
-                $this->leaveWormhole($fleetShip, $outerMap);
+                $fleetShipWrapper = $this->shipWrapperFactory->wrapShip($fleetShip);
+                $this->leaveWormhole($fleetShipWrapper, $outerMap);
                 if ($fleetShip->isTractoring()) {
-                    $this->leaveWormholeTraktor($this->shipWrapperFactory->wrapShip($fleetShip), $outerMap, $game);
+                    $this->leaveWormholeTraktor($fleetShipWrapper, $outerMap, $game);
                 }
                 $this->shipRepository->save($fleetShip);
             }
@@ -159,6 +160,7 @@ final class LeaveWormhole implements ActionControllerInterface
     private function leaveWormholeTraktor(ShipWrapperInterface $wrapper, MapInterface $map, GameControllerInterface $game): void
     {
         $ship = $wrapper->get();
+        $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
         $tractoredShip = $ship->getTractoredShip();
 
         if (
@@ -166,7 +168,7 @@ final class LeaveWormhole implements ActionControllerInterface
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Verlassen des Wurmlochs deaktiviert'),
@@ -175,7 +177,7 @@ final class LeaveWormhole implements ActionControllerInterface
             return;
         }
 
-        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($ship, $tractoredShip);
+        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShip);
         if ($abortionMsg !== null) {
             $game->addInformation($abortionMsg);
             return;
@@ -185,12 +187,12 @@ final class LeaveWormhole implements ActionControllerInterface
 
         if ($epsSystem->getEps() < 1) {
             $name = $tractoredShip->getName();
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Wurmlochs aufgrund Energiemangels deaktiviert");
             return;
         }
         $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship, true));
-        $this->leaveWormhole($tractoredShip, $map);
+        $this->leaveWormhole($tractoredShipWrapper, $map);
         $epsSystem->setEps($epsSystem->getEps() - 1)->update();
 
         $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit aus dem Wurmloch gezogen");
@@ -204,12 +206,13 @@ final class LeaveWormhole implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function leaveWormhole(ShipInterface $ship, MapInterface $map): void
+    private function leaveWormhole(ShipWrapperInterface $wrapper, MapInterface $map): void
     {
+        $ship = $wrapper->get();
         $this->loggerUtil->log(sprintf('newDirection: %d', $ship->getFlightDirection()));
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
         }
 
         $ship->setDockedTo(null);

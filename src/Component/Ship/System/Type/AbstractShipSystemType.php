@@ -38,7 +38,7 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         return true;
     }
 
-    public function checkDeactivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, &$reason): bool
     {
         return true;
     }

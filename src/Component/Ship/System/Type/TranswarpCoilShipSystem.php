@@ -65,8 +65,8 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
         $ship->getDockedShips()->clear();
     }
 
-    public function deactivate(ShipInterface $ship): void
+    public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 }

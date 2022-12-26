@@ -13,6 +13,8 @@ interface ShipWrapperInterface
 {
     public function get(): ShipInterface;
 
+    public function getFleetWrapper(): ?FleetWrapperInterface;
+
     public function getEpsUsage(): int;
 
     public function lowerEpsUsage($value): void;
@@ -43,6 +45,10 @@ interface ShipWrapperInterface
     public function getRepairCosts(): array;
 
     public function getPossibleTorpedoTypes(): array;
+
+    public function getTractoredShipWrapper(): ?ShipWrapperInterface;
+
+    public function getTractoringShipWrapper(): ?ShipWrapperInterface;
 
     public function getHullSystemData(): HullSystemData;
 
