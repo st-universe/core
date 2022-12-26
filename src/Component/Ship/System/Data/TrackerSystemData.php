@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Data;
 
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -59,6 +60,10 @@ class TrackerSystemData extends AbstractSystemData
 
     public function isUseable(): bool
     {
+        if ($this->getTargetWrapper() !== null) {
+            return false;
+        }
+
         $cooldown = $this->ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->getCooldown();
 
         return $cooldown === null ? true : $cooldown < time();
@@ -73,5 +78,12 @@ class TrackerSystemData extends AbstractSystemData
     {
         $this->remainingTicks = $ticks;
         return $this;
+    }
+
+    public function canAttackCloakedTarget(): bool
+    {
+        $target = $this->getTargetWrapper()->get();
+
+        return (new InteractionChecker())->checkPosition($this->ship, $target) && $target->getCloakState();
     }
 }

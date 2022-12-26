@@ -533,6 +533,14 @@
               <img src="assets/buttons/landshuttle1.png" name="land_${ship/getId}" title="In Shuttle-Rampe landen" />
             </a>
           </div>
+          <div style="float:left; margin-right:4px;"
+            tal:condition="php: WRAPPER.getTrackerSystemData() && WRAPPER.getTrackerSystemData().isUseable()">
+            <a href="?B_TRACK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}"
+              onmouseover="cp('track_${ship/getId}','buttons/mark2', 'png')"
+              onmouseout="cp('track_${ship/getId}','buttons/mark1', 'png')">
+              <img src="assets/buttons/mark1.png" name="track_${ship/getId}" title="Ziel markieren" />
+            </a>
+          </div>
         </tal:block>
         <div style="float:left; margin-right:4px;" tal:condition="php: ship.isBase() AND NOT ship.getIsDestroyed()">
           <a tal:condition="not:SHIP/getDockedTo"
