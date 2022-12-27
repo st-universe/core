@@ -211,16 +211,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private function resetTrackerDevices(int $shipId): void
     {
-        $this->loggerUtil->init('TRACKER', LoggerEnum::LEVEL_WARNING);
-
         foreach ($this->shipSystemRepository->getTrackingShipSystems($shipId) as $system) {
             $wrapper = $this->shipWrapperFactory->wrapShip($system->getShip());
-
-            $this->loggerUtil->log(sprintf(
-                'trackedShipId: %d, trackingShipId: %d',
-                $shipId,
-                $system->getShip()->getId()
-            ));
 
             $wrapper->getTrackerSystemData()->setTarget(null)->update();
         }
