@@ -11,6 +11,9 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
@@ -61,6 +64,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         StorageRepositoryInterface $storageRepository,
@@ -78,7 +83,8 @@ final class ShipRemover implements ShipRemoverInterface
         TradePostRepositoryInterface $tradePostRepository,
         CancelRepairInterface $cancelRepair,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->storageRepository = $storageRepository;
@@ -97,6 +103,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->cancelRepair = $cancelRepair;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function destroy(ShipWrapperInterface $wrapper): ?string
@@ -204,8 +211,16 @@ final class ShipRemover implements ShipRemoverInterface
 
     private function resetTrackerDevices(int $shipId): void
     {
+        $this->loggerUtil->init('TRACKER', LoggerEnum::LEVEL_WARNING);
+
         foreach ($this->shipSystemRepository->getTrackingShipSystems($shipId) as $system) {
             $wrapper = $this->shipWrapperFactory->wrapShip($system->getShip());
+
+            $this->loggerUtil->log(sprintf(
+                'trackedShipId: %d, trackingShipId: %d',
+                $shipId,
+                $system->getShip()->getId()
+            ));
 
             $wrapper->getTrackerSystemData()->setTarget(null)->update();
         }
