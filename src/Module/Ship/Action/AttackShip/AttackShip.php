@@ -100,7 +100,7 @@ final class AttackShip implements ActionControllerInterface
             }
         }
 
-        if ($target->getIsDestroyed()) {
+        if ($target->isDestroyed()) {
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             $game->addInformation(_('Das Ziel ist bereits zerstört'));
             return;
@@ -155,17 +155,17 @@ final class AttackShip implements ActionControllerInterface
 
         if ($isActiveTractorShipWarped) {
             //Alarm-Rot check for ship
-            if (!$ship->getIsDestroyed()) {
+            if (!$ship->isDestroyed()) {
                 $msg = array_merge($msg, $this->alertRedHelper->doItAll($ship, null));
             }
 
             //Alarm-Rot check for traktor ship
-            if (!$target->getIsDestroyed()) {
+            if (!$target->isDestroyed()) {
                 $msg = array_merge($msg, $this->alertRedHelper->doItAll($target, null));
             }
         }
 
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
             $game->addInformationMerge($msg);
             return;
         }

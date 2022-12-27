@@ -148,7 +148,7 @@ final class LeaveWormhole implements ActionControllerInterface
         // alert red check
         $this->alertRedHelper->doItAll($ship, $game);
 
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
             return;
         }
 

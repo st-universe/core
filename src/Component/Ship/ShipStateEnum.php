@@ -13,6 +13,7 @@ final class ShipStateEnum
     public const SHIP_STATE_UNDER_CONSTRUCTION = 3;
     public const SHIP_STATE_REPAIR_ACTIVE = 4;
     public const SHIP_STATE_UNDER_SCRAPPING = 5;
+    public const SHIP_STATE_DESTROYED = 6;
 
     public static function getDescription(int $state): string
     {
@@ -29,6 +30,8 @@ final class ShipStateEnum
                 return _("4_repair_active");
             case self::SHIP_STATE_UNDER_SCRAPPING:
                 return _("5_scrapping");
+            case self::SHIP_STATE_DESTROYED:
+                return _("6_destroyed");
         }
         return 'unknown';
     }

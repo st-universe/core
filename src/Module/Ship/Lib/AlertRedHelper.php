@@ -85,7 +85,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         foreach ($wrappers as $wrapper) {
             $ship = $wrapper->get();
 
-            if (!$ship->getIsDestroyed()) {
+            if (!$ship->isDestroyed()) {
                 if ($ship->isFleetLeader()) {
                     return $ship;
                 }
@@ -307,7 +307,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             (int) $alert_user_id,
             $pm,
             $isAlertShipBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
-            $alertShip->getIsDestroyed() ? null : $href
+            $alertShip->isDestroyed() ? null : $href
         );
         $pm = sprintf(_('Fremde Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getSectorString());
         foreach ($this->shipAttackCycle->getMessages() as $value) {
@@ -320,7 +320,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
 
-        if ($leadShip->getIsDestroyed()) {
+        if ($leadShip->isDestroyed()) {
 
             $informations = array_merge($informations, $this->shipAttackCycle->getMessages());
             return;

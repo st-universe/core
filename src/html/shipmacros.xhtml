@@ -470,7 +470,7 @@
       <tal:block tal:condition="not:ship/getWarpState">
         <tal:block tal:condition="not:ship/getCloakState">
           <div style="float:left; margin-right:4px;">
-            <a href="javascript:void(0);" tal:condition="not:ship/getIsDestroyed"
+            <a href="javascript:void(0);" tal:condition="not:ship/isDestroyed"
               onclick="showETransferWindow(${ship/getId})" onmouseover="cp('etr_${ship/getId}','buttons/e_trans2')"
               onmouseout="cp('etr_${ship/getId}','buttons/e_trans1')">
               <img src="assets/buttons/e_trans1.png" name="etr_${ship/getId}"
@@ -534,7 +534,7 @@
             </a>
           </div>
           <div style="float:left; margin-right:4px;"
-            tal:condition="php: WRAPPER.getTrackerSystemData() && WRAPPER.getTrackerSystemData().isUseable() && !ship.getIsDestroyed()">
+            tal:condition="php: WRAPPER.getTrackerSystemData() && WRAPPER.getTrackerSystemData().isUseable() && !ship.isDestroyed()">
             <a href="?B_TRACK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}"
               onmouseover="cp('track_${ship/getId}','buttons/mark_1', 'png')"
               onmouseout="cp('track_${ship/getId}','buttons/mark', 'png')">
@@ -542,7 +542,7 @@
             </a>
           </div>
         </tal:block>
-        <div style="float:left; margin-right:4px;" tal:condition="php: ship.isBase() AND NOT ship.getIsDestroyed()">
+        <div style="float:left; margin-right:4px;" tal:condition="php: ship.isBase() AND NOT ship.isDestroyed()">
           <a tal:condition="not:SHIP/getDockedTo"
             href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}"
             onmouseover="cp('dock_${ship/getId}','buttons/dock2')"
@@ -1144,7 +1144,7 @@
   <metal:block tal:condition="THIS/getInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
   <tal:block tal:condition="exists:TARGETWRAPPER">
     <tal:block tal:define="targetShip TARGETWRAPPER/get">
-      <tal:block tal:condition="not:targetShip/getIsDestroyed">
+      <tal:block tal:condition="not:targetShip/isDestroyed">
         <tal:block tal:define="targetShipEps TARGETWRAPPER/getEpsSystemData">
           <table class="tcal" tal:condition="php:SHIP.isMatrixScannerHealthy() AND NOT SHIP.getCloakState()">
             <tr>
@@ -1244,7 +1244,7 @@
           </form>
         </tal:block>
       </tal:block>
-      <tal:block tal:condition="targetShip/getIsDestroyed">
+      <tal:block tal:condition="targetShip/isDestroyed">
         <span>Ziel ist zerstört</span>
       </tal:block>
     </tal:block>

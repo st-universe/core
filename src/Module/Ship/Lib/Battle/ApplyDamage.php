@@ -74,7 +74,7 @@ final class ApplyDamage implements ApplyDamageInterface
                 $msg[] = $disablemessage;
             }
 
-            if ($ship->getIsDestroyed()) {
+            if ($ship->isDestroyed()) {
                 $msg[] = "-- Das Schiff wurde zerstört!";
             }
 

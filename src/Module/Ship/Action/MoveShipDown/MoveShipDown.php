@@ -48,7 +48,7 @@ final class MoveShipDown implements ActionControllerInterface
         );
         $game->addInformationMerge($this->shipMover->getInformations());
 
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
             return;
         }
 

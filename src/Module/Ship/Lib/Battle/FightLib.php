@@ -52,7 +52,7 @@ final class FightLib implements FightLibInterface
     {
         $ship = $wrapper->get();
         $msg = [];
-        if ($ship->getRump()->isEscapePods() || $ship->getIsDestroyed()) {
+        if ($ship->getRump()->isEscapePods() || $ship->isDestroyed()) {
             return $msg;
         }
         if ($ship->getBuildplan() === null) {
@@ -127,7 +127,7 @@ final class FightLib implements FightLibInterface
         return array_filter(
             $base,
             function (ShipWrapperInterface $wrapper): bool {
-                return !$wrapper->get()->getIsDestroyed() && !$wrapper->get()->getDisabled();
+                return !$wrapper->get()->isDestroyed() && !$wrapper->get()->getDisabled();
             }
         );
     }

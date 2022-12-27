@@ -64,7 +64,7 @@ final class ShipNfsItem
     {
         return $this->getWarpState();
     }
-    public function getIsDestroyed()
+    public function isDestroyed()
     {
         return $this->values['isdestroyed'];
     }

@@ -137,7 +137,7 @@ final class ManageShips implements ActionControllerInterface
             if (!$this->interactionChecker->checkPosition($station, $shipobj)) {
                 continue;
             }
-            if ($shipobj->getIsDestroyed()) {
+            if ($shipobj->isDestroyed()) {
                 continue;
             }
 

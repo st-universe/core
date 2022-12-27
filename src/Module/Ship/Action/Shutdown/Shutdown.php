@@ -70,7 +70,7 @@ final class Shutdown implements ActionControllerInterface
                 $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
             }
 
-            if ($ship->getIsDestroyed()) {
+            if ($ship->isDestroyed()) {
                 return;
             }
         }

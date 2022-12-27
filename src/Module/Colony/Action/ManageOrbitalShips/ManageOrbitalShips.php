@@ -148,7 +148,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
             return;
         }
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
             return;
         }
 

@@ -156,7 +156,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
             return;
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -166,7 +166,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $game->addInformation("Der Traktorstrahl wurde bei dem Angriff zerstört");
             return;
         }
-        if ($target->getIsDestroyed()) {
+        if ($target->isDestroyed()) {
             $game->addInformation("Das Ziel wurde bei dem Angriff zerstört");
             $this->abort($ship, $game);
             return;

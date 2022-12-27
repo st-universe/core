@@ -104,7 +104,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -120,7 +120,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -142,7 +142,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -164,7 +164,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -190,7 +190,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -220,7 +220,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -258,7 +258,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -293,7 +293,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -334,7 +334,7 @@ class ShipLoaderTest extends StuTestCase
             ->with(5)
             ->once()
             ->andReturn($this->ship);
-        $this->ship->shouldReceive('getIsDestroyed')
+        $this->ship->shouldReceive('isDestroyed')
             ->withNoArgs()
             ->once()
             ->andReturn(false);

@@ -73,7 +73,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
 
             $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
-            if ($target->getIsDestroyed()) {
+            if ($target->isDestroyed()) {
                 if ($isAlertRed) {
                     $this->entryCreator->addShipEntry(
                         '[b][color=red]Alarm-Rot:[/color][/b] Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',

@@ -55,7 +55,7 @@ final class FleetDeactivateWarp implements ActionControllerInterface
             $this->alertRedHelper->doItAll($tractoredShip, $game, $tractoringShip);
         }
 
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
             return;
         }
 

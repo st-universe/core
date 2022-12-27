@@ -987,7 +987,7 @@
 		<tr>
 			<td>
 				<tal:block tal:condition="SHIP/isTractoring">
-					<a tal:condition="php:SHIP.isBase() AND NOT SHIP.getTractoredShip().getIsDestroyed()"
+					<a tal:condition="php:SHIP.isBase() AND NOT SHIP.getTractoredShip().isDestroyed()"
 						href="?B_DOCK_TRACTORED=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 						onmouseover="cp('docktractored','buttons/dock2')"
 						onmouseout="cp('docktractored','buttons/dock1')">

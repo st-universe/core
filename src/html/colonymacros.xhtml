@@ -736,8 +736,8 @@
             </tr>
           </table>
         </td>
-        <td colspan="2" tal:condition="data/getIsDestroyed"></td>
-        <tal:block tal:condition="not:data/getIsDestroyed">
+        <td colspan="2" tal:condition="data/isDestroyed"></td>
+        <tal:block tal:condition="not:data/isDestroyed">
           <td style="width: 150px;" tal:define="shields wrapper/getShieldSystemData">
             <table class="tcal" tal:condition="shields">
               <tr>

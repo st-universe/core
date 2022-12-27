@@ -586,7 +586,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getIsDestroyed(): bool
+    public function isDestroyed(): bool
     {
         return $this->is_destroyed;
     }

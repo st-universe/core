@@ -45,7 +45,7 @@
                 <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span
                     tal:content="structure bbcode:ship/getName">NAME</span></a>
               </td>
-              <tal:block tal:condition="not:ship/getIsDestroyed">
+              <tal:block tal:condition="not:ship/isDestroyed">
                 <td tal:condition="wrapper/isOwnedByCurrentUser">
                   <div tal:condition="ship/canMan">
                     <input type="checkbox" name="man[${ship/getId}]" />

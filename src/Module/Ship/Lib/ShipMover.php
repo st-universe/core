@@ -286,7 +286,7 @@ final class ShipMover implements ShipMoverInterface
 
                 // check for destroyed ships
                 foreach ($wrappers as $wrapper) {
-                    if ($wrapper->get()->getIsDestroyed()) {
+                    if ($wrapper->get()->isDestroyed()) {
                         $this->addLostShip($wrapper, $leadShip, false, null);
                     }
                 }
@@ -294,7 +294,7 @@ final class ShipMover implements ShipMoverInterface
 
             //AR Check for tractored ships
             foreach ($this->tractoredShips as [$tractoringShip, $tractoredShip]) {
-                if (!$tractoredShip->getIsDestroyed()) {
+                if (!$tractoredShip->isDestroyed()) {
                     $this->informations = array_merge(
                         $this->informations,
                         $this->alertRedHelper->doItAll($tractoredShip, null, $tractoringShip)
@@ -311,7 +311,7 @@ final class ShipMover implements ShipMoverInterface
         // save all ships
         foreach ($wrappers as $wrapper) {
             $ship = $wrapper->get();
-            if (!$ship->getIsDestroyed()) {
+            if (!$ship->isDestroyed()) {
                 $this->shipRepository->save($ship);
             }
             if ($ship->isTractoring()) {
@@ -598,7 +598,7 @@ final class ShipMover implements ShipMoverInterface
 
             $this->applyFieldDamage($wrapper, $leadShip, $nextField->getFieldType()->getSpecialDamage(), true, '');
 
-            if ($ship->getIsDestroyed()) {
+            if ($ship->isDestroyed()) {
                 return;
             }
         }
@@ -647,7 +647,7 @@ final class ShipMover implements ShipMoverInterface
             );
             $this->addInformationMerge($damageMsg);
 
-            if ($tractoredShip->getIsDestroyed()) {
+            if ($tractoredShip->isDestroyed()) {
                 $this->entryCreator->addShipEntry(sprintf(
                     _('Die %s (%s) wurde beim Einflug in Sektor %s zerstört'),
                     $tractoredShip->getName(),
@@ -665,7 +665,7 @@ final class ShipMover implements ShipMoverInterface
         $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $wrapper);
         $this->addInformationMerge($damageMsg);
 
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
             $this->entryCreator->addShipEntry(sprintf(
                 _('Die %s (%s) wurde beim Einflug in Sektor %s zerstört'),
                 $ship->getName(),

@@ -76,7 +76,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
-            if ($target->getIsDestroyed()) {
+            if ($target->isDestroyed()) {
                 unset($targetPool[$target->getId()]);
 
                 if ($isAlertRed) {

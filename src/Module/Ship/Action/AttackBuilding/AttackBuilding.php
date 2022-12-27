@@ -213,7 +213,7 @@ final class AttackBuilding implements ActionControllerInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
         );
 
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
 
             $game->addInformationMerge($this->messages);
             return;

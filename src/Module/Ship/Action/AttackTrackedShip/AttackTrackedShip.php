@@ -137,16 +137,16 @@ final class AttackTrackedShip implements ActionControllerInterface
         $msg = $this->shipAttackCycle->getMessages();
 
         //Alarm-Rot check for ship
-        if ($isShipWarped && !$ship->getIsDestroyed()) {
+        if ($isShipWarped && !$ship->isDestroyed()) {
             $msg = array_merge($msg, $this->alertRedHelper->doItAll($ship, null));
         }
 
         //Alarm-Rot check for traktor ship
-        if ($isTargetWarped && !$target->getIsDestroyed()) {
+        if ($isTargetWarped && !$target->isDestroyed()) {
             $msg = array_merge($msg, $this->alertRedHelper->doItAll($target, null));
         }
 
-        if ($ship->getIsDestroyed()) {
+        if ($ship->isDestroyed()) {
             $game->addInformationMerge($msg);
             return;
         }

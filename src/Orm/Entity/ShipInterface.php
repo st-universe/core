@@ -126,7 +126,7 @@ interface ShipInterface
 
     public function setDatabaseId(int $databaseEntryId): ShipInterface;
 
-    public function getIsDestroyed(): bool;
+    public function isDestroyed(): bool;
 
     public function setIsDestroyed(bool $isDestroyed): ShipInterface;
 

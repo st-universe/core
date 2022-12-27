@@ -74,7 +74,7 @@ final class EpsTransfer implements ActionControllerInterface
             return;
         }
 
-        if ($target->getIsDestroyed()) {
+        if ($target->isDestroyed()) {
             return;
         }
         if ($target->getWarpState()) {
