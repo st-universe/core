@@ -57,6 +57,12 @@ final class TrackShip implements ActionControllerInterface
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
+
+        if ($target->getShieldState()) {
+            $game->addInformation(_("Das Ziel hat die Schilde aktiviert"));
+            return;
+        }
+
         if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
             return;
         }
