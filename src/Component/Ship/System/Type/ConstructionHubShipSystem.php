@@ -22,6 +22,11 @@ final class ConstructionHubShipSystem extends AbstractShipSystemType implements 
         $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
     }
 
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB;
+    }
+
     public function getEnergyUsageForActivation(): int
     {
         return 20;
@@ -45,14 +50,14 @@ final class ConstructionHubShipSystem extends AbstractShipSystemType implements 
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $ship = $wrapper->get();
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB)->setMode(ShipSystemModeEnum::MODE_ON);
+        $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
         $this->shipyardShipQueueRepository->restartQueueByShipyard($ship->getId());
     }
 
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
         $this->stopShipyardQeue($ship);
     }
 

@@ -12,14 +12,14 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class ComputerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
+    public function getSystemType(): int
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        return ShipSystemTypeEnum::SYSTEM_COMPUTER;
     }
 
-    public function deactivate(ShipWrapperInterface $wrapper): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     public function getEnergyUsageForActivation(): int
@@ -30,11 +30,6 @@ final class ComputerShipSystem extends AbstractShipSystemType implements ShipSys
     public function getEnergyConsumption(): int
     {
         return 0;
-    }
-
-    public function getPriority(): int
-    {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_COMPUTER];
     }
 
     public function getDefaultMode(): int

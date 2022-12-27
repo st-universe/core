@@ -29,6 +29,11 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         $this->cancelRepair = $cancelRepair;
     }
 
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_CLOAK;
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         if ($ship->isTractoring()) {
@@ -64,11 +69,6 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         return 8;
     }
 
-    public function getPriority(): int
-    {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_CLOAK];
-    }
-
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $ship = $wrapper->get();
@@ -96,11 +96,6 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->setMode(ShipSystemModeEnum::MODE_OFF);
         }
 
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK)->setMode(ShipSystemModeEnum::MODE_ON);
-    }
-
-    public function deactivate(ShipWrapperInterface $wrapper): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
     }
 }

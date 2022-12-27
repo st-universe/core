@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -23,6 +22,11 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         AstroEntryLibInterface $astroEntryLib
     ) {
         $this->astroEntryLib = $astroEntryLib;
+    }
+
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
@@ -43,11 +47,6 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         }
 
         return true;
-    }
-
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
     public function deactivate(ShipWrapperInterface $wrapper): void

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Game\TimeConstants;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -13,9 +12,9 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
+    public function getSystemType(): int
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB)->setMode(ShipSystemModeEnum::MODE_ON);
+        return ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB;
     }
 
     public function deactivate(ShipWrapperInterface $wrapper): void

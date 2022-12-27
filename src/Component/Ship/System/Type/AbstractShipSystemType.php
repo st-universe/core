@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -33,6 +34,18 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         $shipSystemRepository->save($system);
     }
 
+    public abstract function getSystemType(): int;
+
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
+    {
+        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
+    }
+
+    public function deactivate(ShipWrapperInterface $wrapper): void
+    {
+        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         return true;
@@ -50,6 +63,10 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 
     public function getPriority(): int
     {
+        if (array_key_exists($this->getSystemType(), ShipSystemTypeEnum::SYSTEM_PRIORITIES)) {
+            return ShipSystemTypeEnum::SYSTEM_PRIORITIES[$this->getSystemType()];
+        }
+
         return ShipSystemTypeEnum::SYSTEM_PRIORITY_STANDARD;
     }
 

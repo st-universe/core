@@ -6,7 +6,6 @@ namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -21,6 +20,11 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         AstroEntryLibInterface $astroEntryLib
     ) {
         $this->astroEntryLib = $astroEntryLib;
+    }
+
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_NBS;
     }
 
     public function checkDeactivationConditions(ShipWrapperInterface $wrapper, &$reason): bool
@@ -41,15 +45,10 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         return true;
     }
 
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_ON);
-    }
-
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
 
         //other consequences
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)) {
@@ -70,6 +69,10 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
             if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
                 $this->astroEntryLib->cancelAstroFinalizing($ship);
             }
+        }
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)) {
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->setMode(ShipSystemModeEnum::MODE_OFF);
+            $wrapper->getTrackerSystemData()->setTarget(null)->update();
         }
     }
 }

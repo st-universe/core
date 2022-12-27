@@ -12,14 +12,14 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class BeamBlockerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
+    public function getSystemType(): int
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        return ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER;
     }
 
-    public function deactivate(ShipWrapperInterface $wrapper): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     public function getDefaultMode(): int

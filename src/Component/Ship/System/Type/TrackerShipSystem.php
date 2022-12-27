@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Game\TimeConstants;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -14,6 +13,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_TRACKER;
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         if (!$ship->getLss()) {
@@ -27,11 +31,6 @@ class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemType
         }
 
         return true;
-    }
-
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
     public function deactivate(ShipWrapperInterface $wrapper): void

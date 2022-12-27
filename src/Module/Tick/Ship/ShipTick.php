@@ -381,7 +381,7 @@ final class ShipTick implements ShipTickInterface
         if ($remainingTicks > $reduceByTicks) {
             $tracker->setRemainingTicks($remainingTicks - $reduceByTicks)->update();
         } else {
-            $tracker->setTarget(null)->update();
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACKER, true);
 
             if ($target->getUser() !== $ship->getUser()) {
 

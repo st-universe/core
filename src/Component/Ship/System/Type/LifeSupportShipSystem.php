@@ -13,14 +13,14 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class LifeSupportShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT;
+    }
+
     public function getEnergyUsageForActivation(): int
     {
         return 0;
-    }
-
-    public function getPriority(): int
-    {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT];
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
@@ -35,12 +35,7 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
 
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
-    }
-
-    public function deactivate(ShipWrapperInterface $wrapper): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void

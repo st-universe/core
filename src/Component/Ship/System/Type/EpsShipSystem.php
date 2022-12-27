@@ -12,24 +12,19 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
+    public function getSystemType(): int
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        return ShipSystemTypeEnum::SYSTEM_EPS;
     }
 
-    public function deactivate(ShipWrapperInterface $wrapper): void
+    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     public function getEnergyUsageForActivation(): int
     {
         return 0;
-    }
-
-    public function getPriority(): int
-    {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_EPS];
     }
 
     public function getEnergyConsumption(): int

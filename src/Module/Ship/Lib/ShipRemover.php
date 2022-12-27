@@ -214,7 +214,7 @@ final class ShipRemover implements ShipRemoverInterface
         foreach ($this->shipSystemRepository->getTrackingShipSystems($shipId) as $system) {
             $wrapper = $this->shipWrapperFactory->wrapShip($system->getShip());
 
-            $wrapper->getTrackerSystemData()->setTarget(null)->update();
+            $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACKER, true);
         }
     }
 

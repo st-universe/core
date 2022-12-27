@@ -139,17 +139,30 @@ class LongRangeScannerShipSystemTest extends StuTestCase
     public function testHandleDestruction(): void
     {
         $systemAstro = $this->mock(ShipSystemInterface::class);
+        $systemTracker = $this->mock(ShipSystemInterface::class);
+        $trackerSystemData = $this->mock(TrackerSystemData::class);
 
         //ASTRO STUFF
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturnTrue();
+        $this->ship->shouldReceive('hasShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_TRACKER)
+            ->once()
+            ->andReturnTrue();
         $this->ship->shouldReceive('getShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)
             ->once()
             ->andReturn($systemAstro);
+        $this->ship->shouldReceive('getShipSystem')
+            ->with(ShipSystemTypeEnum::SYSTEM_TRACKER)
+            ->once()
+            ->andReturn($systemTracker);
         $systemAstro->shouldReceive('setMode')
+            ->with(ShipSystemModeEnum::MODE_OFF)
+            ->once();
+        $systemTracker->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_OFF)
             ->once();
         $this->ship->shouldReceive('getState')
@@ -159,11 +172,22 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
             ->with($this->ship)
             ->once();
+        $trackerSystemData->shouldReceive('setTarget')
+            ->with(null)
+            ->once()
+            ->andReturnSelf();
+        $trackerSystemData->shouldReceive('update')
+            ->withNoArgs()
+            ->once();
         //wrapper
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getTrackerSystemData')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($trackerSystemData);
 
         $this->system->handleDestruction($this->wrapper);
     }

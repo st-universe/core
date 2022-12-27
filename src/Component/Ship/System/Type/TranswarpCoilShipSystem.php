@@ -27,6 +27,11 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
         $this->cancelRepair = $cancelRepair;
     }
 
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL;
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         if ($ship->isTractored()) {
@@ -52,7 +57,7 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
         $ship = $wrapper->get();
         $this->cancelRepair->cancelRepair($ship);
         $this->undock($ship);
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->setMode(ShipSystemModeEnum::MODE_ON);
+        $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
     private function undock(ShipInterface $ship): void
@@ -63,10 +68,5 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
             $this->shipRepository->save($dockedShip);
         }
         $ship->getDockedShips()->clear();
-    }
-
-    public function deactivate(ShipWrapperInterface $wrapper): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 }

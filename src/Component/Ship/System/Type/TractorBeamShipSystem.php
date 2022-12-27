@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -38,6 +37,11 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         $this->privateMessageSender = $privateMessageSender;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+    }
+
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM;
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
@@ -85,17 +89,12 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         return 2;
     }
 
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_ON);
-    }
-
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $ship = $wrapper->get();
 
         if ($ship->isTractoring()) {
-            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
+            $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
 
             $traktor = $ship->getTractoredShip();
 

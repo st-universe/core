@@ -13,6 +13,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_WARPCORE;
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         if ($ship->getReactorLoad() == 0) {
@@ -25,22 +30,12 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
 
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
-    }
-
-    public function deactivate(ShipWrapperInterface $wrapper): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
 
     public function getEnergyUsageForActivation(): int
     {
         return 0;
-    }
-
-    public function getPriority(): int
-    {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_WARPCORE];
     }
 
     public function getEnergyConsumption(): int

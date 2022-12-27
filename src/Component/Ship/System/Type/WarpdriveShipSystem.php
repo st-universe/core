@@ -27,6 +27,11 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $this->cancelRepair = $cancelRepair;
     }
 
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         if ($ship->isTractored()) {
@@ -52,7 +57,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $ship = $wrapper->get();
         $this->cancelRepair->cancelRepair($ship);
         $this->undock($ship);
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_ON);
+        $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
 
         if ($ship->isTractoring()) {
             $eps = $wrapper->getEpsSystemData();
@@ -78,10 +83,5 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
             $this->shipRepository->save($dockedShip);
         }
         $ship->getDockedShips()->clear();
-    }
-
-    public function deactivate(ShipWrapperInterface $wrapper): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 }

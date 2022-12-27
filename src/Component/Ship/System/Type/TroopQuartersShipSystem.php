@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -23,14 +21,10 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
     ) {
         $this->crewRepository = $crewRepository;
     }
-    public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->setMode(ShipSystemModeEnum::MODE_ON);
-    }
 
-    public function deactivate(ShipWrapperInterface $wrapper): void
+    public function getSystemType(): int
     {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->setMode(ShipSystemModeEnum::MODE_OFF);
+        return ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS;
     }
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void
@@ -45,11 +39,6 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
     public function getEnergyUsageForActivation(): int
     {
         return 5;
-    }
-
-    public function getPriority(): int
-    {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS];
     }
 
     public function getEnergyConsumption(): int

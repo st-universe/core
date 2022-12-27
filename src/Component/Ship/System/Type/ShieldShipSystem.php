@@ -22,6 +22,11 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         $this->cancelRepair = $cancelRepair;
     }
 
+    public function getSystemType(): int
+    {
+        return ShipSystemTypeEnum::SYSTEM_SHIELDS;
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         if ($ship->getCloakState()) {
@@ -52,12 +57,7 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         $ship = $wrapper->get();
         $this->cancelRepair->cancelRepair($ship);
         $ship->setDockedTo(null);
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_ON);
-    }
-
-    public function deactivate(ShipWrapperInterface $wrapper): void
-    {
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
     }
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void
