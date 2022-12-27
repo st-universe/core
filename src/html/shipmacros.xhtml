@@ -534,7 +534,7 @@
             </a>
           </div>
           <div style="float:left; margin-right:4px;"
-            tal:condition="php: WRAPPER.getTrackerSystemData() && WRAPPER.getTrackerSystemData().isUseable()">
+            tal:condition="php: WRAPPER.getTrackerSystemData() && WRAPPER.getTrackerSystemData().isUseable() && !ship.getIsDestroyed()">
             <a href="?B_TRACK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}"
               onmouseover="cp('track_${ship/getId}','buttons/mark_1', 'png')"
               onmouseout="cp('track_${ship/getId}','buttons/mark', 'png')">
