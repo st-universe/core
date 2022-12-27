@@ -1390,7 +1390,7 @@
     <div style="padding-left: 5px; float: left; width: 220px">
       <div class="divhead">Informationen</div>
       <div class="divbody">
-        <span>Ersatzbatterie:</span> ${eps/getMaxBattery}<br />
+        <span>Ersatzbatterie:</span> <span tal:condition="eps">${eps/getMaxBattery}</span><br />
         <span>Trefferchance (eff.):</span> ${SHIP/getHitChance}%<br />
         <span>Ausweichchance (eff.):</span> ${SHIP/getEvadeChance}%<br />
         <span>Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
