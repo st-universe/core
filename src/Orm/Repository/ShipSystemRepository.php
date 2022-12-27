@@ -53,7 +53,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
             )
             ->setParameters([
                 'systemType' => ShipSystemTypeEnum::SYSTEM_TRACKER,
-                'target' => sprintf('"targetId":%d', $targetId)
+                'target' => sprintf('%%"targetId":%d%%', $targetId)
             ])
             ->getResult();
     }
