@@ -45,6 +45,6 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
 
     private function reset(ShipWrapperInterface $wrapper): void
     {
-        $wrapper->getTrackerSystemData()->setTarget(null)->update();
+        $wrapper->getWebEmitterSystemData()->setTarget(null)->update();
     }
 }
