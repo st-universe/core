@@ -7,6 +7,9 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SessionInvalidException;
 use Stu\Component\Player\Validation\LoginValidationInterface;
 use Stu\Module\Control\StuHashInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
@@ -26,6 +29,8 @@ final class Session implements SessionInterface
 
     private $loginValidation;
 
+    private LoggerUtilInterface $loggerUtil;
+
     /**
      * @var UserInterface|null
      */
@@ -36,13 +41,15 @@ final class Session implements SessionInterface
         SessionStringRepositoryInterface $sessionStringRepository,
         UserRepositoryInterface $userRepository,
         StuHashInterface $stuHash,
-        LoginValidationInterface $loginValidation
+        LoginValidationInterface $loginValidation,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->userIpTableRepository = $userIpTableRepository;
         $this->sessionStringRepository = $sessionStringRepository;
         $this->userRepository = $userRepository;
         $this->stuHash = $stuHash;
         $this->loginValidation = $loginValidation;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function createSession(bool $session_check = true): void
@@ -113,6 +120,10 @@ final class Session implements SessionInterface
             $this->userRepository->save($result);
         }
 
+        if ($result->getId() === 126) {
+            $this->loggerUtil->init('SESSION', LoggerEnum::LEVEL_WARNING);
+        }
+
         if ($result->getState() === UserEnum::USER_STATE_NEW) {
             $result->setState(UserEnum::USER_STATE_UNCOLONIZED);
 
@@ -146,7 +157,9 @@ final class Session implements SessionInterface
         $this->sessionStringRepository->truncate($result);
 
         if (!$result->isSaveLogin()) {
-            setcookie('sstr', $this->buildCookieString($result), (time() + TimeConstants::TWO_DAYS_IN_SECONDS));
+            $cookieString = $this->buildCookieString($result);
+            $this->loggerUtil->log(sprintf('noSaveLogin, set cookieString: %s', $cookieString));
+            setcookie('sstr', $cookieString, (time() + TimeConstants::TWO_DAYS_IN_SECONDS));
         }
 
         // Login verzeichnen
@@ -176,7 +189,7 @@ final class Session implements SessionInterface
 
         if ($user === null) {
             $this->destroyLoginCookies();
-            setCookie(session_name(), '', time() - 42000);
+            setcookie(session_name(), '', time() - 42000);
             @session_destroy();
 
             $this->user = null;
@@ -185,7 +198,7 @@ final class Session implements SessionInterface
 
     private function destroyLoginCookies(): void
     {
-        setCookie('sstr', 0);
+        setcookie('sstr', 0);
     }
 
     public function logout(?UserInterface $user = null): void
@@ -195,6 +208,7 @@ final class Session implements SessionInterface
 
     private function performCookieLogin(int $uid, string $sstr): void
     {
+
         if (strlen($sstr) != 40) {
             $this->destroySession();
             return;
