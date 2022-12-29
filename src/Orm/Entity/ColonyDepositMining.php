@@ -59,6 +59,7 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     public function setUser(UserInterface $user): ColonyDepositMiningInterface
     {
         $this->user = $user;
+        $this->user_id = $user->getId();
 
         return $this;
     }
@@ -71,6 +72,7 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     public function setColony(ColonyInterface $colony): ColonyDepositMiningInterface
     {
         $this->colony = $colony;
+        $this->colony_id = $colony->getId();
 
         return $this;
     }
@@ -83,6 +85,7 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     public function setCommodity(CommodityInterface $commodity): ColonyDepositMiningInterface
     {
         $this->commodity = $commodity;
+        $this->commodity_id = $commodity->getId();
 
         return $this;
     }
