@@ -115,12 +115,13 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         $commodities = $this->commodityRepository->getByType(CommodityTypeEnum::COMMODITY_TYPE_EFFECT);
         $effects = [];
         foreach ($commodities as $value) {
+            $commodityId = $value->getId();
+
             //skip deposit effects on asteroid
             if (array_key_exists($commodityId, $depositMinings)) {
                 continue;
             }
 
-            $commodityId = $value->getId();
             if (!array_key_exists($commodityId, $prod) || $prod[$commodityId]->getProduction() == 0) {
                 continue;
             }
