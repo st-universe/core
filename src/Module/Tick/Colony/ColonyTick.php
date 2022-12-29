@@ -153,17 +153,18 @@ final class ColonyTick implements ColonyTickInterface
             $production = $colony->getProduction();
             foreach ($production as $commodityId => $pro) {
 
+                if ($pro->getProduction() >= 0) {
+                    continue;
+                }
+
                 $depositMining = $userDepositMinings[$commodityId];
                 if ($depositMining !== null) {
 
-                    if ($depositMining->isEnoughLeft((int) $pro->getProduction())) {
+                    if ($depositMining->isEnoughLeft(abs($pro->getProduction()))) {
                         continue;
                     }
                 }
 
-                if ($pro->getProduction() >= 0) {
-                    continue;
-                }
                 $storageItem = $storage[$pro->getCommodityId()] ?? null;
                 if ($storageItem !== null && $storageItem->getAmount() + $pro->getProduction() >= 0) {
                     continue;
