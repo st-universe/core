@@ -595,12 +595,14 @@
               <tr>
                 <th colspan="2">Ressource</th>
                 <th>verbleibend</th>
+                <th></th>
               </tr>
               <tr tal:repeat="deposit COLONY/getUserDepositMinings">
                 <td><img src="assets/commodities/${deposit/getCommodity/getId}.png"
                     tal:attributes="title deposit/getCommodity/getName" /></td>
                 <td>${deposit/getCommodity/getName}</td>
                 <td>${deposit/getAmountLeft}</td>
+                <td>${deposit/currentlyMined}</td>
               </tr>
             </table>
           </div>

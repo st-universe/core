@@ -19,4 +19,8 @@ interface ColonyDepositMiningInterface
     public function getAmountLeft(): int;
 
     public function setAmountLeft(int $amountLeft): ColonyDepositMiningInterface;
+
+    public function isEnoughLeft(int $neededAmount): bool;
+
+    public function currentlyMined(): int;
 }
