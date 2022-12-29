@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
@@ -142,7 +143,6 @@ class User implements UserInterface
 
     /**
      * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id", cascade={"remove"}, fetch="EAGER")
-     * @OrderBy({"award_id" = "ASC"})
      */
     private $awards;
 
@@ -284,7 +284,10 @@ class User implements UserInterface
 
     public function getAwards(): Collection
     {
-        return $this->awards;
+        $criteria = Criteria::create()
+            ->orderBy(array("award_id" => Criteria::ASC));
+
+        return $this->awards->matching($criteria);
     }
 
     public function getColonies(): Collection

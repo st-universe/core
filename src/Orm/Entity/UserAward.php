@@ -58,6 +58,11 @@ class UserAward implements UserAwardInterface
         return $this;
     }
 
+    public function getAwardId(): int
+    {
+        return $this->award_id;
+    }
+
     public function getAward(): AwardInterface
     {
         return $this->award;
