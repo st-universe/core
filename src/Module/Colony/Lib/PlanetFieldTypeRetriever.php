@@ -7,6 +7,9 @@ namespace Stu\Module\Colony\Lib;
 use Cache\Adapter\Common\CacheItem;
 use Psr\Cache\CacheItemPoolInterface;
 use Stu\Component\Game\TimeConstants;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\PlanetFieldTypeRepositoryInterface;
 
 final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterface
@@ -20,12 +23,16 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
 
     private PlanetFieldTypeRepositoryInterface $planetFieldTypeRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         CacheItemPoolInterface $cache,
-        PlanetFieldTypeRepositoryInterface $planetFieldTypeRepository
+        PlanetFieldTypeRepositoryInterface $planetFieldTypeRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->cache = $cache;
         $this->planetFieldTypeRepository = $planetFieldTypeRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getDescription(int $fieldTypeId): string
@@ -43,7 +50,14 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
             $this->fillCache(static::CACHE_KEY_CATEGORY, 'getCategory');
         }
 
-        return  $this->cache->getItem(static::CACHE_KEY_CATEGORY)->get()[$fieldTypeId];
+        $result = $this->cache->getItem(static::CACHE_KEY_CATEGORY)->get()[$fieldTypeId];
+
+        if ($result === null) {
+            $this->loggerUtil->init('CACHE', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->log(sprintf('could not retrieve category for fieldTypeId: %s', $fieldTypeId));
+        }
+
+        return  $result;
     }
 
     private function fillCache(string $cacheKey, string $method): void
