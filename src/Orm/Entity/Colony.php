@@ -153,6 +153,12 @@ class Colony implements ColonyInterface
      */
     private $crewTrainings;
 
+    /**
+     * @OneToMany(targetEntity="ColonyDepositMining", mappedBy="colony")
+     * @var ColonyDepositMiningInterface[]
+     */
+    private $depositMinings;
+
     private $has_active_building_by_function = [];
 
     private $positive_effect_secondary;
@@ -177,6 +183,7 @@ class Colony implements ColonyInterface
         $this->blockers = new ArrayCollection();
         $this->crewAssignments = new ArrayCollection();
         $this->crewTrainings = new ArrayCollection();
+        $this->depositMinings = new ArrayCollection();
     }
 
     public function getId(): int
@@ -632,6 +639,19 @@ class Colony implements ColonyInterface
     public function getCrewTrainingAmount(): int
     {
         return $this->crewTrainings->count();
+    }
+
+    public function getUserDepositMinings(): array
+    {
+        $result = [];
+
+        foreach ($this->depositMinings as $deposit) {
+            if ($deposit->getUser() === $this->getUser()) {
+                $result[$deposit->getCommodity()->getId()] = $deposit;
+            }
+        }
+
+        return $result;
     }
 
     /**

@@ -54,7 +54,7 @@ class ColonyClass implements ColonyClassInterface
     private $databaseEntry;
 
     /**
-     * @OneToMany(targetEntity="ColonyClassDeposit", mappedBy="colonyClass")
+     * @OneToMany(targetEntity="ColonyClassDeposit", mappedBy="colonyClass", indexBy="commodity_id")
      */
     private $colonyClassDeposits;
 

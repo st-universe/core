@@ -40,6 +40,9 @@ interface ColonyClassInterface
 
     public function setAllowStart(bool $allowStart): ColonyClassInterface;
 
+    /**
+     * @return ColonyClassDepositInterface[]|Collection
+     */
     public function getColonyClassDeposits(): Collection;
 
     public function hasRing(): bool;

@@ -161,9 +161,13 @@ interface ColonyInterface
     public function getCrewTrainingAmount(): int;
 
     /**
+     * @return ColonyDepositMiningInterface[]
+     */
+    public function getUserDepositMinings(): array;
+
+    /**
      * @return ColonyProduction[]
      */
-
     public function getProduction(): array;
 
     public function setProduction(array $array): void;
