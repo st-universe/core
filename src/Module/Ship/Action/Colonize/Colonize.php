@@ -18,6 +18,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -47,6 +48,8 @@ final class Colonize implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
+    private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
@@ -57,7 +60,8 @@ final class Colonize implements ActionControllerInterface
         ShipRemoverInterface $shipRemover,
         InteractionCheckerInterface $interactionChecker,
         ColonizationCheckerInterface $colonizationChecker,
-        ShipCrewRepositoryInterface $shipCrewRepository
+        ShipCrewRepositoryInterface $shipCrewRepository,
+        ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
@@ -69,6 +73,7 @@ final class Colonize implements ActionControllerInterface
         $this->interactionChecker = $interactionChecker;
         $this->colonizationChecker = $colonizationChecker;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -121,6 +126,8 @@ final class Colonize implements ActionControllerInterface
 
         $this->transferCrewToColony($ship, $colony);
 
+        $this->createUserDepositMinings($colony);
+
         $this->shipRemover->remove($ship);
 
         $game->checkDatabaseItem($colony->getColonyClass()->getDatabaseId());
@@ -143,6 +150,28 @@ final class Colonize implements ActionControllerInterface
         }
 
         $ship->getCrewlist()->clear();
+    }
+
+    private function createUserDepositMinings(ColonyInterface $colony): void
+    {
+        $deposits = $colony->getColonyClass()->getColonyClassDeposits();
+        $userMinings = $colony->getUserDepositMinings();
+
+        foreach ($deposits as $deposit) {
+            //check if user already mined this commodity on this colony
+            if (array_key_exists($deposit->getCommodity()->getId(), $userMinings)) {
+                continue;
+            }
+
+            //create new mining entry
+            $depositMining = $this->colonyDepositMiningRepository->prototype();
+            $depositMining->setUser($colony->getUser());
+            $depositMining->setColony($colony);
+            $depositMining->setCommodity($deposit->getCommodity());
+            $depositMining->setAmountLeft(rand($deposit->getMinAmount(), $deposit->getMaxAmount()));
+
+            $this->colonyDepositMiningRepository->save($depositMining);
+        }
     }
 
     public function performSessionCheck(): bool
