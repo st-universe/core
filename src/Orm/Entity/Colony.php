@@ -155,6 +155,7 @@ class Colony implements ColonyInterface
 
     /**
      * @OneToMany(targetEntity="ColonyDepositMining", mappedBy="colony")
+     * @OrderBy({"commodity_id" = "ASC"})
      * @var ColonyDepositMiningInterface[]
      */
     private $depositMinings;
