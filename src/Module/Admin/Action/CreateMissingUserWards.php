@@ -56,7 +56,7 @@ final class CreateMissingUserWards implements ActionControllerInterface
             }
         }
 
-        $game->addInformation(_('Der PHP Cache Item Pool wurde geleert'));
+        $game->addInformation(_('Fehlende User Awards wurden hinzugefügt'));
     }
 
     private function checkForMissingAward(UserInterface $user, DatabaseCategoryInterface $category): void
