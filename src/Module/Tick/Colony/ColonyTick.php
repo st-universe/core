@@ -22,6 +22,7 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -59,6 +60,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private CreateUserAwardInterface $createUserAward;
 
+    private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository;
+
     private EntityManagerInterface $entityManager;
 
     private LoggerUtilInterface $loggerUtil;
@@ -83,6 +86,7 @@ final class ColonyTick implements ColonyTickInterface
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         CreateUserAwardInterface $createUserAward,
+        ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -100,6 +104,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->createUserAward = $createUserAward;
+        $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -137,11 +142,23 @@ final class ColonyTick implements ColonyTickInterface
 
         $i = 1;
         $storage = $colony->getStorage();
+        $userDepositMinings = $colony->getUserDepositMinings();
 
         while (true) {
             $rewind = 0;
             $production = $colony->getProduction();
             foreach ($production as $commodityId => $pro) {
+
+                $depositMining = $userDepositMinings[$commodityId];
+                if ($depositMining !== null) {
+
+                    if ($depositMining->isEnoughLeft((int) $pro->getProduction())) {
+                        $depositMining->setAmountLeft($depositMining->getAmountLeft() - (int) $pro->getProduction());
+                        $this->colonyDepositMiningRepository->save($depositMining);
+                        continue;
+                    }
+                }
+
                 if ($pro->getProduction() >= 0) {
                     continue;
                 }
