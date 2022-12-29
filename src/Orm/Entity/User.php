@@ -141,7 +141,7 @@ class User implements UserInterface
     private $faction;
 
     /**
-     * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="id", cascade={"remove"}, fetch="EAGER")
+     * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id", cascade={"remove"}, fetch="EAGER")
      * @OrderBy({"award_id" = "ASC"})
      */
     private $awards;
