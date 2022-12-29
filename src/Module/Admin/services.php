@@ -6,6 +6,7 @@ namespace Stu\Module\Admin;
 
 use Stu\Module\Admin\Action\BlockUser;
 use Stu\Module\Admin\Action\ClearFaultyBBCodes;
+use Stu\Module\Admin\Action\CreateMissingUserWards;
 use Stu\Module\Admin\Action\LockUser;
 use Stu\Module\Admin\Action\Map\CreateInfluenceAreas\CreateInfluenceAreas;
 use Stu\Module\Admin\Action\Map\EditField\EditField;
@@ -70,7 +71,8 @@ return [
         UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class),
         BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),
         StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class),
-        ResetCaches::ACTION_IDENTIFIER => autowire(ResetCaches::class)
+        ResetCaches::ACTION_IDENTIFIER => autowire(ResetCaches::class),
+        CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

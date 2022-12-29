@@ -7,6 +7,7 @@ use Stu\Orm\Entity\DatabaseCategoryInterface;
 
 /**
  * @method null|DatabaseCategoryInterface find(integer $id)
+ * @method DatabaseCategoryInterface[] findAll()
  */
 interface DatabaseCategoryRepositoryInterface extends ObjectRepository
 {
