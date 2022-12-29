@@ -19,6 +19,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -117,9 +118,10 @@ final class ColonyTick implements ColonyTickInterface
 
         $this->commodityArray = $commodityArray;
 
-        $this->mainLoop($colony);
+        $userDepositMinings = $colony->getUserDepositMinings();
 
-        $this->proceedStorage($colony);
+        $this->mainLoop($colony, $userDepositMinings);
+        $this->proceedStorage($colony, $userDepositMinings);
 
         $this->colonyRepository->save($colony);
 
@@ -134,7 +136,10 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    private function mainLoop(ColonyInterface $colony)
+    /**
+     * @param ColonyDepositMiningInterface[] $userDepositMinings
+     */
+    private function mainLoop(ColonyInterface $colony, array $userDepositMinings)
     {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -142,7 +147,6 @@ final class ColonyTick implements ColonyTickInterface
 
         $i = 1;
         $storage = $colony->getStorage();
-        $userDepositMinings = $colony->getUserDepositMinings();
 
         while (true) {
             $rewind = 0;
@@ -153,8 +157,6 @@ final class ColonyTick implements ColonyTickInterface
                 if ($depositMining !== null) {
 
                     if ($depositMining->isEnoughLeft((int) $pro->getProduction())) {
-                        $depositMining->setAmountLeft($depositMining->getAmountLeft() - (int) $pro->getProduction());
-                        $this->colonyDepositMiningRepository->save($depositMining);
                         continue;
                     }
                 }
@@ -232,7 +234,10 @@ final class ColonyTick implements ColonyTickInterface
         return current($fields);
     }
 
-    private function proceedStorage(ColonyInterface $colony): void
+    /**
+     * @param ColonyDepositMiningInterface[] $userDepositMinings
+     */
+    private function proceedStorage(ColonyInterface $colony, array $userDepositMinings): void
     {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -245,22 +250,30 @@ final class ColonyTick implements ColonyTickInterface
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
+
+        //DECREASE
         foreach ($production as $commodityId => $obj) {
             $amount = $obj->getProduction();
+            $commodity = $this->commodityArray[$commodityId];
 
-            if ($amount >= 0) {
-                continue;
-            }
+            if ($amount < 0) {
+                $amount = abs($amount);
 
-            $amount = abs($amount);
+                if ($commodity->isSaveable()) {
+                    // STANDARD
+                    $this->colonyStorageManager->lowerStorage(
+                        $colony,
+                        $this->commodityArray[$commodityId],
+                        $amount
+                    );
+                    $sum -= $amount;
+                } else {
+                    // EFFECTS
+                    $depositMining = $userDepositMinings[$commodityId];
 
-            if ($amount > 0) {
-                $this->colonyStorageManager->lowerStorage(
-                    $colony,
-                    $this->commodityArray[$commodityId],
-                    $amount
-                );
-                $sum -= $amount;
+                    $depositMining->setAmountLeft($depositMining->getAmountLeft() - $amount);
+                    $this->colonyDepositMiningRepository->save($depositMining);
+                }
             }
         }
         if ($this->loggerUtil->doLog()) {

@@ -29,7 +29,7 @@ class ColonyProduction
         $this->data['commodity_id'] = $value;
     }
 
-    function getProduction()
+    function getProduction(): int
     {
         return $this->data['gc'];
     }
