@@ -9,6 +9,7 @@ use Stu\Lib\ColonyProductionPreviewWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -65,6 +66,14 @@ final class ShowBuilding implements ViewControllerInterface
         } else {
             $useableFieldTypes = current($alternativeBuildings)->getBuilding()->getBuildableFields();
         }
+
+        //filter by view
+        $useableFieldTypes = array_filter(
+            $useableFieldTypes->toArray(),
+            function (PlanetFieldTypeBuildingInterface $pftb): bool {
+                return $pftb->getView();
+            }
+        );
 
         // @todo: Code verschoenern
         $storage        = $colony->getStorage();

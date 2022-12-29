@@ -34,7 +34,7 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
     /** @Column(type="integer", nullable=true) * */
     private $research_id;
 
-    /** @Column(type="boolean", nullable=true) * */
+    /** @Column(type="boolean") * */
     private $view = true;
 
     /**
@@ -84,12 +84,12 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
         return $this;
     }
 
-    public function getView(): ?bool
+    public function getView(): bool
     {
         return $this->view;
     }
 
-    public function setView(?bool $view): PlanetFieldTypeBuildingInterface
+    public function setView(bool $view): PlanetFieldTypeBuildingInterface
     {
         $this->view = $view;
 
