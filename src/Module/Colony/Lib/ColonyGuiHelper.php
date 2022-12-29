@@ -110,16 +110,24 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             }
         }
 
+        $depositMinings = $colony->getUserDepositMinings();
+
         $commodities = $this->commodityRepository->getByType(CommodityTypeEnum::COMMODITY_TYPE_EFFECT);
-        $effets = [];
+        $effects = [];
         foreach ($commodities as $value) {
+            //skip deposit effects on asteroid
+            if (array_key_exists($commodityId, $depositMinings)) {
+                continue;
+            }
+
             $commodityId = $value->getId();
             if (!array_key_exists($commodityId, $prod) || $prod[$commodityId]->getProduction() == 0) {
                 continue;
             }
-            $effets[$commodityId]['commodity'] = $value;
-            $effets[$commodityId]['production'] = $prod[$commodityId];
+            $effects[$commodityId]['commodity'] = $value;
+            $effects[$commodityId]['production'] = $prod[$commodityId];
         }
+
 
         $game->setTemplateVar(
             'EPS_STATUS_BAR',
@@ -132,7 +140,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             );
         }
         $game->setTemplateVar('STORAGE', $storage);
-        $game->setTemplateVar('EFFECTS', $effets);
+        $game->setTemplateVar('EFFECTS', $effects);
     }
 
     private function buildShieldBar(ColonyInterface $colony): array
