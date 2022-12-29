@@ -14,6 +14,7 @@ use Stu\Module\Admin\Action\Map\EditField\EditFieldRequestInterface;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemField;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequest;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequestInterface;
+use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\StartMirrorWorld;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
@@ -68,7 +69,8 @@ return [
         LockUser::ACTION_IDENTIFIER => autowire(LockUser::class),
         UnlockUser::ACTION_IDENTIFIER => autowire(UnlockUser::class),
         BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),
-        StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class)
+        StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class),
+        ResetCaches::ACTION_IDENTIFIER => autowire(ResetCaches::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
