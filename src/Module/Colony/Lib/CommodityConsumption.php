@@ -19,6 +19,7 @@ final class CommodityConsumption implements CommodityConsumptionInterface
 
     public function getConsumption(ColonyInterface $colony): array
     {
+        $depositMinings = $colony->getUserDepositMinings();
         $stor = $colony->getStorage();
         $prod = $colony->getProduction();
         $ret = [];
@@ -29,12 +30,14 @@ final class CommodityConsumption implements CommodityConsumptionInterface
             }
             $ret[$commodityId]['commodity'] = $this->commodityRepository->find((int)$productionItem->getCommodityId());
             $ret[$commodityId]['production'] = $productionItem->getProduction();
-            if (!$stor->containsKey($commodityId)) {
-                $ret[$commodityId]['storage'] = 0;
+
+            if (array_key_exists($commodityId, $depositMinings)) {
+                $deposit = $depositMinings[$commodityId];
+                $ret[$commodityId]['turnsleft'] = floor($deposit->getAmountLeft() / abs($proc));
             } else {
-                $ret[$commodityId]['storage'] = $stor[$commodityId]->getAmount();
+                $stored = $stor->containsKey($commodityId) ? $stor[$commodityId]->getAmount() : 0;
+                $ret[$commodityId]['turnsleft'] = floor($stored / abs($proc));
             }
-            $ret[$commodityId]['turnsleft'] = floor($ret[$commodityId]['storage'] / abs($proc));
         }
         return $ret;
     }
