@@ -887,6 +887,7 @@ div.navigation_item:hover,
 div.header_box_research:hover,
 div.header_box_help:hover,
 div.header_box_settings:hover,
+div.header_box_col:hover,
 div.header_box_user:hover {
     background-color: #2b2b4d;
     color: #dddddd ! important;
@@ -922,7 +923,7 @@ div.header_box_col {
 }
 
 div.header_box_research {
-    width: 300px;
+    width: 270px;
     text-align: center;
     margin: 5px 0 0 15px;
     padding: 5px;
