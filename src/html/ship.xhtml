@@ -259,6 +259,15 @@
 				</td>
 			</tr>
 		</tal:block>
+		<tal:block tal:condition="SHIP/isWebEmitterHealthy">
+			<tr>
+				<td>
+					<a href="javascript:void(0);" onclick="showWebEmitterWindow();">
+						<img src="assets/system/28.png" name="webemitter" title="Webemitter Einstellungen" />
+					</a>
+				</td>
+			</tr>
+		</tal:block>
 		<tal:block tal:condition="SHIP/hasTachyonScanner">
 			<tr>
 				<td colspan="2">
@@ -1244,7 +1253,7 @@
 							<th style="text-align: center;">Name</th>
 							<td rowspan="3" style="text-align: center;">
 								<tal:block tal:condition="SHIP/isConstruction">
-									<a href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
+									<a href="javascript:void(0);" onclick="showScrapWindow();"
 										onmouseover="cp('scrap','buttons/scrap2');"
 										onmouseout="cp('scrap','buttons/scrap1');">
 										<img src="assets/buttons/scrap1.png" name="scrap" title="Konstrukt entfernen" />
@@ -1258,7 +1267,7 @@
 											title="Selbstzerstörung" />
 									</a>
 									<a tal:condition="php: SHIP.isBase() AND (SHIP.getState() != SHIP_STATE_UNDER_SCRAPPING)"
-										href="javascript:void(0);" onclick="showScrapWindow(${SHIP/getId});"
+										href="javascript:void(0);" onclick="showScrapWindow();"
 										onmouseover="cp('scrap','buttons/scrap2');"
 										onmouseout="cp('scrap','buttons/scrap1');">
 										<img src="assets/buttons/scrap1.png" name="scrap" title="Station demontieren" />

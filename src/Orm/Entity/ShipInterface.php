@@ -220,6 +220,8 @@ interface ShipInterface
 
     public function isShuttleRampHealthy(): bool;
 
+    public function isWebEmitterHealthy(): bool;
+
     public function isWarpAble(): bool;
 
     public function isTractoring(): bool;

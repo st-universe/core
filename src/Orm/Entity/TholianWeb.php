@@ -22,6 +22,9 @@ class TholianWeb implements TholianWebInterface
      */
     private $id;
 
+    /** @Column(type="integer") */
+    private $finished_time = 0;
+
     /**
      * @OneToMany(targetEntity="Ship", mappedBy="holdingWeb", cascade={"remove"})
      */

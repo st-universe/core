@@ -11,7 +11,8 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 class WebEmitterSystemData extends AbstractSystemData
 {
-    public ?int $webId = null;
+    public ?int $webUnderConstructionId = null;
+    public ?int $ownedWebId = null;
 
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
@@ -34,24 +35,39 @@ class WebEmitterSystemData extends AbstractSystemData
         );
     }
 
-    public function getTholianWeb(): ?TholianWebInterface
+    public function getWebUnderConstruction(): ?TholianWebInterface
     {
-        if ($this->webId === null) {
+        if ($this->webUnderConstructionId === null) {
             return null;
         }
 
-        return $this->tholianWebRepository->find($this->webId);
+        return $this->tholianWebRepository->find($this->webUnderConstructionId);
     }
 
-    public function setTholianWebId(?int $webId): WebEmitterSystemData
+    public function getOwnedTholianWeb(): ?TholianWebInterface
     {
-        $this->webId = $webId;
+        if ($this->ownedWebId === null) {
+            return null;
+        }
+
+        return $this->tholianWebRepository->find($this->ownedWebId);
+    }
+
+    public function setWebUnderConstructionId(?int $webId): WebEmitterSystemData
+    {
+        $this->webUnderConstructionId = $webId;
+        return $this;
+    }
+
+    public function setOwnedWebId(?int $webId): WebEmitterSystemData
+    {
+        $this->ownedWebId = $webId;
         return $this;
     }
 
     public function isUseable(): bool
     {
-        if ($this->webId !== null) {
+        if ($this->webUnderConstructionId) {
             return false;
         }
 

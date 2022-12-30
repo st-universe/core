@@ -9,9 +9,23 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    private ShipSystemRepositoryInterface $shipSystemRepository;
+
+    private TholianWebRepositoryInterface $tholianWebRepository;
+
+    public function __construct(
+        ShipSystemRepositoryInterface $shipSystemRepository,
+        TholianWebRepositoryInterface $tholianWebRepository
+    ) {
+        $this->shipSystemRepository = $shipSystemRepository;
+        $this->tholianWebRepository = $tholianWebRepository;
+    }
+
     public function getSystemType(): int
     {
         return ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB;
@@ -19,7 +33,7 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
 
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
-        $this->reset($wrapper);
+        $this->checkForWebAbortion($wrapper);
         $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
@@ -40,11 +54,22 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
-        $this->reset($wrapper);
+        $this->checkForWebAbortion($wrapper);
     }
 
-    private function reset(ShipWrapperInterface $wrapper): void
+    private function checkForWebAbortion(ShipWrapperInterface $wrapper): void
     {
-        $wrapper->getWebEmitterSystemData()->setTarget(null)->update();
+        $webUnderConstruction = $wrapper->getWebEmitterSystemData()->getWebUnderConstruction();
+
+        if ($webUnderConstruction !== null) {
+            $systems = $this->shipSystemRepository->getWebConstructingShipSystems($webUnderConstruction->getId());
+
+            //remove web if only one ship constructing
+            if (count($systems) === 1) {
+                $this->tholianWebRepository->delete($webUnderConstruction);
+            }
+
+            $wrapper->getWebEmitterSystemData()->setWebUnderConstructionId(null)->update();
+        }
     }
 }

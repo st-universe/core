@@ -10,4 +10,5 @@ use Stu\Orm\Entity\TholianWebInterface;
  */
 interface TholianWebRepositoryInterface extends ObjectRepository
 {
+    public function delete(TholianWebInterface $web): void;
 }

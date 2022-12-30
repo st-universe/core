@@ -58,6 +58,24 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
             ->getResult();
     }
 
+    public function getWebConstructingShipSystems(int $webId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT ss FROM %s ss
+                    WHERE ss.system_type = :systemType
+                    AND ss.data LIKE :target',
+                    ShipSystem::class
+                )
+            )
+            ->setParameters([
+                'systemType' => ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB,
+                'target' => sprintf('%%"webUnderConstructionId":%d%%', $webId)
+            ])
+            ->getResult();
+    }
+
     public function truncateByShip(int $shipId): void
     {
         $this->getEntityManager()

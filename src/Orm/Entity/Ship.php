@@ -958,6 +958,11 @@ class Ship implements ShipInterface
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP);
     }
 
+    public function isWebEmitterHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB);
+    }
+
     public function isWarpAble(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);

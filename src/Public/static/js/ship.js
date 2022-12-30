@@ -97,10 +97,15 @@ function showSelfdestructWindow(target) {
 	openWindow('elt', 1, 300);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SELFDESTRUCT_AJAX=1&target=' + target);
 }
-function showScrapWindow(target) {
+function showScrapWindow() {
 	closeAjaxWindow();
 	openWindow('elt', 1, 300);
-	ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SCRAP_AJAX=1&target=' + target);
+	ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SCRAP_AJAX=1');
+}
+function showWebEmitterWindow() {
+	closeAjaxWindow();
+	openWindow('elt', 1, 300);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_WEBEMITTER_AJAX=1');
 }
 function showScanWindow(shipid, target) {
 	closeAjaxWindow();

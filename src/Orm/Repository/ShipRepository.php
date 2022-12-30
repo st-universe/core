@@ -13,7 +13,6 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Crew;
@@ -53,7 +52,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        //$em->flush();
     }
 
     public function getAmountByUserAndSpecialAbility(
