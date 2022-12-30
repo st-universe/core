@@ -145,7 +145,7 @@ final class ShipCreator implements ShipCreatorInterface
                 $this->loggerUtil->log(sprintf("moduleTypeId: %d", $moduleTypeId));
             }
             $buildplanModules = $ship->getBuildplan()->getModulesByType($moduleTypeId);
-            if ($buildplanModules !== []) {
+            if (!empty($buildplanModules)) {
                 if ($this->loggerUtil->doLog()) {
                     $this->loggerUtil->log(sprintf("wrapperCallable!"));
                 }
@@ -243,11 +243,11 @@ final class ShipCreator implements ShipCreatorInterface
                 $this->addSpecialSystems($mod->getModule(), $systems);
             }
         }
-        foreach ($systems as $sysId => $module) {
+        foreach ($systems as $systemType => $module) {
             $obj = $this->shipSystemRepository->prototype();
             $obj->setShip($ship);
-            $ship->getSystems()->set((int) $sysId, $obj);
-            $obj->setSystemType((int) $sysId);
+            $ship->getSystems()->set($systemType, $obj);
+            $obj->setSystemType($systemType);
             if ($module !== 0) {
                 $obj->setModule($module);
             }

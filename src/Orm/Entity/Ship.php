@@ -92,6 +92,9 @@ class Ship implements ShipInterface
     private $tractored_ship_id;
 
     /** @Column(type="integer", nullable=true) */
+    private $holding_web_id;
+
+    /** @Column(type="integer", nullable=true) */
     private $dock;
 
     /** @Column(type="integer") */
@@ -186,6 +189,12 @@ class Ship implements ShipInterface
      * @OneToOne(targetEntity="Ship", mappedBy="tractoredShip")
      */
     private $tractoringShip;
+
+    /**
+     * @ManyToOne(targetEntity="TholianWeb")
+     * @JoinColumn(name="holding_web_id", referencedColumnName="id")
+     */
+    private $holdingWeb;
 
     /**
      * @ManyToOne(targetEntity="User")

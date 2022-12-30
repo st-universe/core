@@ -107,6 +107,7 @@ use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\TradeLicense;
@@ -632,6 +633,11 @@ return [
         ContainerInterface $c
     ): TerraformingCostRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TerraformingCost::class);
+    },
+    TholianWebRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TholianWebRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TholianWeb::class);
     },
     TorpedoTypeRepositoryInterface::class => function (
         ContainerInterface $c

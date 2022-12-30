@@ -26,6 +26,9 @@ $db->beginTransaction();
 $container->get(GameControllerInterface::class)->sessionAndAdminCheck();
 
 $shipRumpRepo = $container->get(ShipRumpRepositoryInterface::class);
+/**
+ * @var ShipRumpModuleLevelRepositoryInterface
+ */
 $shipRumpModuleLevelRepo = $container->get(ShipRumpModuleLevelRepositoryInterface::class);
 $moduleRepo = $container->get(ModuleRepositoryInterface::class);
 $buildplanRepo = $container->get(ShipBuildplanRepositoryInterface::class);

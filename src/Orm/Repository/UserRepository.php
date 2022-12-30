@@ -182,7 +182,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 Contact::class
             )
         )->setParameters([
-            'mode' => 1,
+            'mode' => ContactListModeEnum::CONTACT_FRIEND,
             'userId' => $userId,
             'allianceId' => $allianceId
         ])->getResult();
