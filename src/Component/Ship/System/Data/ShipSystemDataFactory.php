@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
 {
@@ -16,12 +17,16 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
 
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
+    private TholianWebRepositoryInterface $tholianWebRepository;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository
+        ShipSystemRepositoryInterface $shipSystemRepository,
+        TholianWebRepositoryInterface $tholianWebRepository
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipSystemRepository = $shipSystemRepository;
+        $this->tholianWebRepository = $tholianWebRepository;
     }
 
     public function createSystemData(
@@ -44,9 +49,8 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
                 );
             case ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB:
                 return  new WebEmitterSystemData(
-                    $this->shipRepository,
                     $this->shipSystemRepository,
-                    $shipWrapperFactory
+                    $this->tholianWebRepository
                 );
         }
 
