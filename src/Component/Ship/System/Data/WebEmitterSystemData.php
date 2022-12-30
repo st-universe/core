@@ -34,7 +34,7 @@ class WebEmitterSystemData extends AbstractSystemData
     public function update(): void
     {
         $this->updateSystemData(
-            ShipSystemTypeEnum::SYSTEM_TRACKER,
+            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB,
             $this,
             $this->shipSystemRepository
         );

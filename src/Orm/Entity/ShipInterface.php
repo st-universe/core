@@ -10,9 +10,6 @@ interface ShipInterface
 {
     public function getId(): ?int;
 
-    //TODO REMOVE ASAP! FIND Error location
-    public function get(): ShipInterface;
-
     /**
      * @deprecated
      */
@@ -294,7 +291,7 @@ interface ShipInterface
     /**
      * @param ShipSystemTypeEnum
      */
-    public function getShipSystem($system): ShipSystemInterface;
+    public function getShipSystem($systemType): ShipSystemInterface;
 
     /**
      * @return ShipSystemInterface[]

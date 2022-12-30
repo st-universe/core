@@ -20,22 +20,22 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
     public function deactivate(ShipWrapperInterface $wrapper): void
     {
         $this->reset($wrapper);
-        $wrapper->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
     public function getCooldownSeconds(): ?int
     {
-        return TimeConstants::ONE_HOUR_IN_SECONDS;
+        return TimeConstants::ONE_DAY_IN_SECONDS;
     }
 
     public function getEnergyUsageForActivation(): int
     {
-        return 15;
+        return 30;
     }
 
     public function getEnergyConsumption(): int
     {
-        return 7;
+        return 10;
     }
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void

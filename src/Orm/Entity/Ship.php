@@ -255,11 +255,6 @@ class Ship implements ShipInterface
         $this->storage = new ArrayCollection();
     }
 
-    public function get(): ShipInterface
-    {
-        return $this;
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -1141,9 +1136,9 @@ class Ship implements ShipInterface
     }
 
     // with ShipSystemTypeEnum
-    public function getShipSystem($system): ShipSystemInterface
+    public function getShipSystem($systemType): ShipSystemInterface
     {
-        return $this->getSystems()->get($system);
+        return $this->getSystems()->get($systemType);
     }
 
     public function getHealthySystems(): array
