@@ -65,13 +65,18 @@ class WebEmitterSystemData extends AbstractSystemData
         return $this;
     }
 
+    public function getCooldown(): ?int
+    {
+        return $this->ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB)->getCooldown();
+    }
+
     public function isUseable(): bool
     {
         if ($this->webUnderConstructionId) {
             return false;
         }
 
-        $cooldown = $this->ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB)->getCooldown();
+        $cooldown = $this->getCooldown();
 
         return $cooldown === null ? true : $cooldown < time();
     }

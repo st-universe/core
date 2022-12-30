@@ -1118,6 +1118,25 @@
     </table>
   </form>
 </metal:block>
+<metal:block metal:define-macro="webemitter">
+  <form action="ship.php" method="post" tal:define="SHIP WRAPPER/get; emitter WRAPPER/getWebEmitterSystemData;">
+    <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+    <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
+    <table class="tcal" tal:condition="SHIP/isWebEmitterHealthy"
+      tal:define="webUnderConstruction emitter/getWebUnderConstruction">
+      <tal:block tal:condition="webUnderConstruction">
+
+      </tal:block>
+      <tal:block tal:condition="not:webUnderConstruction">
+        <tr tal:condition="not:emitter/isUseable">
+          <td style="width: 70%;">
+            Gesperrt bis ${datetime:emitter/getCooldown}
+          </td>
+        </tr>
+      </tal:block>
+    </table>
+  </form>
+</metal:block>
 <metal:block metal:define-macro="scrapping">
   <form action="ship.php" method="post">
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />

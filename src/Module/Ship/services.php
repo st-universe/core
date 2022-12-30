@@ -200,6 +200,7 @@ use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use Stu\Module\Ship\View\ShowTroopTransfer\ShowTroopTransfer;
+use Stu\Module\Ship\View\ShowWebEmitter\ShowWebEmitter;
 
 use function DI\autowire;
 
@@ -373,6 +374,7 @@ return [
         ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),
         ShowShiplistSingles::VIEW_IDENTIFIER => autowire(ShowShiplistSingles::class),
         ShowAvailableShips::VIEW_IDENTIFIER => autowire(ShowAvailableShips::class),
+        ShowWebEmitter::VIEW_IDENTIFIER => autowire(ShowWebEmitter::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
 ];
