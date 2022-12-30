@@ -456,6 +456,24 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     $torp_obj->getName()
                 );
             }
+            if ($load > 0) {
+                $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+
+                $this->privateMessageSender->send(
+                    $user->getId(),
+                    $ship->getUser()->getId(),
+                    sprintf(
+                        _('Die Kolonie %s hat in Sektor %s %d %s auf die %s transferiert'),
+                        $colony->getName(),
+                        $ship->getSectorString(),
+                        $load,
+                        $ship->getTorpedo()->getName(),
+                        $ship->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                    $href
+                );
+            }
         }
     }
 
