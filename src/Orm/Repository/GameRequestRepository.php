@@ -42,7 +42,7 @@ final class GameRequestRepository extends EntityRepository implements GameReques
             )
             ->setParameters([
                 'userId' => $userId,
-                'params' => sprintf('%%[advent] => %s%%', date("m.d.y")), //TODO fix to d.m.y
+                'params' => sprintf('%%[advent] => %s%%', date("d.m.y")),
                 'action' => OpenAdventDoor::ACTION_IDENTIFIER
             ])
             ->getSingleScalarResult();
