@@ -18,7 +18,6 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class DockShip implements ActionControllerInterface
@@ -37,16 +36,13 @@ final class DockShip implements ActionControllerInterface
 
     private CancelRepairInterface $cancelRepair;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipSystemManagerInterface $shipSystemManager,
         InteractionCheckerInterface $interactionChecker,
-        CancelRepairInterface $cancelRepair,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        CancelRepairInterface $cancelRepair
     ) {
         $this->shipLoader = $shipLoader;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
@@ -54,7 +50,6 @@ final class DockShip implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->interactionChecker = $interactionChecker;
         $this->cancelRepair = $cancelRepair;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -176,22 +171,24 @@ final class DockShip implements ActionControllerInterface
         $msg = [];
         $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();;
         $freeSlots = $target->getFreeDockingSlotCount();
-        foreach ($ship->getFleet()->getShips() as $fleetShip) {
+        foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $fleetShipWrapper) {
+
             if ($freeSlots <= 0) {
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
             }
+
+            $fleetShip = $fleetShipWrapper->get();
             if ($fleetShip->getDockedTo()) {
                 continue;
             }
 
-            $fleetShipWrapper = $this->shipWrapperFactory->wrapShip($fleetShip);
             $epsSystem = $fleetShipWrapper->getEpsSystemData();
-
             if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $fleetShip->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
+
             if ($fleetShip->getCloakState()) {
                 $msg[] = $fleetShip->getName() . _(': Das Schiff ist getarnt');
                 continue;
