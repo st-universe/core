@@ -9,6 +9,9 @@ use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
@@ -18,15 +21,23 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+
+        if ($userId === 126) {
+            $this->loggerUtil->init('TORP', LoggerEnum::LEVEL_WARNING);
+        }
 
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
@@ -76,6 +87,7 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
             $target->getUser() != $ship->getUser()
             && !$target->getUser()->isFriend($ship->getUser())
         ) {
+            $this->loggerUtil->log('EXIT');
             return;
         }
 
