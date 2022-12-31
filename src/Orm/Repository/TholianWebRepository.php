@@ -32,8 +32,8 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
                 Ship::class
             )
         )->setParameters([
-            'mapId' => $ship->getMap()->getId(),
-            'sysMapId' => $ship->getStarsystemMap()->getId()
+            'mapId' => $ship->getMap() === null ? null : $ship->getMap()->getId(),
+            'sysMapId' => $ship->getStarsystemMap() === null ? null : $ship->getStarsystemMap()->getId()
         ])->getOneOrNullResult();
     }
 }
