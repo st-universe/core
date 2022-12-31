@@ -72,7 +72,7 @@ class WebEmitterSystemData extends AbstractSystemData
 
     public function isUseable(): bool
     {
-        if ($this->webUnderConstructionId) {
+        if ($this->webUnderConstructionId !== null) {
             return false;
         }
 
