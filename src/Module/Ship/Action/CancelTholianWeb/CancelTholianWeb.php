@@ -75,6 +75,7 @@ final class CancelTholianWeb implements ActionControllerInterface
             $target->setHoldingWeb(null);
             $this->shipRepository->save($target);
         }
+        $web->getCapturedShips()->clear();
 
         $this->entityManager->flush();
 
