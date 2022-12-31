@@ -8,22 +8,27 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
-use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
-    private TholianWebRepositoryInterface $tholianWebRepository;
+    private ShipRepositoryInterface $shipRepository;
+
+    private ShipRemoverInterface $shipRemover;
 
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
-        TholianWebRepositoryInterface $tholianWebRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipRemoverInterface $shipRemover
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
-        $this->tholianWebRepository = $tholianWebRepository;
+        $this->shipRepository = $shipRepository;
+        $this->shipRemover = $shipRemover;
     }
 
     public function getSystemType(): int
@@ -61,15 +66,30 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
     {
         $webUnderConstruction = $wrapper->getWebEmitterSystemData()->getWebUnderConstruction();
 
-        if ($webUnderConstruction !== null) {
-            $systems = $this->shipSystemRepository->getWebConstructingShipSystems($webUnderConstruction->getId());
-
-            //remove web if only one ship constructing
-            if (count($systems) === 1) {
-                $this->tholianWebRepository->delete($webUnderConstruction);
-            }
-
-            $wrapper->getWebEmitterSystemData()->setWebUnderConstructionId(null)->update();
+        if ($webUnderConstruction === null) {
+            return;
         }
+
+        $systems = $this->shipSystemRepository->getWebConstructingShipSystems($webUnderConstruction->getId());
+        $emitter = $wrapper->getWebEmitterSystemData();
+
+        //remove web if only one ship constructing
+        if (count($systems) === 1) {
+            //unlink targets
+            foreach ($webUnderConstruction->getCapturedShips() as $target) {
+                $target->setHoldingWeb(null);
+                $this->shipRepository->save($target);
+            }
+            $webUnderConstruction->getCapturedShips()->clear();
+
+            //delete web ship
+            $this->shipRemover->remove($webUnderConstruction->getWebShip());
+
+            if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
+                $emitter->setOwnedWebId(null);
+            }
+        }
+
+        $emitter->setWebUnderConstructionId(null)->update();
     }
 }

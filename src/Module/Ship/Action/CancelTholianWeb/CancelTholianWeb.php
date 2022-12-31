@@ -17,6 +17,8 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 final class CancelTholianWeb implements ActionControllerInterface
 {
@@ -30,6 +32,10 @@ final class CancelTholianWeb implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
+    private ShipSystemRepositoryInterface $shipSystemRepository;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     private EntityManagerInterface $entityManager;
@@ -39,6 +45,8 @@ final class CancelTholianWeb implements ActionControllerInterface
         ShipRepositoryInterface $shipRepository,
         ActivatorDeactivatorHelperInterface $helper,
         ShipRemoverInterface $shipRemover,
+        ShipSystemRepositoryInterface $shipSystemRepository,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         EntityManagerInterface $entityManager
     ) {
@@ -46,6 +54,8 @@ final class CancelTholianWeb implements ActionControllerInterface
         $this->shipRepository = $shipRepository;
         $this->helper = $helper;
         $this->shipRemover = $shipRemover;
+        $this->shipSystemRepository = $shipSystemRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->entityManager = $entityManager;
     }
@@ -78,7 +88,7 @@ final class CancelTholianWeb implements ActionControllerInterface
         //TODO check if system healthy?
 
         // activate system
-        if (!$this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
+        if (!$this->helper->deactivate($shipId, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
             $this->loggerUtil->log('4');
             return;
         }
@@ -109,6 +119,13 @@ final class CancelTholianWeb implements ActionControllerInterface
             $emitter->setWebUnderConstructionId(null);
         }
         $emitter->setOwnedWebId(null)->update();
+
+        //reset other web helper
+        $systems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
+        foreach ($systems as $system) {
+            $this->shipWrapperFactory->wrapShip($system->getShip())->getWebEmitterSystemData()->setWebUnderConstructionId(null)->update();
+            $this->helper->deactivate($system->getShip()->getId(), ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game);
+        }
 
         $game->addInformation("Der Aufbau des Energienetz wurde abgebrochen");
     }
