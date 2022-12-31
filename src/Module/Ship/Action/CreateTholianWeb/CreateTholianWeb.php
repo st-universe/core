@@ -99,6 +99,8 @@ final class CreateTholianWeb implements ActionControllerInterface
 
         //create web ship
         $webShip = $this->shipCreator->createBy($userId, 9, 1840)->get();
+        $webShip->updateLocation($ship->getMap(), $ship->getStarsystemMap());
+        $this->shipRepository->save($webShip);
 
         //create web entity
         $web = $this->tholianWebRepository->prototype();
