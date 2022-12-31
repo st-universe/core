@@ -16,6 +16,8 @@ interface TholianWebInterface
 
     public function getUser(): UserInterface;
 
+    public function getWebShip(): ShipInterface;
+
     public function setWebShip(ShipInterface $webShip): TholianWebInterface;
 
     /**

@@ -75,6 +75,11 @@ class TholianWeb implements TholianWebInterface
         return $this->webShip->getUser();
     }
 
+    public function getWebShip(): ShipInterface
+    {
+        return $this->webShip;
+    }
+
     public function setWebShip(ShipInterface $webShip): TholianWebInterface
     {
         $this->webShip = $webShip;

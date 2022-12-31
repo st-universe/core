@@ -52,6 +52,7 @@ use Stu\Module\Ship\Action\BeamTo\BeamTo;
 use Stu\Module\Ship\Action\BeamToColony\BeamToColony;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Action\BuyTradeLicense\BuyTradeLicense;
+use Stu\Module\Ship\Action\CancelTholianWeb\CancelTholianWeb;
 use Stu\Module\Ship\Action\ChangeFleetFixation\ChangeFleetFixation;
 use Stu\Module\Ship\Action\ChangeFleetFleader\ChangeFleetFleader;
 use Stu\Module\Ship\Action\ChangeName\ChangeName;
@@ -344,7 +345,8 @@ return [
         SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class),
         OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
         TrackShip::ACTION_IDENTIFIER => autowire(TrackShip::class),
-        CreateTholianWeb::ACTION_IDENTIFIER => autowire(CreateTholianWeb::class)
+        CreateTholianWeb::ACTION_IDENTIFIER => autowire(CreateTholianWeb::class),
+        CancelTholianWeb::ACTION_IDENTIFIER => autowire(CancelTholianWeb::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
