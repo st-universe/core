@@ -1251,6 +1251,17 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    public function getHoldingWeb(): ?TholianWebInterface
+    {
+        return $this->holdingWeb;
+    }
+
+    public function setHoldingWeb(?TholianWebInterface $web): ShipInterface
+    {
+        $this->holdingWeb = $web;
+        return $this;
+    }
+
     public function getCurrentMapField()
     {
         return $this->getStarsystemMap() !== null ? $this->getStarsystemMap() : $this->getMap();

@@ -332,6 +332,10 @@ interface ShipInterface
 
     public function setTractoringShip(?ShipInterface $ship): ShipInterface;
 
+    public function getHoldingWeb(): ?TholianWebInterface;
+
+    public function setHoldingWeb(?TholianWebInterface $web): ShipInterface;
+
     /**
      * @return StarSystemMapInterface|MapInterface
      */

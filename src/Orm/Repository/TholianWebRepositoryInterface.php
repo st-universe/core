@@ -11,6 +11,10 @@ use Stu\Orm\Entity\TholianWebInterface;
  */
 interface TholianWebRepositoryInterface extends ObjectRepository
 {
+    public function prototype(): TholianWebInterface;
+
+    public function save(TholianWebInterface $web): void;
+
     public function delete(TholianWebInterface $web): void;
 
     public function getWebAtLocation(ShipInterface $ship): ?TholianWebInterface;

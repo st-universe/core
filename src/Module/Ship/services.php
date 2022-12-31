@@ -63,6 +63,7 @@ use Stu\Module\Ship\Action\ColonyDefending\StopDefending;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleet;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequest;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequestInterface;
+use Stu\Module\Ship\Action\CreateTholianWeb\CreateTholianWeb;
 use Stu\Module\Ship\Action\DeactivateAstroLaboratory\DeactivateAstroLaboratory;
 use Stu\Module\Ship\Action\DeactivateCloak\DeactivateCloak;
 use Stu\Module\Ship\Action\DeactivateSubspace\DeactivateSubspace;
@@ -342,7 +343,8 @@ return [
         ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class),
         SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class),
         OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
-        TrackShip::ACTION_IDENTIFIER => autowire(TrackShip::class)
+        TrackShip::ACTION_IDENTIFIER => autowire(TrackShip::class),
+        CreateTholianWeb::ACTION_IDENTIFIER => autowire(CreateTholianWeb::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
