@@ -35,10 +35,6 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        if ($userId === 126) {
-            $this->loggerUtil->init('TORP', LoggerEnum::LEVEL_WARNING);
-        }
-
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
@@ -87,7 +83,6 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
             $target->getUser() !== $ship->getUser()
             && !$target->getUser()->isFriend($ship->getUser()->getId())
         ) {
-            $this->loggerUtil->log('EXIT');
             return;
         }
 
