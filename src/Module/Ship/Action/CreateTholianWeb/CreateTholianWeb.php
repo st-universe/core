@@ -81,7 +81,7 @@ final class CreateTholianWeb implements ActionControllerInterface
          */
         $possibleCatches = [];
         foreach ($chosenShipIds as $targetId) {
-            $target = $this->tryToCatch($ship, $targetId, $game);
+            $target = $this->tryToCatch($ship, (int)$targetId, $game);
             if ($target !== null) {
                 $possibleCatches[] = $target;
             }
