@@ -78,7 +78,7 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
             $webUnderConstruction->getCapturedShips()->clear();
 
             //delete web ship
-            //$this->shipRemover->remove($webUnderConstruction->getWebShip());
+            $this->shipRepository->delete($webUnderConstruction->getWebShip());
 
             if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
                 $emitter->setOwnedWebId(null);
