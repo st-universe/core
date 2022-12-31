@@ -9,6 +9,9 @@ use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -27,6 +30,8 @@ final class CancelTholianWeb implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
+    private LoggerUtilInterface $loggerUtil;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -34,12 +39,14 @@ final class CancelTholianWeb implements ActionControllerInterface
         ShipRepositoryInterface $shipRepository,
         ActivatorDeactivatorHelperInterface $helper,
         ShipRemoverInterface $shipRemover,
+        LoggerUtilFactoryInterface $loggerUtilFactory,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->helper = $helper;
         $this->shipRemover = $shipRemover;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->entityManager = $entityManager;
     }
 
@@ -49,6 +56,10 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
         $shipId = request::indInt('id');
+
+        if ($userId === 126) {
+            $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
+        }
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
@@ -72,6 +83,7 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         //unlink targets
         foreach ($web->getCapturedShips() as $target) {
+            $this->loggerUtil->log(sprintf('%s: unlink', $target->getName()));
             $target->setHoldingWeb(null);
             $this->shipRepository->save($target);
         }
