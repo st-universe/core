@@ -7,6 +7,9 @@ namespace Stu\Module\Ship\View\ShowWebEmitter;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
@@ -21,20 +24,28 @@ final class ShowWebEmitter implements ViewControllerInterface
 
     private TholianWebRepositoryInterface $tholianWebRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        TholianWebRepositoryInterface $tholianWebRepository
+        TholianWebRepositoryInterface $tholianWebRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->tholianWebRepository = $tholianWebRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
+
+        if ($userId === 126) {
+            $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
+        }
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -53,6 +64,7 @@ final class ShowWebEmitter implements ViewControllerInterface
 
         //helping under construction?
         if ($webUnderConstruction !== null) {
+            $this->loggerUtil->log('A');
             $game->setTemplateVar('WEBCONSTRUCT', $webUnderConstruction);
             $game->setTemplateVar('ISOWNCONSTRUCT', $webUnderConstruction === $ownWeb);
         }
@@ -60,23 +72,28 @@ final class ShowWebEmitter implements ViewControllerInterface
         $web = $this->tholianWebRepository->getWebAtLocation($ship);
 
         if ($web === null) {
-
+            $this->loggerUtil->log('B');
             // wenn keines da und isUseable -> dann Targetliste
             if ($emitter->isUseable()) {
+                $this->loggerUtil->log('C');
                 $game->setTemplateVar('SHIPLIST', $this->shipRepository->getByLocation(
                     $ship->getStarsystemMap(),
                     $ship->getMap()
                 ));
             } else {
+                $this->loggerUtil->log('D');
                 $game->setTemplateVar('COOLDOWN', $emitter->getCooldown());
             }
         } else {
+            $this->loggerUtil->log('E');
 
             //can help under construction?
             //fremdes Netz under construction da? -> dann button für Support
             if (!$web->isFinished()) {
+                $this->loggerUtil->log('F');
                 $game->setTemplateVar('CANHELP', true);
             } else {
+                $this->loggerUtil->log('G');
                 $game->setTemplateVar('OWNFINISHED', $web->getUser() === $user);
             }
         }
