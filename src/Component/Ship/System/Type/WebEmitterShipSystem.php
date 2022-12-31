@@ -8,7 +8,6 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
@@ -19,16 +18,12 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
 
     private ShipRepositoryInterface $shipRepository;
 
-    private ShipRemoverInterface $shipRemover;
-
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipRepositoryInterface $shipRepository,
-        ShipRemoverInterface $shipRemover
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipRepository = $shipRepository;
-        $this->shipRemover = $shipRemover;
     }
 
     public function getSystemType(): int
@@ -83,7 +78,7 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
             $webUnderConstruction->getCapturedShips()->clear();
 
             //delete web ship
-            $this->shipRemover->remove($webUnderConstruction->getWebShip());
+            //$this->shipRemover->remove($webUnderConstruction->getWebShip());
 
             if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
                 $emitter->setOwnedWebId(null);
