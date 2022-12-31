@@ -1259,6 +1259,11 @@ class Ship implements ShipInterface
     public function setHoldingWeb(?TholianWebInterface $web): ShipInterface
     {
         $this->holdingWeb = $web;
+
+        if ($web === null) {
+            $this->holding_web_id = null;
+        }
+
         return $this;
     }
 
