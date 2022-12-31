@@ -70,14 +70,15 @@ final class ShowWebEmitter implements ViewControllerInterface
             } else {
                 $game->setTemplateVar('COOLDOWN', $emitter->getCooldown());
             }
-        }
-
-        //can help under construction?
-        //fremdes Netz under construction da? -> dann button für Support
-        if (!$web->isFinished()) {
-            $game->setTemplateVar('CANHELP', true);
         } else {
-            $game->setTemplateVar('OWNFINISHED', $web->getUser() === $user);
+
+            //can help under construction?
+            //fremdes Netz under construction da? -> dann button für Support
+            if (!$web->isFinished()) {
+                $game->setTemplateVar('CANHELP', true);
+            } else {
+                $game->setTemplateVar('OWNFINISHED', $web->getUser() === $user);
+            }
         }
     }
 }
