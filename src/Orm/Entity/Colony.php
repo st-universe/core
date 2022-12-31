@@ -706,7 +706,11 @@ class Colony implements ColonyInterface
             // @todo refactor
             global $container;
 
-            $shiplist = $container->get(ShipRepositoryInterface::class)->getByLocation(
+            /**
+             * @var ShipRepositoryInterface
+             */
+            $shipRepo = $container->get(ShipRepositoryInterface::class);
+            $shiplist = $shipRepo->getByLocation(
                 $this->getStarsystemMap(),
                 null
             );
