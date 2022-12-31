@@ -141,22 +141,19 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
-    public function getByInnerSystemLocation(
-        int $starSystemId,
-        int $sx,
-        int $sy
+    public function getByLocation(
+        ?StarSystemMapInterface $starSystemMap,
+        ?MapInterface $map
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                JOIN %s sm
-                WITH s.starsystem_map_id = sm.id
                 LEFT JOIN %s f
                 WITH s.fleets_id = f.id
                 JOIN %s r
                 WITH s.rumps_id = r.id
-                WHERE sm.systems_id = :starSystemId
-                AND sm.sx = :sx AND sm.sy = :sy
+                WHERE s.starsystem_map_id = :starSystemMapId
+                WHERE s.map_id = :mapId
                 AND NOT EXISTS (SELECT ss.id
                                     FROM %s ss
                                     WHERE s.id = ss.ship_id
@@ -165,15 +162,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ORDER BY s.is_destroyed ASC, f.sort DESC, f.id DESC, s.is_fleet_leader DESC,
                     r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
                 Ship::class,
-                StarSystemMap::class,
                 Fleet::class,
                 ShipRump::class,
                 ShipSystem::class
             )
         )->setParameters([
-            'starSystemId' => $starSystemId,
-            'sx' => $sx,
-            'sy' => $sy,
+            'starSystemMapId' => $starSystemMap === null ? null : $starSystemMap->getId(),
+            'mapId' => $map === null ? null : $map->getId(),
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }
@@ -216,30 +211,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
-        ])->getResult();
-    }
-
-    public function getByOuterSystemLocation(
-        int $cx,
-        int $cy
-    ): iterable {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s
-                WHERE s.starsystem_map_id is null AND s.cx = :cx AND s.cy = :cy
-                AND NOT EXISTS (SELECT ss.id
-                                    FROM %s ss
-                                    WHERE s.id = ss.ship_id
-                                    AND ss.system_type = :systemId
-                                    AND ss.mode > 1)
-                ORDER BY s.is_destroyed ASC, s.fleets_id DESC, s.id ASC',
-                Ship::class,
-                ShipSystem::class
-            )
-        )->setParameters([
-            'cx' => $cx,
-            'cy' => $cy,
-            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }
 

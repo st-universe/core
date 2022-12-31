@@ -45,10 +45,9 @@ final class ShowOrbitManagement implements ViewControllerInterface
             $userId
         );
 
-        $shipList = $this->shipRepository->getByInnerSystemLocation(
-            $colony->getSystemsId(),
-            $colony->getSX(),
-            $colony->getSY()
+        $shipList = $this->shipRepository->getByLocation(
+            $colony->getStarsystemMap(),
+            null
         );
 
         /**

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Entity\TholianWebInterface;
 
 final class TholianWebRepository extends EntityRepository implements TholianWebRepositoryInterface
@@ -14,5 +17,23 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
         $em = $this->getEntityManager();
 
         $em->remove($web);
+    }
+
+    public function getWebAtLocation(ShipInterface $ship): ?TholianWebInterface
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT tw FROM %s tw
+                 JOIN %s s
+                 WITH tw.ship_id = s.id
+                 WHERE s.map_id = :mapId
+                 AND s.starsystem_map_id = :sysMapId',
+                TholianWeb::class,
+                Ship::class
+            )
+        )->setParameters([
+            'mapId' => $ship->getMap()->getId(),
+            'sysMapId' => $ship->getStarsystemMap()->getId()
+        ])->getOneOrNullResult();
     }
 }

@@ -10,7 +10,10 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TholianWebRepository")
  * @Table(
- *     name="stu_tholian_web"
+ *     name="stu_tholian_web",
+ *     indexes={
+ *         @Index(name="tholian_web_ship_idx", columns={"ship_id"})
+ *     }
  * )
  **/
 class TholianWeb implements TholianWebInterface
@@ -25,6 +28,15 @@ class TholianWeb implements TholianWebInterface
     /** @Column(type="integer") */
     private $finished_time = 0;
 
+    /** @Column(type="integer") */
+    private $ship_id = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Ship")
+     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $webShip;
+
     /**
      * @OneToMany(targetEntity="Ship", mappedBy="holdingWeb", cascade={"remove"})
      */
@@ -38,6 +50,35 @@ class TholianWeb implements TholianWebInterface
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getFinishedTime(): int
+    {
+        return $this->finished_time;
+    }
+
+    public function setFinishedTime(int $time): TholianWebInterface
+    {
+        $this->finished_time = $time;
+
+        return $this;
+    }
+
+    public function isFinished(): bool
+    {
+        return $this->finished_time < time();
+    }
+
+    public function getUser(): UserInterface
+    {
+        return $this->webShip->getUser();
+    }
+
+    public function setWebShip(ShipInterface $webShip): TholianWebInterface
+    {
+        $this->webShip = $webShip;
+
+        return $this;
     }
 
     public function getCapturedShips(): Collection

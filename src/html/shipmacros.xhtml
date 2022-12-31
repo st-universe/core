@@ -1122,15 +1122,41 @@
   <form action="ship.php" method="post" tal:define="SHIP WRAPPER/get; emitter WRAPPER/getWebEmitterSystemData;">
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
     <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
-    <table class="tcal" tal:condition="SHIP/isWebEmitterHealthy"
-      tal:define="webUnderConstruction emitter/getWebUnderConstruction">
-      <tal:block tal:condition="webUnderConstruction">
-
+    <table class="tcal" tal:condition="SHIP/isWebEmitterHealthy">
+      <tal:block tal:condition="exists:WEBCONSTRUCT">
+        <tr>
+          <td>Netz wird erstellt</td>
+          <td><input tal:condition="ISOWNCONSTRUCT" type="submit" class="button" name="B_CANCEL_WEB"
+              value="Abbrechen" /></td>
+        </tr>
+        <tr>
+          <td colspan="2">Fertigstellung ${datetime:WEBCONSTRUCT/getFinishedTime}</td>
+        </tr>
       </tal:block>
-      <tal:block tal:condition="not:webUnderConstruction">
-        <tr tal:condition="not:emitter/isUseable">
-          <td style="width: 70%;">
-            Gesperrt bis ${datetime:emitter/getCooldown}
+      <tr tal:condition="exists:CANHELP">
+        <td>Netzerstellung kann unterstützt werden</td>
+        <td><input type="submit" class="button" name="B_SUPPORT_WEB" value="Unterstützen" />
+        </td>
+      </tr>
+      <tal:block tal:condition="exists:OWNFINISHED">
+        <tr tal:condition="OWNFINISHED">
+          <td>dies ist dein Netz</td>
+        </tr>
+        <tr tal:condition="not:OWNFINISHED">
+          <td>Es existiert hier bereits ein Energienetz</td>
+        </tr>
+      </tal:block>
+      <tal:block tal:condition="exists:COOLDOWN">
+        <tr>
+          <td>
+            Gesperrt bis ${datetime:COOLDOWN}
+          </td>
+        </tr>
+      </tal:block>
+      <tal:block tal:condition="exists:SHIPLIST">
+        <tr tal:repeat="target SHIPLIST">
+          <td>
+            ${target/getName}
           </td>
         </tr>
       </tal:block>
