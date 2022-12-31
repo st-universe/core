@@ -11,6 +11,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
@@ -76,10 +77,18 @@ final class ShowWebEmitter implements ViewControllerInterface
             // wenn keines da und isUseable -> dann Targetliste
             if ($emitter->isUseable()) {
                 $this->loggerUtil->log('C');
-                $game->setTemplateVar('SHIPLIST', $this->shipRepository->getByLocation(
-                    $ship->getStarsystemMap(),
-                    $ship->getMap()
-                ));
+                $possibleTargetList =
+                    array_filter(
+                        $this->shipRepository->getByLocation(
+                            $ship->getStarsystemMap(),
+                            $ship->getMap()
+                        ),
+                        function (ShipInterface $target) use ($ship): bool {
+                            return !$target->getCloakState() && $target !== $ship;
+                        }
+                    );
+
+                $game->setTemplateVar('SHIPLIST', $possibleTargetList);
             } else {
                 $this->loggerUtil->log('D');
                 $game->setTemplateVar('COOLDOWN', $emitter->getCooldown());
