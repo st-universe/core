@@ -152,8 +152,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WITH s.fleets_id = f.id
                 JOIN %s r
                 WITH s.rumps_id = r.id
-                WHERE s.starsystem_map_id = :starSystemMapId
-                AND s.map_id = :mapId
+                WHERE s.%s = :mapId
                 AND NOT EXISTS (SELECT ss.id
                                     FROM %s ss
                                     WHERE s.id = ss.ship_id
@@ -164,11 +163,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 Ship::class,
                 Fleet::class,
                 ShipRump::class,
+                $starSystemMap === null ? 'map_id' : 'starsystem_map_id',
                 ShipSystem::class
             )
         )->setParameters([
-            'starSystemMapId' => $starSystemMap === null ? null : $starSystemMap->getId(),
-            'mapId' => $map === null ? null : $map->getId(),
+            'mapId' => $starSystemMap === null ? $map->getId() : $starSystemMap->getId(),
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }
