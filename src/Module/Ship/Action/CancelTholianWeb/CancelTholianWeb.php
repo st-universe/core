@@ -68,32 +68,42 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         $emitter = $wrapper->getWebEmitterSystemData();
 
+        $this->loggerUtil->log('1');
         if ($emitter === null || $emitter->ownedWebId === null) {
+            $this->loggerUtil->log('2');
             return;
         }
+        $this->loggerUtil->log('3');
 
         //TODO check if system healthy?
 
         // activate system
         if (!$this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
+            $this->loggerUtil->log('4');
             return;
         }
+        $this->loggerUtil->log('5');
 
         $web = $emitter->getOwnedTholianWeb();
 
         $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
+        $this->loggerUtil->log('6');
         //unlink targets
         foreach ($web->getCapturedShips() as $target) {
             $this->loggerUtil->log(sprintf('%s: unlink', $target->getName()));
             $target->setHoldingWeb(null);
             $this->shipRepository->save($target);
         }
+        $this->loggerUtil->log('7');
         $web->getCapturedShips()->clear();
 
+        $this->loggerUtil->log('8');
         $this->entityManager->flush();
+        $this->loggerUtil->log('9');
 
         //delete web ship
         $this->shipRemover->remove($web->getWebShip());
+        $this->loggerUtil->log('10');
 
         if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
             $emitter->setWebUnderConstructionId(null);
