@@ -81,6 +81,7 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         $web = $emitter->getOwnedTholianWeb();
 
+        $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
         //unlink targets
         foreach ($web->getCapturedShips() as $target) {
             $this->loggerUtil->log(sprintf('%s: unlink', $target->getName()));
