@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\CancelTholianWeb;
 
+use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -26,16 +27,20 @@ final class CancelTholianWeb implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ActivatorDeactivatorHelperInterface $helper,
-        ShipRemoverInterface $shipRemover
+        ShipRemoverInterface $shipRemover,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->helper = $helper;
         $this->shipRemover = $shipRemover;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -70,6 +75,8 @@ final class CancelTholianWeb implements ActionControllerInterface
             $target->setHoldingWeb(null);
             $this->shipRepository->save($target);
         }
+
+        $this->entityManager->flush();
 
         //delete web ship
         $this->shipRemover->remove($web->getWebShip());
