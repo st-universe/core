@@ -22,4 +22,6 @@ interface TholianWebInterface
      * @return ShipInterface[]|Collection
      */
     public function getCapturedShips(): Collection;
+
+    public function updateFinishTime(): void;
 }

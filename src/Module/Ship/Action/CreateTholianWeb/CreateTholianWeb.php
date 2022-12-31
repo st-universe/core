@@ -105,6 +105,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         //create web entity
         $web = $this->tholianWebRepository->prototype();
         $web->setWebShip($webShip);
+        $web->updateFinishTime();
         $this->tholianWebRepository->save($web);
 
         //link ships to web

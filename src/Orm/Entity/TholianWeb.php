@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Game\TimeConstants;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TholianWebRepository")
@@ -84,5 +85,20 @@ class TholianWeb implements TholianWebInterface
     public function getCapturedShips(): Collection
     {
         return $this->capturedShips;
+    }
+
+    public function updateFinishTime(): void
+    {
+        //TODO calculate!
+
+        $targetWeightSum = array_reduce(
+            $this->capturedShips->toArray(),
+            function (int $sum, ShipInterface $ship) {
+                return $sum + $ship->getRump()->getTractorMass();
+            },
+            0
+        );
+
+        $this->finished_time = time() + TimeConstants::ONE_HOUR_IN_SECONDS;
     }
 }

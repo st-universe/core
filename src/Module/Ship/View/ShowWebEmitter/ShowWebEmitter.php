@@ -68,6 +68,7 @@ final class ShowWebEmitter implements ViewControllerInterface
             $this->loggerUtil->log('A');
             $game->setTemplateVar('WEBCONSTRUCT', $webUnderConstruction);
             $game->setTemplateVar('ISOWNCONSTRUCT', $webUnderConstruction === $ownWeb);
+            return;
         }
 
         $web = $this->tholianWebRepository->getWebAtLocation($ship);
