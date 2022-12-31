@@ -88,7 +88,7 @@ final class ShowWebEmitter implements ViewControllerInterface
                         }
                     );
 
-                $game->setTemplateVar('SHIPLIST', $possibleTargetList);
+                $game->setTemplateVar('AVAILABLE_SHIPS', $possibleTargetList);
             } else {
                 $this->loggerUtil->log('D');
                 $game->setTemplateVar('COOLDOWN', $emitter->getCooldown());

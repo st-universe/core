@@ -1006,24 +1006,27 @@
     </table>
   </form>
 </metal:block>
+<metal:block metal:define-macro="shipselector">
+  <span tal:condition="not:AVAILABLE_SHIPS">Keine Schiffe vorhanden</span>
+  <tal:block tal:condition="AVAILABLE_SHIPS">
+    <table class="tcal" id="availableShipsTable">
+      <tr tal:repeat="ship AVAILABLE_SHIPS">
+        <td>
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+        </td>
+        <td><input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="${ship/getId}" /><span
+            tal:content="structure bbcode:ship/getName">NAME</span></td>
+      </tr>
+    </table>
+  </tal:block>
+</metal:block>
 <metal:block metal:define-macro="show_available_ships">
   <form action="ship.php" method="post">
     <input type="hidden" name="fleetid" tal:attributes="value FLEET/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-    <span tal:condition="not:AVAILABLE_SHIPS">Keine Schiffe vorhanden</span>
-    <tal:block tal:condition="AVAILABLE_SHIPS">
-      <table class="tcal" id="availableShipsTable">
-        <tr tal:repeat="ship AVAILABLE_SHIPS">
-          <td>
-            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
-          </td>
-          <td><input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="${ship/getId}" /><span
-              tal:content="structure bbcode:ship/getName">NAME</span></td>
-        </tr>
-      </table>
-      <a href="javascript:void(0);" onclick="joinFleetInShiplist(${FLEET/getId});" title="Schiffe hinzufügen"
-        class="fabutton">Schiffe hinzufügen</a>
-    </tal:block>
+    <metal:block metal:use-macro="shipselector" />
+    <a href="javascript:void(0);" onclick="joinFleetInShiplist(${FLEET/getId});" title="Schiffe hinzufügen"
+      class="fabutton">Schiffe hinzufügen</a>
   </form>
 </metal:block>
 <metal:block metal:define-macro="show_troop_transfer">
@@ -1153,12 +1156,9 @@
           </td>
         </tr>
       </tal:block>
-      <tal:block tal:condition="exists:SHIPLIST">
-        <tr tal:repeat="target SHIPLIST">
-          <td>
-            ${target/getName}
-          </td>
-        </tr>
+      <tal:block tal:condition="exists:AVAILABLE_SHIPS">
+        <metal:block metal:use-macro="shipselector" />
+        <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen" />
       </tal:block>
     </table>
   </form>
