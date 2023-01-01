@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -58,7 +57,7 @@ final class ShipRemover implements ShipRemoverInterface
 
     private TradePostRepositoryInterface $tradePostRepository;
 
-    private CancelRepairInterface $cancelRepair;
+    private ShipStateChangerInterface $shipStateChanger;
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
@@ -81,7 +80,7 @@ final class ShipRemover implements ShipRemoverInterface
         AstroEntryLibInterface $astroEntryLib,
         ShipTorpedoManagerInterface $shipTorpedoManager,
         TradePostRepositoryInterface $tradePostRepository,
-        CancelRepairInterface $cancelRepair,
+        ShipStateChangerInterface $shipStateChanger,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -100,7 +99,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->astroEntryLib = $astroEntryLib;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->tradePostRepository = $tradePostRepository;
-        $this->cancelRepair = $cancelRepair;
+        $this->shipStateChanger = $shipStateChanger;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -160,7 +159,7 @@ final class ShipRemover implements ShipRemoverInterface
         $oldName = $ship->getName();
         $ship->setName(_('Trümmer'));
         $ship->setIsDestroyed(true);
-        $this->cancelRepair->cancelRepair($ship);
+        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_DESTROYED);
 
         // delete ship systems
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());

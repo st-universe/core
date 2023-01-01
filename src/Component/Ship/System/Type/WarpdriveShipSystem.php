@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -17,14 +18,14 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 {
     private ShipRepositoryInterface $shipRepository;
 
-    private CancelRepairInterface $cancelRepair;
+    private ShipStateChangerInterface $shipStateChanger;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
-        CancelRepairInterface $cancelRepair
+        ShipStateChangerInterface $shipStateChanger
     ) {
         $this->shipRepository = $shipRepository;
-        $this->cancelRepair = $cancelRepair;
+        $this->shipStateChanger = $shipStateChanger;
     }
 
     public function getSystemType(): int
@@ -55,20 +56,16 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {
         $ship = $wrapper->get();
-        $this->cancelRepair->cancelRepair($ship);
+        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
         $this->undock($ship);
         $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
 
         if ($ship->isTractoring()) {
             $eps = $wrapper->getEpsSystemData();
             if ($eps->getEps() > $this->getEnergyUsageForActivation()) {
-                $traktorShip = $ship->getTractoredShip();
-
-                $this->cancelRepair->cancelRepair($traktorShip);
+                $this->shipStateChanger->changeShipState($wrapper->getTractoredShipWrapper(), ShipStateEnum::SHIP_STATE_NONE);
 
                 $eps->setEps($eps->getEps() - $this->getEnergyUsageForActivation())->update();
-
-                $this->shipRepository->save($traktorShip);
             } else {
                 $manager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             }

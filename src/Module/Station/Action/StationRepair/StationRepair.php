@@ -51,10 +51,7 @@ final class StationRepair implements ActionControllerInterface
             return;
         }
 
-        if (
-            $station->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
-            || $station->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
-        ) {
+        if ($station->isUnderRepair()) {
             $game->addInformation(_('Die Station wird bereits repariert.'));
             return;
         }

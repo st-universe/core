@@ -7,12 +7,17 @@ use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Data\WebEmitterSystemData;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
 interface ShipWrapperInterface
 {
     public function get(): ShipInterface;
+
+    public function getShipWrapperFactory(): ShipWrapperFactoryInterface;
+
+    public function getShipSystemManager(): ShipSystemManagerInterface;
 
     public function getFleetWrapper(): ?FleetWrapperInterface;
 
