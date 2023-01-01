@@ -165,6 +165,8 @@ interface ShipInterface
 
     public function setState(int $state): ShipInterface;
 
+    public function isUnderRepair(): bool;
+
     public function getAstroStartTurn(): ?int;
 
     public function setAstroStartTurn(?int $turn): ShipInterface;
