@@ -75,7 +75,8 @@ final class RepairShip implements ActionControllerInterface
         $repairableShiplist = [];
         foreach ($station->getDockedShips() as $dockedShip) {
             if (
-                !$this->shipWrapperFactory->wrapShip($dockedShip)->canBeRepaired() || $dockedShip->isUnderRepair()
+                !$this->shipWrapperFactory->wrapShip($dockedShip)->canBeRepaired() || $dockedShip->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                || $dockedShip->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
             ) {
                 continue;
             }

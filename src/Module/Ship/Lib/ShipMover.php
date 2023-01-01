@@ -5,6 +5,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Exception\InvalidParamException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
@@ -50,9 +51,7 @@ final class ShipMover implements ShipMoverInterface
 
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
-    private ShipStateChangerInterface $shipStateChanger;
-
-    private TholianWebUtilInterface $tholianWebUtil;
+    private CancelRepairInterface $cancelRepair;
 
     private int $new_x = 0;
     private int $new_y = 0;
@@ -80,8 +79,7 @@ final class ShipMover implements ShipMoverInterface
         AstroEntryRepositoryInterface $astroEntryRepository,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface  $tractorMassPayloadUtil,
-        ShipStateChangerInterface $shipStateChanger,
-        TholianWebUtilInterface $tholianWebUtil
+        CancelRepairInterface $cancelRepair
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -95,8 +93,7 @@ final class ShipMover implements ShipMoverInterface
         $this->astroEntryRepository = $astroEntryRepository;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
-        $this->shipStateChanger = $shipStateChanger;
-        $this->tholianWebUtil = $tholianWebUtil;
+        $this->cancelRepair = $cancelRepair;
     }
 
     private function setDestination(
@@ -377,24 +374,13 @@ final class ShipMover implements ShipMoverInterface
             $ship = $wrapper->get();
             $ship->setDockedTo(null);
 
-            if ($ship->isUnderRepair()) {
+            if ($this->cancelRepair->cancelRepair($ship)) {
                 $this->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getId()));
             }
-
-            $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
 
             if ($ship->isTractored()) {
                 $this->addLostShip($wrapper, $leadShip, $isFixedFleetMode, sprintf(_('Die %s wird von einem Traktorstrahl gehalten'), $ship->getName()));
                 continue;
-            }
-            $holdingWeb = $ship->getHoldingWeb();
-            if ($holdingWeb !== null) {
-                if ($holdingWeb->isFinished()) {
-                    $this->addLostShip($wrapper, $leadShip, $isFixedFleetMode, sprintf(_('Die %s wird von einem Energienetz gehalten'), $ship->getName()));
-                    continue;
-                } else {
-                    $this->tholianWebUtil->releaseShipFromWeb($wrapper);
-                }
             }
             // WA vorhanden?
             if ($ship->getSystem() === null && !$ship->isWarpAble()) {

@@ -82,11 +82,6 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->ship;
     }
 
-    public function getShipWrapperFactory(): ShipWrapperFactoryInterface
-    {
-        return $this->shipWrapperFactory;
-    }
-
     public function getFleetWrapper(): ?FleetWrapperInterface
     {
         if ($this->get()->getFleet() === null) {
