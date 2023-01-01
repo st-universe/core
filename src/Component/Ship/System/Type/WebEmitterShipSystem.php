@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
@@ -18,12 +19,16 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
 
     private ShipRepositoryInterface $shipRepository;
 
+    private TholianWebRepositoryInterface $tholianWebRepository;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        TholianWebRepositoryInterface $tholianWebRepository
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipRepository = $shipRepository;
+        $this->tholianWebRepository = $tholianWebRepository;
     }
 
     public function getSystemType(): int
@@ -78,6 +83,7 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
             $webUnderConstruction->getCapturedShips()->clear();
 
             //delete web ship
+            $this->tholianWebRepository->delete($webUnderConstruction);
             $this->shipRepository->delete($webUnderConstruction->getWebShip());
 
             if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
