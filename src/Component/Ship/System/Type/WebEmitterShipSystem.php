@@ -9,26 +9,16 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
-use Stu\Orm\Repository\TholianWebRepositoryInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 
 class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private TholianWebRepositoryInterface $tholianWebRepository;
+    private TholianWebUtilInterface $tholianWebUtil;
 
     public function __construct(
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipRepositoryInterface $shipRepository,
-        TholianWebRepositoryInterface $tholianWebRepository
+        TholianWebUtilInterface $tholianWebUtil
     ) {
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->shipRepository = $shipRepository;
-        $this->tholianWebRepository = $tholianWebRepository;
+        $this->tholianWebUtil = $tholianWebUtil;
     }
 
     public function getSystemType(): int
@@ -70,27 +60,6 @@ class WebEmitterShipSystem extends AbstractShipSystemType implements ShipSystemT
             return;
         }
 
-        $systems = $this->shipSystemRepository->getWebConstructingShipSystems($webUnderConstruction->getId());
-        $emitter = $wrapper->getWebEmitterSystemData();
-
-        //remove web if only one ship constructing
-        if (count($systems) === 1) {
-            //unlink targets
-            foreach ($webUnderConstruction->getCapturedShips() as $target) {
-                $target->setHoldingWeb(null);
-                $this->shipRepository->save($target);
-            }
-            $webUnderConstruction->getCapturedShips()->clear();
-
-            //delete web ship
-            $this->tholianWebRepository->delete($webUnderConstruction);
-            $this->shipRepository->delete($webUnderConstruction->getWebShip());
-
-            if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
-                $emitter->setOwnedWebId(null);
-            }
-        }
-
-        $emitter->setWebUnderConstructionId(null)->update();
+        $this->tholianWebUtil->releaseWebHelper($wrapper);
     }
 }

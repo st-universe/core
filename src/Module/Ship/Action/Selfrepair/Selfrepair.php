@@ -87,10 +87,7 @@ final class Selfrepair implements ActionControllerInterface
             return;
         }
 
-        if (
-            $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
-            || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
-        ) {
+        if ($ship->isUnderRepair()) {
             $game->addInformation(_('Das Schiff wird bereits repariert.'));
             return;
         }

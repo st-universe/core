@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\CancelTholianWeb;
 
-use Doctrine\ORM\EntityManagerInterface;
 use request;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -14,11 +15,8 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 
 final class CancelTholianWeb implements ActionControllerInterface
 {
@@ -26,38 +24,22 @@ final class CancelTholianWeb implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private ActivatorDeactivatorHelperInterface $helper;
 
-    private ShipRemoverInterface $shipRemover;
-
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
+    private TholianWebUtilInterface $tholianWebUtil;
 
     private LoggerUtilInterface $loggerUtil;
 
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
         ActivatorDeactivatorHelperInterface $helper,
-        ShipRemoverInterface $shipRemover,
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
-        EntityManagerInterface $entityManager
+        TholianWebUtilInterface $tholianWebUtil,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
         $this->helper = $helper;
-        $this->shipRemover = $shipRemover;
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->tholianWebUtil = $tholianWebUtil;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -81,16 +63,20 @@ final class CancelTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log('1');
         if ($emitter === null || $emitter->ownedWebId === null) {
             $this->loggerUtil->log('2');
-            return;
+            throw new SanityCheckException('emitter = null or no owned web');
         }
         $this->loggerUtil->log('3');
 
-        //TODO check if system healthy?
+        $ship = $wrapper->get();
+        //check if system healthy
+        if (!$ship->isWebEmitterHealthy()) {
+            throw new SanityCheckException('emitter not healthy');
+        }
 
         // activate system
         if (!$this->helper->deactivate($shipId, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
             $this->loggerUtil->log('4');
-            return;
+            throw new SanityCheckException('couldnt deactivate web emitter system');
         }
         $this->loggerUtil->log('5');
 
@@ -99,20 +85,11 @@ final class CancelTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
         $this->loggerUtil->log('6');
         //unlink targets
-        foreach ($web->getCapturedShips() as $target) {
-            $this->loggerUtil->log(sprintf('%s: unlink', $target->getName()));
-            $target->setHoldingWeb(null);
-            $this->shipRepository->save($target);
-        }
+        $this->tholianWebUtil->releaseAllShips($web, $wrapper->getShipWrapperFactory());
         $this->loggerUtil->log('7');
-        $web->getCapturedShips()->clear();
-
-        $this->loggerUtil->log('8');
-        $this->entityManager->flush();
-        $this->loggerUtil->log('9');
 
         //delete web ship
-        $this->shipRemover->remove($web->getWebShip());
+        $this->tholianWebUtil->removeWeb($web);
         $this->loggerUtil->log('10');
 
         if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
@@ -121,11 +98,10 @@ final class CancelTholianWeb implements ActionControllerInterface
         $emitter->setOwnedWebId(null)->update();
 
         //reset other web helper
-        $systems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
-        foreach ($systems as $system) {
-            $this->shipWrapperFactory->wrapShip($system->getShip())->getWebEmitterSystemData()->setWebUnderConstructionId(null)->update();
-            $this->helper->deactivate($system->getShip()->getId(), ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game);
-        }
+        $this->tholianWebUtil->resetWebHelpers($web, $wrapper->getShipWrapperFactory());
+
+        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+        $this->shipLoader->save($ship);
 
         $game->addInformation("Der Aufbau des Energienetz wurde abgebrochen");
     }

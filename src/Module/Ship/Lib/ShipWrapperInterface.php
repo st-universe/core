@@ -14,6 +14,8 @@ interface ShipWrapperInterface
 {
     public function get(): ShipInterface;
 
+    public function getShipWrapperFactory(): ShipWrapperFactoryInterface;
+
     public function getFleetWrapper(): ?FleetWrapperInterface;
 
     public function getEpsUsage(): int;

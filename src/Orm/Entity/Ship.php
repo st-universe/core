@@ -760,6 +760,12 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    public function isUnderRepair(): bool
+    {
+        return $this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
+            || $this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE;
+    }
+
     public function getAstroStartTurn(): ?int
     {
         return $this->astro_start_turn;

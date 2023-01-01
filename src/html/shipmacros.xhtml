@@ -1025,8 +1025,8 @@
     <input type="hidden" name="fleetid" tal:attributes="value FLEET/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <metal:block metal:use-macro="shipselector" />
-    <a href="javascript:void(0);" onclick="joinFleetInShiplist(${FLEET/getId});" title="Schiffe hinzufügen"
-      class="fabutton">Schiffe hinzufügen</a>
+    <a tal:condition="AVAILABLE_SHIPS" href="javascript:void(0);" onclick="joinFleetInShiplist(${FLEET/getId});"
+      title="Schiffe hinzufügen" class="fabutton">Schiffe hinzufügen</a>
   </form>
 </metal:block>
 <metal:block metal:define-macro="show_troop_transfer">

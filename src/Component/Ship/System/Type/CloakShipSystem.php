@@ -4,29 +4,24 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class CloakShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    private AstroEntryLibInterface $astroEntryLib;
-
-    private CancelRepairInterface $cancelRepair;
+    private ShipStateChangerInterface $shipStateChanger;
 
     public function __construct(
-        AstroEntryLibInterface $astroEntryLib,
-        CancelRepairInterface $cancelRepair
+        ShipStateChangerInterface $shipStateChanger
     ) {
-        $this->astroEntryLib = $astroEntryLib;
-        $this->cancelRepair = $cancelRepair;
+        $this->shipStateChanger = $shipStateChanger;
     }
 
     public function getSystemType(): int
@@ -77,11 +72,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         }
 
         $ship->setDockedTo(null);
-        $this->cancelRepair->cancelRepair($ship);
-
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
-        }
+        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)) {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);

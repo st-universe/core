@@ -169,10 +169,14 @@ use Stu\Module\Ship\Lib\ReactorUtil;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ShipMover2;
 use Stu\Module\Ship\Lib\ShipMover2Interface;
+use Stu\Module\Ship\Lib\ShipStateChanger;
+use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManager;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactory;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\TholianWebUtil;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -236,6 +240,8 @@ return [
     ReactorUtilInterface::class => autowire(ReactorUtil::class),
     ShipTorpedoManagerInterface::class => autowire(ShipTorpedoManager::class),
     ShipWrapperFactoryInterface::class => autowire(ShipWrapperFactory::class),
+    TholianWebUtilInterface::class => autowire(TholianWebUtil::class),
+    ShipStateChangerInterface::class => autowire(ShipStateChanger::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
