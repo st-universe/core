@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Mockery;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -25,9 +26,14 @@ class CloakShipSystemTest extends StuTestCase
     private $system;
 
     /**
-     * @var null|MockInterface|ShipStateChangerInterface
+     * @var null|AstroEntryLibInterface|MockInterface
      */
-    private $shipStateChanger;
+    private $astroEntryLib;
+
+    /**
+     * @var null|MockInterface|CancelRepairInterface
+     */
+    private $cancelRepairMock;
 
     private ShipInterface $ship;
     private ShipWrapperInterface $wrapper;
@@ -36,10 +42,12 @@ class CloakShipSystemTest extends StuTestCase
     {
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
-        $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
+        $this->astroEntryLib = Mockery::mock(AstroEntryLibInterface::class);
+        $this->cancelRepairMock = $this->mock(CancelRepairInterface::class);
 
         $this->system = new CloakShipSystem(
-            $this->shipStateChanger
+            $this->astroEntryLib,
+            $this->cancelRepairMock
         );
     }
 
@@ -176,8 +184,17 @@ class CloakShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($this->wrapper, ShipStateEnum::SHIP_STATE_NONE)
+        $this->cancelRepairMock->shouldReceive('cancelRepair')
+            ->with($this->ship)
+            ->once();
+
+        //ASTRO STUFF
+        $this->ship->shouldReceive('getState')
+            ->with()
+            ->once()
+            ->andReturn(ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING);
+        $this->astroEntryLib->shouldReceive('cancelAstroFinalizing')
+            ->with($this->ship)
             ->once();
 
         //SYSTEMS TO SHUTDOWN

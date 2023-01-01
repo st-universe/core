@@ -62,7 +62,10 @@ final class StartAstroMapping implements ActionControllerInterface
             return;
         }
 
-        if ($ship->isUnderRepair()) {
+        if (
+            $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE ||
+            $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
+        ) {
             $game->addInformation(_('Kartographieren nicht möglich. Das Schiff wird derzeit repariert.'));
             return;
         }

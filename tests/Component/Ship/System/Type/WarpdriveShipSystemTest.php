@@ -7,12 +7,12 @@ namespace Stu\Component\Ship\System\Type;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -28,10 +28,14 @@ class WarpdriveShipSystemTest extends StuTestCase
     private $shipRepositoryMock;
 
     /**
-     * @var null|MockInterface|ShipStateChangerInterface
+     * @var null|MockInterface|CancelRepairInterface
      */
-    private $shipStateChanger;
+    private $cancelRepairMock;
 
+    /**
+     * @var null|MockInterface|ShipWrapperFactoryInterface
+     */
+    private $shipWrapperFactoryMock;
 
     /**
      * @var null|MockInterface|ShipSystemManagerInterface
@@ -49,7 +53,7 @@ class WarpdriveShipSystemTest extends StuTestCase
     public function setUp(): void
     {
         $this->shipRepositoryMock = $this->mock(ShipRepositoryInterface::class);
-        $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
+        $this->cancelRepairMock = $this->mock(CancelRepairInterface::class);
         $this->managerMock = $this->mock(ShipSystemManagerInterface::class);
 
         $this->ship = $this->mock(ShipInterface::class);
@@ -57,7 +61,7 @@ class WarpdriveShipSystemTest extends StuTestCase
 
         $this->system = new WarpdriveShipSystem(
             $this->shipRepositoryMock,
-            $this->shipStateChanger
+            $this->cancelRepairMock
         );
     }
 
@@ -220,8 +224,8 @@ class WarpdriveShipSystemTest extends StuTestCase
         $this->shipRepositoryMock->shouldReceive('save')
             ->with($dockedShip)
             ->once();
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($this->wrapper, ShipStateEnum::SHIP_STATE_NONE)
+        $this->cancelRepairMock->shouldReceive('cancelRepair')
+            ->with($this->ship)
             ->once();
         $this->managerMock->shouldReceive('deactivate')
             ->with($this->wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true)
@@ -234,7 +238,7 @@ class WarpdriveShipSystemTest extends StuTestCase
     public function testActivateActivatesAndActivatesWarpStateOnTraktorShip(): void
     {
         $system = $this->mock(ShipSystemInterface::class);
-        $traktorBeamShipWrapper = $this->mock(ShipWrapperInterface::class);
+        $traktorBeamShip = $this->mock(ShipInterface::class);
         $epsSystem = $this->mock(EpsSystemData::class);
 
         //DOCKING STUFF
@@ -281,16 +285,20 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->wrapper->shouldReceive('getTractoredShipWrapper')
+        $this->ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
-            ->andReturn($traktorBeamShipWrapper);
+            ->andReturn($traktorBeamShip);
 
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($this->wrapper, ShipStateEnum::SHIP_STATE_NONE)
+        $this->shipRepositoryMock->shouldReceive('save')
+            ->with($traktorBeamShip)
             ->once();
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($traktorBeamShipWrapper, ShipStateEnum::SHIP_STATE_NONE)
+
+        $this->cancelRepairMock->shouldReceive('cancelRepair')
+            ->with($this->ship)
+            ->once();
+        $this->cancelRepairMock->shouldReceive('cancelRepair')
+            ->with($traktorBeamShip)
             ->once();
 
         $this->system->activate($this->wrapper, $this->managerMock);

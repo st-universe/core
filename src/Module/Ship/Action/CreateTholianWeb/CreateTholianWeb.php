@@ -6,9 +6,7 @@ namespace Stu\Module\Ship\Action\CreateTholianWeb;
 
 use Doctrine\ORM\EntityManagerInterface;
 use request;
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Exception\SanityCheckException;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -73,11 +71,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         $emitter = $wrapper->getWebEmitterSystemData();
 
         if ($emitter === null || $emitter->getWebUnderConstruction() !== null || $emitter->getOwnedTholianWeb() !== null) {
-            throw new SanityCheckException('emitter = null or already spinning');
-        }
-
-        if ($this->tholianWebRepository->getWebAtLocation($ship) !== null) {
-            throw new SanityCheckException('already existing web on location');
+            return;
         }
 
         $chosenShipIds = request::postArray('chosen');
@@ -102,7 +96,6 @@ final class CreateTholianWeb implements ActionControllerInterface
         if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
             return;
         }
-        $ship->setState(ShipStateEnum::SHIP_STATE_WEB_SPINNING);
 
         //create web ship
         $webShip = $this->shipCreator->createBy($userId, 9, 1840)->get();

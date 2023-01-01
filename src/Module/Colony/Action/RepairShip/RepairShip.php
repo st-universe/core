@@ -84,7 +84,10 @@ final class RepairShip implements ActionControllerInterface
              */
             foreach ($fleet['ships'] as $ship) {
                 $wrapper = $this->shipWrapperFactory->wrapShip($ship);
-                if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {
+                if (
+                    !$wrapper->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                    || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
+                ) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {

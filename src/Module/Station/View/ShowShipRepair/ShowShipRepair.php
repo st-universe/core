@@ -50,7 +50,8 @@ final class ShowShipRepair implements ViewControllerInterface
         foreach ($station->getDockedShips() as $ship) {
             $wrapper = $this->shipWrapperFactory->wrapShip($ship);
             if (
-                !$wrapper->canBeRepaired() || $ship->isUnderRepair()
+                !$wrapper->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
             ) {
                 continue;
             }

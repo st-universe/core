@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -22,20 +21,20 @@ class ShieldShipSystemTest extends StuTestCase
     private $system;
 
     /**
-     * @var ShipStateChangerInterface|MockInterface
+     * @var CancelRepairInterface|MockInterface
      */
-    private ShipStateChangerInterface $shipStateChanger;
+    private CancelRepairInterface $cancelRepairMock;
 
     private ShipInterface $ship;
     private ShipWrapperInterface $wrapper;
 
     public function setUp(): void
     {
-        $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
+        $this->cancelRepairMock = $this->mock(CancelRepairInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
 
-        $this->system = new ShieldShipSystem($this->shipStateChanger);
+        $this->system = new ShieldShipSystem($this->cancelRepairMock);
     }
 
     public function testCheckActivationConditionsReturnsFalsIfCloaked(): void
@@ -173,8 +172,8 @@ class ShieldShipSystemTest extends StuTestCase
             ->once()
             ->andReturn($this->ship);
 
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($this->wrapper, ShipStateEnum::SHIP_STATE_NONE)
+        $this->cancelRepairMock->shouldReceive('cancelRepair')
+            ->with($this->ship)
             ->once();
 
         $this->system->activate($this->wrapper, $managerMock);
