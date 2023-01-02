@@ -12,6 +12,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -39,6 +40,8 @@ final class CreateTholianWeb implements ActionControllerInterface
 
     private ShipCreatorInterface $shipCreator;
 
+    private StuTime $stuTime;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -49,6 +52,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         TholianWebRepositoryInterface $tholianWebRepository,
         TholianWebUtilInterface $tholianWebUtil,
         ShipCreatorInterface $shipCreator,
+        StuTime $stuTime,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
@@ -58,6 +62,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         $this->tholianWebRepository = $tholianWebRepository;
         $this->tholianWebUtil = $tholianWebUtil;
         $this->shipCreator = $shipCreator;
+        $this->stuTime = $stuTime;
         $this->entityManager = $entityManager;
     }
 
@@ -136,7 +141,11 @@ final class CreateTholianWeb implements ActionControllerInterface
 
         $this->tholianWebUtil->updateWebFinishTime($web);
 
-        $game->addInformationf("Es wird ein Energienetz um %d Ziele gespannt", count($possibleCatches));
+        $game->addInformationf(
+            "Es wird ein Energienetz um %d Ziele gespannt, Fertigstellung: %s",
+            count($possibleCatches),
+            $this->stuTime->transformToStuDate($web->getFinishedTime())
+        );
     }
 
     private function tryToCatch(ShipInterface $ship, int $targetId, GameControllerInterface $game): ?ShipInterface
