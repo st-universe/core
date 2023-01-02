@@ -1156,10 +1156,16 @@
           </td>
         </tr>
       </tal:block>
-      <tal:block tal:condition="exists:AVAILABLE_SHIPS">
-        <metal:block metal:use-macro="shipselector" />
-        <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen" />
-      </tal:block>
+      <div class="box" tal:condition="exists:AVAILABLE_SHIPS">
+        <div class="box_title">Zielauswahl</div>
+        <div class="box_body">
+          <metal:block metal:use-macro="shipselector" />
+          <tal:block tal:condition="AVAILABLE_SHIPS">
+            <br />
+            <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen" />
+          </tal:block>
+        </div>
+      </div>
     </table>
   </form>
 </metal:block>
