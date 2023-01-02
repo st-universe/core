@@ -1149,13 +1149,6 @@
           <td>Es existiert hier bereits ein Energienetz</td>
         </tr>
       </tal:block>
-      <tal:block tal:condition="exists:COOLDOWN">
-        <tr>
-          <td>
-            Gesperrt bis ${datetime:COOLDOWN}
-          </td>
-        </tr>
-      </tal:block>
       <div class="box" tal:condition="exists:AVAILABLE_SHIPS">
         <div class="box_title">Zielauswahl</div>
         <div class="box_body">
@@ -1164,6 +1157,16 @@
             <br />
             <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen" />
           </tal:block>
+        </div>
+      </div>
+      <div class="box" tal:condition="exists:COOLDOWN">
+        <div class="box_title">Zielauswahl</div>
+        <div class="box_body">
+          <tr>
+            <td>
+              Gesperrt bis ${datetime:COOLDOWN}
+            </td>
+          </tr>
         </div>
       </div>
     </table>
