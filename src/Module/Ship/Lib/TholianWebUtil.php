@@ -45,13 +45,14 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $web = $ship->getHoldingWeb();
 
         $ship->setHoldingWeb(null);
-        $this->shipRepository->save($ship);
         $web->getCapturedShips()->removeElement($ship);
 
         if ($web->getCapturedShips()->isEmpty()) {
             $this->resetWebHelpers($web, $wrapper->getShipWrapperFactory());
             $this->removeWeb($web);
         }
+
+        $this->shipRepository->save($ship);
     }
 
     public function releaseAllShips(TholianWebInterface $web, ShipWrapperFactoryInterface $shipWrapperFactory): void
