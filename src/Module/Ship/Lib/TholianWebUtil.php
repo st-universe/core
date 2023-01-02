@@ -149,7 +149,10 @@ final class TholianWebUtil implements TholianWebUtilInterface
             0
         );
 
-        $web->setFinishedTime((int)ceil($targetWeightSum / $webSpinnerWeightSum) * TimeConstants::ONE_HOUR_IN_SECONDS);
-        $this->tholianWebRepository->save($web);
+        //only update if web spinners left
+        if ($webSpinnerWeightSum !== 0) {
+            $web->setFinishedTime(((int)ceil($targetWeightSum / $webSpinnerWeightSum)) * TimeConstants::ONE_HOUR_IN_SECONDS);
+            $this->tholianWebRepository->save($web);
+        }
     }
 }
