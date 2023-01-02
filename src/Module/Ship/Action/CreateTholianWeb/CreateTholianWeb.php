@@ -13,6 +13,8 @@ use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -40,6 +42,8 @@ final class CreateTholianWeb implements ActionControllerInterface
 
     private ShipCreatorInterface $shipCreator;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     private StuTime $stuTime;
 
     private EntityManagerInterface $entityManager;
@@ -52,6 +56,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         TholianWebRepositoryInterface $tholianWebRepository,
         TholianWebUtilInterface $tholianWebUtil,
         ShipCreatorInterface $shipCreator,
+        PrivateMessageSenderInterface $privateMessageSender,
         StuTime $stuTime,
         EntityManagerInterface $entityManager
     ) {
@@ -62,6 +67,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         $this->tholianWebRepository = $tholianWebRepository;
         $this->tholianWebUtil = $tholianWebUtil;
         $this->shipCreator = $shipCreator;
+        $this->privateMessageSender = $privateMessageSender;
         $this->stuTime = $stuTime;
         $this->entityManager = $entityManager;
     }
@@ -131,6 +137,18 @@ final class CreateTholianWeb implements ActionControllerInterface
             $target->setHoldingWeb($web);
             $this->shipRepository->save($target);
             $web->getCapturedShips()->add($target);
+
+            //notify target owner
+            $this->privateMessageSender->send(
+                $userId,
+                $target->getUser()->getId(),
+                sprintf(
+                    'In Sektor %s wird ein Energienetz um die %s errichtet',
+                    $target->getSectorString(),
+                    $target->getName()
+                ),
+                $target->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
         }
 
         $this->entityManager->flush();

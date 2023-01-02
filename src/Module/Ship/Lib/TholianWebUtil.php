@@ -12,6 +12,8 @@ use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\TholianWebInterface;
@@ -29,6 +31,8 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     private StuTime $stuTime;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     private LoggerUtilInterface $loggerUtil;
 
     private EntityManagerInterface $entityManager;
@@ -38,6 +42,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         TholianWebRepositoryInterface $tholianWebRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
         StuTime $stuTime,
+        PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         EntityManagerInterface $entityManager
     ) {
@@ -45,6 +50,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->tholianWebRepository = $tholianWebRepository;
         $this->shipSystemRepository = $shipSystemRepository;
         $this->stuTime = $stuTime;
+        $this->privateMessageSender = $privateMessageSender;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
@@ -73,6 +79,18 @@ final class TholianWebUtil implements TholianWebUtilInterface
     {
         foreach ($web->getCapturedShips() as $target) {
             $this->releaseShipFromWeb($shipWrapperFactory->wrapShip($target));
+
+            //notify target owner
+            $this->privateMessageSender->send(
+                $web->getWebShip()->getUser()->getId(),
+                $target->getUser()->getId(),
+                sprintf(
+                    'Das Energienetz um die %s in Sektor %s wurde aufgelöst',
+                    $target->getName(),
+                    $target->getSectorString()
+                ),
+                $target->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
         }
     }
 
@@ -121,7 +139,6 @@ final class TholianWebUtil implements TholianWebUtilInterface
         if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
             $emitter->setOwnedWebId(null);
         }
-
         $emitter->setWebUnderConstructionId(null)->update();
         $wrapper->getShipSystemManager()->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, true);
 
@@ -141,6 +158,10 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         //flush to read persistent webIds from system data
         $this->entityManager->flush();
+
+        if ($web->isFinished()) {
+            return;
+        }
 
         $targetWeightSum = array_reduce(
             $web->getCapturedShips()->toArray(),
