@@ -208,7 +208,7 @@
 				</tal:block>
 			</td>
 		</tr>
-		<tr tal:condition="SHIP/isTorpedoStorageHealthy">
+		<tr tal:condition="php: !SHIP.hasTorpedo() && SHIP.isTorpedoStorageHealthy()">
 			<td>
 				<tal:block tal:condition="SHIP/getTorpedo">
 					<img src="assets/commodities/${SHIP/getTorpedo/getCommodityId}.png" />
@@ -261,10 +261,10 @@
 		</tal:block>
 		<tal:block tal:condition="SHIP/isWebEmitterHealthy">
 			<tr>
-				<td>
+				<td title="Webemitter Einstellungen" colspan="2">
 					<a href="javascript:void(0);" onclick="showWebEmitterWindow();">
-						<img src="assets/system/28.png" name="webemitter" title="Webemitter Einstellungen" />
-					</a>
+						<img src="assets/system/28.png" name="webemitter" />
+					</a> Webemitter Einstellungen
 				</td>
 			</tr>
 		</tal:block>
