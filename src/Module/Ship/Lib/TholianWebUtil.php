@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -26,6 +27,8 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
+    private StuTime $stuTime;
+
     private LoggerUtilInterface $loggerUtil;
 
     private EntityManagerInterface $entityManager;
@@ -34,12 +37,14 @@ final class TholianWebUtil implements TholianWebUtilInterface
         ShipRepositoryInterface $shipRepository,
         TholianWebRepositoryInterface $tholianWebRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
+        StuTime $stuTime,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         EntityManagerInterface $entityManager
     ) {
         $this->shipRepository = $shipRepository;
         $this->tholianWebRepository = $tholianWebRepository;
         $this->shipSystemRepository = $shipSystemRepository;
+        $this->stuTime = $stuTime;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
@@ -159,7 +164,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         //only update if web spinners left
         if ($webSpinnerWeightSum !== 0) {
-            $web->setFinishedTime(((int)ceil($targetWeightSum / $webSpinnerWeightSum)) * TimeConstants::ONE_HOUR_IN_SECONDS);
+            $web->setFinishedTime($this->stuTime->time() + ((int)ceil($targetWeightSum / $webSpinnerWeightSum)) * TimeConstants::ONE_HOUR_IN_SECONDS);
             $this->tholianWebRepository->save($web);
         }
     }
