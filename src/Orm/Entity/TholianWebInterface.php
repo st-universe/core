@@ -25,5 +25,5 @@ interface TholianWebInterface
      */
     public function getCapturedShips(): Collection;
 
-    public function updateFinishTime(): void;
+    public function updateFinishTime(int $time): void;
 }

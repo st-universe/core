@@ -17,6 +17,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
@@ -34,6 +35,8 @@ final class CreateTholianWeb implements ActionControllerInterface
 
     private TholianWebRepositoryInterface $tholianWebRepository;
 
+    private TholianWebUtilInterface $tholianWebUtil;
+
     private ShipCreatorInterface $shipCreator;
 
     private EntityManagerInterface $entityManager;
@@ -44,6 +47,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         InteractionCheckerInterface $interactionChecker,
         ActivatorDeactivatorHelperInterface $helper,
         TholianWebRepositoryInterface $tholianWebRepository,
+        TholianWebUtilInterface $tholianWebUtil,
         ShipCreatorInterface $shipCreator,
         EntityManagerInterface $entityManager
     ) {
@@ -52,12 +56,15 @@ final class CreateTholianWeb implements ActionControllerInterface
         $this->interactionChecker = $interactionChecker;
         $this->helper = $helper;
         $this->tholianWebRepository = $tholianWebRepository;
+        $this->tholianWebUtil = $tholianWebUtil;
         $this->shipCreator = $shipCreator;
         $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        //TODO other web spinners in fleet should join
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -112,7 +119,6 @@ final class CreateTholianWeb implements ActionControllerInterface
         //create web entity
         $web = $this->tholianWebRepository->prototype();
         $web->setWebShip($webShip);
-        $web->updateFinishTime();
         $this->tholianWebRepository->save($web);
 
         //link ships to web
@@ -126,6 +132,8 @@ final class CreateTholianWeb implements ActionControllerInterface
         $emitter
             ->setWebUnderConstructionId($web->getId())
             ->setOwnedWebId($web->getId())->update();
+
+        $this->tholianWebUtil->updateWebFinishTime($web);
 
         $game->addInformationf("Es wird ein Energienetz um %d Ziele gespannt", count($possibleCatches));
     }

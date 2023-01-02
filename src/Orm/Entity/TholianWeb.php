@@ -92,18 +92,8 @@ class TholianWeb implements TholianWebInterface
         return $this->capturedShips;
     }
 
-    public function updateFinishTime(): void
+    public function updateFinishTime(int $time): void
     {
-        //TODO calculate!
-
-        $targetWeightSum = array_reduce(
-            $this->capturedShips->toArray(),
-            function (int $sum, ShipInterface $ship) {
-                return $sum + $ship->getRump()->getTractorMass();
-            },
-            0
-        );
-
-        $this->finished_time = time() + TimeConstants::ONE_HOUR_IN_SECONDS;
+        $this->finished_time = $time;
     }
 }

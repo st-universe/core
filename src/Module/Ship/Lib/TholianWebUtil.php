@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
@@ -24,15 +28,19 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         TholianWebRepositoryInterface $tholianWebRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipRepository = $shipRepository;
         $this->tholianWebRepository = $tholianWebRepository;
         $this->shipSystemRepository = $shipSystemRepository;
+        $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
     }
@@ -82,7 +90,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $systems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
 
         //remove web if lost
-        if (count($systems) === 1) {
+        if (empty($systems)) {
             $this->releaseAllShips($web, $wrapper->getShipWrapperFactory());
             $this->removeWeb($web);
         }
@@ -103,6 +111,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     private function releaseWebHelperIntern(ShipWrapperInterface $wrapper): void
     {
         $emitter = $wrapper->getWebEmitterSystemData();
+        $web = $emitter->getWebUnderConstruction();
 
         if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
             $emitter->setOwnedWebId(null);
@@ -114,5 +123,33 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $ship = $wrapper->get();
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
         $this->shipRepository->save($ship);
+
+        //update finish time last
+        $this->updateWebFinishTime($web);
+    }
+
+    public function updateWebFinishTime(TholianWebInterface $web): void
+    {
+        //flush to read persistent webIds from system data
+        $this->entityManager->flush();
+
+        $targetWeightSum = array_reduce(
+            $web->getCapturedShips()->toArray(),
+            function (int $sum, ShipInterface $ship) {
+                return $sum + $ship->getRump()->getTractorMass();
+            },
+            0
+        );
+
+        $webSpinnerWeightSum = array_reduce(
+            $this->shipSystemRepository->getWebConstructingShipSystems($web->getId()),
+            function (int $sum, ShipSystemInterface $shipSystem) {
+                return $sum + $shipSystem->getShip()->getRump()->getTractorMass();
+            },
+            0
+        );
+
+        $web->setFinishedTime((int)ceil($targetWeightSum / $webSpinnerWeightSum) * TimeConstants::ONE_HOUR_IN_SECONDS);
+        $this->tholianWebRepository->save($web);
     }
 }
