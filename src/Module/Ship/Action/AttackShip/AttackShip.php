@@ -226,6 +226,8 @@ final class AttackShip implements ActionControllerInterface
             }
         }
 
+        //if ($target) TODO filter ships in web if attacking web
+
         return [
             $attacker,
             $defender,
