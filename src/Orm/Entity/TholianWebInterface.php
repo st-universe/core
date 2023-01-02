@@ -8,9 +8,9 @@ interface TholianWebInterface
 {
     public function getId(): int;
 
-    public function getFinishedTime(): int;
+    public function getFinishedTime(): ?int;
 
-    public function setFinishedTime(int $time): TholianWebInterface;
+    public function setFinishedTime(?int $time): TholianWebInterface;
 
     public function isFinished(): bool;
 

@@ -136,7 +136,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $emitter = $wrapper->getWebEmitterSystemData();
         $web = $emitter->getWebUnderConstruction();
 
-        if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
+        if ($emitter->ownedWebId === $emitter->webUnderConstructionId && !$web->isFinished()) {
             $emitter->setOwnedWebId(null);
         }
         $emitter->setWebUnderConstructionId(null)->update();

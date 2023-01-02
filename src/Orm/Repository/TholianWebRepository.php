@@ -48,4 +48,17 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
             'sysMapId' => $ship->getStarsystemMap() === null ? null : $ship->getStarsystemMap()->getId()
         ])->getOneOrNullResult();
     }
+
+    public function getFinishedWebs(): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT tw FROM %s tw
+                WHERE tw.finished_time < :time',
+                TholianWeb::class
+            )
+        )->setParameters([
+            'time' => time()
+        ])->getResult();
+    }
 }

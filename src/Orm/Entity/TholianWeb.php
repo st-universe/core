@@ -26,8 +26,8 @@ class TholianWeb implements TholianWebInterface
      */
     private $id;
 
-    /** @Column(type="integer") */
-    private $finished_time = 0;
+    /** @Column(type="integer", nullable=true) */
+    private $finished_time;
 
     /** @Column(type="integer") */
     private $ship_id = 0;
@@ -53,12 +53,12 @@ class TholianWeb implements TholianWebInterface
         return $this->id;
     }
 
-    public function getFinishedTime(): int
+    public function getFinishedTime(): ?int
     {
         return $this->finished_time;
     }
 
-    public function setFinishedTime(int $time): TholianWebInterface
+    public function setFinishedTime(?int $time): TholianWebInterface
     {
         $this->finished_time = $time;
 
@@ -67,7 +67,7 @@ class TholianWeb implements TholianWebInterface
 
     public function isFinished(): bool
     {
-        return $this->finished_time < time();
+        return $this->finished_time === null || $this->finished_time < time();
     }
 
     public function getUser(): UserInterface

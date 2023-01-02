@@ -18,4 +18,9 @@ interface TholianWebRepositoryInterface extends ObjectRepository
     public function delete(TholianWebInterface $web): void;
 
     public function getWebAtLocation(ShipInterface $ship): ?TholianWebInterface;
+
+    /**
+     * @return TholianWebInterface[]
+     */
+    public function getFinishedWebs(): array;
 }

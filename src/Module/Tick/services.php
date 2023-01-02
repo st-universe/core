@@ -26,5 +26,6 @@ return [
         autowire(Process\FinishTerraformingJobs::class),
         autowire(Process\ShieldRegeneration::class),
         autowire(Process\RepairTaskJobs::class),
+        autowire(Process\ReleaseWebEmitter::class)
     ],
 ];
