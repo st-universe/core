@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -109,5 +110,9 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         $emitter->setWebUnderConstructionId(null)->update();
         $wrapper->getShipSystemManager()->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, true);
+
+        $ship = $wrapper->get();
+        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+        $this->shipRepository->save($ship);
     }
 }
