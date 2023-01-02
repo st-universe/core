@@ -44,7 +44,6 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $ship = $wrapper->get();
         $web = $ship->getHoldingWeb();
 
-        $ship->setHoldingWeb(null);
         $web->getCapturedShips()->removeElement($ship);
 
         if ($web->getCapturedShips()->isEmpty()) {
@@ -52,6 +51,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
             $this->removeWeb($web);
         }
 
+        $ship->setHoldingWeb(null);
         $this->shipRepository->save($ship);
     }
 
