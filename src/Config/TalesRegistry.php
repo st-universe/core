@@ -6,6 +6,7 @@ namespace Stu\Config;
 
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
+use Stu\Module\Control\StuTime;
 
 TalesRegistry::registerPrefix(
     'clmodeDescription',
@@ -58,7 +59,7 @@ TalesRegistry::registerPrefix(
 TalesRegistry::registerPrefix(
     'datetime',
     function ($src, $nothrow): string {
-        return 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370) . " " . date("H:i", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
+        return (new StuTime())->transformToStuDate((int)TalesInternal::compileToPHPExpression($src, $nothrow));
     }
 );
 TalesRegistry::registerPrefix(
