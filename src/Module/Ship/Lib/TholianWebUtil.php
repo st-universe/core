@@ -39,7 +39,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     public function releaseShipFromWeb(ShipWrapperInterface $wrapper): void
     {
         if ($wrapper->get()->getUser()->getId() === 126) {
-            $this->loggerUtil->log('releaseShipFromWeb, shipId: %d', $wrapper->get()->getId());
+            $this->loggerUtil->log(sprintf('releaseShipFromWeb, shipId: %d', $wrapper->get()->getId()));
         }
         $ship = $wrapper->get();
         $web = $ship->getHoldingWeb();
@@ -64,7 +64,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     public function removeWeb(TholianWebInterface $web): void
     {
         if ($web->getWebShip()->getUser()->getId() === 126) {
-            $this->loggerUtil->log('removeWeb, webId: %d', $web->getId());
+            $this->loggerUtil->log(sprintf('removeWeb, webId: %d', $web->getId()));
         }
         $this->tholianWebRepository->delete($web);
         $this->shipRepository->delete($web->getWebShip());
@@ -89,7 +89,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
     public function resetWebHelpers(TholianWebInterface $web, ShipWrapperFactoryInterface $shipWrapperFactory): void
     {
         if ($web->getWebShip()->getUser()->getId() === 126) {
-            $this->loggerUtil->log('resetWebHelpers, webId: %d', $web->getId());
+            $this->loggerUtil->log(sprintf('resetWebHelpers, webId: %d', $web->getId()));
         }
         $systems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
         foreach ($systems as $system) {
