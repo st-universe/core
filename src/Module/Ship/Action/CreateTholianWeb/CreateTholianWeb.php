@@ -125,6 +125,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         foreach ($possibleCatches as $target) {
             $target->setHoldingWeb($web);
             $this->shipRepository->save($target);
+            $web->getCapturedShips()->add($target);
         }
 
         $this->entityManager->flush();
