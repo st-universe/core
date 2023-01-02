@@ -73,11 +73,6 @@ final class CancelTholianWeb implements ActionControllerInterface
             throw new SanityCheckException('emitter not healthy');
         }
 
-        // activate system
-        if (!$this->helper->deactivate($shipId, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
-            $this->loggerUtil->log('4');
-            throw new SanityCheckException('couldnt deactivate web emitter system');
-        }
         $this->loggerUtil->log('5');
 
         $web = $emitter->getOwnedTholianWeb();
@@ -102,6 +97,12 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
         $this->shipLoader->save($ship);
+
+        // deactivate system
+        if (!$this->helper->deactivate($shipId, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
+            $this->loggerUtil->log('4');
+            throw new SanityCheckException('couldnt deactivate web emitter system');
+        }
 
         $game->addInformation("Der Aufbau des Energienetz wurde abgebrochen");
     }
