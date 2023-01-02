@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Action\CancelTholianWeb;
 
 use request;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,7 +14,6 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 
 final class CancelTholianWeb implements ActionControllerInterface
@@ -24,20 +22,16 @@ final class CancelTholianWeb implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ActivatorDeactivatorHelperInterface $helper;
-
     private TholianWebUtilInterface $tholianWebUtil;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ActivatorDeactivatorHelperInterface $helper,
         TholianWebUtilInterface $tholianWebUtil,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
-        $this->helper = $helper;
         $this->tholianWebUtil = $tholianWebUtil;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -97,12 +91,6 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
         $this->shipLoader->save($ship);
-
-        // deactivate system
-        if (!$this->helper->deactivate($shipId, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
-            $this->loggerUtil->log('4');
-            throw new SanityCheckException('couldnt deactivate web emitter system');
-        }
 
         $game->addInformation("Der Aufbau des Energienetz wurde abgebrochen");
     }
