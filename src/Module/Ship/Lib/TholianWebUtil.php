@@ -130,6 +130,10 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     public function updateWebFinishTime(TholianWebInterface $web): void
     {
+        if ($web->getWebShip()->getUser()->getId() === 126) {
+            $this->loggerUtil->log(sprintf('updateWebFinishTime, webId: %d', $web->getId()));
+        }
+
         //flush to read persistent webIds from system data
         $this->entityManager->flush();
 
@@ -148,6 +152,10 @@ final class TholianWebUtil implements TholianWebUtilInterface
             },
             0
         );
+
+        if ($web->getWebShip()->getUser()->getId() === 126) {
+            $this->loggerUtil->log(sprintf('targetWeightSum: %d, webSpinnerWeightSum: %d', $targetWeightSum, $webSpinnerWeightSum));
+        }
 
         //only update if web spinners left
         if ($webSpinnerWeightSum !== 0) {
