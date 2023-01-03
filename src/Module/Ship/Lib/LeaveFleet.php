@@ -54,6 +54,7 @@ final class LeaveFleet implements LeaveFleetInterface
         }
 
         $this->shipRepository->save($ship);
+        return true;
     }
 
     private function changeFleetLeader(ShipInterface $oldLeader): void
