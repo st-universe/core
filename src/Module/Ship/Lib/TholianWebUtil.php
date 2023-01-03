@@ -53,7 +53,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        //$this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
+        $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
     }
 
     public function releaseShipFromWeb(ShipWrapperInterface $wrapper): void
@@ -96,7 +96,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     public function removeWeb(TholianWebInterface $web): void
     {
-        if ($web->getWebShip()->getUser()->getId() === 126) {
+        if ($web->getUser()->getId() === 126) {
             $this->loggerUtil->log(sprintf('removeWeb, webId: %d', $web->getId()));
         }
         $this->tholianWebRepository->delete($web);
