@@ -27,7 +27,7 @@ class TholianWeb implements TholianWebInterface
     private $id;
 
     /** @Column(type="integer", nullable=true) */
-    private $finished_time = 0;
+    private $finished_time = PHP_INT_MAX;
 
     /** @Column(type="integer") */
     private $ship_id = 0;
