@@ -51,7 +51,7 @@ abstract class AbstractJoinFleet
             return;
         }
 
-        if ($ship->getHoldingWeb() !== $fleet->getLeadShip()->getHoldingWeb()) {
+        if ($this->isTholianWebPreventing($fleet->getLeadShip(), $ship)) {
             $game->addInformationf(_('%s: Ein Energienetz verhindert den Beitritt.'), $ship->getName());
             return;
         }
@@ -92,5 +92,24 @@ abstract class AbstractJoinFleet
             $ship->getName(),
             $fleet->getName()
         ));
+    }
+
+    private function isTholianWebPreventing(ShipInterface $fleetLeader, ShipInterface $ship): bool
+    {
+        $fleetLeaderWeb = $fleetLeader->getHoldingWeb();
+        $shipWeb = $ship->getHoldingWeb();
+
+        if ($fleetLeaderWeb === $shipWeb) {
+            return false;
+        }
+
+        if ($fleetLeaderWeb !== null && $fleetLeaderWeb->isFinished()) {
+            return true;
+        }
+        if ($shipWeb !== null && $shipWeb->isFinished()) {
+            return true;
+        }
+
+        return false;
     }
 }
