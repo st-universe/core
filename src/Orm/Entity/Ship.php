@@ -101,9 +101,6 @@ class Ship implements ShipInterface
     /** @Column(type="integer") */
     private $former_rumps_id = 0;
 
-    /** @Column(type="boolean", nullable=true) */
-    private $is_base = false;
-
     /** @Column(type="smallint", length=1, nullable=true) */
     private $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
 
