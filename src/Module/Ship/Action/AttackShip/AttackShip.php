@@ -132,11 +132,12 @@ final class AttackShip implements ActionControllerInterface
         $target_user_id = $target->getUser()->getId();
         $isTargetBase = $target->isBase();
 
-        [$attacker, $defender, $fleet] = $this->getAttackerDefender($ship, $target);
+        [$attacker, $defender, $fleet, $isWebSituation] = $this->getAttackerDefender($ship, $target);
 
         $this->shipAttackCycle->init(
             $this->shipWrapperFactory->wrapShips($attacker),
             $this->shipWrapperFactory->wrapShips($defender),
+            $isWebSituation
         );
         $this->shipAttackCycle->cycle();
 
@@ -226,13 +227,31 @@ final class AttackShip implements ActionControllerInterface
             }
         }
 
-        //if ($target) TODO filter ships in web if attacking web
+        $isWebSituation = false;
+
+        //if in tholian web and defenders outside, reflect damage
+        if ($this->isTargetingOutsideTholianWeb($ship, $target)) {
+            $isWebSituation = true;
+            $defender = [];
+
+            foreach ($ship->getHoldingWeb()->getCapturedShips() as $shipInWeb) {
+                $defender[$shipInWeb->getId()] = $shipInWeb;
+            }
+        }
 
         return [
             $attacker,
             $defender,
-            $fleet
+            $fleet,
+            $isWebSituation
         ];
+    }
+
+    private function isTargetingOutsideTholianWeb(ShipInterface $ship, ShipInterface $target): bool
+    {
+        return $ship->getHoldingWeb() !== null
+            && $ship->getHoldingWeb()->isFinished()
+            && ($target->getHoldingWeb() !== $ship->getHoldingWeb());
     }
 
     public function performSessionCheck(): bool
