@@ -12,6 +12,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\ShipLSSModeEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
@@ -102,6 +103,9 @@ class Ship implements ShipInterface
 
     /** @Column(type="boolean") */
     private $is_base = false;
+
+    /** @Column(type="smallint", length=1, nullable=true) */
+    private $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
 
     /** @Column(type="integer") */
     private $database_id = 0;
