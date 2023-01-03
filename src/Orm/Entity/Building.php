@@ -74,9 +74,6 @@ class Building implements BuildingInterface
     /** @Column(type="smallint") * */
     private $bm_col = 0;
 
-    /** @Column(type="smallint", nullable=true) * */
-    private $is_base = 0;
-
     /**
      * @OneToMany(targetEntity="BuildingCost", mappedBy="building")
      */
@@ -272,17 +269,6 @@ class Building implements BuildingInterface
     public function setBmCol(int $buildmenuColumn): BuildingInterface
     {
         $this->bm_col = $buildmenuColumn;
-        return $this;
-    }
-
-    public function getIsBase(): int
-    {
-        return $this->is_base;
-    }
-
-    public function setIsBase($isBase): BuildingInterface
-    {
-        $this->is_base = $isBase;
         return $this;
     }
 

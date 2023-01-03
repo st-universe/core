@@ -68,10 +68,6 @@ interface BuildingInterface
 
     public function setBmCol(int $buildmenuColumn): BuildingInterface;
 
-    public function getIsBase(): int;
-
-    public function setIsBase($isBase): BuildingInterface;
-
     public function isActivateable(): bool;
 
     public function isViewable(): bool;
