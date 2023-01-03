@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\TholianWeb;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
@@ -130,6 +131,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         //create web ship
         $webShip = $this->shipCreator->createBy($userId, 9, 1840)->get();
         $webShip->updateLocation($ship->getMap(), $ship->getStarsystemMap());
+        $webShip->setSpacecraftType(SpacecraftTypeEnum::SPACECRAFT_TYPE_OTHER);
         $this->shipRepository->save($webShip);
 
         //create web entity
