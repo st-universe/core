@@ -43,7 +43,7 @@ final class RemoveTholianWeb implements ActionControllerInterface
         $shipId = request::indInt('id');
 
         if ($userId === 126) {
-            $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
+            // $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
         }
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(

@@ -53,7 +53,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
+        //$this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
     }
 
     public function releaseShipFromWeb(ShipWrapperInterface $wrapper): void
