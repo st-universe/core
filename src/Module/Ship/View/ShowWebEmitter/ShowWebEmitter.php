@@ -89,7 +89,7 @@ final class ShowWebEmitter implements ViewControllerInterface
                             $ship->getMap()
                         ),
                         function (ShipInterface $target) use ($ship): bool {
-                            return !$target->getCloakState() && $target !== $ship;
+                            return !$target->getCloakState() && !$target->getWarpState() && $target !== $ship;
                         }
                     );
 
