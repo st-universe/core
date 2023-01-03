@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\Overview;
 
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -29,7 +30,7 @@ final class Overview implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $bases = $this->shipRepository->getByUserAndFleetAndBase($userId, null, true);
+        $bases = $this->shipRepository->getByUserAndFleetAndType($userId, null, SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION);
         $uplinkBases = $this->shipRepository->getByUplink($userId);
 
         $game->appendNavigationPart(

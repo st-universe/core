@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -136,7 +137,7 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setHuell((int) ceil($ship->getMaxHuell() / 20));
         $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $ship->setBuildplan(null);
-        $ship->setIsBase(false);
+        $ship->setSpacecraftType(SpacecraftTypeEnum::SPACECRAFT_TYPE_OTHER);
         $ship->setShield(0);
         $ship->setAlertStateGreen();
         $ship->setInfluenceArea(null);

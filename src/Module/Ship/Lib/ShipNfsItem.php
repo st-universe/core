@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 
 final class ShipNfsItem
 {
@@ -70,7 +71,7 @@ final class ShipNfsItem
     }
     public function isBase()
     {
-        return $this->values['isbase'];
+        return $this->values['spacecrafttype'] === SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION;
     }
     public function isTrumfield()
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Nbs;
 
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -50,7 +51,7 @@ final class NbsUtility implements NbsUtilityInterface
         if ($ship->getNbs() || $mapId !== null || $sysMapId !== null) {
             $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
                 $ship,
-                true,
+                [SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION],
                 $tachyonActive,
                 $mapId,
                 $sysMapId
@@ -58,7 +59,7 @@ final class NbsUtility implements NbsUtilityInterface
 
             $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
                 $ship,
-                false,
+                [SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP, SpacecraftTypeEnum::SPACECRAFT_TYPE_OTHER],
                 $tachyonActive,
                 $mapId,
                 $sysMapId

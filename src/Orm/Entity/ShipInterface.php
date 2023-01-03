@@ -117,7 +117,7 @@ interface ShipInterface
 
     public function isConstruction(): bool;
 
-    public function setIsBase(bool $isBase): ShipInterface;
+    public function setSpacecraftType(int $type): ShipInterface;
 
     public function getDatabaseId(): int;
 

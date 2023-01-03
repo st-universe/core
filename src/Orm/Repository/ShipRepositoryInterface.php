@@ -76,7 +76,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return ShipInterface[]
      */
-    public function getByUserAndFleetAndBase(int $userId, ?int $fleetId, bool $isBase): iterable;
+    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): iterable;
 
     /**
      * @return ShipInterface[]
@@ -155,7 +155,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      */
     public function getSingleShipScannerResults(
         ShipInterface $ship,
-        bool $isBase,
+        array $types,
         bool $showCloaked = false,
         int $mapId = null,
         int $sysMapId = null

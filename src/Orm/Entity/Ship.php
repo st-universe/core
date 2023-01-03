@@ -101,7 +101,7 @@ class Ship implements ShipInterface
     /** @Column(type="integer") */
     private $former_rumps_id = 0;
 
-    /** @Column(type="boolean") */
+    /** @Column(type="boolean", nullable=true) */
     private $is_base = false;
 
     /** @Column(type="smallint", length=1, nullable=true) */
@@ -559,7 +559,7 @@ class Ship implements ShipInterface
 
     public function isBase(): bool
     {
-        return $this->is_base;
+        return $this->type === SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION;
     }
 
     public function isTrumfield(): bool
@@ -577,9 +577,9 @@ class Ship implements ShipInterface
         return $this->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION;
     }
 
-    public function setIsBase(bool $isBase): ShipInterface
+    public function setSpacecraftType(int $type): ShipInterface
     {
-        $this->is_base = $isBase;
+        $this->type = $type;
         return $this;
     }
 

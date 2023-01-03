@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShiplistSingles;
 
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -29,7 +30,7 @@ final class ShowShiplistSingles implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
+        $ships = $this->shipRepository->getByUserAndFleetAndType($userId, null, SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP);
 
         $game->setTemplateVar('SINGLESHIPWRAPPERS', $this->shipWrapperFactory->wrapShips($ships));
         $game->showMacro('html/shipmacros.xhtml/shiplist_singles');

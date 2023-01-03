@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -289,7 +290,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction = $this->shipRepository->prototype();
         $construction->setUser($ship->getUser());
         $construction->setRump($rump);
-        $construction->setIsBase(true);
+        $construction->setSpacecraftType(SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION);
         $construction->setName($rump->getName());
         $construction->setHuell($rump->getBaseHull());
         $construction->setMaxHuell($rump->getBaseHull());

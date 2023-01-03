@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\Overview;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -53,7 +54,7 @@ final class Overview implements ViewControllerInterface
         $this->loggerUtil->log(sprintf('Shiplist-start, timestamp: %F', microtime(true)));
 
         $fleets = $this->fleetRepository->getByUser($userId);
-        $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
+        $ships = $this->shipRepository->getByUserAndFleetAndType($userId, null, SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP);
 
         foreach ($fleets as $fleet) {
             $fleet->setHiddenStyle($this->session->hasSessionValue('hiddenshiplistfleets', $fleet->getId()) ? 'display: none' : '');

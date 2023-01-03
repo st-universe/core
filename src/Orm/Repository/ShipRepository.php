@@ -11,6 +11,7 @@ use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -26,7 +27,6 @@ use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
@@ -117,13 +117,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.%s = :mapId
                 AND s.fleets_id IS NULL
                 AND s.user_id = :userId
-                AND s.is_base = false
+                AND s.type = :type
                 ORDER BY s.rumps_id ASC, s.name ASC',
                 Ship::class,
                 $isSystem ? 'starsystem_map_id' : 'map_id'
             )
         )->setParameters([
             'userId' => $fleetLeader->getUser()->getId(),
+            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP,
             'mapId' => $isSystem ? $fleetLeader->getStarsystemMap()->getId() : $fleetLeader->getMap()->getId()
         ])->getResult();
     }
@@ -223,15 +224,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->getResult();
     }
 
-    public function getByUserAndFleetAndBase(int $userId, ?int $fleetId, bool $isBase): iterable
+    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): iterable
     {
         return $this->findBy(
             [
                 'user_id' => $userId,
                 'fleets_id' => $fleetId,
-                'is_base' => $isBase,
+                'type' => $type,
             ],
-            $isBase ? ['max_huelle' => 'desc', 'id' => 'asc'] : ['id' => 'asc']
+            $type === SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION ? ['max_huelle' => 'desc', 'id' => 'asc'] : ['id' => 'asc']
         );
     }
 
@@ -752,7 +753,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
         $rsm->addScalarResult('uplinkstate', 'uplinkstate', 'integer');
         $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
-        $rsm->addScalarResult('isbase', 'isbase', 'boolean');
+        $rsm->addScalarResult('spacecrafttype', 'spacecrafttype', 'integer');
         $rsm->addScalarResult('shipname', 'shipname', 'string');
         $rsm->addScalarResult('hull', 'hull', 'integer');
         $rsm->addScalarResult('maxhull', 'maxhull', 'integer');
@@ -768,7 +769,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT f.id as fleetid, f.name as fleetname, f.defended_colony_id is not null as isdefending,
                     f.blocked_colony_id is not null as isblocking, s.id as shipid, s.rumps_id as rumpid, s.former_rumps_id as formerrumpid,
                     ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed,
-                    s.is_base as isbase, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield,
+                    s.type as spacecrafttype, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid
                 FROM stu_ships s
                 LEFT JOIN stu_ship_system ss
@@ -809,7 +810,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function getSingleShipScannerResults(
         ShipInterface $ship,
-        bool $isBase,
+        array $types,
         bool $showCloaked = false,
         int $mapId = null,
         int $sysMapId = null
@@ -826,7 +827,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
         $rsm->addScalarResult('uplinkstate', 'uplinkstate', 'integer');
         $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
-        $rsm->addScalarResult('isbase', 'isbase', 'boolean');
+        $rsm->addScalarResult('spacecrafttype', 'spacecrafttype', 'integer');
         $rsm->addScalarResult('shipname', 'shipname', 'string');
         $rsm->addScalarResult('hull', 'hull', 'integer');
         $rsm->addScalarResult('maxhull', 'maxhull', 'integer');
@@ -840,7 +841,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
                 'SELECT s.id as shipid, s.rumps_id as rumpid , s.former_rumps_id as formerrumpid, ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate,
-                    ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed, s.is_base as isbase, s.name as shipname,
+                    ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed, s.type as spacecrafttype, s.name as shipname,
                     s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid
                 FROM stu_ships s
@@ -863,7 +864,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.%s = :fieldId
                 AND s.id != :ignoreId
                 AND s.fleets_id IS NULL
-                AND s.is_base = :isBase
+                AND s.type IN (:types)
                 %s
                 ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
                 $isSystem ? 'starsystem_map_id' : 'map_id',
@@ -873,7 +874,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameters([
             'fieldId' => $mapId ?? $sysMapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
             'ignoreId' => $ship->getId(),
-            'isBase' => $isBase,
+            'types' => $types,
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
@@ -957,12 +958,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT COUNT(s.id) FROM %s s
                 WHERE s.%s = :mapId
-                AND s.is_base = true',
+                AND s.type = :type',
                 Ship::class,
                 $isSystem ? 'starsystem_map_id' : 'map_id',
             )
         )->setParameters([
-            'mapId' => $isSystem  ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()
+            'mapId' => $isSystem  ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION
         ]);
 
         return $query->getSingleScalarResult() > 0;
