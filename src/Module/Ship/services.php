@@ -142,6 +142,7 @@ use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\TholianWeb\CancelTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\CreateTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\ImplodeTholianWeb;
+use Stu\Module\Ship\Action\TholianWeb\RemoveTholianWeb;
 use Stu\Module\Ship\Action\ToggleFleetVisibility\ToggleFleetVisibility;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TrackShip\TrackShip;
@@ -357,7 +358,8 @@ return [
         TrackShip::ACTION_IDENTIFIER => autowire(TrackShip::class),
         CreateTholianWeb::ACTION_IDENTIFIER => autowire(CreateTholianWeb::class),
         CancelTholianWeb::ACTION_IDENTIFIER => autowire(CancelTholianWeb::class),
-        ImplodeTholianWeb::ACTION_IDENTIFIER => autowire(ImplodeTholianWeb::class)
+        ImplodeTholianWeb::ACTION_IDENTIFIER => autowire(ImplodeTholianWeb::class),
+        RemoveTholianWeb::ACTION_IDENTIFIER => autowire(RemoveTholianWeb::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\TholianWeb;
 
 use request;
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,9 +15,9 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 
-final class CancelTholianWeb implements ActionControllerInterface
+final class RemoveTholianWeb implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CANCEL_WEB';
+    public const ACTION_IDENTIFIER = 'B_REMOVE_WEB';
 
     private ShipLoaderInterface $shipLoader;
 
@@ -59,6 +58,11 @@ final class CancelTholianWeb implements ActionControllerInterface
             $this->loggerUtil->log('2');
             throw new SanityCheckException('emitter = null or no owned web');
         }
+        $web = $emitter->getOwnedTholianWeb();
+        if (!$web->isFinished()) {
+            $this->loggerUtil->log('2');
+            throw new SanityCheckException('web not finished');
+        }
         $this->loggerUtil->log('3');
 
         $ship = $wrapper->get();
@@ -69,24 +73,20 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         $this->loggerUtil->log('5');
 
-        $web = $emitter->getOwnedTholianWeb();
 
         $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
         $this->loggerUtil->log('6');
+
         //unlink targets
         $this->tholianWebUtil->releaseAllShips($web, $wrapper->getShipWrapperFactory());
-        $this->loggerUtil->log('7');
 
-        if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
-            $emitter->setWebUnderConstructionId(null);
-        }
+        $game->addInformation("Das Energienetz wurde aufgelöst");
+
+        $this->loggerUtil->log('10');
+
         $emitter->setOwnedWebId(null)->update();
-
-        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
-        $this->shipLoader->save($ship);
-
-        $game->addInformation("Der Aufbau des Energienetz wurde abgebrochen");
     }
+
 
     public function performSessionCheck(): bool
     {
