@@ -150,6 +150,8 @@ use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Ship\Action\Transwarp\Transwarp;
 use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
+use Stu\Module\Ship\Lib\Battle\TholianWebWeaponPhase;
+use Stu\Module\Ship\Lib\Battle\TholianWebWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefend;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtility;
@@ -222,6 +224,7 @@ return [
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
     FightLibInterface::class => autowire(FightLib::class),
     ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
+    TholianWebWeaponPhaseInterface::class => autowire(TholianWebWeaponPhase::class),
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
     ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
     AlertRedHelperInterface::class => autowire(AlertRedHelper::class),
