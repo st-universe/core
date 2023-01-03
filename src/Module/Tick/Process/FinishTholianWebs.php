@@ -78,7 +78,7 @@ final class FinishTholianWebs implements ProcessTickInterface
                 $fleets[$fleet->getId()] = [];
             }
 
-            $fleets[$fleet->getId()] = $ship;
+            $fleets[$fleet->getId()][] = $ship;
         }
 
         $pms = [];
