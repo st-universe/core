@@ -105,6 +105,10 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     public function releaseWebHelper(ShipWrapperInterface $wrapper): void
     {
+        if ($wrapper->get()->getUser()->getId() === 126) {
+            $this->loggerUtil->log(sprintf('releaseWebHelper, shipId: %d', $wrapper->get()->getId()));
+        }
+
         $emitter = $wrapper->getWebEmitterSystemData();
         $web = $emitter->getWebUnderConstruction();
 
