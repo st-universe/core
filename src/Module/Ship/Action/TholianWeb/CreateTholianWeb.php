@@ -98,6 +98,11 @@ final class CreateTholianWeb implements ActionControllerInterface
             throw new SanityCheckException('already existing web on location');
         }
 
+        if ($ship->getWarpState()) {
+            $game->addInformation("Aktion nicht möglich, da der Warpantrieb aktiviert ist");
+            return;
+        }
+
         $chosenShipIds = request::postArray('chosen');
 
         /**
