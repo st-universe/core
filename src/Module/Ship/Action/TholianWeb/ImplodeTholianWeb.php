@@ -92,6 +92,11 @@ final class ImplodeTholianWeb implements ActionControllerInterface
             $ship->setHoldingWeb(null);
             $this->shipLoader->save($ship);
 
+            //don't damage trumfields
+            if ($ship->isDestroyed()) {
+                continue;
+            }
+
             $msg = $this->tholianWebWeaponPhase->damageCapturedShip($wrapper->getShipWrapperFactory()->wrapShip($ship), $game);
 
             $pm = sprintf(_('Das Energienetz um die %s in Sektor %s ist implodiert') . "\n", $ship->getName(), $ship->getSectorString());
