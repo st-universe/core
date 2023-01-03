@@ -157,6 +157,7 @@ use Stu\Module\Ship\Lib\CancelColonyBlockOrDefend;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtility;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
+use Stu\Module\Ship\Lib\LeaveFleet as LibLeaveFleet;
 use Stu\Module\Ship\Lib\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\ShipCreator;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
@@ -248,7 +249,7 @@ return [
     ShipWrapperFactoryInterface::class => autowire(ShipWrapperFactory::class),
     TholianWebUtilInterface::class => autowire(TholianWebUtil::class),
     ShipStateChangerInterface::class => autowire(ShipStateChanger::class),
-    LeaveFleetInterface::class => autowire(LeaveFleet::class),
+    LeaveFleetInterface::class => autowire(LibLeaveFleet::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
