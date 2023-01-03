@@ -52,7 +52,6 @@ use Stu\Module\Ship\Action\BeamTo\BeamTo;
 use Stu\Module\Ship\Action\BeamToColony\BeamToColony;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Action\BuyTradeLicense\BuyTradeLicense;
-use Stu\Module\Ship\Action\CancelTholianWeb\CancelTholianWeb;
 use Stu\Module\Ship\Action\ChangeFleetFixation\ChangeFleetFixation;
 use Stu\Module\Ship\Action\ChangeFleetFleader\ChangeFleetFleader;
 use Stu\Module\Ship\Action\ChangeName\ChangeName;
@@ -64,7 +63,6 @@ use Stu\Module\Ship\Action\ColonyDefending\StopDefending;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleet;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequest;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequestInterface;
-use Stu\Module\Ship\Action\CreateTholianWeb\CreateTholianWeb;
 use Stu\Module\Ship\Action\DeactivateAstroLaboratory\DeactivateAstroLaboratory;
 use Stu\Module\Ship\Action\DeactivateCloak\DeactivateCloak;
 use Stu\Module\Ship\Action\DeactivateSubspace\DeactivateSubspace;
@@ -141,6 +139,9 @@ use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
 use Stu\Module\Ship\Action\Shutdown\Shutdown;
 use Stu\Module\Ship\Action\StartShuttle\StartShuttle;
 use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
+use Stu\Module\Ship\Action\TholianWeb\CancelTholianWeb;
+use Stu\Module\Ship\Action\TholianWeb\CreateTholianWeb;
+use Stu\Module\Ship\Action\TholianWeb\ImplodeTholianWeb;
 use Stu\Module\Ship\Action\ToggleFleetVisibility\ToggleFleetVisibility;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TrackShip\TrackShip;
@@ -352,7 +353,8 @@ return [
         OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
         TrackShip::ACTION_IDENTIFIER => autowire(TrackShip::class),
         CreateTholianWeb::ACTION_IDENTIFIER => autowire(CreateTholianWeb::class),
-        CancelTholianWeb::ACTION_IDENTIFIER => autowire(CancelTholianWeb::class)
+        CancelTholianWeb::ACTION_IDENTIFIER => autowire(CancelTholianWeb::class),
+        ImplodeTholianWeb::ACTION_IDENTIFIER => autowire(ImplodeTholianWeb::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

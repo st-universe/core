@@ -63,8 +63,12 @@ final class ShowWebEmitter implements ViewControllerInterface
         $webUnderConstruction = $emitter->getWebUnderConstruction();
         $ownWeb = $emitter->getOwnedTholianWeb();
 
+        if ($ownWeb !== null && $ownWeb->isFinished()) {
+            $game->setTemplateVar('OWNFINISHEDWEB', $ownWeb);
+        }
+
         //helping under construction?
-        if ($webUnderConstruction !== null) {
+        if ($webUnderConstruction !== null && !$webUnderConstruction->isFinished()) {
             $this->loggerUtil->log('A');
             $game->setTemplateVar('WEBCONSTRUCT', $webUnderConstruction);
             $game->setTemplateVar('ISOWNCONSTRUCT', $webUnderConstruction === $ownWeb);

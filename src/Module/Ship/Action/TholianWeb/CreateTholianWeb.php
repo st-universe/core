@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\CreateTholianWeb;
+namespace Stu\Module\Ship\Action\TholianWeb;
 
 use Doctrine\ORM\EntityManagerInterface;
 use request;

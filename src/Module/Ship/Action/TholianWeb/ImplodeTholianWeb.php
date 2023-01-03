@@ -2,37 +2,47 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\CancelTholianWeb;
+namespace Stu\Module\Ship\Action\TholianWeb;
 
 use request;
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\Battle\TholianWebWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 
-final class CancelTholianWeb implements ActionControllerInterface
+final class ImplodeTholianWeb implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CANCEL_WEB';
+    public const ACTION_IDENTIFIER = 'B_IMPLODE_WEB';
 
     private ShipLoaderInterface $shipLoader;
 
     private TholianWebUtilInterface $tholianWebUtil;
+
+    private PrivateMessageSenderInterface $privateMessageSender;
+
+    private TholianWebWeaponPhaseInterface $tholianWebWeaponPhase;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TholianWebUtilInterface $tholianWebUtil,
+        PrivateMessageSenderInterface $privateMessageSender,
+        TholianWebWeaponPhaseInterface $tholianWebWeaponPhase,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->tholianWebUtil = $tholianWebUtil;
+        $this->privateMessageSender = $privateMessageSender;
+        $this->tholianWebWeaponPhase = $tholianWebWeaponPhase;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -73,27 +83,40 @@ final class CancelTholianWeb implements ActionControllerInterface
 
         $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
         $this->loggerUtil->log('6');
-        //unlink targets
-        $this->tholianWebUtil->releaseAllShips($web, $wrapper->getShipWrapperFactory());
-        $this->loggerUtil->log('7');
 
         //delete web ship
         $this->tholianWebUtil->removeWeb($web);
+
+        //damage captured ships
+        foreach ($web->getCapturedShips() as $ship) {
+            $ship->setHoldingWeb(null);
+            $this->shipRepository->save($ship);
+
+            $msg = $this->tholianWebWeaponPhase->damageCapturedShip($wrapper->getShipWrapperFactory()->wrapShip($ship), $game);
+
+            $pm = sprintf(_('Das Energienetz um die %s in Sektor %s ist implodiert') . "\n", $ship->getName(), $ship->getSectorString());
+            foreach ($msg as $value) {
+                $pm .= $value . "\n";
+            }
+
+            //notify target owner
+            $this->privateMessageSender->send(
+                $userId,
+                $ship->getUser()->getId(),
+                $pm,
+                $ship->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
+        }
+
+        $game->addInformation("Das Energienetz ist implodiert");
+        $game->addInformationMergeDown($msg);
+
         $this->loggerUtil->log('10');
 
-        if ($emitter->ownedWebId === $emitter->webUnderConstructionId) {
-            $emitter->setWebUnderConstructionId(null);
-        }
         $emitter->setOwnedWebId(null)->update();
-
-        //reset other web helper
-        $this->tholianWebUtil->resetWebHelpers($web, $wrapper->getShipWrapperFactory());
-
-        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
-        $this->shipLoader->save($ship);
-
-        $game->addInformation("Der Aufbau des Energienetz wurde abgebrochen");
     }
+
+
 
     public function performSessionCheck(): bool
     {

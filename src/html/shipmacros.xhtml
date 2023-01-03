@@ -1126,6 +1126,18 @@
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
     <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
     <table class="tcal" tal:condition="SHIP/isWebEmitterHealthy">
+      <tal:block tal:condition="exists:OWNFINISHEDWEB">
+        <tr>
+          <th colspan="2">
+            Eigenes Netz bei ${OWNFINISHEDWEB/getWebShip/getSectorString}
+          </th>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="submit" class="button" name="B_IMPLODE_WEB" value="Netz implodieren lassen" />
+          </td>
+        </tr>
+      </tal:block>
       <tal:block tal:condition="exists:WEBCONSTRUCT">
         <tr>
           <td>Netz wird erstellt</td>
@@ -1142,9 +1154,6 @@
         </td>
       </tr>
       <tal:block tal:condition="exists:OWNFINISHED">
-        <tr tal:condition="OWNFINISHED">
-          <td>dies ist dein Netz</td>
-        </tr>
         <tr tal:condition="not:OWNFINISHED">
           <td>Es existiert hier bereits ein Energienetz</td>
         </tr>

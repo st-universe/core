@@ -235,7 +235,7 @@ final class GameController implements GameControllerInterface
 
     public function addInformationMerge(array $info): void
     {
-        $notificationArray = array();
+        $notificationArray = [];
         foreach ($info as $value) {
             $notification = new Notification();
             $notification->setText($value);
