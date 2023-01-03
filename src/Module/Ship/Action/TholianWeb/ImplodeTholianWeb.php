@@ -90,7 +90,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
         //damage captured ships
         foreach ($web->getCapturedShips() as $ship) {
             $ship->setHoldingWeb(null);
-            $this->shipRepository->save($ship);
+            $this->shipLoader->save($ship);
 
             $msg = $this->tholianWebWeaponPhase->damageCapturedShip($wrapper->getShipWrapperFactory()->wrapShip($ship), $game);
 
