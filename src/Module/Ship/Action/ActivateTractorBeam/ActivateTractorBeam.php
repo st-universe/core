@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
+use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -41,6 +42,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
@@ -49,7 +52,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         InteractionCheckerInterface $interactionChecker,
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        ShipWrapperFactoryInterface $shipWrapperFactory,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
@@ -59,6 +63,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -203,6 +208,9 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private function abort($ship, $game): void
     {
+        //flush to persist activated state
+        $this->entityManager->flush();
+
         // deactivate system
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
         $this->shipRepository->save($ship);

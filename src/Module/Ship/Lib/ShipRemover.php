@@ -18,7 +18,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
@@ -37,8 +36,6 @@ final class ShipRemover implements ShipRemoverInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private FleetRepositoryInterface $fleetRepository;
-
     private ShipRepositoryInterface $shipRepository;
 
     private UserRepositoryInterface $userRepository;
@@ -48,8 +45,6 @@ final class ShipRemover implements ShipRemoverInterface
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipLeaverInterface $shipLeaver;
-
-    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
 
     private AstroEntryLibInterface $astroEntryLib;
 
@@ -61,6 +56,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private LeaveFleetInterface $leaveFleet;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private LoggerUtilInterface $loggerUtil;
@@ -70,18 +67,17 @@ final class ShipRemover implements ShipRemoverInterface
         StorageRepositoryInterface $storageRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
         UserRepositoryInterface $userRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipSystemManagerInterface $shipSystemManager,
         ShipLeaverInterface $shipLeaver,
-        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         AstroEntryLibInterface $astroEntryLib,
         ShipTorpedoManagerInterface $shipTorpedoManager,
         TradePostRepositoryInterface $tradePostRepository,
         ShipStateChangerInterface $shipStateChanger,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        LeaveFleetInterface $leaveFleet,
         PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -89,18 +85,17 @@ final class ShipRemover implements ShipRemoverInterface
         $this->storageRepository = $storageRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
-        $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
         $this->userRepository = $userRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipLeaver = $shipLeaver;
-        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->astroEntryLib = $astroEntryLib;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->tradePostRepository = $tradePostRepository;
         $this->shipStateChanger = $shipStateChanger;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->leaveFleet = $leaveFleet;
         $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -112,17 +107,7 @@ final class ShipRemover implements ShipRemoverInterface
         $ship = $wrapper->get();
         $this->shipSystemManager->deactivateAll($wrapper);
 
-        $fleet = $ship->getFleet();
-
-        if ($ship->isFleetLeader()) {
-            $this->changeFleetLeader($ship);
-        } else if ($fleet !== null) {
-            $fleet->getShips()->removeElement($ship);
-
-            $ship->setFleet(null);
-            $ship->setIsFleetLeader(false);
-            $ship->setFleetId(null);
-        }
+        $this->leaveFleet->leaveFleet($ship);
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
@@ -296,9 +281,7 @@ final class ShipRemover implements ShipRemoverInterface
 
     public function remove(ShipInterface $ship, ?bool $truncateCrew = false): void
     {
-        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
-            $this->changeFleetLeader($ship);
-        }
+        $this->leaveFleet->leaveFleet($ship);
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
@@ -333,40 +316,5 @@ final class ShipRemover implements ShipRemoverInterface
         $this->resetTrackerDevices($ship->getId());
 
         $this->shipRepository->delete($ship);
-    }
-
-    private function changeFleetLeader(ShipInterface $oldLeader): void
-    {
-        $ship = current(
-            array_filter(
-                $oldLeader->getFleet()->getShips()->toArray(),
-                function (ShipInterface $ship) use ($oldLeader): bool {
-                    return $ship !== $oldLeader;
-                }
-            )
-        );
-
-        if (!$ship) {
-            $this->cancelColonyBlockOrDefend->work($oldLeader);
-        }
-
-        $fleet = $oldLeader->getFleet();
-
-        $oldLeader->setFleet(null);
-        $oldLeader->setIsFleetLeader(false);
-        $fleet->getShips()->removeElement($oldLeader);
-
-        $this->shipRepository->save($oldLeader);
-
-        if (!$ship) {
-            $this->fleetRepository->delete($fleet);
-
-            return;
-        }
-        $fleet->setLeadShip($ship);
-        $ship->setIsFleetLeader(true);
-
-        $this->shipRepository->save($ship);
-        $this->fleetRepository->save($fleet);
     }
 }
