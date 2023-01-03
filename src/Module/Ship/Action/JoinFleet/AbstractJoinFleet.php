@@ -51,6 +51,11 @@ abstract class AbstractJoinFleet
             return;
         }
 
+        if ($ship->getHoldingWeb() !== $fleet->getLeadShip()->getHoldingWeb()) {
+            $game->addInformationf(_('%s: Ein Energienetz verhindert den Beitritt.'), $ship->getName());
+            return;
+        }
+
         if ($ship->isBase()) {
             return;
         }
