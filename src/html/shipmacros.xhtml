@@ -1159,26 +1159,32 @@
           <td>Es existiert hier bereits ein Energienetz</td>
         </tr>
       </tal:block>
-      <div class="box" tal:condition="exists:AVAILABLE_SHIPS">
-        <div class="box_title">Zielauswahl</div>
-        <div class="box_body">
-          <metal:block metal:use-macro="shipselector" />
-          <tal:block tal:condition="AVAILABLE_SHIPS">
-            <br />
-            <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen" />
-          </tal:block>
-        </div>
-      </div>
-      <div class="box" tal:condition="exists:COOLDOWN">
-        <div class="box_title">Zielauswahl</div>
-        <div class="box_body">
-          <tr>
-            <td>
+      <tr>
+        <td colspan="2">
+          <div class="box" tal:condition="exists:AVAILABLE_SHIPS">
+            <div class="box_title">Zielauswahl</div>
+            <div class="box_body">
+              <metal:block metal:use-macro="shipselector" />
+              <tal:block tal:condition="AVAILABLE_SHIPS">
+                <br />
+                <input type="submit" class="button" name="B_CREATE_WEB" value="Schiffe einfangen" />
+              </tal:block>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2">
+          <div class="box" tal:condition="exists:COOLDOWN">
+            <div class="box_title">Zielauswahl</div>
+            <div class="box_body">
               Gesperrt bis ${datetime:COOLDOWN}
-            </td>
-          </tr>
-        </div>
-      </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
     </table>
   </form>
 </metal:block>
