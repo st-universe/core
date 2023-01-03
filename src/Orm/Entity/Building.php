@@ -74,7 +74,7 @@ class Building implements BuildingInterface
     /** @Column(type="smallint") * */
     private $bm_col = 0;
 
-    /** @Column(type="smallint") * */
+    /** @Column(type="smallint", nullable=true) * */
     private $is_base = 0;
 
     /**

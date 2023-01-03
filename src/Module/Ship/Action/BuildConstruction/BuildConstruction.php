@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BuildConstruction;
 
 use request;
-use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -52,8 +51,6 @@ final class BuildConstruction implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private EntityManagerInterface $entityManager;
-
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
     private ShipRumpUserRepositoryInterface $shipRumpUserRepository;
@@ -69,7 +66,6 @@ final class BuildConstruction implements ActionControllerInterface
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        EntityManagerInterface $entityManager,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
         CommodityRepositoryInterface $commodityRepository,
@@ -81,7 +77,6 @@ final class BuildConstruction implements ActionControllerInterface
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
-        $this->entityManager = $entityManager;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->commodityRepository = $commodityRepository;
