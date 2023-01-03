@@ -84,9 +84,6 @@ final class ImplodeTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('capturedSize: %d', count($web->getCapturedShips())));
         $this->loggerUtil->log('6');
 
-        //delete web ship
-        $this->tholianWebUtil->removeWeb($web);
-
         //damage captured ships
         foreach ($web->getCapturedShips() as $ship) {
             $ship->setHoldingWeb(null);
@@ -112,6 +109,9 @@ final class ImplodeTholianWeb implements ActionControllerInterface
                 $ship->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
+
+        //delete web ship
+        $this->tholianWebUtil->removeWeb($web);
 
         $game->addInformation("Das Energienetz ist implodiert");
         $game->addInformationMergeDown($msg);
