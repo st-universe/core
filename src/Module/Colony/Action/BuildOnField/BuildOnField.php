@@ -99,15 +99,16 @@ final class BuildOnField implements ActionControllerInterface
         $buildingId = $building->getId();
         $researchId = $building->getResearchId();
 
-
-        if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
-            return;
-        }
         if ($building->getBuildableFields()->containsKey((int) $field->getFieldType()) === false) {
             return;
         }
 
         if ($userId !== GameEnum::USER_NOONE) {
+
+            if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
+                return;
+            }
+
             $researchId = $building->getBuildableFields()->get((int) $field->getFieldType())->getResearchId();
             if ($researchId != null && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
                 return;
