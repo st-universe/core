@@ -28,11 +28,12 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT b FROM %s b WHERE b.bm_col = :buildMenu
-                AND b.view = :viewState AND b.id IN (
+                AND b.view = :viewState
+                AND b.id IN (
                         SELECT fb.buildings_id FROM %s fb WHERE fb.type IN (
                             SELECT fd.type_id FROM %s fd WHERE fd.colonies_id = :colonyId
                         )
-                    )) ORDER BY b.name',
+                    ) ORDER BY b.name',
                 Building::class,
                 Researched::class,
                 PlanetFieldTypeBuilding::class,
