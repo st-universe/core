@@ -99,6 +99,7 @@ final class BuildOnField implements ActionControllerInterface
         $buildingId = $building->getId();
         $researchId = $building->getResearchId();
 
+
         if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
             return;
         }
@@ -106,9 +107,11 @@ final class BuildOnField implements ActionControllerInterface
             return;
         }
 
-        $researchId = $building->getBuildableFields()->get((int) $field->getFieldType())->getResearchId();
-        if ($researchId != null && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
-            return;
+        if ($userId !== GameEnum::USER_NOONE) {
+            $researchId = $building->getBuildableFields()->get((int) $field->getFieldType())->getResearchId();
+            if ($researchId != null && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
+                return;
+            }
         }
 
         if ($field->isOrbit() && $colony->isBlocked()) {
