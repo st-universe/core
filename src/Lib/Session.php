@@ -121,7 +121,7 @@ final class Session implements SessionInterface
         }
 
         if ($result->getId() === 126) {
-            $this->loggerUtil->init('SESSION', LoggerEnum::LEVEL_WARNING);
+            //$this->loggerUtil->init('SESSION', LoggerEnum::LEVEL_WARNING);
         }
 
         if ($result->getState() === UserEnum::USER_STATE_NEW) {
