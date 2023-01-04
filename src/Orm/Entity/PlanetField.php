@@ -350,7 +350,7 @@ class PlanetField implements PlanetFieldInterface
 
             $userId = $container->get(GameControllerInterface::class)->getUser()->getId();
 
-            $this->terraformingopts = $container->get(TerraformingRepositoryInterface::class)->getBySourceFieldType(
+            $this->terraformingopts = $container->get(TerraformingRepositoryInterface::class)->getBySourceFieldTypeAndUser(
                 (int) $this->getFieldType(),
                 (int) $userId
             );
