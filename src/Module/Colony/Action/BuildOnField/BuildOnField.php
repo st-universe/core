@@ -183,7 +183,7 @@ final class BuildOnField implements ActionControllerInterface
             $colony->lowerEps($building->getEpsCost());
             $field->setActive(time() + $building->getBuildtime());
         } else {
-            $field->setActive(time() + 1);
+            $field->setActive(time() + 5);
         }
 
         $field->setBuilding($building);
