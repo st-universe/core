@@ -42,7 +42,6 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
             ->setMaxResults(ColonyEnum::BUILDMENU_SCROLLOFFSET)
             ->setFirstResult($offset)
             ->setParameters([
-                'activeState' => 0,
                 'viewState' => 1,
                 'buildMenu' => $buildMenu,
                 'colonyId' => $colonyId
