@@ -8,6 +8,7 @@ use request;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -143,11 +144,11 @@ final class BuildOnField implements ActionControllerInterface
         }
 
         //check for sufficient commodities
-        if (!$this->checkBuildingCosts($colony, $building, $field, $game)) {
+        if ($userId !== GameEnum::USER_NOONE && !$this->checkBuildingCosts($colony, $building, $field, $game)) {
             return;
         }
 
-        if ($colony->getEps() < $building->getEpsCost()) {
+        if ($userId !== GameEnum::USER_NOONE &&  $colony->getEps() < $building->getEpsCost()) {
             $game->addInformationf(
                 _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $building->getEpsCost(),
@@ -170,13 +171,18 @@ final class BuildOnField implements ActionControllerInterface
         $this->entityManager->flush();
         $colony = $this->colonyRepository->find(request::indInt('id'));
 
-        foreach ($building->getCosts() as $cost) {
-            $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
+        if ($userId !== GameEnum::USER_NOONE) {
+            foreach ($building->getCosts() as $cost) {
+                $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
+            }
+
+            $colony->lowerEps($building->getEpsCost());
+            $field->setActive(time() + $building->getBuildtime());
+        } else {
+            $field->setActive(time() + 1);
         }
 
-        $colony->lowerEps($building->getEpsCost());
         $field->setBuilding($building);
-        $field->setActive(time() + $building->getBuildtime());
         $field->setActivateAfterBuild(true);
 
         $this->colonyRepository->save($colony);

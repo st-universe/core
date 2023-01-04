@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\Terraform;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Queue\Message\MessageFactoryInterface;
 use Stu\Component\Queue\Publisher\DelayedJobPublisherInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -62,6 +63,7 @@ final class Terraform implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
+        $userId = $user->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
@@ -95,7 +97,7 @@ final class Terraform implements ActionControllerInterface
         if ($field->getFieldType() != $terraf->getFromFieldTypeId()) {
             return;
         }
-        if ($terraf->getEnergyCosts() > $colony->getEps()) {
+        if ($userId !== GameEnum::USER_NOONE && $terraf->getEnergyCosts() > $colony->getEps()) {
             $game->addInformationf(
                 _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
                 $terraf->getEnergyCosts(),
@@ -106,35 +108,40 @@ final class Terraform implements ActionControllerInterface
 
         $storage = $colony->getStorage();
 
-        foreach ($terraf->getCosts() as $obj) {
-            $commodityId = $obj->getCommodityId();
-            if (!$storage->containsKey($commodityId)) {
-                $game->addInformationf(
-                    _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
-                    $obj->getAmount(),
-                    $obj->getCommodity()->getName()
-                );
-                return;
-            }
-            if ($obj->getAmount() > $storage[$commodityId]->getAmount()) {
-                $game->addInformationf(
-                    _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
-                    $obj->getAmount(),
-                    $obj->getCommodity()->getName(),
-                    $storage[$commodityId]->getAmount()
-                );
-                return;
-            }
-        }
-
-        foreach ($terraf->getCosts() as $obj) {
-            $this->colonyStorageManager->lowerStorage($colony, $obj->getCommodity(), $obj->getAmount());
-        }
-        $colony->clearCache();
-        $colony->lowerEps($terraf->getEnergyCosts());
-        $time = time() + $terraf->getDuration();
-
         $obj = $this->colonyTerraformingRepository->prototype();
+
+        if ($userId !== GameEnum::USER_NOONE) {
+            foreach ($terraf->getCosts() as $obj) {
+                $commodityId = $obj->getCommodityId();
+                if (!$storage->containsKey($commodityId)) {
+                    $game->addInformationf(
+                        _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
+                        $obj->getAmount(),
+                        $obj->getCommodity()->getName()
+                    );
+                    return;
+                }
+                if ($obj->getAmount() > $storage[$commodityId]->getAmount()) {
+                    $game->addInformationf(
+                        _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
+                        $obj->getAmount(),
+                        $obj->getCommodity()->getName(),
+                        $storage[$commodityId]->getAmount()
+                    );
+                    return;
+                }
+            }
+            foreach ($terraf->getCosts() as $obj) {
+                $this->colonyStorageManager->lowerStorage($colony, $obj->getCommodity(), $obj->getAmount());
+            }
+            $colony->clearCache();
+            $colony->lowerEps($terraf->getEnergyCosts());
+            $time = time() + $terraf->getDuration();
+        } else {
+            $colony->clearCache();
+            $time = time() + 1;
+        }
+
         $obj->setColony($colony);
         $obj->setField($field);
         $obj->setTerraforming($terraf);
