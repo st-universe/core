@@ -35,7 +35,6 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                         )
                     ) ORDER BY b.name',
                 Building::class,
-                Researched::class,
                 PlanetFieldTypeBuilding::class,
                 PlanetField::class
             )

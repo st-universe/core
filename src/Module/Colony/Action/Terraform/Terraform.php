@@ -62,6 +62,8 @@ final class Terraform implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        //TODO check if user has researched!
+
         $user = $game->getUser();
         $userId = $user->getId();
 
