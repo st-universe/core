@@ -17,7 +17,6 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {
@@ -26,8 +25,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     private BuildingRepositoryInterface $buildingRepository;
 
     private ColonyRepositoryInterface $colonyRepository;
-
-    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
     private CommodityConsumptionInterface $commodityConsumption;
 
@@ -49,7 +46,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         ColonyRepositoryInterface $colonyRepository,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         CommodityConsumptionInterface $commodityConsumption,
         ShipRepositoryInterface $shipRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
@@ -62,7 +58,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
         $this->colonyRepository = $colonyRepository;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->commodityConsumption = $commodityConsumption;
         $this->shipRepository = $shipRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
