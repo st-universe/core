@@ -110,7 +110,7 @@ final class Terraform implements ActionControllerInterface
 
         $storage = $colony->getStorage();
 
-        $obj = $this->colonyTerraformingRepository->prototype();
+        $colonyTerraforming = $this->colonyTerraformingRepository->prototype();
 
         if ($userId !== GameEnum::USER_NOONE) {
             foreach ($terraf->getCosts() as $obj) {
@@ -144,12 +144,12 @@ final class Terraform implements ActionControllerInterface
             $time = time() + 1;
         }
 
-        $obj->setColony($colony);
-        $obj->setField($field);
-        $obj->setTerraforming($terraf);
-        $obj->setFinishDate($time);
+        $colonyTerraforming->setColony($colony);
+        $colonyTerraforming->setField($field);
+        $colonyTerraforming->setTerraforming($terraf);
+        $colonyTerraforming->setFinishDate($time);
 
-        $this->colonyTerraformingRepository->save($obj);
+        $this->colonyTerraformingRepository->save($colonyTerraforming);
 
         $field->setTerraforming($terraf);
 
