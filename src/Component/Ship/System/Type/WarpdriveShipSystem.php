@@ -40,7 +40,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
             return false;
         }
 
-        if ($ship->getHoldingWeb() && $ship->getHoldingWeb()->isFinished()) {
+        if ($ship->getHoldingWeb() !== null && $ship->getHoldingWeb()->isFinished()) {
             $reason = _('es in einem Energienetz gefangen ist');
             return false;
         }

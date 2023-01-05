@@ -122,7 +122,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->abort($ship, $game);
             return;
         }
-        if ($target->getHoldingWeb() && $target->getHoldingWeb()->isFinished()) {
+        if ($target->getHoldingWeb() !== null && $target->getHoldingWeb()->isFinished()) {
             $game->addInformation("Ziel kann nicht erfasst werden, da es in einem Energienetz gefangen ist");
             $this->abort($ship, $game);
             return;

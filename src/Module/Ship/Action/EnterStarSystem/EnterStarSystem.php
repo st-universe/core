@@ -80,6 +80,11 @@ final class EnterStarSystem implements ActionControllerInterface
             return;
         }
 
+        if ($ship->getHoldingWeb() !== null && $ship->getHoldingWeb()->isFinished()) {
+            $game->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
+            return;
+        }
+
         $flightDirection = $ship->getFlightDirection();
         if ($flightDirection === 0) {
             $flightDirection = rand(1, 4);

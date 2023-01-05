@@ -96,6 +96,11 @@ final class EnterWormhole implements ActionControllerInterface
             return;
         }
 
+        if ($ship->getHoldingWeb() !== null && $ship->getHoldingWeb()->isFinished()) {
+            $game->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
+            return;
+        }
+
         // the destination starsystem map field
         $starsystemMap = $wormholeEntry->getSystemMap();
 
