@@ -97,7 +97,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
 
             $msg = $this->tholianWebWeaponPhase->damageCapturedShip($wrapper->getShipWrapperFactory()->wrapShip($ship), $game);
 
-            $pm = sprintf(_('Das Energienetz um die %s in Sektor %s ist implodiert') . "\n", $ship->getName(), $ship->getSectorString());
+            $pm = '';
             foreach ($msg as $value) {
                 $pm .= $value . "\n";
             }
