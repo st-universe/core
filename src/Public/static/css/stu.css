@@ -670,7 +670,7 @@ a.tradebutton:hover {
     background-color: #161515 ! important;
 }
 
-.row1 td {
+.row1 td :not(.nbsshipimage, .shipimage, .shiplistshipimage) {
     background-color: #161515 ! important;
 }
 
