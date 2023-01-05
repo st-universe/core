@@ -17,5 +17,5 @@ interface TholianWebUtilInterface
 
     public function resetWebHelpers(TholianWebInterface $web, ShipWrapperFactoryInterface $shipWrapperFactory): void;
 
-    public function updateWebFinishTime(TholianWebInterface $web): void;
+    public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): void;
 }

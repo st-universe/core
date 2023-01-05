@@ -103,7 +103,7 @@ final class SupportTholianWeb implements ActionControllerInterface
         $emitter->setWebUnderConstructionId($web->getId())->update();
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_WEB_SPINNING);
 
-        $this->tholianWebUtil->updateWebFinishTime($web);
+        $this->tholianWebUtil->updateWebFinishTime($web, 1);
         $finishTimeString = $this->stuTime->transformToStuDate($web->getFinishedTime());
 
 

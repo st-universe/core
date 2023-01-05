@@ -151,10 +151,10 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->shipRepository->save($ship);
 
         //update finish time last
-        $this->updateWebFinishTime($web);
+        $this->updateWebFinishTime($web, -1);
     }
 
-    public function updateWebFinishTime(TholianWebInterface $web): void
+    public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): void
     {
         if ($web->getWebShip()->getUser()->getId() === 126) {
             $this->loggerUtil->log(sprintf('updateWebFinishTime, webId: %d', $web->getId()));
@@ -167,6 +167,21 @@ final class TholianWebUtil implements TholianWebUtilInterface
             return;
         }
 
+        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());;
+        $time = $this->stuTime->time();
+
+        //adjust by modified web spinner count
+        if ($helperModifier !== null) {
+            $secondsLeft = $web->getFinishedTime() - $time;
+            $currentSpinnerCount = count($currentSpinnerSystems);
+            $oldSpinnerCount =  $currentSpinnerCount - $helperModifier;
+
+            $web->setFinishedTime($time + (int)ceil($secondsLeft * $oldSpinnerCount / $currentSpinnerCount));
+            $this->tholianWebRepository->save($web);
+            return;
+        }
+
+        //initialize by weight of targets and spinners
         $targetWeightSum = array_reduce(
             $web->getCapturedShips()->toArray(),
             function (int $sum, ShipInterface $ship) {
@@ -174,7 +189,6 @@ final class TholianWebUtil implements TholianWebUtilInterface
             },
             0
         );
-
         $webSpinnerWeightSum = array_reduce(
             $this->shipSystemRepository->getWebConstructingShipSystems($web->getId()),
             function (int $sum, ShipSystemInterface $shipSystem) {
@@ -189,7 +203,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         //only update if web spinners left
         if ($webSpinnerWeightSum !== 0) {
-            $web->setFinishedTime($this->stuTime->time() + ((int)ceil($targetWeightSum / $webSpinnerWeightSum)) * TimeConstants::ONE_HOUR_IN_SECONDS);
+            $web->setFinishedTime($time + ((int)ceil($targetWeightSum / $webSpinnerWeightSum)) * TimeConstants::ONE_HOUR_IN_SECONDS);
             $this->tholianWebRepository->save($web);
         }
     }
