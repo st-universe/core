@@ -122,6 +122,11 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->abort($ship, $game);
             return;
         }
+        if ($target->getHoldingWeb() && $target->getHoldingWeb()->isFinished()) {
+            $game->addInformation("Ziel kann nicht erfasst werden, da es in einem Energienetz gefangen ist");
+            $this->abort($ship, $game);
+            return;
+        }
         if ($target->getFleetId() && $target->getFleetId() == $ship->getFleetId()) {
             $game->addInformation("Die " . $targetName . " befindet sich in der selben Flotte wie die " . $shipName);
             $this->abort($ship, $game);
