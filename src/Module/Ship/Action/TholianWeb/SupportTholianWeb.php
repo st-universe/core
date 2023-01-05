@@ -98,6 +98,11 @@ final class SupportTholianWeb implements ActionControllerInterface
             throw new SanityCheckException('no web at location or already finished');
         }
 
+        if ($ship->getWarpState()) {
+            $game->addInformation("Aktion nicht möglich, da der Warpantrieb aktiviert ist");
+            return;
+        }
+
         $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
 
         $emitter->setWebUnderConstructionId($web->getId())->update();
