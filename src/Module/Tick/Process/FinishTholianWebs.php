@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -14,6 +15,7 @@ use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class FinishTholianWebs implements ProcessTickInterface
@@ -52,6 +54,9 @@ final class FinishTholianWebs implements ProcessTickInterface
 
             //remove captured ships from fleet
             $this->handleFleetConstellations($web);
+
+            //cancel tractor beams
+            $this->cancelTractorBeams($web);
 
             //free helper
             $this->tholianWebUtil->resetWebHelpers($web, $this->shipWrapperFactory);
@@ -121,5 +126,40 @@ final class FinishTholianWebs implements ProcessTickInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
+    }
+
+    private function cancelTractorBeams(TholianWebInterface $web): void
+    {
+        $webOwner = $web->getUser();
+
+        foreach ($web->getCapturedShips() as $ship) {
+            if ($ship->isTractoring()) {
+                $this->cancelTractorBeam($webOwner, $ship);
+            }
+            if ($ship->isTractored()) {
+                $this->cancelTractorBeam($webOwner, $ship->getTractoringShip());
+            }
+        }
+    }
+
+    private function cancelTractorBeam(UserInterface $webOwner, ShipInterface $ship): void
+    {
+        $this->privateMessageSender->send(
+            $webOwner->getId(),
+            $ship->getUser()->getId(),
+            sprintf(
+                'Der Traktorstrahl der %s auf die %s wurde in Sektor %s durch ein Energienetz unterbrochen',
+                $ship->getName(),
+                $ship->getTractoredShip(),
+                $ship->getSectorString()
+            ),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
+
+        $this->shipSystemManager->deactivate(
+            $this->shipWrapperFactory->wrapShip($ship),
+            ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM,
+            true
+        ); //forced deactivation
     }
 }
