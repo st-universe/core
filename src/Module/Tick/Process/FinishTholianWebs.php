@@ -105,8 +105,7 @@ final class FinishTholianWebs implements ProcessTickInterface
                 $this->leaveFleet->leaveFleet($ship);
 
                 if (!array_key_exists($userId, $pms)) {
-                    $pms[$userId] = [];
-                    $pms[$userId][] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());;
+                    $pms[$userId] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());;
                 }
 
                 $pms[$userId] .= sprintf('Die %s hat die Flotte %s verlassen' . "\n", $ship->getName(), $fleetName);
