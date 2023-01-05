@@ -68,7 +68,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurface(): array
     {
-        if ($this->colony->isFree() && $this->colony->getId() !== 317) {
+        if ($this->colony->isFree()) {
 
             try {
                 $this->updateSurface();
