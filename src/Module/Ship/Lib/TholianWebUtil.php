@@ -114,12 +114,29 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
         $this->releaseWebHelperIntern($wrapper);
 
-        $systems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
+        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
 
         //remove web if lost
-        if (empty($systems)) {
+        if (empty($currentSpinnerSystems)) {
             $this->releaseAllShips($web, $wrapper->getShipWrapperFactory());
             $this->removeWeb($web);
+        } else {
+            $ship = $wrapper->get();
+
+            //notify other web spinners
+            foreach ($currentSpinnerSystems as $shipSystem) {
+                $this->privateMessageSender->send(
+                    $ship->getUser()->getId(),
+                    $shipSystem->getShip()->getUser()->getId(),
+                    sprintf(
+                        'Die %s hat den Netzaufbau in Sektor %s verlassen, Fertigstellung: %s',
+                        $ship->getName(),
+                        $ship->getSectorString(),
+                        $this->stuTime->transformToStuDate($web->getFinishedTime())
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+            }
         }
     }
 

@@ -9,16 +9,12 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 final class UnsupportTholianWeb implements ActionControllerInterface
@@ -31,29 +27,17 @@ final class UnsupportTholianWeb implements ActionControllerInterface
 
     private TholianWebRepositoryInterface $tholianWebRepository;
 
-    private ShipSystemRepositoryInterface $shipSystemRepository;
-
-    private StuTime $stuTime;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TholianWebUtilInterface $tholianWebUtil,
         TholianWebRepositoryInterface $tholianWebRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository,
-        StuTime $stuTime,
-        PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->tholianWebUtil = $tholianWebUtil;
         $this->tholianWebRepository = $tholianWebRepository;
-        $this->shipSystemRepository = $shipSystemRepository;
-        $this->stuTime = $stuTime;
-        $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -96,25 +80,7 @@ final class UnsupportTholianWeb implements ActionControllerInterface
             throw new SanityCheckException('no web at location or already finished');
         }
 
-        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
-
         $this->tholianWebUtil->releaseWebHelper($wrapper);
-        $finishTimeString = $this->stuTime->transformToStuDate($web->getFinishedTime());
-
-        //notify other web spinners
-        foreach ($currentSpinnerSystems as $shipSystem) {
-            $this->privateMessageSender->send(
-                $userId,
-                $shipSystem->getShip()->getUser()->getId(),
-                sprintf(
-                    'Die %s hat den Netzaufbau in Sektor %s verlassen, Fertigstellung: %s',
-                    $ship->getName(),
-                    $ship->getSectorString(),
-                    $finishTimeString
-                ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
-        }
 
         $game->addInformation("Die Unterstützung des Energienetz wurde abgebrochen");
     }
