@@ -15,7 +15,7 @@ use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 
 final class DeactivateTractorBeam implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DEACTIVATE_TRAKTOR';
+    public const ACTION_IDENTIFIER = 'B_DEACTIVATE_TRACTOR';
 
     private ShipLoaderInterface $shipLoader;
 

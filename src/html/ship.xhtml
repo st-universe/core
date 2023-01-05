@@ -1008,7 +1008,7 @@
 				<img tal:condition="SHIP/isTractored" src="assets/ships/${SHIP/getTractoringShip/getRump/getId}.png" />
 			</td>
 			<td>
-				<input tal:condition="SHIP/isTractoring" type="submit" class="button" name="B_DEACTIVATE_TRAKTOR"
+				<input tal:condition="SHIP/isTractoring" type="submit" class="button" name="B_DEACTIVATE_TRACTOR"
 					value="deaktivieren" />
 				<tal:block tal:condition="SHIP/isDeflectorHealthy">
 					<input tal:condition="SHIP/isTractored" type="submit" class="button" name="B_ESCAPE_TRAKTOR"

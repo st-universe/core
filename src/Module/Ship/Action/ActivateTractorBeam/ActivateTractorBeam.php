@@ -24,7 +24,7 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_ACTIVATE_TRAKTOR';
+    public const ACTION_IDENTIFIER = 'B_ACTIVATE_TRACTOR';
 
     private ShipLoaderInterface $shipLoader;
 
