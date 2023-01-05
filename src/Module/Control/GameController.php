@@ -563,6 +563,7 @@ final class GameController implements GameControllerInterface
                 $action = $this->executeCallback($actions);
             } catch (SanityCheckException $e) {
                 $this->sanityCheckExceptions[] = $e;
+                $action = $e->getAction();
             }
             $gameRequest->unsetParameter($action);
             $actionMs = hrtime(true) - $startTime;
@@ -572,6 +573,7 @@ final class GameController implements GameControllerInterface
                 $view = $this->executeView($views);
             } catch (SanityCheckException $e) {
                 $this->sanityCheckExceptions[] = $e;
+                $view = $e->getView();
             }
             $gameRequest->unsetParameter($view);
             $viewMs = hrtime(true) - $startTime;

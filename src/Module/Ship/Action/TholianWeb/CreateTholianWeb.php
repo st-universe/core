@@ -97,11 +97,11 @@ final class CreateTholianWeb implements ActionControllerInterface
         $emitter = $wrapper->getWebEmitterSystemData();
 
         if ($emitter === null || $emitter->getWebUnderConstruction() !== null || $emitter->getOwnedTholianWeb() !== null) {
-            throw new SanityCheckException('emitter = null or already spinning');
+            throw new SanityCheckException('emitter = null or already spinning', self::ACTION_IDENTIFIER);
         }
 
         if ($this->tholianWebRepository->getWebAtLocation($ship) !== null) {
-            throw new SanityCheckException('already existing web on location');
+            throw new SanityCheckException('already existing web on location', self::ACTION_IDENTIFIER);
         }
 
         if ($ship->getWarpState()) {

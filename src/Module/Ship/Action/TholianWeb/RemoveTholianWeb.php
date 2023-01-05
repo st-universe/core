@@ -56,19 +56,19 @@ final class RemoveTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log('1');
         if ($emitter === null || $emitter->ownedWebId === null) {
             $this->loggerUtil->log('2');
-            throw new SanityCheckException('emitter = null or no owned web');
+            throw new SanityCheckException('emitter = null or no owned web', self::ACTION_IDENTIFIER);
         }
         $web = $emitter->getOwnedTholianWeb();
         if (!$web->isFinished()) {
             $this->loggerUtil->log('2');
-            throw new SanityCheckException('web not finished');
+            throw new SanityCheckException('web not finished', self::ACTION_IDENTIFIER);
         }
         $this->loggerUtil->log('3');
 
         $ship = $wrapper->get();
         //check if system healthy
         if (!$ship->isWebEmitterHealthy()) {
-            throw new SanityCheckException('emitter not healthy');
+            throw new SanityCheckException('emitter not healthy', self::ACTION_IDENTIFIER);
         }
 
         $this->loggerUtil->log('5');

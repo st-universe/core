@@ -93,7 +93,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $target = $targetWrapper->get();
 
         if (!InteractionChecker::canInteractWith($ship, $target, $game)) {
-            throw new SanityCheckException('can not interact with target');
+            throw new SanityCheckException('can not interact with target', self::ACTION_IDENTIFIER);
         }
 
         if (!$ship->hasEnoughCrew($game)) {

@@ -18,7 +18,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowModuleScreenBuildplan implements ViewControllerInterface
 {
@@ -28,16 +27,12 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -51,7 +46,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $plan = $this->shipBuildplanRepository->find(request::indInt('planid'),);
         if ($plan === null || $plan->getUserId() !== $userId) {
-            throw new SanityCheckException(sprintf('This buildplan belongs to someone else'));
+            throw new SanityCheckException(sprintf('This buildplan belongs to someone else'), null, self::VIEW_IDENTIFIER);
         }
         $rump = $plan->getRump();
 

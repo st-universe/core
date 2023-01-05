@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AttackTrackedShip;
 
 use request;
-use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -33,8 +32,6 @@ final class AttackTrackedShip implements ActionControllerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
-    private NbsUtilityInterface $nbsUtility;
-
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function __construct(
@@ -43,7 +40,6 @@ final class AttackTrackedShip implements ActionControllerInterface
         ShipAttackCycleInterface $shipAttackCycle,
         InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
-        NbsUtilityInterface $nbsUtility,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -51,7 +47,6 @@ final class AttackTrackedShip implements ActionControllerInterface
         $this->shipAttackCycle = $shipAttackCycle;
         $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
-        $this->nbsUtility = $nbsUtility;
         $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
@@ -96,7 +91,7 @@ final class AttackTrackedShip implements ActionControllerInterface
             return;
         }
         if (!$this->interactionChecker->checkPosition($target, $ship)) {
-            throw new SanityCheckException('InteractionChecker->checkPosition failed');
+            throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
         if ($wrapper->getEpsSystemData()->getEps() == 0) {

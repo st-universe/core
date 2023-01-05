@@ -105,7 +105,7 @@ final class Terraform implements ActionControllerInterface
             $userId
         );
         if (!array_key_exists($terraf->getId(), $terraformingopts)) {
-            throw new SanityCheckException('user tried to perform unresearched terraforming');
+            throw new SanityCheckException('user tried to perform unresearched terraforming', self::ACTION_IDENTIFIER);
         }
 
 

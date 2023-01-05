@@ -86,7 +86,7 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
         if (!$this->interactionChecker->checkPosition($target, $ship)) {
-            throw new SanityCheckException('InteractionChecker->checkPosition failed');
+            throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
         $isAttackingActiveTractorShip = false;
@@ -107,11 +107,11 @@ final class AttackShip implements ActionControllerInterface
         }
 
         if (!$target->canBeAttacked(!$isAttackingActiveTractorShip)) {
-            throw new SanityCheckException('Target cant be attacked');
+            throw new SanityCheckException('Target cant be attacked', self::ACTION_IDENTIFIER);
         }
 
         if ($target->getCloakState() && !$this->nbsUtility->isTachyonActive($ship)) {
-            throw new SanityCheckException('Attacked cloaked ship without active tachyon');
+            throw new SanityCheckException('Attacked cloaked ship without active tachyon', self::ACTION_IDENTIFIER);
         }
 
         if ($target->getRump()->isTrumfield()) {

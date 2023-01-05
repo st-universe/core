@@ -78,10 +78,10 @@ final class OpenAdventDoor implements ActionControllerInterface
         $target = $targetWrapper->get();
 
         if ($target->getRump()->getRoleId() !== ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR) {
-            throw new SanityCheckException('target is not an advent door');
+            throw new SanityCheckException('target is not an advent door', self::ACTION_IDENTIFIER);
         }
         if (!InteractionChecker::canInteractWith($ship, $target, $game,)) {
-            throw new SanityCheckException('can not interact with target');
+            throw new SanityCheckException('can not interact with target', self::ACTION_IDENTIFIER);
         }
 
         if (!$ship->hasEnoughCrew($game)) {

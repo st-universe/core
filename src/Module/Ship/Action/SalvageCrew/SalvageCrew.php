@@ -77,10 +77,10 @@ final class SalvageCrew implements ActionControllerInterface
 
         $tradepost = $target->getTradePost();
         if ($tradepost === null) {
-            throw new SanityCheckException('target is not a tradepost');
+            throw new SanityCheckException('target is not a tradepost', self::ACTION_IDENTIFIER);
         }
         if (!InteractionChecker::canInteractWith($ship, $target, $game)) {
-            throw new SanityCheckException('can not interact with target');
+            throw new SanityCheckException('can not interact with target', self::ACTION_IDENTIFIER);
         }
 
         if (!$ship->hasEnoughCrew($game)) {
@@ -88,7 +88,7 @@ final class SalvageCrew implements ActionControllerInterface
         }
 
         if ($tradepost->getCrewCountOfCurrentUser() === 0) {
-            throw new SanityCheckException('no crew to rescue');
+            throw new SanityCheckException('no crew to rescue', self::ACTION_IDENTIFIER);
         }
         $epsSystem = $wrapper->getEpsSystemData();
         if ($epsSystem->getEps() < 1) {

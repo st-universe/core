@@ -84,19 +84,19 @@ final class SupportTholianWeb implements ActionControllerInterface
         $this->loggerUtil->log('1');
         if ($emitter === null || $emitter->webUnderConstructionId !== null) {
             $this->loggerUtil->log('2');
-            throw new SanityCheckException('emitter = null or already constructing');
+            throw new SanityCheckException('emitter = null or already constructing', self::ACTION_IDENTIFIER);
         }
         $this->loggerUtil->log('3');
 
         $ship = $wrapper->get();
         //check if system healthy
         if (!$ship->isWebEmitterHealthy()) {
-            throw new SanityCheckException('emitter not healthy');
+            throw new SanityCheckException('emitter not healthy', self::ACTION_IDENTIFIER);
         }
 
         $web = $this->tholianWebRepository->getWebAtLocation($ship);
         if ($web === null || $web->isFinished()) {
-            throw new SanityCheckException('no web at location or already finished');
+            throw new SanityCheckException('no web at location or already finished', self::ACTION_IDENTIFIER);
         }
 
         if ($ship->getWarpState()) {

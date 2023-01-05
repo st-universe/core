@@ -91,7 +91,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $shipName = $ship->getName();
 
         if (!$this->interactionChecker->checkPosition($ship, $target)) {
-            throw new SanityCheckException('InteractionChecker->checkPosition failed');
+            throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
