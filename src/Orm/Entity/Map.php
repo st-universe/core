@@ -36,7 +36,7 @@ class Map implements MapInterface
     private $cy = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private $cz = 0;
+    private $layer_id = 0;
 
     /** @Column(type="integer") * */
     private $field_id = 0;
@@ -55,6 +55,12 @@ class Map implements MapInterface
 
     /** @Column(type="integer", nullable=true) * */
     private $admin_region_id;
+
+    /**
+     * @ManyToOne(targetEntity="Layer")
+     * @JoinColumn(name="layer_id", referencedColumnName="id")
+     */
+    private $layer;
 
     /**
      * @ManyToOne(targetEntity="StarSystem")

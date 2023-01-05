@@ -74,6 +74,7 @@ use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassResearch;
 use Stu\Orm\Entity\ColonyDepositMining;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
@@ -383,6 +384,11 @@ return [
         ContainerInterface $c
     ): KnPostToPlotApplicationRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(KnPostToPlotApplication::class);
+    },
+    LayerRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): LayerRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Layer::class);
     },
     MapBorderTypeRepositoryInterface::class => function (
         ContainerInterface $c
