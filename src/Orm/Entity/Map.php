@@ -35,6 +35,9 @@ class Map implements MapInterface
     /** @Column(type="integer") * */
     private $cy = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $cz = 0;
+
     /** @Column(type="integer") * */
     private $field_id = 0;
 
