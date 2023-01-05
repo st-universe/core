@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\TholianWeb;
 
 use request;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -100,6 +101,11 @@ final class SupportTholianWeb implements ActionControllerInterface
 
         if ($ship->getWarpState()) {
             $game->addInformation("Aktion nicht möglich, da der Warpantrieb aktiviert ist");
+            return;
+        }
+
+        // activate system
+        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
             return;
         }
 

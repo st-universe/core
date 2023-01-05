@@ -21,6 +21,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
@@ -47,6 +48,8 @@ final class CreateTholianWeb implements ActionControllerInterface
 
     private StuTime $stuTime;
 
+    private ShipStateChangerInterface $shipStateChanger;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -59,6 +62,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         ShipCreatorInterface $shipCreator,
         PrivateMessageSenderInterface $privateMessageSender,
         StuTime $stuTime,
+        ShipStateChangerInterface $shipStateChanger,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
@@ -70,6 +74,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         $this->shipCreator = $shipCreator;
         $this->privateMessageSender = $privateMessageSender;
         $this->stuTime = $stuTime;
+        $this->shipStateChanger = $shipStateChanger;
         $this->entityManager = $entityManager;
     }
 
@@ -126,7 +131,7 @@ final class CreateTholianWeb implements ActionControllerInterface
         if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
             return;
         }
-        $ship->setState(ShipStateEnum::SHIP_STATE_WEB_SPINNING);
+        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_WEB_SPINNING);
 
         //create web ship
         $webShip = $this->shipCreator->createBy($userId, 9, 1840)->get();
