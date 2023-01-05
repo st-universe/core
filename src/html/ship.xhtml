@@ -1277,7 +1277,8 @@
 							</td>
 						</tr>
 						<tr tal:define="epssystem WRAPPER/getEpsSystemData">
-							<td rowspan="2" tal:define="ship SHIP" style="vertical-align: middle; text-align: center;">
+							<td style="SHIP/getHoldingWebBackgroundStyle" rowspan="2" tal:define="ship SHIP"
+								class="shipimage">
 								<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
 									<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 								</a>

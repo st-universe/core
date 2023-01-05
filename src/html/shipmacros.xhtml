@@ -207,7 +207,7 @@
 <metal:macro metal:define-macro="shiplist_body">
   <tr tal:define="ship wrapper/get; epssystem wrapper/getEpsSystemData;"
     tal:attributes="class string:row${repeat/wrapper/odd}">
-    <td style="background-color: #000000 ! important">
+    <td style="ship/getHoldingWebBackgroundStyle" class="shiplistshipimage">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
         onmouseout="closeStorage();">
         <metal:macro metal:use-macro="shipimage" />
@@ -579,7 +579,7 @@
     </td>
   </tal:block>
   <tal:block tal:condition="ship/isOwnedByCurrentUser">
-    <td style="width: 200px; background-color: #000000 !important;">
+    <td style="ship/getHoldingWebBackgroundStyle" class="nbsshipimage">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
         <metal:macro metal:use-macro="shipimage" />
       </a>
@@ -589,7 +589,7 @@
     </td>
   </tal:block>
   <tal:block tal:condition="not:ship/isOwnedByCurrentUser">
-    <td style="width: 200px; background-color: #000000 !important;">
+    <td style="ship/getHoldingWebBackgroundStyle" class="nbsshipimage">
       <metal:macro metal:use-macro="shipimage" />
     </td>
     <td>
@@ -1012,7 +1012,7 @@
   <tal:block tal:condition="AVAILABLE_SHIPS">
     <table class="tcal" id="availableShipsTable">
       <tr tal:repeat="ship AVAILABLE_SHIPS">
-        <td>
+        <td style="ship/getHoldingWebBackgroundStyle" class="shiplistshipimage">
           <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
         </td>
         <td><input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="${ship/getId}" /><span

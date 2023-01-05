@@ -521,6 +521,15 @@ td.shipimage {
     text-align: center;
 }
 
+td.shiplistshipimage {
+    background-color: #000000 ! important;
+}
+
+td.nbsshipimage {
+    width: 200px;
+    background-color: #000000 !important;
+}
+
 div.fabutton {
     border: 1px solid #acacac;
     margin: 3px;

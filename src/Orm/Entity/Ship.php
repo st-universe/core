@@ -1274,6 +1274,11 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    public function getHoldingWebBackgroundStyle(): string
+    {
+        return $this->getHoldingWeb() !== null ? 'background-image: url(assets/buttons/netz.png);' : '';
+    }
+
     public function getCurrentMapField()
     {
         return $this->getStarsystemMap() !== null ? $this->getStarsystemMap() : $this->getMap();

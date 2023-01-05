@@ -338,6 +338,8 @@ interface ShipInterface
 
     public function setHoldingWeb(?TholianWebInterface $web): ShipInterface;
 
+    public function getHoldingWebBackgroundStyle(): string;
+
     /**
      * @return StarSystemMapInterface|MapInterface
      */
