@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 
@@ -91,7 +92,25 @@ final class ShipNfsItem
     }
     public function getHoldingWebBackgroundStyle(): string
     {
-        return $this->values['webid'] !== null ? 'background-image: url(assets/buttons/web.png);' : '';
+        if ($this->values['webid'] === null) {
+            return '';
+        }
+
+        $finishTime = $this->values['webfinishtime'];
+
+        if ($finishTime === null || $finishTime < time()) {
+            $icon =  'web.png';
+        } else {
+            $closeTofinish = $finishTime - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
+
+            if ($closeTofinish) {
+                $icon = 'web_u.png';
+            } else {
+                $icon = 'web_u2.png';
+            }
+        }
+
+        return sprintf('background-image: url(assets/buttons/%s); vertical-align: middle; text-align: center;', $icon);
     }
     public function getRumpName()
     {
