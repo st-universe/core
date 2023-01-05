@@ -274,7 +274,8 @@
         </tal:block>
       </div>
       <div tal:condition="epssystem" style="float: left; width: 50%">
-        <img src="assets/buttons/batt.png" title="Ersatzbatterie" /> <span
+        <img tal:condition="epssystem/isEBattUseable" src="assets/buttons/batt.png" title="Ersatzbatterie" /><img
+          tal:condition="not:epssystem/isEBattUseable" src="assets/buttons/batt2.png" title="Ersatzbatterie" /> <span
           tal:replace="epssystem/getBattery">BATTERY</span>
       </div>
     </td>
