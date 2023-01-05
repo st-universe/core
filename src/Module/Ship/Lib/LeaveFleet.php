@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -33,10 +34,13 @@ final class LeaveFleet implements LeaveFleetInterface
         $this->shipRepository = $shipRepository;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->loggerUtil->init('LEAVE', LoggerEnum::LEVEL_WARNING);
     }
 
     public function leaveFleet(ShipInterface $ship): bool
     {
+        $this->loggerUtil->log('leaveFleet');
+
         $fleet = $ship->getFleet();
 
         if ($fleet === null) {
@@ -59,6 +63,8 @@ final class LeaveFleet implements LeaveFleetInterface
 
     private function changeFleetLeader(ShipInterface $oldLeader): void
     {
+        $this->loggerUtil->log('changeFleetLeader');
+
         $ship = current(
             array_filter(
                 $oldLeader->getFleet()->getShips()->toArray(),
@@ -81,6 +87,7 @@ final class LeaveFleet implements LeaveFleetInterface
         $this->shipRepository->save($oldLeader);
 
         if (!$ship) {
+            $this->loggerUtil->log('noFollowUp');
             $this->fleetRepository->delete($fleet);
 
             return;
@@ -89,5 +96,7 @@ final class LeaveFleet implements LeaveFleetInterface
         $ship->setIsFleetLeader(true);
 
         $this->fleetRepository->save($fleet);
+
+        $this->loggerUtil->log('setNewLeader');
     }
 }
