@@ -193,7 +193,9 @@ final class TholianWebUtil implements TholianWebUtilInterface
             $currentSpinnerCount = count($currentSpinnerSystems);
             $oldSpinnerCount =  $currentSpinnerCount - $helperModifier;
 
-            $web->setFinishedTime($time + (int)ceil($secondsLeft * $oldSpinnerCount / $currentSpinnerCount));
+            if ($currentSpinnerCount !== 0) {
+                $web->setFinishedTime($time + (int)ceil($secondsLeft * $oldSpinnerCount / $currentSpinnerCount));
+            }
             $this->tholianWebRepository->save($web);
             return;
         }
