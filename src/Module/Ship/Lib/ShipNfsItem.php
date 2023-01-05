@@ -91,7 +91,7 @@ final class ShipNfsItem
     }
     public function getHoldingWebBackgroundStyle(): string
     {
-        return $this->values['webid'] !== null ? 'background-image: url(assets/buttons/netz.png);' : '';
+        return $this->values['webid'] !== null ? 'background-image: url(assets/buttons/web.png);' : '';
     }
     public function getRumpName()
     {
