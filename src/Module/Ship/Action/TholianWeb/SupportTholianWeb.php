@@ -87,7 +87,10 @@ final class SupportTholianWeb implements ActionControllerInterface
 
         $this->tholianWebUtil->updateWebFinishTime($web);
 
-        $game->addInformation("Der Aufbau des Energienetz wird unterstützt");
+        $game->addInformationf(
+            "Der Aufbau des Energienetz wird unterstützt, Fertigstellung: %s",
+            $this->stuTime->transformToStuDate($web->getFinishedTime())
+        );
     }
 
     public function performSessionCheck(): bool
