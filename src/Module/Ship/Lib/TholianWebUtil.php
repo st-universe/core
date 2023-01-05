@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -140,7 +141,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
         }
     }
 
-    public function resetWebHelpers(TholianWebInterface $web, ShipWrapperFactoryInterface $shipWrapperFactory): void
+    public function resetWebHelpers(TholianWebInterface $web, ShipWrapperFactoryInterface $shipWrapperFactory, $isFinished = false): void
     {
         if ($web->getWebShip()->getUser()->getId() === 126) {
             $this->loggerUtil->log(sprintf('resetWebHelpers, webId: %d', $web->getId()));
@@ -149,6 +150,21 @@ final class TholianWebUtil implements TholianWebUtilInterface
         foreach ($systems as $system) {
             $wrapper = $shipWrapperFactory->wrapShip($system->getShip());
             $this->releaseWebHelperIntern($wrapper);
+
+            //notify helpers when finished
+            if ($isFinished) {
+                $ship = $system->getShip();
+
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $ship->getUser()->getId(),
+                    sprintf(
+                        'Das Energienetz in Sektor %s wurde fertiggestellt',
+                        $ship->getSectorString()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+            }
         }
     }
 

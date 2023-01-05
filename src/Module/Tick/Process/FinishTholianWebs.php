@@ -59,7 +59,7 @@ final class FinishTholianWebs implements ProcessTickInterface
             $this->cancelTractorBeams($web);
 
             //free helper
-            $this->tholianWebUtil->resetWebHelpers($web, $this->shipWrapperFactory);
+            $this->tholianWebUtil->resetWebHelpers($web, $this->shipWrapperFactory, true);
 
             //set finished
             $web->setFinishedTime(null);
