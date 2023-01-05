@@ -576,6 +576,11 @@ class Ship implements ShipInterface
         return $this->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION;
     }
 
+    public function getSpacecraftType(): int
+    {
+        return $this->type;
+    }
+
     public function setSpacecraftType(int $type): ShipInterface
     {
         $this->type = $type;
