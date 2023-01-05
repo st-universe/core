@@ -34,7 +34,6 @@ final class LeaveFleet implements LeaveFleetInterface
         $this->shipRepository = $shipRepository;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->loggerUtil->init('LEAVE', LoggerEnum::LEVEL_WARNING);
     }
 
     public function leaveFleet(ShipInterface $ship): bool
