@@ -113,8 +113,9 @@ final class SupportTholianWeb implements ActionControllerInterface
                 $userId,
                 $shipSystem->getShip()->getUser()->getId(),
                 sprintf(
-                    'Die %s unterstützt den Netzaufbau in Sektor %s, Fertigstellung: ',
-                    $shipSystem->getShip()->getName(),
+                    'Die %s unterstützt den Netzaufbau in Sektor %s, Fertigstellung: %s',
+                    $ship->getName(),
+                    $ship->getSectorString(),
                     $finishTimeString
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
