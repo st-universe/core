@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -76,12 +77,41 @@ class WarpdriveShipSystemTest extends StuTestCase
         $this->assertEquals('es von einem Traktorstrahl gehalten wird', $reason);
     }
 
+    public function testCheckActivationConditionsReturnsFalseIfShipInActiveTholianWeb(): void
+    {
+        $tholianWeb = $this->mock(TholianWebInterface::class);
+
+        $this->ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->twice()
+            ->andReturn($tholianWeb);
+        $tholianWeb->shouldReceive('isFinished')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $reason = null;
+        $this->assertFalse(
+            $this->system->checkActivationConditions($this->ship, $reason)
+        );
+
+        $this->assertEquals('es in einem Energienetz gefangen ist', $reason);
+    }
+
     public function testCheckActivationConditionsReturnsFalseIfShipInWormhole(): void
     {
         $this->ship->shouldReceive('isTractored')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $this->ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $starSystem = Mockery::mock(StarSystemInterface::class);
         $this->ship->shouldReceive('getSystem')
@@ -108,6 +138,10 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $this->ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $starSystem = Mockery::mock(StarSystemInterface::class);
         $this->ship->shouldReceive('getSystem')
@@ -139,6 +173,10 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(false);
+        $this->ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $starSystem = Mockery::mock(StarSystemInterface::class);
         $this->ship->shouldReceive('getSystem')
