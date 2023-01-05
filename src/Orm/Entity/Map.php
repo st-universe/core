@@ -37,7 +37,7 @@ class Map implements MapInterface
     private $cy = 0;
 
     /** @Column(type="integer") * */
-    private $layer_id = 0;
+    private $layer_id;
 
     /** @Column(type="integer") * */
     private $field_id = 0;
