@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Exception\InvalidParamException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipEnum;
@@ -11,6 +10,7 @@ use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
+use Stu\Exception\SanityCheckException;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
@@ -105,15 +105,16 @@ final class ShipMover implements ShipMoverInterface
         int $posy
     ) {
         if ($leadShip->getPosX() != $posx && $leadShip->getPosY() != $posy) {
-            throw new InvalidParamException(sprintf(
-                'userId %d tried to navigate from %d|%d to invalid position %d|%d',
-                $leadShip->getUser()->getId(),
-                $leadShip->getPosX(),
-                $leadShip->getPosY(),
-                $posx,
-                $posy
-
-            ));
+            throw new SanityCheckException(
+                sprintf(
+                    'userId %d tried to navigate from %d|%d to invalid position %d|%d',
+                    $leadShip->getUser()->getId(),
+                    $leadShip->getPosX(),
+                    $leadShip->getPosY(),
+                    $posx,
+                    $posy
+                )
+            );
         }
         if ($posx < 1) {
             $posx = 1;
