@@ -15,7 +15,8 @@ use Stu\Component\Map\MapEnum;
  *     indexes={
  *         @Index(name="coordinates_idx", columns={"cx","cy"}),
  *         @Index(name="coordinates_reverse_idx", columns={"cy","cx"}),
- *         @Index(name="map_field_type_idx", columns={"field_id"})
+ *         @Index(name="map_field_type_idx", columns={"field_id"}),
+ *         @Index(name="map_layer_idx", columns={"layer_id"})
  *     }
  * )
  **/
