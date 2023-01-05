@@ -1144,7 +1144,8 @@
         <tr>
           <td>Netz wird erstellt</td>
           <td><input tal:condition="ISOWNCONSTRUCT" type="submit" class="button" name="B_CANCEL_WEB"
-              value="Abbrechen" /></td>
+              value="Abbrechen" /><input tal:condition="not:ISOWNCONSTRUCT" type="submit" class="button"
+              name="B_UNSUPPORT_WEB" value="Unterstützung abbrechen" /></td>
         </tr>
         <tr>
           <td colspan="2">Fertigstellung ${datetime:WEBCONSTRUCT/getFinishedTime}</td>
