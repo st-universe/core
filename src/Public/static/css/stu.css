@@ -516,6 +516,11 @@ td.buildmenu3 {
     padding-left: 10px;
 }
 
+td.shipimage {
+    vertical-align: middle;
+    text-align: center;
+}
+
 div.fabutton {
     border: 1px solid #acacac;
     margin: 3px;
