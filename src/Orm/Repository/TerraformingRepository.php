@@ -32,7 +32,7 @@ final class TerraformingRepository extends EntityRepository implements Terraform
 
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT t FROM %s t
+                'SELECT t FROM %s t INDEX BY t.id
                  WHERE t.v_feld = :sourceFieldTypeId
                  AND (t.research_id IS NULL
                         OR EXISTS (SELECT r.id

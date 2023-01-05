@@ -9,6 +9,7 @@ use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Queue\Message\MessageFactoryInterface;
 use Stu\Component\Queue\Publisher\DelayedJobPublisherInterface;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -62,8 +63,6 @@ final class Terraform implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        //TODO check if user has researched!
-
         $user = $game->getUser();
         $userId = $user->getId();
 
@@ -99,6 +98,17 @@ final class Terraform implements ActionControllerInterface
         if ($field->getFieldType() != $terraf->getFromFieldTypeId()) {
             return;
         }
+
+        //sanity check if user has researched this terraforming
+        $terraformingopts = $this->terraformingRepository->getBySourceFieldTypeAndUser(
+            $field->getFieldType(),
+            $userId
+        );
+        if (!array_key_exists($terraf->getId(), $terraformingopts)) {
+            throw new SanityCheckException('user tried to perform unresearched terraforming');
+        }
+
+
         if ($userId !== GameEnum::USER_NOONE && $terraf->getEnergyCosts() > $colony->getEps()) {
             $game->addInformationf(
                 _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
