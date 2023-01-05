@@ -670,10 +670,6 @@ a.tradebutton:hover {
     background-color: #161515 ! important;
 }
 
-.row1 td :not(.nbsshipimage, .shipimage, .shiplistshipimage) {
-    background-color: #161515 ! important;
-}
-
 table.tcal tr:nth-child(odd) td {
     background-color: #161515;
 }
