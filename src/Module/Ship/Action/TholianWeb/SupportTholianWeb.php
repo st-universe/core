@@ -16,6 +16,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -37,6 +38,8 @@ final class SupportTholianWeb implements ActionControllerInterface
 
     private ShipStateChangerInterface $shipStateChanger;
 
+    private ActivatorDeactivatorHelperInterface $helper;
+
     private StuTime $stuTime;
 
     private PrivateMessageSenderInterface $privateMessageSender;
@@ -49,6 +52,7 @@ final class SupportTholianWeb implements ActionControllerInterface
         TholianWebRepositoryInterface $tholianWebRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStateChangerInterface $shipStateChanger,
+        ActivatorDeactivatorHelperInterface $helper,
         StuTime $stuTime,
         PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -58,6 +62,7 @@ final class SupportTholianWeb implements ActionControllerInterface
         $this->tholianWebRepository = $tholianWebRepository;
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStateChanger = $shipStateChanger;
+        $this->helper = $helper;
         $this->stuTime = $stuTime;
         $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
