@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
@@ -107,13 +108,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
 
-        if ($target->getRump()->isTrumfield()) {
-            $game->addInformation("Das Trümmerfeld kann nicht erfasst werden");
-            $this->abort($ship, $game);
-            return;
-        }
-        if ($target->isBase()) {
-            $game->addInformation("Die " . $targetName . " kann nicht erfasst werden");
+        if ($target->getSpacecraftType() !== SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP) {
+            $game->addInformation("Das Ziel kann nicht erfasst werden");
             $this->abort($ship, $game);
             return;
         }
