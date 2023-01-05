@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -31,6 +32,7 @@ use Stu\Module\Starmap\View\Overview\Overview;
  *         @Index(name="ship_starsystem_map_idx", columns={"starsystem_map_id"}),
  *         @Index(name="outer_system_location_idx", columns={"cx","cy"}),
  *         @Index(name="ship_rump_idx", columns={"rumps_id"}),
+ *         @Index(name="ship_web_idx", columns={"holding_web_id"}),
  *         @Index(name="ship_user_idx", columns={"user_id"})
  *     }
  * )
@@ -1276,7 +1278,23 @@ class Ship implements ShipInterface
 
     public function getHoldingWebBackgroundStyle(): string
     {
-        return $this->getHoldingWeb() !== null ? 'background-image: url(assets/buttons/web.png);' : '';
+        if ($this->getHoldingWeb() === null) {
+            return '';
+        }
+
+        if ($this->getHoldingWeb()->isFinished()) {
+            $icon =  'web.png';
+        } else {
+            $closeTofinish = $this->getHoldingWeb()->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
+
+            if ($closeTofinish) {
+                $icon = 'web_u.png';
+            } else {
+                $icon = 'web_u2.png';
+            }
+        }
+
+        return sprintf('background-image: url(assets/buttons/%s); vertical-align: middle; text-align: center;', $icon);
     }
 
     public function getCurrentMapField()
