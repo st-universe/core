@@ -108,10 +108,9 @@ final class ImplodeTholianWeb implements ActionControllerInterface
                 $pm,
                 $ship->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
-        }
 
-        //delete web ship
-        $this->tholianWebUtil->removeWeb($web);
+            $this->tholianWebUtil->releaseShipFromWeb($wrapper->getShipWrapperFactory()->wrapShip($ship));
+        }
 
         $game->addInformation("Das Energienetz ist implodiert");
         $game->addInformationMergeDown($msg);
