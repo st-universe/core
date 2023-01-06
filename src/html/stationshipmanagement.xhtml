@@ -83,7 +83,7 @@
                   </div>
                 </td>
                 <td>
-                  <div tal:condition="php:not ship.getMaxTorpedos() > 0">
+                  <div tal:condition="php: ship.getMaxTorpedos() > 0">
                     <img class="center" onclick="this.up('div').down('input').value=${ship/getMaxTorpedos}"
                       tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.png" title="Torpedos" />
                     <img class="center" tal:condition="ship/getTorpedoCount"
