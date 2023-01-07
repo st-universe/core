@@ -8,7 +8,6 @@ use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishBuildJobs implements ProcessTickInterface
@@ -17,19 +16,15 @@ final class FinishBuildJobs implements ProcessTickInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private ColonyRepositoryInterface $colonyRepository;
-
     private BuildingManagerInterface $buildingManager;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        ColonyRepositoryInterface $colonyRepository,
         BuildingManagerInterface $buildingManager
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->privateMessageSender = $privateMessageSender;
-        $this->colonyRepository = $colonyRepository;
         $this->buildingManager = $buildingManager;
     }
 

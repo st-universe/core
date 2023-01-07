@@ -12,6 +12,7 @@ use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -33,6 +34,8 @@ final class ColonyResetter implements ColonyResetterInterface
 
     private FleetRepositoryInterface $fleetRepository;
 
+    private CrewRepositoryInterface $crewRepository;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -43,6 +46,7 @@ final class ColonyResetter implements ColonyResetterInterface
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         FleetRepositoryInterface $fleetRepository,
+        CrewRepositoryInterface $crewRepository,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyRepository = $colonyRepository;
@@ -52,6 +56,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->fleetRepository = $fleetRepository;
+        $this->crewRepository = $crewRepository;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -61,6 +66,7 @@ final class ColonyResetter implements ColonyResetterInterface
     ): void {
         $this->resetBlockers($colony, $sendMessage);
         $this->resetDefenders($colony, $sendMessage);
+        $this->resetCrew($colony);
 
         $colony->setEps(0)
             ->setMaxEps(0)
@@ -107,6 +113,13 @@ final class ColonyResetter implements ColonyResetterInterface
             $this->fleetRepository->save($defenderFleet);
         }
         $colony->getDefenders()->clear();
+    }
+
+    private function resetCrew(ColonyInterface $colony): void
+    {
+        foreach ($colony->getCrewAssignments() as $crewAssignment) {
+            $this->crewRepository->delete($crewAssignment->getCrew());
+        }
     }
 
     private function sendMessage(ColonyInterface $colony, FleetInterface $fleet, bool $isDefending): void
