@@ -86,16 +86,17 @@ final class ImplodeTholianWeb implements ActionControllerInterface
 
         $game->addInformation("Das Energienetz ist implodiert");
 
-        //damage captured ships
-        foreach ($web->getCapturedShips() as $ship) {
-            $this->tholianWebUtil->releaseShipFromWeb($wrapper->getShipWrapperFactory()->wrapShip($ship));
+        //damage captured targets
+        foreach ($web->getCapturedShips() as $target) {
+            $targetWrapper = $wrapper->getShipWrapperFactory()->wrapShip($ship);
+            $this->tholianWebUtil->releaseShipFromWeb($targetWrapper);
 
             //don't damage trumfields
-            if ($ship->isDestroyed()) {
+            if ($target->isDestroyed()) {
                 continue;
             }
 
-            $msg = $this->tholianWebWeaponPhase->damageCapturedShip($wrapper->getShipWrapperFactory()->wrapShip($ship), $game);
+            $msg = $this->tholianWebWeaponPhase->damageCapturedShip($targetWrapper, $game);
 
             $pm = '';
             foreach ($msg as $value) {
@@ -105,9 +106,9 @@ final class ImplodeTholianWeb implements ActionControllerInterface
             //notify target owner
             $this->privateMessageSender->send(
                 $userId,
-                $ship->getUser()->getId(),
+                $target->getUser()->getId(),
                 $pm,
-                $ship->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                $target->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
 
             $game->addInformationMergeDown($msg);

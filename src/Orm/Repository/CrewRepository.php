@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewInterface;
-use Stu\Orm\Entity\ShipCrew;
 
 final class CrewRepository extends EntityRepository implements CrewRepositoryInterface
 {

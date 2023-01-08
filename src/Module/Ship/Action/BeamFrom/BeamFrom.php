@@ -115,7 +115,7 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        if ($ship->getShieldState()) {
+        if (!$isDockTransfer && $ship->getShieldState()) {
             $game->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
