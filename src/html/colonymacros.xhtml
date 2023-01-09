@@ -1342,6 +1342,15 @@
           <br />
           <strong>Bauzeit</strong><br />
           <span tal:replace="formatSeconds:building/getBuildTime">BUILDTIME</span>
+          <br />
+          <tal:block tal:condition="php: building.hasLimit() OR building.hasLimitColony()">
+            <br />
+            <strong>Limits</strong><br />
+            <tal:block tal:condition="building/hasLimitColony">
+              <span>Kolonie: ${building/getLimitColony}</span><br />
+            </tal:block>
+            <span tal:condition="building/hasLimit">Account: ${building/getLimit}</span>
+          </tal:block>
         </td>
         <td style="vertical-align: top; width: 110px;">
           <div tal:condition="building/isActivateable">
