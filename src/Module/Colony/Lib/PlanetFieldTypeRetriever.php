@@ -57,7 +57,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
             $this->loggerUtil->log(sprintf('could not retrieve category for fieldTypeId: %s', $fieldTypeId));
         }
 
-        return  $result;
+        return  $result ?? 0;
     }
 
     private function fillCache(string $cacheKey, string $method): void
