@@ -41,6 +41,8 @@ final class SaveNote implements ActionControllerInterface
             }
         }
 
+        $game->setView(GameController::DEFAULT_VIEW);
+
         $title = $this->saveNoteRequest->getTitle();
 
         if (mb_strlen($title) === 0) {
@@ -60,8 +62,6 @@ final class SaveNote implements ActionControllerInterface
         $this->noteRepository->save($note);
 
         $game->addInformation(_('Die Notiz wurde gespeichert'));
-
-        $game->setView(GameController::DEFAULT_VIEW);
     }
 
     public function performSessionCheck(): bool
