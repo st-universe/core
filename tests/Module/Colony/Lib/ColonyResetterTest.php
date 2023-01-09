@@ -11,12 +11,15 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyTerraformingInterface;
+use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -60,6 +63,11 @@ class ColonyResetterTest extends StuTestCase
     private $fleetRepository;
 
     /**
+     * @var null|MockInterface|CrewRepositoryInterface
+     */
+    private $crewRepository;
+
+    /**
      * @var null|MockInterface|PrivateMessageSenderInterface
      */
     private $privateMessageSender;
@@ -78,6 +86,7 @@ class ColonyResetterTest extends StuTestCase
         $this->colonyShipQueueRepository = Mockery::mock(ColonyShipQueueRepositoryInterface::class);
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->fleetRepository = $this->mock(FleetRepositoryInterface::class);
+        $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
         $this->resetter = new ColonyResetter(
@@ -88,6 +97,7 @@ class ColonyResetterTest extends StuTestCase
             $this->colonyShipQueueRepository,
             $this->planetFieldRepository,
             $this->fleetRepository,
+            $this->crewRepository,
             $this->privateMessageSender
         );
     }
@@ -136,6 +146,22 @@ class ColonyResetterTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn($defenderFleetCollection);
+
+        //CREW
+        $crewAssignment = $this->mock(ShipCrewInterface::class);
+        $crew = $this->mock(CrewInterface::class);
+        $crewAssignmentsCollection = new ArrayCollection([$crewAssignment]);
+        $colony->shouldReceive('getCrewAssignments')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($crewAssignmentsCollection);
+        $crewAssignment->shouldReceive('getCrew')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($crew);
+        $this->crewRepository->shouldReceive('delete')
+            ->with($crew)
+            ->once();
 
         //OTHER
         $colony->shouldReceive('setEps')
