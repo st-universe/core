@@ -154,6 +154,8 @@ final class DatabaseEntry implements ViewControllerInterface
 
     private function showPmHref(StarSystemMapInterface $map, UserInterface $user): bool
     {
-        return $map->getColony() !== null && $map->getColony()->getUser() !== $user;
+        return $map->getColony() !== null
+            && !$map->getColony()->isFree()
+            && $map->getColony()->getUser() !== $user;
     }
 }
