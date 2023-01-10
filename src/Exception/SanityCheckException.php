@@ -6,8 +6,8 @@ namespace Stu\Exception;
 
 final class SanityCheckException extends StuException
 {
-    private string $action;
-    private string $view;
+    private ?string $action;
+    private ?string $view;
 
     public function __construct($message = "", ?string $action = null, ?string $view = null)
     {
