@@ -207,9 +207,13 @@
 			<form method="post" action="database.php">
 				<table class="use">
 					<tr>
+						<th>Prestige</th>
 						<th>Anzahl</th>
 					</tr>
 					<tr>
+						<td>
+							${THIS/getUser/getPrestige}
+						</td>
 						<td>
 							<input type="text" size="3" name="count" value="runtime" tal:attributes="value COUNT" />
 							<input type="submit" name="SHOW_PRESTIGELOG" class="button" value="Aktualisieren" />
