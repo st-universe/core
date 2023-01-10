@@ -10,6 +10,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
 use Stu\Orm\Entity\DatabaseEntryInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -125,13 +127,33 @@ final class DatabaseEntry implements ViewControllerInterface
             case DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM:
                 $starSystem = $this->starSystemRepository->find($entry_object_id);
                 $fields = [];
+                $userHasColonyInSystem = $this->hasUserColonyInSystem($game->getUser(), $entry_object_id);
                 foreach ($starSystem->getFields() as $obj) {
-                    $fields['fields'][$obj->getSY()][] = $obj;
+                    $fields['fields'][$obj->getSY()][] = [
+                        'map' => $obj,
+                        'showPm' => $userHasColonyInSystem && $this->showPmHref($obj, $game->getUser())
+                    ];
                 }
                 $fields['xaxis'] = range(1, $starSystem->getMaxX());
                 $game->setTemplateVar('SYSTEM', $starSystem);
                 $game->setTemplateVar('FIELDS', $fields);
                 break;
         }
+    }
+
+    private function hasUserColonyInSystem(UserInterface $user, int $systemId): bool
+    {
+        foreach ($user->getColonies() as $colony) {
+            if ($colony->getStarsystemMap()->getSystem()->getId() === $systemId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function showPmHref(StarSystemMapInterface $map, UserInterface $user): bool
+    {
+        return $map->getColony() !== null && $map->getColony()->getUser() !== $user;
     }
 }
