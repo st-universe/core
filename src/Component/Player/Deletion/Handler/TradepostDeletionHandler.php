@@ -9,6 +9,7 @@ use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -20,6 +21,8 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private StorageRepositoryInterface $storageRepository;
+
     private EntryCreatorInterface $entryCreator;
 
     private PrivateMessageSenderInterface $privateMessageSender;
@@ -28,12 +31,14 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
         TradePostRepositoryInterface $tradePostRepository,
         ShipRepositoryInterface $shipRepository,
         UserRepositoryInterface $userRepository,
+        StorageRepositoryInterface $storageRepository,
         EntryCreatorInterface $entryCreator,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->tradePostRepository = $tradePostRepository;
         $this->shipRepository = $shipRepository;
         $this->userRepository = $userRepository;
+        $this->storageRepository = $storageRepository;
         $this->entryCreator = $entryCreator;
         $this->privateMessageSender = $privateMessageSender;
     }
@@ -43,7 +48,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
         foreach ($this->tradePostRepository->getByUser($user->getId()) as $tradepost) {
             $ship = $tradepost->getShip();
 
-            // send PMs to license owners except tradepost owner
+            // send PMs to storage owners except tradepost owner
             foreach ($this->tradePostRepository->getUsersWithStorageOnTradepost($tradepost->getId()) as $user) {
                 if ($user->getId() !== $tradepost->getUserId()) {
                     $this->privateMessageSender->send(
@@ -77,6 +82,13 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             $ship->setName('Verlassener Handelsposten');
             $ship->setDisabled(true);
             $this->shipRepository->save($ship);
+
+            //change torpedo owner
+            if ($ship->getTorpedoStorage() !== null) {
+                $storage = $ship->getTorpedoStorage()->getStorage();
+                $storage->setUser($noOne);
+                $this->storageRepository->save($storage);
+            }
         }
     }
 }
