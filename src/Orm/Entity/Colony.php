@@ -771,7 +771,7 @@ class Colony implements ColonyInterface
         if ($im < 0) {
             return 0;
         }
-        return (int) round($im / 100 * $this->getColonyClass()->getBevGrowthRate());
+        return (int) round($im / 100 * $this->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 100);
     }
 
     public function getNegativeEffect(): int
