@@ -205,21 +205,23 @@
 			<metal:macro metal:use-macro="html/databasemacros.xhtml/initial_js" />
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 			<form method="post" action="database.php">
-				<table class="use">
-					<tr>
-						<th>Prestige</th>
-						<th>Anzahl</th>
-					</tr>
-					<tr>
-						<td>
+				<div>
+					<div class="box">
+						<div class="box_title">Prestige</div>
+						<div class="box_body">
 							${THIS/getUser/getPrestige}
-						</td>
-						<td>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="box">
+						<div class="box_title">Anzahl</div>
+						<div class="box_body">
 							<input type="text" size="3" name="count" value="runtime" tal:attributes="value COUNT" />
 							<input type="submit" name="SHOW_PRESTIGELOG" class="button" value="Aktualisieren" />
-						</td>
-					</tr>
-				</table>
+						</div>
+					</div>
+				</div>
 				<br />
 				<table class="tcal">
 					<tr>
