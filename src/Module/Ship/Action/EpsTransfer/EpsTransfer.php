@@ -89,6 +89,10 @@ final class EpsTransfer implements ActionControllerInterface
 
         $targetEps = $targetWrapper->getEpsSystemData();
 
+        if ($targetEps === null) {
+            $game->addInformation(sprintf(_('Die %s hat kein Energiesystem installiert'), $target->getName()));
+            return;
+        }
         if ($targetEps->getBattery() >= $targetEps->getMaxBattery()) {
             $game->addInformation(sprintf(_('Die Ersatzbatterie der %s ist bereits voll'), $target->getName()));
             return;
