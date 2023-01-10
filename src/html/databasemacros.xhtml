@@ -100,7 +100,7 @@
       </tr>
       <tr tal:repeat="yaxis map/fields">
         <th tal:content="repeat/yaxis/key">CY</th>
-        <td tal:repeat="xaxis yaxis" class="lss"
+        <td tal:repeat="xaxis yaxis" class="starmap"
           style="background-image: url('assets/map/${xaxis/map/getFieldType/getType}.png');">
           <a tal:condition="xaxis/showPm" href="javascript:void(0);"
             onclick="openPmWindow(${THIS/getUser/getId},${xaxis/map/getColony/getUser/getId},1,5)"
