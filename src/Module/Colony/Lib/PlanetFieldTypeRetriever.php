@@ -52,7 +52,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
 
         $result = $this->cache->getItem(static::CACHE_KEY_CATEGORY)->get()[$fieldTypeId];
 
-        if ($result === null) {
+        if ($result === null && $fieldTypeId !== 1000) {
             $this->loggerUtil->init('CACHE', LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(sprintf('could not retrieve category for fieldTypeId: %s', $fieldTypeId));
         }
