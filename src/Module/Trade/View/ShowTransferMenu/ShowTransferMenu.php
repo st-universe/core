@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowTransferMenu;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -47,11 +48,15 @@ final class ShowTransferMenu implements ViewControllerInterface
 
         $tradePost = $storage->getTradePost();
 
-        $accounts = $this->tradePostRepository->getByUserLicense($userId);
+        $tradeposts = $this->tradePostRepository->getByUserLicense($userId);
 
         $trade_post_list = [];
-        foreach ($accounts as $obj) {
-            if ($tradePost->getId() != $obj->getId() && $obj->getTradeNetwork() == $tradePost->getTradeNetwork()) {
+        foreach ($tradeposts as $obj) {
+            if (
+                $tradePost !== $obj
+                && $obj->getTradeNetwork() == $tradePost->getTradeNetwork()
+                && $obj->getUser()->getId() !== GameEnum::USER_NOONE
+            ) {
                 $trade_post_list[] = $this->tradeLibFactory->createTradePostStorageManager($obj, $game->getUser());
             }
         }

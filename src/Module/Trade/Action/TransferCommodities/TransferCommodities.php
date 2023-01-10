@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TransferCommodities;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -87,7 +88,7 @@ final class TransferCommodities implements ActionControllerInterface
 
         $targetpost = $this->tradePostRepository->find($destinationTradePostId);
 
-        if ($targetpost === null) {
+        if ($targetpost === null || $targetpost->getUser()->getId() === GameEnum::USER_NOONE) {
             return;
         }
 
