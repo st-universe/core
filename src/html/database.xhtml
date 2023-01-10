@@ -206,37 +206,38 @@
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 			<form method="post" action="database.php">
 				<div>
-					<div class="box">
-						<div class="box_title">Prestige</div>
-						<div class="box_body">
-							${THIS/getUser/getPrestige}
+					<div style="float:left; padding-right: 5px; width: 5vw;">
+						<div class="box">
+							<div class="box_title">Prestige</div>
+							<div class="box_body">
+								${THIS/getUser/getPrestige}
+							</div>
 						</div>
 					</div>
-				</div>
-				<div>
-					<div class="box">
+					<div class="box" style="float:left;">
 						<div class="box_title">Anzahl</div>
 						<div class="box_body">
 							<input type="text" size="3" name="count" value="runtime" tal:attributes="value COUNT" />
 							<input type="submit" name="SHOW_PRESTIGELOG" class="button" value="Aktualisieren" />
 						</div>
 					</div>
+					<div style="float:left; width: 90vw; padding-top:5px;">
+						<table class="tcal">
+							<tr>
+								<th>Eintrag</th>
+								<th>Datum</th>
+							</tr>
+							<tr tal:condition="LOGS" tal:attributes="class string:row${repeat/entry/odd}"
+								tal:repeat="entry LOGS">
+								<td tal:content="structure bbcode:entry/getDescription">ENTRY</td>
+								<td tal:content="datetime:entry/getDate">DATE</td>
+							</tr>
+							<tr tal:condition="not:LOGS">
+								<td colspan="2">Keine Einträge vorhanden</td>
+							</tr>
+						</table>
+					</div>
 				</div>
-				<br />
-				<table class="tcal">
-					<tr>
-						<th>Eintrag</th>
-						<th>Datum</th>
-					</tr>
-					<tr tal:condition="LOGS" tal:attributes="class string:row${repeat/entry/odd}"
-						tal:repeat="entry LOGS">
-						<td tal:content="structure bbcode:entry/getDescription">ENTRY</td>
-						<td tal:content="datetime:entry/getDate">DATE</td>
-					</tr>
-					<tr tal:condition="not:LOGS">
-						<td colspan="2">Keine Einträge vorhanden</td>
-					</tr>
-				</table>
 			</form>
 		</tal:block>
 	</tal:block>
