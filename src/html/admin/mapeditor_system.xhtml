@@ -9,11 +9,13 @@
 			</tr>
 			<tr tal:repeat="yrow MAP_FIELDS">
 				<th tal:content="yrow/getRow">y</th>
-				<td tal:repeat="data yrow/getSystemFields" class="lss" tal:attributes="id string:${data/getSX}_${data/getSY};style string:${data/getFieldStyle}">
+				<td tal:repeat="data yrow/getSystemFields" class="starmap"
+					tal:attributes="id string:${data/getSX}_${data/getSY};style string:${data/getFieldStyle}">
 					<div class="lssobj" onclick="openSystemFieldSelector(${data/getId});" id="runtime">&nbsp;</div>
 				</td>
 			</tr>
 		</table>
 	</metal:macro>
 </metal:macro>
+
 </html>
