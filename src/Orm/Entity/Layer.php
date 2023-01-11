@@ -29,6 +29,9 @@ class Layer implements LayerInterface
     /** @Column(type="integer") * */
     private $height;
 
+    /** @Column(type="boolean", nullable=true) */
+    private $is_hidden;
+
     public function getId(): int
     {
         return $this->id;
