@@ -20,7 +20,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 sprintf(
                     'SELECT s FROM %s s
                     JOIN %s m
-                    WITH m.cx = s.cx AND m.cy = s.cy
+                    WITH m.systems_id = s.id
                     WHERE m.layer_id  = :layerId
                     ORDER BY s.name ASC',
                     StarSystem::class,
