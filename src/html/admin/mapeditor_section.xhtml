@@ -45,7 +45,7 @@
 							</tr>
 							<tr tal:repeat="yrow MAP_FIELDS">
 								<th tal:content="yrow/getRow">y</th>
-								<td tal:repeat="data yrow/getFields" class="lss" style="runtime"
+								<td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
 									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj" style="cursor: pointer ! important;"
 										onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)"
