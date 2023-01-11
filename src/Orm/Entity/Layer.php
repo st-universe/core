@@ -23,6 +23,12 @@ class Layer implements LayerInterface
     /** @Column(type="string") * */
     private $name;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $width;
+
+    /** @Column(type="integer", nullable=true) * */
+    private $height;
+
     public function getId(): int
     {
         return $this->id;
@@ -31,5 +37,15 @@ class Layer implements LayerInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getWidth(): int
+    {
+        return $this->width;
+    }
+
+    public function getHeight(): int
+    {
+        return $this->height;
     }
 }
