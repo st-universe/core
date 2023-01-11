@@ -2,6 +2,14 @@
 <metal:macro metal:use-macro="../sitemacros.xhtml/admindefaults">
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="../sitemacros.xhtml/breadcrumb" />
+		<select name="layerid">
+			<tal:block tal:repeat="layer LAYERS">
+				<option tal:content="layer/getName"
+					tal:attributes="value layer/getId; selected php:layer.getId() EQ LAYERID">
+					NAME</option>
+			</tal:block>
+		</select>
+		<br />
 		<table class="tcal">
 			<tr>
 				<th>x|y</th>
@@ -10,7 +18,8 @@
 			<tr tal:repeat="rowy SECTIONS">
 				<th style="width: 30px;" tal:content="php:repeat.rowy.number*FIELDS_PER_SECTION">Y</th>
 				<td tal:repeat="data rowy">
-					<a href="/admin/?SHOW_EDIT_MAP_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}" tal:content="data">sec</a>
+					<a href="/admin/?SHOW_EDIT_MAP_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}"
+						tal:content="data">sec</a>
 				</td>
 			</tr>
 		</table>
@@ -22,10 +31,12 @@
 			</tr>
 			<tr>
 				<td>
-					<div tal:repeat="system SYSTEM_LIST"><a href="/admin/?SHOW_SYSTEM=1&sysid=${system/getId}" tal:content="system/getName">SYSNAME</a></div>
+					<div tal:repeat="system SYSTEM_LIST"><a href="/admin/?SHOW_SYSTEM=1&sysid=${system/getId}"
+							tal:content="system/getName">SYSNAME</a></div>
 				</td>
 			</tr>
 		</table>
 	</metal:macro>
 </metal:macro>
+
 </html>

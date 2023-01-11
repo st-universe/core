@@ -23,10 +23,10 @@ class Layer implements LayerInterface
     /** @Column(type="string") * */
     private $name;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $width;
 
-    /** @Column(type="integer", nullable=true) * */
+    /** @Column(type="integer") * */
     private $height;
 
     public function getId(): int

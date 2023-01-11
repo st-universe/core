@@ -204,6 +204,11 @@ class Map implements MapInterface
         return $this;
     }
 
+    public function getLayer(): LayerInterface
+    {
+        return $this->layer;
+    }
+
     public function getSystem(): ?StarSystemInterface
     {
         return $this->starSystem;

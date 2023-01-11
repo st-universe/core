@@ -36,6 +36,8 @@ interface MapInterface
 
     public function setRegionId(?int $region_id): MapInterface;
 
+    public function getLayer(): LayerInterface;
+
     public function getSystem(): ?StarSystemInterface;
 
     public function getInfluenceArea(): ?StarSystemInterface;

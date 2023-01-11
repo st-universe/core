@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
-use Stu\Component\Map\MapEnum;
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class ShowMapEditor implements ViewControllerInterface
@@ -14,11 +15,15 @@ final class ShowMapEditor implements ViewControllerInterface
     private const FIELDS_PER_SECTION = 20;
     public const VIEW_IDENTIFIER = 'SHOW_MAP_EDITOR';
 
+    private LayerRepositoryInterface $layerRepository;
+
     private StarSystemRepositoryInterface $starSystemRepository;
 
     public function __construct(
+        LayerRepositoryInterface $layerRepository,
         StarSystemRepositoryInterface $starSystemRepository
     ) {
+        $this->layerRepository = $layerRepository;
         $this->starSystemRepository = $starSystemRepository;
     }
 
@@ -28,20 +33,36 @@ final class ShowMapEditor implements ViewControllerInterface
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->setPageTitle(_('Karteneditor'));
 
+        //LAYER
+        $layers = $this->layerRepository->findAll();
+
+        $layerId = request::getInt('layerid');
+        if (!$layerId) {
+            $layer = current($layers)->getId();
+            $game->setTemplateVar('LAYERID', $layer);
+        } else {
+            $layer = $layers[$layerId];
+            $game->setTemplateVar('LAYERID', $layerId);
+        }
+
+        //HEADROW
         $xHeadRow = [];
-        for ($j = 1; $j <= MapEnum::MAP_MAX_X / static::FIELDS_PER_SECTION; $j++) {
+        for ($j = 1; $j <= $layer->getWidth() / static::FIELDS_PER_SECTION; $j++) {
             $xHeadRow[] = $j;
         }
 
+        //SECTIONS
         $sections = [];
         $k = 1;
-        for ($i = 1; $i <= MapEnum::MAP_MAX_Y / self::FIELDS_PER_SECTION; $i++) {
-            for ($j = 1; $j <= MapEnum::MAP_MAX_X / self::FIELDS_PER_SECTION; $j++) {
+        for ($i = 1; $i <= $layer->getHeight() / self::FIELDS_PER_SECTION; $i++) {
+            for ($j = 1; $j <= $layer->getWidth() / self::FIELDS_PER_SECTION; $j++) {
                 $sections[$i][$j] = $k;
                 $k++;
             }
         }
 
+
+        $game->setTemplateVar('LAYERS', $layers);
         $game->setTemplateVar('X_HEAD_ROW', $xHeadRow);
         $game->setTemplateVar('SECTIONS', $sections);
         $game->setTemplateVar('FIELDS_PER_SECTION', static::FIELDS_PER_SECTION);
