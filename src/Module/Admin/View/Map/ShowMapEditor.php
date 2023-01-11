@@ -34,16 +34,15 @@ final class ShowMapEditor implements ViewControllerInterface
         $game->setPageTitle(_('Karteneditor'));
 
         //LAYER
-        $layers = $this->layerRepository->findAll();
+        $layers = $this->layerRepository->findAllIndexed();
 
         $layerId = request::getInt('layerid');
         if (!$layerId) {
-            $layer = current($layers)->getId();
-            $game->setTemplateVar('LAYERID', $layer);
+            $layer = current($layers);
         } else {
             $layer = $layers[$layerId];
-            $game->setTemplateVar('LAYERID', $layerId);
         }
+        $game->setTemplateVar('LAYERID', $layer->getId());
 
         //HEADROW
         $xHeadRow = [];
