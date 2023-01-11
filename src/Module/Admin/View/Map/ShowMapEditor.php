@@ -46,15 +46,15 @@ final class ShowMapEditor implements ViewControllerInterface
 
         //HEADROW
         $xHeadRow = [];
-        for ($j = 1; $j <= $layer->getWidth() / static::FIELDS_PER_SECTION; $j++) {
+        for ($j = 1; $j <= (int)ceil($layer->getWidth() / static::FIELDS_PER_SECTION); $j++) {
             $xHeadRow[] = $j;
         }
 
         //SECTIONS
         $sections = [];
         $k = 1;
-        for ($i = 1; $i <= $layer->getHeight() / self::FIELDS_PER_SECTION; $i++) {
-            for ($j = 1; $j <= $layer->getWidth() / self::FIELDS_PER_SECTION; $j++) {
+        for ($i = 1; $i <= (int)ceil($layer->getHeight() / self::FIELDS_PER_SECTION); $i++) {
+            for ($j = 1; $j <= (int)ceil($layer->getWidth() / self::FIELDS_PER_SECTION); $j++) {
                 $sections[$i][$j] = $k;
                 $k++;
             }

@@ -2,13 +2,15 @@
 <metal:macro metal:use-macro="../sitemacros.xhtml/admindefaults">
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="../sitemacros.xhtml/breadcrumb" />
-		<select name="layerid">
-			<tal:block tal:repeat="layer LAYERS">
-				<option tal:content="layer/getName"
-					tal:attributes="value layer/getId; selected php:layer.getId() EQ LAYERID">
-					NAME</option>
-			</tal:block>
-		</select>
+		<div>
+			<select onchange="window.location.href='/admin/?SHOW_MAP_EDITOR=1&layerid=' + this.value">
+				<tal:block tal:repeat="layer LAYERS">
+					<option tal:content="layer/getName"
+						tal:attributes="value layer/getId; selected php:layer.getId() EQ LAYERID">
+						NAME</option>
+				</tal:block>
+			</select>
+		</div>
 		<br />
 		<table class="tcal">
 			<tr>
