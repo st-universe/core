@@ -11,7 +11,7 @@
 						<table class="use" tal:condition="TOP_PREVIEW_ROW">
 							<tr>
 								<th style="width: 30px;">/\</th>
-								<td tal:repeat="data TOP_PREVIEW_ROW" class="lss"
+								<td tal:repeat="data TOP_PREVIEW_ROW" class="starmap"
 									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj">&nbsp;</div>
 								</td>
@@ -29,7 +29,7 @@
 						<table class="use" tal:condition="LEFT_PREVIEW_ROW">
 							<th style="width: 30px;">&lt;</th>
 							<tr tal:repeat="row LEFT_PREVIEW_ROW">
-								<td tal:repeat="data row/getFields" class="lss"
+								<td tal:repeat="data row/getFields" class="starmap"
 									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj">&nbsp;</div>
 								</td>
@@ -59,7 +59,7 @@
 						<table class="use" tal:condition="RIGHT_PREVIEW_ROW">
 							<th>&gt;</th>
 							<tr tal:repeat="row RIGHT_PREVIEW_ROW">
-								<td tal:repeat="data row/getFields" class="lss"
+								<td tal:repeat="data row/getFields" class="starmap"
 									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj">&nbsp;</div>
 								</td>
@@ -77,7 +77,7 @@
 						<table class="use" tal:condition="BOTTOM_PREVIEW_ROW">
 							<tr>
 								<th style="width: 30px;">\/</th>
-								<td tal:repeat="data BOTTOM_PREVIEW_ROW" class="lss"
+								<td tal:repeat="data BOTTOM_PREVIEW_ROW" class="starmap"
 									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj">&nbsp;</div>
 								</td>

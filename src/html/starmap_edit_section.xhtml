@@ -11,7 +11,10 @@
 						<table class="use" tal:condition="TOP_PREVIEW_ROW">
 							<tr>
 								<th style="width: 30px;">/\</th>
-								<td tal:repeat="data TOP_PREVIEW_ROW" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj">&nbsp;</div></td>
+								<td tal:repeat="data TOP_PREVIEW_ROW" class="starmap"
+									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+									<div class="lssobj">&nbsp;</div>
+								</td>
 							</tr>
 						</table>
 					</td>
@@ -19,14 +22,15 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="runtime" tal:attributes="colspan php:FIELDS_PER_SECTION+1" style="height: 30px;"></td>	
+					<td colspan="runtime" tal:attributes="colspan php:FIELDS_PER_SECTION+1" style="height: 30px;"></td>
 				</tr>
 				<tr>
 					<td>
 						<table class="use" tal:condition="LEFT_PREVIEW_ROW">
 							<th style="width: 30px;">&lt;</th>
 							<tr tal:repeat="row LEFT_PREVIEW_ROW">
-								<td tal:repeat="data row/getFields" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+								<td tal:repeat="data row/getFields" class="starmap"
+									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj">&nbsp;</div>
 								</td>
 							</tr>
@@ -41,7 +45,10 @@
 							</tr>
 							<tr tal:repeat="yrow MAP_FIELDS">
 								<th tal:content="yrow/getRow">y</th>
-								<td tal:repeat="data yrow/getFields" class="lss" style="runtime" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj" style="cursor: auto ! important;">&nbsp;</div></td>
+								<td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
+									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+									<div class="lssobj" style="cursor: auto ! important;">&nbsp;</div>
+								</td>
 							</tr>
 						</table>
 					</td>
@@ -50,7 +57,8 @@
 						<table class="use" tal:condition="RIGHT_PREVIEW_ROW">
 							<th>&gt;</th>
 							<tr tal:repeat="row RIGHT_PREVIEW_ROW">
-								<td tal:repeat="data row/getFields" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+								<td tal:repeat="data row/getFields" class="starmap"
+									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj">&nbsp;</div>
 								</td>
 							</tr>
@@ -58,7 +66,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="runtime" tal:attributes="colspan php:FIELDS_PER_SECTION+1" style="height: 30px;"></td>	
+					<td colspan="runtime" tal:attributes="colspan php:FIELDS_PER_SECTION+1" style="height: 30px;"></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -67,7 +75,10 @@
 						<table class="use" tal:condition="BOTTOM_PREVIEW_ROW">
 							<tr>
 								<th style="width: 30px;">\/</th>
-								<td tal:repeat="data BOTTOM_PREVIEW_ROW" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj">&nbsp;</div></td>
+								<td tal:repeat="data BOTTOM_PREVIEW_ROW" class="starmap"
+									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+									<div class="lssobj">&nbsp;</div>
+								</td>
 							</tr>
 						</table>
 					</td>
@@ -80,21 +91,26 @@
 			<table class="tcal">
 				<tr>
 					<td style="text-align: center" colspan="3">
-						<a href="runtime" tal:attributes="href NAV_UP" style="display: block;" tal:condition="HAS_NAV_UP">/\</a>
+						<a href="runtime" tal:attributes="href NAV_UP" style="display: block;"
+							tal:condition="HAS_NAV_UP">/\</a>
 					</td>
 				</tr>
 				<tr>
-					<td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="HAS_NAV_LEFT" style="display: block;">&lt;</a></td>
+					<td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="HAS_NAV_LEFT"
+							style="display: block;">&lt;</a></td>
 					<td style="text-align: center;" tal:content="SECTION_ID">SEC</td>
-					<td style="text-align: right;"><a href="runtime" tal:attributes="href NAV_RIGHT" tal:condition="HAS_NAV_RIGHT" style="display: block;">&gt;</a></td>
+					<td style="text-align: right;"><a href="runtime" tal:attributes="href NAV_RIGHT"
+							tal:condition="HAS_NAV_RIGHT" style="display: block;">&gt;</a></td>
 				</tr>
 				<tr>
 					<td style="text-align: center" colspan="3">
-						<a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="HAS_NAV_DOWN" style="display: block;">\/</a>
+						<a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="HAS_NAV_DOWN"
+							style="display: block;">\/</a>
 					</td>
 				</tr>
 			</table>
 		</div>
 	</metal:macro>
 </metal:macro>
+
 </html>
