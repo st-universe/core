@@ -12,4 +12,6 @@ interface LayerInterface
     public function getWidth(): int;
 
     public function getHeight(): int;
+
+    public function isHidden(): bool;
 }

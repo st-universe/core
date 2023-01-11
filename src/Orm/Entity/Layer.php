@@ -29,7 +29,7 @@ class Layer implements LayerInterface
     /** @Column(type="integer") * */
     private $height;
 
-    /** @Column(type="boolean", nullable=true) */
+    /** @Column(type="boolean") */
     private $is_hidden;
 
     public function getId(): int
@@ -50,5 +50,10 @@ class Layer implements LayerInterface
     public function getHeight(): int
     {
         return $this->height;
+    }
+
+    public function isHidden(): bool
+    {
+        return $this->is_hidden;
     }
 }

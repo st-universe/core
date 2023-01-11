@@ -23,6 +23,10 @@ interface ShipInterface
 
     public function getSystemsId(): ?int;
 
+    public function getLayerId(): int;
+
+    public function setLayerId(int $layerId): ShipInterface;
+
     public function getCx(): int;
 
     public function setCx(int $cx): ShipInterface;

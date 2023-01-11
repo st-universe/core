@@ -7,6 +7,7 @@ namespace Stu\Orm\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Game\TimeConstants;
+use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -57,6 +58,9 @@ class Ship implements ShipInterface
 
     /** @Column(type="integer", nullable=true) */
     private $fleets_id;
+
+    /** @Column(type="integer", length=5, nullable=true) */
+    private $layer = MapEnum::LAYER_ID_CRAGGANMORE;
 
     /** @Column(type="integer", length=5) */
     private $cx = 0;
@@ -296,6 +300,17 @@ class Ship implements ShipInterface
     public function getSystemsId(): ?int
     {
         return $this->getSystem() !== null ? $this->getSystem()->getId() : null;
+    }
+
+    public function getLayerId(): int
+    {
+        return $this->layer;
+    }
+
+    public function setLayerId(int $layerId): ShipInterface
+    {
+        $this->layer = $layerId;
+        return $this;
     }
 
     public function getCx(): int
