@@ -12,6 +12,26 @@ use Stu\Orm\Entity\StarSystemInterface;
 
 final class StarSystemRepository extends EntityRepository implements StarSystemRepositoryInterface
 {
+    public function getByLayer(int $layerId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
+                    JOIN %s m
+                    WITH m.cx = s.cx AND m.cy = s.cy
+                    WHERE m.layer_id  = :layerId
+                    ORDER BY s.name ASC',
+                    StarSystem::class,
+                    Map::class
+                )
+            )
+            ->setParameters([
+                'layerId' => $layerId
+            ])
+            ->getResult();
+    }
+
     public function getByCoordinates(int $cx, int $cy): ?StarSystemInterface
     {
         return $this->findOneBy([
