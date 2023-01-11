@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map\EditSection;
 
-use Stu\Component\Map\MapEnum;
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use YRow;
 
@@ -17,13 +18,17 @@ final class EditSection implements ViewControllerInterface
 
     private EditSectionRequestInterface $editSectionRequest;
 
+    private LayerRepositoryInterface $layerRepository;
+
     private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
     public function __construct(
         EditSectionRequestInterface $editSectionRequest,
+        LayerRepositoryInterface $layerRepository,
         MapFieldTypeRepositoryInterface $mapFieldTypeRepository
     ) {
         $this->editSectionRequest = $editSectionRequest;
+        $this->layerRepository = $layerRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
     }
 
@@ -32,6 +37,7 @@ final class EditSection implements ViewControllerInterface
         $xCoordinate = $this->editSectionRequest->getXCoordinate();
         $yCoordinate = $this->editSectionRequest->getYCoordinate();
         $section_id = $this->editSectionRequest->getSectionId();
+        $layerId = request::getIntFatal('layerid');
 
         $maxx = $xCoordinate * self::FIELDS_PER_SECTION;
         $minx = $maxx - self::FIELDS_PER_SECTION + 1;
@@ -43,6 +49,8 @@ final class EditSection implements ViewControllerInterface
             $fields[] = new YRow($value, $minx, $maxx);
         }
 
+        $layer = $this->layerRepository->find($layerId);
+
         if ($yCoordinate - 1 >= 1) {
             $game->setTemplateVar(
                 'TOP_PREVIEW_ROW',
@@ -51,7 +59,7 @@ final class EditSection implements ViewControllerInterface
         } else {
             $game->setTemplateVar('TOP_PREVIEW_ROW', false);
         }
-        if ($yCoordinate * self::FIELDS_PER_SECTION + 1 <= MapEnum::MAP_MAX_Y) {
+        if ($yCoordinate * self::FIELDS_PER_SECTION + 1 <= $layer->getHeight()) {
             $game->setTemplateVar(
                 'BOTTOM_PREVIEW_ROW',
                 (new YRow($yCoordinate * self::FIELDS_PER_SECTION + 1, $minx, $maxx))->getFields()
@@ -79,7 +87,7 @@ final class EditSection implements ViewControllerInterface
             );
         }
 
-        if ($xCoordinate * self::FIELDS_PER_SECTION + 1 <= MapEnum::MAP_MAX_X) {
+        if ($xCoordinate * self::FIELDS_PER_SECTION + 1 <= $layer->getWidth()) {
             $row = [];
             for ($i = $miny; $i <= $maxy; $i++) {
                 $row[] = new YRow($i, $maxx + 1, $maxx + 1);
@@ -108,10 +116,11 @@ final class EditSection implements ViewControllerInterface
         $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(
-                '/admin/?SHOW_EDIT_MAP_SECTION=1&x=%d&y=%d&sec=%d',
+                '/admin/?SHOW_EDIT_MAP_SECTION=1&x=%d&y=%d&sec=%d&layerid=%d',
                 $xCoordinate,
                 $yCoordinate,
-                $section_id
+                $section_id,
+                $layerId
             ),
             sprintf(_('Sektion %d anzeigen'), $section_id)
         );
@@ -122,47 +131,51 @@ final class EditSection implements ViewControllerInterface
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
         $game->setTemplateVar('MAP_FIELDS', $fields);
         $game->setTemplateVar('HAS_NAV_LEFT', $xCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_RIGHT', $xCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_X);
+        $game->setTemplateVar('HAS_NAV_RIGHT', $xCoordinate * static::FIELDS_PER_SECTION < $layer->getWidth());
         $game->setTemplateVar('HAS_NAV_UP', $yCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_DOWN', $yCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_Y);
+        $game->setTemplateVar('HAS_NAV_DOWN', $yCoordinate * static::FIELDS_PER_SECTION < $layer->getHeight());
         $game->setTemplateVar(
             'NAV_UP',
             sprintf(
-                '?%s=1&x=%d&y=%d&sec=%d',
+                '?%s=1&x=%d&y=%d&sec=%d&layerid=%d',
                 static::VIEW_IDENTIFIER,
                 $xCoordinate,
                 $yCoordinate > 1 ? $yCoordinate - 1 : 1,
-                $section_id - 6
+                $section_id - 6,
+                $layerId
             )
         );
         $game->setTemplateVar(
             'NAV_DOWN',
             sprintf(
-                "?%s=1&x=%d&y=%d&sec=%d",
+                "?%s=1&x=%d&y=%d&sec=%d&layerid=%d",
                 static::VIEW_IDENTIFIER,
                 $xCoordinate,
-                $yCoordinate + 1 > MapEnum::MAP_MAX_Y / self::FIELDS_PER_SECTION ? $yCoordinate : $yCoordinate + 1,
-                $section_id + 6
+                $yCoordinate + 1 > $layer->getHeight() / self::FIELDS_PER_SECTION ? $yCoordinate : $yCoordinate + 1,
+                $section_id + 6,
+                $layerId
             )
         );
         $game->setTemplateVar(
             'NAV_LEFT',
             sprintf(
-                "?%s=1&x=%d&y=%d&sec=%d",
+                "?%s=1&x=%d&y=%d&sec=%d&layerid=%d",
                 static::VIEW_IDENTIFIER,
                 $xCoordinate > 1 ? $xCoordinate - 1 : 1,
                 $yCoordinate,
-                $section_id - 1
+                $section_id - 1,
+                $layerId
             )
         );
         $game->setTemplateVar(
             'NAV_RIGHT',
             sprintf(
-                '?%s=1&x=%d&y=%d&sec=%d',
+                '?%s=1&x=%d&y=%d&sec=%d&layerid=%d',
                 static::VIEW_IDENTIFIER,
-                $xCoordinate + 1 > MapEnum::MAP_MAX_X / self::FIELDS_PER_SECTION ? $xCoordinate : $xCoordinate + 1,
+                $xCoordinate + 1 > $layer->getWidth() / self::FIELDS_PER_SECTION ? $xCoordinate : $xCoordinate + 1,
                 $yCoordinate,
-                $section_id + 1
+                $section_id + 1,
+                $layerId
             )
         );
     }

@@ -20,7 +20,7 @@
 			<tr tal:repeat="rowy SECTIONS">
 				<th style="width: 30px;" tal:content="php:repeat.rowy.number*FIELDS_PER_SECTION">Y</th>
 				<td tal:repeat="data rowy">
-					<a href="/admin/?SHOW_EDIT_MAP_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}"
+					<a href="/admin/?SHOW_EDIT_MAP_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}&layerid=${LAYERID}"
 						tal:content="data">sec</a>
 				</td>
 			</tr>
