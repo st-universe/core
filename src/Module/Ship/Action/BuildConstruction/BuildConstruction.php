@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -295,6 +296,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction->setHuell($rump->getBaseHull());
         $construction->setMaxHuell($rump->getBaseHull());
         $construction->setAlertStateGreen();
+        $construction->setState(ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
 
         $construction->updateLocation($ship->getMap(), $ship->getStarsystemMap());
 
