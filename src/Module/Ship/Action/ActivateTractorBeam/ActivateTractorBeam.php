@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
+use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
@@ -213,7 +214,9 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->entityManager->flush();
 
         // deactivate system
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
+        if (!$this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
+            throw new SystemNotDeactivatableException('TRACTOR ERROR');
+        }
         $this->shipRepository->save($ship);
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
