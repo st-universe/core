@@ -53,10 +53,6 @@ final class ImplodeTholianWeb implements ActionControllerInterface
         $userId = $game->getUser()->getId();
         $shipId = request::indInt('id');
 
-        if ($userId === 126) {
-            // $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
-        }
-
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
             $userId

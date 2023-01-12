@@ -176,25 +176,17 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         $systemName = ShipSystemTypeEnum::getDescription($systemId);
         $ship = $wrapper->get();
 
-        if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->init('TRACTOR', LoggerEnum::LEVEL_WARNING);
-        }
-
         try {
             $this->shipSystemManager->deactivate($wrapper, $systemId);
             $game->addInformation(sprintf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
             return true;
         } catch (AlreadyOffException $e) {
-            $this->loggerUtil->log('AlreadyOffException');
             $game->addInformation(sprintf(_('%s: System %s ist bereits deaktiviert'), $ship->getName(), $systemName));
         } catch (SystemNotDeactivatableException $e) {
-            $this->loggerUtil->log('SystemNotDeactivatableException');
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s besitzt keinen Deaktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
         } catch (DeactivationConditionsNotMetException $e) {
-            $this->loggerUtil->log('DeactivationConditionsNotMetException');
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht deaktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
         } catch (SystemNotFoundException $e) {
-            $this->loggerUtil->log('SystemNotFoundException');
             $game->addInformation(sprintf(_('%s: System %s nicht vorhanden'), $ship->getName(), $systemName));
         }
 
