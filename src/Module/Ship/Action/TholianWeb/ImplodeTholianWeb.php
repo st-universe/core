@@ -85,7 +85,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
         //damage captured targets
         foreach ($web->getCapturedShips() as $target) {
             $this->loggerUtil->log(sprintf('capturedTargetId: %d', $target->getId()));
-            $targetWrapper = $wrapper->getShipWrapperFactory()->wrapShip($ship);
+            $targetWrapper = $wrapper->getShipWrapperFactory()->wrapShip($target);
             $this->tholianWebUtil->releaseShipFromWeb($targetWrapper);
 
             //don't damage trumfields
