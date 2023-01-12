@@ -6,6 +6,9 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface FightLibInterface
 {
+    /**
+     * @return string[]
+     */
     public function ready(ShipWrapperInterface $wrapper): array;
 
     /**

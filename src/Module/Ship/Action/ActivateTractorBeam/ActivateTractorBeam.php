@@ -148,7 +148,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
             );
             $this->shipAttackCycle->cycle();
 
-            $game->addInformationMergeDown($this->shipAttackCycle->getMessages());
+            $messageDump = $this->shipAttackCycle->getMessages()->getMessageDump();
+            $game->addInformationMergeDown($messageDump);
 
             $this->privateMessageSender->send(
                 $userId,
@@ -158,7 +159,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
                     $shipName,
                     $targetName,
                     $ship->getSectorString(),
-                    implode(PHP_EOL, $this->shipAttackCycle->getMessages())
+                    implode(PHP_EOL, $messageDump)
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );

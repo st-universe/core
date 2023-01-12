@@ -117,9 +117,10 @@ final class AttackTrackedShip implements ActionControllerInterface
             $this->shipWrapperFactory->wrapShips($defender),
         );
         $this->shipAttackCycle->cycle();
+        $messageDump = $this->shipAttackCycle->getMessages()->getMessageDump();
 
         $pm = sprintf(_('Kampf in Sektor %s') . "\n", $ship->getSectorString());
-        foreach ($this->shipAttackCycle->getMessages() as $value) {
+        foreach ($messageDump as $value) {
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
@@ -129,7 +130,7 @@ final class AttackTrackedShip implements ActionControllerInterface
             $isTargetBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
 
-        $msg = $this->shipAttackCycle->getMessages();
+        $msg = $messageDump;
 
         //Alarm-Rot check for ship
         if ($isShipWarped && !$ship->isDestroyed()) {

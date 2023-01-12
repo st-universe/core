@@ -120,10 +120,6 @@ final class Session implements SessionInterface
             $this->userRepository->save($result);
         }
 
-        if ($result->getId() === 126) {
-            //$this->loggerUtil->init('SESSION', LoggerEnum::LEVEL_WARNING);
-        }
-
         if ($result->getState() === UserEnum::USER_STATE_NEW) {
             $result->setState(UserEnum::USER_STATE_UNCOLONIZED);
 

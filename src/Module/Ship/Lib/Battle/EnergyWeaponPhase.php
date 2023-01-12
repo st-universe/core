@@ -22,7 +22,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         array $targetPool,
         bool $isAlertRed = false
     ): array {
-        $msg = [];
+        $fightMessages = [];
 
         /**
          * @var ShipInterface
@@ -48,17 +48,20 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
              */
             $target = $targetWrapper->get();
 
-            $msg[] = sprintf(
+            $fightMessage = new FightMessage($attacker->getUser()->getId(), $target->getUser()->getId());
+            $fightMessages[] = $fightMessage;
+
+            $fightMessage->add(sprintf(
                 "Die %s feuert mit einem %s auf die %s",
                 $attacker->getName(),
                 $this->getEnergyWeapon($attacker)->getName(),
                 $target->getName()
-            );
+            ));
 
             if (
                 $attacker->getHitChance() * (100 - $target->getEvadeChance()) < rand(1, 10000)
             ) {
-                $msg[] = "Die " . $target->getName() . " wurde verfehlt";
+                $fightMessage->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }
             $isCritical = $this->isCritical($attacker, $target->getCloakState());
@@ -71,7 +74,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setHullDamageFactor($attacker->getRump()->getPhaserHullDamageFactor());
             $damage_wrapper->setIsPhaserDamage(true);
 
-            $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $targetWrapper));
+            $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
             if ($target->isDestroyed()) {
                 if ($isAlertRed) {
@@ -103,10 +106,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 $this->checkForPrestige($attacker->getUser(), $target);
 
                 $targetId = $target->getId();
-                $destroyMsg = $this->shipRemover->destroy($targetWrapper);
-                if ($destroyMsg !== null) {
-                    $msg[] = $destroyMsg;
-                }
+                $fightMessage->add($this->shipRemover->destroy($targetWrapper));
 
                 unset($targetPool[$targetId]);
 
@@ -116,7 +116,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             }
         }
 
-        return $msg;
+        return $fightMessages;
     }
 
     private function hasUnsufficientEnergy(?ShipWrapperInterface $wrapper, $attackingPhalanx): bool

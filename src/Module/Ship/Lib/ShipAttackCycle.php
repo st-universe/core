@@ -9,6 +9,10 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Ship\Lib\Battle\FightMessage;
+use Stu\Module\Ship\Lib\Battle\FightMessageCollection;
+use Stu\Module\Ship\Lib\Battle\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\FightMessageInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -36,7 +40,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     private bool $firstStrike = true;
 
-    private array $messages = [];
+    private FightMessageCollectionInterface $messages;
 
     private array $usedShips = ['attacker' => [], 'defender' => []];
 
@@ -66,7 +70,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->oneWay = $oneWay;
 
         $this->firstStrike = true;
-        $this->messages = [];
+        $this->messages = new FightMessageCollection();
         $this->usedShips = ['attacker' => [], 'defender' => []];
     }
 
@@ -91,11 +95,11 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     public function cycle(bool $isAlertRed = false): void
     {
         foreach ($this->attacker as $attacker) {
-            $this->addMessageMerge($this->fightLib->ready($attacker));
+            $this->addMessageMerge($attacker->get()->getUser()->getId(), $this->fightLib->ready($attacker));
         }
         if (!$this->oneWay) {
             foreach ($this->defender as $defender) {
-                $this->addMessageMerge($this->fightLib->ready($defender));
+                $this->addMessageMerge($defender->get()->getUser()->getId(), $this->fightLib->ready($defender));
             }
         }
 
@@ -151,14 +155,14 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 }
             }
 
-            $this->addMessageMerge($this->energyWeaponPhase->fire(
+            $this->addFightMessages($this->energyWeaponPhase->fire(
                 $attackingShipWrapper,
                 null,
                 $targetShipWrappers,
                 $isAlertRed
             ));
 
-            $this->addMessageMerge($this->projectileWeaponPhase->fire(
+            $this->addFightMessages($this->projectileWeaponPhase->fire(
                 $attackingShipWrapper,
                 null,
                 $this->fightLib->filterInactiveShips($targetShipWrappers),
@@ -175,12 +179,27 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         }
     }
 
-    private function addMessageMerge($msg): void
+    /**
+     * @param FightMessageInterface[] $messages
+     */
+    private function addFightMessages(array $messages): void
     {
-        $this->messages = array_merge($this->getMessages(), $msg);
+        foreach ($messages as $message) {
+            $this->messages->add($message);
+        }
     }
 
-    public function getMessages(): array
+    /**
+     * @param string[] $msg
+     */
+    private function addMessageMerge(int $senderId, $msg): void
+    {
+        $fightMessage = new FightMessage($senderId, null);
+        $fightMessage->addMessageMerge($msg);
+        $this->messages->add($fightMessage);
+    }
+
+    public function getMessages(): FightMessageCollectionInterface
     {
         return $this->messages;
     }

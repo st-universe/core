@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Module\Ship\Lib\Battle\FightMessageCollectionInterface;
 use Stu\Orm\Entity\ShipWrapperInterface;
 
 interface ShipAttackCycleInterface
@@ -19,5 +20,5 @@ interface ShipAttackCycleInterface
 
     public function cycle(bool $isAlertRed = false);
 
-    public function getMessages();
+    public function getMessages(): FightMessageCollectionInterface;
 }

@@ -295,7 +295,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $this->shipWrapperFactory->wrapShips($defender),
         );
         $this->shipAttackCycle->cycle(true);
-        $messages = $this->shipAttackCycle->getMessages();
+        $messages = $this->shipAttackCycle->getMessages()->getMessageDump();
 
         if (empty($messages)) {
             //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
@@ -315,7 +315,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $alertShip->isDestroyed() ? null : $href
         );
         $pm = sprintf(_('Fremde Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getSectorString());
-        foreach ($this->shipAttackCycle->getMessages() as $value) {
+        foreach ($messages as $value) {
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
@@ -327,11 +327,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
         if ($leadShip->isDestroyed()) {
 
-            $informations = array_merge($informations, $this->shipAttackCycle->getMessages());
+            $informations = array_merge($informations, $messages);
             return;
         }
 
         $informations[] = sprintf(_('[b][color=red]%s[/color][/b] fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());
-        $informations = array_merge($informations, $this->shipAttackCycle->getMessages());
+        $informations = array_merge($informations, $messages);
     }
 }

@@ -20,7 +20,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         array $targetPool,
         bool $isAlertRed = false
     ): array {
-        $msg = [];
+        $fightMessages = [];
 
         $attacker = $wrapper !== null ? $wrapper->get() : $attackingPhalanx;
 
@@ -51,7 +51,10 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
             $this->reduceEps($wrapper, $attackingPhalanx);
 
-            $msg[] = "Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName();
+            $fightMessage = new FightMessage($attacker->getUser()->getId(), $target->getUser()->getId());
+            $fightMessages[] = $fightMessage;
+
+            $fightMessage->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
 
             // higher evade chance for pulseships against torpedo ships
 
@@ -61,7 +64,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 $hitchance = $attacker->getHitChance();
             }
             if ($hitchance * (100 - $target->getEvadeChance()) < rand(1, 10000)) {
-                $msg[] = "Die " . $target->getName() . " wurde verfehlt";
+                $fightMessage->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }
             $isCritical = $this->isCritical($torpedo, $target->getCloakState());
@@ -74,7 +77,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
 
-            $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $targetWrapper));
+            $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
             if ($target->isDestroyed()) {
                 unset($targetPool[$target->getId()]);
@@ -105,14 +108,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                     }
                 }
                 $this->checkForPrestige($attacker->getUser(), $target);
-                $destroyMsg = $this->shipRemover->destroy($targetWrapper);
-                if ($destroyMsg !== null) {
-                    $msg[] = $destroyMsg;
-                }
+                $fightMessage->add($this->shipRemover->destroy($targetWrapper));
             }
         }
 
-        return $msg;
+        return $fightMessages;
     }
 
     private function hasUnsufficientEnergy(?ShipWrapperInterface $wrapper, $attackingPhalanx): bool

@@ -13,6 +13,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\FightMessageCollectionInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -129,9 +130,6 @@ final class AttackShip implements ActionControllerInterface
             $ship->setDockedTo(null);
         }
 
-        $target_user_id = $target->getUser()->getId();
-        $isTargetBase = $target->isBase();
-
         [$attacker, $defender, $fleet, $isWebSituation] = $this->getAttackerDefender($ship, $target);
 
         $this->shipAttackCycle->init(
@@ -140,19 +138,11 @@ final class AttackShip implements ActionControllerInterface
             $isWebSituation
         );
         $this->shipAttackCycle->cycle();
+        $messageCollection = $this->shipAttackCycle->getMessages();
 
-        $pm = sprintf(_('Kampf in Sektor %s') . "\n", $ship->getSectorString());
-        foreach ($this->shipAttackCycle->getMessages() as $value) {
-            $pm .= $value . "\n";
-        }
-        $this->privateMessageSender->send(
-            $userId,
-            (int) $target_user_id,
-            $pm,
-            $isTargetBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-        );
+        $this->sendPms($ship, $messageCollection, !$isWebSituation && $target->isBase());
 
-        $msg = $this->shipAttackCycle->getMessages();
+        $msg = $messageCollection->getMessageDump();
 
         if ($isActiveTractorShipWarped) {
             //Alarm-Rot check for ship
@@ -178,6 +168,25 @@ final class AttackShip implements ActionControllerInterface
         } else {
             $game->addInformationMerge($msg);
             $game->setTemplateVar('FIGHT_RESULTS', null);
+        }
+    }
+
+    private function sendPms(ShipInterface $ship, FightMessageCollectionInterface $messageCollection, bool $isTargetBase): void
+    {
+        foreach ($messageCollection->getRecipientIds() as $recipientId) {
+            $messageDump = $messageCollection->getMessageDump($recipientId);
+
+            $pm = sprintf(_('Kampf in Sektor %s') . "\n", $ship->getSectorString());
+            foreach ($messageDump as $value) {
+                $pm .= $value . "\n";
+            }
+
+            $this->privateMessageSender->send(
+                $ship->getUser()->getId(),
+                $recipientId,
+                $pm,
+                $isTargetBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
         }
     }
 
