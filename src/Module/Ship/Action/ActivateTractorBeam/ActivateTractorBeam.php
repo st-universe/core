@@ -217,7 +217,6 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if (!$this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
             throw new SystemNotDeactivatableException('TRACTOR ERROR');
         }
-        $this->shipRepository->save($ship);
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
