@@ -16,6 +16,7 @@ use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
+use Stu\Module\Ship\Lib\Battle\FightMessageInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -165,7 +166,7 @@ final class AttackBuilding implements ActionControllerInterface
             if (count($attackerPool) === 0) {
                 break;
             }
-            $this->addMessageMerge($this->energyWeaponPhase->fire(null, $defendingPhalanx, $attackerPool));
+            $this->addFightMessageMerge($this->energyWeaponPhase->fire(null, $defendingPhalanx, $attackerPool));
         }
 
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
@@ -177,7 +178,7 @@ final class AttackBuilding implements ActionControllerInterface
             if (count($attackerPool) === 0) {
                 break;
             }
-            $this->addMessageMerge($this->projectileWeaponPhase->fire(null, $defendingPhalanx, $attackerPool));
+            $this->addFightMessageMerge($this->projectileWeaponPhase->fire(null, $defendingPhalanx, $attackerPool));
         }
 
         // OFFENSE OF ATTACKING SHIPS
@@ -229,6 +230,19 @@ final class AttackBuilding implements ActionControllerInterface
         }
     }
 
+    /**
+     * @param FightMessageInterface[] $fightMessages
+     */
+    private function addFightMessageMerge(array $fightMessages): void
+    {
+        foreach ($fightMessages as $message) {
+            $this->messages = array_merge($this->messages, $message->getMessage());
+        }
+    }
+
+    /**
+     * @param string[] $msg
+     */
     private function addMessageMerge($msg): void
     {
         $this->messages = array_merge($this->messages, $msg);
