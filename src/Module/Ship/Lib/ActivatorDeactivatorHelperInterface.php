@@ -24,7 +24,7 @@ interface ActivatorDeactivatorHelperInterface
         int $systemId,
         GameControllerInterface $game,
         bool $allowUplink = false
-    ): void;
+    ): bool;
 
     public function deactivateFleet(
         int $shipId,
@@ -32,7 +32,7 @@ interface ActivatorDeactivatorHelperInterface
         GameControllerInterface $game
     ): void;
 
-	public function setLSSMode(
+    public function setLSSMode(
         int $shipId,
         int $lssMode,
         GameControllerInterface $game
