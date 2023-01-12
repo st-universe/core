@@ -93,8 +93,9 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
     {
         $ship = $wrapper->get();
 
+        $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
+
         if ($ship->isTractoring()) {
-            $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
 
             $traktor = $ship->getTractoredShip();
 
