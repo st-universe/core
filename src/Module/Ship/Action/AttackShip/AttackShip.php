@@ -130,6 +130,8 @@ final class AttackShip implements ActionControllerInterface
             $ship->setDockedTo(null);
         }
 
+        $isTargetBase = $target->isBase();
+
         [$attacker, $defender, $fleet, $isWebSituation] = $this->getAttackerDefender($ship, $target);
 
         $this->shipAttackCycle->init(
@@ -140,7 +142,7 @@ final class AttackShip implements ActionControllerInterface
         $this->shipAttackCycle->cycle();
         $messageCollection = $this->shipAttackCycle->getMessages();
 
-        $this->sendPms($ship, $messageCollection, !$isWebSituation && $target->isBase());
+        $this->sendPms($ship, $messageCollection, !$isWebSituation && $isTargetBase);
 
         $msg = $messageCollection->getMessageDump();
 

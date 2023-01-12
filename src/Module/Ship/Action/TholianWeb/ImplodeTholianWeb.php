@@ -84,6 +84,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
 
         //damage captured targets
         foreach ($web->getCapturedShips() as $target) {
+            $this->loggerUtil->log(sprintf('capturedTargetId: %d', $target->getId()));
             $targetWrapper = $wrapper->getShipWrapperFactory()->wrapShip($ship);
             $this->tholianWebUtil->releaseShipFromWeb($targetWrapper);
 
@@ -91,6 +92,10 @@ final class ImplodeTholianWeb implements ActionControllerInterface
             if ($target->isDestroyed()) {
                 continue;
             }
+
+            //store these values, cause they are changed in case of destruction
+            $targetUserId = $target->getUser()->getId();
+            $isTargetBase = $target->isBase();
 
             $msg = $this->tholianWebWeaponPhase->damageCapturedShip($targetWrapper, $game);
 
@@ -102,9 +107,9 @@ final class ImplodeTholianWeb implements ActionControllerInterface
             //notify target owner
             $this->privateMessageSender->send(
                 $userId,
-                $target->getUser()->getId(),
+                $targetUserId,
                 $pm,
-                $target->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
 
             $game->addInformationMergeDown($msg);
