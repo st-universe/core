@@ -164,6 +164,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
                 continue;
             }
 
+            //ships in finished tholian web dont attack
+            if ($shipOnLocation->getHoldingWeb() !== null && $shipOnLocation->getHoldingWeb()->isFinished()) {
+                continue;
+            }
+
             $fleet = $shipOnLocation->getFleet();
 
             if ($fleet === null) {
