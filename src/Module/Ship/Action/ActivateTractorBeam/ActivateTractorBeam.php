@@ -23,6 +23,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
@@ -111,22 +112,22 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
         if ($target->getSpacecraftType() !== SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP) {
             $game->addInformation("Das Ziel kann nicht erfasst werden");
-            $this->abort($ship, $game);
+            $this->abort($wrapper, $game);
             return;
         }
         if ($target->isTractored()) {
             $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $target->getTractoringShip()->getName() . " gehalten");
-            $this->abort($ship, $game);
+            $this->abort($wrapper, $game);
             return;
         }
         if ($target->getHoldingWeb() !== null && $target->getHoldingWeb()->isFinished()) {
             $game->addInformation("Ziel kann nicht erfasst werden, da es in einem Energienetz gefangen ist");
-            $this->abort($ship, $game);
+            $this->abort($wrapper, $game);
             return;
         }
         if ($target->getFleetId() && $target->getFleetId() == $ship->getFleetId()) {
             $game->addInformation("Die " . $targetName . " befindet sich in der selben Flotte wie die " . $shipName);
-            $this->abort($ship, $game);
+            $this->abort($wrapper, $game);
             return;
         }
         if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED)
@@ -175,21 +176,21 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
         if ($target->isDestroyed()) {
             $game->addInformation("Das Ziel wurde bei dem Angriff zerstört");
-            $this->abort($ship, $game);
+            $this->abort($wrapper, $game);
             return;
         }
 
         //is nbs system still healthy?
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_NBS)) {
             $game->addInformation("Abbruch, die Nahbereichssensoren wurden bei dem Angriff zerstört");
-            $this->abort($ship, $game);
+            $this->abort($wrapper, $game);
             return;
         }
 
 
         if ($target->getShieldState()) {
             $game->addInformation("Die " . $targetName . " kann aufgrund der aktiven Schilde nicht erfasst werden");
-            $this->abort($ship, $game);
+            $this->abort($wrapper, $game);
             return;
         }
         $this->shipSystemManager->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //forced active deactivation
@@ -208,15 +209,13 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $game->addInformation("Der Traktorstrahl wurde auf die " . $targetName . " gerichtet");
     }
 
-    private function abort($ship, $game): void
+    private function abort(ShipWrapperInterface $wrapper, $game): void
     {
         //flush to persist activated state
         $this->entityManager->flush();
 
         // deactivate system
-        if (!$this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
-            throw new SystemNotDeactivatableException('TRACTOR ERROR');
-        }
+        $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
