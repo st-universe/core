@@ -540,6 +540,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private function repairShipsOnColonies(int $tickId): void
     {
+        $usedShipyards = [];
+
         foreach ($this->colonyShipRepairRepository->getMostRecentJobs($tickId) as $obj) {
 
             $ship = $obj->getShip();
@@ -553,7 +555,23 @@ final class ShipTickManager implements ShipTickManagerInterface
                 continue;
             }
 
-            if ($this->repairShipOnEntity($ship, $colony, true)) {
+            if (!array_key_exists($colony->getId(), $usedShipyards)) {
+                $usedShipyards[$colony->getId()] = [];
+            }
+
+            $isRepairStationBonus = $colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+
+            //already repaired a ship on this colony field, max is one without repair station
+            if (
+                !$isRepairStationBonus
+                && array_key_exists($obj->getField()->getFieldId(), $usedShipyards[$colony->getId()])
+            ) {
+                continue;
+            }
+
+            $usedShipyards[$colony->getId()][$obj->getField()->getFieldId()] = [$obj->getField()->getFieldId()];
+
+            if ($this->repairShipOnEntity($ship, $colony, true, $isRepairStationBonus)) {
                 $this->colonyShipRepairRepository->delete($obj);
                 $this->shipRepository->save($ship);
             }
@@ -573,14 +591,14 @@ final class ShipTickManager implements ShipTickManagerInterface
                 continue;
             }
 
-            if ($this->repairShipOnEntity($ship, $station, false)) {
+            if ($this->repairShipOnEntity($ship, $station, false, false)) {
                 $this->stationShipRepairRepository->delete($obj);
                 $this->shipRepository->save($ship);
             }
         }
     }
 
-    private function repairShipOnEntity(ShipInterface $ship, $entity, bool $isColony): bool
+    private function repairShipOnEntity(ShipInterface $ship, $entity, bool $isColony, bool $isRepairStationBonus): bool
     {
 
         // check for U-Mode
@@ -597,7 +615,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
         $repairFinished = false;
 
-        $ship->setHuell($ship->getHull() + $ship->getRepairRate());
+        $hullRepairRate = $isRepairStationBonus ? $ship->getRepairRate() * 2 : $ship->getRepairRate();
+        $ship->setHuell($ship->getHull() + $hullRepairRate);
         if ($ship->getHull() > $ship->getMaxHuell()) {
             $ship->setHuell($ship->getMaxHuell());
         }
@@ -621,6 +640,26 @@ final class ShipTickManager implements ShipTickManagerInterface
 
                 if ($ship->getCrewCount() > 0) {
                     $secondSystem->setMode($this->shipSystemManager->lookupSystem($secondSystem->getSystemType())->getDefaultMode());
+                }
+            }
+
+            // maximum of two additional systems get repaired
+            if ($isRepairStationBonus) {
+                if (count($damagedSystems) > 2) {
+                    $thirdSystem = $damagedSystems[2];
+                    $thirdSystem->setStatus(100);
+
+                    if ($ship->getCrewCount() > 0) {
+                        $thirdSystem->setMode($this->shipSystemManager->lookupSystem($thirdSystem->getSystemType())->getDefaultMode());
+                    }
+                }
+                if (count($damagedSystems) > 3) {
+                    $fourthSystem = $damagedSystems[3];
+                    $fourthSystem->setStatus(100);
+
+                    if ($ship->getCrewCount() > 0) {
+                        $fourthSystem->setMode($this->shipSystemManager->lookupSystem($fourthSystem->getSystemType())->getDefaultMode());
+                    }
                 }
             }
         }

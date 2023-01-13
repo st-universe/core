@@ -49,7 +49,7 @@ implements
                     SELECT  *, ROW_NUMBER() OVER (PARTITION BY colony_id, field_id ORDER BY id ASC) rn
                     FROM    stu_colonies_shiprepair
                     ) c
-            WHERE   c.rn = 1',
+            WHERE   c.rn IN (1,2)',
             $rsm
         )
             ->setParameter('tickId', $tickId)
