@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -28,6 +29,8 @@ final class FinishTholianWebs implements ProcessTickInterface
 
     private LeaveFleetInterface $leaveFleet;
 
+    private ShipSystemManagerInterface $shipSystemManager;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private LoggerUtilInterface $loggerUtil;
@@ -37,6 +40,7 @@ final class FinishTholianWebs implements ProcessTickInterface
         TholianWebUtilInterface $tholianWebUtil,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         LeaveFleetInterface $leaveFleet,
+        ShipSystemManagerInterface $shipSystemManager,
         PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -44,6 +48,7 @@ final class FinishTholianWebs implements ProcessTickInterface
         $this->tholianWebUtil = $tholianWebUtil;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->leaveFleet = $leaveFleet;
+        $this->shipSystemManager = $shipSystemManager;
         $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
