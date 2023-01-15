@@ -192,7 +192,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id != :ignoreUserId AND (u.show_online_status = :allowStart OR u.id IN (
+                'SELECT u FROM %s u
+                WHERE u.id != :ignoreUserId
+                AND u.id > 100
+                AND (u.show_online_status = :allowStart OR u.id IN (
                         SELECT cl.user_id FROM %s cl WHERE cl.mode = :contactListModeFriend AND cl.recipient = :ignoreUserId
                     )
                 ) AND u.lastaction > :lastActionThreshold',
