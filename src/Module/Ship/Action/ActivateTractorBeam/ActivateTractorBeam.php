@@ -193,7 +193,9 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->abort($ship, $game);
             return;
         }
-        $this->shipSystemManager->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //forced active deactivation
+        if ($target->isTractoring()) {
+            $this->shipSystemManager->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //forced active deactivation
+        }
         $target->setDockedTo(null);
         $ship->setTractoredShip($target);
         $this->shipRepository->save($ship);
