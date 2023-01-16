@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowByPosition implements ViewControllerInterface
 {
@@ -17,18 +18,24 @@ final class ShowByPosition implements ViewControllerInterface
 
     private ShowSectionRequestInterface $request;
 
+    private LayerRepositoryInterface $layerRepository;
+
     public function __construct(
-        ShowSectionRequestInterface $request
+        ShowSectionRequestInterface $request,
+        LayerRepositoryInterface $layerRepository
     ) {
         $this->request = $request;
+        $this->layerRepository = $layerRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $xCoordinate = $this->request->getXCoordinate();
-        $yCoordinate = $this->request->getYCoordinate();
+        $layerId = $this->request->getLayerId();
+        $layer = $this->layerRepository->find($layerId);
+
+        $xCoordinate = $this->request->getXCoordinate($layer);
+        $yCoordinate = $this->request->getYCoordinate($layer);
         $sectionId = $this->request->getSectionId();
-        $layer = $this->request->getLayer();
 
         //sanity check if user knows layer
         if (!$game->getUser()->hasSeen($layer->getId())) {
