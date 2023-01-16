@@ -60,7 +60,7 @@ class Ship implements ShipInterface
     private $fleets_id;
 
     /** @Column(type="integer", length=5, nullable=true) */
-    private $layer = MapEnum::LAYER_ID_CRAGGANMORE;
+    private $layer_id = MapEnum::LAYER_ID_CRAGGANMORE;
 
     /** @Column(type="integer", length=5) */
     private $cx = 0;
@@ -300,6 +300,15 @@ class Ship implements ShipInterface
     public function getSystemsId(): ?int
     {
         return $this->getSystem() !== null ? $this->getSystem()->getId() : null;
+    }
+
+    public function getLayer(): ?LayerInterface
+    {
+        if ($this->getMap() !== null) {
+            return $this->getMap()->getLayer();
+        }
+
+        return $this->getSystem()->getLayer();
     }
 
     public function getLayerId(): int
@@ -1107,6 +1116,7 @@ class Ship implements ShipInterface
         $this->map = $map;
 
         if ($map !== null) {
+            $this->setLayerId($map->getLayer()->getId());
             $this->setCx($map->getCx());
             $this->setCy($map->getCy());
         }
@@ -1124,6 +1134,12 @@ class Ship implements ShipInterface
         $this->starsystem_map = $starsystem_map;
 
         if ($starsystem_map !== null) {
+            $system = $starsystem_map->getSystem();
+            if ($system->isWormhole()) {
+                $this->setLayerId(MapEnum::LAYER_ID_WORMHOLES);
+            } else {
+                $this->setLayerId($system->getMapField()->getLayer()->getId());
+            }
             $this->setCx($starsystem_map->getSystem()->getCx());
             $this->setCy($starsystem_map->getSystem()->getCy());
         }

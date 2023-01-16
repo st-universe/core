@@ -10,8 +10,16 @@ use Stu\Orm\Entity\LayerInterface;
  */
 interface LayerRepositoryInterface extends ObjectRepository
 {
+    public function prototype(): LayerInterface;
+
+    public function save(LayerInterface $layer): void;
+
+    public function delete(LayerInterface $layer): void;
+
     /**
      * @return LayerInterface[]
      */
     public function findAllIndexed(): array;
+
+    public function getKnownByUser(int $userId): array;
 }

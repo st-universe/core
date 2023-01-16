@@ -56,7 +56,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
             return;
         }
 
-        $mapField = $this->mapRepository->getByCoordinates($cx, $cy);
+        $mapField = $this->mapRepository->getByCoordinates($ship->getLayerId(), $cx, $cy);
 
         $game->showMacro('html/stationmacros.xhtml/systemsensorscan');
 

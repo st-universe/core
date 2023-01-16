@@ -8,13 +8,15 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 class YRow
 {
 
+    protected $layerId = null;
     protected $row = null;
     protected $minx = null;
     protected $maxx = null;
     protected $systemId = null;
 
-    function __construct($cury, $minx, $maxx, $systemId = 0)
+    function __construct($layerId, $cury, $minx, $maxx, $systemId = 0)
     {
+        $this->layerId = $layerId;
         $this->row = $cury;
         $this->minx = $minx;
         $this->maxx = $maxx;
@@ -29,9 +31,16 @@ class YRow
             // @todo refactor
             global $container;
 
+            /**
+             * @var MapRepositoryInterface
+             */
             $mapRepository = $container->get(MapRepositoryInterface::class);
             for ($i = $this->minx; $i <= $this->maxx; $i++) {
-                $this->fields[] = $mapRepository->getByCoordinates((int) $i, (int) $this->row);
+                $this->fields[] = $mapRepository->getByCoordinates(
+                    $this->layerId,
+                    (int) $i,
+                    (int) $this->row
+                );
             }
         }
         return $this->fields;

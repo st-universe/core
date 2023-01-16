@@ -843,6 +843,14 @@
 					Gesperrt bis ${datetime:SHIP/getTranswarpCooldown}</span>
 			</td>
 			<td>
+				Areal:
+				<select name="transwarplayer">
+					<tal:block tal:repeat="userlayer THIS/getUser/getUserLayers">
+						<option tal:content="userlayer/getLayer/getName"
+							tal:attributes="value userlayer/getLayer/getId; selected php:userlayer.getLayer().getId() EQ SHIP.getLayerId()">
+							NAME</option>
+					</tal:block>
+				</select>
 				X:
 				<input type="text" size="2" name="transwarpcx" id="transwarpcx"
 					onkeydown="event.key == 'Enter' && $('transwarpButton').click()" />

@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class ShowMapInfluenceAreas implements ViewControllerInterface
@@ -16,24 +17,29 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private LayerRepositoryInterface $layerRepository;
+
     public function __construct(
-        MapRepositoryInterface $mapRepository
+        MapRepositoryInterface $mapRepository,
+        LayerRepositoryInterface $layerRepository
     ) {
         $this->mapRepository = $mapRepository;
+        $this->layerRepository = $layerRepository;
     }
 
+    //TODO handle layer input
     public function handle(GameControllerInterface $game): void
     {
         $showAllyAreas = request::getInt('showAlly');
-
-        $img = imagecreatetruecolor(MapEnum::MAP_MAX_X * 15, MapEnum::MAP_MAX_Y * 15);
+        $layer = $this->layerRepository->find(MapEnum::LAYER_ID_CRAGGANMORE);
+        $img = imagecreatetruecolor($layer->getWidth() * 15,  $layer->getHeight() * 15);
 
         // mapfields
         $startY = 1;
         $cury = 0;
         $curx = 0;
 
-        foreach ($this->mapRepository->getAllOrdered() as $data) {
+        foreach ($this->mapRepository->getAllOrdered(MapEnum::LAYER_ID_CRAGGANMORE) as $data) {
             $col = null;
 
             if ($startY != $data->getCy()) {

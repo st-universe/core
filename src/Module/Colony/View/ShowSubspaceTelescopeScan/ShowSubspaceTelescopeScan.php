@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\View\ShowSubspaceTelescopeScan;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -77,11 +76,13 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 
     private function calculateScanCost(ColonyInterface $colony, int $cx, int $cy): int
     {
+        $layer = $colony->getSystem()->getLayer();
+
         $difX = abs($cx - $colony->getSystem()->getCx());
         $difY = abs($cy - $colony->getSystem()->getCy());
         $diagonal = (int)ceil(sqrt($difX * $difX + $difY * $difY));
 
-        $maxDiagonal = (int)ceil(sqrt((MapEnum::MAP_MAX_X - 1) * (MapEnum::MAP_MAX_X - 1) + (MapEnum::MAP_MAX_Y - 1) * (MapEnum::MAP_MAX_Y - 1)));
+        $maxDiagonal = (int)ceil(sqrt(($layer->getWidth() - 1) * ($layer->getWidth() - 1) + ($layer->getHeight() - 1) * ($layer->getHeight() - 1)));
 
         $neededEnergy = self::SCAN_BASE_COST + $diagonal / $maxDiagonal * self::SCAN_VARIABEL_COST;
 

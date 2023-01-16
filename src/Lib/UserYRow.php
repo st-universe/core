@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Stu\Component\Map\MapEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -11,9 +10,9 @@ class UserYRow extends YRow
 {
     private $user;
 
-    function __construct(UserInterface $user, $cury, $minx, $maxx, $systemId = 0)
+    function __construct(UserInterface $user, $layerId, $cury, $minx, $maxx, $systemId = 0)
     {
-        parent::__construct($cury, $minx, $maxx, $systemId);
+        parent::__construct($layerId, $cury, $minx, $maxx, $systemId);
         $this->user = $user;
     }
 
@@ -25,19 +24,23 @@ class UserYRow extends YRow
 
             $this->fields = [];
 
-            $result = $container->get(MapRepositoryInterface::class)->getExplored($this->user->getId(), (int) $this->minx, (int) $this->maxx, (int) $this->row);
-            $mapType = $this->user->getMapType();
+            /**
+             * @var MapRepositoryInterface
+             */
+            $repo = $container->get(MapRepositoryInterface::class);
+            $result = $repo->getExplored(
+                $this->user->getId(),
+                $this->layerId,
+                (int) $this->minx,
+                (int) $this->maxx,
+                (int) $this->row
+            );
+            $hasExploredLayer = $this->user->hasExplored($this->layerId);
 
             /** @var ExploreableStarMap $item */
             foreach ($result as $item) {
-                if ($mapType == MapEnum::MAPTYPE_INSERT) {
-                    if ($item->getUserId() === null) {
-                        $item->setHide(true);
-                    }
-                } else {
-                    if ($item->getUserId() !== null) {
-                        $item->setHide(true);
-                    }
+                if (!$hasExploredLayer && $item->getUserId() === null) {
+                    $item->setHide(true);
                 }
                 $this->fields[$item->getCx()] = $item;
             }

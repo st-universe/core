@@ -40,7 +40,9 @@ interface StarSystemInterface
 
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): StarSystemInterface;
 
-    public function getMapField(): MapInterface;
+    public function getLayer(): ?LayerInterface;
+
+    public function getMapField(): ?MapInterface;
 
     public function getBase(): ?ShipInterface;
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\View\ShowSection;
 
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
@@ -27,15 +28,22 @@ final class ShowSection implements ViewControllerInterface
         $xCoordinate = $this->showSectionRequest->getXCoordinate();
         $yCoordinate = $this->showSectionRequest->getYCoordinate();
         $sectionId = $this->showSectionRequest->getSectionId();
+        $layer = $this->showSectionRequest->getLayer();
+
+        //sanity check if user knows layer
+        if (!$game->getUser()->hasSeen($layer->getId())) {
+            throw new SanityCheckException('user tried to access unseen layer');
+        }
 
         $game->setTemplateFile('html/starmap_section.xhtml');
         $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
         $game->appendNavigationPart(
             sprintf(
-                'starmap.php?SHOW_SECTION=1&x=%d&y=%d&sec=%d',
+                'starmap.php?SHOW_SECTION=1&x=%d&y=%d&sec=%d&layerid=%d',
                 $xCoordinate,
                 $yCoordinate,
-                $sectionId
+                $sectionId,
+                $layer->getId()
             ),
             sprintf(_('Sektion %d anzeigen'), $sectionId)
         );
@@ -44,6 +52,7 @@ final class ShowSection implements ViewControllerInterface
         $helper = new MapSectionHelper();
         $helper->setTemplateVars(
             $game,
+            $layer,
             $xCoordinate,
             $yCoordinate,
             $sectionId,

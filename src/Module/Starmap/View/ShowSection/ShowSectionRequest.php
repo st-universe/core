@@ -4,18 +4,38 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowSection;
 
-use Stu\Component\Map\MapEnum;
 use Stu\Lib\Request\CustomControllerHelperTrait;
+use Stu\Orm\Entity\LayerInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowSectionRequest implements ShowSectionRequestInterface
 {
     use CustomControllerHelperTrait;
 
+    private LayerRepositoryInterface $layerRepository;
+
+    private ?LayerInterface $layer = null;
+
+    public function __construct(LayerRepositoryInterface $layerRepository)
+    {
+        $this->layerRepository = $layerRepository;
+    }
+
+    public function getLayer(): LayerInterface
+    {
+        if ($this->layer === null) {
+            $layerId = $this->queryParameter('layerid')->int()->required();
+            $this->layer = $this->layerRepository->find($layerId);
+        }
+
+        return $this->layer;
+    }
+
     public function getXCoordinate(): int
     {
         return $this->getCoordinate(
             $this->queryParameter('x')->int()->required(),
-            MapEnum::MAP_MAX_X
+            true
         );
     }
 
@@ -23,7 +43,7 @@ final class ShowSectionRequest implements ShowSectionRequestInterface
     {
         return $this->getCoordinate(
             $this->queryParameter('y')->int()->required(),
-            MapEnum::MAP_MAX_Y
+            false
         );
     }
 
@@ -32,7 +52,10 @@ final class ShowSectionRequest implements ShowSectionRequestInterface
         return $this->queryParameter('sec')->int()->required();
     }
 
-    private function getCoordinate(int $value, int $max_value): int {
+    private function getCoordinate(int $value, bool $isWidth): int
+    {
+        $max_value = $isWidth ? $this->getLayer()->getWidth() : $this->getLayer()->getHeight();
+
         return max(1, min($value, $max_value));
     }
 }

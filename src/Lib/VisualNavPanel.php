@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -10,6 +9,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\UserLayerRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class VisualNavPanel
@@ -68,20 +68,43 @@ class VisualNavPanel
         $cy = $this->getShip()->getCY();
         $range = $this->getShip()->getSensorRange();
 
+        $layerId = $this->ship->getLayerId();
+        $hasSeenLayer = $this->user->hasSeen($layerId);
+        $hasExploredLayer = $this->user->hasExplored($layerId);
+
         // @todo refactor
         global $container;
+
+        /**
+         * @var UserLayerRepositoryInterface
+         */
+        $userLayerRepo = $container->get(UserLayerRepositoryInterface::class);
+
+        /**
+         * @var UserMapRepositoryInterface
+         */
         $repo = $container->get(UserMapRepositoryInterface::class);
 
-        if ($this->user->getMapType() === MapEnum::MAPTYPE_INSERT) {
-            $repo->insertMapFieldsForUser(
+        if (!$hasSeenLayer) {
+            $userLayer = $userLayerRepo->prototype();
+            $userLayer->setLayer($this->ship->getLayer());
+            $userLayer->setUser($this->user);
+            $userLayerRepo->save($userLayer);
+            $this->user->getUserLayers()->set($layerId, $userLayer);
+        }
+
+        if ($hasExploredLayer) {
+            $repo->deleteMapFieldsForUser(
                 $this->user->getId(),
+                $layerId,
                 $cx,
                 $cy,
                 $range
             );
         } else {
-            $repo->deleteMapFieldsForUser(
+            $repo->insertMapFieldsForUser(
                 $this->user->getId(),
+                $layerId,
                 $cx,
                 $cy,
                 $range
@@ -183,7 +206,7 @@ class VisualNavPanel
                     continue;
                 }
                 if ($this->system === null) {
-                    if ($this->showOuterMap && $min > MapEnum::MAP_MAX_X) {
+                    if ($this->showOuterMap && $min > $this->getShip()->getLayer()->getWidth()) {
                         break;
                     }
                     if (!$this->showOuterMap && $min > $this->getShip()->getSystem()->getMaxX()) {

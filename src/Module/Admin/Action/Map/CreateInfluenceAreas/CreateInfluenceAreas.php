@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Map\CreateInfluenceAreas;
 
+use request;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -46,8 +47,9 @@ final class CreateInfluenceAreas implements ActionControllerInterface
             return;
         }
 
-        $allMapWithSystem = $this->mapRepository->getAllWithSystem();
-        $allMapWithoutSystem = $this->mapRepository->getAllWithoutSystem();
+        $layerId = request::postIntFatal('layerid');
+        $allMapWithSystem = $this->mapRepository->getAllWithSystem($layerId);
+        $allMapWithoutSystem = $this->mapRepository->getAllWithoutSystem($layerId);
 
         $this->loadMapByCoords($allMapWithoutSystem);
 

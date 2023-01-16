@@ -10,29 +10,30 @@ use Stu\Orm\Entity\MapInterface;
  */
 interface MapRepositoryInterface extends ObjectRepository
 {
-    public function count(array $criteria);
+    public function getAmountByLayer(int $layerId): int;
 
     /**
      * @return MapInterface[]
      */
-    public function getAllOrdered(): array;
+    public function getAllOrdered(int $layerId): array;
 
     /**
      * @return MapInterface[]
      */
-    public function getAllWithSystem(): array;
+    public function getAllWithSystem(int $layerId): array;
 
     /**
      * @return MapInterface[]
      */
-    public function getAllWithoutSystem(): array;
+    public function getAllWithoutSystem(int $layerId): array;
 
-    public function getByCoordinates(int $cx, int $cy): ?MapInterface;
+    public function getByCoordinates(int $layerId, int $cx, int $cy): ?MapInterface;
 
     /**
      * @return MapInterface[]
      */
     public function getByCoordinateRange(
+        int $layerId,
         int $startSx,
         int $endSx,
         int $startSy,
@@ -41,7 +42,7 @@ interface MapRepositoryInterface extends ObjectRepository
 
     public function save(MapInterface $map): void;
 
-    public function getExplored(int $userId, int $startX, int $endX, int $cy): array;
+    public function getExplored(int $userId, int $layerId, int $startX, int $endX, int $cy): array;
 
     public function getRandomPassableUnoccupiedWithoutDamage(): int;
 }

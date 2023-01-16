@@ -106,11 +106,13 @@ final class ShipMover2 implements ShipMover2Interface
                 $posy = $sys->getMaxY();
             }
         } else {
-            if ($posx > MapEnum::MAP_MAX_X) {
-                $posx = MapEnum::MAP_MAX_X;
+            $layer = $leadShip->getLayer();
+
+            if ($posx > $layer->getWidth()) {
+                $posx = $layer->getWidth();
             }
-            if ($posy > MapEnum::MAP_MAX_Y) {
-                $posy = MapEnum::MAP_MAX_Y;
+            if ($posy > $layer->getHeight()) {
+                $posy = $layer->getHeight();
             }
         }
         $this->setDestX($posx);
@@ -729,6 +731,7 @@ final class ShipMover2 implements ShipMover2Interface
             }
             if ($leadShip->getSystem() === null) {
                 $result = $this->mapRepository->getByCoordinateRange(
+                    $leadShip->getLayerId(),
                     $sx,
                     $destx,
                     $sy,

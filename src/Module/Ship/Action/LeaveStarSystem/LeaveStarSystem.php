@@ -25,7 +25,6 @@ use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class LeaveStarSystem implements ActionControllerInterface
 {
@@ -36,8 +35,6 @@ final class LeaveStarSystem implements ActionControllerInterface
     private ShipRepositoryInterface $shipRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
-
-    private MapRepositoryInterface $mapRepository;
 
     private ActivatorDeactivatorHelperInterface $helper;
 
@@ -55,7 +52,6 @@ final class LeaveStarSystem implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        MapRepositoryInterface $mapRepository,
         ActivatorDeactivatorHelperInterface $helper,
         AstroEntryLibInterface $astroEntryLib,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
@@ -66,7 +62,6 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->mapRepository = $mapRepository;
         $this->helper = $helper;
         $this->astroEntryLib = $astroEntryLib;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
@@ -130,7 +125,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         );
 
         //the destination map field
-        $outerMap = $this->mapRepository->getByCoordinates($ship->getSystem()->getCx(), $ship->getSystem()->getCy());
+        $outerMap = $ship->getSystem()->getMapField();
 
         $this->leaveStarSystem($wrapper, $outerMap, $game);
         if ($ship->isTractoring()) {

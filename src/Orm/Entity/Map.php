@@ -64,7 +64,7 @@ class Map implements MapInterface
     private $layer;
 
     /**
-     * @ManyToOne(targetEntity="StarSystem")
+     * @OneToOne(targetEntity="StarSystem", inversedBy="map")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
     private $starSystem;

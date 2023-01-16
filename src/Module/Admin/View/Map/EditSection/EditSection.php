@@ -46,7 +46,7 @@ final class EditSection implements ViewControllerInterface
 
         $fields = [];
         foreach (range($miny, $maxy) as $key => $value) {
-            $fields[] = new YRow($value, $minx, $maxx);
+            $fields[] = new YRow($layerId, $value, $minx, $maxx);
         }
 
         $layer = $this->layerRepository->find($layerId);
@@ -54,7 +54,7 @@ final class EditSection implements ViewControllerInterface
         if ($yCoordinate - 1 >= 1) {
             $game->setTemplateVar(
                 'TOP_PREVIEW_ROW',
-                (new YRow($yCoordinate * self::FIELDS_PER_SECTION - self::FIELDS_PER_SECTION, $minx, $maxx))->getFields()
+                (new YRow($layerId, $yCoordinate * self::FIELDS_PER_SECTION - self::FIELDS_PER_SECTION, $minx, $maxx))->getFields()
             );
         } else {
             $game->setTemplateVar('TOP_PREVIEW_ROW', false);
@@ -62,7 +62,7 @@ final class EditSection implements ViewControllerInterface
         if ($yCoordinate * self::FIELDS_PER_SECTION + 1 <= $layer->getHeight()) {
             $game->setTemplateVar(
                 'BOTTOM_PREVIEW_ROW',
-                (new YRow($yCoordinate * self::FIELDS_PER_SECTION + 1, $minx, $maxx))->getFields()
+                (new YRow($layerId, $yCoordinate * self::FIELDS_PER_SECTION + 1, $minx, $maxx))->getFields()
             );
         } else {
             $game->setTemplateVar(
@@ -73,7 +73,7 @@ final class EditSection implements ViewControllerInterface
         if ($xCoordinate - 1 >= 1) {
             $row = [];
             for ($i = $miny; $i <= $maxy; $i++) {
-                $row[] = new YRow($i, $minx - 1, $minx - 1);
+                $row[] = new YRow($layerId, $i, $minx - 1, $minx - 1);
             }
 
             $game->setTemplateVar(
@@ -90,7 +90,7 @@ final class EditSection implements ViewControllerInterface
         if ($xCoordinate * self::FIELDS_PER_SECTION + 1 <= $layer->getWidth()) {
             $row = [];
             for ($i = $miny; $i <= $maxy; $i++) {
-                $row[] = new YRow($i, $maxx + 1, $maxx + 1);
+                $row[] = new YRow($layerId, $i, $maxx + 1, $maxx + 1);
             }
 
             $game->setTemplateVar(

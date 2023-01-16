@@ -60,7 +60,6 @@ final class ShowMapEditor implements ViewControllerInterface
             }
         }
 
-
         $game->setTemplateVar('LAYERS', $layers);
         $game->setTemplateVar('X_HEAD_ROW', $xHeadRow);
         $game->setTemplateVar('SECTIONS', $sections);

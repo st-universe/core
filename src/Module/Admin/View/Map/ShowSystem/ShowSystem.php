@@ -34,12 +34,15 @@ final class ShowSystem implements ViewControllerInterface
         }
 
         $fields = [];
-        foreach (range(1, $system->getMaxY()) as $key => $value) {
-            $fields[] = new YRow($value, 1, $system->getMaxX(), $system->getId());
+        foreach (range(1, $system->getMaxY()) as $value) {
+            $fields[] = new YRow(null, $value, 1, $system->getMaxX(), $system->getId());
         }
 
         $game->setTemplateFile('html/admin/mapeditor_system.xhtml');
-        $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
+        $game->appendNavigationPart(sprintf(
+            '/admin/?SHOW_MAP_EDITOR=1&layerid=',
+            $system->getLayer()->getId()
+        ), _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(
                 '/admin/?%s=1&sysid=%d',

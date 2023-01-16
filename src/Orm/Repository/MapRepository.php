@@ -6,77 +6,97 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Stu\Component\Map\MapEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 
 final class MapRepository extends EntityRepository implements MapRepositoryInterface
 {
-    public function getAllOrdered(): array
+    public function getAmountByLayer(int $layerId): int
+    {
+        return $this->count([
+            'layer_id' => $layerId
+        ]);
+    }
+
+    public function getAllOrdered(int $layerId): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT m FROM %s m WHERE m.cx BETWEEN 1 AND :mapMaxX AND m.cy BETWEEN 1 AND :mapMaxY
-                        ORDER BY m.cy, m.cx',
-                    Map::class
+                    'SELECT m FROM %s m
+                    JOIN %s l
+                    WITH m.layer_id = l.id
+                    WHERE m.cx BETWEEN 1 AND l.width
+                    AND m.cy BETWEEN 1 AND l.height
+                    AND m.layer_id = :layerId
+                    ORDER BY m.cy, m.cx',
+                    Map::class,
+                    Layer::class
                 )
             )
             ->setParameters([
-                'mapMaxX' => MapEnum::MAP_MAX_X,
-                'mapMaxY' => MapEnum::MAP_MAX_Y
+                'layerId' => $layerId
             ])
             ->getResult();
     }
 
-    public function getAllWithSystem(): array
+    public function getAllWithSystem(int $layerId): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT m FROM %s m INDEX BY m.id
-                    WHERE m.cx BETWEEN 1 AND :mapMaxX
-                    AND m.cy BETWEEN 1 AND :mapMaxY
+                    JOIN %s l
+                    WITH m.layer_id = l.id
+                    WHERE m.cx BETWEEN 1 AND l.width
+                    AND m.cy BETWEEN 1 AND l.height
+                    AND m.layer_id = :layerId
                     AND m.systems_id IS NOT null',
-                    Map::class
+                    Map::class,
+                    Layer::class
                 )
             )
             ->setParameters([
-                'mapMaxX' => MapEnum::MAP_MAX_X,
-                'mapMaxY' => MapEnum::MAP_MAX_Y
+                'layerId' => $layerId
             ])
             ->getResult();
     }
 
-    public function getAllWithoutSystem(): array
+    public function getAllWithoutSystem(int $layerId): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT m FROM %s m INDEX BY m.id
-                    WHERE m.cx BETWEEN 1 AND :mapMaxX
-                    AND m.cy BETWEEN 1 AND :mapMaxY
+                    JOIN %s l
+                    WITH m.layer_id = l.id
+                    WHERE m.cx BETWEEN 1 AND l.width
+                    AND m.cy BETWEEN 1 AND l.height
+                    AND m.layer_id = :layerId
                     AND m.systems_id IS null',
-                    Map::class
+                    Map::class,
+                    Layer::class
                 )
             )
             ->setParameters([
-                'mapMaxX' => MapEnum::MAP_MAX_X,
-                'mapMaxY' => MapEnum::MAP_MAX_Y
+                'layerId' => $layerId
             ])
             ->getResult();
     }
 
-    public function getByCoordinates(int $cx, int $cy): ?MapInterface
+    public function getByCoordinates(int $layerId, int $cx, int $cy): ?MapInterface
     {
         return $this->findOneBy([
+            'layer_id' => $layerId,
             'cx' => $cx,
             'cy' => $cy
         ]);
     }
 
     public function getByCoordinateRange(
+        int $layerId,
         int $startCx,
         int $endCx,
         int $startCy,
@@ -86,12 +106,15 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->createQuery(
                 sprintf(
                     'SELECT m FROM %s m
-                    WHERE m.cx BETWEEN :startCx AND :endCx AND m.cy BETWEEN :startCy AND :endCy
+                    WHERE m.cx BETWEEN :startCx AND :endCx
+                    AND m.cy BETWEEN :startCy AND :endCy
+                    AND m.layer_id = :layerId
                     ORDER BY m.cy, m.cx',
                     Map::class
                 )
             )
             ->setParameters([
+                'layerId' => $layerId,
                 'startCx' => $startCx,
                 'endCx' => $endCx,
                 'startCy' => $startCy,
@@ -107,7 +130,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $em->persist($map);
     }
 
-    public function getExplored(int $userId, int $startX, int $endX, int $cy): array
+    public function getExplored(int $userId, int $layerId, int $startX, int $endX, int $cy): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult(ExploreableStarMap::class, 'm');
@@ -131,18 +154,20 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     (SELECT tp.id FROM stu_ships s JOIN stu_trade_posts tp ON s.id = tp.ship_id WHERE s.map_id = m.id) as tradepost_id
                 FROM stu_map m
                 LEFT JOIN stu_user_map um
-                    ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId
+                    ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId AND um.layer_id = m.layer_id
                 LEFT JOIN stu_systems sys
                     ON m.systems_id = sys.id
                 LEFT JOIN stu_database_user dbu
                     ON dbu.user_id = :userId
                     AND sys.database_id = dbu.database_id
-                WHERE m.cx
-                BETWEEN :startX AND :endX AND m.cy = :cy
+                WHERE m.cx BETWEEN :startX AND :endX
+                AND m.cy = :cy
+                AND m.layer_id = :layerId
                 ORDER BY m.cx ASC',
                 $rsm
             )
             ->setParameters([
+                'layerId' => $layerId,
                 'userId' => $userId,
                 'startX' => $startX,
                 'endX' => $endX,
@@ -160,9 +185,12 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->createNativeQuery(
                 'SELECT m.id
                 FROM stu_map m
+                JOIN stu_layer l
+                ON m.layer_id = l.id
                 JOIN stu_map_ftypes mft
                 ON m.field_id = mft.id
                 WHERE NOT EXISTS (SELECT s.id FROM stu_ships s WHERE s.map_id = m.id)
+                AND l.is_hidden = false
                 AND mft.x_damage = 0
                 AND mft.passable = true
                 ORDER BY RANDOM()

@@ -8,38 +8,35 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
-use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class ShowMapOverall implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MAP_OVERALL';
 
-    private MapBorderTypeRepositoryInterface $mapBorderTypeRepository;
-
-    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
-
     private MapRepositoryInterface $mapRepository;
+
+    private LayerRepositoryInterface $layerRepository;
 
     private ConfigInterface $config;
 
     public function __construct(
-        MapBorderTypeRepositoryInterface $mapBorderTypeRepository,
-        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
         MapRepositoryInterface $mapRepository,
+        LayerRepositoryInterface $layerRepository,
         ConfigInterface $config
     ) {
-        $this->mapBorderTypeRepository = $mapBorderTypeRepository;
-        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
         $this->mapRepository = $mapRepository;
+        $this->layerRepository = $layerRepository;
         $this->config = $config;
     }
 
+    //TODO handle layer input
     public function handle(GameControllerInterface $game): void
     {
         $types = [];
-        $img = imagecreatetruecolor(MapEnum::MAP_MAX_X * 15, MapEnum::MAP_MAX_Y * 15);
+        $layer = $this->layerRepository->find(MapEnum::LAYER_ID_CRAGGANMORE);
+        $img = imagecreatetruecolor($layer->getWidth() * 15, $layer->getHeight() * 15);
 
         // mapfields
         $startY = 1;
@@ -48,7 +45,7 @@ final class ShowMapOverall implements ViewControllerInterface
 
         $webrootWithoutPublic = str_replace("/Public", "", $this->config->get('game.webroot'));
 
-        foreach ($this->mapRepository->getAllOrdered() as $data) {
+        foreach ($this->mapRepository->getAllOrdered(MapEnum::LAYER_ID_CRAGGANMORE) as $data) {
             if ($startY != $data->getCy()) {
                 $startY = $data->getCy();
                 $curx = 0;

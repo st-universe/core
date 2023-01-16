@@ -91,12 +91,14 @@ if ($torptypeId > 0 || $noTorps) {
             '<form action="" method="post">
             <input type="hidden" name="userId" value="%d" />
             <input type="hidden" name="buildplanId" value="%d" />
+            <input type="hidden" name="layer" value="%d" />
             <input type="hidden" name="cx" value="%d" />
             <input type="hidden" name="cy" value="%d" />
             <input type="hidden" name="shipcount" value="%d" />
             ',
             $userId,
             $buildplanId,
+            request::postIntFatal('layer'),
             request::postIntFatal('cx'),
             request::postIntFatal('cy'),
             request::postIntFatal('shipcount')
@@ -145,7 +147,7 @@ if ($torptypeId > 0 || $noTorps) {
 
             printf(
                 '<br /><br />
-                Koordinaten<br /><input type="text" size="3" name="cx" /> | <input type="text" size="3" name="cy" /><br />
+                Koordinaten<br /><input type="text" size="3" name="layer" value="1"/> | <input type="text" size="3" name="cx" /> | <input type="text" size="3" name="cy" /><br />
                 Anzahl<br /><input type="text" size="3" name="shipcount" value="1"/><br /><br />
                 <input type="submit" value="weiter zu Torpedo-Auswahl" /></form>'
             );

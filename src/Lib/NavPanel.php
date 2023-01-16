@@ -38,16 +38,20 @@ class NavPanel
     function getMapBorders()
     {
         $starSystem = $this->getShip()->getSystem();
+
         if ($starSystem !== null) {
-            return array(
+
+            return [
                 "mx" => $starSystem->getMaxX(),
                 "my" => $starSystem->getMaxY()
-            );
+            ];
         }
-        return array(
-            "mx" => MapEnum::MAP_MAX_X,
-            "my" => MapEnum::MAP_MAX_Y
-        );
+
+        $layer = $this->getShip()->getLayer();
+        return [
+            "mx" => $layer->getWidth(),
+            "my" => $layer->getHeight()
+        ];
     }
 
     function getLeft()

@@ -9,7 +9,6 @@ use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -56,13 +55,15 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 
         $mapX =  (int) ceil($colony->getSystem()->getCx() / Overview::FIELDS_PER_SECTION);
         $mapY =  (int) ceil($colony->getSystem()->getCy() / Overview::FIELDS_PER_SECTION);
+        $layer = $colony->getSystem()->getLayer();
 
         $helper = new MapSectionHelper();
         $helper->setTemplateVars(
             $game,
+            $layer,
             $mapX,
             $mapY,
-            $mapX + ($mapY - 1) * ((int) ceil(MapEnum::MAP_MAX_X / Overview::FIELDS_PER_SECTION)),
+            $mapX + ($mapY - 1) * ((int) ceil($layer->getWidth() / Overview::FIELDS_PER_SECTION)),
             ModuleViewEnum::MODULE_VIEW_COLONY,
             RefreshSubspaceSection::VIEW_IDENTIFIER
         );

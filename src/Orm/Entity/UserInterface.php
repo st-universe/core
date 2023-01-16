@@ -121,9 +121,11 @@ interface UserInterface
 
     public function setTick(int $tick): UserInterface;
 
-    public function getMaptype(): int;
+    public function getUserLayers(): Collection;
 
-    public function setMaptype(int $maptype): UserInterface;
+    public function hasSeen(int $layerId): bool;
+
+    public function hasExplored(int $layerId): bool;
 
     public function getSessiondata(): string;
 

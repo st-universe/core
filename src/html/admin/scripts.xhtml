@@ -48,6 +48,7 @@
             </div>
             <br />
             <div>
+                Layer-ID:<input type="text" size="5" name="layerid" id="layerid" />
                 <input type="submit" class="button" name="B_INFLUENCE_AREAS" value="Influence Areas neu generieren"
                     id="influenceareabutton" />
             </div>
@@ -63,13 +64,14 @@
             </div>
             <div>
                 <br />
-                <a href="/admin/?SHOW_MAP_EDITOR=1">Karteneditor</a>
+                <a href="/admin/?SHOW_MAP_EDITOR=1&layerid=1">Karteneditor</a>
                 <br />
-                <a href="/admin/?SHOW_MAP_OVERALL=1" target="_blank">Karten Gesamtansicht</a>
+                <a href="/admin/?SHOW_MAP_OVERALL=1&layerid=1" target="_blank">Karten Gesamtansicht</a>
                 <br />
-                <a href="/admin/?SHOW_INFLUENCE_AREAS=1" target="_blank">Influence Areas Gesamtansicht</a>
+                <a href="/admin/?SHOW_INFLUENCE_AREAS=1&layerid=1" target="_blank">Influence Areas Gesamtansicht</a>
                 <br />
-                <a href="/admin/?SHOW_INFLUENCE_AREAS=1&showAlly=1" target="_blank">Influence Areas Allianzansicht</a>
+                <a href="/admin/?SHOW_INFLUENCE_AREAS=1&showAlly=1&layerid=1" target="_blank">Influence Areas
+                    Allianzansicht</a>
             </div>
         </form>
     </tal:block>

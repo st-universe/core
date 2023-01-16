@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\Transwarp;
 
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -45,6 +46,13 @@ final class Transwarp implements ActionControllerInterface
             $userId
         );
 
+        $layerId = request::postIntFatal('transwarplayer');
+
+        //sanity check if user knows layer
+        if (!$game->getUser()->hasSeen($layerId)) {
+            throw new SanityCheckException('user tried to access unseen layer');
+        }
+
         //sanity checks
         if (!$ship->hasEnoughCrew($game)) {
             return;
@@ -79,12 +87,17 @@ final class Transwarp implements ActionControllerInterface
         $cx = request::postInt('transwarpcx');
         $cy = request::postInt('transwarpcy');
 
-        if (!$cx || !$cy) {
+
+        if (!$cx || !$cy || !$layerId) {
             $game->addInformation(_('Zielkoordinaten müssen angegeben werden'));
             return;
         }
 
-        $map = $this->mapRepository->getByCoordinates($cx, $cy);
+        $map = $this->mapRepository->getByCoordinates($layerId, $cx, $cy);
+
+        if ($map->getLayer()->isHidden()) {
+            throw new SanityCheckException('tried to access hidden layer');
+        }
 
         if ($map === null) {
             $game->addInformation(_('Zielkoordinaten existieren nicht'));

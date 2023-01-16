@@ -22,6 +22,12 @@ class UserMap implements UserMapInterface
      * @Id
      * @Column(type="integer")
      */
+    private $layer_id = 0;
+
+    /** 
+     * @Id
+     * @Column(type="integer")
+     */
     private $cx = 0;
 
     /** 
@@ -43,4 +49,10 @@ class UserMap implements UserMapInterface
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
+
+    /**
+     * @ManyToOne(targetEntity="Layer")
+     * @JoinColumn(name="layer_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $layer;
 }

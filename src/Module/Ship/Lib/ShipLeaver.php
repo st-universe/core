@@ -257,6 +257,7 @@ final class ShipLeaver implements ShipLeaverInterface
                 $pods->setStarsystemMap($map);
             } else {
                 $map = $this->mapRepository->getByCoordinates(
+                    $pods->getLayerId(),
                     $newXY[0],
                     $newXY[1]
                 );

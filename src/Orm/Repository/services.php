@@ -122,6 +122,7 @@ use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserAward;
 use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserIpTable;
+use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
@@ -694,6 +695,11 @@ return [
         ContainerInterface $c
     ): UserAwardRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserAward::class);
+    },
+    UserLayerRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserLayerRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(UserLayer::class);
     },
     UserLockRepositoryInterface::class => function (
         ContainerInterface $c

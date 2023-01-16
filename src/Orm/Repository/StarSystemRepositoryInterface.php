@@ -15,8 +15,6 @@ interface StarSystemRepositoryInterface extends ObjectRepository
      */
     public function getByLayer(int $layerId): array;
 
-    public function getByCoordinates(int $cx, int $cy): ?StarSystemInterface;
-
     /**
      * @return StarSystemInterface[]
      */

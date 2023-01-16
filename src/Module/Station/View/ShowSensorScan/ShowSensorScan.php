@@ -93,7 +93,7 @@ final class ShowSensorScan implements ViewControllerInterface
                 return;
             }
 
-            $mapField = $this->mapRepository->getByCoordinates($cx, $cy);
+            $mapField = $this->mapRepository->getByCoordinates($station->getLayerId(), $cx, $cy);
         } else {
             $mapField = $this->starSystemMapRepository->getByCoordinates($sysid, $cx, $cy);
 

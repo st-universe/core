@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Criteria;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -111,8 +112,8 @@ class User implements UserInterface
     /** @Column(type="smallint") */
     private $tick = 1;
 
-    /** @Column(type="smallint") */
-    private $maptype = 1;
+    /** @Column(type="smallint", nullable=true) */
+    private $maptype = MapEnum::MAPTYPE_INSERT;
 
     /** @Column(type="text") */
     private $sessiondata = '';
@@ -153,6 +154,11 @@ class User implements UserInterface
     private $colonies;
 
     /**
+     * @OneToMany(targetEntity="UserLayer", mappedBy="user", indexBy="layer_id", cascade={"remove"})
+     */
+    private $userLayers;
+
+    /**
      * @OneToOne(targetEntity="UserLock", mappedBy="user")
      */
     private $userLock;
@@ -173,6 +179,7 @@ class User implements UserInterface
     {
         $this->awards = new ArrayCollection();
         $this->colonies = new ArrayCollection();
+        $this->userLayers = new ArrayCollection();
     }
 
     public function getId(): int
@@ -490,15 +497,19 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getMaptype(): int
+    public function getUserLayers(): Collection
     {
-        return $this->maptype;
+        return $this->userLayers;
     }
 
-    public function setMaptype(int $maptype): UserInterface
+    public function hasSeen(int $layerId): bool
     {
-        $this->maptype = $maptype;
-        return $this;
+        return $this->getUserLayers()->containsKey($layerId);
+    }
+
+    public function hasExplored(int $layerId): bool
+    {
+        return $this->hasSeen($layerId) && $this->getUserLayers()->get($layerId)->isExplored();
     }
 
     public function getSessiondata(): string

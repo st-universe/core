@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 /**
@@ -57,6 +56,11 @@ class StarSystem implements StarSystemInterface
      * @JoinColumn(name="type", referencedColumnName="id", onDelete="CASCADE")
      */
     private $systemType;
+
+    /**
+     * @OneToOne(targetEntity="Map", mappedBy="starSystem")
+     */
+    private $map;
 
     /**
      * @ManyToOne(targetEntity="DatabaseEntry")
@@ -177,12 +181,18 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
-    public function getMapField(): MapInterface
+    public function getLayer(): ?LayerInterface
     {
-        // @todo refactor
-        global $container;
+        if ($this->isWormhole()) {
+            return null;
+        }
 
-        return $container->get(MapRepositoryInterface::class)->getByCoordinates($this->getCx(), $this->getCy());
+        return $this->getMapField()->getLayer();
+    }
+
+    public function getMapField(): ?MapInterface
+    {
+        return $this->map;
     }
 
     public function getBase(): ?ShipInterface

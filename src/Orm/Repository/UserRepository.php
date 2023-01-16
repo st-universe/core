@@ -140,13 +140,6 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ]);
     }
 
-    public function getByMappingType(int $mappingType): iterable
-    {
-        return $this->findBy([
-            'maptype' => $mappingType
-        ]);
-    }
-
     public function getList(
         string $sortField,
         string $sortOrder,

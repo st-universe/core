@@ -131,11 +131,13 @@ final class ShipMover implements ShipMoverInterface
                 $posy = $sys->getMaxY();
             }
         } else {
-            if ($posx > MapEnum::MAP_MAX_X) {
-                $posx = MapEnum::MAP_MAX_X;
+            $layer = $leadShip->getLayer();
+
+            if ($posx > $layer->getWidth()) {
+                $posx = $layer->getWidth();
             }
-            if ($posy > MapEnum::MAP_MAX_Y) {
-                $posy = MapEnum::MAP_MAX_Y;
+            if ($posy > $layer->getHeight()) {
+                $posy = $layer->getHeight();
             }
         }
         $this->setDestX($posx);
@@ -506,7 +508,7 @@ final class ShipMover implements ShipMoverInterface
         $epsSystem = $wrapper->getEpsSystemData();
 
         //zu wenig E zum weiterfliegen
-        if ($epsSystem->getEps() < $flight_ecost) {
+        if ($epsSystem === null || $epsSystem->getEps() < $flight_ecost) {
             $this->addLostShip(
                 $wrapper,
                 $leadShip,
@@ -837,6 +839,7 @@ final class ShipMover implements ShipMoverInterface
             }
             if ($leadShip->getSystem() === null) {
                 $result = $this->mapRepository->getByCoordinateRange(
+                    $leadShip->getLayerId(),
                     $sx,
                     $destx,
                     $sy,

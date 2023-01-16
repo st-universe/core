@@ -9,7 +9,6 @@ use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystem;
-use Stu\Orm\Entity\StarSystemInterface;
 
 final class StarSystemRepository extends EntityRepository implements StarSystemRepositoryInterface
 {
@@ -31,14 +30,6 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 'layerId' => $layerId
             ])
             ->getResult();
-    }
-
-    public function getByCoordinates(int $cx, int $cy): ?StarSystemInterface
-    {
-        return $this->findOneBy([
-            'cx' => $cx,
-            'cy' => $cy
-        ]);
     }
 
     public function getWithoutDatabaseEntry(): array

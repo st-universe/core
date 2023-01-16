@@ -56,11 +56,6 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * @return UserInterface[]
      */
-    public function getByMappingType(int $mappingType): iterable;
-
-    /**
-     * @return UserInterface[]
-     */
     public function getList(
         string $sortField,
         string $sortOrder,
