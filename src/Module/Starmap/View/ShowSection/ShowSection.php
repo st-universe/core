@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
+use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowSection implements ViewControllerInterface
 {
@@ -17,10 +18,14 @@ final class ShowSection implements ViewControllerInterface
 
     private ShowSectionRequestInterface $showSectionRequest;
 
+    private LayerRepositoryInterface $layerRepository;
+
     public function __construct(
-        ShowSectionRequestInterface $showSectionRequest
+        ShowSectionRequestInterface $showSectionRequest,
+        LayerRepositoryInterface $layerRepository
     ) {
         $this->showSectionRequest = $showSectionRequest;
+        $this->layerRepository = $layerRepository;
     }
 
     public function handle(GameControllerInterface $game): void
