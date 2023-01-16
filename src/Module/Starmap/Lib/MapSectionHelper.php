@@ -97,7 +97,7 @@ final class MapSectionHelper
     private function constructPath(string $module, string $viewIdentifier, int $layerId, int $x, int $y, int $sectionId): string
     {
         return sprintf(
-            '%s.php?%s=1&x=%d&y=%d&sec=%d$layerid=%d',
+            '%s.php?%s=1&x=%d&y=%d&sec=%d&layerid=%d',
             $module,
             $viewIdentifier,
             $x,
