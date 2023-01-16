@@ -313,12 +313,12 @@ class Ship implements ShipInterface
 
     public function getLayerId(): int
     {
-        return $this->layer;
+        return $this->layer_id;
     }
 
     public function setLayerId(int $layerId): ShipInterface
     {
-        $this->layer = $layerId;
+        $this->layer_id = $layerId;
         return $this;
     }
 
