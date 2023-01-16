@@ -25,7 +25,7 @@ final class ShowSection implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $layerId = $this->request->getLayerId();
+        $layerId = $this->showSectionRequest->getLayerId();
         $layer = $this->layerRepository->find($layerId);
 
         $xCoordinate = $this->showSectionRequest->getXCoordinate($layer);
