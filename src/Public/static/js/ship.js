@@ -134,7 +134,7 @@ function openStarMap(obj, cx, cy, layerid) {
 	closeAjaxWindow();
 	var pos = findObject(obj);
 	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
-	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy + '&sec=0&layerid' + layerid);
+	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy + '&sec=0&layerid=' + layerid);
 }
 function openStorageInit(obj, id) {
 	closeAjaxWindow();
