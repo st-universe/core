@@ -32,6 +32,9 @@ $shipCreator = $container->get(ShipCreatorInterface::class);
 $shipRepo = $container->get(ShipRepositoryInterface::class);
 $crewCreator = $container->get(CrewCreatorInterface::class);
 $shipCrewRepo = $container->get(ShipCrewRepositoryInterface::class);
+/**
+ * @var MapRepositoryInterface
+ */
 $mapRepo = $container->get(MapRepositoryInterface::class);
 /**
  * @var ShipTorpedoManagerInterface
@@ -46,6 +49,7 @@ $noTorps = request::indInt('noTorps');
 if ($torptypeId > 0 || $noTorps) {
 
     $plan = $buildplanRepo->find($buildplanId);
+    $layerId = request::postIntFatal('layer');
     $cx = request::postIntFatal('cx');
     $cy = request::postIntFatal('cy');
     $shipcount = request::postIntFatal('shipcount');
@@ -57,7 +61,7 @@ if ($torptypeId > 0 || $noTorps) {
         $wrapper = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
         $ship = $wrapper->get();
 
-        $ship->setMap($mapRepo->getByCoordinates($cx, $cy));
+        $ship->setMap($mapRepo->getByCoordinates($layerId, $cx, $cy));
         $ship->setReactorLoad($ship->getReactorCapacity());
         $ship->setShield($ship->getMaxShield());
 
