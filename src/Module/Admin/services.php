@@ -19,8 +19,6 @@ use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\StartMirrorWorld;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
-use Stu\Module\Admin\View\Map\EditSection\EditSectionRequest;
-use Stu\Module\Admin\View\Map\EditSection\EditSectionRequestInterface;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Admin\View\Map\ShowMapEditor;
 use Stu\Module\Admin\View\Map\ShowMapOverall;
@@ -51,7 +49,6 @@ use Stu\Module\Control\GameController;
 use function DI\autowire;
 
 return [
-    EditSectionRequestInterface::class => autowire(EditSectionRequest::class),
     EditFieldRequestInterface::class => autowire(EditFieldRequest::class),
     ShowSystemRequestInterface::class => autowire(ShowSystemRequest::class),
     ShowSystemEditFieldRequestInterface::class => autowire(ShowSystemEditFieldRequest::class),

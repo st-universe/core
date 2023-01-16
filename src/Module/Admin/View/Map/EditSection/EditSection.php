@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map\EditSection;
 
-use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use YRow;
@@ -16,28 +16,30 @@ final class EditSection implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_EDIT_MAP_SECTION';
     private const FIELDS_PER_SECTION = 20;
 
-    private EditSectionRequestInterface $editSectionRequest;
+    private ShowSectionRequestInterface $request;
 
     private LayerRepositoryInterface $layerRepository;
 
     private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
     public function __construct(
-        EditSectionRequestInterface $editSectionRequest,
+        ShowSectionRequestInterface $request,
         LayerRepositoryInterface $layerRepository,
         MapFieldTypeRepositoryInterface $mapFieldTypeRepository
     ) {
-        $this->editSectionRequest = $editSectionRequest;
+        $this->request = $request;
         $this->layerRepository = $layerRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $xCoordinate = $this->editSectionRequest->getXCoordinate();
-        $yCoordinate = $this->editSectionRequest->getYCoordinate();
-        $section_id = $this->editSectionRequest->getSectionId();
-        $layerId = request::getIntFatal('layerid');
+        $layerId = $this->request->getLayerId();
+        $layer = $this->layerRepository->find($layerId);
+
+        $xCoordinate = $this->request->getXCoordinate($layer);
+        $yCoordinate = $this->request->getYCoordinate($layer);
+        $section_id = $this->request->getSectionId();
 
         $maxx = $xCoordinate * self::FIELDS_PER_SECTION;
         $minx = $maxx - self::FIELDS_PER_SECTION + 1;
@@ -48,8 +50,6 @@ final class EditSection implements ViewControllerInterface
         foreach (range($miny, $maxy) as $key => $value) {
             $fields[] = new YRow($layerId, $value, $minx, $maxx);
         }
-
-        $layer = $this->layerRepository->find($layerId);
 
         if ($yCoordinate - 1 >= 1) {
             $game->setTemplateVar(

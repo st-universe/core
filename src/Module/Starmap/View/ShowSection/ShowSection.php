@@ -25,10 +25,12 @@ final class ShowSection implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $xCoordinate = $this->showSectionRequest->getXCoordinate();
-        $yCoordinate = $this->showSectionRequest->getYCoordinate();
+        $layerId = $this->request->getLayerId();
+        $layer = $this->layerRepository->find($layerId);
+
+        $xCoordinate = $this->showSectionRequest->getXCoordinate($layer);
+        $yCoordinate = $this->showSectionRequest->getYCoordinate($layer);
         $sectionId = $this->showSectionRequest->getSectionId();
-        $layer = $this->showSectionRequest->getLayer();
 
         //sanity check if user knows layer
         if (!$game->getUser()->hasSeen($layer->getId())) {

@@ -6,11 +6,11 @@ use Stu\Orm\Entity\LayerInterface;
 
 interface ShowSectionRequestInterface
 {
-    public function getLayer(): LayerInterface;
+    public function getLayerId(): int;
 
-    public function getXCoordinate(): int;
+    public function getXCoordinate(LayerInterface $layer): int;
 
-    public function getYCoordinate(): int;
+    public function getYCoordinate(LayerInterface $layer): int;
 
     public function getSectionId(): int;
 }

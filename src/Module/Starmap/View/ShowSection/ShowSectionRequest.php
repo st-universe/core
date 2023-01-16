@@ -6,42 +6,29 @@ namespace Stu\Module\Starmap\View\ShowSection;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 use Stu\Orm\Entity\LayerInterface;
-use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowSectionRequest implements ShowSectionRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    private LayerRepositoryInterface $layerRepository;
-
-    private ?LayerInterface $layer = null;
-
-    public function __construct(LayerRepositoryInterface $layerRepository)
+    public function getLayerId(): int
     {
-        $this->layerRepository = $layerRepository;
+        return $this->queryParameter('layerid')->int()->required();
     }
 
-    public function getLayer(): LayerInterface
-    {
-        if ($this->layer === null) {
-            $layerId = $this->queryParameter('layerid')->int()->required();
-            $this->layer = $this->layerRepository->find($layerId);
-        }
-
-        return $this->layer;
-    }
-
-    public function getXCoordinate(): int
+    public function getXCoordinate(LayerInterface $layer): int
     {
         return $this->getCoordinate(
+            $layer,
             $this->queryParameter('x')->int()->required(),
             true
         );
     }
 
-    public function getYCoordinate(): int
+    public function getYCoordinate(LayerInterface $layer): int
     {
         return $this->getCoordinate(
+            $layer,
             $this->queryParameter('y')->int()->required(),
             false
         );
@@ -52,9 +39,9 @@ final class ShowSectionRequest implements ShowSectionRequestInterface
         return $this->queryParameter('sec')->int()->required();
     }
 
-    private function getCoordinate(int $value, bool $isWidth): int
+    private function getCoordinate(LayerInterface $layer, int $value, bool $isWidth): int
     {
-        $max_value = $isWidth ? $this->getLayer()->getWidth() : $this->getLayer()->getHeight();
+        $max_value = $isWidth ? $layer->getWidth() : $layer->getHeight();
 
         return max(1, min($value, $max_value));
     }
