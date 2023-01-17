@@ -44,7 +44,7 @@ final class ShowSystemEditField implements ViewControllerInterface
         $field = $this->starSystemMapRepository->find($this->showSystemEditFieldRequest->getFieldId());
 
         $game->setPageTitle(_('Feld wählen'));
-        $game->setMacroAndTemplate('../html/admin/mapeditor_macros.xhtml/mapeditor_system_fieldselector', 'html/admin/ajaxwindow.xhtml');
+        $game->setMacroAndTemplate('html/admin/mapeditor_macros.xhtml/mapeditor_system_fieldselector', 'html/admin/ajaxwindow.xhtml');
         $game->setTemplateVar('POSSIBLE_FIELD_TYPES', $possibleFieldTypes);
         $game->setTemplateVar('SELECTED_MAP_FIELD', $field);
     }
