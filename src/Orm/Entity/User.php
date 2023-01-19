@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Criteria;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -110,6 +111,9 @@ class User implements UserInterface
 
     /** @Column(type="smallint") */
     private $tick = 1;
+
+    /** @Column(type="smallint", nullable=true) */
+    private $maptype = MapEnum::MAPTYPE_INSERT;
 
     /** @Column(type="text") */
     private $sessiondata = '';
