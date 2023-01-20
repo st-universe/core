@@ -85,7 +85,7 @@ final class BuyLotteryTickets implements ActionControllerInterface
             $this->lotteryFacade->createLotteryTicket($user, false);
         }
 
-        $game->addInformation(_('Ein Lotterielos wurde gekauft'));
+        $game->addInformationf(_('%d Lotterielos(e) wurde gekauft'), $amount);
     }
 
     public function performSessionCheck(): bool
