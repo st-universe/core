@@ -12,7 +12,6 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -47,8 +46,6 @@ final class StationUtility implements StationUtilityInterface
 
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
@@ -59,8 +56,7 @@ final class StationUtility implements StationUtilityInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         TradePostRepositoryInterface $tradePostRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
@@ -72,7 +68,6 @@ final class StationUtility implements StationUtilityInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
@@ -135,6 +130,10 @@ final class StationUtility implements StationUtilityInterface
     {
         $dockedWorkbees = 0;
         foreach ($ship->getDockedShips() as $docked) {
+            if (!$docked->hasEnoughCrew()) {
+                continue;
+            }
+
             $commodity = $docked->getRump()->getCommodity();
             if ($commodity !== null && $commodity->isWorkbee()) {
                 $dockedWorkbees += 1;
