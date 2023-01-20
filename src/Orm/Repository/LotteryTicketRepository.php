@@ -31,6 +31,6 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
 
     public function getByPeriod(string $period): array
     {
-        return $this->findBy(['period' => $period]);
+        return $this->findBy(['period' => $period, 'is_winner' => NULL]);
     }
 }
