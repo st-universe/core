@@ -24,11 +24,6 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * @return UserInterface[]
      */
-    public function getActualPlayer(): iterable;
-
-    /**
-     * @return UserInterface[]
-     */
     public function getDeleteable(
         int $idleTimeThreshold,
         int $idleTimeVacationThreshold,

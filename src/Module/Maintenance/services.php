@@ -18,6 +18,7 @@ return [
     EmptyPlotDeletion::class => autowire(EmptyPlotDeletion::class),
     IdleUserDeletion::class => autowire(IdleUserDeletion::class),
     OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class),
-    TopFlightsReward::class => autowire(TopFlightsReward::class)
+    TopFlightsReward::class => autowire(TopFlightsReward::class),
+    EndLotteryPeriod::class => autowire(EndLotteryPeriod::class)
     //TODO Handler to remove expired trade licenses
 ];

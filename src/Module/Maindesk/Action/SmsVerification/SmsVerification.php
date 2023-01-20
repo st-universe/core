@@ -14,6 +14,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SmsVerification implements ActionControllerInterface
@@ -22,16 +23,20 @@ final class SmsVerification implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private LotteryFacadeInterface $lotteryFacade;
+
     private StuHashInterface $stuHash;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
+        LotteryFacadeInterface $lotteryFacade,
         StuHashInterface $stuHash,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->userRepository = $userRepository;
+        $this->lotteryFacade = $lotteryFacade;
         $this->stuHash = $stuHash;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -62,6 +67,8 @@ final class SmsVerification implements ActionControllerInterface
             'DISPLAY_FIRST_COLONY_DIALOGUE',
             $user->getState() === UserEnum::USER_STATE_UNCOLONIZED
         );
+
+        $this->lotteryFacade->createLotteryTicket($user, true);
 
         $game->setView(GameController::DEFAULT_VIEW);
 

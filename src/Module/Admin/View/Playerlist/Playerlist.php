@@ -44,7 +44,7 @@ final class Playerlist implements ViewControllerInterface
                 function (UserInterface $user): UserlistEntry {
                     return new UserlistEntry($this->userTagRepository, $user);
                 },
-                $this->userRepository->getActualPlayer()
+                $this->userRepository->getNonNpcList()
             )
         );
     }

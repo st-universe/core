@@ -164,7 +164,7 @@ class PlayerDeletionTest extends StuTestCase
     {
         $player = $this->mock(UserInterface::class);
 
-        $this->userRepository->shouldReceive('getActualPlayer')
+        $this->userRepository->shouldReceive('getNonNpcList')
             ->withNoArgs()
             ->once()
             ->andReturn([$player]);

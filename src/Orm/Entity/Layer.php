@@ -20,13 +20,13 @@ class Layer implements LayerInterface
      */
     private $id;
 
-    /** @Column(type="string") * */
+    /** @Column(type="string") */
     private $name;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer") */
     private $width;
 
-    /** @Column(type="integer") * */
+    /** @Column(type="integer") */
     private $height;
 
     /** @Column(type="boolean") */

@@ -10,6 +10,7 @@ use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequest;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequestInterface;
 use Stu\Module\Trade\Action\BasicTradeBuy\BasicTradeBuy;
 use Stu\Module\Trade\Action\BasicTradeSell\BasicTradeSell;
+use Stu\Module\Trade\Action\BuyLotteryTickets\BuyLotteryTickets;
 use Stu\Module\Trade\Action\CancelOffer\CancelOffer;
 use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequest;
 use Stu\Module\Trade\Action\CancelOffer\CancelOfferRequestInterface;
@@ -37,6 +38,8 @@ use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequestInterface;
 use Stu\Module\Trade\Action\TransferCommodities\TransferCommodities;
 use Stu\Module\Trade\Action\TransferCommodities\TransferCommoditiesRequest;
 use Stu\Module\Trade\Action\TransferCommodities\TransferCommoditiesRequestInterface;
+use Stu\Module\Trade\Lib\LotteryFacade;
+use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Module\Trade\Lib\TradeLibFactory;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
@@ -52,6 +55,7 @@ use Stu\Module\Trade\View\ShowLicenseMenu\ShowLicenseMenuRequestInterface;
 use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfo;
 use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequest;
 use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequestInterface;
+use Stu\Module\Trade\View\ShowLottery\ShowLottery;
 use Stu\Module\Trade\View\ShowOfferCommodity\ShowOfferCommodity;
 use Stu\Module\Trade\View\ShowOfferCommodity\ShowOfferCommodityRequest;
 use Stu\Module\Trade\View\ShowOfferCommodity\ShowOfferCommodityRequestInterface;
@@ -84,6 +88,7 @@ use function DI\autowire;
 
 return [
     TradeLibFactoryInterface::class => autowire(TradeLibFactory::class),
+    LotteryFacadeInterface::class => autowire(LotteryFacade::class),
     ShowLicenseMenuRequestInterface::class => autowire(ShowLicenseMenuRequest::class),
     ShowLicenseInfoRequestInterface::class => autowire(ShowLicenseInfoRequest::class),
     ShowOfferMenuRequestInterface::class => autowire(ShowOfferMenuRequest::class),
@@ -117,7 +122,8 @@ return [
         DealsBidAuction::ACTION_IDENTIFIER => autowire(DealsBidAuction::class),
         DealsTakeAuction::ACTION_IDENTIFIER => autowire(DealsTakeAuction::class),
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
-        TransferCommodities::ACTION_IDENTIFIER => autowire(TransferCommodities::class)
+        TransferCommodities::ACTION_IDENTIFIER => autowire(TransferCommodities::class),
+        BuyLotteryTickets::ACTION_IDENTIFIER => autowire(BuyLotteryTickets::class)
     ],
     'TRADE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -139,6 +145,7 @@ return [
         ShowSearchBoth::VIEW_IDENTIFIER => autowire(ShowSearchBoth::class),
         ShowBasicTrade::VIEW_IDENTIFIER => autowire(ShowBasicTrade::class),
         ShowDeals::VIEW_IDENTIFIER => autowire(ShowDeals::class),
-        ShowShiplist::VIEW_IDENTIFIER => autowire(ShowShiplist::class)
+        ShowShiplist::VIEW_IDENTIFIER => autowire(ShowShiplist::class),
+        ShowLottery::VIEW_IDENTIFIER => autowire(ShowLottery::class)
     ],
 ];

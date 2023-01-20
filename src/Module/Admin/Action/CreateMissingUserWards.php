@@ -50,7 +50,7 @@ final class CreateMissingUserWards implements ActionControllerInterface
 
         $categories = $this->databaseCategoryRepository->findAll();
 
-        foreach ($this->userRepository->getActualPlayer() as $user) {
+        foreach ($this->userRepository->getNonNpcList() as $user) {
             foreach ($categories as $category) {
                 $this->checkForMissingAward($user, $category);
             }

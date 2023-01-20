@@ -75,6 +75,7 @@ use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyClassResearch;
 use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\Layer;
+use Stu\Orm\Entity\LotteryTicket;
 use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
@@ -390,6 +391,11 @@ return [
         ContainerInterface $c
     ): LayerRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Layer::class);
+    },
+    LotteryTicketRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): LotteryTicketRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(LotteryTicket::class);
     },
     MapBorderTypeRepositoryInterface::class => function (
         ContainerInterface $c

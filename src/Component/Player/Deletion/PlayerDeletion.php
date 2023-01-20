@@ -86,7 +86,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     public function handleReset(): void
     {
-        foreach ($this->userRepository->getActualPlayer() as $player) {
+        foreach ($this->userRepository->getNonNpcList() as $player) {
             $this->delete($player);
         }
     }

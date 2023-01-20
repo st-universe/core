@@ -50,17 +50,6 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ]);
     }
 
-    public function getActualPlayer(): iterable
-    {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT u FROM %s u WHERE u.id > 100
-                ORDER BY u.id ASC',
-                User::class
-            )
-        )->getResult();
-    }
-
     public function getDeleteable(
         int $idleTimeThreshold,
         int $idleTimeVacationThreshold,
@@ -268,7 +257,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id > 100 ORDER BY u.id',
+                'SELECT u FROM %s u WHERE u.id > 100 ORDER BY u.id ASC',
                 User::class
             )
         )->getResult();
