@@ -10,26 +10,27 @@
             <br />
             <p style="text-align:center"><b>Großer Nagus Rom </b></p>
         </div>
-        <br />
-        <table class="tcal">
-            <tr>
-                <td>Kosten pro Los:</td>
-                <td>1 Latinum</td>
-            </tr>
-            <tr>
-                <td>Lose im Umlauf</td>
-                <td>${TICKETCOUNT}</td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <form method="post" action="trade.php">
-                        <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-                        <input type="text" size="2" name="amount" value="1" /> <input type="submit" value="Lose kaufen"
-                            name="B_BUY_LOTTERY_TICKETS" />
-                    </form>
-                </td>
-            </tr>
-        </table>
+        <div class="divbody" style="width: 20%; border-style: none!important; padding-top: 10px;">
+            <table class="tcal">
+                <tr>
+                    <td>Kosten pro Los:</td>
+                    <td>1 Latinum</td>
+                </tr>
+                <tr>
+                    <td>Lose im Umlauf</td>
+                    <td>${TICKETCOUNT}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <form method="post" action="trade.php">
+                            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                            <input type="text" size="2" name="amount" value="1" /> <input type="submit"
+                                value="Lose kaufen" name="B_BUY_LOTTERY_TICKETS" />
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </metal:macro>
 </metal:macro>
 
