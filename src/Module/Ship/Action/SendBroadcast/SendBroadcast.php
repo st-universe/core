@@ -7,11 +7,11 @@ namespace Stu\Module\Ship\Action\SendBroadcast;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -47,62 +47,67 @@ final class SendBroadcast implements ActionControllerInterface
             return;
         }
 
-        $hasFoundRecipient = $this->broadcastToColoniesInRange($ship);
-        $hasFoundRecipient = $hasFoundRecipient || $this->broadcastToStationsInRange($ship);
+        $usersToBroadcast = array_merge(
+            $this->searchBroadcastableColoniesInRange($ship),
+            $this->searchBroadcastableStationsInRange($ship)
+        );
 
-        if ($hasFoundRecipient) {
-            $game->addInformation(_("Der Broadcast wurde erfolgreich versendet"));
-        } else {
+        if (empty($usersToBroadcast)) {
             $game->addInformation(_("Keine Ziele in Reichweite"));
+        } else {
+            $this->privateMessageSender->sendBroadcast(
+                $ship->getUser(),
+                $usersToBroadcast,
+                request::postStringFatal('text')
+            );
+            $game->addInformation(_("Der Broadcast wurde erfolgreich versendet"));
         }
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
-    private function broadcastToColoniesInRange(ShipInterface $ship): bool
+    /**
+     * @return UserInterface[]
+     */
+    private function searchBroadcastableColoniesInRange(ShipInterface $ship): array
     {
         $systemMap = $ship->getStarsystemMap();
 
         if ($systemMap === null) {
-            return false;
+            return [];
         }
 
         $colonies = $this->colonyRepository->getForeignColoniesInBroadcastRange($ship);
 
         if (empty($colonies)) {
-            return false;
+            return [];
         }
 
+        $result = [];
         foreach ($colonies as $colony) {
-            $this->sendMessage($ship, $colony->getUser()->getId());
+            $result[$colony->getUser()->getId()] = $colony->getUser();
         }
 
-        return true;
+        return $result;
     }
 
-    private function broadcastToStationsInRange(ShipInterface $ship): bool
+    /**
+     * @return UserInterface[]
+     */
+    private function searchBroadcastableStationsInRange(ShipInterface $ship): array
     {
         $stations = $this->shipRepository->getForeignStationsInBroadcastRange($ship);
 
         if (empty($stations)) {
-            return false;
+            return [];
         }
 
+        $result = [];
         foreach ($stations as $station) {
-            $this->sendMessage($ship, $station->getUser()->getId());
+            $result[$station->getUser()->getId()] = $station->getUser();
         }
 
-        return true;
-    }
-
-    private function sendMessage(ShipInterface $ship, int $recipientId): void
-    {
-        $this->privateMessageSender->send(
-            $ship->getUser()->getId(),
-            $recipientId,
-            request::postStringFatal('text'),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
-        );
+        return $result;
     }
 
     public function performSessionCheck(): bool

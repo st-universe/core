@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use JBBCode\Parser;
 use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
@@ -35,6 +35,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private Parser $bbcodeParser;
 
+    private StuTime $stuTime;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -43,6 +45,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         UserRepositoryInterface $userRepository,
         ConfigInterface $config,
         Parser $bbcodeParser,
+        StuTime $stuTime,
         EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
@@ -51,6 +54,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $this->userRepository = $userRepository;
         $this->config = $config;
         $this->bbcodeParser = $bbcodeParser;
+        $this->stuTime = $stuTime;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -65,32 +69,11 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         if ($senderId == $recipientId) {
             return;
         }
-        $folder = $this->privateMessageFolderRepository->getByUserAndSpecial((int)$recipientId, (int)$category);
         $recipient = $this->userRepository->find($recipientId);
         $sender = $this->userRepository->find($senderId);
+        $time = $this->stuTime->time();
 
-        $pm = $this->privateMessageRepository->prototype();
-        $pm->setDate(time());
-        $pm->setCategory($folder);
-        $pm->setText($text);
-        $pm->setHref($href);
-        $pm->setRecipient($recipient);
-        $pm->setSender($sender);
-        $pm->setNew(true);
-
-        if ($recipient->getState() === UserEnum::DELETION_EXECUTED) {
-            $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
-            $e = new Exception('flaflifu1');
-            $this->loggerUtil->log(sprintf('text: %s, trace: %s', $text, $e->getTraceAsString()));
-        }
-
-        if ($recipientId === 356 || $recipientId === 300) {
-            $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
-            $e = new Exception('flaflifu2');
-            $this->loggerUtil->log(sprintf('text: %s, trace: %s', $text, $e->getTraceAsString()));
-        }
-
-        $this->privateMessageRepository->save($pm);
+        $pm = $this->createPrivateMessage($sender, $recipient, $time, $category, $text, $href, true, null);
 
         if ($category === PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN && $recipient->isEmailNotification()) {
             $this->sendEmailNotification($sender->getUserName(), $text, $recipient);
@@ -100,21 +83,83 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
             $this->entityManager->flush();
 
-            $folder = $this->privateMessageFolderRepository->getByUserAndSpecial(
-                $senderId,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT
+            $this->createPrivateMessage(
+                $recipient,
+                $sender,
+                $time,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT,
+                $text,
+                null,
+                false,
+                $pm->getId()
             );
-
-            $newobj = clone ($pm);
-            $newobj->setSender($pm->getRecipient());
-            $newobj->setRecipient($pm->getSender());
-            $newobj->setCategory($folder);
-            $newobj->setNew(false);
-            $newobj->setInboxPmId($pm->getId());
-            $newobj->setHref(null);
-
-            $this->privateMessageRepository->save($newobj);
         }
+    }
+
+    public function sendBroadcast(
+        UserInterface $sender,
+        array $recipients,
+        string $text
+    ): void {
+
+        if (empty($recipients)) {
+            return;
+        }
+
+        $time = $this->stuTime->time();
+
+        //broadcast pm to every recipient
+        foreach ($recipients as $recipient) {
+            $this->createPrivateMessage(
+                $sender,
+                $recipient,
+                $time,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
+                $text,
+                null,
+                true,
+                null
+            );
+        }
+
+        //single item to outbox
+        $this->createPrivateMessage(
+            $this->userRepository->find(GameEnum::USER_NOONE),
+            $sender,
+            $time,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT,
+            $text,
+            null,
+            false,
+            null
+        );
+    }
+
+    private function createPrivateMessage(
+        UserInterface $sender,
+        UserInterface $recipient,
+        int $time,
+        int $category,
+        string $text,
+        ?string $href,
+        bool $new,
+        ?int $inboxPmId
+    ): PrivateMessageInterface {
+        $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $category);
+
+        $pm = $this->privateMessageRepository->prototype();
+        $pm->setDate($time);
+        $pm->setCategory($folder);
+        $pm->setText($text);
+        $pm->setHref($href);
+        $pm->setRecipient($recipient);
+        $pm->setSender($sender);
+        $pm->setNew($new);
+        $pm->setInboxPmId($inboxPmId);
+
+        $this->privateMessageRepository->save($pm);
+
+        return $pm;
     }
 
     private function sendEmailNotification(string $senderName, string $message, UserInterface $user): void
