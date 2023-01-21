@@ -13,34 +13,6 @@ services:
         ipv4_address: 172.40.128.2
     volumes:
       - ./dist/db:/dump
-  stu-mq:
-    image: 'heidiks/rabbitmq-delayed-message-exchange:latest'
-    hostname: 'stu-mq'
-    environment:
-      RABBITMQ_ERLANG_COOKIE: 'ASFAIFFHFAFFSADF'
-      RABBITMQ_DEFAULT_USER: 'mq'
-      RABBITMQ_DEFAULT_PASS: 'mq'
-      RABBITMQ_DEFAULT_VHOST: '/'
-    ports:
-      - '15672:15672'
-      - '5672:5672'
-    labels:
-      name: 'stu-mq'
-    volumes:
-      - './dist/amqp/plugins:/etc/rabbitmq/enabled_plugins'
-    networks:
-      static-network:
-        ipv4_address: 172.40.128.3
-  stu-process-worker:
-    hostname: 'stu-process-worker'
-    build: dist/docker/php-cli/
-    command: php /usr/src/stu/bin/test_consume.php
-    restart: always
-    volumes:
-      - .:/usr/src/stu
-    networks:
-      static-network:
-        ipv4_address: 172.40.128.4
 networks:
   static-network:
     ipam:

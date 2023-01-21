@@ -33,8 +33,6 @@
     "devster/ubench": "^2",
     "doctrine/annotations": "^1.13",
     "doctrine/orm": "^2.6",
-    "enqueue/amqp-lib": "^0.9.14",
-    "enqueue/amqp-tools": "^0.9.12",
     "filp/whoops": "^2.5",
     "graphp/graphviz": "^0.2.1",
     "hackzilla/password-generator": "^1.4",

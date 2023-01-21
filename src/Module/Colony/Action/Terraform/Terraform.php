@@ -7,8 +7,6 @@ namespace Stu\Module\Colony\Action\Terraform;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Queue\Message\MessageFactoryInterface;
-use Stu\Component\Queue\Publisher\DelayedJobPublisherInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -37,19 +35,13 @@ final class Terraform implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
-    private DelayedJobPublisherInterface $delayedJobPublisher;
-
-    private MessageFactoryInterface $messageFactory;
-
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TerraformingRepositoryInterface $terraformingRepository,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
-        DelayedJobPublisherInterface $delayedJobPublisher,
-        MessageFactoryInterface $messageFactory
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->terraformingRepository = $terraformingRepository;
@@ -57,8 +49,6 @@ final class Terraform implements ActionControllerInterface
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
-        $this->delayedJobPublisher = $delayedJobPublisher;
-        $this->messageFactory = $messageFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -166,17 +156,6 @@ final class Terraform implements ActionControllerInterface
         $this->planetFieldRepository->save($field);
 
         $this->colonyRepository->save($colony);
-
-        /**
-         * 
-         *$message = $this->messageFactory->createTerraformingJobProcessMessage()
-         *    ->setTerraformingId($obj->getId());
-         *
-         *$this->delayedJobPublisher->publish(
-         *    $message,
-         *    $terraf->getDuration()
-         *);
-         */
 
         $game->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),
