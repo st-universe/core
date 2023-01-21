@@ -4,20 +4,28 @@ namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
+use Stu\Component\Trade\TradeEnum;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class EndLotteryPeriod implements MaintenanceHandlerInterface
 {
     private LotteryTicketRepositoryInterface $lotteryTicketRepository;
 
+    private TradePostRepositoryInterface $tradepostRepository;
+
     private LotteryFacadeInterface $lotteryFacade;
 
     private UserRepositoryInterface $userRepository;
+
+    private TradeLibFactoryInterface $tradeLibFactory;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
@@ -25,14 +33,18 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
     public function __construct(
         LotteryTicketRepositoryInterface $lotteryTicketRepository,
+        TradePostRepositoryInterface $tradepostRepository,
         LotteryFacadeInterface $lotteryFacade,
         UserRepositoryInterface $userRepository,
+        TradeLibFactoryInterface $tradeLibFactory,
         PrivateMessageSenderInterface $privateMessageSender,
         StuTime $stuTime
     ) {
         $this->lotteryTicketRepository = $lotteryTicketRepository;
+        $this->tradepostRepository = $tradepostRepository;
         $this->lotteryFacade = $lotteryFacade;
         $this->userRepository = $userRepository;
+        $this->tradeLibFactory = $tradeLibFactory;
         $this->privateMessageSender = $privateMessageSender;
         $this->stuTime = $stuTime;
     }
@@ -77,12 +89,21 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             $this->lotteryTicketRepository->save($ticket);
         }
 
+        //jackpot to winner
+        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
+
+        $storageManagerUser->upperStorage(
+            CommodityTypeEnum::COMMODITY_LATINUM,
+            $jackpot
+        );
+
         //PM to winner
         $this->privateMessageSender->send(
             GameEnum::USER_FERG_NPC,
             $winner->getId(),
             sprintf(
-                'Du hast %d Latinum in der Lotterie gewonnen. Es waren %d Lose im Topf.',
+                "Du hast %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nDer Gewinn wartet auf dich am Handelsposten 'Zur goldenen Kugel'",
                 $jackpot,
                 $ticketCount
             ),
@@ -95,7 +116,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
                 GameEnum::USER_FERG_NPC,
                 $loserId,
                 sprintf(
-                    '%s hat %d Latinum in der Lotterie gewonnen. Es waren %d Lose im Topf. Viel Glück beim nächsten Mal!',
+                    "%s hat %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nViel Glück beim nächsten Mal!",
                     $winner->getName(),
                     $jackpot,
                     $ticketCount
