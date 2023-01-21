@@ -130,6 +130,7 @@ use Stu\Module\Ship\Action\SalvageCrew\SalvageCrew;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPods;
 use Stu\Module\Ship\Action\SelfDestruct\SelfDestruct;
 use Stu\Module\Ship\Action\Selfrepair\Selfrepair;
+use Stu\Module\Ship\Action\SendBroadcast\SendBroadcast;
 use Stu\Module\Ship\Action\SetLSSModeBorder\SetLSSModeBorder;
 use Stu\Module\Ship\Action\SetLSSModeNormal\SetLSSModeNormal;
 use Stu\Module\Ship\Action\SetGreenAlert\SetGreenAlert;
@@ -205,6 +206,7 @@ use Stu\Module\Ship\View\ShowScan\ShowScan;
 use Stu\Module\Ship\View\ShowSectorScan\ShowSectorScan;
 use Stu\Module\Ship\View\ShowSelfDestruct\ShowSelfDestruct;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Ship\View\ShowShipCommunication\ShowShipCommunication;
 use Stu\Module\Ship\View\ShowShipDetails\ShowShipDetails;
 use Stu\Module\Ship\View\ShowShiplistFleet\ShowShiplistFleet;
 use Stu\Module\Ship\View\ShowShiplistSingles\ShowShiplistSingles;
@@ -366,7 +368,8 @@ return [
         ImplodeTholianWeb::ACTION_IDENTIFIER => autowire(ImplodeTholianWeb::class),
         RemoveTholianWeb::ACTION_IDENTIFIER => autowire(RemoveTholianWeb::class),
         SupportTholianWeb::ACTION_IDENTIFIER => autowire(SupportTholianWeb::class),
-        UnsupportTholianWeb::ACTION_IDENTIFIER => autowire(UnsupportTholianWeb::class)
+        UnsupportTholianWeb::ACTION_IDENTIFIER => autowire(UnsupportTholianWeb::class),
+        SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -395,6 +398,7 @@ return [
         ShowRenameCrew::VIEW_IDENTIFIER => autowire(ShowRenameCrew::class),
         ShowRepairOptions::VIEW_IDENTIFIER => autowire(ShowRepairOptions::class),
         ShowInformation::VIEW_IDENTIFIER => autowire(ShowInformation::class),
+        ShowShipCommunication::VIEW_IDENTIFIER => autowire(ShowShipCommunication::class),
         ShowShiplistFleet::VIEW_IDENTIFIER => autowire(ShowShiplistFleet::class),
         ShowShiplistSingles::VIEW_IDENTIFIER => autowire(ShowShiplistSingles::class),
         ShowAvailableShips::VIEW_IDENTIFIER => autowire(ShowAvailableShips::class),

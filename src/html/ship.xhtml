@@ -1349,6 +1349,11 @@
 									<img src="assets/buttons/info1.png" title="Schiffsinformationen anzeigen"
 										name="shinfo" />
 								</a>
+								<a href="javascript:void(0);" onclick="showShipCommunication(${SHIP/getId});"
+									onmouseover="cp('shipcom','buttons/msg2');"
+									onmouseout="cp('shipcom','buttons/msg1');">
+									<img src="assets/buttons/msg1.png" title="Kommunikation" name="shipcom" />
+								</a>
 								<a href="?B_SET_LSS_BORDER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 									tal:condition="SHIP/isLSSModeNormal"
 									onmouseover="cp('actlss','buttons/lss_button1');"

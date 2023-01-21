@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -86,6 +86,30 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         return $this->findOneBy([
             'starsystem_map_id' => $sysmap->getId()
         ]);
+    }
+
+    public function getForeignColoniesInBroadcastRange(ShipInterface $ship): array
+    {
+        $systemMap = $ship->getStarsystemMap();
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT c FROM %s c
+                 JOIN %s sm
+                 WITH c.starsystem_map_id = sm.id
+                 WHERE c.user_id NOT IN (:ignoreIds)
+                 AND sm.systems_id = :systemId
+                 AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
+                 AND sm.sy BETWEEN (:sy - 1) AND (:sy + 1)',
+                Colony::class,
+                StarSystemMap::class
+            )
+        )->setParameters([
+            'ignoreIds' => [$ship->getUser()->getId(), GameEnum::USER_NOONE],
+            'systemId' => $systemMap->getSystem()->getId(),
+            'sx' => $systemMap->getSx(),
+            'sy' => $systemMap->getSy()
+        ])->getResult();
     }
 
     public function getByTick(int $tick): iterable

@@ -1366,6 +1366,27 @@
     </tr>
   </table>
 </metal:block>
+<metal:block metal:define-macro="shipcommunication">
+  <div class="box" tal:condition="exists:AVAILABLE_SHIPS">
+    <div class="box_title">Broadcast</div>
+    <div class="box_body">
+      <form method="post" action="ship.php">
+        <input type="hidden" name="id" tal:attributes="SHIP/getId" />
+        <table class="tcal">
+          <tr>
+            <th>Sende Broadcast an alle Kolonien und Stationen im Umkreis von einem Feld</th>
+          </tr>
+          <tr>
+            <td><textarea tal:content="TEMPLATETEXT" name="text" style="width: 100%; height: 300px;"></textarea></td>
+          </tr>
+          <tr>
+            <td><input type="submit" name="B_SEND_BROADCAST" class="button" value="Broadcast senden" /></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</metal:block>
 <metal:block metal:define-macro="shipdetails">
   <tal:block tal:define="SHIP WRAPPER/get; eps WRAPPER/getEpsSystemData">
     <br />

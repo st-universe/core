@@ -71,6 +71,11 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return ShipInterface[]
      */
+    public function getForeignStationsInBroadcastRange(ShipInterface $ship): array;
+
+    /**
+     * @return ShipInterface[]
+     */
     public function getTradePostsWithoutDatabaseEntry(): iterable;
 
     /**

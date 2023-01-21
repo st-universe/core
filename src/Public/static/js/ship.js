@@ -153,6 +153,11 @@ function showShipDetails(id) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_SHIPDETAILS=1&id=' + id);
 }
+function showShipCommunication(id) {
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'ship.php?SHOW_SHIP_COMMUNICATION=1&id=' + id);
+}
 function openTradeMenu(postid) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
