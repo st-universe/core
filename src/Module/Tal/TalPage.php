@@ -40,7 +40,7 @@ final class TalPage implements TalPageInterface
             $this->template = new PhpTal\PHPTAL();
             $this->template->setTemplateRepository($template_repository);
             $this->template->setPhpCodeDestination(sprintf(
-                '%s/stu/%d/tal',
+                '%s/stu/%s/tal',
                 $this->config->get('game.temp_dir'),
                 $this->config->get('game.version')
             ));
