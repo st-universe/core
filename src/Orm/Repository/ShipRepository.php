@@ -19,6 +19,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
@@ -194,6 +195,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
                     AND sm.sy BETWEEN (:sy - 1) AND (:sy + 1)))',
                 Ship::class,
+                Map::class,
                 StarSystemMap::class
             )
         )->setParameters([
