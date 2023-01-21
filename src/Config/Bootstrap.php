@@ -265,12 +265,6 @@ $builder->addDefinitions(
     require_once __DIR__ . '/../Component/Colony/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__ . '/../Component/Queue/services.php'
-);
-$builder->addDefinitions(
-    require_once __DIR__ . '/../Component/Process/services.php'
-);
-$builder->addDefinitions(
     require_once __DIR__ . '/../Component/Specials/services.php'
 );
 
