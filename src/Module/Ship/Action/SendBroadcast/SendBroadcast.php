@@ -48,7 +48,7 @@ final class SendBroadcast implements ActionControllerInterface
         }
 
         $hasFoundRecipient = $this->broadcastToColoniesInRange($ship);
-        $hasFoundRecipient = $hasFoundRecipient  && $this->broadcastToStationsInRange($ship);
+        $hasFoundRecipient = $hasFoundRecipient || $this->broadcastToStationsInRange($ship);
 
         if ($hasFoundRecipient) {
             $game->addInformation(_("Der Broadcast wurde erfolgreich versendet"));
