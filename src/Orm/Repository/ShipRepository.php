@@ -29,6 +29,7 @@ use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
