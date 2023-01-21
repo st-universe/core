@@ -40,6 +40,6 @@ final class ShowLottery implements ViewControllerInterface
 
         $game->setTemplateVar('TICKETCOUNT', $ticketCount);
         $game->setTemplateVar('OWNCOUNT', $ownCount);
-        $game->setTemplateVar('WINCHANCE', $ticketCount === 0 ? '-' : (int)ceil($ownCount / $ticketCount * 100));
+        $game->setTemplateVar('WINCHANCE', $ticketCount === 0 || $ownCount === 0 ? '-' : (int)ceil($ownCount / $ticketCount * 100));
     }
 }
