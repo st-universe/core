@@ -34,6 +34,12 @@ final class ShowLottery implements ViewControllerInterface
         $game->setTemplateFile('html/lottery.xhtml');
 
         $period = date("Y.m", time());
-        $game->setTemplateVar('TICKETCOUNT', $this->lotteryTicketRepository->getAmountByPeriod($period));
+
+        $ticketCount = $this->lotteryTicketRepository->getAmountByPeriod($period);
+        $ownCount = $this->lotteryTicketRepository->getAmountByPeriodAndUser($period, $game->getUser()->getId());
+
+        $game->setTemplateVar('TICKETCOUNT', $ticketCount);
+        $game->setTemplateVar('OWNCOUNT', $ownCount);
+        $game->setTemplateVar('WINCHANCE', $ticketCount === 0 ? '-' : (int)ceil($ownCount / $ticketCount));
     }
 }

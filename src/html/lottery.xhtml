@@ -24,6 +24,14 @@
                     <td>${TICKETCOUNT}</td>
                 </tr>
                 <tr>
+                    <td>Eigene Lose</td>
+                    <td>${OWNCOUNT}</td>
+                </tr>
+                <tr>
+                    <td>Aktuelle Gewinnchance</td>
+                    <td>${WINCHANCE} %</td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         <form method="post" action="trade.php">
                             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
