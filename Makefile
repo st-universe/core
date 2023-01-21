@@ -32,7 +32,8 @@ dev-create-db:force
 	docker-compose exec -T stu-db sh -c 'exec psql -U stu -d stu_db < /dump/stu.dump'
 
 dev-wipe-db:force
-	docker-compose down stu-db
+	docker-compose kill stu-db
+	docker-compose rm -f stu-db
 
 dev-start-db:force
 	docker-compose up -d stu-db
