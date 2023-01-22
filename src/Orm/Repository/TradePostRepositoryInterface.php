@@ -3,10 +3,13 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
+ * @extends ObjectRepository<TradePost>
+ *
  * @method null|TradePostInterface find(integer $id)
  */
 interface TradePostRepositoryInterface extends ObjectRepository

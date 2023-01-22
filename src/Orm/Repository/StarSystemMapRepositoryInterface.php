@@ -4,9 +4,12 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
 /**
+ * @extends ObjectRepository<StarSystemMap>
+ *
  * @method null|StarSystemMapInterface find(integer $id)
  */
 interface StarSystemMapRepositoryInterface extends ObjectRepository

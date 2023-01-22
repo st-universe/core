@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradeOfferInterface;
 
 /**
+ * @extends ObjectRepository<TradeOffer>
+ *
  * @method null|TradeOfferInterface find(integer $id)
  */
 interface TradeOfferRepositoryInterface extends ObjectRepository

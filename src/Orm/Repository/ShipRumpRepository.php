@@ -14,6 +14,9 @@ use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\Storage;
 
+/**
+ * @extends EntityRepository<ShipRump>
+ */
 final class ShipRumpRepository extends EntityRepository implements ShipRumpRepositoryInterface
 {
     public function getGroupedInfoByUser(int $userId): array

@@ -16,6 +16,9 @@ use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\User;
 
+/**
+ * @extends EntityRepository<TradePost>
+ */
 final class TradePostRepository extends EntityRepository implements TradePostRepositoryInterface
 {
     public function prototype(): TradePostInterface

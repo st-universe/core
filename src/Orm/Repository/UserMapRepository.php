@@ -7,6 +7,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserMap;
 
+/**
+ * @extends EntityRepository<UserMap>
+ */
 final class UserMapRepository extends EntityRepository implements UserMapRepositoryInterface
 {
 
@@ -15,7 +18,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         $this->getEntityManager()->getConnection()->query(
             sprintf(
                 'INSERT INTO stu_user_map (user_id,layer_id,cx,cy,map_id)
-                (SELECT %d as user_id,layer_id,cx,cy,id as map_id 
+                (SELECT %d as user_id,layer_id,cx,cy,id as map_id
                 FROM stu_map
                 WHERE cx BETWEEN %d AND %d
                 AND cy BETWEEN %d AND %d

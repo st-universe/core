@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
 
 /**
+ * @extends ObjectRepository<TradeLicense>
+ *
  * @method null|TradeLicenseInterface find(integer $id)
  */
 interface TradeLicenseRepositoryInterface extends ObjectRepository

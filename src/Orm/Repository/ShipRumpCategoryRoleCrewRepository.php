@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
 
+/**
+ * @extends EntityRepository<ShipRumpCategoryRoleCrew>
+ */
 final class ShipRumpCategoryRoleCrewRepository extends EntityRepository implements ShipRumpCategoryRoleCrewRepositoryInterface
 {
     public function getByShipRumpCategoryAndRole(

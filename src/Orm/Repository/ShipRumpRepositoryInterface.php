@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpInterface;
 
 /**
+ * @extends ObjectRepository<ShipRump>
+ *
  * @method null|ShipRumpInterface find(integer $id)
  */
 interface ShipRumpRepositoryInterface extends ObjectRepository

@@ -11,6 +11,9 @@ use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradeOfferInterface;
 
+/**
+ * @extends EntityRepository<TradeOffer>
+ */
 final class TradeOfferRepository extends EntityRepository implements TradeOfferRepositoryInterface
 {
 

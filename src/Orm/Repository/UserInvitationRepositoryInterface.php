@@ -5,9 +5,12 @@ namespace Stu\Orm\Repository;
 use DateTimeInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserInvitationInterface;
 
 /**
+ * @extends ObjectRepository<UserInvitation>
+ *
  * @method null|UserInvitationInterface find(integer $id)
  * @method UserInvitationInterface[] findAll()
  */

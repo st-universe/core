@@ -2,9 +2,14 @@
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ShipyardShipQueue;
 use Stu\Orm\Entity\ShipyardShipQueueInterface;
 
-interface ShipyardShipQueueRepositoryInterface
+/**
+ * @extends ObjectRepository<ShipyardShipQueue>
+ */
+interface ShipyardShipQueueRepositoryInterface extends ObjectRepository
 {
     public function prototype(): ShipyardShipQueueInterface;
 

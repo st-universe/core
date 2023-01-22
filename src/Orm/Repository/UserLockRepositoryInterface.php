@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Entity\UserLockInterface;
 
 /**
+ * @extends ObjectRepository<UserLock>
+ *
  * @method null|UserLockInterface find(integer $id)
  */
 interface UserLockRepositoryInterface extends ObjectRepository

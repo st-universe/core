@@ -9,6 +9,9 @@ use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\StarSystemType;
 
+/**
+ * @extends EntityRepository<StarSystemType>
+ */
 final class StarSystemTypeRepository extends EntityRepository implements StarSystemTypeRepositoryInterface
 {
     public function getWithoutDatabaseEntry(): array

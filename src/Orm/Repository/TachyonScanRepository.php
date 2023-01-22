@@ -6,12 +6,14 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-
 use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\TachyonScanInterface;
 
+/**
+ * @extends EntityRepository<TachyonScan>
+ */
 final class TachyonScanRepository extends EntityRepository implements TachyonScanRepositoryInterface
 {
     public function prototype(): TachyonScanInterface

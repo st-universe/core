@@ -9,6 +9,9 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipSystemInterface;
 
+/**
+ * @extends EntityRepository<ShipSystem>
+ */
 final class ShipSystemRepository extends EntityRepository implements ShipSystemRepositoryInterface
 {
 

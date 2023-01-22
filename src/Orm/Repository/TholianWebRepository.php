@@ -10,6 +10,9 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Entity\TholianWebInterface;
 
+/**
+ * @extends EntityRepository<TholianWeb>
+ */
 final class TholianWebRepository extends EntityRepository implements TholianWebRepositoryInterface
 {
     public function prototype(): TholianWebInterface

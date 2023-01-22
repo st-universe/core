@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -14,6 +13,9 @@ use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
+/**
+ * @extends EntityRepository<StarSystemMap>
+ */
 final class StarSystemMapRepository extends EntityRepository implements StarSystemMapRepositoryInterface
 {
     public function getBySystemOrdered(int $starSystemId): array
@@ -122,7 +124,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         if (count($result) < AstronomicalMappingEnum::MEASUREMENT_COUNT) {
             $otherFields = $this->getEntityManager()
                 ->createNativeQuery(
-                    'SELECT sm.id as id, sm.sx as sx, sm.sy as sy, sm.systems_id as systems_id, sm.field_id as field_id 
+                    'SELECT sm.id as id, sm.sx as sx, sm.sy as sy, sm.systems_id as systems_id, sm.field_id as field_id
                     FROM stu_sys_map sm
                     JOIN stu_map_ftypes ft
                     ON sm.field_id = ft.id

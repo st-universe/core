@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ShipyardShipQueue;
 use Stu\Orm\Entity\ShipyardShipQueueInterface;
 
+/**
+ * @extends EntityRepository<ShipyardShipQueue>
+ */
 final class ShipyardShipQueueRepository extends EntityRepository implements ShipyardShipQueueRepositoryInterface
 {
     public function prototype(): ShipyardShipQueueInterface

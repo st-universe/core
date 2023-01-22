@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\ShipRumpUserInterface;
 
+/**
+ * @extends EntityRepository<ShipRumpUser>
+ */
 final class ShipRumpUserRepository extends EntityRepository implements ShipRumpUserRepositoryInterface
 {
     public function isAvailableForUser(int $shipRumpId, int $userId): bool

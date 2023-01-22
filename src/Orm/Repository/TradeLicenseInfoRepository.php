@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\TradeLicenseInfoInterface;
 use Stu\Orm\Entity\TradeLicenseInfo;
 
+/**
+ * @extends EntityRepository<TradeLicenseInfo>
+ */
 final class TradeLicenseInfoRepository extends EntityRepository implements TradeLicenseInfoRepositoryInterface
 {
 

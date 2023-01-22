@@ -10,6 +10,9 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserProfileVisitorInterface;
 
+/**
+ * @extends EntityRepository<UserProfileVisitor>
+ */
 final class UserProfileVisitorRepository extends EntityRepository implements UserProfileVisitorRepositoryInterface
 {
     public function isVisitRegistered(int $profileUserId, int $userId): bool

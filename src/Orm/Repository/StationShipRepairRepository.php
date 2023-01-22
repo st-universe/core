@@ -9,11 +9,11 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\StationShipRepair;
 use Stu\Orm\Entity\StationShipRepairInterface;
 
-final class StationShipRepairRepository extends EntityRepository
-implements
-    StationShipRepairRepositoryInterface
+/**
+ * @extends EntityRepository<StationShipRepair>
+ */
+final class StationShipRepairRepository extends EntityRepository implements StationShipRepairRepositoryInterface
 {
-
     public function prototype(): StationShipRepairInterface
     {
         return new StationShipRepair();

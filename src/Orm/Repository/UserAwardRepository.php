@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserAward;
 use Stu\Orm\Entity\UserAwardInterface;
 
+/**
+ * @extends EntityRepository<UserAward>
+ */
 final class UserAwardRepository extends EntityRepository implements UserAwardRepositoryInterface
 {
 

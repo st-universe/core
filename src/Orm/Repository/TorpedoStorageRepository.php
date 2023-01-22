@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoStorageInterface;
 
+/**
+ * @extends EntityRepository<TorpedoStorage>
+ */
 final class TorpedoStorageRepository extends EntityRepository implements TorpedoStorageRepositoryInterface
 {
     public function prototype(): TorpedoStorageInterface

@@ -10,6 +10,9 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserInvitationInterface;
 
+/**
+ * @extends EntityRepository<UserInvitation>
+ */
 final class UserInvitationRepository extends EntityRepository implements UserInvitationRepositoryInterface
 {
     public function prototype(): UserInvitationInterface

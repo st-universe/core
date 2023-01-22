@@ -4,9 +4,12 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\TachyonScanInterface;
 
 /**
+ * @extends ObjectRepository<TachyonScan>
+ *
  * @method null|TachyonScanInterface find(integer $id)
  */
 interface TachyonScanRepositoryInterface extends ObjectRepository

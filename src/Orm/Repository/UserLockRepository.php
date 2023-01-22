@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Entity\UserLockInterface;
 
+/**
+ * @extends EntityRepository<UserLock>
+ */
 final class UserLockRepository extends EntityRepository implements UserLockRepositoryInterface
 {
     public function getActiveByUser(int $userId): ?UserLockInterface

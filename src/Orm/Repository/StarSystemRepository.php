@@ -10,6 +10,9 @@ use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\StarSystem;
 
+/**
+ * @extends EntityRepository<StarSystem>
+ */
 final class StarSystemRepository extends EntityRepository implements StarSystemRepositoryInterface
 {
     public function getByLayer(int $layerId): array

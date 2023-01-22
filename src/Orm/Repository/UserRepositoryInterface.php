@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
 /**
+ * @extends ObjectRepository<User>
+ *
  * @method null|UserInterface find(integer $id)
  * @method UserInterface[] findAll()
  */

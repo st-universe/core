@@ -13,6 +13,9 @@ use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
 
+/**
+ * @extends EntityRepository<Storage>
+ */
 final class StorageRepository extends EntityRepository implements StorageRepositoryInterface
 {
     public function prototype(): StorageInterface

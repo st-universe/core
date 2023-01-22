@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Entity\UserLayerInterface;
 
+/**
+ * @extends EntityRepository<UserLayer>
+ */
 final class UserLayerRepository extends EntityRepository implements UserLayerRepositoryInterface
 {
     public function prototype(): UserLayerInterface

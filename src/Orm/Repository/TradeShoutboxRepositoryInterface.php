@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeShoutboxInterface;
 
+/**
+ * @extends ObjectRepository<TradeShoutbox>
+ */
 interface TradeShoutboxRepositoryInterface extends ObjectRepository
 {
     /**

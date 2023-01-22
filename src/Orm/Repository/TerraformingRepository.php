@@ -9,6 +9,9 @@ use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Terraforming;
 
+/**
+ * @extends EntityRepository<Terraforming>
+ */
 final class TerraformingRepository extends EntityRepository implements TerraformingRepositoryInterface
 {
     private function getBySourceFieldType(int $sourceFieldTypeId): iterable

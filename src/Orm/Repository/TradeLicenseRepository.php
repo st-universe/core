@@ -11,6 +11,9 @@ use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInterface;
 use Stu\Orm\Entity\TradePost;
 
+/**
+ * @extends EntityRepository<TradeLicense>
+ */
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
 

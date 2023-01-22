@@ -10,6 +10,9 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Orm\Entity\TradeTransaction;
 use Stu\Orm\Entity\TradeTransactionInterface;
 
+/**
+ * @extends EntityRepository<TradeTransaction>
+ */
 final class TradeTransactionRepository extends EntityRepository implements TradeTransactionRepositoryInterface
 {
     public function prototype(): TradeTransactionInterface

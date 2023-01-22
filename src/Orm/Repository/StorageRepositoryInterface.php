@@ -4,9 +4,12 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
 
 /**
+ * @extends ObjectRepository<Storage>
+ *
  * @method null|StorageInterface find(integer $id)
  */
 interface StorageRepositoryInterface extends ObjectRepository

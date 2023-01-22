@@ -9,6 +9,9 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserIpTableInterface;
 
+/**
+ * @extends EntityRepository<UserIpTable>
+ */
 final class UserIpTableRepository extends EntityRepository implements UserIpTableRepositoryInterface
 {
 

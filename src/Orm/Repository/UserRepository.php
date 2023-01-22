@@ -12,6 +12,9 @@ use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<User>
+ */
 final class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
 

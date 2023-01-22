@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeShoutboxInterface;
 
+/**
+ * @extends EntityRepository<TradeShoutbox>
+ */
 final class TradeShoutboxRepository extends EntityRepository implements TradeShoutboxRepositoryInterface
 {
     public function getByTradeNetwork(int $tradeNetworkId): array

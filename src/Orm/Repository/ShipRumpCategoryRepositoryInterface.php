@@ -2,6 +2,12 @@
 
 namespace Stu\Orm\Repository;
 
-interface ShipRumpCategoryRepositoryInterface
+use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ShipRumpCategory;
+
+/**
+ * @extends ObjectRepository<ShipRumpCategory>
+ */
+interface ShipRumpCategoryRepositoryInterface extends ObjectRepository
 {
 }

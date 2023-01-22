@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipSystemInterface;
 
+/**
+ * @extends ObjectRepository<ShipSystem>
+ */
 interface ShipSystemRepositoryInterface extends ObjectRepository
 {
     public function prototype(): ShipSystemInterface;

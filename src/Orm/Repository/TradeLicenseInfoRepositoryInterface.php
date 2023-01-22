@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\TradeLicenseInfo;
 use Stu\Orm\Entity\TradeLicenseInfoInterface;
 
 /**
+ * @extends ObjectRepository<TradeLicenseInfo>
+ *
  * @method null|TradeLicenseInfoInterface find(integer $id)
- */ #
+ */
 interface TradeLicenseInfoRepositoryInterface extends ObjectRepository
 {
 

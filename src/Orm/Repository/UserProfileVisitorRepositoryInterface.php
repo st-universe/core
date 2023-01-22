@@ -2,10 +2,15 @@
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserProfileVisitorInterface;
 
-interface UserProfileVisitorRepositoryInterface
+/**
+ * @extends ObjectRepository<UserProfileVisitor>
+ */
+interface UserProfileVisitorRepositoryInterface extends ObjectRepository
 {
     public function isVisitRegistered(int $profileUserId, int $userId): bool;
 

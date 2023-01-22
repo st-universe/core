@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\UserAward;
 use Stu\Orm\Entity\UserAwardInterface;
 
 /**
+ * @extends ObjectRepository<UserAward>
+ *
  * @method null|UserAwardInterface find(integer $id)
  */
 interface UserAwardRepositoryInterface extends ObjectRepository
