@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Colony\ColonyTypeEnum;
 
 /**
@@ -12,7 +19,7 @@ use Stu\Component\Colony\ColonyTypeEnum;
  **/
 class Research implements ResearchInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -56,18 +63,24 @@ class Research implements ResearchInterface
     private $upper_limit_colony_amount;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
     /**
+     * @var null|ShipBuildplanInterface
+     *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="reward_buildplan_id", referencedColumnName="id")
      */
     private $rewardBuildplan;
 
     /**
+     * @var null|AwardInterface
+     *
      * @ManyToOne(targetEntity="Award")
      * @JoinColumn(name="award_id", referencedColumnName="id")
      */

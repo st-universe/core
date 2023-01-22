@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradeTransactionRepository")
  * @Table(
@@ -15,7 +23,7 @@ namespace Stu\Orm\Entity;
  **/
 class TradeTransaction implements TradeTransactionInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -41,12 +49,16 @@ class TradeTransaction implements TradeTransactionInterface
     private $tradepost_id = 0;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="wg_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $wantedCommodity;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="gg_id", referencedColumnName="id", onDelete="CASCADE")
      */

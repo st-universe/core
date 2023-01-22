@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TorpedoStorageRepository")
  * @Table(
@@ -26,18 +35,24 @@ class TorpedoStorage implements TorpedoStorageInterface
     private $torpedo_type;
 
     /**
+     * @var ShipInterface
+     *
      * @OneToOne(targetEntity="Ship", inversedBy="torpedoStorage")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
 
     /**
+     * @var TorpedoTypeInterface
+     *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
      */
     private $torpedo;
 
     /**
+     * @var StorageInterface
+     *
      * @OneToOne(targetEntity="Storage", mappedBy="torpedoStorage")
      */
     private $storage;

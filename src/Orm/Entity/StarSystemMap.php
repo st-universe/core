@@ -6,6 +6,16 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
 /**
@@ -17,7 +27,7 @@ use Stu\Component\Map\MapEnum;
  **/
 class StarSystemMap implements StarSystemMapInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -37,34 +47,46 @@ class StarSystemMap implements StarSystemMapInterface
     private $field_id = 0;
 
     /**
+     * @var StarSystemInterface
+     *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
     private $starSystem;
 
     /**
+     * @var null|ColonyInterface
+     *
      * @OneToOne(targetEntity="Colony", mappedBy="starsystem_map")
      */
     private $colony;
 
     /**
+     * @var MapFieldTypeInterface
+     *
      * @ManyToOne(targetEntity="MapFieldType")
      * @JoinColumn(name="field_id", referencedColumnName="id")
      */
     private $mapFieldType;
 
     /**
+     * @var ArrayCollection<int, ShipInterface>
+     *
      * @OneToMany(targetEntity="Ship", mappedBy="starsystem_map", fetch="EXTRA_LAZY")
      */
     private $ships;
 
     /**
+     * @var ArrayCollection<int, FlightSignatureInterface>
+     *
      * @OneToMany(targetEntity="FlightSignature", mappedBy="starsystem_map")
      * @OrderBy({"time" = "DESC"})
      */
     private $signatures;
 
     /**
+     * @var ArrayCollection<int, WormholeEntryInterface>
+     *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="systemMap")
      */
     private $wormholeEntries;

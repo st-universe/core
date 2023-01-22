@@ -6,6 +6,15 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\KnPostRepository")
@@ -20,7 +29,7 @@ use Doctrine\Common\Collections\Collection;
  **/
 class KnPost implements KnPostInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -52,18 +61,24 @@ class KnPost implements KnPostInterface
     private $ratings = [];
 
     /**
+     * @var ArrayCollection<int, KnCommentInterface>
+     *
      * @OneToMany(targetEntity="KnComment", mappedBy="post")
      * @OrderBy({"id" = "ASC"})
      */
     private $comments;
 
     /**
+     * @var null|RpgPlotInterface
+     *
      * @ManyToOne(targetEntity="RpgPlot", inversedBy="posts")
      * @JoinColumn(name="plot_id", referencedColumnName="id")
      */
     private $rpgPlot;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */

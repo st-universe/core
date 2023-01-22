@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchDependencyRepository")
  * @Table(name="stu_research_dependencies")
- **/
+ */
 class ResearchDependency implements ResearchDependencyInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -27,12 +35,16 @@ class ResearchDependency implements ResearchDependencyInterface
     private $mode;
 
     /**
+     * @var ResearchInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
      * @JoinColumn(name="research_id", referencedColumnName="id")
      */
     private $research;
 
     /**
+     * @var ResearchInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
      * @JoinColumn(name="depends_on", referencedColumnName="id")
      */

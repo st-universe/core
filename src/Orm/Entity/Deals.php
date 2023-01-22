@@ -6,6 +6,15 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 
 /**
@@ -16,7 +25,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
  **/
 class Deals implements DealsInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -69,24 +78,32 @@ class Deals implements DealsInterface
     private $auction_amount;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="want_commodity", referencedColumnName="id", onDelete="CASCADE")
      */
     private $wantedCommodity;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="give_commodity", referencedColumnName="id", onDelete="CASCADE")
      */
     private $giveCommodity;
 
     /**
+     * @var null|ShipBuildplanInterface
+     *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id")
      */
     private $buildplan;
 
     /**
+     * @var ArrayCollection<int, AuctionBidInterface>
+     *
      * @OneToMany(targetEntity="AuctionBid", mappedBy="auction", cascade={"remove"})
      * @OrderBy({"max_amount" = "ASC"})
      */
@@ -133,9 +150,9 @@ class Deals implements DealsInterface
     }
 
 
-    public function setAmount(int $dealamount): DealsInterface
+    public function setAmount(int $amount): DealsInterface
     {
-        $this->amount = $dealamount;
+        $this->amount = $amount;
 
         return $this;
     }

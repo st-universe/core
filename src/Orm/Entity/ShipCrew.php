@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Crew\CrewEnum;
 
 /**
@@ -22,7 +29,7 @@ use Stu\Component\Crew\CrewEnum;
 //TODO RENAME to CrewAssignment, indices, repo and stuff
 class ShipCrew implements ShipCrewInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -51,36 +58,48 @@ class ShipCrew implements ShipCrewInterface
     private $repair_task_id;
 
     /**
+     * @var CrewInterface
+     *
      * @ManyToOne(targetEntity="Crew")
      * @JoinColumn(name="crew_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $crew;
 
     /**
+     * @var null|ShipInterface
+     *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
 
     /**
+     * @var null|ColonyInterface
+     *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $colony;
 
     /**
+     * @var null|TradePostInterface
+     *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="tradepost_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $tradepost;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
     /**
+     * @var null|RepairTaskInterface
+     *
      * @ManyToOne(targetEntity="RepairTask")
      * @JoinColumn(name="repair_task_id", referencedColumnName="id")
      */

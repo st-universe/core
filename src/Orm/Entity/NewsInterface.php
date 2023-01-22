@@ -22,5 +22,8 @@ interface NewsInterface
 
     public function setRefs(string $refs): NewsInterface;
 
+    /**
+     * @return array<string>
+     */
     public function getLinks(): array;
 }

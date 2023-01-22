@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -21,7 +28,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  **/
 class DockingPrivilege implements DockingPrivilegeInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -41,6 +48,8 @@ class DockingPrivilege implements DockingPrivilegeInterface
     private $privilege_mode = 0;
 
     /**
+     * @var ShipInterface
+     *
      * @ManyToOne(targetEntity="Ship", inversedBy="dockingPrivileges")
      * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
      */

@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 
 /**
@@ -17,7 +24,7 @@ use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
  **/
 class ModuleSpecial implements ModuleSpecialInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -31,6 +38,8 @@ class ModuleSpecial implements ModuleSpecialInterface
     private $special_id = 0;
 
     /**
+     * @var ModuleInterface
+     *
      * @ManyToOne(targetEntity="Module", inversedBy="moduleSpecials")
      * @JoinColumn(name="module_id", referencedColumnName="id")
      */

@@ -6,6 +6,16 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
 /**
@@ -22,8 +32,7 @@ use Stu\Component\Map\MapEnum;
  **/
 class Map implements MapInterface
 {
-
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -58,59 +67,79 @@ class Map implements MapInterface
     private $admin_region_id;
 
     /**
+     * @var LayerInterface
+     *
      * @ManyToOne(targetEntity="Layer")
      * @JoinColumn(name="layer_id", referencedColumnName="id")
      */
     private $layer;
 
     /**
+     * @var null|StarSystemInterface
+     *
      * @OneToOne(targetEntity="StarSystem", inversedBy="map")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
     private $starSystem;
 
     /**
+     * @var null|StarSystemInterface
+     *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="influence_area_id", referencedColumnName="id")
      */
     private $influenceArea;
 
     /**
+     * @var MapFieldTypeInterface
+     *
      * @ManyToOne(targetEntity="MapFieldType")
      * @JoinColumn(name="field_id", referencedColumnName="id")
      */
     private $mapFieldType;
 
     /**
+     * @var null|MapBorderTypeInterface
+     *
      * @ManyToOne(targetEntity="MapBorderType")
      * @JoinColumn(name="bordertype_id", referencedColumnName="id")
      */
     private $mapBorderType;
 
     /**
+     * @var null|MapRegionInterface
+     *
      * @ManyToOne(targetEntity="MapRegion")
      * @JoinColumn(name="region_id", referencedColumnName="id")
      */
     private $mapRegion;
 
     /**
+     * @var null|MapRegionInterface
+     *
      * @ManyToOne(targetEntity="MapRegion")
      * @JoinColumn(name="admin_region_id", referencedColumnName="id")
      */
     private $administratedRegion;
 
     /**
+     * @var ArrayCollection<int, ShipInterface>
+     *
      * @OneToMany(targetEntity="Ship", mappedBy="map", fetch="EXTRA_LAZY")
      */
     private $ships;
 
     /**
+     * @var ArrayCollection<int, FlightSignatureInterface>
+     *
      * @OneToMany(targetEntity="FlightSignature", mappedBy="map")
      * @OrderBy({"time" = "DESC"})
      */
     private $signatures;
 
     /**
+     * @var ArrayCollection<int, WormholeEntryInterface>
+     *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="map")
      */
     private $wormholeEntries;

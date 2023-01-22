@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
@@ -19,10 +27,10 @@ use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;
  *          @Index(name="rump_category_idx", columns={"category_id"})
  *     }
  * )
- **/
+ */
 class ShipRump implements ShipRumpInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -138,36 +146,49 @@ class ShipRump implements ShipRumpInterface
     private $prestige;
 
     /**
+     * @var null|ShipRumpRoleInterface
+     *
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="role_id", referencedColumnName="id")
      */
     private $shipRumpRole;
 
     /**
+     * @var ShipRumpCategoryInterface
+     *
      * @ManyToOne(targetEntity="ShipRumpCategory")
      * @JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $shipRumpCategory;
 
     /**
+     * @var null|CommodityInterface
+     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id")
      */
     private $commodity;
 
     /**
+     * @var null|DatabaseEntryInterface
+     *
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
     private $databaseEntry;
 
+    /** @var null|ShipRumpModuleLevelInterface */
     private $module_levels;
 
+    /** @var null|ShipRumpCategoryRoleCrewInterface */
     private $crewobj;
 
+    /** @var null|array<int> */
     private $specialAbilities;
 
     /**
+     * @var ArrayCollection<int, ShipRumpCostInterface>
+     *
      * @OneToMany(targetEntity="ShipRumpCost", mappedBy="shipRump")
      */
     private $buildingCosts;
@@ -484,9 +505,9 @@ class ShipRump implements ShipRumpInterface
         return $this->slots;
     }
 
-    public function setDockingSlots(int $dockingSlots): ShipRumpInterface
+    public function setDockingSlots(int $slots): ShipRumpInterface
     {
-        $this->slots = $dockingSlots;
+        $this->slots = $slots;
         return $this;
     }
 
@@ -628,9 +649,6 @@ class ShipRump implements ShipRumpInterface
         return $this->module_levels;
     }
 
-    /**
-     * @return ShipRumpCostInterface[]
-     */
     public function getBuildingCosts(): Collection
     {
         return $this->buildingCosts;

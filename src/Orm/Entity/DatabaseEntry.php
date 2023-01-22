@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseEntryRepository")
  * @Table(
@@ -14,7 +22,7 @@ namespace Stu\Orm\Entity;
  **/
 class DatabaseEntry implements DatabaseEntryInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -40,12 +48,16 @@ class DatabaseEntry implements DatabaseEntryInterface
     private $object_id;
 
     /**
+     * @var DatabaseTypeInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseType")
      * @JoinColumn(name="type", referencedColumnName="id")
      */
     private $type_object;
 
     /**
+     * @var DatabaseCategoryInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseCategory", inversedBy="entries")
      * @JoinColumn(name="category_id", referencedColumnName="id")
      */

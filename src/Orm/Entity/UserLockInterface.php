@@ -10,7 +10,7 @@ interface UserLockInterface
 
     public function setUserId(?int $userId): UserLockInterface;
 
-    public function getUser(): UserInterface;
+    public function getUser(): ?UserInterface;
 
     public function setUser(?UserInterface $user): UserLockInterface;
 

@@ -41,6 +41,9 @@ interface ShipBuildplanInterface
 
     public function getShipCount(): int;
 
+    /**
+     * @return Collection<int, ShipInterface>
+     */
     public function getShiplist(): Collection;
 
     public function getRump(): ShipRumpInterface;
@@ -53,7 +56,7 @@ interface ShipBuildplanInterface
     public function getModulesByType($type): array;
 
     /**
-     * @return BuildplanModuleInterface[]|Collection
+     * @return Collection<int, BuildplanModuleInterface>
      */
     public function getModules(): Collection;
 

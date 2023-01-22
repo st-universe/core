@@ -39,10 +39,13 @@ interface StarSystemMapInterface
     public function getFieldStyle(): string;
 
     /**
-     * @return ShipInterface[]|Collection
+     * @return Collection<int, ShipInterface>
      */
     public function getShips(): Collection;
 
+    /**
+     * @return Collection<int, FlightSignatureInterface>
+     */
     public function getSignatures(): Collection;
 
     public function getRandomWormholeEntry(): ?WormholeEntryInterface;

@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PrivateMessageRepository")
  * @Table(
@@ -16,7 +24,7 @@ namespace Stu\Orm\Entity;
  **/
 class PrivateMessage implements PrivateMessageInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -54,18 +62,24 @@ class PrivateMessage implements PrivateMessageInterface
     private $deleted;
 
     /**
+     * @var PrivateMessageFolderInterface
+     *
      * @ManyToOne(targetEntity="PrivateMessageFolder")
      * @JoinColumn(name="cat_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $category;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="send_user", referencedColumnName="id", onDelete="CASCADE")
      */
     private $sendingUser;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="recip_user", referencedColumnName="id", onDelete="CASCADE")
      */

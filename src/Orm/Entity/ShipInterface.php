@@ -184,7 +184,7 @@ interface ShipInterface
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface;
 
     /**
-     * @return ShipCrewInterface[]|Collection
+     * @return Collection<ShipCrewInterface>
      */
     public function getCrewlist(): Collection;
 
@@ -251,7 +251,7 @@ interface ShipInterface
     public function setTorpedoStorage(?TorpedoStorageInterface $torpedoStorage): ShipInterface;
 
     /**
-     * @return StorageInterface[]|Collection Indexed by commodityId, ordered by commodityId
+     * @return Collection<int, StorageInterface> Indexed by commodityId, ordered by commodityId
      */
     public function getStorage(): Collection;
 
@@ -260,7 +260,7 @@ interface ShipInterface
     public function getMaxStorage(): int;
 
     /**
-     * @return StorageInterface[]|Collection Indexed by commodityId, ordered by commodityId
+     * @return array<int, StorageInterface> Indexed by commodityId, ordered by commodityId
      */
     public function getBeamableStorage(): array;
 
@@ -294,16 +294,16 @@ interface ShipInterface
     public function setBuildplan(?ShipBuildplanInterface $shipBuildplan): ShipInterface;
 
     /**
-     * @return ShipSystemInterface[]|Collection
+     * @return Collection<int, ShipSystemInterface>
      */
     public function getSystems(): Collection;
 
     public function hasShipSystem($system): bool;
 
     /**
-     * @param ShipSystemTypeEnum
+     * @param int $systemType
      */
-    public function getShipSystem($systemType): ShipSystemInterface;
+    public function getShipSystem(int $systemType): ShipSystemInterface;
 
     /**
      * @return ShipSystemInterface[]
@@ -322,6 +322,9 @@ interface ShipInterface
 
     public function dockedOnTradePost(): bool;
 
+    /**
+     * @return Collection<int, DockingPrivilegeInterface>
+     */
     public function getDockPrivileges(): Collection;
 
     public function hasFreeDockingSlots(): bool;
@@ -406,7 +409,7 @@ interface ShipInterface
     public function getMaxTorpedos(): int;
 
     /**
-     * @return ShipInterface[]|Collection
+     * @return Collection<int, ShipInterface>
      */
     public function getDockedShips(): Collection;
 

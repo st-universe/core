@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 /**
@@ -17,7 +25,7 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
  **/
 class StarSystem implements StarSystemInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -52,27 +60,36 @@ class StarSystem implements StarSystemInterface
     private $is_wormhole;
 
     /**
+     * @var StarSystemTypeInterface
+     *
      * @ManyToOne(targetEntity="StarSystemType")
      * @JoinColumn(name="type", referencedColumnName="id", onDelete="CASCADE")
      */
     private $systemType;
 
     /**
+     * @var MapInterface
+     *
      * @OneToOne(targetEntity="Map", mappedBy="starSystem")
      */
     private $map;
 
     /**
+     * @var null|DatabaseEntryInterface
+     *
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $databaseEntry;
 
     /**
+     * @var null|ShipInterface
+     *
      * @OneToOne(targetEntity="Ship", mappedBy="influenceArea")
      */
     private $base;
 
+    /** @var null|array<StarSystemMapInterface> */
     private $fields;
 
     public function getId(): int

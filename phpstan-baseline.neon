@@ -91,6 +91,11 @@ parameters:
 			path: src/Component/Player/Deletion/Handler/PrivateMessageDeletionHandler.php
 
 		-
+			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\RpgPlotMemberInterface\\|false\\.$#"
+			count: 1
+			path: src/Component/Player/Deletion/Handler/RpgPlotDeletionHandler.php
+
+		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Component/Player/Deletion/Handler/RpgPlotDeletionHandler.php
@@ -769,6 +774,11 @@ parameters:
 			message: "#^Method Stu\\\\Component\\\\Specials\\\\AdventCycle\\:\\:setRandomLocation\\(\\) has parameter \\$adventDoors with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Component/Specials/AdventCycle.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 1
+			path: src/Component/Station/StationUtility.php
 
 		-
 			message: "#^Cannot call method getBaseHull\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
@@ -2669,6 +2679,16 @@ parameters:
 			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Tick\\\\Ship\\\\ShipTickInterface\\:\\:work\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/Ticks/DoManualShipTick.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/UnlockUser.php
+
+		-
+			message: "#^Cannot call method getUserName\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Admin/Action/UnlockUser.php
 
 		-
 			message: "#^Cannot call method isAdmin\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
@@ -12116,6 +12136,16 @@ parameters:
 			path: src/Module/Ship/Action/SelfDestruct/SelfDestruct.php
 
 		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
+
+		-
+			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
+
+		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
@@ -12171,7 +12201,7 @@ parameters:
 			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
 
 		-
-			message: "#^Parameter \\#1 \\$key of method Doctrine\\\\Common\\\\Collections\\\\ReadableCollection\\<\\(int\\|string\\),mixed\\>\\:\\:containsKey\\(\\) expects \\(int\\|string\\), int\\|null given\\.$#"
+			message: "#^Parameter \\#1 \\$key of method Doctrine\\\\Common\\\\Collections\\\\ReadableCollection\\<int,Stu\\\\Orm\\\\Entity\\\\StorageInterface\\>\\:\\:containsKey\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
 
@@ -13094,6 +13124,16 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/ReactorUtil.php
+
+		-
+			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 3
+			path: src/Module/Ship/Lib/ReactorUtil.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ReactorUtil\\:\\:storageContainsNeededCommodities\\(\\) has parameter \\$storage with no type specified\\.$#"
@@ -15406,11 +15446,6 @@ parameters:
 			path: src/Module/Station/Action/CancelShipRepair/CancelShipRepair.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\StationShipRepairInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Station/Action/CancelShipRepair/CancelShipRepair.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Station/Action/DeleteDockPrivilege/DeleteDockPrivilege.php
@@ -15459,6 +15494,11 @@ parameters:
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Station/Action/DockTractoredShip/DockTractoredShip.php
+
+		-
+			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
+			count: 4
+			path: src/Module/Station/Action/ManageShips/ManageShips.php
 
 		-
 			message: "#^Cannot call method getBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
@@ -15513,11 +15553,6 @@ parameters:
 		-
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Ship\\\\Storage\\\\ShipStorageManagerInterface\\:\\:lowerStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 2
-			path: src/Module/Station/Action/ManageShips/ManageShips.php
-
-		-
-			message: "#^Parameter \\#3 \\$amount of method Stu\\\\Component\\\\Ship\\\\Storage\\\\ShipStorageManagerInterface\\:\\:upperStorage\\(\\) expects int, float\\|int\\<0, max\\> given\\.$#"
-			count: 1
 			path: src/Module/Station/Action/ManageShips/ManageShips.php
 
 		-
@@ -15651,7 +15686,7 @@ parameters:
 			path: src/Module/Station/Action/UndockStationShip/UndockStationShip.php
 
 		-
-			message: "#^Parameter \\#1 \\$key of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<\\(int\\|string\\),mixed\\>\\:\\:remove\\(\\) expects \\(int\\|string\\), int\\|null given\\.$#"
+			message: "#^Parameter \\#1 \\$key of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int,Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\:\\:remove\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Station/Action/UndockStationShip/UndockStationShip.php
 
@@ -16119,6 +16154,11 @@ parameters:
 			message: "#^Variable \\$startTime might not be defined\\.$#"
 			count: 6
 			path: src/Module/Tick/Ship/ShipTickManager.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Tick/TickManager.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
@@ -16809,6 +16849,11 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:\\$storage has no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/DealAccountTal.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeAccountTal\\:\\:getOfferStorage\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\StorageInterface\\> but returns array\\<array\\<string, int\\|string\\>\\>\\.$#"
+			count: 1
+			path: src/Module/Trade/Lib/TradeAccountTal.php
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeAccountTal\\:\\:\\$storage has no type specified\\.$#"
@@ -18736,17 +18781,7 @@ parameters:
 			path: src/Orm/Entity/Contact.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$opponent has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$recipient has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Contact.php
 
@@ -18776,22 +18811,12 @@ parameters:
 			path: src/Orm/Entity/Crew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$race has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$race_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Crew.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Crew.php
 
@@ -18816,11 +18841,6 @@ parameters:
 			path: src/Orm/Entity/CrewRace.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$faction has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewRace.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$faction_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/CrewRace.php
@@ -18841,11 +18861,6 @@ parameters:
 			path: src/Orm/Entity/CrewRace.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$colony has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewTraining.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$colony_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/CrewTraining.php
@@ -18861,19 +18876,9 @@ parameters:
 			path: src/Orm/Entity/CrewTraining.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewTraining.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/CrewTraining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award is never written, only read\\.$#"
@@ -18892,16 +18897,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$entries has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$entries is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseCategory.php
 
@@ -18939,11 +18934,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$type has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$category has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$category_id has no type specified\\.$#"
@@ -18996,11 +18986,6 @@ parameters:
 			path: src/Orm/Entity/DatabaseEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$type_object has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseType\\:\\:\\$description has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseType.php
@@ -19019,11 +19004,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseType\\:\\:\\$macro has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$databaseEntry has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$database_id has no type specified\\.$#"
@@ -19047,11 +19027,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseUser.php
 
@@ -19081,12 +19056,7 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getAuctionBids\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getHighestBid\\(\\) should return Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|false\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
@@ -19097,11 +19067,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auction has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auctionBids has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
@@ -19117,11 +19082,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auction_user is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$buildplan has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
@@ -19142,11 +19102,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$faction_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$giveCommodity has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
@@ -19206,21 +19161,6 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$wantedCommodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\DealsInterface\\:\\:getAuctionBids\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/DealsInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\DealsInterface\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/DealsInterface.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DockingPrivilege.php
@@ -19237,11 +19177,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$privilege_type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DockingPrivilege.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$ship has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DockingPrivilege.php
 
@@ -19297,11 +19232,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_building_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_research has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Faction.php
 
@@ -19441,22 +19371,12 @@ parameters:
 			path: src/Orm/Entity/FlightSignature.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$map has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/FlightSignature.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$map_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$map_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/FlightSignature.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$rump has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
 
@@ -19477,11 +19397,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$ship_name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/FlightSignature.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$starsystem_map has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
 
@@ -19536,11 +19451,6 @@ parameters:
 			path: src/Orm/Entity/GameConfig.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:setParameterArray\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:unsetParameter\\(\\) has parameter \\$key with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameRequest.php
@@ -19582,11 +19492,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$module is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$parameterArray has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameRequest.php
 
@@ -19661,11 +19566,6 @@ parameters:
 			path: src/Orm/Entity/GameRequest.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\GameRequestInterface\\:\\:setParameterArray\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequestInterface.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\GameRequestInterface\\:\\:unsetParameter\\(\\) has parameter \\$key with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameRequestInterface.php
@@ -19687,11 +19587,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurn\\:\\:\\$startdate has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameTurn.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurn\\:\\:\\$stats has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameTurn.php
 
@@ -19752,11 +19647,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\:\\:\\$ship_count_npc has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameTurnStats.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\:\\:\\$turn has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameTurnStats.php
 
@@ -19826,17 +19716,7 @@ parameters:
 			path: src/Orm/Entity/IgnoreList.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\IgnoreList\\:\\:\\$opponent has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/IgnoreList.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\IgnoreList\\:\\:\\$recipient has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/IgnoreList.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\IgnoreList\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/IgnoreList.php
 
@@ -19866,22 +19746,12 @@ parameters:
 			path: src/Orm/Entity/KnComment.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$post has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnComment.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$post_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnComment.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$text has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnComment.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnComment.php
 
@@ -19894,26 +19764,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$username has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnComment.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:getComments\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/KnPost.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:getRatings\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPost.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:setRatings\\(\\) has parameter \\$ratings with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$comments has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$date has no type specified\\.$#"
@@ -19951,22 +19801,12 @@ parameters:
 			path: src/Orm/Entity/KnPost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$rpgPlot has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$text has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$titel has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPost.php
 
@@ -19981,32 +19821,12 @@ parameters:
 			path: src/Orm/Entity/KnPost.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\:\\:getComments\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/KnPostInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\:\\:getRatings\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPostInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\:\\:setRatings\\(\\) has parameter \\$ratings with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPostInterface.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPostToPlotApplication.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPostToPlotApplication.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$knPost has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPostToPlotApplication.php
 
@@ -20027,11 +19847,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$post_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPostToPlotApplication.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$rpgPlot has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPostToPlotApplication.php
 
@@ -20116,11 +19931,6 @@ parameters:
 			path: src/Orm/Entity/LotteryTicket.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/LotteryTicket.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/LotteryTicket.php
@@ -20131,27 +19941,12 @@ parameters:
 			path: src/Orm/Entity/LotteryTicket.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Map\\:\\:getShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Map\\:\\:getSignatures\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$admin_region_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$admin_region_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$administratedRegion has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
@@ -20191,17 +19986,7 @@ parameters:
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$influenceArea has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$influence_area_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$layer has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
@@ -20221,27 +20006,12 @@ parameters:
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapBorderType has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapBorderType is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapFieldType has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapFieldType is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapRegion has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
@@ -20256,32 +20026,12 @@ parameters:
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$ships has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$signatures has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$starSystem has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$starSystem is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$systems_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$wormholeEntries has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
@@ -20312,11 +20062,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$colonies_classes_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$colonyClass has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapFieldType.php
 
@@ -20381,21 +20126,6 @@ parameters:
 			path: src/Orm/Entity/MapFieldType.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\MapInterface\\:\\:getShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/MapInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\MapInterface\\:\\:getSignatures\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/MapInterface.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$databaseEntry has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegion.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$database_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapRegion.php
@@ -20441,32 +20171,12 @@ parameters:
 			path: src/Orm/Entity/MapRegionSettlement.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getCost\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getCostSorted\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getSpecials\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:hasSpecial\\(\\) has parameter \\$special_id with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$buildingCosts has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$commodity has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
@@ -20511,17 +20221,7 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$moduleSpecials has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$research has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
@@ -20541,17 +20241,7 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$shipRumpRole has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$shipRumpRole is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$specialAbilities type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
@@ -20586,11 +20276,6 @@ parameters:
 			path: src/Orm/Entity/ModuleBuildingFunction.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$module has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleBuildingFunction.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$module is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleBuildingFunction.php
@@ -20599,11 +20284,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$module_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleBuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$commodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleCost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$commodity is never written, only read\\.$#"
@@ -20631,11 +20311,6 @@ parameters:
 			path: src/Orm/Entity/ModuleCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleCost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleCost.php
@@ -20646,17 +20321,7 @@ parameters:
 			path: src/Orm/Entity/ModuleCost.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:getCost\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ModuleInterface.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:getCostSorted\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:getSpecials\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/Orm/Entity/ModuleInterface.php
 
@@ -20667,11 +20332,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$buildingfunction has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$colony has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleQueue.php
 
@@ -20701,11 +20361,6 @@ parameters:
 			path: src/Orm/Entity/ModuleQueue.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$module has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$module_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleQueue.php
@@ -20717,11 +20372,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$module has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleSpecial.php
 
@@ -20739,11 +20389,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$special_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleSpecial.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\News\\:\\:getLinks\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/News.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\News\\:\\:\\$date has no type specified\\.$#"
@@ -20776,11 +20421,6 @@ parameters:
 			path: src/Orm/Entity/News.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\NewsInterface\\:\\:getLinks\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/NewsInterface.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$date has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Note.php
@@ -20802,11 +20442,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$title has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Note.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Note.php
 
@@ -20906,27 +20541,12 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:getPossibleUpgrades\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:getTerraformingOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$activate_after_build has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$aktiv has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$building has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
@@ -20941,17 +20561,7 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$buildmode has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$colonies_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$colony has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
@@ -20976,16 +20586,6 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraforming has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraformingState has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraforming_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
@@ -20996,17 +20596,7 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraformingopts has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$type_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$upgrades has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
@@ -21014,16 +20604,6 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\:\\:getPossibleUpgrades\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\:\\:getTerraformingOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldInterface.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$category has no type specified\\.$#"
@@ -21059,11 +20639,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$normal_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$building has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$building is unused\\.$#"
@@ -21136,11 +20711,6 @@ parameters:
 			path: src/Orm/Entity/PrivateMessage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$category has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$date has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrivateMessage.php
@@ -21181,11 +20751,6 @@ parameters:
 			path: src/Orm/Entity/PrivateMessage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$receivingUser has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$recip_user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrivateMessage.php
@@ -21197,11 +20762,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$send_user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$sendingUser has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrivateMessage.php
 
@@ -21241,11 +20801,6 @@ parameters:
 			path: src/Orm/Entity/PrivateMessageFolder.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessageFolder.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrivateMessageFolder.php
@@ -21276,11 +20831,6 @@ parameters:
 			path: src/Orm/Entity/RepairTask.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/RepairTask.php
@@ -21296,29 +20846,9 @@ parameters:
 			path: src/Orm/Entity/RepairTask.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/RepairTask.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getDatabaseEntryIds\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:setDatabaseEntryIds\\(\\) has parameter \\$databaseEntryIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award is never written, only read\\.$#"
@@ -21332,11 +20862,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$commodity has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
 
@@ -21387,11 +20912,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$points has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$rewardBuildplan has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
 
@@ -21461,17 +20981,7 @@ parameters:
 			path: src/Orm/Entity/ResearchDependency.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research_depends_on has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ResearchDependency.php
 
@@ -21484,16 +20994,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ResearchDependency.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\:\\:getDatabaseEntryIds\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\:\\:setDatabaseEntryIds\\(\\) has parameter \\$databaseEntryIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchInterface.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$aktiv has no type specified\\.$#"
@@ -21516,17 +21016,7 @@ parameters:
 			path: src/Orm/Entity/Researched.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$research has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Researched.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$research_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Researched.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Researched.php
 
@@ -21534,16 +21024,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Researched.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:getMembers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:getPosts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$description has no type specified\\.$#"
@@ -21566,16 +21046,6 @@ parameters:
 			path: src/Orm/Entity/RpgPlot.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$members has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$posts has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$start_date has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/RpgPlot.php
@@ -21586,24 +21056,9 @@ parameters:
 			path: src/Orm/Entity/RpgPlot.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface\\:\\:getMembers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlotInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface\\:\\:getPosts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlotInterface.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$id has no type specified\\.$#"
@@ -21617,16 +21072,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$plot_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlotMember.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$rpgPlot has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlotMember.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/RpgPlotMember.php
 
@@ -21652,11 +21097,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$sess_string has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/SessionString.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/SessionString.php
 
@@ -21711,11 +21151,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getBeamableStorage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getCrewlist\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
@@ -21726,37 +21161,12 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getDockPrivileges\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getDockedShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getShipSystem\\(\\) has parameter \\$systemType with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getStorage\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getStoredShuttles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getSystems\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -21781,17 +21191,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$buildplan has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$can_be_disabled has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$crew has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -21831,27 +21231,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dockedShips has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dockedTo has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dockingPrivileges has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$evade_chance has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$fleet has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -21867,11 +21247,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$hit_chance has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$holdingWeb has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -21897,11 +21272,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$influenceArea has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -21932,11 +21302,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$lss_mode has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$map has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -21981,11 +21346,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$rump has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$rumps_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
@@ -22006,11 +21366,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$starsystem_map has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$starsystem_map_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
@@ -22026,26 +21381,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$storage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$systems has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$torpedoStorage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractoredShip has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractored_ship_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
@@ -22056,22 +21391,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractoringShip has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tradePost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -22086,22 +21406,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:createSignature\\(\\) has parameter \\$modules with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:getModules\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:getModulesByType\\(\\) has parameter \\$type with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:getShiplist\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
@@ -22126,11 +21431,6 @@ parameters:
 			path: src/Orm/Entity/ShipBuildplan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$modules has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$name has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
@@ -22141,22 +21441,7 @@ parameters:
 			path: src/Orm/Entity/ShipBuildplan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$shipRump has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$ships has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$signature has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
@@ -22166,27 +21451,12 @@ parameters:
 			path: src/Orm/Entity/ShipBuildplan.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\:\\:getModules\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplanInterface.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\:\\:getModulesByType\\(\\) has parameter \\$type with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplanInterface.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\:\\:getShiplist\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplanInterface.php
-
-		-
 			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$colony has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
@@ -22197,11 +21467,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$colony_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$crew has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
@@ -22221,22 +21486,12 @@ parameters:
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$repairTask has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$repair_task_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$repair_task_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$ship has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
@@ -22251,11 +21506,6 @@ parameters:
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$tradepost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$tradepost_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
@@ -22266,32 +21516,12 @@ parameters:
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getBeamableStorage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getCrewlist\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getDockPrivileges\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getDockedShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/Orm/Entity/ShipInterface.php
 
@@ -22301,22 +21531,7 @@ parameters:
 			path: src/Orm/Entity/ShipInterface.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getShipSystem\\(\\) has parameter \\$systemType with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getStorage\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getStoredShuttles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getSystems\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/Orm/Entity/ShipInterface.php
 
@@ -22326,27 +21541,7 @@ parameters:
 			path: src/Orm/Entity/ShipInterface.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(ShipSystemTypeEnum\\)\\: Unexpected token \"\\\\n     \", expected variable at offset 36$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
-			message: "#^PHPDoc tag @return with type Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\StorageInterface\\> is incompatible with native type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:getBuildingCosts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:setSort\\(\\) has parameter \\$sort with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^PHPDoc tag @return with type array\\<Stu\\\\Orm\\\\Entity\\\\ShipRumpCostInterface\\> is incompatible with native type Doctrine\\\\Common\\\\Collections\\\\Collection\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
 
@@ -22396,11 +21591,6 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$buildingCosts has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$buildtime has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
@@ -22411,22 +21601,7 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$commodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$crewobj has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$databaseEntry has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
 
@@ -22481,11 +21656,6 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$module_levels has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$name has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
@@ -22531,16 +21701,6 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$shipRumpCategory has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$shipRumpRole has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$shuttle_slots has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
@@ -22552,11 +21712,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$sort has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$specialAbilities has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
 
@@ -22609,11 +21764,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpBuildingFunction\\:\\:\\$rump_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpBuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:\\$databaseEntry has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategory.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:\\$database_id has no type specified\\.$#"
@@ -22696,11 +21846,6 @@ parameters:
 			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$shiprumpRole has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$shiprumpRole is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
@@ -22724,11 +21869,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpColonizationBuilding\\:\\:\\$rump_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpColonizationBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$commodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$commodity is never written, only read\\.$#"
@@ -22761,19 +21901,9 @@ parameters:
 			path: src/Orm/Entity/ShipRumpCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\:\\:getBuildingCosts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpInterface.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\:\\:setSort\\(\\) has parameter \\$sort with no type specified\\.$#"
@@ -23061,17 +22191,7 @@ parameters:
 			path: src/Orm/Entity/ShipSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$module has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$module_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$ship has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipSystem.php
 
@@ -23131,21 +22251,6 @@ parameters:
 			path: src/Orm/Entity/ShipyardShipQueue.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$ship has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipyardShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$shipBuildplan has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipyardShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$shipRump has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipyardShipQueue.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$ship_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipyardShipQueue.php
@@ -23171,11 +22276,6 @@ parameters:
 			path: src/Orm/Entity/StarSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$base has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$base is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
@@ -23196,22 +22296,12 @@ parameters:
 			path: src/Orm/Entity/StarSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$databaseEntry has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$database_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$database_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$fields has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
 
@@ -23236,11 +22326,6 @@ parameters:
 			path: src/Orm/Entity/StarSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
@@ -23261,11 +22346,6 @@ parameters:
 			path: src/Orm/Entity/StarSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$systemType has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$systemType is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
@@ -23276,27 +22356,12 @@ parameters:
 			path: src/Orm/Entity/StarSystem.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:getShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:getSignatures\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:setSx\\(\\) has parameter \\$sx with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystemMap.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:setSy\\(\\) has parameter \\$sy with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$colony has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystemMap.php
 
@@ -23321,27 +22386,7 @@ parameters:
 			path: src/Orm/Entity/StarSystemMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$mapFieldType has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$mapFieldType is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$ships has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$signatures has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$starSystem has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystemMap.php
 
@@ -23366,21 +22411,6 @@ parameters:
 			path: src/Orm/Entity/StarSystemMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$wormholeEntries has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\:\\:getShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMapInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\:\\:getSignatures\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMapInterface.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\:\\:setSx\\(\\) has parameter \\$sx with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystemMapInterface.php
@@ -23389,11 +22419,6 @@ parameters:
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\:\\:setSy\\(\\) has parameter \\$sy with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystemMapInterface.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$databaseEntry has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemType.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$database_id has no type specified\\.$#"
@@ -23426,22 +22451,12 @@ parameters:
 			path: src/Orm/Entity/StationShipRepair.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$ship has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StationShipRepair.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$ship_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StationShipRepair.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$ship_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StationShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$station has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/StationShipRepair.php
 
@@ -23456,22 +22471,12 @@ parameters:
 			path: src/Orm/Entity/StationShipRepair.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$colony has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$colony_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$colony_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$commodity has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
@@ -23496,11 +22501,6 @@ parameters:
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$ship has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$ship_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
@@ -23511,27 +22511,12 @@ parameters:
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$torpedoStorage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$torpedo_storage_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$torpedo_storage_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradeOffer has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradePost has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
@@ -23552,11 +22537,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradepost_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
@@ -23586,11 +22566,6 @@ parameters:
 			path: src/Orm/Entity/TachyonScan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$map has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TachyonScan.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$map_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TachyonScan.php
@@ -23606,11 +22581,6 @@ parameters:
 			path: src/Orm/Entity/TachyonScan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$starsystem_map has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TachyonScan.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$starsystem_map_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TachyonScan.php
@@ -23621,29 +22591,9 @@ parameters:
 			path: src/Orm/Entity/TachyonScan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TachyonScan.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TachyonScan.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Terraforming\\:\\:getCosts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Terraforming.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Terraforming\\:\\:\\$costs has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Terraforming.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Terraforming\\:\\:\\$costs is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Terraforming.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Terraforming\\:\\:\\$description has no type specified\\.$#"
@@ -23731,21 +22681,6 @@ parameters:
 			path: src/Orm/Entity/TerraformingCost.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\:\\:getCosts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/TerraformingInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:getCapturedShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/TholianWeb.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$capturedShips has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TholianWeb.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$finished_time has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TholianWeb.php
@@ -23771,27 +22706,12 @@ parameters:
 			path: src/Orm/Entity/TholianWeb.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$webShip has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TholianWeb.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\:\\:getCapturedShips\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/TholianWebInterface.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoStorage.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoStorage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$ship has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoStorage.php
 
@@ -23806,16 +22726,6 @@ parameters:
 			path: src/Orm/Entity/TorpedoStorage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$storage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoStorage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$torpedo has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoStorage.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$torpedo_type has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoStorage.php
@@ -23826,27 +22736,12 @@ parameters:
 			path: src/Orm/Entity/TorpedoStorage.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:getProductionCosts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoType.php
-
-		-
-			message: "#^PHPDoc tag @return with type array\\<Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCostInterface\\> is incompatible with native type Doctrine\\\\Common\\\\Collections\\\\Collection\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoType.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$amount has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoType.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$base_damage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$commodity has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoType.php
 
@@ -23901,11 +22796,6 @@ parameters:
 			path: src/Orm/Entity/TorpedoType.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$productionCosts has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoType.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$research_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoType.php
@@ -23919,11 +22809,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$variance has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$commodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoTypeCost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$commodity is never written, only read\\.$#"
@@ -23951,11 +22836,6 @@ parameters:
 			path: src/Orm/Entity/TorpedoTypeCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$torpedoType has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoTypeCost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$torpedoType is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoTypeCost.php
@@ -23964,11 +22844,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$torpedo_type_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoTypeCost.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\:\\:getProductionCosts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoTypeInterface.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$date has no type specified\\.$#"
@@ -23996,27 +22871,12 @@ parameters:
 			path: src/Orm/Entity/TradeLicense.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$tradePost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeLicense.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeLicense.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeLicense.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$amount has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeLicenseInfo.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$commodity has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeLicenseInfo.php
 
@@ -24047,11 +22907,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$posts_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeLicenseInfo.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$tradePost has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeLicenseInfo.php
 
@@ -24091,17 +22946,7 @@ parameters:
 			path: src/Orm/Entity/TradeOffer.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$offeredCommodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeOffer.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$posts_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeOffer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$storage has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeOffer.php
 
@@ -24111,22 +22956,7 @@ parameters:
 			path: src/Orm/Entity/TradeOffer.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$tradePost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeOffer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeOffer.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeOffer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$wantedCommodity has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeOffer.php
 
@@ -24139,16 +22969,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$wg_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeOffer.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:getCrewAssignments\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/TradePost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$crewAssignments has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradePost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$description has no type specified\\.$#"
@@ -24171,17 +22991,12 @@ parameters:
 			path: src/Orm/Entity/TradePost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$licenseInfos has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$licenseInfos \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\>\\) in empty\\(\\) is not falsy\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradePost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradePost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$ship has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradePost.php
 
@@ -24206,19 +23021,9 @@ parameters:
 			path: src/Orm/Entity/TradePost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradePost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradePost.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\:\\:getCrewAssignments\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/TradePostInterface.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeShoutbox\\:\\:\\$date has no type specified\\.$#"
@@ -24242,11 +23047,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeShoutbox\\:\\:\\$trade_network_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeShoutbox.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeShoutbox\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeShoutbox.php
 
@@ -24281,17 +23081,7 @@ parameters:
 			path: src/Orm/Entity/TradeTransaction.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:\\$offeredCommodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeTransaction.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:\\$tradepost_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeTransaction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:\\$wantedCommodity has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeTransaction.php
 
@@ -24331,27 +23121,12 @@ parameters:
 			path: src/Orm/Entity/TradeTransfer.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransfer\\:\\:\\$tradePost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeTransfer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransfer\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeTransfer.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransfer\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeTransfer.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getAwards\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getColonies\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			message: "#^Cannot call method isExplored\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
@@ -24366,16 +23141,6 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getUserLayers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$alliance has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$allys_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
@@ -24386,32 +23151,7 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$awards has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$colonies has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$creation has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$crew_count_debris_and_tradeposts has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$crew_in_training has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$crew_on_ships_count has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
@@ -24436,22 +23176,7 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$faction has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$fleet_fixed_default has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$friends has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$global_crew_limit has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
@@ -24541,11 +23266,6 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$sessiondataUnserialized has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$show_online_status has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
@@ -24581,16 +23301,6 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$userLayers has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$userLock has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$userLock is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
@@ -24609,11 +23319,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$vac_request_date has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$award has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserAward.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$award_id has no type specified\\.$#"
@@ -24636,24 +23341,9 @@ parameters:
 			path: src/Orm/Entity/UserAward.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserAward.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserAward.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getAwards\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/UserInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getColonies\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/UserInterface.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getFriends\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -24662,11 +23352,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getSessionDataUnserialized\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getUserLayers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/Orm/Entity/UserInterface.php
 
@@ -24736,11 +23421,6 @@ parameters:
 			path: src/Orm/Entity/UserIpTable.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserIpTable\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserIpTable.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserIpTable\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserIpTable.php
@@ -24749,11 +23429,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserIpTable\\:\\:\\$user_id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserIpTable.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$layer has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserLayer.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$layer_id has no type specified\\.$#"
@@ -24767,11 +23442,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$map_type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserLayer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserLayer.php
 
@@ -24816,11 +23486,6 @@ parameters:
 			path: src/Orm/Entity/UserLock.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserLock.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserLock.php
@@ -24851,11 +23516,6 @@ parameters:
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
@@ -24877,11 +23537,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$map_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
 
@@ -24916,17 +23571,7 @@ parameters:
 			path: src/Orm/Entity/UserProfileVisitor.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$opponent has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserProfileVisitor.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$recipient has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserProfileVisitor.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserProfileVisitor.php
 
@@ -24952,11 +23597,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$tag_type_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserTag.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserTag.php
 
@@ -25036,11 +23676,6 @@ parameters:
 			path: src/Orm/Entity/WormholeEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/WormholeEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/WormholeEntry.php
@@ -25056,17 +23691,7 @@ parameters:
 			path: src/Orm/Entity/WormholeEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$starSystem has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/WormholeEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$starSystem is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/WormholeEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$systemMap has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/WormholeEntry.php
 
@@ -25101,141 +23726,6 @@ parameters:
 			path: src/Orm/Entity/WormholeEntry.php
 
 		-
-			message: "#^Class Doctrine\\\\ORM\\\\EntityRepository specifies template type T of interface Doctrine\\\\Persistence\\\\ObjectRepository as Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost but it's already specified as Stu\\\\Orm\\\\Repository\\\\AllianceBoardPost\\.$#"
-			count: 1
-			path: src/Orm/Repository/AllianceBoardPostRepository.php
-
-		-
-			message: "#^PHPDoc tag @extends has invalid type Stu\\\\Orm\\\\Repository\\\\AllianceBoardPost\\.$#"
-			count: 1
-			path: src/Orm/Repository/AllianceBoardPostRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AllianceRelationRepository\\:\\:getActiveByTypeAndAlliancePair\\(\\) has parameter \\$typeIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/AllianceRelationRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AllianceRelationRepositoryInterface\\:\\:getActiveByTypeAndAlliancePair\\(\\) has parameter \\$typeIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/AllianceRelationRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AllianceRepository\\:\\:findAllOrdered\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/AllianceRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AllianceRepository\\:\\:findByApplicationState\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/AllianceRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AllianceRepositoryInterface\\:\\:findAllOrdered\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/AllianceRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AllianceRepositoryInterface\\:\\:findByApplicationState\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/AllianceRepositoryInterface.php
-
-		-
-			message: "#^Class Doctrine\\\\ORM\\\\EntityRepository specifies template type T of interface Doctrine\\\\Persistence\\\\ObjectRepository as Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry but it's already specified as Stu\\\\Orm\\\\Proxy\\\\__CG__\\\\Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\.$#"
-			count: 1
-			path: src/Orm/Repository/AstroEntryRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AstroEntryRepository\\:\\:getByUserAndSystem\\(\\) has parameter \\$starSystemId with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/AstroEntryRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AstroEntryRepository\\:\\:getByUserAndSystem\\(\\) has parameter \\$userId with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/AstroEntryRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AstroEntryRepositoryInterface\\:\\:getByUserAndSystem\\(\\) has parameter \\$starSystemId with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/AstroEntryRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\AstroEntryRepositoryInterface\\:\\:getByUserAndSystem\\(\\) has parameter \\$userId with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/AstroEntryRepositoryInterface.php
-
-		-
-			message: "#^PHPDoc tag @extends has invalid type Stu\\\\Orm\\\\Proxy\\\\__CG__\\\\Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\.$#"
-			count: 1
-			path: src/Orm/Repository/AstroEntryRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingCommodityRepository\\:\\:getProductionByColony\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingCommodityRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingCommodityRepositoryInterface\\:\\:getProductionByColony\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingCommodityRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingCostRepository\\:\\:getByBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingCostRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingCostRepositoryInterface\\:\\:getByBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingCostRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingRepository\\:\\:getByColonyAndBuildMenu\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingRepository\\:\\:getByColonyAndUserAndBuildMenu\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingRepositoryInterface\\:\\:getByColonyAndUserAndBuildMenu\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingUpgradeCostRepository\\:\\:getByBuildingUpgradeId\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingUpgradeCostRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingUpgradeCostRepositoryInterface\\:\\:getByBuildingUpgradeId\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingUpgradeCostRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingUpgradeRepository\\:\\:getByBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingUpgradeRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\BuildingUpgradeRepositoryInterface\\:\\:getByBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/BuildingUpgradeRepositoryInterface.php
-
-		-
-			message: "#^PHPDoc tag @return has invalid value \\(BuildingUpgradeInterface\\[\\];\\)\\: Unexpected token \";\", expected TOKEN_HORIZONTAL_WS at offset 45$#"
-			count: 1
-			path: src/Orm/Repository/BuildingUpgradeRepositoryInterface.php
-
-		-
-			message: "#^PHPDoc tag @extends has invalid value \\(ColonyDepositMining\\>\\)\\: Unexpected token \"\\>\", expected '\\<' at offset 35$#"
-			count: 1
-			path: src/Orm/Repository/ColonyDepositMiningRepositoryInterface.php
-
-		-
 			message: "#^Cannot call method getSx\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/ColonyRepository.php
@@ -25256,379 +23746,9 @@ parameters:
 			path: src/Orm/Repository/ColonyShipRepairRepository.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ColonyTerraformingRepository\\:\\:getByColony\\(\\) has parameter \\$colonies with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ColonyTerraformingRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ColonyTerraformingRepositoryInterface\\:\\:getByColony\\(\\) has parameter \\$colonyies with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ColonyTerraformingRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseCategoryRepository\\:\\:getByTypeId\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseCategoryRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseCategoryRepositoryInterface\\:\\:getByTypeId\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseCategoryRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseEntryRepository\\:\\:getByCategoryId\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseEntryRepository.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseEntryRepository\\:\\:getByCategoryIdAndObjectId\\(\\) should return Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface but returns Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/DatabaseEntryRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseEntryRepositoryInterface\\:\\:getByCategoryId\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseEntryRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseUserRepository\\:\\:getTopList\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseUserRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseUserRepository\\:\\:truncateByUserId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseUserRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseUserRepositoryInterface\\:\\:getTopList\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseUserRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseUserRepositoryInterface\\:\\:truncateByUserId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseUserRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveAuctionsBuildplans\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveAuctionsBuildplansPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveAuctionsGoods\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveAuctionsGoodsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveAuctionsShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveAuctionsShipsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveDealsBuildplans\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveDealsBuildplansPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveDealsGoods\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveDealsGoodsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveDealsShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getActiveDealsShipsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getEndedAuctionsBuildplans\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getEndedAuctionsBuildplansPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getEndedAuctionsGoods\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getEndedAuctionsGoodsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getEndedAuctionsShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getEndedAuctionsShipsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getOwnEndedAuctionsBuildplans\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getOwnEndedAuctionsBuildplansPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getOwnEndedAuctionsGoods\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getOwnEndedAuctionsGoodsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getOwnEndedAuctionsShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepository\\:\\:getOwnEndedAuctionsShipsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveAuctionsBuildplans\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveAuctionsBuildplansPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveAuctionsGoods\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveAuctionsGoodsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveAuctionsShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveAuctionsShipsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveDealsBuildplans\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveDealsBuildplansPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveDealsGoods\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveDealsGoodsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveDealsShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getActiveDealsShipsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getEndedAuctionsBuildplans\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getEndedAuctionsBuildplansPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getEndedAuctionsGoods\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getEndedAuctionsGoodsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getEndedAuctionsShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getEndedAuctionsShipsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getOwnEndedAuctionsBuildplans\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getOwnEndedAuctionsBuildplansPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getOwnEndedAuctionsGoods\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getOwnEndedAuctionsGoodsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getOwnEndedAuctionsShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DealsRepositoryInterface\\:\\:getOwnEndedAuctionsShipsPrestige\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/DealsRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FleetRepository\\:\\:getNonNpcFleetList\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/FleetRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:getNonNpcFleetList\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/FleetRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepository\\:\\:getFlightsTop10\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepository\\:\\:getSignatureRangeForAlly\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepository\\:\\:getSignatureRangeForUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepository\\:\\:getVisibleSignatureCount\\(\\) has parameter \\$colony with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepository\\:\\:getVisibleSignatures\\(\\) has parameter \\$field with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepository\\:\\:getVisibleSignatures\\(\\) has parameter \\$ignoreId with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepository\\:\\:saveAll\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepositoryInterface\\:\\:getFlightsTop10\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepositoryInterface\\:\\:getSignatureRangeForAlly\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepositoryInterface\\:\\:getSignatureRangeForUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepositoryInterface\\:\\:getVisibleSignatureCount\\(\\) has parameter \\$colony with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepositoryInterface\\:\\:getVisibleSignatures\\(\\) has parameter \\$field with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepositoryInterface\\:\\:getVisibleSignatures\\(\\) has parameter \\$ignoreId with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\FlightSignatureRepositoryInterface\\:\\:saveAll\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/FlightSignatureRepositoryInterface.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\GameTurnRepository\\:\\:getCurrent\\(\\) should return Stu\\\\Orm\\\\Entity\\\\GameTurnInterface but returns Stu\\\\Orm\\\\Entity\\\\GameTurn\\|null\\.$#"
@@ -25636,229 +23756,9 @@ parameters:
 			path: src/Orm/Repository/GameTurnRepository.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\HistoryRepository\\:\\:getByTypeAndSearch\\(\\) has parameter \\$search with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/HistoryRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\HistoryRepositoryInterface\\:\\:getByTypeAndSearch\\(\\) has parameter \\$search with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/HistoryRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\KnPostRepository\\:\\:getNewerThenMark\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/KnPostRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\KnPostRepositoryInterface\\:\\:getNewerThenMark\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/KnPostRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\LayerRepository\\:\\:getKnownByUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/LayerRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\LayerRepositoryInterface\\:\\:getKnownByUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/LayerRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\MapRepository\\:\\:getExplored\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/MapRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\MapRepositoryInterface\\:\\:getExplored\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/MapRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleQueueRepository\\:\\:getByColonyAndBuilding\\(\\) has parameter \\$buildingFunctions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleQueueRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleQueueRepository\\:\\:getByColonyAndBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleQueueRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleQueueRepositoryInterface\\:\\:getByColonyAndBuilding\\(\\) has parameter \\$buildingFunctions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleQueueRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleQueueRepositoryInterface\\:\\:getByColonyAndBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleQueueRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleRepository\\:\\:getBySpecialTypeIds\\(\\) has parameter \\$specialTypeIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleRepository\\:\\:getBySpecialTypeIds\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleRepository\\:\\:getByTypeAndLevel\\(\\) has parameter \\$moduleLevel with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleRepository\\:\\:getByTypeColonyAndLevel\\(\\) has parameter \\$moduleLevel with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleRepositoryInterface\\:\\:getBySpecialTypeIds\\(\\) has parameter \\$specialTypeIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleRepositoryInterface\\:\\:getBySpecialTypeIds\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleRepositoryInterface\\:\\:getByTypeAndLevel\\(\\) has parameter \\$moduleLevel with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ModuleRepositoryInterface\\:\\:getByTypeColonyAndLevel\\(\\) has parameter \\$moduleLevel with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ModuleRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\NoteRepository\\:\\:getByUserId\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/NoteRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\NoteRepositoryInterface\\:\\:getByUserId\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/NoteRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getByColonyAndBuildingFunction\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getByColonyAndBuildingFunction\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getCommodityConsumingByColonyAndCommodity\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getCountByColonyAndBuildingFunctionAndState\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getCountByColonyAndBuildingFunctionAndState\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepository\\:\\:getEnergyConsumingByColony\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getByColonyAndBuildingFunction\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getByColonyAndBuildingFunction\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getCommodityConsumingByColonyAndCommodity\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getCountByColonyAndBuildingFunctionAndState\\(\\) has parameter \\$buildingFunctionIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getCountByColonyAndBuildingFunctionAndState\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PlanetFieldRepositoryInterface\\:\\:getEnergyConsumingByColony\\(\\) has parameter \\$state with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PlanetFieldRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PrestigeLogRepository\\:\\:getPrestigeHistory\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PrestigeLogRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PrestigeLogRepositoryInterface\\:\\:getPrestigeHistory\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PrestigeLogRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PrivateMessageRepository\\:\\:getOrderedCorrepondence\\(\\) has parameter \\$specialIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PrivateMessageRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\PrivateMessageRepositoryInterface\\:\\:getOrderedCorrepondence\\(\\) has parameter \\$specialIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/PrivateMessageRepositoryInterface.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\RepairTaskRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ShipInterface but returns Stu\\\\Orm\\\\Entity\\\\RepairTask\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/RepairTaskRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ResearchDependencyRepository\\:\\:getByMode\\(\\) has parameter \\$modes with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ResearchDependencyRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ResearchDependencyRepositoryInterface\\:\\:getByMode\\(\\) has parameter \\$modes with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ResearchDependencyRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepository\\:\\:getCrewsTop10\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipCrewRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepository\\:\\:getOrphanedSummaryByUserAtTradeposts\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipCrewRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepositoryInterface\\:\\:getCrewsTop10\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipCrewRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepositoryInterface\\:\\:getOrphanedSummaryByUserAtTradeposts\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipCrewRepositoryInterface.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
@@ -25886,211 +23786,6 @@ parameters:
 			path: src/Orm/Repository/ShipRepository.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepository\\:\\:getSensorResultInnerSystem\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepository\\:\\:getSensorResultOuterSystem\\(\\) has parameter \\$ignoreId with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepository\\:\\:getSensorResultOuterSystem\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepository\\:\\:getSignaturesOuterSystemOfAlly\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepository\\:\\:getSignaturesOuterSystemOfUser\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepository\\:\\:getSingleShipScannerResults\\(\\) has parameter \\$types with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:getSensorResultInnerSystem\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:getSensorResultOuterSystem\\(\\) has parameter \\$ignoreId with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:getSensorResultOuterSystem\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:getSignaturesOuterSystemOfAlly\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:getSignaturesOuterSystemOfUser\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:getSingleShipScannerResults\\(\\) has parameter \\$types with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRumpRepository\\:\\:getGroupedInfoByUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRumpRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipRumpRepositoryInterface\\:\\:getGroupedInfoByUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipRumpRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepository\\:\\:getByShipyard\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipyardShipQueueRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepository\\:\\:getByUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipyardShipQueueRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepository\\:\\:getFinishedJobs\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipyardShipQueueRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepositoryInterface\\:\\:getByShipyard\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipyardShipQueueRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepositoryInterface\\:\\:getByUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipyardShipQueueRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepositoryInterface\\:\\:getFinishedJobs\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/ShipyardShipQueueRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StarSystemMapRepository\\:\\:getRandomFieldsForAstroMeasurement\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StarSystemMapRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StarSystemMapRepository\\:\\:getRumpCategoryInfo\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StarSystemMapRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StarSystemMapRepositoryInterface\\:\\:count\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Orm/Repository/StarSystemMapRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StarSystemMapRepositoryInterface\\:\\:count\\(\\) has parameter \\$criteria with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StarSystemMapRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StarSystemMapRepositoryInterface\\:\\:getRandomFieldsForAstroMeasurement\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StarSystemMapRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StarSystemMapRepositoryInterface\\:\\:getRumpCategoryInfo\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StarSystemMapRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StationShipRepairRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\StationShipRepairInterface but returns Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\|null\\.$#"
-			count: 1
-			path: src/Orm/Repository/StationShipRepairRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StationShipRepairRepository\\:\\:getByStation\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StationShipRepairRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StationShipRepairRepositoryInterface\\:\\:getByStation\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StationShipRepairRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepository\\:\\:getByUserAccumulated\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepository\\:\\:getColonyStorageByUserAndCommodity\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepository\\:\\:getLatinumTop10\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepository\\:\\:getShipStorageByUserAndCommodity\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepository\\:\\:getTorpdeoStorageByUserAndCommodity\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepository\\:\\:getTradeOfferStorageByUserAndCommodity\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepositoryInterface\\:\\:getByUserAccumulated\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepositoryInterface\\:\\:getColonyStorageByUserAndCommodity\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepositoryInterface\\:\\:getLatinumTop10\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepositoryInterface\\:\\:getShipStorageByUserAndCommodity\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepositoryInterface\\:\\:getTorpdeoStorageByUserAndCommodity\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\StorageRepositoryInterface\\:\\:getTradeOfferStorageByUserAndCommodity\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/StorageRepositoryInterface.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/TachyonScanRepository.php
@@ -26101,129 +23796,9 @@ parameters:
 			path: src/Orm/Repository/TachyonScanRepository.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TachyonScanRepository\\:\\:findActiveByShipLocationAndOwner\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TachyonScanRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TachyonScanRepositoryInterface\\:\\:findActiveByShipLocationAndOwner\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TachyonScanRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TerraformingCostRepositoryInterface\\:\\:getByTerraforming\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TerraformingCostRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TerraformingRepository\\:\\:getBySourceFieldType\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Orm/Repository/TerraformingRepository.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/TholianWebRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeLicenseRepository\\:\\:getByTradePostAndNotExpired\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeLicenseRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeLicenseRepository\\:\\:getLicensesCountbyUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeLicenseRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeLicenseRepositoryInterface\\:\\:getByTradePostAndNotExpired\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeLicenseRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeLicenseRepositoryInterface\\:\\:getLicensesCountbyUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeLicenseRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeOfferRepository\\:\\:getGroupedSumByTradePostAndUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeOfferRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeOfferRepositoryInterface\\:\\:getGroupedSumByTradePostAndUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeOfferRepositoryInterface.php
-
-		-
-			message: "#^Call to sprintf contains 0 placeholders, 1 value given\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradePostRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradePostRepository\\:\\:getByUserLicenseOnlyFerg\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradePostRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradePostRepository\\:\\:getByUserLicenseOnlyNPC\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradePostRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradePostRepositoryInterface\\:\\:getByUserLicenseOnlyFerg\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradePostRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradePostRepositoryInterface\\:\\:getByUserLicenseOnlyNPC\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradePostRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeTransactionRepository\\:\\:getLatestTransactions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeTransactionRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeTransactionRepository\\:\\:getTradePostsTop10\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeTransactionRepository.php
-
-		-
-			message: "#^Parameter \\#2 \\$orderBy of method Doctrine\\\\ORM\\\\EntityRepository\\<Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\>\\:\\:findBy\\(\\) expects array\\<string, string\\>\\|null, int given\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeTransactionRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeTransactionRepositoryInterface\\:\\:getLatestTransactions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeTransactionRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\TradeTransactionRepositoryInterface\\:\\:getTradePostsTop10\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/TradeTransactionRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\UserInvitationRepository\\:\\:getInvitationsByUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/UserInvitationRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\UserInvitationRepositoryInterface\\:\\:getInvitationsByUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/UserInvitationRepositoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\UserRepository\\:\\:getDeleteable\\(\\) has parameter \\$ignoreIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/UserRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\UserRepositoryInterface\\:\\:getDeleteable\\(\\) has parameter \\$ignoreIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Repository/UserRepositoryInterface.php
 
 		-
 			message: "#^Cannot call method getMandatoryModulesCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevelInterface\\|null\\.$#"

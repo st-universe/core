@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -20,7 +28,7 @@ use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
  **/
 class ShipBuildplan implements ShipBuildplanInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -46,23 +54,31 @@ class ShipBuildplan implements ShipBuildplanInterface
     private $crew = 0;
 
     /**
+     * @var ArrayCollection<int, ShipInterface>
+     *
      * @OneToMany(targetEntity="Ship", mappedBy="buildplan", fetch="EXTRA_LAZY")
      */
     private $ships;
 
     /**
+     * @var ShipRumpInterface
+     *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $shipRump;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
     /**
+     * @var ArrayCollection<int, BuildplanModuleInterface>
+     *
      * @OneToMany(targetEntity="BuildplanModule", mappedBy="buildplan", indexBy="module_id", fetch="EXTRA_LAZY")
      */
     private $modules;
@@ -145,6 +161,9 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this->getShipCount() == 0 && count($array) == 0;
     }
 
+    /**
+     * @param array<int> $modules
+     */
     public static function createSignature(array $modules, int $crewUsage = 0): string
     {
         return md5(implode('_', $modules) . '_' . $crewUsage);

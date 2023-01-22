@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
@@ -14,7 +21,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  **/
 class Faction implements FactionInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -45,6 +52,8 @@ class Faction implements FactionInterface
     //TODO survivor_rate to escape pods
 
     /**
+     * @var null|ResearchInterface
+     *
      * @ManyToOne(targetEntity="Research")
      * @JoinColumn(name="start_research_id", referencedColumnName="id")
      */

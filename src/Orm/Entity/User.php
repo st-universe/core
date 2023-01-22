@@ -7,6 +7,16 @@ namespace Stu\Orm\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
@@ -33,7 +43,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  **/
 class User implements UserInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -131,48 +141,66 @@ class User implements UserInterface
     private $start_page;
 
     /**
+     * @var null|AllianceInterface
+     *
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
      */
     private $alliance;
 
     /**
+     * @var FactionInterface
+     *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="race", referencedColumnName="id")
      */
     private $faction;
 
     /**
+     * @var ArrayCollection<int, UserAwardInterface>
+     *
      * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id", cascade={"remove"}, fetch="EAGER")
      */
     private $awards;
 
     /**
+     * @var ArrayCollection<int, ColonyInterface>
+     *
      * @OneToMany(targetEntity="Colony", mappedBy="user")
      * @OrderBy({"colonies_classes_id" = "ASC", "id" = "ASC"})
      */
     private $colonies;
 
     /**
+     * @var ArrayCollection<int, UserLayerInterface>
+     *
      * @OneToMany(targetEntity="UserLayer", mappedBy="user", indexBy="layer_id", cascade={"remove"})
      */
     private $userLayers;
 
     /**
+     * @var null|UserLockInterface
+     *
      * @OneToOne(targetEntity="UserLock", mappedBy="user")
      */
     private $userLock;
 
+    /** @var null|int */
     private $crew_on_ships_count;
 
+    /** @var null|int */
     private $crew_in_training;
 
+    /** @var null|int */
     private $global_crew_limit;
 
+    /** @var null|int */
     private $crew_count_debris_and_tradeposts;
 
+    /** @var null|array<mixed> */
     private $sessiondataUnserialized;
 
+    /** @var null|array<UserInterface> */
     private $friends;
 
     public function __construct()

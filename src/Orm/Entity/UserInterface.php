@@ -44,10 +44,13 @@ interface UserInterface
 
     public function getFaction(): ?FactionInterface;
 
+    /**
+     * @return Collection<int, UserAwardInterface>
+     */
     public function getAwards(): Collection;
 
     /**
-     * @return ColonyInterface[]|Collection
+     * @return Collection<int, ColonyInterface>
      */
     public function getColonies(): Collection;
 
@@ -121,6 +124,9 @@ interface UserInterface
 
     public function setTick(int $tick): UserInterface;
 
+    /**
+     * @return Collection<int, UserLayerInterface>
+     */
     public function getUserLayers(): Collection;
 
     public function hasSeen(int $layerId): bool;

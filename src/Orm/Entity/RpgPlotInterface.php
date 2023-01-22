@@ -32,6 +32,9 @@ interface RpgPlotInterface
 
     public function isActive(): bool;
 
+    /**
+     * @return Collection<int, KnPostInterface>
+     */
     public function getPosts(): Collection;
 
     public function getMemberCount(): int;
@@ -39,7 +42,7 @@ interface RpgPlotInterface
     public function getPostingCount(): int;
 
     /**
-     * @return RpgPlotMemberInterface[]|Collection
+     * @return Collection<int, RpgPlotMemberInterface>
      */
     public function getMembers(): Collection;
 }
