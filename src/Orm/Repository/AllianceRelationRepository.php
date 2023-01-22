@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AllianceRelationInterface;
 
+/**
+ * @extends EntityRepository<AllianceRelation>
+ */
 final class AllianceRelationRepository extends EntityRepository implements AllianceRelationRepositoryInterface
 {
 

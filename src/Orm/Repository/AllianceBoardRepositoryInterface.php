@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Entity\AllianceBoardInterface;
 
 /**
+ * @extends ObjectRepository<AllianceBoard>
+ *
  * @method null|AllianceBoardInterface find(integer $id)
  */
 interface AllianceBoardRepositoryInterface extends ObjectRepository

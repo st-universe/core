@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceJobInterface;
 
 /**
+ * @extends ObjectRepository<AllianceJob>
+ *
  * @method null|AllianceJobInterface find(integer $id)
  */
 interface AllianceJobRepositoryInterface extends ObjectRepository

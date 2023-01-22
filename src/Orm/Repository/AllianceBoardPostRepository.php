@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardPostInterface;
 
+/**
+ * @extends EntityRepository<AllianceBoardPost>
+ */
 final class AllianceBoardPostRepository extends EntityRepository implements AllianceBoardPostRepositoryInterface
 {
     public function getRecentByBoard(int $boardId): ?AllianceBoardPostInterface
@@ -20,7 +23,6 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
 
     public function getRecentByTopic(int $topicId): ?AllianceBoardPostInterface
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->findOneBy(
             ['topic_id' => $topicId],
             ['date' => 'desc']

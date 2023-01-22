@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AuctionBid;
 use Stu\Orm\Entity\AuctionBidInterface;
 
+/**
+ * @extends EntityRepository<AuctionBid>
+ */
 final class AuctionBidRepository extends EntityRepository implements AuctionBidRepositoryInterface
 {
 

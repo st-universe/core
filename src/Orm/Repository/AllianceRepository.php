@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceInterface;
 
+/**
+ * @extends EntityRepository<Alliance>
+ */
 final class AllianceRepository extends EntityRepository implements AllianceRepositoryInterface
 {
     public function prototype(): AllianceInterface

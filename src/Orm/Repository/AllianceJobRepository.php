@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceJobInterface;
 
+/**
+ * @extends EntityRepository<AllianceJob>
+ */
 final class AllianceJobRepository extends EntityRepository implements AllianceJobRepositoryInterface
 {
 

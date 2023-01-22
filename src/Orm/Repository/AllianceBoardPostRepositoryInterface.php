@@ -6,6 +6,8 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AllianceBoardPostInterface;
 
 /**
+ * @extends ObjectRepository<AllianceBoardPost>
+ *
  * @method null|AllianceBoardPostInterface find(integer $id)
  */
 interface AllianceBoardPostRepositoryInterface extends ObjectRepository
