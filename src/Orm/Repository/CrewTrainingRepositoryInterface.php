@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\CrewTrainingInterface;
 
+/**
+ * @extends ObjectRepository<CrewTraining>
+ */
 interface CrewTrainingRepositoryInterface extends ObjectRepository
 {
     public function save(CrewTrainingInterface $researched): void;

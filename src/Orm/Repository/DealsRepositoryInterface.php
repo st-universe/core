@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\DealsInterface;
 
 /**
+ * @extends ObjectRepository<Deals>
+ *
  * @method null|DealsInterface find(integer $id)
  */
 interface DealsRepositoryInterface extends ObjectRepository

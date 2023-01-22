@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 
+/**
+ * @extends EntityRepository<DatabaseEntry>
+ */
 final class DatabaseEntryRepository extends EntityRepository implements DatabaseEntryRepositoryInterface
 {
     public function getByCategoryId(int $categoryId): array

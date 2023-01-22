@@ -10,6 +10,9 @@ use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\DatabaseUserInterface;
 
+/**
+ * @extends EntityRepository<DatabaseUser>
+ */
 final class DatabaseUserRepository extends EntityRepository implements DatabaseUserRepositoryInterface
 {
 

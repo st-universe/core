@@ -3,10 +3,13 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ConstructionProgress;
 use Stu\Orm\Entity\ConstructionProgressInterface;
 
 /**
- * @method null|ShipInterface find(integer $id)
+ * @extends ObjectRepository<ConstructionProgress>
+ *
+ * @method null|ConstructionProgressInterface find(integer $id)
  * @method ConstructionProgressInterface[] findAll()
  */
 interface ConstructionProgressRepositoryInterface extends ObjectRepository

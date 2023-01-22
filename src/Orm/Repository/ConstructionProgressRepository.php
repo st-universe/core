@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ConstructionProgress;
 use Stu\Orm\Entity\ConstructionProgressInterface;
 
+/**
+ * @extends EntityRepository<ConstructionProgress>
+ */
 final class ConstructionProgressRepository extends EntityRepository implements ConstructionProgressRepositoryInterface
 {
     public function getByShip(int $shipId): ?ConstructionProgressInterface

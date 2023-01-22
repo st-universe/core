@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\ContactInterface;
 
 /**
+ * @extends ObjectRepository<Contact>
+ *
  * @method null|ContactInterface find(integer $id)
  */
 interface ContactRepositoryInterface extends ObjectRepository

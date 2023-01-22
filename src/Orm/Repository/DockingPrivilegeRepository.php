@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\DockingPrivilegeInterface;
 
+/**
+ * @extends EntityRepository<DockingPrivilege>
+ */
 final class DockingPrivilegeRepository extends EntityRepository implements DockingPrivilegeRepositoryInterface
 {
 

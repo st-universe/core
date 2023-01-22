@@ -9,6 +9,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewInterface;
 
+/**
+ * @extends EntityRepository<Crew>
+ */
 final class CrewRepository extends EntityRepository implements CrewRepositoryInterface
 {
     public function prototype(): CrewInterface

@@ -10,6 +10,9 @@ use Stu\Orm\Entity\Deals;
 use Stu\Orm\Entity\DealsInterface;
 use Stu\Orm\Entity\User;
 
+/**
+ * @extends EntityRepository<Deals>
+ */
 final class DealsRepository extends EntityRepository implements DealsRepositoryInterface
 {
 

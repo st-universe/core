@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\DatabaseUserInterface;
 
+/**
+ * @extends ObjectRepository<DatabaseUser>
+ */
 interface DatabaseUserRepositoryInterface extends ObjectRepository
 {
     public function truncateByUserId(int $userId);

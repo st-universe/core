@@ -10,6 +10,9 @@ use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\CrewTrainingInterface;
 
+/**
+ * @extends EntityRepository<CrewTraining>
+ */
 final class CrewTrainingRepository extends EntityRepository implements CrewTrainingRepositoryInterface
 {
 

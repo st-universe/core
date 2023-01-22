@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ConstructionProgressModule;
 use Stu\Orm\Entity\ConstructionProgressModuleInterface;
 
+/**
+ * @extends EntityRepository<ConstructionProgressModule>
+ */
 final class ConstructionProgressModuleRepository extends EntityRepository implements ConstructionProgressModuleRepositoryInterface
 {
     public function prototype(): ConstructionProgressModuleInterface

@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 
 /**
+ * @extends ObjectRepository<DatabaseEntry>
+ *
  * @method null|DatabaseEntryInterface find(integer $id)
  */
 interface DatabaseEntryRepositoryInterface extends ObjectRepository

@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\CommodityInterface;
 
 /**
+ * @extends ObjectRepository<Commodity>
+ *
  * @method null|CommodityInterface find(integer $commodityId)
  */
 interface CommodityRepositoryInterface extends ObjectRepository
@@ -24,7 +27,7 @@ interface CommodityRepositoryInterface extends ObjectRepository
      * @return CommodityInterface[]
      */
     public function getViewable(): array;
-	
+
 	    /**
      * @return CommodityInterface[]
      */

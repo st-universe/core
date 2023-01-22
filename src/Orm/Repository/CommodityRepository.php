@@ -9,6 +9,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\Commodity;
 
+/**
+ * @extends EntityRepository<Commodity>
+ */
 final class CommodityRepository extends EntityRepository implements CommodityRepositoryInterface
 {
     public function getByBuildingsOnColony(int $colonyId): array

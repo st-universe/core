@@ -9,6 +9,9 @@ use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\ContactInterface;
 
+/**
+ * @extends EntityRepository<Contact>
+ */
 final class ContactRepository extends EntityRepository implements ContactRepositoryInterface
 {
     public function prototype(): ContactInterface
