@@ -49,6 +49,9 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
 
     public function getSumByTradePostAndUser(int $tradePostId, int $userId): int;
 
+    /**
+     * @return array<array{commodity_id: int, amount: int, commodity_name: string}>
+     */
     public function getGroupedSumByTradePostAndUser(int $tradePostId, int $userId): array;
 
     /**

@@ -28,6 +28,8 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): iterable;
 
     /**
+     * @param array<int> $state
+     *
      * @return PlanetFieldInterface[]
      */
     public function getEnergyConsumingByColony(
@@ -42,6 +44,8 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getEnergyProducingByColony(int $colonyId): iterable;
 
     /**
+     * @param array<int> $state
+     *
      * @return PlanetFieldInterface[]
      */
     public function getCommodityConsumingByColonyAndCommodity(
@@ -70,12 +74,21 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
 
     public function getCountByBuildingAndUser(int $buildingId, int $userId): int;
 
+    /**
+     * @param array<int> $buildingFunctionIds
+     * @param array<int> $state
+     */
     public function getCountByColonyAndBuildingFunctionAndState(
         int $colonyId,
         array $buildingFunctionIds,
         array $state
     ): int;
 
+    /**
+     * @param array<int> $buildingFunctionIds
+     *
+     * @return array<PlanetFieldInterface>
+     */
     public function getByColonyAndBuildingFunction(
         int $colonyId,
         array $buildingFunctionIds

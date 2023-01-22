@@ -18,6 +18,7 @@ interface AllianceBoardRepositoryInterface extends ObjectRepository
     public function save(AllianceBoardInterface $post): void;
 
     public function delete(AllianceBoardInterface $post): void;
+
     /**
      * @return AllianceBoardInterface[]
      */

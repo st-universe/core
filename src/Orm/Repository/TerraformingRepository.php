@@ -14,23 +14,18 @@ use Stu\Orm\Entity\Terraforming;
  */
 final class TerraformingRepository extends EntityRepository implements TerraformingRepositoryInterface
 {
-    private function getBySourceFieldType(int $sourceFieldTypeId): iterable
-    {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT t FROM %s t
-                 WHERE t.v_feld = :sourceFieldTypeId',
-                Terraforming::class
-            )
-        )->setParameters([
-            'sourceFieldTypeId' => $sourceFieldTypeId
-        ])->getResult();
-    }
-
     public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId): iterable
     {
         if ($userId == GameEnum::USER_NOONE) {
-            return $this->getBySourceFieldType($sourceFieldTypeId);
+            return $this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT t FROM %s t
+                 WHERE t.v_feld = :sourceFieldTypeId',
+                    Terraforming::class
+                )
+            )->setParameters([
+                'sourceFieldTypeId' => $sourceFieldTypeId
+            ])->getResult();
         }
 
         return $this->getEntityManager()->createQuery(

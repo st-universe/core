@@ -37,5 +37,8 @@ interface AllianceRelationRepositoryInterface extends ObjectRepository
 
     public function getActiveByAlliancePair(int $allianceId, int $opponentId): ?AllianceRelationInterface;
 
+    /**
+     * @param array<int> $typeIds
+     */
     public function getActiveByTypeAndAlliancePair(array $typeIds, int $allianceId, int $opponentId): ?AllianceRelationInterface;
 }

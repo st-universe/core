@@ -13,6 +13,9 @@ use Stu\Orm\Entity\NoteInterface;
  */
 interface NoteRepositoryInterface extends ObjectRepository
 {
+    /**
+     * @return array<NoteInterface>
+     */
     public function getByUserId(int $userId): array;
 
     public function prototype(): NoteInterface;

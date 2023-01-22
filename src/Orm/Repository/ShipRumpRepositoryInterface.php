@@ -13,6 +13,9 @@ use Stu\Orm\Entity\ShipRumpInterface;
  */
 interface ShipRumpRepositoryInterface extends ObjectRepository
 {
+    /**
+     * @return array<array{rump_id: int, amount: int, name: string}>
+     */
     public function getGroupedInfoByUser(int $userId): array;
 
     /**

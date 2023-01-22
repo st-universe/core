@@ -34,6 +34,8 @@ interface ModuleRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
+     * @param array<int> $moduleLevel
+     *
      * @return ModuleInterface[]
      */
     public function getByTypeColonyAndLevel(
@@ -44,6 +46,8 @@ interface ModuleRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
+     * @param array<int> $moduleLevel
+     *
      * @return ModuleInterface[]
      */
     public function getByTypeAndLevel(
@@ -52,5 +56,10 @@ interface ModuleRepositoryInterface extends ObjectRepository
         array $moduleLevel
     ): iterable;
 
+    /**
+     * @param array<int> $specialTypeIds
+     *
+     * @return iterable<ModuleInterface>
+     */
     public function getBySpecialTypeIds(array $specialTypeIds): iterable;
 }

@@ -26,7 +26,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         ], ['id' => 'asc']);
     }
 
-    public function getByShip(int $shipId): StationShipRepairInterface
+    public function getByShip(int $shipId): ?StationShipRepairInterface
     {
         return $this->findOneBy([
             'ship_id' => $shipId
