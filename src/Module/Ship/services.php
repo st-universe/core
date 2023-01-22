@@ -41,6 +41,7 @@ use Stu\Module\Ship\Action\ActivateTorpedo\ActivateTorpedo;
 use Stu\Module\Ship\Action\ActivateTractorBeam\ActivateTractorBeam;
 use Stu\Module\Ship\Action\ActivateUplink\ActivateUplink;
 use Stu\Module\Ship\Action\ActivateWarp\ActivateWarp;
+use Stu\Module\Ship\Action\AddShipLog\AddShipLog;
 use Stu\Module\Ship\Action\AstroMapping\PlanAstroMapping;
 use Stu\Module\Ship\Action\AstroMapping\StartAstroMapping;
 use Stu\Module\Ship\Action\AttackShip\AttackShip;
@@ -369,7 +370,8 @@ return [
         RemoveTholianWeb::ACTION_IDENTIFIER => autowire(RemoveTholianWeb::class),
         SupportTholianWeb::ACTION_IDENTIFIER => autowire(SupportTholianWeb::class),
         UnsupportTholianWeb::ACTION_IDENTIFIER => autowire(UnsupportTholianWeb::class),
-        SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class)
+        SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
+        AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

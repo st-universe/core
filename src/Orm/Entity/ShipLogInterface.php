@@ -6,6 +6,8 @@ interface ShipLogInterface
 {
     public function getId(): int;
 
+    public function setShip(ShipInterface $ship): ShipLogInterface;
+
     public function getText(): string;
 
     public function setText(string $text): ShipLogInterface;

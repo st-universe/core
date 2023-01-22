@@ -55,6 +55,13 @@ class ShipLog implements ShipLogInterface
         return $this->id;
     }
 
+    public function setShip(ShipInterface $ship): ShipLogInterface
+    {
+        $this->ship = $ship;
+
+        return $this;
+    }
+
     public function getText(): string
     {
         return $this->text;
