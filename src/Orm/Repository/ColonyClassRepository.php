@@ -9,6 +9,9 @@ use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\ColonyClass;
 
+/**
+ * @extends EntityRepository<ColonyClass>
+ */
 final class ColonyClassRepository extends EntityRepository implements ColonyClassRepositoryInterface
 {
     public function getWithoutDatabaseEntry(): array

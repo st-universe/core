@@ -16,6 +16,9 @@ use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<Colony>
+ */
 final class ColonyRepository extends EntityRepository implements ColonyRepositoryInterface
 {
     public function prototype(): ColonyInterface

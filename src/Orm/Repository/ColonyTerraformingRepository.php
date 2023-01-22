@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\ColonyTerraformingInterface;
 
+/**
+ * @extends EntityRepository<ColonyTerraforming>
+ */
 final class ColonyTerraformingRepository extends EntityRepository implements ColonyTerraformingRepositoryInterface
 {
     public function prototype(): ColonyTerraformingInterface

@@ -2,10 +2,15 @@
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\ColonyShipQueueInterface;
 
-interface ColonyShipQueueRepositoryInterface
+/**
+ * @extends ObjectRepository<ColonyShipQueue>
+ */
+interface ColonyShipQueueRepositoryInterface extends ObjectRepository
 {
     public function prototype(): ColonyShipQueueInterface;
 

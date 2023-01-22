@@ -9,6 +9,9 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\ColonyShipQueueInterface;
 
+/**
+ * @extends EntityRepository<ColonyShipQueue>
+ */
 final class ColonyShipQueueRepository extends EntityRepository implements ColonyShipQueueRepositoryInterface
 {
     public function prototype(): ColonyShipQueueInterface

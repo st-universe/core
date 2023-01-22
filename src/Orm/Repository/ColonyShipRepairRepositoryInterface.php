@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 
+/**
+ * @extends ObjectRepository<ColonyShipRepair>
+ */
 interface ColonyShipRepairRepositoryInterface extends ObjectRepository
 {
     public function prototype(): ColonyShipRepairInterface;

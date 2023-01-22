@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 
+/**
+ * @extends EntityRepository<ColonyDepositMining>
+ */
 final class ColonyDepositMiningRepository extends EntityRepository implements ColonyDepositMiningRepositoryInterface
 {
     public function prototype(): ColonyDepositMiningInterface

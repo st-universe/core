@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\ColonyTerraformingInterface;
 
 /**
+ * @extends ObjectRepository<ColonyTerraforming>
+ *
  * @method null|ColonyTerraformingInterface find(integer $id)
  */
 interface ColonyTerraformingRepositoryInterface extends ObjectRepository

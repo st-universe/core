@@ -6,7 +6,11 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ColonyClassInterface;
+use Stu\Orm\Entity\ColonyClassResearch;
 
+/**
+ * @extends EntityRepository<ColonyClassResearch>
+ */
 final class ColonyClassResearchRepository extends EntityRepository implements ColonyClassResearchRepositoryInterface
 {
     public function getByColonyClass(ColonyClassInterface $colonyClass): array
