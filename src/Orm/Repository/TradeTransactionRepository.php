@@ -27,14 +27,6 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
         $em->persist($tradeTransaction);
     }
 
-    public function getLatestTransactions(int $offered, int $wanted): array
-    {
-        return $this->findBy(
-            ['gg_id' => $offered, 'wg_id' => $wanted],
-            10
-        );
-    }
-
     public function getTradePostsTop10(): array
     {
         $rsm = new ResultSetMapping();

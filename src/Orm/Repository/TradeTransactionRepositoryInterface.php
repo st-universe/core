@@ -18,11 +18,6 @@ interface TradeTransactionRepositoryInterface extends ObjectRepository
     public function save(TradeTransactionInterface $tradeTransaction): void;
 
     /**
-     * @return array<TradeTransactionInterface>
-     */
-    public function getLatestTransactions(int $offered, int $wanted): array;
-
-    /**
      * @return array<array{id: int, name: string, transactions: int}>
      */
     public function getTradePostsTop10(): array;
