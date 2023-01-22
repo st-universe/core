@@ -30,8 +30,14 @@ interface TradePostRepositoryInterface extends ObjectRepository
      */
     public function getByUserLicense(int $userId): array;
 
+    /**
+     * @return array<TradePostInterface>
+     */
     public function getByUserLicenseOnlyNPC(int $userId): array;
 
+    /**
+     * @return array<TradePostInterface>
+     */
     public function getByUserLicenseOnlyFerg(int $userId): array;
 
     public function getTradePostIdByShip(int $ship_id): int;

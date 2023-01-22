@@ -52,12 +52,15 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         ]);
     }
 
+    /**
+     * @return array<array{id: int, name: string, sector: string, amount: int}>
+     */
     public function getOrphanedSummaryByUserAtTradeposts(int $userId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
-        $rsm->addScalarResult('name', 'name', 'string');
-        $rsm->addScalarResult('sector', 'sector', 'string');
+        $rsm->addScalarResult('name', 'name');
+        $rsm->addScalarResult('sector', 'sector');
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(

@@ -135,16 +135,72 @@ interface ShipRepositoryInterface extends ObjectRepository
      */
     public function getNpcShipsForTick(): iterable;
 
+    /**
+     * @return iterable<array{
+     *     posx: int,
+     *     posy: int,
+     *     sysid: int,
+     *     shipcount: int,
+     *     cloakcount: int,
+     *     shieldstate: bool,
+     *     type: int,
+     *     d1c?: int,
+     *     d2c?: int,
+     *     d3c?: int,
+     *     d4c?: int
+     * }>
+     */
     public function getSensorResultInnerSystem(
         ShipInterface $ship,
         int $ignoreId,
         StarSystemInterface $system = null
     ): iterable;
 
-    public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable;
+    /**
+     * @return iterable<array{
+     *     posx: int,
+     *     posy: int,
+     *     sysid: int,
+     *     shipcount: int,
+     *     cloakcount: int,
+     *     allycolor: string,
+     *     usercolor: string,
+     *     factioncolor: string,
+     *     type: int,
+     *     d1c?: int,
+     *     d2c?: int,
+     *     d3c?: int,
+     *     d4c?: int
+     * }>
+     */
+    public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, int $ignoreId): iterable;
 
+    /**
+     * @return iterable<array{
+     *     posx: int,
+     *     posy: int,
+     *     shipcount: int,
+     *     type: int,
+     *     d1c: int,
+     *     d2c: int,
+     *     d3c: int,
+     *     d4c: int
+     * }>
+     */
     public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable;
 
+    /**
+     * @return iterable<array{
+     *     posx: int,
+     *     posy: int,
+     *     shipcount: int,
+     *     type: int,
+     *     d1c: int,
+     *     d2c: int,
+     *     d3c: int,
+     *     d4c: int
+     * }>
+     */
     public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId): iterable;
 
     /**
@@ -158,6 +214,8 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
+     * @param array<int> $types
+     *
      * @return ShipInterface[]
      */
     public function getSingleShipScannerResults(

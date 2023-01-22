@@ -13,9 +13,12 @@ interface StationShipRepairRepositoryInterface extends ObjectRepository
 {
     public function prototype(): StationShipRepairInterface;
 
+    /**
+     * @return array<StationShipRepairInterface>
+     */
     public function getByStation(int $stationId): array;
 
-    public function getByShip(int $shipId): StationShipRepairInterface;
+    public function getByShip(int $shipId): ?StationShipRepairInterface;
 
     /**
      * @return StationShipRepairInterface[]

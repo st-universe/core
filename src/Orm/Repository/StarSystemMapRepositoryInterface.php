@@ -14,8 +14,6 @@ use Stu\Orm\Entity\StarSystemMapInterface;
  */
 interface StarSystemMapRepositoryInterface extends ObjectRepository
 {
-    public function count(array $criteria);
-
     /**
      * @return StarSystemMapInterface[]
      */
@@ -38,8 +36,14 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
         int $endSy
     ): array;
 
+    /**
+     * @return array<array{id: int, sx: int, sy: int, systems_id: int, field_id: int}>
+     */
     public function getRandomFieldsForAstroMeasurement(int $starSystemId): array;
 
+    /**
+     * @return array<array{category_name: string, amount: int}>
+     */
     public function getRumpCategoryInfo(int $cx, int $cy): array;
 
     public function save(StarSystemMapInterface $starSystemMap): void;

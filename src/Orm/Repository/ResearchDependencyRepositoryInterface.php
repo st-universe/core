@@ -12,7 +12,7 @@ use Stu\Orm\Entity\ResearchDependencyInterface;
 interface ResearchDependencyRepositoryInterface extends ObjectRepository
 {
     /**
-     * @param array $modes array<int> expected
+     * @param array<int> $modes
      * @return ResearchDependencyInterface[]
      */
     public function getByMode(array $modes): array;

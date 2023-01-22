@@ -22,6 +22,8 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
     public function delete(PrivateMessageInterface $post): void;
 
     /**
+     * @param array<int> $specialIds
+     *
      * @return PrivateMessageInterface[]
      */
     public function getOrderedCorrepondence(

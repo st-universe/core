@@ -578,7 +578,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
+    public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, int $ignoreId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
@@ -586,9 +586,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
         $rsm->addScalarResult('type', 'type', 'integer');
-        $rsm->addScalarResult('allycolor', 'allycolor', 'string');
-        $rsm->addScalarResult('usercolor', 'usercolor', 'string');
-        $rsm->addScalarResult('factioncolor', 'factioncolor', 'string');
+        $rsm->addScalarResult('allycolor', 'allycolor');
+        $rsm->addScalarResult('usercolor', 'usercolor');
+        $rsm->addScalarResult('factioncolor', 'factioncolor');
 
         if ($doSubspace) {
             $rsm->addScalarResult('d1c', 'd1c', 'integer');
