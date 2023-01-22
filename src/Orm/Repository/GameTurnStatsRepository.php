@@ -15,6 +15,9 @@ use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipRump;
 
+/**
+ * @extends EntityRepository<GameTurnStats>
+ */
 final class GameTurnStatsRepository extends EntityRepository implements GameTurnStatsRepositoryInterface
 {
     public function prototype(): GameTurnStatsInterface

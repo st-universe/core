@@ -2,9 +2,14 @@
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Entity\ModuleBuildingFunctionInterface;
 
-interface ModuleBuildingFunctionRepositoryInterface
+/**
+ * @extends ObjectRepository<ModuleBuildingFunction>
+ */
+interface ModuleBuildingFunctionRepositoryInterface extends ObjectRepository
 {
     /**
      * @return ModuleBuildingFunctionInterface[]

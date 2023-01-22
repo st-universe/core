@@ -9,6 +9,9 @@ use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\KnPostInterface;
 
+/**
+ * @extends EntityRepository<KnComment>
+ */
 final class KnCommentRepository extends EntityRepository implements KnCommentRepositoryInterface
 {
     public function getByPost(int $postId): array

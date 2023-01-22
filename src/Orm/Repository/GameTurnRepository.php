@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\GameTurnInterface;
 
+/**
+ * @extends EntityRepository<GameTurn>
+ */
 final class GameTurnRepository extends EntityRepository implements GameTurnRepositoryInterface
 {
     public function getCurrent(): GameTurnInterface

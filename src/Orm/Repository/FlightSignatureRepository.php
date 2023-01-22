@@ -11,6 +11,9 @@ use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\StarSystemMap;
 
+/**
+ * @extends EntityRepository<FlightSignature>
+ */
 final class FlightSignatureRepository extends EntityRepository implements FlightSignatureRepositoryInterface
 {
     public function prototype(): FlightSignatureInterface

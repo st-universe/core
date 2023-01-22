@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameRequestInterface;
 
 /**
+ * @extends ObjectRepository<GameRequest>
+ *
  * @method GameRequestInterface[] findAll()
  */
 interface GameRequestRepositoryInterface extends ObjectRepository

@@ -9,6 +9,9 @@ use Stu\Module\Ship\Action\OpenAdventDoor\OpenAdventDoor;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameRequestInterface;
 
+/**
+ * @extends EntityRepository<GameRequest>
+ */
 final class GameRequestRepository extends EntityRepository implements GameRequestRepositoryInterface
 {
     public function prototype(): GameRequestInterface

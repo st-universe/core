@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\LayerInterface;
 
 /**
+ * @extends ObjectRepository<Layer>
+ *
  * @method null|LayerInterface find(integer $id)
  */
 interface LayerRepositoryInterface extends ObjectRepository

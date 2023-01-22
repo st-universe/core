@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\HistoryInterface;
 
 /**
+ * @extends ObjectRepository<History>
+ *
  * @method null|HistoryInterface find(integer $id)
  * @method array|HistoryInterface[] findAll()
  */

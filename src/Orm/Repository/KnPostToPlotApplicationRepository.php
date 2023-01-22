@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnPostToPlotApplication;
 use Stu\Orm\Entity\KnPostToPlotApplicationInterface;
 
+/**
+ * @extends EntityRepository<KnPostToPlotApplication>
+ */
 final class KnPostToPlotApplicationRepository extends EntityRepository implements KnPostToPlotApplicationRepositoryInterface
 {
     public function prototype(): KnPostToPlotApplicationInterface

@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\HistoryInterface;
 
+/**
+ * @extends EntityRepository<History>
+ */
 final class HistoryRepository extends EntityRepository implements HistoryRepositoryInterface
 {
     public function getRecent(): array

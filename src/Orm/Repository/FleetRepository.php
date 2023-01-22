@@ -10,6 +10,9 @@ use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<Fleet>
+ */
 final class FleetRepository extends EntityRepository implements FleetRepositoryInterface
 {
     public function prototype(): FleetInterface

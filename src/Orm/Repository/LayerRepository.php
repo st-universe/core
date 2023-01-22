@@ -9,6 +9,9 @@ use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Entity\UserLayer;
 
+/**
+ * @extends EntityRepository<Layer>
+ */
 final class LayerRepository extends EntityRepository implements LayerRepositoryInterface
 {
     public function prototype(): LayerInterface

@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 
 /**
+ * @extends ObjectRepository<Map>
+ *
  * @method null|MapInterface find(integer $id)
  */
 interface MapRepositoryInterface extends ObjectRepository

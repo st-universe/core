@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\IgnoreList;
 use Stu\Orm\Entity\IgnoreListInterface;
 
+/**
+ * @extends EntityRepository<IgnoreList>
+ */
 final class IgnoreListRepository extends EntityRepository implements IgnoreListRepositoryInterface
 {
     public function prototype(): IgnoreListInterface

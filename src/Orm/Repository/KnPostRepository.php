@@ -9,6 +9,9 @@ use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 
+/**
+ * @extends EntityRepository<KnPost>
+ */
 final class KnPostRepository extends EntityRepository implements KnPostRepositoryInterface
 {
     public function prototype(): KnPostInterface

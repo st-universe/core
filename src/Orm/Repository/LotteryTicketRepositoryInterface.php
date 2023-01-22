@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\LotteryTicket;
 use Stu\Orm\Entity\LotteryTicketInterface;
 
 /**
+ * @extends ObjectRepository<LotteryTicket>
+ *
  * @method null|LotteryTicketInterface find(integer $id)
  */
 interface LotteryTicketRepositoryInterface extends ObjectRepository

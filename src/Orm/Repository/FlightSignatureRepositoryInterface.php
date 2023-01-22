@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
 
 /**
+ * @extends ObjectRepository<FlightSignature>
+ *
  * @method null|FlightSignatureInterface find(integer $id)
  */
 interface FlightSignatureRepositoryInterface extends ObjectRepository

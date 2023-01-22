@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\IgnoreList;
 use Stu\Orm\Entity\IgnoreListInterface;
 
+/**
+ * @extends ObjectRepository<IgnoreList>
+ */
 interface IgnoreListRepositoryInterface extends ObjectRepository
 {
     public function prototype(): IgnoreListInterface;

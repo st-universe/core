@@ -11,6 +11,9 @@ use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
 
+/**
+ * @extends EntityRepository<Map>
+ */
 final class MapRepository extends EntityRepository implements MapRepositoryInterface
 {
     public function getAmountByLayer(int $layerId): int

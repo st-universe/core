@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\LotteryTicket;
 use Stu\Orm\Entity\LotteryTicketInterface;
 
+/**
+ * @extends EntityRepository<LotteryTicket>
+ */
 final class LotteryTicketRepository extends EntityRepository implements LotteryTicketRepositoryInterface
 {
     public function prototype(): LotteryTicketInterface

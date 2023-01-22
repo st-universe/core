@@ -3,9 +3,13 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\KnPostInterface;
 
+/**
+ * @extends ObjectRepository<KnComment>
+ */
 interface KnCommentRepositoryInterface extends ObjectRepository
 {
     /**

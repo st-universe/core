@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\ModuleBuildingFunction;
 
+/**
+ * @extends EntityRepository<ModuleBuildingFunction>
+ */
 final class ModuleBuildingFunctionRepository extends EntityRepository implements ModuleBuildingFunctionRepositoryInterface
 {
     public function getByBuildingFunctionAndUser(int $buildingFunction, int $userId): array

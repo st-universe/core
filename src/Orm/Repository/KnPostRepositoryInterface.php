@@ -3,10 +3,13 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 
 /**
+ * @extends ObjectRepository<KnPost>
+ *
  * @method null|KnPostInterface find(integer $id)
  * @method KnPostInterface[] findAll()
  */

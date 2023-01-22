@@ -3,10 +3,13 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
+ * @extends ObjectRepository<Fleet>
+ *
  * @method null|FleetInterface find(integer $id)
  * @method FleetInterface[] findAll()
  */
