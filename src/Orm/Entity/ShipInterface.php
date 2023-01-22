@@ -255,6 +255,11 @@ interface ShipInterface
      */
     public function getStorage(): Collection;
 
+    /**
+     * @return Collection<int, ShipLogInterface> Ordered by id
+     */
+    public function getLogbook(): Collection;
+
     public function getStorageSum(): int;
 
     public function getMaxStorage(): int;

@@ -308,6 +308,14 @@ class Ship implements ShipInterface
      */
     private $influenceArea;
 
+    /**
+     * @var ArrayCollection<int, ShipLogInterface>
+     *
+     * @OneToMany(targetEntity="ShipLog", mappedBy="ship", fetch="EXTRA_LAZY")
+     * @OrderBy({"id" = "DESC"})
+     */
+    private $logbook;
+
     public function __construct()
     {
         $this->dockedShips = new ArrayCollection();
@@ -315,6 +323,7 @@ class Ship implements ShipInterface
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
         $this->storage = new ArrayCollection();
+        $this->logbook = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1104,6 +1113,11 @@ class Ship implements ShipInterface
     public function getStorage(): Collection
     {
         return $this->storage;
+    }
+
+    public function getLogbook(): Collection
+    {
+        return $this->logbook;
     }
 
     public function getStorageSum(): int

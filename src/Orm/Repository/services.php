@@ -89,6 +89,7 @@ use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipCrew;
+use Stu\Orm\Entity\ShipLog;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpCategory;
@@ -541,6 +542,11 @@ return [
         ContainerInterface $c
     ): ShipCrewRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipCrew::class);
+    },
+    ShipLogRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipLogRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipLog::class);
     },
     ShipRepositoryInterface::class => function (
         ContainerInterface $c
