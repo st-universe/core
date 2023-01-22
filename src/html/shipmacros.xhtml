@@ -1368,6 +1368,21 @@
 </metal:block>
 <metal:block metal:define-macro="shipcommunication">
   <div class="box">
+    <div class="box_title">Menü</div>
+    <div class="box_body">
+      <table class="tcal">
+        <tr>
+          <td style="width: 50%" class="selected" id="menubroadcast">
+            <a style="display: block;" href="javascript:void(0);" onclick="switchMenuToBroadcast()">Broadcast</a>
+          </td>
+          <td style="width: 50%" id="menulogbook">
+            <a style="display: block;" href="javascript:void(0);" onclick="switchMenuToLogbook()">Logbuch</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="box" id='broadcast'>
     <div class="box_title">Broadcast</div>
     <div class="box_body">
       <form method="post" action="ship.php">
@@ -1381,6 +1396,19 @@
           </tr>
           <tr>
             <td><input type="submit" name="B_SEND_BROADCAST" class="button" value="Broadcast senden" /></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div class="box" id='logbook'>
+    <div class="box_title">Logbuch</div>
+    <div class="box_body">
+      <form method="post" action="ship.php">
+        <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+        <table class="tcal">
+          <tr>
+            <th>lorem ipsum</th>
           </tr>
         </table>
       </form>

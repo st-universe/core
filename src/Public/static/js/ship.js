@@ -179,6 +179,20 @@ function switchTransferToAccount(postid) {
 	$('transferfromaccount').removeClassName('selected');
 	$('transfertoaccount').addClassName('selected');
 }
+function switchMenuToBroadcast() {
+	$('menulogbook').removeClassName('selected');
+	$('menubroadcast').addClassName('selected');
+
+	document.getElementById('broadcast').style.display = "";
+	document.getElementById('logbook').style.display = "none";
+}
+function switchMenuToLogbook() {
+	$('menubroadcast').removeClassName('selected');
+	$('menulogbook').addClassName('selected');
+
+	document.getElementById('logbook').style.display = "";
+	document.getElementById('broadcast').style.display = "none";
+}
 function showRegionInfo(region) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
