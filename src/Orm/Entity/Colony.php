@@ -30,7 +30,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
  **/
 class Colony implements ColonyInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -706,9 +706,6 @@ class Colony implements ColonyInterface
             // @todo refactor
             global $container;
 
-            /**
-             * @var ShipRepositoryInterface
-             */
             $shipRepo = $container->get(ShipRepositoryInterface::class);
             $shiplist = $shipRepo->getByLocation(
                 $this->getStarsystemMap(),

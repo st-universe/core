@@ -10,7 +10,6 @@ src/Public/assets
 src/Public/version_*
 backup
 .phpunit.result.cache
-src/api/
 build
 OrmProxy
 src/lang/*/*/*.mo
