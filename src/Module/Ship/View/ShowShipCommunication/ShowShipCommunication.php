@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShipCommunication;
 
+use JBBCode\Parser;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -15,10 +16,14 @@ final class ShowShipCommunication implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private Parser $bbCodeParser;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        Parser $bbCodeParser
     ) {
         $this->shipLoader = $shipLoader;
+        $this->bbCodeParser = $bbCodeParser;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,7 +41,11 @@ final class ShowShipCommunication implements ViewControllerInterface
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar(
             'TEMPLATETEXT',
-            sprintf('Die %s in Sektor %s sendet folgende Broadcast Nachricht:', $ship->getName(), $ship->getSectorString())
+            sprintf(
+                'Die %s in Sektor %s sendet folgende Broadcast Nachricht:',
+                $this->bbCodeParser->parse($ship->getName())->getAsText(),
+                $ship->getSectorString()
+            )
         );
     }
 }
