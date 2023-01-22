@@ -109,18 +109,6 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->getResult();
     }
 
-    public function getTradePostIdByShip(int $ship_id): int
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                sprintf('SELECT tp.id FROM $s tp WHERE tp.ship_id = :shipid', TradePost::class)
-            )
-            ->setParameters([
-                'shipid' => $ship_id,
-            ])
-            ->getResult();
-    }
-
     public function getClosestNpcTradePost(int $cx, int $cy): TradePostInterface
     {
         return $this->getEntityManager()
