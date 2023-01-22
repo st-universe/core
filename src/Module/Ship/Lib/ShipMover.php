@@ -900,7 +900,7 @@ final class ShipMover implements ShipMoverInterface
             return;
         }
 
-        $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUser(), $ship->getSystemsId());
+        $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUser()->getId(), $ship->getSystemsId());
 
         if ($astroEntry === null) {
             return;
