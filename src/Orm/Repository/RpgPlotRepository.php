@@ -11,6 +11,9 @@ use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<RpgPlot>
+ */
 final class RpgPlotRepository extends EntityRepository implements RpgPlotRepositoryInterface
 {
     public function getByFoundingUser(int $userId): array

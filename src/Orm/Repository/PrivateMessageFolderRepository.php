@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 
+/**
+ * @extends EntityRepository<PrivateMessageFolder>
+ */
 final class PrivateMessageFolderRepository extends EntityRepository implements PrivateMessageFolderRepositoryInterface
 {
 

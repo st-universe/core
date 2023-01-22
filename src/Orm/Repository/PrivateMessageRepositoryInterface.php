@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageInterface;
 
 /**
+ * @extends ObjectRepository<PrivateMessage>
+ *
  * @method null|PrivateMessageInterface find(integer $id)
  */
 interface PrivateMessageRepositoryInterface extends ObjectRepository

@@ -3,9 +3,13 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends ObjectRepository<Researched>
+ */
 interface ResearchedRepositoryInterface extends ObjectRepository
 {
     /**

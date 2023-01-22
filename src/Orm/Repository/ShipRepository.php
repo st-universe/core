@@ -35,6 +35,9 @@ use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<Ship>
+ */
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
 {
 
@@ -222,7 +225,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 JOIN %s u
                 WITH s.user_id = u.id
                 WHERE s.alvl = :alertRed
-                AND s.user_id != :ignoreId 
+                AND s.user_id != :ignoreId
                 AND s.%s = :mapId
                 AND NOT EXISTS (SELECT ss.id
                                 FROM %s ss
@@ -433,7 +436,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     OR
                         (s.state IN (:scrapping, :underConstruction))
                     OR
-                        (p.crew = 0)) 
+                        (p.crew = 0))
                 AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
                 Ship::class,
                 ShipBuildplan::class,
@@ -613,25 +616,25 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                         WHERE c.id = ss2.ship_id
                                         AND ss2.system_type = :systemId
                                         AND ss2.mode > 1)) as cloakcount,
-				(select al.rgb_code FROM stu_alliances al 
-					JOIN stu_user u ON al.id = u.allys_id 
-						JOIN stu_ships s ON u.id = s.user_id 
-							JOIN stu_map m ON m.influence_area_id = s.influence_area_id 
-							WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL) 
+				(select al.rgb_code FROM stu_alliances al
+					JOIN stu_user u ON al.id = u.allys_id
+						JOIN stu_ships s ON u.id = s.user_id
+							JOIN stu_map m ON m.influence_area_id = s.influence_area_id
+							WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
 							as allycolor,
-				(select u.rgb_code FROM stu_user u 
-					JOIN stu_ships s ON u.id = s.user_id 
+				(select u.rgb_code FROM stu_user u
+					JOIN stu_ships s ON u.id = s.user_id
 						JOIN stu_map m ON m.influence_area_id = s.influence_area_id
-						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL) 
+						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
 						as usercolor,
 				(select mb.color FROM stu_map_bordertypes mb
 					JOIN stu_map m ON m.bordertype_id = mb.id
-						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NOT NULL) 
+						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NOT NULL)
 						as factioncolor
-                %s 
+                %s
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
-                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
                 $doSubspace ? sprintf(self::FLIGHT_SIGNATURE_MAP_COUNT, $ignoreId, $maxAge) : ''
             ),
@@ -687,10 +690,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                         FROM stu_ships b
                         WHERE b.cx=a.cx AND b.cy=a.cy
                         AND b.user_id = :userId) as shipcount
-                %s 
+                %s
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
-                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
                 sprintf(self::ADMIN_SIGNATURE_MAP_COUNT_USER, $userId, 0)
             ),
@@ -751,10 +754,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                         JOIN stu_user u ON b.user_id = u.id
                         WHERE b.cx=a.cx AND b.cy=a.cy
                         AND u.allys_id = :allyId) as shipcount
-                %s 
+                %s
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
-                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
                 sprintf(self::ADMIN_SIGNATURE_MAP_COUNT_ALLY, $allyId, 0)
             ),
@@ -827,7 +830,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ON s.rumps_id = r.id
                 JOIN stu_fleets f
                 ON s.fleets_id = f.id
-                LEFT OUTER JOIN stu_tholian_web tw 
+                LEFT OUTER JOIN stu_tholian_web tw
                 ON s.holding_web_id = tw.id
                 JOIN stu_user u
                 ON s.user_id = u.id
@@ -982,7 +985,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.user_id = :userId
                 AND EXISTS (SELECT sc.id
                             FROM stu_crew_assign sc
-                            WHERE s.id = sc.ship_id) 
+                            WHERE s.id = sc.ship_id)
                 ORDER BY RANDOM()
                 LIMIT 1',
                 $rsm

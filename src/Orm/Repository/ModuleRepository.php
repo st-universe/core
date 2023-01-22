@@ -9,6 +9,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleSpecial;
 
+/**
+ * @extends EntityRepository<Module>
+ */
 final class ModuleRepository extends EntityRepository implements ModuleRepositoryInterface
 {
     // used for ModuleSelector

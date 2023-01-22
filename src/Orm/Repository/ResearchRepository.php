@@ -13,6 +13,9 @@ use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<Research>
+ */
 final class ResearchRepository extends EntityRepository implements ResearchRepositoryInterface
 {
 

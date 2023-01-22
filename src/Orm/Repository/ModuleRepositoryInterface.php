@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleInterface;
 
 /**
+ * @extends ObjectRepository<Module>
+ *
  * @method null|ModuleInterface find(integer $id)
  */
 interface ModuleRepositoryInterface extends ObjectRepository

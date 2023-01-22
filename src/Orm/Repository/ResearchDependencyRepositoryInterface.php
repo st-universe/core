@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\ResearchDependencyInterface;
 
+/**
+ * @extends ObjectRepository<ResearchDependency>
+ */
 interface ResearchDependencyRepositoryInterface extends ObjectRepository
 {
     /**

@@ -11,6 +11,9 @@ use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\SessionStringInterface;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<SessionString>
+ */
 final class SessionStringRepository extends EntityRepository implements SessionStringRepositoryInterface
 {
 

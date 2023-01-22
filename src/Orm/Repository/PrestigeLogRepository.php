@@ -9,6 +9,9 @@ use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrestigeLogInterface;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<PrestigeLog>
+ */
 final class PrestigeLogRepository extends EntityRepository implements PrestigeLogRepositoryInterface
 {
 

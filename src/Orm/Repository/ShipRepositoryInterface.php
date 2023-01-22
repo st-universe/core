@@ -3,14 +3,16 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
+ * @extends ObjectRepository<Ship>
+ *
  * @method null|ShipInterface find(integer $id)
  * @method ShipInterface[] findAll()
  */

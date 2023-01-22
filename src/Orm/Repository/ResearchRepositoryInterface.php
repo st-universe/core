@@ -4,10 +4,13 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use phpDocumentor\Reflection\Types\Integer;
+use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
+ * @extends ObjectRepository<Research>
+ *
  * @method null|ResearchInterface find(Integer $id)
  */
 interface ResearchRepositoryInterface extends ObjectRepository

@@ -9,6 +9,9 @@ use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleQueueInterface;
 
+/**
+ * @extends EntityRepository<ModuleQueue>
+ */
 final class ModuleQueueRepository extends EntityRepository implements ModuleQueueRepositoryInterface
 {
     public function getByUser(int $userId): array

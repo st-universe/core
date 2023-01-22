@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\NoteInterface;
 
 /**
+ * @extends ObjectRepository<Note>
+ *
  * @method null|NoteInterface find(integer $id)
  */
 interface NoteRepositoryInterface extends ObjectRepository

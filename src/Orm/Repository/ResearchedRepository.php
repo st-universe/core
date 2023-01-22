@@ -9,6 +9,9 @@ use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\UserInterface;
 
+/**
+ * @extends EntityRepository<Researched>
+ */
 final class ResearchedRepository extends EntityRepository implements ResearchedRepositoryInterface
 {
 

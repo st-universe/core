@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
+ * @extends ObjectRepository<RpgPlot>
+ *
  * @method null|RpgPlotInterface find(integer $id)
  * @method RpgPlotInterface[] findAll()
  */

@@ -9,6 +9,9 @@ use Stu\Orm\Entity\RepairTask;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
 
+/**
+ * @extends EntityRepository<RepairTask>
+ */
 final class RepairTaskRepository extends EntityRepository implements RepairTaskRepositoryInterface
 {
     public function prototype(): RepairTaskInterface

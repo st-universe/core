@@ -12,6 +12,9 @@ use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipRump;
 
+/**
+ * @extends EntityRepository<ShipCrew>
+ */
 final class ShipCrewRepository extends EntityRepository implements ShipCrewRepositoryInterface
 {
     public function prototype(): ShipCrewInterface

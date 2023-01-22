@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 
 /**
+ * @extends ObjectRepository<PrivateMessageFolder>
+ *
  * @method null|PrivateMessageFolderInterface find(integer $id)
  */
 interface PrivateMessageFolderRepositoryInterface extends ObjectRepository

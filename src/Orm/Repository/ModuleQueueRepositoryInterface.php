@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleQueueInterface;
 
 /**
+ * @extends ObjectRepository<ModuleQueue>
+ *
  * @method ModuleQueueInterface[] findAll()
  */
 interface ModuleQueueRepositoryInterface extends ObjectRepository

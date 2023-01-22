@@ -6,7 +6,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-
 use Stu\Component\Building\BuildingEnum;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingFunction;
@@ -16,6 +15,9 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
+/**
+ * @extends EntityRepository<PlanetField>
+ */
 final class PlanetFieldRepository extends EntityRepository implements PlanetFieldRepositoryInterface
 {
 

@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\NoteInterface;
 
+/**
+ * @extends EntityRepository<Note>
+ */
 final class NoteRepository extends EntityRepository implements NoteRepositoryInterface
 {
 

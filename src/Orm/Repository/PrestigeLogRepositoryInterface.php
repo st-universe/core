@@ -3,10 +3,13 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\PrestigeLog;
 use Stu\Orm\Entity\PrestigeLogInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
+ * @extends ObjectRepository<PrestigeLog>
+ *
  * @method null|PrestigeLogInterface find(integer $id)
  */
 interface PrestigeLogRepositoryInterface extends ObjectRepository

@@ -4,9 +4,12 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
 /**
+ * @extends ObjectRepository<PlanetField>
+ *
  * @method null|PlanetFieldInterface find(integer $id)
  */
 interface PlanetFieldRepositoryInterface extends ObjectRepository

@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
 
+/**
+ * @extends EntityRepository<RpgPlotMember>
+ */
 final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotMemberRepositoryInterface
 {
     public function getByPlotAndUser(int $plotId, int $userId): ?RpgPlotMemberInterface

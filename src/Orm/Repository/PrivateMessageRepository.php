@@ -9,6 +9,9 @@ use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageInterface;
 
+/**
+ * @extends EntityRepository<PrivateMessage>
+ */
 final class PrivateMessageRepository extends EntityRepository implements PrivateMessageRepositoryInterface
 {
     public function prototype(): PrivateMessageInterface

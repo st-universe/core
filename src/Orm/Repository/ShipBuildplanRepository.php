@@ -12,6 +12,9 @@ use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpUser;
 
+/**
+ * @extends EntityRepository<ShipBuildplan>
+ */
 final class ShipBuildplanRepository extends EntityRepository implements ShipBuildplanRepositoryInterface
 {
     public function getByUserAndBuildingFunction(int $userId, int $buildingFunction): array
