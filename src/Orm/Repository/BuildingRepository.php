@@ -13,6 +13,9 @@ use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Researched;
 
+/**
+ * @extends EntityRepository<Building>
+ */
 final class BuildingRepository extends EntityRepository implements BuildingRepositoryInterface
 {
     private function getByColonyAndBuildMenu(

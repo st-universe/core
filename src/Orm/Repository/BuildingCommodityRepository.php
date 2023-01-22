@@ -6,7 +6,11 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Orm\Entity\BuildingCommodity;
 
+/**
+ * @extends EntityRepository<BuildingCommodity>
+ */
 final class BuildingCommodityRepository extends EntityRepository implements BuildingCommodityRepositoryInterface
 {
     public function getByBuilding(int $buildingId): array

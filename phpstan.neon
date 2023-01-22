@@ -3,7 +3,6 @@ parameters:
 	paths:
 		- src
 	excludePaths:
-	  - src/Public
 	  - src/OrmProxy
 	  - src/html
 

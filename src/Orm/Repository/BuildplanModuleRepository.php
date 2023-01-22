@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 
+/**
+ * @extends EntityRepository<BuildplanModule>
+ */
 final class BuildplanModuleRepository extends EntityRepository implements BuildplanModuleRepositoryInterface
 {
     public function getByBuildplan(int $buildplanId): array

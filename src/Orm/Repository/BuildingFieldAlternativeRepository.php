@@ -9,6 +9,9 @@ use Stu\Orm\Entity\BuildingFieldAlternative;
 use Stu\Orm\Entity\BuildingFieldAlternativeInterface;
 use Stu\Orm\Entity\Researched;
 
+/**
+ * @extends EntityRepository<BuildingFieldAlternative>
+ */
 final class BuildingFieldAlternativeRepository extends EntityRepository implements BuildingFieldAlternativeRepositoryInterface
 {
     public function getByBuildingAndFieldType(int $buildingId, int $fieldType): ?BuildingFieldAlternativeInterface
@@ -22,7 +25,7 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
     public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): iterable
     {
         return $this->getEntityManager()->createQuery(
-            
+
             sprintf(
                 'SELECT b FROM %s b WHERE b.buildings_id = :buildingId AND (
                     b.research_id is null OR b.research_id IN (

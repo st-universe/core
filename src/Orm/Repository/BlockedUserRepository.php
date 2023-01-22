@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\BlockedUser;
 use Stu\Orm\Entity\BlockedUserInterface;
 
+/**
+ * @extends EntityRepository<BlockedUser>
+ */
 final class BlockedUserRepository extends EntityRepository implements BlockedUserRepositoryInterface
 {
     public function getByEmailHash(string $emailHash): ?BlockedUserInterface

@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\Researched;
 
+/**
+ * @extends EntityRepository<BuildingUpgrade>
+ */
 final class BuildingUpgradeRepository extends EntityRepository implements BuildingUpgradeRepositoryInterface
 {
     public function getByBuilding(int $buildingId, int $userId): array {

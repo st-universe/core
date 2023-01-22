@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\BuildingUpgradeCost;
 
+/**
+ * @extends EntityRepository<BuildingUpgradeCost>
+ */
 final class BuildingUpgradeCostRepository extends EntityRepository implements BuildingUpgradeCostRepositoryInterface
 {
 

@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\BuildingCost;
 
+/**
+ * @extends EntityRepository<BuildingCost>
+ */
 final class BuildingCostRepository extends EntityRepository implements BuildingCostRepositoryInterface
 {
     public function getByBuilding(int $buildingId): array

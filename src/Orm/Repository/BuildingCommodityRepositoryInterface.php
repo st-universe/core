@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\BuildingCommodityInterface;
 
+/**
+ * @extends ObjectRepository<BuildingCommodity>
+ */
 interface BuildingCommodityRepositoryInterface extends ObjectRepository
 {
     /**

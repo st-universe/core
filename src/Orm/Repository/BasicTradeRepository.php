@@ -11,6 +11,9 @@ use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradePost;
 
+/**
+ * @extends EntityRepository<BasicTrade>
+ */
 final class BasicTradeRepository extends EntityRepository implements BasicTradeRepositoryInterface
 {
     public function prototype(): BasicTradeInterface

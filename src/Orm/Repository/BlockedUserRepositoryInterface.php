@@ -3,9 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\BlockedUser;
 use Stu\Orm\Entity\BlockedUserInterface;
 
 /**
+ * @extends ObjectRepository<BlockedUser>
+ *
  * @method null|BlockedUserInterface find(integer $id)
  */
 interface BlockedUserRepositoryInterface extends ObjectRepository

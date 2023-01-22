@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 
+/**
+ * @extends ObjectRepository<BuildplanModule>
+ */
 interface BuildplanModuleRepositoryInterface extends ObjectRepository
 {
     /**
