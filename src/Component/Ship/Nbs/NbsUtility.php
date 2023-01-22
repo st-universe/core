@@ -36,7 +36,7 @@ final class NbsUtility implements NbsUtilityInterface
 
     public function isTachyonActive(ShipInterface $ship): bool
     {
-        return !empty($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship));
+        return $this->tachyonScanRepository->isTachyonScanActiveByShipLocationAndOwner($ship);
     }
 
     public function setNbsTemplateVars(
