@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingFieldAlternativeRepository")
  * @Table(
@@ -14,7 +22,7 @@ namespace Stu\Orm\Entity;
  **/
 class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -29,17 +37,21 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 
     /** @Column(type="integer") * */
     private $alternate_buildings_id = 0;
-    
+
     /** @Column(type="integer", nullable=true) */
     private $research_id;
 
     /**
+     * @var BuildingInterface
+     *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $building;
 
     /**
+     * @var BuildingInterface
+     *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="alternate_buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */

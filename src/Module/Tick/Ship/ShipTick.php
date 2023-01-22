@@ -421,6 +421,7 @@ final class ShipTick implements ShipTickInterface
             case 2:
                 return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction()->getName());
         }
+        return '';
     }
 
     private function getSystemDescription(ShipSystemInterface $shipSystem): string

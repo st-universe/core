@@ -6,7 +6,16 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Faction\FactionEnum;
@@ -98,82 +107,111 @@ class Colony implements ColonyInterface
     private $surface_width = 1;
 
     /**
+     * @var ColonyClassInterface
+     *
      * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
      */
     private $colonyClass;
 
     /**
+     * @var StarSystemMapInterface
+     *
      * @OneToOne(targetEntity="StarSystemMap", inversedBy="colony")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
     private $starsystem_map;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
     /**
+     * @var ArrayCollection<int, PlanetFieldInterface>
+     *
      * @OneToMany(targetEntity="PlanetField", mappedBy="colony", indexBy="field_id", fetch="EXTRA_LAZY")
      * @OrderBy({"field_id" = "ASC"})
      */
     private $planetFields;
 
     /**
+     * @var ArrayCollection<int, StorageInterface>
+     *
      * @OneToMany(targetEntity="Storage", mappedBy="colony", indexBy="commodity_id")
      * @OrderBy({"commodity_id" = "ASC"})
      */
     private $storage;
 
     /**
+     * @var null|TorpedoTypeInterface
+     *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
      */
     private $torpedo;
 
     /**
+     * @var ArrayCollection<int, FleetInterface>
+     *
      * @OneToMany(targetEntity="Fleet", mappedBy="defendedColony")
      */
     private $defenders;
 
     /**
+     * @var ArrayCollection<int, FleetInterface>
+     *
      * @OneToMany(targetEntity="Fleet", mappedBy="blockedColony")
      */
     private $blockers;
 
     /**
+     * @var ArrayCollection<int, ShipCrewInterface>
+     *
      * @OneToMany(targetEntity="ShipCrew", mappedBy="colony")
      */
     private $crewAssignments;
 
     /**
+     * @var ArrayCollection<int, ShipCrewInterface>
+     *
      * @OneToMany(targetEntity="CrewTraining", mappedBy="colony")
      */
     private $crewTrainings;
 
     /**
+     * @var ArrayCollection<int, ColonyDepositMiningInterface>
+     *
      * @OneToMany(targetEntity="ColonyDepositMining", mappedBy="colony")
      * @OrderBy({"commodity_id" = "ASC"})
-     * @var ColonyDepositMiningInterface[]
      */
     private $depositMinings;
 
+    /** @var array<int, bool> */
     private $has_active_building_by_function = [];
 
+    /** @var null|int */
     private $positive_effect_secondary;
 
+    /** @var null|int */
     private $positive_effect_primary;
 
+    /** @var null|array<int, ColonyProduction> */
     private $production;
 
+    /** @var null|int */
     private $productionsum;
 
+    /** @var null|array<int, array{name: string, ships: array<int, ShipInterface>}> */
     private $shiplist;
 
+    /** @var null|int */
     private $maxShields;
 
+    /** @var null|int */
     private $twilightZone;
 
     public function __construct()
@@ -330,7 +368,7 @@ class Colony implements ColonyInterface
         return $this->database_id;
     }
 
-    public function setDatabaseId(?int $database_id)
+    public function setDatabaseId(?int $database_id): ColonyInterface
     {
         $this->database_id = $database_id;
         return $this;

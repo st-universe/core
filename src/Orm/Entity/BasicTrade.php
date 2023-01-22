@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BasicTradeRepository")
  * @Table(
@@ -15,7 +23,7 @@ namespace Stu\Orm\Entity;
  **/
 class BasicTrade implements BasicTradeInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -44,12 +52,16 @@ class BasicTrade implements BasicTradeInterface
     private $user_id;
 
     /**
+     * @var FactionInterface
+     *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id")
      */
     private $faction;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */

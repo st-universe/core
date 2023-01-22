@@ -20,6 +20,9 @@ interface AllianceBoardInterface
 
     public function getLatestPost(): ?AllianceBoardPostInterface;
 
+    /**
+     * @return Collection<int, AllianceBoardTopicInterface>
+     */
     public function getTopics(): Collection;
 
     public function getAlliance(): AllianceInterface;

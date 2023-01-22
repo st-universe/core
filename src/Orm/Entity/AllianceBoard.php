@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 /**
@@ -19,7 +27,7 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
  **/
 class AllianceBoard implements AllianceBoardInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -33,16 +41,22 @@ class AllianceBoard implements AllianceBoardInterface
     private $name = '';
 
     /**
+     * @var ArrayCollection<int, AllianceBoardTopicInterface>
+     *
      * @OneToMany(targetEntity="AllianceBoardTopic", mappedBy="board")
      */
     private $topics;
 
     /**
+     * @var ArrayCollection<int, AllianceBoardPostInterface>
+     *
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="board")
      */
     private $posts;
 
     /**
+     * @var AllianceInterface
+     *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */

@@ -332,6 +332,8 @@ final class DealsBidAuction implements ActionControllerInterface
                 return _('%d Prestige: Du wurdest bei einer Auktion des Großen Nagus überboten und hast dein Prestige zurück erhalten');
             case self::BID_TYPE_REVISE:
                 return _('-%d Prestige: Eingebüßt bei einer Auktion des Großen Nagus');
+            default:
+                return '';
         }
     }
 

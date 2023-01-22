@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyClassResearchRepository")
  * @Table(
@@ -16,7 +24,7 @@ namespace Stu\Orm\Entity;
 //TODO rename table and column planet_type_id
 class ColonyClassResearch implements ColonyClassResearchInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -30,12 +38,16 @@ class ColonyClassResearch implements ColonyClassResearchInterface
     private $planet_type_id;
 
     /**
+     * @var ResearchInterface
+     *
      * @ManyToOne(targetEntity="Research")
      * @JoinColumn(name="research_id", referencedColumnName="id")
      */
     private $research;
 
     /**
+     * @var ColonyClassInterface
+     *
      * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="planet_type_id", referencedColumnName="id")
      */

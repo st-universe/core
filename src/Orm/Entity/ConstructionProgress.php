@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ConstructionProgressRepository")
@@ -32,11 +40,15 @@ class ConstructionProgress implements ConstructionProgressInterface
     private $remaining_ticks = 0;
 
     /**
+     * @var ArrayCollection<int, ConstructionProgressModuleInterface>
+     *
      * @OneToMany(targetEntity="ConstructionProgressModule", mappedBy="progress")
      */
     private $specialModules;
 
     /**
+     * @var ShipInterface
+     *
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */

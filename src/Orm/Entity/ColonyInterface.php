@@ -59,7 +59,7 @@ interface ColonyInterface
 
     public function getDatabaseId(): ?int;
 
-    public function setDatabaseId(?int $database_id);
+    public function setDatabaseId(?int $database_id): ColonyInterface;
 
     public function getPopulationlimit(): int;
 
@@ -125,6 +125,9 @@ interface ColonyInterface
 
     public function getBeamFactor(): int;
 
+    /**
+     * @return Collection<int, PlanetFieldInterface>
+     */
     public function getPlanetFields(): Collection;
 
     /**
@@ -133,26 +136,26 @@ interface ColonyInterface
     public function getBeamableStorage(): array;
 
     /**
-     * @return StorageInterface[]|Collection
+     * @return Collection<int, StorageInterface>
      */
     public function getStorage(): Collection;
 
     public function isDefended(): bool;
 
     /**
-     * @return FleetInterface[]|Collection
+     * @return Collection<int, FleetInterface>
      */
     public function getDefenders(): Collection;
 
     public function isBlocked(): bool;
 
     /**
-     * @return FleetInterface[]|Collection
+     * @return Collection<int, FleetInterface>
      */
     public function getBlockers(): Collection;
 
     /**
-     * @return ShipCrewInterface[]|Collection
+     * @return Collection<int, ShipCrewInterface>
      */
     public function getCrewAssignments(): Collection;
 
@@ -170,10 +173,16 @@ interface ColonyInterface
      */
     public function getProduction(): array;
 
+    /**
+     * @param array<int, ColonyProduction> $array
+     */
     public function setProduction(array $array): void;
 
     public function getProductionSum(): int;
 
+    /**
+     * @return array<int, array{name: string, ships: array<int, ShipInterface>}>
+     */
     public function getOrbitShipList(int $userId): array;
 
     public function isFree(): bool;
@@ -204,6 +213,9 @@ interface ColonyInterface
 
     public function hasActiveBuildingWithFunction(int $function_id): bool;
 
+    /**
+     * @param array<int> $states
+     */
     public function getBuildingWithFunctionCount(int $function_id, array $states = [1]): int;
 
     public function lowerEps(int $value): void;

@@ -6,6 +6,12 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 
@@ -22,7 +28,7 @@ use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
  **/
 class Building implements BuildingInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -75,21 +81,29 @@ class Building implements BuildingInterface
     private $bm_col = 0;
 
     /**
+     * @var ArrayCollection<int, BuildingCostInterface>
+     *
      * @OneToMany(targetEntity="BuildingCost", mappedBy="building")
      */
     private $costs;
 
     /**
+     * @var ArrayCollection<int, BuildingFunctionInterface>
+     *
      * @OneToMany(targetEntity="BuildingFunction", mappedBy="building", indexBy="function")
      */
     private $functions;
 
     /**
+     * @var ArrayCollection<int, BuildingCommodityInterface>
+     *
      * @OneToMany(targetEntity="BuildingCommodity", mappedBy="building")
      */
     private $commodities;
 
     /**
+     * @var ArrayCollection<int, PlanetFieldTypeBuildingInterface>
+     *
      * @OneToMany(targetEntity="PlanetFieldTypeBuilding", mappedBy="building", indexBy="type")
      */
     private $possibleFieldTypes;

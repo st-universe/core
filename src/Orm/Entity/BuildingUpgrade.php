@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeRepository")
@@ -41,17 +49,23 @@ class BuildingUpgrade implements BuildingUpgradeInterface
     private $energy_cost = 0;
 
     /**
+     * @var ArrayCollection<int, BuildingUpgradeCostInterface>
+     *
      * @OneToMany(targetEntity="BuildingUpgradeCost", mappedBy="upgrade")
      */
     private $upgradeCosts;
 
     /**
+     * @var BuildingInterface
+     *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="upgrade_to", referencedColumnName="id", onDelete="CASCADE")
      */
     private $upgradeToBuilding;
 
     /**
+     * @var BuildingInterface
+     *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="upgrade_from", referencedColumnName="id", onDelete="CASCADE")
      */

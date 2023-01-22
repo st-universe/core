@@ -32,6 +32,9 @@ interface AllianceBoardTopicInterface
 
     public function setUser(UserInterface $user): AllianceBoardTopicInterface;
 
+    /**
+     * @return null|array<int>
+     */
     public function getPages(): ?array;
 
     public function getPostCount(): int;
@@ -42,6 +45,9 @@ interface AllianceBoardTopicInterface
 
     public function setBoard(AllianceBoardInterface $board): AllianceBoardTopicInterface;
 
+    /**
+     * @return Collection<int, AllianceBoardPostInterface>
+     */
     public function getPosts(): Collection;
 
     public function getAlliance(): AllianceInterface;

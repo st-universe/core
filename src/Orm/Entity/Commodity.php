@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Commodity\CommodityTypeEnum;
 
 /**
@@ -13,7 +18,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
  **/
 class Commodity implements CommodityInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -126,7 +131,7 @@ class Commodity implements CommodityInterface
     /**
      * @deprecated
      */
-    public function isIllegal($network): bool
+    public function isIllegal(int $network): bool
     {
         // @todo remove
         return false;

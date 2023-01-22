@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeCostRepository")
  * @Table(
  *      name="stu_buildings_upgrades_cost",
- *      indexes={@Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})}
+ *      indexes={
+ *          @Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})
+ *      }
  * )
  **/
 class BuildingUpgradeCost implements BuildingUpgradeCostInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -30,12 +40,16 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
     private $amount;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
     /**
+     * @var BuildingUpgradeInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\BuildingUpgrade")
      * @JoinColumn(name="buildings_upgrades_id", referencedColumnName="id", onDelete="CASCADE")
      */

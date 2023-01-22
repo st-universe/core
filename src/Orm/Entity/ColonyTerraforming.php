@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyTerraformingRepository")
  * @Table(
@@ -16,7 +24,7 @@ namespace Stu\Orm\Entity;
  */
 class ColonyTerraforming implements ColonyTerraformingInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -36,18 +44,24 @@ class ColonyTerraforming implements ColonyTerraformingInterface
     private $finished = 0;
 
     /**
+     * @var TerraformingInterface
+     *
      * @ManyToOne(targetEntity="Terraforming")
      * @JoinColumn(name="terraforming_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $terraforming;
 
     /**
+     * @var PlanetFieldInterface
+     *
      * @ManyToOne(targetEntity="PlanetField")
      * @JoinColumn(name="field_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $field;
 
     /**
+     * @var ColonyInterface
+     *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
      */
