@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\StorageRepository")
  * @Table(
@@ -45,42 +54,56 @@ class Storage implements StorageInterface
     private $tradeoffer_id;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
     /**
+     * @var null|ColonyInterface
+     *
      * @ManyToOne(targetEntity="Colony", inversedBy="storage")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $colony;
 
     /**
+     * @var null|ShipInterface
+     *
      * @ManyToOne(targetEntity="Ship", inversedBy="storage")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
 
     /**
+     * @var null|TorpedoStorageInterface
+     *
      * @OneToOne(targetEntity="TorpedoStorage", inversedBy="storage")
      * @JoinColumn(name="torpedo_storage_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $torpedoStorage;
 
     /**
+     * @var null|TradePostInterface
+     *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="tradepost_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $tradePost;
 
     /**
+     * @var null|TradeOfferInterface
+     *
      * @OneToOne(targetEntity="TradeOffer", inversedBy="storage")
      * @JoinColumn(name="tradeoffer_id", referencedColumnName="id", onDelete="CASCADE")
      */

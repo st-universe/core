@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\MapFieldTypeRepository")
  * @Table(
@@ -15,7 +23,7 @@ namespace Stu\Orm\Entity;
  **/
 class MapFieldType implements MapFieldTypeInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -53,6 +61,8 @@ class MapFieldType implements MapFieldTypeInterface
     private $passable = false;
 
     /**
+     * @var null|ColonyClassInterface
+     *
      * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
      */

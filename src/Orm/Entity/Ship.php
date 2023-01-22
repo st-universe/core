@@ -6,6 +6,16 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -40,7 +50,7 @@ use Stu\Module\Starmap\View\Overview\Overview;
  **/
 class Ship implements ShipInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -159,104 +169,140 @@ class Ship implements ShipInterface
     private $influence_area_id;
 
     /**
+     * @var null|FleetInterface
+     *
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id")
      */
     private $fleet;
 
     /**
+     * @var null|TradePostInterface
+     *
      * @OneToOne(targetEntity="TradePost", mappedBy="ship")
      */
     private $tradePost;
 
     /**
+     * @var null|ShipInterface
+     *
      * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
      * @JoinColumn(name="dock", referencedColumnName="id")
      */
     private $dockedTo;
 
     /**
+     * @var ArrayCollection<int, ShipInterface>
+     *
      * @OneToMany(targetEntity="Ship", mappedBy="dockedTo", indexBy="id")
      * @OrderBy({"fleets_id" = "DESC", "is_fleet_leader" = "DESC"})
      */
     private $dockedShips;
 
     /**
+     * @var ArrayCollection<int, DockingPrivilegeInterface>
+     *
      * @OneToMany(targetEntity="DockingPrivilege", mappedBy="ship")
      */
     private $dockingPrivileges;
 
     /**
+     * @var null|ShipInterface
+     *
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="tractored_ship_id", referencedColumnName="id")
      */
     private $tractoredShip;
 
     /**
+     * @var null|ShipInterface
+     *
      * @OneToOne(targetEntity="Ship", mappedBy="tractoredShip")
      */
     private $tractoringShip;
 
     /**
+     * @var null|TholianWebInterface
+     *
      * @ManyToOne(targetEntity="TholianWeb")
      * @JoinColumn(name="holding_web_id", referencedColumnName="id")
      */
     private $holdingWeb;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
     /**
+     * @var ArrayCollection<int, ShipCrewInterface>
+     *
      * @OneToMany(targetEntity="ShipCrew", mappedBy="ship", indexBy="id")
      * @OrderBy({"id" = "ASC"})
      */
     private $crew;
 
     /**
+     * @var null|TorpedoStorageInterface
+     *
      * @OneToOne(targetEntity="TorpedoStorage", mappedBy="ship")
      */
     private $torpedoStorage;
 
     /**
+     * @var ArrayCollection<int, ShipSystemInterface>
+     *
      * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"remove"})
      * @OrderBy({"system_type" = "ASC"})
      */
     private $systems;
 
     /**
+     * @var ShipRumpInterface
+     *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rumps_id", referencedColumnName="id")
      */
     private $rump;
 
     /**
+     * @var null|ShipBuildplanInterface
+     *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="plans_id", referencedColumnName="id")
      */
     private $buildplan;
 
     /**
+     * @var ArrayCollection<int, StorageInterface>
+     *
      * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
      * @OrderBy({"commodity_id" = "ASC"})
      */
     private $storage;
 
     /**
+     * @var null|MapInterface
+     *
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
     private $map;
 
     /**
+     * @var null|StarSystemMapInterface
+     *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
     private $starsystem_map;
 
     /**
+     * @var null|StarSystemInterface
+     *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="influence_area_id", referencedColumnName="id")
      */
@@ -1195,9 +1241,11 @@ class Ship implements ShipInterface
     }
 
     // with ShipSystemTypeEnum
-    public function getShipSystem($systemType): ShipSystemInterface
+    public function getShipSystem(int $systemType): ShipSystemInterface
     {
-        return $this->getSystems()->get($systemType);
+        /** @var ShipSystemInterface $system */
+        $system = $this->getSystems()->get($systemType);
+        return $system;
     }
 
     public function getHealthySystems(): array

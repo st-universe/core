@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity
  * @Table(
@@ -12,7 +20,7 @@ namespace Stu\Orm\Entity;
  **/
 class TorpedoTypeCost implements TorpedoTypeCostInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -29,12 +37,16 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
     private $count = 0;
 
     /**
+     * @var TorpedoTypeInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\TorpedoType")
      * @JoinColumn(name="torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $torpedoType;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */

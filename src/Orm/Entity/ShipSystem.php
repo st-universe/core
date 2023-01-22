@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 /**
@@ -21,7 +28,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
  **/
 class ShipSystem implements ShipSystemInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -50,12 +57,16 @@ class ShipSystem implements ShipSystemInterface
     private $data;
 
     /**
+     * @var ModuleInterface
+     *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $module;
 
     /**
+     * @var ShipInterface
+     *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */

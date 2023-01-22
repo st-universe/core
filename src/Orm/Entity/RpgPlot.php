@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotRepository")
@@ -19,7 +27,7 @@ use Doctrine\Common\Collections\Collection;
  **/
 class RpgPlot implements RpgPlotInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -42,16 +50,22 @@ class RpgPlot implements RpgPlotInterface
     private $end_date;
 
     /**
+     * @var ArrayCollection<int, KnPostInterface>
+     *
      * @OneToMany(targetEntity="KnPost", mappedBy="rpgPlot")
      */
     private $posts;
 
     /**
+     * @var ArrayCollection<int, RpgPlotMemberInterface>
+     *
      * @OneToMany(targetEntity="RpgPlotMember", mappedBy="rpgPlot")
      */
     private $members;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */

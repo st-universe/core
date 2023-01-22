@@ -21,7 +21,7 @@ interface TholianWebInterface
     public function setWebShip(ShipInterface $webShip): TholianWebInterface;
 
     /**
-     * @return ShipInterface[]|Collection
+     * @return Collection<int, ShipInterface>
      */
     public function getCapturedShips(): Collection;
 

@@ -54,10 +54,13 @@ interface ModuleInterface
 
     public function hasSpecial($special_id): bool;
 
+    /**
+     * @return Collection<int, ModuleSpecialInterface>
+     */
     public function getSpecials(): Collection;
 
     /**
-     * @return ModuleCostInterface[]|Collection
+     * @return Collection<int, ModuleCostInterface>
      */
     public function getCost(): Collection;
 

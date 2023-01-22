@@ -6,6 +6,15 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 
 /**
@@ -19,7 +28,7 @@ use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
  **/
 class Module implements ModuleInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -60,37 +69,45 @@ class Module implements ModuleInterface
     private $ecost = 0;
 
     /**
+     * @var ResearchInterface
+     *
      * @ManyToOne(targetEntity="Research")
      * @JoinColumn(name="research_id", referencedColumnName="id")
      */
     private $research;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
 
     /**
+     * @var ShipRumpRoleInterface
+     *
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="rumps_role_id", referencedColumnName="id")
      */
     private $shipRumpRole;
 
     /**
+     * @var ArrayCollection<int, ModuleSpecialInterface>
+     *
      * @OneToMany(targetEntity="ModuleSpecial", mappedBy="module")
      * @OrderBy({"special_id" = "ASC"})
      */
     private $moduleSpecials;
 
     /**
+     * @var ArrayCollection<int, ModuleCostInterface>
+     *
      * @OneToMany(targetEntity="ModuleCost", mappedBy="module")
      */
     private $buildingCosts;
 
-    /**
-     * @var null|array
-     */
+    /** @var null|array<int> */
     private $specialAbilities;
 
     public function __construct()

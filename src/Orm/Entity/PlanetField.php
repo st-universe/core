@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Colony\ColonyFieldTypeCategoryEnum;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
@@ -27,7 +34,7 @@ use Stu\Orm\Repository\TerraformingRepositoryInterface;
  **/
 class PlanetField implements PlanetFieldInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -59,29 +66,39 @@ class PlanetField implements PlanetFieldInterface
     private $activate_after_build = true;
 
     /**
+     * @var null|BuildingInterface
+     *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="buildings_id", referencedColumnName="id")
      */
     private $building;
 
     /**
+     * @var null|TerraformingInterface
+     *
      * @ManyToOne(targetEntity="Terraforming")
      * @JoinColumn(name="terraforming_id", referencedColumnName="id")
      */
     private $terraforming;
 
     /**
+     * @var ColonyInterface
+     *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $colony;
 
+    /** @var bool */
     private $buildmode = false;
 
+    /** @var null|ColonyTerraformingInterface */
     private $terraformingState;
 
+    /** @var null|iterable<TerraformingInterface> */
     private $terraformingopts;
 
+    /** @var null|iterable<BuildingUpgradeInterface> */
     private $upgrades;
 
     public function getId(): int

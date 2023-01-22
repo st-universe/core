@@ -26,6 +26,9 @@ interface GameRequestInterface
 
     public function setParams(): GameRequestInterface;
 
+    /**
+     * @param array<mixed> $array
+     */
     public function setParameterArray(array $array): GameRequestInterface;
 
     public function unsetParameter($key): void;

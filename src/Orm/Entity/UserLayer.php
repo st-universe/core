@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
 /**
@@ -14,13 +20,13 @@ use Stu\Component\Map\MapEnum;
  **/
 class UserLayer implements UserLayerInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      */
     private $user_id;
 
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      */
@@ -29,14 +35,17 @@ class UserLayer implements UserLayerInterface
     /** @Column(type="smallint") */
     private $map_type = MapEnum::MAPTYPE_INSERT;
 
-
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
     /**
+     * @var LayerInterface
+     *
      * @ManyToOne(targetEntity="Layer")
      * @JoinColumn(name="layer_id", referencedColumnName="id", onDelete="CASCADE")
      */

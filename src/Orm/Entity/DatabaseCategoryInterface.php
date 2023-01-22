@@ -28,7 +28,8 @@ interface DatabaseCategoryInterface
 
     /**
      * Returns a list of associated database entries
-     * @return DatabaseEntryInterface[]
+     *
+     * @return array<int, DatabaseEntryInterface>
      */
     public function getEntries(): array;
 }

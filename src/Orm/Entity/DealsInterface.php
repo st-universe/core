@@ -74,6 +74,9 @@ interface DealsInterface
 
     public function setGiveCommodity(CommodityInterface $giveCommodity): DealsInterface;
 
+    /**
+     * @return array<int, ModuleInterface>
+     */
     public function getModules(): array;
 
     public function getBuildplan(): ?ShipBuildplanInterface;
@@ -82,6 +85,9 @@ interface DealsInterface
 
     public function getBuildplanName(): string;
 
+    /**
+     * @return Collection<int, AuctionBidInterface>
+     */
     public function getAuctionBids(): Collection;
 
     public function getHighestBid(): ?AuctionBidInterface;

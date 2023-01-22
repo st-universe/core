@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TerraformingRepository")
@@ -18,7 +25,7 @@ use Doctrine\Common\Collections\Collection;
  */
 class Terraforming implements TerraformingInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -44,9 +51,16 @@ class Terraforming implements TerraformingInterface
     private $research_id;
 
     /**
+     * @var ArrayCollection<int, TerraformingCostInterface>
+     *
      * @OneToMany(targetEntity="TerraformingCost", mappedBy="terraforming")
      */
     private $costs;
+
+    public function __construct()
+    {
+        $this->costs = new ArrayCollection();
+    }
 
     public function getId(): int
     {

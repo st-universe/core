@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipyardShipQueueRepository")
  * @Table(
@@ -16,7 +24,7 @@ namespace Stu\Orm\Entity;
  **/
 class ShipyardShipQueue implements ShipyardShipQueueInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -45,18 +53,24 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     private $stop_date = 0;
 
     /**
+     * @var ShipBuildplanInterface
+     *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $shipBuildplan;
 
     /**
+     * @var ShipRumpInterface
+     *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $shipRump;
 
     /**
+     * @var ShipInterface
+     *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */

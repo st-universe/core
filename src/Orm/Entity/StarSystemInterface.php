@@ -47,7 +47,7 @@ interface StarSystemInterface
     public function getBase(): ?ShipInterface;
 
     /**
-     * @return StarSystemMapInterface[]
+     * @return array<StarSystemMapInterface>
      */
     public function getFields(): array;
 

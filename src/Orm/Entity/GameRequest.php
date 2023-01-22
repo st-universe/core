@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\GameRequestRepository")
  * @Table(
@@ -15,7 +21,7 @@ namespace Stu\Orm\Entity;
  **/
 class GameRequest implements GameRequestInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -52,6 +58,7 @@ class GameRequest implements GameRequestInterface
     /** @Column(type="text", nullable=true) */
     private $params;
 
+    /** @var null|array<mixed> */
     private $parameterArray;
 
     public function getId(): int

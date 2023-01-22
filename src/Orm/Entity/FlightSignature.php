@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\FlightSignatureRepository")
  * @Table(
@@ -18,7 +26,7 @@ namespace Stu\Orm\Entity;
  **/
 class FlightSignature implements FlightSignatureInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -56,18 +64,24 @@ class FlightSignature implements FlightSignatureInterface
     private $is_cloaked = false;
 
     /**
+     * @var ShipRumpInterface
+     *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id")
      */
     private $rump;
 
     /**
+     * @var null|MapInterface
+     *
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
     private $map;
 
     /**
+     * @var null|StarSystemMapInterface
+     *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */

@@ -52,8 +52,14 @@ interface MapInterface
 
     public function getAdministratedRegion(): ?MapRegionInterface;
 
+    /**
+     * @return Collection<int, ShipInterface>
+     */
     public function getShips(): Collection;
 
+    /**
+     * @return Collection<int, FlightSignatureInterface>
+     */
     public function getSignatures(): Collection;
 
     public function getRandomWormholeEntry(): ?WormholeEntryInterface;

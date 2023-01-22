@@ -22,8 +22,14 @@ interface ResearchInterface
 
     public function setRumpId(int $rumpId): ResearchInterface;
 
+    /**
+     * @return array<int>
+     */
     public function getDatabaseEntryIds(): array;
 
+    /**
+     * @param array<int> $databaseEntryIds
+     */
     public function setDatabaseEntryIds(array $databaseEntryIds): ResearchInterface;
 
     public function getPoints(): int;

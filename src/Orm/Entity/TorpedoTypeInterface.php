@@ -57,7 +57,7 @@ interface TorpedoTypeInterface
     public function setProductionAmount(int $productionAmount): TorpedoTypeInterface;
 
     /**
-     * @return TorpedoTypeCostInterface[]|Collection
+     * @return Collection<int, TorpedoTypeCostInterface>
      */
     public function getProductionCosts(): Collection;
 

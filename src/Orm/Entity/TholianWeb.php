@@ -6,7 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Stu\Component\Game\TimeConstants;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TholianWebRepository")
@@ -19,7 +26,7 @@ use Stu\Component\Game\TimeConstants;
  **/
 class TholianWeb implements TholianWebInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -33,12 +40,16 @@ class TholianWeb implements TholianWebInterface
     private $ship_id = 0;
 
     /**
+     * @var ShipInterface
+     *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $webShip;
 
     /**
+     * @var ArrayCollection<int, ShipInterface>
+     *
      * @OneToMany(targetEntity="Ship", mappedBy="holdingWeb", cascade={"remove"})
      */
     private $capturedShips;

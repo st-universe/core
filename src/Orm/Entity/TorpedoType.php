@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TorpedoTypeRepository")
@@ -18,7 +26,7 @@ use Doctrine\Common\Collections\Collection;
  **/
 class TorpedoType implements TorpedoTypeInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -62,11 +70,15 @@ class TorpedoType implements TorpedoTypeInterface
     private $amount = 0;
 
     /**
+     * @var ArrayCollection<int, TorpedoTypeCostInterface>
+     *
      * @OneToMany(targetEntity="TorpedoTypeCost", mappedBy="torpedoType")
      */
     private $productionCosts;
 
     /**
+     * @var CommodityInterface
+     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id")
      */
@@ -226,9 +238,6 @@ class TorpedoType implements TorpedoTypeInterface
         return $this;
     }
 
-    /**
-     * @return TorpedoTypeCostInterface[]
-     */
     public function getProductionCosts(): Collection
     {
         return $this->productionCosts;

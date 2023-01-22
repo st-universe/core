@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\GameTurnStatsRepository")
  * @Table(
@@ -12,7 +20,7 @@ namespace Stu\Orm\Entity;
  **/
 class GameTurnStats implements GameTurnStatsInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -53,6 +61,8 @@ class GameTurnStats implements GameTurnStatsInterface
     private $flight_sig_system_24h;
 
     /**
+     * @var GameTurnInterface
+     *
      * @OneToOne(targetEntity="GameTurn")
      * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
      */

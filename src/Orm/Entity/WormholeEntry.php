@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Map\MapEnum;
 
 /**
@@ -14,7 +21,7 @@ use Stu\Component\Map\MapEnum;
  **/
 class WormholeEntry implements WormholeEntryInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -40,18 +47,24 @@ class WormholeEntry implements WormholeEntryInterface
     private $cooldown;
 
     /**
+     * @var MapInterface
+     *
      * @ManyToOne(targetEntity="Map", inversedBy="wormholeEntries")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
     private $map;
 
     /**
+     * @var StarSystemInterface
+     *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="system_id", referencedColumnName="id")
      */
     private $starSystem;
 
     /**
+     * @var StarSystemMapInterface
+     *
      * @ManyToOne(targetEntity="StarSystemMap", inversedBy="wormholeEntries")
      * @JoinColumn(name="system_map_id", referencedColumnName="id")
      */

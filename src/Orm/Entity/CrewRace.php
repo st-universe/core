@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\CrewRaceRepository")
  * @Table(
@@ -13,7 +21,7 @@ namespace Stu\Orm\Entity;
  **/
 class CrewRace implements CrewRaceInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -36,6 +44,8 @@ class CrewRace implements CrewRaceInterface
     private $define = '';
 
     /**
+     * @var FactionInterface
+     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id", onDelete="CASCADE")
      */
