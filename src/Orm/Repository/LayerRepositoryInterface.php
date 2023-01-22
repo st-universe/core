@@ -24,5 +24,8 @@ interface LayerRepositoryInterface extends ObjectRepository
      */
     public function findAllIndexed(): array;
 
+    /**
+     * @return LayerInterface[]
+     */
     public function getKnownByUser(int $userId): array;
 }

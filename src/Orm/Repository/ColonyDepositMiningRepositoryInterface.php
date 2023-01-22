@@ -2,13 +2,14 @@
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyDepositMining;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 
 /**
- * @extends ColonyDepositMining>
+ * @extends ObjectRepository<ColonyDepositMining>
  */
-interface ColonyDepositMiningRepositoryInterface
+interface ColonyDepositMiningRepositoryInterface extends ObjectRepository
 {
     public function prototype(): ColonyDepositMiningInterface;
 

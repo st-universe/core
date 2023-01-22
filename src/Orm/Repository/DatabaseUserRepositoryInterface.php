@@ -11,7 +11,7 @@ use Stu\Orm\Entity\DatabaseUserInterface;
  */
 interface DatabaseUserRepositoryInterface extends ObjectRepository
 {
-    public function truncateByUserId(int $userId);
+    public function truncateByUserId(int $userId): void;
 
     public function findFor(int $databaseEntryId, int $userId): ?DatabaseUserInterface;
 
@@ -21,6 +21,9 @@ interface DatabaseUserRepositoryInterface extends ObjectRepository
 
     public function save(DatabaseUserInterface $entry): void;
 
+    /**
+     * @return array<array{user_id: int, points: int}>
+     */
     public function getTopList(): array;
 
     public function getCountForUser(int $userId): int;

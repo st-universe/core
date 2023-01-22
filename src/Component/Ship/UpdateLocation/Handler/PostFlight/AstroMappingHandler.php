@@ -46,7 +46,7 @@ final class AstroMappingHandler extends AbstractUpdateLocationHandler implements
             return;
         }
 
-        $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUser(), $ship->getSystemsId());
+        $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUser()->getId(), $ship->getSystemsId());
 
         if ($astroEntry === null) {
             return;

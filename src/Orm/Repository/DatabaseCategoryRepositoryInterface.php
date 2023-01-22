@@ -14,5 +14,8 @@ use Stu\Orm\Entity\DatabaseCategoryInterface;
  */
 interface DatabaseCategoryRepositoryInterface extends ObjectRepository
 {
+    /**
+     * @return array<DatabaseCategoryInterface>
+     */
     public function getByTypeId(int $type_id): array;
 }

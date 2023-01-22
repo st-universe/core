@@ -7,9 +7,12 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\StarSystemMapInterface;
 
 /**
  * @extends EntityRepository<FlightSignature>
@@ -30,7 +33,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         }
     }
 
-    public function getVisibleSignatureCount($colony): int
+    public function getVisibleSignatureCount(ColonyInterface $colony): int
     {
         return (int) $this->getEntityManager()
             ->createQuery(
@@ -60,7 +63,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getSingleScalarResult();
     }
 
-    public function getVisibleSignatures($field, bool $isSystem, $ignoreId): array
+    public function getVisibleSignatures($field, bool $isSystem, int $ignoreId): array
     {
         return $this->getEntityManager()
             ->createQuery(

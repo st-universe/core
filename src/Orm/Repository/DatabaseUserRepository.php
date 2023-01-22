@@ -16,7 +16,7 @@ use Stu\Orm\Entity\DatabaseUserInterface;
 final class DatabaseUserRepository extends EntityRepository implements DatabaseUserRepositoryInterface
 {
 
-    public function truncateByUserId(int $userId)
+    public function truncateByUserId(int $userId): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(
