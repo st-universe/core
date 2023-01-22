@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildplanModuleRepository")
  * @Table(
@@ -13,7 +21,7 @@ namespace Stu\Orm\Entity;
  **/
 class BuildplanModule implements BuildplanModuleInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -36,12 +44,16 @@ class BuildplanModule implements BuildplanModuleInterface
     private $module_count = 1;
 
     /**
+     * @var ShipBuildplanInterface
+     *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $buildplan;
 
     /**
+     * @var ModuleInterface
+     *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */

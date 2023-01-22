@@ -24,6 +24,9 @@ interface ColonyClassInterface
 
     public function setDatabaseId(?int $databaseId): ColonyClassInterface;
 
+    /**
+     * @return array<int>
+     */
     public function getColonizeableFields(): array;
 
     public function setColonizeableFields(array $colonizeableFields): ColonyClassInterface;
@@ -41,7 +44,7 @@ interface ColonyClassInterface
     public function setAllowStart(bool $allowStart): ColonyClassInterface;
 
     /**
-     * @return ColonyClassDepositInterface[]|Collection
+     * @return Collection<int, ColonyClassDepositInterface>
      */
     public function getColonyClassDeposits(): Collection;
 

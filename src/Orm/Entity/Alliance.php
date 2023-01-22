@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -20,7 +28,7 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
  **/
 class Alliance implements AllianceInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -52,25 +60,34 @@ class Alliance implements AllianceInterface
     private $rgb_code = '';
 
     /**
+     * @var FactionInterface
+     *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id")
      */
     private $faction;
 
     /**
+     * @var ArrayCollection<int, UserInterface>
+     *
      * @OneToMany(targetEntity="User", mappedBy="alliance")
      */
     private $members;
 
     /**
+     * @var ArrayCollection<int, AllianceJobInterface>
+     *
      * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance")
      */
     private $jobs;
 
+    /** @var null|AllianceJobInterface */
     private $founder;
 
+    /** @var null|AllianceJobInterface */
     private $successor;
 
+    /** @var null|AllianceJobInterface */
     private $diplomatic;
 
     public function __construct()

@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildplanHangarRepository")
  * @Table(
@@ -13,7 +21,7 @@ namespace Stu\Orm\Entity;
  **/
 class BuildplanHangar implements BuildplanHangarInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -33,12 +41,16 @@ class BuildplanHangar implements BuildplanHangarInterface
     private $start_energy_costs;
 
     /**
+     * @var null|TorpedoTypeInterface
+     *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="default_torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $defaultTorpedoType;
 
     /**
+     * @var ShipBuildplanInterface
+     *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */

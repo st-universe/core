@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Alliance\AllianceEnum;
 
 /**
@@ -17,7 +24,7 @@ use Stu\Component\Alliance\AllianceEnum;
  **/
 class AllianceRelation implements AllianceRelationInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -37,12 +44,16 @@ class AllianceRelation implements AllianceRelationInterface
     private $date = 0;
 
     /**
+     * @var AllianceInterface
+     *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $alliance;
 
     /**
+     * @var AllianceInterface
+     *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
      */

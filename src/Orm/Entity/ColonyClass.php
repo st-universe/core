@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyTypeEnum;
 
@@ -19,7 +27,7 @@ use Stu\Component\Colony\ColonyTypeEnum;
  **/
 class ColonyClass implements ColonyClassInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -48,12 +56,16 @@ class ColonyClass implements ColonyClassInterface
     private $allow_start = false;
 
     /**
+     * @var DatabaseEntryInterface|null
+     *
      * @OneToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
     private $databaseEntry;
 
     /**
+     * @var ArrayCollection<int, ColonyClassDepositInterface>
+     *
      * @OneToMany(targetEntity="ColonyClassDeposit", mappedBy="colonyClass", indexBy="commodity_id")
      */
     private $colonyClassDeposits;

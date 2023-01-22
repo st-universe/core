@@ -6,6 +6,14 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
@@ -21,7 +29,7 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
  **/
 class AllianceBoardTopic implements AllianceBoardTopicInterface
 {
-    /** 
+    /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
@@ -47,24 +55,32 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
     private $sticky = false;
 
     /**
+     * @var AllianceBoardInterface
+     *
      * @ManyToOne(targetEntity="AllianceBoard", inversedBy="topics")
      * @JoinColumn(name="board_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $board;
 
     /**
+     * @var AllianceInterface
+     *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $alliance;
 
     /**
+     * @var UserInterface
+     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
     /**
+     * @var ArrayCollection<int, AllianceBoardPostInterface>
+     *
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="topic")
      */
     private $posts;

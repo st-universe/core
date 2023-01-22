@@ -30,5 +30,8 @@ interface BuildingUpgradeInterface
 
     public function getBuilding(): BuildingInterface;
 
+    /**
+     * @return Collection<int, BuildingCostInterface>
+     */
     public function getUpgradeCosts(): Collection;
 }

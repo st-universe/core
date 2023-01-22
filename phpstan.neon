@@ -1,10 +1,11 @@
 parameters:
-	level: 8
-	paths:
-		- src
-	excludePaths:
-	  - src/OrmProxy
-	  - src/html
+  level: 8
+  paths:
+    - src
+  excludePaths:
+    - src/OrmProxy
+    - src/html
 
 includes:
-	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+  - phpstan-baseline.neon
