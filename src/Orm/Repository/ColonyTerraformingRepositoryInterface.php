@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\ColonyTerraformingInterface;
 
@@ -20,6 +21,8 @@ interface ColonyTerraformingRepositoryInterface extends ObjectRepository
     public function delete(ColonyTerraformingInterface $terraforming): void;
 
     /**
+     * @param array<ColonyInterface> $colonyies
+     *
      * @return ColonyTerraformingInterface[]
      */
     public function getByColony(array $colonyies): array;

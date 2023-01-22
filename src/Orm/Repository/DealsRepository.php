@@ -386,9 +386,8 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ->getSingleScalarResult() > 0;
     }
 
-    public function getEndedAuctionsGoods(int $userId): ?array
+    public function getEndedAuctionsGoods(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(

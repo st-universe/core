@@ -42,6 +42,9 @@ interface KnPostRepositoryInterface extends ObjectRepository
 
     public function getAmountSince(int $postId): int;
 
+    /**
+     * @return array<KnPostInterface>
+     */
     public function getNewerThenMark(int $mark): array;
 
     /**

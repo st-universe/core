@@ -13,6 +13,9 @@ use Stu\Orm\Entity\BuildingInterface;
  */
 interface BuildingRepositoryInterface extends ObjectRepository
 {
+    /**
+     * @return iterable<array{id: int, name: string}>
+     */
     public function getByColonyAndUserAndBuildMenu(
         int $colonyId,
         int $userId,

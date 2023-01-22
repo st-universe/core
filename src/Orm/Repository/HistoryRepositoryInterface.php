@@ -20,6 +20,8 @@ interface HistoryRepositoryInterface extends ObjectRepository
     public function getRecent(): array;
 
     /**
+     * @param false|string $search
+     *
      * @return HistoryInterface[]
      */
     public function getByTypeAndSearch(int $typeId, int $limit, $search): array;

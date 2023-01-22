@@ -16,6 +16,9 @@ interface BuildingCommodityRepositoryInterface extends ObjectRepository
      */
     public function getByBuilding(int $buildingId): array;
 
+    /**
+     * @return iterable<array{commodity_id: int, gc: int, pc: int}>
+     */
     public function getProductionByColony(int $colonyId, int $colonyClassId): iterable;
 
     public function getProductionByCommodityAndUser(int $commodityId, int $userId): int;
