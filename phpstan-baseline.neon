@@ -17331,22 +17331,7 @@ parameters:
 			path: src/Orm/Entity/Alliance.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$alliance_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoard.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoard.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoard.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$name has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceBoard.php
 
@@ -17356,64 +17341,9 @@ parameters:
 			path: src/Orm/Entity/AllianceBoard.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$board_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$lastedit has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$text has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$topic_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$alliance_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardTopic.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$board_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardTopic.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardTopic.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$id is never written, only read\\.$#"
@@ -17421,37 +17351,7 @@ parameters:
 			path: src/Orm/Entity/AllianceBoardTopic.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$last_post_date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardTopic.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardTopic.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$sticky has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardTopic.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardTopic.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$alliance_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceJob.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$alliance_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceJob.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceJob.php
 
@@ -17461,32 +17361,7 @@ parameters:
 			path: src/Orm/Entity/AllianceJob.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceJob.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceJob.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:getPossibleTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceRelation.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$alliance_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceRelation.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceRelation.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceRelation.php
 
@@ -17496,37 +17371,12 @@ parameters:
 			path: src/Orm/Entity/AllianceRelation.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$recipient has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceRelation.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceRelation.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:\\:getPossibleTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceRelationInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$astro_start_turn has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_1 has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
@@ -17536,17 +17386,7 @@ parameters:
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_2 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_2 is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_3 has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
@@ -17556,17 +17396,7 @@ parameters:
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_4 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_4 is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_5 has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
@@ -17576,32 +17406,12 @@ parameters:
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$state has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$systems_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$systems_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$auction_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AuctionBid.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:getMaxAmount\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/AuctionBid.php
 
@@ -17611,42 +17421,12 @@ parameters:
 			path: src/Orm/Entity/AuctionBid.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$max_amount has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AuctionBid.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/AuctionBid.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Award\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Award.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Award\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Award.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Award\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Award.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Award\\:\\:\\$prestige has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Award.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$buy_sell has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$commodity_id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:getUniqId\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
 
@@ -17656,22 +17436,7 @@ parameters:
 			path: src/Orm/Entity/BasicTrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$date_ms has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$faction_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$faction_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
 
@@ -17681,22 +17446,7 @@ parameters:
 			path: src/Orm/Entity/BasicTrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$uniqid has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$user_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$value has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
 

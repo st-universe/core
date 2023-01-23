@@ -33,25 +33,51 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $board_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $alliance_id = 0;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $last_post_date = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $sticky = false;
 
     /**

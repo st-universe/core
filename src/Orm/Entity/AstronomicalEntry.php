@@ -28,34 +28,72 @@ class AstronomicalEntry implements AstronomicalEntryInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="smallint", length=1) */
+    /**
+     * @Column(type="smallint", length=1)
+     *
+     * @var int
+     */
     private $state = 0;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $astro_start_turn;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer") *
+     *
+     * @var int
+     */
     private $systems_id;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var null|int
+     */
     private $starsystem_map_id_1;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var null|int
+     */
     private $starsystem_map_id_2;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var null|int
+     */
     private $starsystem_map_id_3;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var null|int
+     */
     private $starsystem_map_id_4;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var null|int
+     */
     private $starsystem_map_id_5;
 
     /**

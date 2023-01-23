@@ -27,16 +27,30 @@ class AuctionBid implements AuctionBidInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer")  */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $auction_id;
 
-    /** @Column(type="integer")  */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id;
 
-    /** @Column(type="integer", nullable=true)  */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $max_amount;
 
     /**

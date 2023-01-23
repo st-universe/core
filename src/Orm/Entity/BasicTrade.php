@@ -27,28 +27,58 @@ class BasicTrade implements BasicTradeInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer", nullable=true)  */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $faction_id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $commodity_id = 0;
 
-    /** @Column(type="smallint") */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $buy_sell = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $value = 0;
 
-    /** @Column(type="bigint", nullable=true) */
+    /**
+     * @Column(type="bigint", nullable=true)
+     *
+     * @var null|int
+     */
     private $date_ms;
 
-    /** @Column(type="string", nullable=true) */
+    /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var null|string
+     */
     private $uniqid;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $user_id;
 
     /**
