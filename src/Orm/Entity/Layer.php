@@ -22,19 +22,37 @@ class Layer implements LayerInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $width;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $height;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $is_hidden;
 
     public function getId(): int

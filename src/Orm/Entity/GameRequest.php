@@ -25,37 +25,79 @@ class GameRequest implements GameRequestInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $user_id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $turn_id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $time;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $module;
 
-    /** @Column(type="string", nullable=true) * */
+    /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var null|string
+     */
     private $action;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $action_ms;
 
-    /** @Column(type="string", nullable=true) * */
+    /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
     private $view;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $view_ms;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $render_ms;
 
-    /** @Column(type="text", nullable=true) */
+    /**
+     * @Column(type="text", nullable=true)
+     *
+     * @var string|null
+     */
     private $params;
 
     /** @var null|array<mixed> */

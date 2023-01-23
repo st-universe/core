@@ -30,37 +30,79 @@ class FlightSignature implements FlightSignatureInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $ship_id = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $rump_id = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $time = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var int|null
+     */
     private $map_id;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var int|null
+     */
     private $starsystem_map_id;
 
-    /** @Column(type="smallint", length=1) */
+    /**
+     * @Column(type="smallint", length=1)
+     *
+     * @var int
+     */
     private $from_direction = 0;
 
-    /** @Column(type="smallint", length=1) */
+    /**
+     * @Column(type="smallint", length=1)
+     *
+     * @var int
+     */
     private $to_direction = 0;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $ship_name;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $is_cloaked = false;
 
     /**

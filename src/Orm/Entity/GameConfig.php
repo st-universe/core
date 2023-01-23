@@ -25,13 +25,23 @@ class GameConfig implements GameConfigInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $option = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $value = 0;
 
     public function getId(): int

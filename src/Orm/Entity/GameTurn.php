@@ -26,16 +26,30 @@ class GameTurn implements GameTurnInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $turn = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $startdate = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $enddate;
 
     /**
@@ -67,9 +81,9 @@ class GameTurn implements GameTurnInterface
         return $this->startdate;
     }
 
-    public function setStart(int $startdate): GameTurnInterface
+    public function setStart(int $start): GameTurnInterface
     {
-        $this->startdate = $startdate;
+        $this->startdate = $start;
 
         return $this;
     }
@@ -79,9 +93,9 @@ class GameTurn implements GameTurnInterface
         return $this->enddate;
     }
 
-    public function setEnd(int $enddate): GameTurnInterface
+    public function setEnd(int $end): GameTurnInterface
     {
-        $this->enddate = $enddate;
+        $this->enddate = $end;
 
         return $this;
     }

@@ -33,31 +33,65 @@ class KnPost implements KnPostInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string", nullable=true) */
+    /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
     private $titel = '';
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $text = '';
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $date = 0;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $username = '';
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $user_id = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $lastedit = 0;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $plot_id;
 
-    /** @Column(type="json") */
+    /**
+     * @Column(type="json")
+     *
+     * @var array<mixed>
+     */
     private $ratings = [];
 
     /**

@@ -24,16 +24,30 @@ class LotteryTicket implements LotteryTicketInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $period;
 
-    /** @Column(type="boolean", nullable=true) */
+    /**
+     * @Column(type="boolean", nullable=true)
+     *
+     * @var bool|null
+     */
     private $is_winner;
 
     /**
