@@ -8,7 +8,7 @@ interface NewsInterface
 
     public function getSubject(): string;
 
-    public function setSubject(int $subject): NewsInterface;
+    public function setSubject(string $subject): NewsInterface;
 
     public function getText(): string;
 

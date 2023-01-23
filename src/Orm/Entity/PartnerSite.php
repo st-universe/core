@@ -25,19 +25,37 @@ class PartnerSite implements PartnerSiteInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $url = '';
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $text = '';
 
-    /** @Column(type="string", length=200) */
+    /**
+     * @Column(type="string", length=200)
+     *
+     * @var string
+     */
     private $banner = '';
 
     public function getId(): int

@@ -18326,32 +18326,12 @@ parameters:
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapBorderType\\:\\:\\$color has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapBorderType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapBorderType\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapBorderType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapBorderType\\:\\:\\$faction_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapBorderType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapBorderType\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapBorderType.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapBorderType\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapBorderType.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$colonies_classes_id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:getColonyClassId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapFieldType.php
 
@@ -18361,77 +18341,12 @@ parameters:
 			path: src/Orm/Entity/MapFieldType.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$damage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$ecost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapFieldType.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$is_system has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$passable has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$view has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$x_damage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$x_damage_system has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$database_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegion.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$database_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegion.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegion.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapRegion.php
 
@@ -18441,27 +18356,22 @@ parameters:
 			path: src/Orm/Entity/MapRegion.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegionSettlement\\:\\:\\$faction_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegionSettlement.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegionSettlement\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegionSettlement.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegionSettlement\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapRegionSettlement.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegionSettlement\\:\\:\\$region_id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getCostSorted\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: src/Orm/Entity/MapRegionSettlement.php
+			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getCostSorted\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getResearchId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getShipRumpRoleId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
@@ -18476,42 +18386,7 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$downgrade_factor has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$ecost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$level has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$name has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
@@ -18521,44 +18396,9 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$research_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$rumps_role_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$shipRumpRole is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$upgrade_factor has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$viewable has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$buildingfunction has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleBuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleBuildingFunction.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$id is never written, only read\\.$#"
@@ -18571,27 +18411,7 @@ parameters:
 			path: src/Orm/Entity/ModuleBuildingFunction.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$module_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleBuildingFunction.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$count has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleCost.php
 
@@ -18606,11 +18426,6 @@ parameters:
 			path: src/Orm/Entity/ModuleCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleCost.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:getCostSorted\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleInterface.php
@@ -18621,27 +18436,7 @@ parameters:
 			path: src/Orm/Entity/ModuleInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$buildingfunction has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$colony_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$colony_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$count has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleQueue.php
 
@@ -18649,16 +18444,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$module_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleSpecial.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$id is never written, only read\\.$#"
@@ -18671,54 +18456,9 @@ parameters:
 			path: src/Orm/Entity/ModuleSpecial.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$module_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$special_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\News\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/News.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\News\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/News.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\News\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/News.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\News\\:\\:\\$refs has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/News.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\News\\:\\:\\$subject has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/News.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\News\\:\\:\\$text has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/News.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Note.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Note.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$id is never written, only read\\.$#"
@@ -18726,47 +18466,7 @@ parameters:
 			path: src/Orm/Entity/Note.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$text has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Note.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$title has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Note.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Note.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PartnerSite\\:\\:\\$banner has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PartnerSite.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PartnerSite\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PartnerSite.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PartnerSite\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PartnerSite.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PartnerSite\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PartnerSite.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PartnerSite\\:\\:\\$text has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PartnerSite.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PartnerSite\\:\\:\\$url has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PartnerSite.php
 
@@ -18831,37 +18531,7 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$activate_after_build has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$aktiv has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$buildings_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$buildings_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$colonies_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$field_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
@@ -18871,22 +18541,7 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$integrity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraforming_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraforming_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$type_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 

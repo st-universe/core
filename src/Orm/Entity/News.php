@@ -25,19 +25,37 @@ class News implements NewsInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $subject = '';
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $text = '';
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $date = 0;
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $refs = '';
 
     public function getId(): int
@@ -50,7 +68,7 @@ class News implements NewsInterface
         return $this->subject;
     }
 
-    public function setSubject(int $subject): NewsInterface
+    public function setSubject(string $subject): NewsInterface
     {
         $this->subject = $subject;
 
