@@ -29,19 +29,37 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $type = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $buildings_id = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $research_id;
 
-    /** @Column(type="boolean") * */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $view = true;
 
     /**

@@ -23,43 +23,93 @@ class Research implements ResearchInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name;
 
-    /** @Column(type="text") * */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $description;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $sort;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $rumps_id;
 
-    /** @Column(type="json") * */
+    /**
+     * @Column(type="json")
+     *
+     * @var array<int>
+     */
     private $database_entries;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $points;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $commodity_id;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $reward_buildplan_id;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $award_id;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $needed_award;
 
-    /** @Column(type="smallint", nullable=true) * */
+    /**
+     * @Column(type="smallint", nullable=true)
+     *
+     * @var int|null
+     */
     private $upper_limit_colony_type;
 
-    /** @Column(type="smallint", nullable=true) * */
+    /**
+     * @Column(type="smallint", nullable=true)
+     *
+     * @var int|null
+     */
     private $upper_limit_colony_amount;
 
     /**

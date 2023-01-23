@@ -28,37 +28,79 @@ class PrivateMessage implements PrivateMessageInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $send_user = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $recip_user = 0;
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $text = '';
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $date = 0;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $new = false;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $replied = false;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $cat_id = 0;
 
-    /** @Column(type="integer", nullable = true) */
+    /**
+     * @Column(type="integer", nullable = true)
+     *
+     * @var int|null
+     */
     private $inbox_pm_id;
 
-    /** @Column(type="string", nullable=true) */
+    /**
+     * @Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
     private $href;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $deleted;
 
     /**

@@ -23,19 +23,37 @@ class PlanetFieldType implements PlanetFieldTypeInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $field_id = 0;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $description = '';
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $normal_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $category;
 
     public function getId(): int

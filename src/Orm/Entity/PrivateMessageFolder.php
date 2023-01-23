@@ -30,22 +30,44 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $description = '';
 
-    /** @Column(type="smallint") */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $sort = 0;
 
-    /** @Column(type="smallint") */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $special = PrivateMessageFolderSpecialEnum::PM_DEFAULT_OWN;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $deleted;
 
     /**

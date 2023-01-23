@@ -18551,27 +18551,7 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$category has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldType.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$category is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$field_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetFieldType.php
 
@@ -18581,22 +18561,7 @@ parameters:
 			path: src/Orm/Entity/PlanetFieldType.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$normal_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldType.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$building is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$buildings_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
 
@@ -18606,77 +18571,12 @@ parameters:
 			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$research_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$view has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrestigeLog\\:\\:\\$amount has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrestigeLog.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrestigeLog\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrestigeLog.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrestigeLog\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrestigeLog.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrestigeLog\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrestigeLog.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrestigeLog\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrestigeLog.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrestigeLog\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrestigeLog.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$cat_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$deleted has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$deleted is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$href has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrivateMessage.php
 
@@ -18686,87 +18586,12 @@ parameters:
 			path: src/Orm/Entity/PrivateMessage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$inbox_pm_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$new has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$recip_user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$replied has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$send_user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$text has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$deleted has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessageFolder.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessageFolder.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessageFolder.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrivateMessageFolder.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$sort has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessageFolder.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$special has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessageFolder.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessageFolder.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$finish_time has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$finish_time is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$healing_percentage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/RepairTask.php
 
@@ -18776,22 +18601,7 @@ parameters:
 			path: src/Orm/Entity/RepairTask.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$system_type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/RepairTask.php
 

@@ -25,21 +25,38 @@ class PrestigeLog implements PrestigeLogInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $amount = 0;
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $description = '';
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $date;
-
 
     public function getId(): int
     {
