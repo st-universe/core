@@ -26,16 +26,30 @@ class BuildingCost implements BuildingCostInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer") *
+     *
+     * @var int
+     */
     private $buildings_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer") *
+     *
+     * @var int
+     */
     private $commodity_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer") *
+     *
+     * @var int
+     */
     private $count = 0;
 
     /**

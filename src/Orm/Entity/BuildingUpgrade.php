@@ -30,22 +30,44 @@ class BuildingUpgrade implements BuildingUpgradeInterface
      * @Id
      * @Column(type="bigint")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $upgrade_from = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $upgrade_to = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $research_id = 0;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $description = '';
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $energy_cost = 0;
 
     /**

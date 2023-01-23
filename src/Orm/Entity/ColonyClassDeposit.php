@@ -22,19 +22,31 @@ class ColonyClassDeposit implements ColonyClassDepositInterface
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $colony_class_id;
 
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $commodity_id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $min_amount = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $max_amount = 0;
 
     /**

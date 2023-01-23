@@ -32,52 +32,114 @@ class Building implements BuildingInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $lager = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $eps = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $eps_cost = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $eps_proc = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $bev_pro = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $bev_use = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $integrity = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $research_id = 0;
 
-    /** @Column(type="boolean") * */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $view = false;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $buildtime = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $blimit = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $bclimit = 0;
 
-    /** @Column(type="boolean") * */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $is_activateable = false;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $bm_col = 0;
 
     /**

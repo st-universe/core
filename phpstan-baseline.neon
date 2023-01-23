@@ -17451,26 +17451,6 @@ parameters:
 			path: src/Orm/Entity/BasicTrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BlockedUser\\:\\:\\$email_hash has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BlockedUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BlockedUser\\:\\:\\$mobile_hash has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BlockedUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BlockedUser\\:\\:\\$time has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BlockedUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BlockedUser\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BlockedUser.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Building\\:\\:getFunctions\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/Orm/Entity/Building.php
@@ -17481,87 +17461,7 @@ parameters:
 			path: src/Orm/Entity/Building.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$bclimit has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$bev_pro has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$bev_use has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$blimit has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$bm_col has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$buildtime has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$eps has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$eps_cost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$eps_proc has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$integrity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$is_activateable has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$lager has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$research_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$view has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Building.php
 
@@ -17571,27 +17471,7 @@ parameters:
 			path: src/Orm/Entity/BuildingCommodity.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$buildings_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCommodity.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCommodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCommodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$count has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCommodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingCommodity.php
 
@@ -17606,27 +17486,7 @@ parameters:
 			path: src/Orm/Entity/BuildingCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$buildings_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$count has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingCost.php
 
@@ -17641,27 +17501,7 @@ parameters:
 			path: src/Orm/Entity/BuildingFieldAlternative.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$alternate_buildings_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFieldAlternative.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$building is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFieldAlternative.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$buildings_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFieldAlternative.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$fieldtype has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFieldAlternative.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingFieldAlternative.php
 
@@ -17671,27 +17511,7 @@ parameters:
 			path: src/Orm/Entity/BuildingFieldAlternative.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$research_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFieldAlternative.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$building is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$buildings_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$function has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingFunction.php
 
@@ -17701,12 +17521,7 @@ parameters:
 			path: src/Orm/Entity/BuildingFunction.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$energy_cost has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:getId\\(\\) should return string but returns int\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingUpgrade.php
 
@@ -17716,17 +17531,7 @@ parameters:
 			path: src/Orm/Entity/BuildingUpgrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$research_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingUpgrade.php
 
@@ -17746,37 +17551,7 @@ parameters:
 			path: src/Orm/Entity/BuildingUpgrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgrade_from has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgrade_to has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$amount has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgradeCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$buildings_upgrades_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgradeCost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgradeCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgradeCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingUpgradeCost.php
 
@@ -17791,12 +17566,12 @@ parameters:
 			path: src/Orm/Entity/BuildingUpgradeCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$buildplan is never written, only read\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:getDefaultTorpedoTypeId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanHangar.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$buildplan_id has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$buildplan is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanHangar.php
 
@@ -17806,34 +17581,9 @@ parameters:
 			path: src/Orm/Entity/BuildplanHangar.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$default_torpedo_type_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$rump_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$start_energy_costs has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$buildplan_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanModule.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$buildplan_id is never read, only written\\.$#"
@@ -17841,32 +17591,7 @@ parameters:
 			path: src/Orm/Entity/BuildplanModule.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanModule.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$module_count has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$module_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$module_special has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$module_type has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanModule.php
 
@@ -17916,97 +17641,12 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$bev_free has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$bev_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$bev_work has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$colonies_classes_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$database_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$eps has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$immigrationstate has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$mask has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$max_eps has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$max_storage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$planet_name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$populationlimit has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$production \\(array\\<int, Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\>\\|null\\) does not accept array\\<int\\|string, Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$rotation_factor has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$shield_frequency has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$shields has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
@@ -18026,32 +17666,12 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$surface_width has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$torpedo_type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$torpedo_type is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
@@ -18076,52 +17696,12 @@ parameters:
 			path: src/Orm/Entity/ColonyClass.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$allow_start has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$bev_growth_rate has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$colonizeable_fields has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$databaseEntry is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClass.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$database_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$special has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$type has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClass.php
 
@@ -18136,11 +17716,6 @@ parameters:
 			path: src/Orm/Entity/ColonyClassDeposit.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$colony_class_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassDeposit.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$colony_class_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassDeposit.php
@@ -18151,22 +17726,7 @@ parameters:
 			path: src/Orm/Entity/ColonyClassDeposit.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassDeposit.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$commodity_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassDeposit.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$max_amount has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassDeposit.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$min_amount has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassDeposit.php
 
@@ -18176,17 +17736,7 @@ parameters:
 			path: src/Orm/Entity/ColonyClassInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassResearch.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassResearch.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$planet_type_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassResearch.php
 
@@ -18196,24 +17746,9 @@ parameters:
 			path: src/Orm/Entity/ColonyClassResearch.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$research_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassResearch.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$research_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassResearch.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$amount_left has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyDepositMining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$colony_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyDepositMining.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$colony_id is never read, only written\\.$#"
@@ -18221,17 +17756,7 @@ parameters:
 			path: src/Orm/Entity/ColonyDepositMining.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyDepositMining.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$commodity_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyDepositMining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyDepositMining.php
 

@@ -22,22 +22,32 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $user_id;
 
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $colony_id;
 
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $commodity_id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $amount_left;
 
     /**

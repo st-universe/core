@@ -28,13 +28,23 @@ class ColonyClassResearch implements ColonyClassResearchInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $research_id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $planet_type_id;
 
     /**

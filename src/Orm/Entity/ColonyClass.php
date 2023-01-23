@@ -31,28 +31,58 @@ class ColonyClass implements ColonyClassInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $type;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $database_id;
 
-    /** @Column(type="json") */
+    /**
+     * @Column(type="json")
+     *
+     * @var array<int>
+     */
     private $colonizeable_fields = [];
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint") *
+     *
+     * @var int
+     */
     private $bev_growth_rate = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint") *
+     *
+     * @var int
+     */
     private $special = 0;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $allow_start = false;
 
     /**

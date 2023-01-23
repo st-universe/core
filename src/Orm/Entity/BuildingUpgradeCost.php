@@ -27,16 +27,30 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="bigint") * */
+    /**
+     * @Column(type="bigint")
+     *
+     * @var int
+     */
     private $buildings_upgrades_id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $commodity_id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $amount;
 
     /**

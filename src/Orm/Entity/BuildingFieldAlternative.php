@@ -26,19 +26,37 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $fieldtype = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $buildings_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $alternate_buildings_id = 0;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $research_id;
 
     /**

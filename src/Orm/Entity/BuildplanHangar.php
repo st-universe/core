@@ -25,19 +25,37 @@ class BuildplanHangar implements BuildplanHangarInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $rump_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $buildplan_id = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $default_torpedo_type_id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $start_energy_costs;
 
     /**

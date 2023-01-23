@@ -43,67 +43,149 @@ class Colony implements ColonyInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $colonies_classes_id = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var null|int
+     */
     private $starsystem_map_id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="string", length=100) */
+    /**
+     * @Column(type="string", length=100)
+     *
+     * @var string
+     */
     private $planet_name = '';
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $bev_work = 0;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $bev_free = 0;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $bev_max = 0;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $eps = 0;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $max_eps = 0;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $max_storage = 0;
 
-    /** @Column(type="text", nullable=true) */
+    /**
+     * @Column(type="text", nullable=true)
+     *
+     * @var null|string
+     */
     private $mask;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $database_id;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $populationlimit = 0;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $immigrationstate = true;
 
-    /** @Column(type="integer", length=6, nullable=true) */
+    /**
+     * @Column(type="integer", length=6, nullable=true)
+     *
+     * @var null|int
+     */
     private $shields = 0;
 
-    /** @Column(type="integer", length=6, nullable=true) */
+    /**
+     * @Column(type="integer", length=6, nullable=true)
+     *
+     * @var int|null
+     */
     private $shield_frequency = 0;
 
-    /** @Column(type="integer", length=3, nullable=true) */
+    /**
+     * @Column(type="integer", length=3, nullable=true)
+     *
+     * @var null|int
+     */
     private $torpedo_type;
 
-    /** @Column(type="integer", length=3) */
+    /**
+     * @Column(type="integer", length=3)
+     *
+     * @var int
+     */
     private $rotation_factor = 1;
 
-    /** @Column(type="integer", length=2, nullable=true) */
+    /**
+     * @Column(type="integer", length=2, nullable=true)
+     *
+     * @var null|int
+     */
     private $surface_width = 1;
 
     /**

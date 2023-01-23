@@ -25,22 +25,44 @@ class BuildplanModule implements BuildplanModuleInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $buildplan_id = 0;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $module_type = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $module_id = 0;
 
-    /** @Column(type="smallint", nullable=true) * */
+    /**
+     * @Column(type="smallint", nullable=true)
+     *
+     * @var null|int
+     */
     private $module_special;
 
-    /** @Column(type="smallint") * */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $module_count = 1;
 
     /**
