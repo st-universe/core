@@ -17771,27 +17771,7 @@ parameters:
 			path: src/Orm/Entity/ColonyDepositMining.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$building_function_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$buildplan_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$buildplan_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$buildtime has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$colony_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyShipQueue.php
 
@@ -17801,52 +17781,12 @@ parameters:
 			path: src/Orm/Entity/ColonyShipQueue.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$finish_date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyShipQueue.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$rump_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$stop_date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$colony_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipRepair.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$colony_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$field_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyShipRepair.php
 
@@ -17856,34 +17796,9 @@ parameters:
 			path: src/Orm/Entity/ColonyShipRepair.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$ship_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipRepair.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$ship_id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$colonies_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyTerraforming.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$field_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyTerraforming.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$finished has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyTerraforming.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyTerraforming.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$id is never written, only read\\.$#"
@@ -17891,47 +17806,7 @@ parameters:
 			path: src/Orm/Entity/ColonyTerraforming.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$terraforming_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyTerraforming.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$bound has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Commodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Commodity.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Commodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Commodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$npc_commodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Commodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$sort has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Commodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Commodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$view has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Commodity.php
 
@@ -17941,37 +17816,12 @@ parameters:
 			path: src/Orm/Entity/ConstructionProgress.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgress.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ConstructionProgress.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$remaining_ticks has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgress.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$ship_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgress.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgressModule.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgressModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$module_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ConstructionProgressModule.php
 
@@ -17981,29 +17831,9 @@ parameters:
 			path: src/Orm/Entity/ConstructionProgressModule.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$progress_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgressModule.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$progress_id is never read, only written\\.$#"
 			count: 1
 			path: src/Orm/Entity/ConstructionProgressModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$comment has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$id is never written, only read\\.$#"
@@ -18011,87 +17841,12 @@ parameters:
 			path: src/Orm/Entity/Contact.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$mode has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$recipient has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$gender has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Crew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$race_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$chance has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewRace.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$define has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewRace.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewRace.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$faction_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewRace.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewRace.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewRace.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$maleratio has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/CrewRace.php
 

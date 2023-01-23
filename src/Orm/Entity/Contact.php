@@ -28,22 +28,44 @@ class Contact implements ContactInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $recipient = 0;
 
-    /** @Column(type="smallint") */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $mode = 0;
 
-    /** @Column(type="string", length=50) */
+    /**
+     * @Column(type="string", length=50)
+     *
+     * @var string
+     */
     private $comment = '';
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $date = 0;
 
     /**
