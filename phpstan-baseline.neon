@@ -18606,12 +18606,22 @@ parameters:
 			path: src/Orm/Entity/RepairTask.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award is never written, only read\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getUpperAsteroidLimit\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award_id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getUpperMoonLimit\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Research.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getUpperPlanetLimit\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Research.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
 
@@ -18626,37 +18636,7 @@ parameters:
 			path: src/Orm/Entity/Research.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$database_entries has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$needed_award has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
 
@@ -18666,17 +18646,7 @@ parameters:
 			path: src/Orm/Entity/Research.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$points has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$rewardBuildplan is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$reward_buildplan_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
 
@@ -18686,27 +18656,7 @@ parameters:
 			path: src/Orm/Entity/Research.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$rumps_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$sort has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$upper_limit_colony_amount has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$upper_limit_colony_amount is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$upper_limit_colony_type has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
 
@@ -18716,22 +18666,7 @@ parameters:
 			path: src/Orm/Entity/Research.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$depends_on has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$mode has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ResearchDependency.php
 
@@ -18746,54 +18681,9 @@ parameters:
 			path: src/Orm/Entity/ResearchDependency.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$aktiv has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Researched.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$finished has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Researched.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Researched.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Researched.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$research_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Researched.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Researched.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$end_date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$id is never written, only read\\.$#"
@@ -18801,47 +18691,12 @@ parameters:
 			path: src/Orm/Entity/RpgPlot.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$start_date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$title has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlotMember.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/RpgPlotMember.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$plot_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlotMember.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlotMember.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/SessionString.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:getDate\\(\\) should return DateTimeInterface but returns DateTimeInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/SessionString.php
 
@@ -18851,17 +18706,7 @@ parameters:
 			path: src/Orm/Entity/SessionString.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$sess_string has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/SessionString.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/SessionString.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/SessionString.php
 
@@ -18916,7 +18761,17 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getLayerId\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getSpacecraftType\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -18931,82 +18786,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$alvl has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$astro_start_turn has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$base_damage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$can_be_disabled has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$cx has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$cy has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$database_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$direction has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$disabled has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dock has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dock is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$evade_chance has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$fleets_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$former_rumps_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$hit_chance has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$holding_web_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -19016,22 +18796,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$huelle has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$influence_area_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -19041,52 +18806,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$is_destroyed has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$is_fleet_leader has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$layer_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$lss_mode has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$map_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$map_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$max_huelle has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$max_schilde has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$plans_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -19096,47 +18816,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$reactor_output has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$rumps_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$schilde has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$sensor_range has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$shield_regeneration_timer has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$starsystem_map_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$starsystem_map_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$state has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractored_ship_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -19146,62 +18826,12 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$warpcore has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:getModulesByType\\(\\) has parameter \\$type with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$buildtime has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$rump_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$signature has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
@@ -19216,7 +18846,7 @@ parameters:
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$colony_id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:getShipId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
@@ -19226,22 +18856,7 @@ parameters:
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$crew_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$repair_task_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
@@ -19251,27 +18866,7 @@ parameters:
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$ship_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$slot has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$tradepost_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$tradepost_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 

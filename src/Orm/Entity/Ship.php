@@ -54,118 +54,268 @@ class Ship implements ShipInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $rumps_id = 0;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $plans_id;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $fleets_id;
 
-    /** @Column(type="integer", length=5, nullable=true) */
+    /**
+     * @Column(type="integer", length=5, nullable=true)
+     *
+     * @var int|null
+     */
     private $layer_id = MapEnum::LAYER_ID_CRAGGANMORE;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $cx = 0;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $cy = 0;
 
-    /** @Column(type="smallint", length=1) */
+    /**
+     * @Column(type="smallint", length=1)
+     *
+     * @var int
+     */
     private $direction = 0;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="smallint", length=1) */
+    /**
+     * @Column(type="smallint", length=1)
+     *
+     * @var int
+     */
     private $alvl = 0;
 
-    /** @Column(type="smallint", length=1) */
+    /**
+     * @Column(type="smallint", length=1)
+     *
+     * @var int
+     */
     private $lss_mode = ShipLSSModeEnum::LSS_NORMAL;
 
-    /** @Column(type="integer", length=5) */
+    /**
+     * @Column(type="integer", length=5)
+     *
+     * @var int
+     */
     private $warpcore = 0;
 
-    /** @Column(type="integer", length=6) */
+    /**
+     * @Column(type="integer", length=6)
+     *
+     * @var int
+     */
     private $huelle = 0;
 
-    /** @Column(type="integer", length=6) */
+    /**
+     * @Column(type="integer", length=6)
+     *
+     * @var int
+     */
     private $max_huelle = 0;
 
-    /** @Column(type="integer", length=6) */
+    /**
+     * @Column(type="integer", length=6)
+     *
+     * @var int
+     */
     private $schilde = 0;
 
-    /** @Column(type="integer", length=6) */
+    /**
+     * @Column(type="integer", length=6)
+     *
+     * @var int
+     */
     private $max_schilde = 0;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $tractored_ship_id;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $holding_web_id;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $dock;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $former_rumps_id = 0;
 
-    /** @Column(type="smallint", length=1, nullable=true) */
+    /**
+     * @Column(type="smallint", length=1, nullable=true)
+     *
+     * @var int|null
+     */
     private $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $database_id = 0;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $is_destroyed = false;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $disabled = false;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $can_be_disabled = false;
 
-    /** @Column(type="smallint", length=3) */
+    /**
+     * @Column(type="smallint", length=3)
+     *
+     * @var int
+     */
     private $hit_chance = 0;
 
-    /** @Column(type="smallint", length=3) */
+    /**
+     * @Column(type="smallint", length=3)
+     *
+     * @var int
+     */
     private $evade_chance = 0;
 
-    /** @Column(type="smallint", length=4) */
+    /**
+     * @Column(type="smallint", length=4)
+     *
+     * @var int
+     */
     private $reactor_output = 0;
 
-    /** @Column(type="smallint", length=4) */
+    /**
+     * @Column(type="smallint", length=4)
+     *
+     * @var int
+     */
     private $base_damage = 0;
 
-    /** @Column(type="smallint", length=3) */
+    /**
+     * @Column(type="smallint", length=3)
+     *
+     * @var int
+     */
     private $sensor_range = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $shield_regeneration_timer = 0;
 
-    /** @Column(type="smallint", length=3) */
+    /**
+     * @Column(type="smallint", length=3)
+     *
+     * @var int
+     */
     private $state = ShipStateEnum::SHIP_STATE_NONE;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $astro_start_turn;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $is_fleet_leader = false;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var int|null
+     */
     private $map_id;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var int|null
+     */
     private $starsystem_map_id;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     * @var int|null
+     */
     private $influence_area_id;
 
     /**

@@ -29,16 +29,30 @@ class SessionString implements SessionStringInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $sess_string = '';
 
-    /** @Column(type="datetime", nullable=true) * */
+    /**
+     * @Column(type="datetime", nullable=true)
+     *
+     * @var DateTimeInterface|null
+     */
     private $date;
 
     /**
