@@ -34,115 +34,261 @@ class ShipRump implements ShipRumpInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @column(type="integer") * */
+    /**
+     * @column(type="integer")
+     *
+     * @var int
+     */
     private $category_id;
 
-    /** @column(type="integer", nullable=true) * */
+    /**
+     * @column(type="integer", nullable=true)
+     *
+     * @var int
+     */
     private $role_id = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $evade_chance = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $hit_chance = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $module_level = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $base_crew = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $base_eps = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $base_reactor = 0;
 
-    /** @column(type="integer") * */
+    /**
+     * @column(type="integer")
+     *
+     * @var int
+     */
     private $base_hull = 0;
 
-    /** @column(type="integer") * */
+    /**
+     * @column(type="integer")
+     *
+     * @var int
+     */
     private $base_shield = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $base_damage = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $base_sensor_range = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $base_torpedo_storage = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $phaser_volleys = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $phaser_hull_damage_factor = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $phaser_shield_damage_factor = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $torpedo_level = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $torpedo_volleys = 0;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $is_buildable;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $is_npc;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $eps_cost = 0;
 
-    /** @column(type="integer") * */
+    /**
+     * @column(type="integer")
+     *
+     * @var int
+     */
     private $storage = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $slots = 0;
 
-    /** @column(type="integer") * */
+    /**
+     * @column(type="integer")
+     *
+     * @var int
+     */
     private $buildtime = 0;
 
-    /** @column(type="smallint", nullable=true) * */
+    /**
+     * @column(type="smallint", nullable=true)
+     *
+     * @var int|null
+     */
     private $needed_workbees;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $sort = 0;
 
-    /** @column(type="integer", nullable=true) * */
+    /**
+     * @column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $database_id = 0;
 
-    /** @column(type="integer", nullable=true) * */
+    /**
+     * @column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $commodity_id = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $flight_ecost = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $beam_factor = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $special_slots = 0;
 
-    /** @column(type="smallint") * */
+    /**
+     * @column(type="smallint")
+     *
+     * @var int
+     */
     private $shuttle_slots = 0;
 
-    /** @column(type="integer") * */
+    /**
+     * @column(type="integer")
+     *
+     * @var int
+     */
     private $tractor_mass = 1;
 
-    /** @column(type="integer") * */
+    /**
+     * @column(type="integer")
+     *
+     * @var int
+     */
     private $tractor_payload = 100;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $prestige;
 
     /**

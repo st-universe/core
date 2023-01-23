@@ -18,20 +18,30 @@ use Doctrine\ORM\Mapping\Table;
  *         @Index(name="rump_colonize_building_ship_rump_idx", columns={"rump_id"})
  *     }
  * )
- **/
+ */
 class ShipRumpColonizationBuilding implements ShipRumpColonizationBuildingInterface
 {
     /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $rump_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $building_id = 0;
 
     public function getId(): int

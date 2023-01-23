@@ -18911,122 +18911,7 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$base_crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$base_damage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$base_eps has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$base_hull has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$base_reactor has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$base_sensor_range has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$base_shield has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$base_torpedo_storage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$beam_factor has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$buildtime has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$category_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$database_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$eps_cost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$evade_chance has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$flight_ecost has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$hit_chance has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$is_buildable has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$is_npc has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$module_level has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$needed_workbees has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
 
@@ -19036,89 +18921,14 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$phaser_hull_damage_factor has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$phaser_shield_damage_factor has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$phaser_volleys has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$prestige has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$prestige is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$role_id has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$role_id \\(int\\) does not accept int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$shuttle_slots has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$slots has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$sort has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$special_slots has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$storage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$torpedo_level has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$torpedo_volleys has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$tractor_mass has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$tractor_payload has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpBuildingFunction\\:\\:\\$building_function has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpBuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpBuildingFunction\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpBuildingFunction.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpBuildingFunction\\:\\:\\$id is never written, only read\\.$#"
@@ -19126,17 +18936,7 @@ parameters:
 			path: src/Orm/Entity/ShipRumpBuildingFunction.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpBuildingFunction\\:\\:\\$rump_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpBuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:\\$database_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:\\$id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:getDatabaseId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCategory.php
 
@@ -19146,67 +18946,7 @@ parameters:
 			path: src/Orm/Entity/ShipRumpCategory.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:\\$points has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$job_1_crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$job_2_crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$job_3_crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$job_4_crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$job_5_crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$job_6_crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$job_7_crew has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$rump_category_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$rump_role_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
 
@@ -19216,22 +18956,7 @@ parameters:
 			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpColonizationBuilding\\:\\:\\$building_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpColonizationBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpColonizationBuilding\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpColonizationBuilding.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpColonizationBuilding\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpColonizationBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpColonizationBuilding\\:\\:\\$rump_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpColonizationBuilding.php
 
@@ -19241,27 +18966,7 @@ parameters:
 			path: src/Orm/Entity/ShipRumpCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$commodity_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$count has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$rump_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCost.php
 
@@ -19276,184 +18981,9 @@ parameters:
 			path: src/Orm/Entity/ShipRumpInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_1 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_1_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_1_min has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_2 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_2_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_2_min has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_3 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_3_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_3_min has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_4 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_4_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_4_min has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_5 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_5_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_5_min has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_6 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_6_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_6_min has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_7 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_7_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_7_min has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_8 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_8_max has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_level_8_min has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_mandatory_1 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_mandatory_2 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_mandatory_3 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_mandatory_4 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_mandatory_5 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_mandatory_6 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_mandatory_7 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$module_mandatory_8 has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$rump_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleSpecial\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleSpecial.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleSpecial\\:\\:\\$id is never written, only read\\.$#"
@@ -19461,34 +18991,9 @@ parameters:
 			path: src/Orm/Entity/ShipRumpModuleSpecial.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleSpecial\\:\\:\\$module_special_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleSpecial\\:\\:\\$rump_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpRole.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpRole.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpRole.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpSpecial.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$id is never written, only read\\.$#"
@@ -19496,27 +19001,7 @@ parameters:
 			path: src/Orm/Entity/ShipRumpSpecial.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$rumps_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$special has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpUser.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$rump_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpUser.php
 
@@ -19526,22 +19011,7 @@ parameters:
 			path: src/Orm/Entity/ShipRumpUser.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$user_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$cooldown has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$data has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$id has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:getModuleId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipSystem.php
 
@@ -19551,32 +19021,7 @@ parameters:
 			path: src/Orm/Entity/ShipSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$mode has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$module_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$ship_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$ship_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$status has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$system_type has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipSystem.php
 
