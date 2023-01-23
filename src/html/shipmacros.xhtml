@@ -1334,7 +1334,7 @@
         <span>Ziel ist zerstört</span>
       </tal:block>
     </div>
-    <div class="box" id="scanlogbook" style="width: 500px;">
+    <div class="box" id="scanlogbook" style="width: 500px; display: none;">
       <div class="box_title">Logbuch</div>
       <div class="box_body" tal:define="target TARGETWRAPPER/get">
         <tal:block tal:repeat="data target/getLogbook">
@@ -1434,7 +1434,7 @@
       </form>
     </div>
   </div>
-  <div class="box" id="logbook" style="width: 500px;">
+  <div class="box" id="logbook" style="width: 500px; display: none;">
     <div class="box_title">Logbuch</div>
     <div class="box_body">
       <form method="post" action="ship.php">
