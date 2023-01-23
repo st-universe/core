@@ -32,31 +32,65 @@ class Alliance implements AllianceInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $description = '';
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $homepage = '';
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $date = 0;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var null|int
+     */
     private $faction_id;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $accept_applications = false;
 
-    /** @Column(type="string", length=32) */
+    /**
+     * @Column(type="string", length=32)
+     *
+     * @var string
+     */
     private $avatar = '';
 
-    /** @Column(type="string", length=7) */
+    /**
+     * @Column(type="string", length=7)
+     *
+     * @var string
+     */
     private $rgb_code = '';
 
     /**

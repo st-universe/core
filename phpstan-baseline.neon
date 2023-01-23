@@ -10608,6 +10608,11 @@ parameters:
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
+			path: src/Module/Ship/Action/AddShipLog/AddShipLog.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
 			path: src/Module/Ship/Action/AstroMapping/PlanAstroMapping.php
 
 		-
@@ -17301,26 +17306,6 @@ parameters:
 			path: src/Module/Trade/View/ShowTransferMenu/ShowTransferMenueRequest.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$accept_applications has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$avatar has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction \\(Stu\\\\Orm\\\\Entity\\\\FactionInterface\\) does not accept Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Alliance.php
@@ -17331,22 +17316,7 @@ parameters:
 			path: src/Orm/Entity/Alliance.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$homepage has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Alliance.php
 
@@ -17357,16 +17327,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$jobs is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$rgb_code has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Alliance.php
 
@@ -21539,6 +21499,21 @@ parameters:
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:hasShipSystem\\(\\) has parameter \\$system with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipInterface.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipLog.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship is never read, only written\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipLog.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship_id is unused\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipLog.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:setSort\\(\\) has parameter \\$sort with no type specified\\.$#"
