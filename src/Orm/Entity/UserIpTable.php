@@ -31,25 +31,51 @@ class UserIpTable implements UserIpTableInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $ip;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $session;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $agent;
 
-    /** @Column(type="datetime", nullable=true) * */
+    /**
+     * @Column(type="datetime", nullable=true)
+     *
+     * @var DateTimeInterface|null
+     */
     private $startDate;
 
-    /** @Column(type="datetime", nullable=true) * */
+    /**
+     * @Column(type="datetime", nullable=true)
+     *
+     * @var DateTimeInterface|null
+     */
     private $endDate;
 
     /**

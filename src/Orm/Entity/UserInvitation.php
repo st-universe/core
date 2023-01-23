@@ -27,19 +27,37 @@ class UserInvitation implements UserInvitationInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $user_id = 0;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $invited_user_id;
 
-    /** @Column(type="datetime") */
+    /**
+     * @Column(type="datetime")
+     *
+     * @var DateTimeInterface
+     */
     private $date;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $token = '';
 
     public function getId(): int

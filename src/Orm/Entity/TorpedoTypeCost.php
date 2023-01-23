@@ -17,23 +17,37 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_torpedo_cost"
  * )
- **/
+ */
 class TorpedoTypeCost implements TorpedoTypeCostInterface
 {
     /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $torpedo_type_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $commodity_id = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $count = 0;
 
     /**

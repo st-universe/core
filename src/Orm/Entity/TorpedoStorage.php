@@ -25,13 +25,23 @@ class TorpedoStorage implements TorpedoStorageInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $ship_id;
 
-    /** @Column(type="integer", length=3) */
+    /**
+     * @Column(type="integer", length=3)
+     *
+     * @var int
+     */
     private $torpedo_type;
 
     /**

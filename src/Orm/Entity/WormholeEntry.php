@@ -25,25 +25,51 @@ class WormholeEntry implements WormholeEntryInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $map_id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $system_id;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $system_map_id;
 
-    /** @Column(type="smallint", length=1) */
+    /**
+     * @Column(type="smallint", length=1)
+     *
+     * @var int
+     */
     private $type = MapEnum::WORMHOLE_ENTRY_TYPE_BOTH;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int
+     */
     private $last_used;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int
+     */
     private $cooldown;
 
     /**

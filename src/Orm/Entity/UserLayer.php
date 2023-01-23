@@ -23,16 +23,24 @@ class UserLayer implements UserLayerInterface
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $user_id;
 
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $layer_id;
 
-    /** @Column(type="smallint") */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $map_type = MapEnum::MAPTYPE_INSERT;
 
     /**

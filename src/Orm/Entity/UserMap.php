@@ -22,28 +22,39 @@ class UserMap implements UserMapInterface
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $user_id = 0;
 
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $layer_id = 0;
 
     /**
      * @Id
      * @Column(type="integer")
+     *
+     * @var int
      */
     private $cx = 0;
 
     /**
      * @Id
      * @Column(type="integer")
+     *
      */
     private $cy = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer") *
+     *
+     * @var int
+     */
     private $map_id = 0;
 
     public function getId(): string

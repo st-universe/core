@@ -47,97 +47,219 @@ class User implements UserInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $username = '';
 
-    /** @Column(type="string", length=20) */
+    /**
+     * @Column(type="string", length=20)
+     *
+     * @var string
+     */
     private $login = '';
 
-    /** @Column(type="string", length=255) */
+    /**
+     * @Column(type="string", length=255)
+     *
+     * @var string
+     */
     private $pass = '';
 
-    /** @Column(type="string", length=6, nullable=true) */
+    /**
+     * @Column(type="string", length=6, nullable=true)
+     *
+     * @var string|null
+     */
     private $sms_code;
 
-    /** @Column(type="string", length=200) */
+    /**
+     * @Column(type="string", length=200)
+     *
+     * @var string
+     */
     private $email = '';
 
-    /** @Column(type="string", length=255, nullable=true) */
+    /**
+     * @Column(type="string", length=255, nullable=true)
+     *
+     * @var string|null
+     */
     private $mobile;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $allys_id;
 
-    /** @Column(type="integer", nullable=true) */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $race;
 
-    /** @Column(type="smallint") */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $state = UserEnum::USER_STATE_NEW;
 
-    /** @Column(type="string", length=200) */
+    /**
+     * @Column(type="string", length=200)
+     *
+     * @var string
+     */
     private $propic = '';
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $email_notification = true;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $lastaction = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $creation = 0;
 
-    /** @Column(type="integer") */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $kn_lez = 0;
 
-    /** @Column(type="smallint") */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $delmark = 0;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $vac_active = false;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $vac_request_date = 0;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $storage_notification = true;
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $description = '';
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $show_online_status = true;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $show_pm_read_receipt = true;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $save_login = true;
 
-    /** @Column(type="boolean") */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $fleet_fixed_default = false;
 
-    /** @Column(type="smallint") */
+    /**
+     * @Column(type="smallint")
+     *
+     * @var int
+     */
     private $tick = 1;
 
-    /** @Column(type="smallint", nullable=true) */
+    /**
+     * @Column(type="smallint", nullable=true)
+     *
+     * @var int|null
+     */
     private $maptype = MapEnum::MAPTYPE_INSERT;
 
-    /** @Column(type="text") */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $sessiondata = '';
 
-    /** @Column(type="string", length=255) */
+    /**
+     * @Column(type="string", length=255)
+     *
+     * @var string
+     */
     private $password_token = '';
 
-    /** @Column(type="string", length=7) */
+    /**
+     * @Column(type="string", length=7)
+     *
+     * @var string
+     */
     private $rgb_code = '';
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer") *
+     *
+     * @var int
+     */
     private $prestige = 0;
 
-    /** @Column(type="string", length=100, nullable=true) */
+    /**
+     * @Column(type="string", length=100, nullable=true)
+     *
+     * @var string|null
+     */
     private $start_page;
 
     /**
