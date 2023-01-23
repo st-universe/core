@@ -1229,7 +1229,7 @@
         </table>
       </div>
     </div>
-    <div id="scandetails" tal:define="targetShip TARGETWRAPPER/get">
+    <div id="scandetails" style="width: 500px;" tal:define="targetShip TARGETWRAPPER/get">
       <tal:block tal:condition="not:targetShip/isDestroyed">
         <table class="tcal" tal:condition="php:SHIP.isMatrixScannerHealthy() AND NOT SHIP.getCloakState()"
           tal:define="targetShipEps TARGETWRAPPER/getEpsSystemData">
