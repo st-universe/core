@@ -18,35 +18,65 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  * @Table(
  *     name="stu_factions"
  * )
- **/
+ */
 class Faction implements FactionInterface
 {
     /**
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
+     *
+     * @var int
      */
     private $id;
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $name = '';
 
-    /** @Column(type="text") * */
+    /**
+     * @Column(type="text")
+     *
+     * @var string
+     */
     private $description = '';
 
-    /** @Column(type="string") * */
+    /**
+     * @Column(type="string")
+     *
+     * @var string
+     */
     private $darker_color = '';
 
-    /** @Column(type="boolean") * */
+    /**
+     * @Column(type="boolean")
+     *
+     * @var bool
+     */
     private $chooseable = false;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $player_limit = 0;
 
-    /** @Column(type="integer") * */
+    /**
+     * @Column(type="integer")
+     *
+     * @var int
+     */
     private $start_building_id = 0;
 
-    /** @Column(type="integer", nullable=true) * */
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
     private $start_research_id;
 
     //TODO survivor_rate to escape pods

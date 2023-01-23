@@ -17851,22 +17851,7 @@ parameters:
 			path: src/Orm/Entity/CrewRace.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$colony_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewTraining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewTraining.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewTraining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/CrewTraining.php
 
@@ -17876,22 +17861,7 @@ parameters:
 			path: src/Orm/Entity/DatabaseCategory.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseCategory.php
 
@@ -17901,52 +17871,12 @@ parameters:
 			path: src/Orm/Entity/DatabaseCategory.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$points has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$prestige has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$prestige is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseCategory.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$sort has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$category_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$category_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$data has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseEntry.php
 
@@ -17956,34 +17886,9 @@ parameters:
 			path: src/Orm/Entity/DatabaseEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$object_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$sort has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$type is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseType\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseType\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseType.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseType\\:\\:\\$id is never written, only read\\.$#"
@@ -17991,37 +17896,12 @@ parameters:
 			path: src/Orm/Entity/DatabaseType.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseType\\:\\:\\$macro has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$database_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$database_id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseUser.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$date has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseUser.php
 
@@ -18046,27 +17926,27 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getFaction\\(\\) should return Stu\\\\Orm\\\\Entity\\\\FactionInterface but returns int\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getHighestBid\\(\\) should return Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\|false\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$amount has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getShip\\(\\) should return bool but returns bool\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auction has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getgiveCommodityAmount\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auction_amount has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auction_user has no type specified\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getwantCommodityAmount\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
@@ -18081,32 +17961,17 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$buildplan_id has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$faction_id \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$end has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$give_commodity \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$faction_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$give_commodity has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$give_commodity_amonut has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$id has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$give_commodity_amonut \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
@@ -18116,62 +17981,22 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$ship has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$start has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$start is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$taken_time has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_commodity \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_commodity has no type specified\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_commodity_amount \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_commodity_amount has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_prestige has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DockingPrivilege.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DockingPrivilege.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$privilege_mode has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DockingPrivilege.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$privilege_type has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DockingPrivilege.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$ships_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/DockingPrivilege.php
 
@@ -18181,52 +18006,7 @@ parameters:
 			path: src/Orm/Entity/DockingPrivilege.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$target has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/DockingPrivilege.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$chooseable has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$darker_color has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$description has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$name has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$player_limit has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_building_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_research_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Faction.php
 
@@ -18251,22 +18031,12 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$blocked_colony_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$blocked_colony_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$defendedColony has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$defended_colony_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
@@ -18281,27 +18051,7 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$hiddenStyle has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$is_fixed has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$name has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
@@ -18311,27 +18061,12 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$ships_id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$ships_id is never read, only written\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$sort has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$user_id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
