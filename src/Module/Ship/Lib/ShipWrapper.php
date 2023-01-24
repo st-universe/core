@@ -291,11 +291,12 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function getRepairDuration(): int
     {
-        $ticks = (int) ceil(($this->get()->getMaxHuell() - $this->get()->getHull()) / $this->get()->getRepairRate());
-        $ticks = max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
+        $ship = $this->get();
+
+        $ticks = $this->getRepairTicks($ship);
 
         //check if repair station is active
-        $colonyRepair = $this->colonyShipRepairRepository->getByShip($this->get()->getId());
+        $colonyRepair = $this->colonyShipRepairRepository->getByShip($ship->getId());
         if ($colonyRepair !== null) {
             $isRepairStationBonus = $colonyRepair->getColony()->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
             if ($isRepairStationBonus) {
@@ -304,6 +305,29 @@ final class ShipWrapper implements ShipWrapperInterface
         }
 
         return $ticks;
+    }
+
+    public function getRepairDurationPreview(): int
+    {
+        $ship = $this->get();
+
+        $ticks = $this->getRepairTicks($ship);
+
+        $colony = $ship->isOverColony();
+        if ($colony !== null) {
+            $isRepairStationBonus = $colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            if ($isRepairStationBonus) {
+                $ticks = (int)ceil($ticks / 2);
+            }
+        }
+
+        return $ticks;
+    }
+
+    private function getRepairTicks(ShipInterface $ship): int
+    {
+        $ticks = (int) ceil(($ship->getMaxHuell() - $ship->getHull()) / $this->get()->getRepairRate());
+        return max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
     }
 
     public function getRepairCosts(): array

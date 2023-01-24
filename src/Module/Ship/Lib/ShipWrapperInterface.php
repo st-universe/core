@@ -48,6 +48,8 @@ interface ShipWrapperInterface
 
     public function getRepairDuration(): int;
 
+    public function getRepairDurationPreview(): int;
+
     public function getRepairCosts(): array;
 
     public function getPossibleTorpedoTypes(): array;

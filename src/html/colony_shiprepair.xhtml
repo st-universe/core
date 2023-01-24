@@ -22,7 +22,7 @@
 							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 						</td>
 						<td tal:content="structure bbcode:ship/getName">NAME</td>
-						<td tal:content="structure bbcode:wrapper/getRepairDuration">DURATION</td>
+						<td tal:content="structure bbcode:wrapper/getRepairDurationPreview">DURATION</td>
 						<td>
 							<table class="tcal">
 								<tr tal:repeat="cost wrapper/getRepairCosts">

@@ -238,6 +238,8 @@ interface ShipInterface
 
     public function isTractored(): bool;
 
+    public function isOverColony(): ?ColonyInterface;
+
     public function isOverSystem(): ?StarSystemInterface;
 
     public function isOverWormhole(): bool;

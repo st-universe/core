@@ -1221,6 +1221,11 @@ class Ship implements ShipInterface
         return $this->getTractoringShip() !== null;
     }
 
+    public function isOverColony(): ?ColonyInterface
+    {
+        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getColony() : null;
+    }
+
     public function isOverSystem(): ?StarSystemInterface
     {
         if ($this->getSystem() !== null) {

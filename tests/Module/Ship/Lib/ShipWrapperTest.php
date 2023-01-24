@@ -18,6 +18,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -392,5 +393,70 @@ class ShipWrapperTest extends StuTestCase
         $duration = $this->shipWrapper->getRepairDuration();
 
         $this->assertEquals(1, $duration);
+    }
+
+    public function testGetRepairDurationPreviewWithDamagedHullAndNotOverColony(): void
+    {
+        $this->ship->shouldReceive('getMaxHuell')
+            ->withNoArgs()->once()->andReturn(100);
+        $this->ship->shouldReceive('getHull')
+            ->withNoArgs()->once()->andReturn(60);
+        $this->ship->shouldReceive('getRepairRate')
+            ->withNoArgs()->once()->andReturn(10);
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()->once()->andReturn(new ArrayCollection());
+
+        $this->ship->shouldReceive('isOverColony')
+            ->withNoArgs()->once()->andReturn(null);
+
+        $duration = $this->shipWrapper->getRepairDurationPreview();
+
+        $this->assertEquals(4, $duration);
+    }
+
+    public function testGetRepairDurationPreviewWithDamagedHullAndOverColonyWithInactiveRepairStation(): void
+    {
+        $this->ship->shouldReceive('getMaxHuell')
+            ->withNoArgs()->once()->andReturn(100);
+        $this->ship->shouldReceive('getHull')
+            ->withNoArgs()->once()->andReturn(60);
+        $this->ship->shouldReceive('getRepairRate')
+            ->withNoArgs()->once()->andReturn(10);
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()->once()->andReturn(new ArrayCollection());
+
+        $colony = $this->mock(ColonyInterface::class);
+        $colony->shouldReceive('hasActiveBuildingWithFunction')
+            ->with(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('isOverColony')
+            ->withNoArgs()->once()->andReturn($colony);
+
+        $duration = $this->shipWrapper->getRepairDurationPreview();
+
+        $this->assertEquals(4, $duration);
+    }
+
+    public function testGetRepairDurationPreviewWithDamagedHullAndOverColonyWithActiveRepairStation(): void
+    {
+        $this->ship->shouldReceive('getMaxHuell')
+            ->withNoArgs()->once()->andReturn(100);
+        $this->ship->shouldReceive('getHull')
+            ->withNoArgs()->once()->andReturn(50);
+        $this->ship->shouldReceive('getRepairRate')
+            ->withNoArgs()->once()->andReturn(10);
+        $this->ship->shouldReceive('getSystems')
+            ->withNoArgs()->once()->andReturn(new ArrayCollection());
+
+        $colony = $this->mock(ColonyInterface::class);
+        $colony->shouldReceive('hasActiveBuildingWithFunction')
+            ->with(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)->once()
+            ->andReturn(true);
+        $this->ship->shouldReceive('isOverColony')
+            ->withNoArgs()->once()->andReturn($colony);
+
+        $duration = $this->shipWrapper->getRepairDurationPreview();
+
+        $this->assertEquals(3, $duration);
     }
 }
