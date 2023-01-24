@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Stu\Component\Game\GameEnum;
+use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
+/**
+ * Updates the owner of a rpg-plot if the owning user gets deleted
+ */
 final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
@@ -30,7 +33,7 @@ final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInterface
 
     public function delete(UserInterface $user): void
     {
-        $gameFallbackUser = $this->userRepository->find(GameEnum::USER_NOONE);
+        $gameFallbackUser = $this->userRepository->getFallbackUser();
         $userId = $user->getId();
 
         foreach ($this->rpgPlotRepository->getByFoundingUser($userId) as $obj) {
@@ -39,8 +42,12 @@ final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInterface
             if ($item !== null) {
                 $this->rpgPlotMemberRepository->delete($item);
             }
-            if ($obj->getMembers()->count() > 0) {
-                $member = $obj->getMembers()->current();
+
+            $members = $obj->getMembers();
+
+            if ($members->count() > 0) {
+                /** @var RpgPlotMemberInterface $member */
+                $member = $members->current();
                 $obj->setUser($member->getUser());
             } else {
                 $obj->setUser($gameFallbackUser);

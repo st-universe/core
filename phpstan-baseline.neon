@@ -6,46 +6,6 @@ parameters:
 			path: src/Component/Colony/Storage/ColonyStorageManager.php
 
 		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\PrivateMessageInterface\\:\\:setSender\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/PrivateMessageDeletionHandler.php
-
-		-
-			message: "#^Property Stu\\\\Component\\\\Player\\\\Deletion\\\\Handler\\\\PrivateMessageDeletionHandler\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/PrivateMessageDeletionHandler.php
-
-		-
-			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\RpgPlotMemberInterface\\|false\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/RpgPlotDeletionHandler.php
-
-		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/RpgPlotDeletionHandler.php
-
-		-
-			message: "#^Property Stu\\\\Component\\\\Player\\\\Deletion\\\\Handler\\\\ShipBuildplanDeletionHandler\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/ShipBuildplanDeletionHandler.php
-
-		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/TradepostDeletionHandler.php
-
-		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\StorageInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/TradepostDeletionHandler.php
-
-		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/TradepostDeletionHandler.php
-
-		-
 			message: "#^Property Stu\\\\Component\\\\Player\\\\Deletion\\\\PlayerDeletion\\:\\:\\$deletionHandler type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Component/Player/Deletion/PlayerDeletion.php
@@ -164,21 +124,6 @@ parameters:
 			message: "#^Variable \\$sysMapId on left side of \\?\\? is never defined\\.$#"
 			count: 1
 			path: src/Component/Ship/Nbs/NbsUtility.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ColonyShipRepairRepositoryInterface\\:\\:truncateByShipId\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/CancelRepair.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\RepairTaskRepositoryInterface\\:\\:truncateByShipId\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/CancelRepair.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\StationShipRepairRepositoryInterface\\:\\:truncateByShipId\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/CancelRepair.php
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
@@ -412,16 +357,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\ConstructionHubShipSystem\\:\\:checkActivationConditions\\(\\) has parameter \\$reason with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Type/ConstructionHubShipSystem.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepositoryInterface\\:\\:restartQueueByShipyard\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Type/ConstructionHubShipSystem.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepositoryInterface\\:\\:stopQueueByShipyard\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Type/ConstructionHubShipSystem.php
 
@@ -732,11 +667,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Station\\\\StationUtility\\:\\:createTradepostAndLicense\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Component/Station/StationUtility.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ConstructionProgressRepositoryInterface\\:\\:getByShip\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Component/Station/StationUtility.php
 
@@ -5371,11 +5301,6 @@ parameters:
 			path: src/Module/Colony/Action/ManageOrbitalShips/ManageOrbitalShips.php
 
 		-
-			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ManageOrbitalShips/ManageOrbitalShips.php
-
-		-
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:lowerStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 2
 			path: src/Module/Colony/Action/ManageOrbitalShips/ManageOrbitalShips.php
@@ -5522,11 +5447,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/RepairShip/RepairShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/RepairShip/RepairShip.php
 
@@ -11726,16 +11646,6 @@ parameters:
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
 
 		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ActivatorDeactivatorHelperInterface\\:\\:activate\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLoaderInterface\\:\\:getWrapperByIdAndUser\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
 			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveStarSystem\\\\LeaveStarSystem\\:\\:leaveStarSystem\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
@@ -12136,11 +12046,6 @@ parameters:
 			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
 
 		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ActivatorDeactivatorHelperInterface\\:\\:deactivate\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
-
-		-
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Ship\\\\Storage\\\\ShipStorageManagerInterface\\:\\:lowerStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
@@ -12281,11 +12186,6 @@ parameters:
 			path: src/Module/Ship/Action/TrackShip/TrackShip.php
 
 		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ActivatorDeactivatorHelperInterface\\:\\:activate\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TrackShip/TrackShip.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TrackShip/TrackShip.php
@@ -12372,16 +12272,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ActivatorDeactivatorHelperInterface\\:\\:deactivate\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Module\\\\Ship\\\\Lib\\\\DockPrivilegeUtilityInterface\\:\\:checkPrivilegeFor\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
 
@@ -13086,11 +12976,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipAttackCycle.php
 
 		-
-			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
 			message: "#^Parameter \\$attackingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:init\\(\\) has invalid type Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipAttackCycle.php
@@ -13271,17 +13156,12 @@ parameters:
 			path: src/Module/Ship/Lib/ShipLoader.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLoader\\:\\:acquireSemaphores\\(\\) should return array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> but returns array\\<int\\|string, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\>\\.$#"
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLoader\\:\\:acquireSemaphores\\(\\) should return array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> but returns array\\<int, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\>\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipLoader.php
 
 		-
 			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLoader\\:\\:acquireSemaphores\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLoader.php
-
-		-
-			message: "#^Parameter \\#2 \\$shipId of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLoader\\:\\:acquireSemaphoresWithoutMain\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipLoader.php
 
@@ -13598,11 +13478,6 @@ parameters:
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:updateDestination\\(\\) has parameter \\$posy with no type specified\\.$#"
 			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#"
-			count: 3
 			path: src/Module/Ship/Lib/ShipMover.php
 
 		-
@@ -14051,11 +13926,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipMover2.php
 
 		-
-			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover2.php
-
-		-
 			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipMover2.php
@@ -14307,16 +14177,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipRemover\\:\\:destroyTradepost\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipRemover.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipRemover\\:\\:resetTrackerDevices\\(\\) expects int, int\\|null given\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipRemover.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepositoryInterface\\:\\:truncateByShip\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipRemover.php
 
@@ -14841,16 +14701,6 @@ parameters:
 			path: src/Module/Ship/View/ShowShip/ShowShip.php
 
 		-
-			message: "#^Parameter \\#1 \\$stationId of method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepositoryInterface\\:\\:getByShipyard\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowShip/ShowShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$stationId of method Stu\\\\Orm\\\\Repository\\\\StationShipRepairRepositoryInterface\\:\\:getByStation\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowShip/ShowShip.php
-
-		-
 			message: "#^Parameter \\#1 \\$storage of class Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper constructor is passed by reference, so it expects variables only$#"
 			count: 1
 			path: src/Module/Ship/View/ShowShip/ShowShip.php
@@ -15301,11 +15151,6 @@ parameters:
 			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
 
 		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ShipyardShipQueueRepositoryInterface\\:\\:getAmountByShipyard\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
@@ -15347,16 +15192,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Station\\\\Action\\\\BuildStation\\\\BuildStation\\:\\:startTransformation\\(\\) has parameter \\$wantedSpecialModules with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildStation/BuildStation.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ConstructionProgressRepositoryInterface\\:\\:getByShip\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildStation/BuildStation.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ModuleRepositoryInterface\\:\\:getBySpecialTypeShipAndRump\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Station/Action/BuildStation/BuildStation.php
 
@@ -15516,16 +15351,6 @@ parameters:
 			path: src/Module/Station/Action/RepairShip/RepairShip.php
 
 		-
-			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/RepairShip/RepairShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$stationId of method Stu\\\\Orm\\\\Repository\\\\StationShipRepairRepositoryInterface\\:\\:getByStation\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/RepairShip/RepairShip.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Station/Action/RepairShip/RepairShip.php
@@ -15571,16 +15396,6 @@ parameters:
 			path: src/Module/Station/Action/Scrapping/Scrapping.php
 
 		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ConstructionProgressRepositoryInterface\\:\\:getByShip\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipId of method Stu\\\\Orm\\\\Repository\\\\ShipSystemRepositoryInterface\\:\\:truncateByShip\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/Scrapping/Scrapping.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Station\\\\Action\\\\Scrapping\\\\Scrapping\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Station/Action/Scrapping/Scrapping.php
@@ -15612,11 +15427,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/UndockStationShip/UndockStationShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$key of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int,Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\:\\:remove\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Module/Station/Action/UndockStationShip/UndockStationShip.php
 
@@ -19474,11 +19284,6 @@ parameters:
 			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/ColonyRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\ColonyShipRepairRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ColonyShipRepairInterface but returns Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\|null\\.$#"
-			count: 1
-			path: src/Orm/Repository/ColonyShipRepairRepository.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseEntryRepository\\:\\:getByCategoryIdAndObjectId\\(\\) should return Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface but returns Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"

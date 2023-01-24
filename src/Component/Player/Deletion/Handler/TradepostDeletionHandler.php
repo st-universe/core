@@ -45,6 +45,8 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
 
     public function delete(UserInterface $user): void
     {
+        $fallbackUser = $this->userRepository->getFallbackUser();
+
         foreach ($this->tradePostRepository->getByUser($user->getId()) as $tradepost) {
             $ship = $tradepost->getShip();
 
@@ -69,16 +71,14 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
                 $ship->getUser()->getId()
             );
 
-            $noOne = $this->userRepository->find(GameEnum::USER_NOONE);
-
             //transfer tradepost to noone user
-            $tradepost->setUser($noOne);
+            $tradepost->setUser($fallbackUser);
             $tradepost->setName('Verlassener Handelsposten');
             $tradepost->setDescription('Verlassener Handelsposten');
             $tradepost->setTradeNetwork(GameEnum::USER_NOONE);
             $this->tradePostRepository->save($tradepost);
 
-            $ship->setUser($noOne);
+            $ship->setUser($fallbackUser);
             $ship->setName('Verlassener Handelsposten');
             $ship->setDisabled(true);
             $this->shipRepository->save($ship);
@@ -86,7 +86,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             //change torpedo owner
             if ($ship->getTorpedoStorage() !== null) {
                 $storage = $ship->getTorpedoStorage()->getStorage();
-                $storage->setUser($noOne);
+                $storage->setUser($fallbackUser);
                 $this->storageRepository->save($storage);
             }
         }

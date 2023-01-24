@@ -17,26 +17,16 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 class RpgPlotDeletionHandlerTest extends MockeryTestCase
 {
+    /** @var MockInterface&RpgPlotMemberRepositoryInterface */
+    private MockInterface $rpgPlotMemberRepository;
 
-    /**
-     * @var null|MockInterface|RpgPlotMemberRepositoryInterface
-     */
-    private $rpgPlotMemberRepository;
+    /** @var MockInterface&RpgPlotRepositoryInterface */
+    private MockInterface $rpgPlotRepository;
 
-    /**
-     * @var null|MockInterface|RpgPlotRepositoryInterface
-     */
-    private $rpgPlotRepository;
+    /** @var MockInterface&UserRepositoryInterface */
+    private MockInterface $userRepository;
 
-    /**
-     * @var null|MockInterface|UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var null|RpgPlotDeletionHandler
-     */
-    private $handler;
+    private RpgPlotDeletionHandler $handler;
 
     public function setUp(): void
     {
@@ -105,8 +95,8 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
             ->with($rpgPlotMemberUser)
             ->once();
 
-        $this->userRepository->shouldReceive('find')
-            ->with(GameEnum::USER_NOONE)
+        $this->userRepository->shouldReceive('getFallbackUser')
+            ->withNoArgs()
             ->once()
             ->andReturn($gameFallbackUser);
 
@@ -152,8 +142,8 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
             ->once()
             ->andReturnNull();
 
-        $this->userRepository->shouldReceive('find')
-            ->with(GameEnum::USER_NOONE)
+        $this->userRepository->shouldReceive('getFallbackUser')
+            ->withNoArgs()
             ->once()
             ->andReturn($gameFallbackUser);
 
