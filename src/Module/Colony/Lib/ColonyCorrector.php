@@ -50,12 +50,6 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                     WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
                 ['colonyId' => $colonyId]
             );
-            $plannedHousing = (int) $database->fetchOne(
-                'SELECT SUM(a.bev_pro) FROM stu_buildings a LEFT
-                    JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
-                    WHERE scf.aktiv > 1 AND scf.colonies_id = :colonyId',
-                ['colonyId' => $colonyId]
-            );
             $storage = (int) $database->fetchOne(
                 'SELECT SUM(a.lager) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
@@ -69,14 +63,11 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 ['colonyId' => $colonyId]
             );
 
-            $max_free = max(0, $activeHousing + $plannedHousing - $worker);
-
             if (
                 $this->check($worker, $colony->getWorkers(), $colony, 'setWorkers', 'worker')
                 || $this->check($activeHousing, $colony->getMaxBev(), $colony, 'setMaxBev', 'housing')
                 || $this->check($storage, $colony->getMaxStorage(), $colony, 'setMaxStorage', 'storage')
                 || $this->check($eps, $colony->getMaxEps(), $colony, 'setMaxEps', 'eps')
-                || $this->checkWorkless($max_free, $colony)
             ) {
                 $this->colonyRepository->save($colony);
             }
@@ -95,26 +86,6 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 $description,
                 $colony->getId(),
                 $expected,
-                $actual
-            ));
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private function checkWorkless(int $maxFree,  ColonyInterface $colony): bool
-    {
-        $actual = $colony->getWorkless();
-
-        if ($maxFree < $actual) {
-            $colony->setWorkless(min($maxFree, $actual));
-
-            $this->loggerUtil->log(sprintf(
-                'maxFreeWorkless of colonyId %d: expected: %d, actual: %d',
-                $colony->getId(),
-                $maxFree,
                 $actual
             ));
 

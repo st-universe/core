@@ -70,7 +70,7 @@ final class BuildingManager implements BuildingManagerInterface
         $building = $field->getBuilding();
         $colony = $field->getColony();
 
-        $this->updateWorkerAndWorkless($building, $colony);
+        $this->updateWorkerAndMaxBev($building, $colony);
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
@@ -78,20 +78,13 @@ final class BuildingManager implements BuildingManagerInterface
         $this->colonyRepository->save($colony);
     }
 
-    private function updateWorkerAndWorkless(BuildingInterface $building, ColonyInterface $colony): void
+    private function updateWorkerAndMaxBev(BuildingInterface $building, ColonyInterface $colony): void
     {
         $workerAmount = $building->getWorkers();
-        $worklessAmount = $colony->getWorkless();
-        $colony->setWorkless($worklessAmount + $workerAmount);
+        $colony->setWorkless($colony->getWorkless() + $workerAmount);
         $colony->setWorkers($colony->getWorkers() - $workerAmount);
 
         $colony->setMaxBev($colony->getMaxBev() - $building->getHousing());
-
-        //reduce workless if exceeded
-        if ($colony->getPopulation() > $colony->getMaxBev() && $colony->getWorkless() > 0) {
-            $reductionAmount = min($colony->getWorkless(), $colony->getPopulation() - $colony->getMaxBev());
-            $colony->setWorkless($colony->getWorkless() - $reductionAmount);
-        }
     }
 
     public function remove(
