@@ -43,7 +43,7 @@ final class ShowSurface implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/colonysurface');
         $game->setTemplateVar(
             'COLONY_SURFACE',
-            $this->colonyLibFactory->createColonySurface($colony, request::getInt('bid', null) !== 0 ? request::getInt('bid', null) : null)
+            $this->colonyLibFactory->createColonySurface($colony, request::getInt('bid') !== 0 ? request::getInt('bid') : null)
         );
     }
 }

@@ -115,7 +115,7 @@ class EpsSystemData extends AbstractSystemData
         return $this->batteryCooldown < time();
     }
 
-    public function getEpsStatusBar()
+    public function getEpsStatusBar(): string
     {
         return $this->getTalStatusBar(
             _('Energie'),
@@ -126,7 +126,7 @@ class EpsSystemData extends AbstractSystemData
             ->render();
     }
 
-    public function getEpsStatusBarBig()
+    public function getEpsStatusBarBig(): string
     {
         return $this->getTalStatusBar(
             _('Energie'),

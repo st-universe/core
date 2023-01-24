@@ -13,7 +13,7 @@ class ShieldSystemData extends AbstractSystemData
         //nothing to do here
     }
 
-    public function getShieldStatusBar()
+    public function getShieldStatusBar(): string
     {
         return $this->getTalStatusBar(
             _('Schilde'),
@@ -24,7 +24,7 @@ class ShieldSystemData extends AbstractSystemData
             ->render();
     }
 
-    public function getShieldStatusBarBig()
+    public function getShieldStatusBarBig(): String
     {
         return $this->getTalStatusBar(
             _('Schilde'),
