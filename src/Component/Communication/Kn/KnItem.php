@@ -138,7 +138,7 @@ final class KnItem implements KnItemInterface
 
     public function getRating(): int
     {
-        return array_sum(
+        return (int) array_sum(
             array_filter(
                 $this->post->getRatings(),
                 function (int $value): bool {

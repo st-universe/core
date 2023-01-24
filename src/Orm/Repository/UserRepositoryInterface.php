@@ -90,4 +90,9 @@ interface UserRepositoryInterface extends ObjectRepository
      * @return UserInterface[]
      */
     public function getNonNpcList(): iterable;
+
+    /**
+     * Returns the game's default fallback user item
+     */
+    public function getFallbackUser(): UserInterface;
 }

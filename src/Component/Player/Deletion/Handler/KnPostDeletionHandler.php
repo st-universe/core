@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
+/**
+ * Updates the associated user data for kn post items on user deletion
+ */
 final class KnPostDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private KnPostRepositoryInterface $knPostRepository;
@@ -25,13 +27,13 @@ final class KnPostDeletionHandler implements PlayerDeletionHandlerInterface
 
     public function delete(UserInterface $user): void
     {
-        $gameFallbackUser = $this->userRepository->find(GameEnum::USER_NOONE);
+        $gameFallbackUser = $this->userRepository->getFallbackUser();
 
-        foreach ($this->knPostRepository->getByUser($user->getId()) as $obj) {
-            $obj->setUsername($user->getUserName());
-            $obj->setUser($gameFallbackUser);
+        foreach ($this->knPostRepository->getByUser($user->getId()) as $knPost) {
+            $knPost->setUsername($user->getUserName());
+            $knPost->setUser($gameFallbackUser);
 
-            $this->knPostRepository->save($obj);
+            $this->knPostRepository->save($knPost);
         }
     }
 }

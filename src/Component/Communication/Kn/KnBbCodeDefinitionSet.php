@@ -10,6 +10,7 @@ use JBBCode\CodeDefinitionSet;
 
 final class KnBbCodeDefinitionSet implements CodeDefinitionSet
 {
+    /** @var null|array<CodeDefinition> */
     private $definitions;
 
     /**

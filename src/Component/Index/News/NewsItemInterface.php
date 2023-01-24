@@ -10,5 +10,8 @@ interface NewsItemInterface
 
     public function getDate(): int;
 
+    /**
+     * @return array<string>
+     */
     public function getLinks(): array;
 }

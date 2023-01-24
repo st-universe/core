@@ -6,31 +6,6 @@ parameters:
 			path: src/Component/Colony/Storage/ColonyStorageManager.php
 
 		-
-			message: "#^Property Stu\\\\Component\\\\Communication\\\\Kn\\\\KnBbCodeDefinitionSet\\:\\:\\$definitions has no type specified\\.$#"
-			count: 1
-			path: src/Component/Communication/Kn/KnBbCodeDefinitionSet.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Communication\\\\Kn\\\\KnItem\\:\\:getRating\\(\\) should return int but returns float\\|int\\.$#"
-			count: 1
-			path: src/Component/Communication/Kn/KnItem.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Index\\\\News\\\\NewsItem\\:\\:getLinks\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Index/News/NewsItem.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Index\\\\News\\\\NewsItemInterface\\:\\:getLinks\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Index/News/NewsItemInterface.php
-
-		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/Handler/KnPostDeletionHandler.php
-
-		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\PrivateMessageInterface\\:\\:setSender\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Component/Player/Deletion/Handler/PrivateMessageDeletionHandler.php

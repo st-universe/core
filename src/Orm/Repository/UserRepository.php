@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -264,5 +265,16 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 User::class
             )
         )->getResult();
+    }
+
+    public function getFallbackUser(): UserInterface
+    {
+        /** @var UserInterface $user */
+        $user = $this->find(GameEnum::USER_NOONE);
+        /**
+         * @todo The fallback user is expected to exist. for now, update the type hint.
+         * Consider to throw a dedicated exception for this case
+         */
+        return $user;
     }
 }
