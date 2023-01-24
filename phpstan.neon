@@ -5,6 +5,9 @@ parameters:
   excludePaths:
     - src/OrmProxy
     - src/html
+  ignoreErrors:
+    - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) is never written, only read#'
+    - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) is never read, only written#'
 
 includes:
   - vendor/phpstan/phpstan/conf/bleedingEdge.neon

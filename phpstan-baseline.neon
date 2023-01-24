@@ -156,16 +156,6 @@ parameters:
 			path: src/Component/Ship/System/Data/HullSystemData.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\ShieldSystemData\\:\\:getShieldStatusBar\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/ShieldSystemData.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\ShieldSystemData\\:\\:getShieldStatusBarBig\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/ShieldSystemData.php
-
-		-
 			message: "#^Cannot call method get\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Data/TrackerSystemData.php
@@ -16906,62 +16896,7 @@ parameters:
 			path: src/Orm/Entity/Alliance.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$jobs is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Alliance.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoard.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$posts is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoard.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceBoardTopic.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$alliance_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceJob.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceJob.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:getPossibleTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceRelation.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceRelation.php
 
@@ -16969,11 +16904,6 @@ parameters:
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:\\:getPossibleTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceRelationInterface.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_1 is unused\\.$#"
@@ -17011,37 +16941,12 @@ parameters:
 			path: src/Orm/Entity/AuctionBid.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/AuctionBid.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Award\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Award.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:getUniqId\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$commodity_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$faction_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$user_id is never read, only written\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
 
@@ -17056,22 +16961,7 @@ parameters:
 			path: src/Orm/Entity/Building.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$building is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCommodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCommodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingCommodity.php
 
@@ -17081,37 +16971,7 @@ parameters:
 			path: src/Orm/Entity/BuildingCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$alternateBuilding is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFieldAlternative.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$building is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFieldAlternative.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFieldAlternative.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$building is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingFunction.php
 
@@ -17121,74 +16981,14 @@ parameters:
 			path: src/Orm/Entity/BuildingUpgrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$energy_cost is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeCosts is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeFromBuilding is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingUpgrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeToBuilding is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgrade.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgradeCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgradeCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$upgrade is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildingUpgradeCost.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:getDefaultTorpedoTypeId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$buildplan is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$defaultTorpedoType is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanHangar.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$buildplan_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/BuildplanModule.php
 
 		-
 			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
@@ -17236,11 +17036,6 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$production \\(array\\<int, Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\>\\|null\\) does not accept array\\<int\\|string, Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
@@ -17253,11 +17048,6 @@ parameters:
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$shiplist \\(array\\<int, array\\{name\\: string, ships\\: array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\}\\>\\|null\\) does not accept non\\-empty\\-array\\<int\\|string, mixed\\>\\.$#"
 			count: 2
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map is never written, only read\\.$#"
-			count: 1
 			path: src/Orm/Entity/Colony.php
 
 		-
@@ -17296,27 +17086,7 @@ parameters:
 			path: src/Orm/Entity/ColonyClass.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$type is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClass.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$colonyClass is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassDeposit.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$colony_class_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassDeposit.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$commodity is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassDeposit.php
 
@@ -17331,11 +17101,6 @@ parameters:
 			path: src/Orm/Entity/ColonyClassInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyClassResearch.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$planet_type_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassResearch.php
@@ -17346,64 +17111,9 @@ parameters:
 			path: src/Orm/Entity/ColonyClassResearch.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$colony_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyDepositMining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$commodity_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyDepositMining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$user_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyDepositMining.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyDepositMining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$buildplan_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$colony_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$colony_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$ship_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyTerraforming.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Commodity\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Commodity.php
 
 		-
 			message: "#^Access to an undefined property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$getId\\.$#"
@@ -17411,99 +17121,9 @@ parameters:
 			path: src/Orm/Entity/ConstructionProgress.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgress.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgressModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$module_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgressModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$progress_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ConstructionProgressModule.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Contact.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Crew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewRace.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/CrewTraining.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$prestige is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$category_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$type is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseType\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$database_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$user_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DatabaseUser.php
 
 		-
 			message: "#^Cannot call method getModules\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
@@ -17546,16 +17166,6 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auction_user is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$buildplan is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$faction_id \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
@@ -17571,16 +17181,6 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$start is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_commodity \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
@@ -17589,21 +17189,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_commodity_amount \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/DockingPrivilege.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$ships_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/DockingPrivilege.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Faction.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_research_id is unused\\.$#"
@@ -17646,17 +17231,7 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$shiplist has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$ships_id is never read, only written\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
@@ -17671,17 +17246,7 @@ parameters:
 			path: src/Orm/Entity/FleetInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/FlightSignature.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$map_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/FlightSignature.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$rump_id is never read, only written\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
 
@@ -17691,72 +17256,7 @@ parameters:
 			path: src/Orm/Entity/FlightSignature.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$user_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/FlightSignature.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameConfig\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameConfig.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:unsetParameter\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$action is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$action_ms is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$module is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$params is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$render_ms is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$time is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$turn_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$user_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$view is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$view_ms is never read, only written\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameRequest.php
 
@@ -17766,109 +17266,14 @@ parameters:
 			path: src/Orm/Entity/GameRequestInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurn\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameTurn.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurn\\:\\:\\$stats is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameTurn.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameTurnStats.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\:\\:\\$turn_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameTurnStats.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\History\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/History.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\IgnoreList\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/IgnoreList.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnComment.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$plot_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPostToPlotApplication.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$plot_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPostToPlotApplication.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$post_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/KnPostToPlotApplication.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Layer\\:\\:\\$height is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Layer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Layer\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Layer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Layer\\:\\:\\$is_hidden is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Layer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Layer\\:\\:\\$name is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Layer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Layer\\:\\:\\$width is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Layer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/LotteryTicket.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$is_winner is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/LotteryTicket.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$user_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/LotteryTicket.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Map\\:\\:getRegionId\\(\\) should return int but returns int\\|null\\.$#"
@@ -17881,79 +17286,14 @@ parameters:
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$administratedRegion is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$layer is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$layer_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapBorderType is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapFieldType is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapRegion is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$starSystem is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Map.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapBorderType\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapBorderType.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:getColonyClassId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$colonyClass is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$database_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegion.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegion.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegionSettlement\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/MapRegionSettlement.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getCostSorted\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -17976,16 +17316,6 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$research is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
@@ -17994,26 +17324,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$shipRumpRole is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleBuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$module is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleBuildingFunction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleCost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module is unused\\.$#"
@@ -18031,39 +17341,9 @@ parameters:
 			path: src/Orm/Entity/ModuleInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$colony_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleSpecial.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$module is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\News\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/News.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Note.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PartnerSite\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PartnerSite.php
 
 		-
 			message: "#^Cannot call method getBuildTime\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
@@ -18126,79 +17406,14 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$buildings_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraforming_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$category is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldType\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldType.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$building is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrestigeLog\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrestigeLog.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$deleted is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/PrivateMessageFolder.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$finish_time is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/RepairTask.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getUpperAsteroidLimit\\(\\) should return int but returns int\\|null\\.$#"
@@ -18216,92 +17431,12 @@ parameters:
 			path: src/Orm/Entity/Research.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$needed_award is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$rewardBuildplan is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$reward_buildplan_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$upper_limit_colony_amount is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$upper_limit_colony_type is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research_depends_on is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ResearchDependency.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Researched.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlot.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/RpgPlotMember.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:getDate\\(\\) should return DateTimeInterface but returns DateTimeInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/SessionString.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/SessionString.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user is never read, only written\\.$#"
 			count: 1
 			path: src/Orm/Entity/SessionString.php
 
@@ -18381,21 +17516,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dock is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$holding_web_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$influence_area_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
@@ -18416,17 +17536,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractored_ship_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:getModulesByType\\(\\) has parameter \\$type with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipBuildplan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
@@ -18447,11 +17557,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$colony_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
@@ -18486,16 +17591,6 @@ parameters:
 			path: src/Orm/Entity/ShipInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipLog.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipLog.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipLog.php
@@ -18506,64 +17601,14 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$needed_workbees is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$prestige is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRump.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$role_id \\(int\\) does not accept int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRump.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpBuildingFunction\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpBuildingFunction.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:getDatabaseId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategory.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$shiprumpRole is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpColonizationBuilding\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpColonizationBuilding.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpCost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump is unused\\.$#"
@@ -18576,31 +17621,6 @@ parameters:
 			path: src/Orm/Entity/ShipRumpInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevel\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleLevel.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleSpecial\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpModuleSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpRole.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpSpecial.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipRumpUser.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpUser.php
@@ -18611,62 +17631,7 @@ parameters:
 			path: src/Orm/Entity/ShipSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$ship_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$buildplan_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipyardShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipyardShipQueue.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$ship_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipyardShipQueue.php
-
-		-
 			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$base is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$database_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$is_wormhole is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$systemType is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
 
@@ -18681,27 +17646,7 @@ parameters:
 			path: src/Orm/Entity/StarSystemMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$colony is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$mapFieldType is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$starSystem is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystemMap.php
 
@@ -18716,37 +17661,12 @@ parameters:
 			path: src/Orm/Entity/StarSystemMapInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StarSystemType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StationShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$ship_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StationShipRepair.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$station_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/StationShipRepair.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$colony_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$id has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
@@ -18771,21 +17691,6 @@ parameters:
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Storage.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TachyonScan.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$map_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/TachyonScan.php
@@ -18794,41 +17699,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$starsystem_map_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/TachyonScan.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Terraforming\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Terraforming.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TerraformingCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TerraformingCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TerraformingCost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TerraformingCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TerraformingCost\\:\\:\\$terraforming is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TerraformingCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TholianWeb.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$ship_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/TholianWeb.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoStorage.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$ship_id is unused\\.$#"
@@ -18841,64 +17711,9 @@ parameters:
 			path: src/Orm/Entity/TorpedoStorage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoType.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$commodity is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoTypeCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoTypeCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$torpedoType is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TorpedoTypeCost.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeLicense.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$id has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeLicenseInfo.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeLicenseInfo.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$tradePost is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeLicenseInfo.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeOffer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$storage is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeOffer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradePost.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$licenseInfos \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\>\\) in empty\\(\\) is not falsy\\.$#"
@@ -18906,24 +17721,9 @@ parameters:
 			path: src/Orm/Entity/TradePost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeShoutbox\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeShoutbox.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:getTradePostId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeTransaction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeTransaction.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransfer\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/TradeTransfer.php
 
 		-
 			message: "#^Cannot call method isExplored\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\|null\\.$#"
@@ -18941,41 +17741,6 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$allys_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$maptype is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$race is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$userLock is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$award_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserAward.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserAward.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getFriends\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserInterface.php
@@ -18986,42 +17751,7 @@ parameters:
 			path: src/Orm/Entity/UserInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserInvitation\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserInvitation.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserIpTable\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserIpTable.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserIpTable\\:\\:\\$user_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserIpTable.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$layer_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserLayer.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$user_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserLayer.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserLock.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:\\$former_user_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserLock.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:\\$id is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserLock.php
 
@@ -19031,17 +17761,7 @@ parameters:
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cx is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cy has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cy is never read, only written\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
 
@@ -19051,72 +17771,12 @@ parameters:
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$map_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserProfileVisitor.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserTag.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$user_id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserTag.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Weapon\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/Weapon.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$cooldown is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/WormholeEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$id is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/WormholeEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/WormholeEntry.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/WormholeEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$starSystem is never written, only read\\.$#"
-			count: 1
-			path: src/Orm/Entity/WormholeEntry.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$systemMap is never written, only read\\.$#"
 			count: 1
 			path: src/Orm/Entity/WormholeEntry.php
 
