@@ -57,6 +57,7 @@
     "friendsofphp/php-cs-fixer": "^3.13",
     "mockery/mockery": "^1.1",
     "phpstan/phpstan": "^1.9",
+    "phpstan/phpstan-mockery": "^1.1",
     "phpunit/phpunit": "^9",
     "rector/rector": "^0.15.10",
     "st-universe/assets": "dev-master"
@@ -74,6 +75,7 @@
     "tests": "@php vendor/bin/phpunit tests",
     "stan": "phpstan",
     "rector:dry": "rector process -n",
+    "coverage": "phpunit --warm-coverage-cache tests && XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html build/coverage tests",
     "cs:check": "php-cs-fixer fix --dry-run --diff",
     "cs:fix": "php-cs-fixer fix"
   },

@@ -10,6 +10,9 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
+/**
+ * Manages actions relating to buildings on planets
+ */
 final class BuildingManager implements BuildingManagerInterface
 {
     private PlanetFieldRepositoryInterface $planetFieldRepository;
@@ -26,6 +29,11 @@ final class BuildingManager implements BuildingManagerInterface
 
     public function activate(PlanetFieldInterface $field): void
     {
+        $building = $field->getBuilding();
+
+        if ($building === null) {
+            return;
+        }
         if (!$field->isActivateable()) {
             return;
         }
@@ -36,7 +44,6 @@ final class BuildingManager implements BuildingManagerInterface
             return;
         }
 
-        $building = $field->getBuilding();
         $colony = $field->getColony();
 
         $workerAmount = $building->getWorkers();
@@ -60,6 +67,12 @@ final class BuildingManager implements BuildingManagerInterface
 
     public function deactivate(PlanetFieldInterface $field): void
     {
+        $building = $field->getBuilding();
+
+        if ($building === null) {
+            return;
+        }
+
         if (!$field->isActivateable()) {
             return;
         }
@@ -67,7 +80,6 @@ final class BuildingManager implements BuildingManagerInterface
             return;
         }
 
-        $building = $field->getBuilding();
         $colony = $field->getColony();
 
         $this->updateWorkerAndMaxBev($building, $colony);
@@ -91,11 +103,10 @@ final class BuildingManager implements BuildingManagerInterface
         PlanetFieldInterface $field,
         bool $upgrade = false
     ): void {
-        if (!$field->hasBuilding()) {
+        $building = $field->getBuilding();
+        if ($building === null) {
             return;
         }
-
-        $building = $field->getBuilding();
 
         if (!$building->isRemovable() && $upgrade === false) {
             return;
@@ -119,6 +130,10 @@ final class BuildingManager implements BuildingManagerInterface
     public function finish(PlanetFieldInterface $field, bool $activate = true): void
     {
         $building = $field->getBuilding();
+        if ($building === null) {
+            return;
+        }
+
         $colony = $field->getColony();
 
         $field

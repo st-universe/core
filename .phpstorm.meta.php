@@ -7,4 +7,6 @@ namespace PHPSTORM_META
     override(\DI\Container::get(0), map([
         '' => '@',
     ]));
+    override(\Mockery::mock(0), type(0));
+    override(\Stu\StuTestCase::mock(0), type(0));
 }
