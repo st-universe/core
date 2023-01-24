@@ -259,7 +259,7 @@ class BuildingManagerTest extends StuTestCase
 
         $colony->shouldReceive('getMaxBev')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn($currentHousing);
         $colony->shouldReceive('getWorkers')
             ->withNoArgs()
@@ -286,10 +286,6 @@ class BuildingManagerTest extends StuTestCase
         $colony->shouldReceive('setMaxBev')
             ->with($newHousing)
             ->once();
-        $colony->shouldReceive('getPopulation')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($newWorkers + $newWorkless);
 
         $building->shouldReceive('getWorkers')
             ->withNoArgs()
@@ -348,22 +344,20 @@ class BuildingManagerTest extends StuTestCase
 
         $colony->shouldReceive('getWorkless')
             ->withNoArgs()
-            ->times(4)
+            ->once()
             ->andReturn($currentWorkless);
         $colony->shouldReceive('getWorkers')
             ->withNoArgs()
             ->once()
             ->andReturn($currentWorker);
 
-        $newWorkless = $currentWorkless + $worker;
-        $colony->shouldReceive('setWorkless')
-            ->with($newWorkless)
-            ->once()
-            ->andReturnSelf();
-
         $newWorkers = $currentWorker - $worker;
         $colony->shouldReceive('setWorkers')
             ->with($newWorkers)
+            ->once()
+            ->andReturnSelf();
+        $colony->shouldReceive('setWorkless')
+            ->with($currentWorkless)
             ->once()
             ->andReturnSelf();
 
@@ -373,13 +367,8 @@ class BuildingManagerTest extends StuTestCase
             ->once();
         $colony->shouldReceive('getMaxBev')
             ->withNoArgs()
-            ->times(3)
+            ->once()
             ->andReturn($currentHousing, $newHousing, $newHousing);
-
-        $colony->shouldReceive('getPopulation')
-            ->withNoArgs()
-            ->twice()
-            ->andReturn($currentWorker + $currentWorkless);
 
         $building->shouldReceive('getWorkers')
             ->withNoArgs()
@@ -392,11 +381,6 @@ class BuildingManagerTest extends StuTestCase
         $building->shouldReceive('postDeactivation')
             ->with($colony)
             ->once();
-
-        $colony->shouldReceive('setWorkless')
-            ->with(44)
-            ->once()
-            ->andReturnSelf();
 
         $this->planetFieldRepository->shouldReceive('save')
             ->with($field)
