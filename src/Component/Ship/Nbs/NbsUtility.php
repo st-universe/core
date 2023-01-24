@@ -21,7 +21,7 @@ final class NbsUtility implements NbsUtilityInterface
 
     public function __construct(
         TachyonScanRepositoryInterface $tachyonScanRepository,
-        ShipRepositoryInterface $shipRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->tachyonScanRepository = $tachyonScanRepository;
         $this->shipRepository = $shipRepository;
