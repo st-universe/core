@@ -8,10 +8,11 @@ use Stu\Orm\Entity\UserInterface;
 
 final class LoginValidation implements LoginValidationInterface
 {
+    /** @var array<PlayerValidationInterface> */
     private array $validators;
 
     /**
-     * @param PlayerValidationInterface[] $validators
+     * @param array<PlayerValidationInterface> $validators
      */
     public function __construct(
         array $validators

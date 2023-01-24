@@ -38,7 +38,7 @@ class request
         return $method[$var];
     }
 
-    public static function getInt($var, $std = 0)
+    public static function getInt($var, $std = 0): int
     {
         $int = self::getVarByMethod(self::getvars(), $var);
         if (strlen($int) == 0) {
@@ -47,19 +47,19 @@ class request
         return self::returnInt($int);
     }
 
-    public static function getIntFatal($var)
+    public static function getIntFatal($var): int
     {
         $int = self::getVarByMethod(self::getvars(), $var, true);
         return self::returnInt($int);
     }
 
-    public static function postInt($var)
+    public static function postInt($var): int
     {
         $int = self::getVarByMethod(self::postvars(), $var);
         return self::returnInt($int);
     }
 
-    public static function postIntFatal($var)
+    public static function postIntFatal($var): int
     {
         $int = self::getVarByMethod(self::postvars(), $var, true);
         return self::returnInt($int);
@@ -84,7 +84,7 @@ class request
         return self::getVarByMethod(self::getvars(), $var);
     }
 
-    public static function indInt($var)
+    public static function indInt($var): int
     {
         $value = self::getVarByMethod(self::postvars(), $var);
         if ($value) {
@@ -113,7 +113,7 @@ class request
         return self::returnArray(self::getVarByMethod(self::postvars(), $var));
     }
 
-    public static function returnInt($result)
+    public static function returnInt($result): int
     {
         if (!$result || $result < 0) {
             return 0;

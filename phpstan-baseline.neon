@@ -21,11 +21,6 @@ parameters:
 			path: src/Component/Player/Register/PlayerDefaultsCreator.php
 
 		-
-			message: "#^Property Stu\\\\Component\\\\Player\\\\Validation\\\\LoginValidation\\:\\:\\$validators type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Player/Validation/LoginValidation.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 3
 			path: src/Component/Ship/Nbs/NbsUtility.php
@@ -38,11 +33,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$ships of class Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator constructor expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
 			count: 2
-			path: src/Component/Ship/Nbs/NbsUtility.php
-
-		-
-			message: "#^Property Stu\\\\Component\\\\Ship\\\\Nbs\\\\NbsUtility\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
 			path: src/Component/Ship/Nbs/NbsUtility.php
 
 		-
@@ -62,16 +52,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtil.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:determineRepairOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtil.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:determineSpareParts\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtil.php
 
@@ -112,16 +92,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:consumeSpareParts\\(\\) has parameter \\$neededParts with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:determineRepairOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/Repair/RepairUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtilInterface\\:\\:determineSpareParts\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Component/Ship/Repair/RepairUtilInterface.php
 
@@ -2081,22 +2051,12 @@ parameters:
 			path: src/Lib/YRow.php
 
 		-
-			message: "#^Method request\\:\\:getInt\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/request.php
-
-		-
 			message: "#^Method request\\:\\:getInt\\(\\) has parameter \\$std with no type specified\\.$#"
 			count: 1
 			path: src/Lib/request.php
 
 		-
 			message: "#^Method request\\:\\:getInt\\(\\) has parameter \\$var with no type specified\\.$#"
-			count: 1
-			path: src/Lib/request.php
-
-		-
-			message: "#^Method request\\:\\:getIntFatal\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Lib/request.php
 
@@ -2151,11 +2111,6 @@ parameters:
 			path: src/Lib/request.php
 
 		-
-			message: "#^Method request\\:\\:indInt\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/request.php
-
-		-
 			message: "#^Method request\\:\\:indInt\\(\\) has parameter \\$var with no type specified\\.$#"
 			count: 1
 			path: src/Lib/request.php
@@ -2196,17 +2151,7 @@ parameters:
 			path: src/Lib/request.php
 
 		-
-			message: "#^Method request\\:\\:postInt\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/request.php
-
-		-
 			message: "#^Method request\\:\\:postInt\\(\\) has parameter \\$var with no type specified\\.$#"
-			count: 1
-			path: src/Lib/request.php
-
-		-
-			message: "#^Method request\\:\\:postIntFatal\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Lib/request.php
 
@@ -2247,11 +2192,6 @@ parameters:
 
 		-
 			message: "#^Method request\\:\\:returnArray\\(\\) has parameter \\$result with no type specified\\.$#"
-			count: 1
-			path: src/Lib/request.php
-
-		-
-			message: "#^Method request\\:\\:returnInt\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Lib/request.php
 
@@ -5387,11 +5327,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ScrollBuildMenu/ScrollBuildMenu.php
-
-		-
-			message: "#^Parameter \\#4 \\$offset of method Stu\\\\Orm\\\\Repository\\\\BuildingRepositoryInterface\\:\\:getByColonyAndUserAndBuildMenu\\(\\) expects int, float\\|int\\<0, max\\> given\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/ScrollBuildMenu/ScrollBuildMenu.php
 
@@ -12093,11 +12028,6 @@ parameters:
 		-
 			message: "#^Cannot call method getLevel\\(\\) on Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\|null\\.$#"
 			count: 1
-			path: src/Module/Ship/Action/TorpedoTransfer/TorpedoTransfer.php
-
-		-
-			message: "#^Parameter \\#2 \\$changeAmount of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipTorpedoManagerInterface\\:\\:changeTorpedo\\(\\) expects int, float\\|int given\\.$#"
-			count: 2
 			path: src/Module/Ship/Action/TorpedoTransfer/TorpedoTransfer.php
 
 		-

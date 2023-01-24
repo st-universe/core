@@ -7,9 +7,6 @@ namespace Stu\Component\Ship\Nbs;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetNfsIterator;
 use Stu\Module\Ship\Lib\ShipNfsIterator;
 use Stu\Orm\Entity\ShipInterface;
@@ -18,8 +15,6 @@ use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
 final class NbsUtility implements NbsUtilityInterface
 {
-    private LoggerUtilInterface $loggerUtil;
-
     private TachyonScanRepositoryInterface $tachyonScanRepository;
 
     private ShipRepositoryInterface $shipRepository;
@@ -27,9 +22,7 @@ final class NbsUtility implements NbsUtilityInterface
     public function __construct(
         TachyonScanRepositoryInterface $tachyonScanRepository,
         ShipRepositoryInterface $shipRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->tachyonScanRepository = $tachyonScanRepository;
         $this->shipRepository = $shipRepository;
     }
