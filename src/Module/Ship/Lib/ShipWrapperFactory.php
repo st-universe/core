@@ -13,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -21,6 +22,8 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipRepositoryInterface $shipRepository;
+
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -37,6 +40,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,
         ShipRepositoryInterface $shipRepository,
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -46,6 +50,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
+        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->cancelRepair = $cancelRepair;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
@@ -60,6 +65,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $ship,
             $this->shipSystemManager,
             $this->shipRepository,
+            $this->colonyShipRepairRepository,
             $this->colonyLibFactory,
             $this->cancelRepair,
             $this->torpedoTypeRepository,

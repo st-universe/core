@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\CancelShipRepair;
 
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -46,6 +47,11 @@ final class CancelShipRepair implements ActionControllerInterface
         $shipId = $this->request->getShipId();
 
         $obj = $this->colonyShipRepairRepository->getByShip($shipId);
+
+        if ($obj === null) {
+            throw new SanityCheckException('ship is not under colony repair');
+        }
+
         $ship = $obj->getShip();
         $colony = $obj->getColony();
 

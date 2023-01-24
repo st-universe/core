@@ -28,7 +28,7 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         ], ['id' => 'asc']);
     }
 
-    public function getByShip(int $shipId): ColonyShipRepairInterface
+    public function getByShip(int $shipId): ?ColonyShipRepairInterface
     {
         return $this->findOneBy([
             'ship_id' => $shipId

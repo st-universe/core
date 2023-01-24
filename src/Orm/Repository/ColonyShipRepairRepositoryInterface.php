@@ -18,7 +18,7 @@ interface ColonyShipRepairRepositoryInterface extends ObjectRepository
      */
     public function getByColonyField(int $colonyId, int $fieldId): array;
 
-    public function getByShip(int $shipId): ColonyShipRepairInterface;
+    public function getByShip(int $shipId): ?ColonyShipRepairInterface;
 
     /**
      * @return ColonyShipRepairInterface[]

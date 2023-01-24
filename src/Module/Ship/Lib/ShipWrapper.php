@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use JsonMapper\JsonMapperInterface;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -22,6 +23,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -34,6 +36,8 @@ final class ShipWrapper implements ShipWrapperInterface
     private ShipRepositoryInterface $shipRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
+
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
     private CancelRepairInterface $cancelRepair;
 
@@ -57,6 +61,7 @@ final class ShipWrapper implements ShipWrapperInterface
         ShipInterface $ship,
         ShipSystemManagerInterface $shipSystemManager,
         ShipRepositoryInterface $shipRepository,
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         CancelRepairInterface $cancelRepair,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -69,6 +74,7 @@ final class ShipWrapper implements ShipWrapperInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->cancelRepair = $cancelRepair;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->game = $game;
@@ -287,6 +293,15 @@ final class ShipWrapper implements ShipWrapperInterface
     {
         $ticks = (int) ceil(($this->get()->getMaxHuell() - $this->get()->getHull()) / $this->get()->getRepairRate());
         $ticks = max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
+
+        //check if repair station is active
+        $colonyRepair = $this->colonyShipRepairRepository->getByShip($this->get()->getId());
+        if ($colonyRepair !== null) {
+            $isRepairStationBonus = $colonyRepair->getColony()->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            if ($isRepairStationBonus) {
+                $ticks = (int)ceil($ticks / 2);
+            }
+        }
 
         return $ticks;
     }

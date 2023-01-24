@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\StuTestCase;
@@ -23,6 +24,8 @@ class ShipWrapperFactoryTest extends StuTestCase
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipRepositoryInterface $shipRepository;
+
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
@@ -43,6 +46,7 @@ class ShipWrapperFactoryTest extends StuTestCase
         //injected
         $this->shipSystemManager = $this->mock(ShipSystemManagerInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
+        $this->colonyShipRepairRepository = $this->mock(ColonyShipRepairRepositoryInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
         $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
@@ -53,6 +57,7 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->shipWrapperFactory = new ShipWrapperFactory(
             $this->shipSystemManager,
             $this->shipRepository,
+            $this->colonyShipRepairRepository,
             $this->colonyLibFactory,
             $this->cancelRepair,
             $this->torpedoTypeRepository,

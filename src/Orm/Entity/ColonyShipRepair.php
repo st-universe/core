@@ -60,7 +60,7 @@ class ColonyShipRepair implements ColonyShipRepairInterface
     /**
      * @var ShipInterface
      *
-     * @ManyToOne(targetEntity="Ship")
+     * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
