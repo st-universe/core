@@ -103,7 +103,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         $this->smsVerificationCodeSender->send($player, $randomHash);
     }
 
-    private function checkForException($loginName, $emailAddress, $mobile = null): void
+    private function checkForException(string $loginName, string $emailAddress, ?string $mobile = null): void
     {
         if (
             !preg_match('/^[a-zA-Z0-9]+$/i', $loginName) ||

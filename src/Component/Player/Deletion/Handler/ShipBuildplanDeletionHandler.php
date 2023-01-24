@@ -15,7 +15,7 @@ final class ShipBuildplanDeletionHandler implements PlayerDeletionHandlerInterfa
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     public function __construct(
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
     }

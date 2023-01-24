@@ -31,19 +31,16 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    /** @todo remove EntityManager as it should only be used within repositories */
     private EntityManagerInterface $entityManager;
 
+    /** @var array<PlayerDeletionHandlerInterface> */
     private array $deletionHandler;
 
     private Parser $bbCodeParser;
 
     /**
-     * @param UserRepositoryInterface $userRepository
-     * @param ConfigInterface $config
-     * @param LoggerUtilFactoryInterface $loggerUtilFactory
-     * @param Parser $bbCodeParser
-     * @param EntityManagerInterface $entityManager
-     * @param PlayerDeletionHandlerInterface[] $deletionHandler
+     * @param array<PlayerDeletionHandlerInterface> $deletionHandler
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
