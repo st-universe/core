@@ -7,6 +7,8 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 class ColonyProduction
 {
+    /** @var int */
+    private $preview = 0;
 
     private $data = null;
 
@@ -19,12 +21,12 @@ class ColonyProduction
         }
     }
 
-    public function getCommodityId()
+    public function getCommodityId(): int
     {
         return $this->data['commodity_id'];
     }
 
-    function setCommodityId($value)
+    function setCommodityId($value): void
     {
         $this->data['commodity_id'] = $value;
     }
@@ -34,15 +36,15 @@ class ColonyProduction
         return $this->data['gc'];
     }
 
-    function getProductionDisplay()
+    function getProductionDisplay(): string
     {
         if ($this->getProduction() <= 0) {
-            return $this->getProduction();
+            return (string) $this->getProduction();
         }
         return '+' . $this->getProduction();
     }
 
-    function getCssClass()
+    function getCssClass(): string
     {
         if ($this->getProduction() < 0) {
             return 'negative';
@@ -50,44 +52,55 @@ class ColonyProduction
         if ($this->getProduction() > 0) {
             return 'positive';
         }
+        return '';
     }
 
-    function lowerProduction($value)
+    /**
+     * @param int $value
+     */
+    function lowerProduction($value): void
     {
         $this->setProduction($this->getProduction() - $value);
     }
 
-    function upperProduction($value)
+    /**
+     * @param int $value
+     */
+    function upperProduction($value): void
     {
         $this->setProduction($this->getProduction() + $value);
     }
 
-    function setProduction($value)
+    /**
+     * @param int $value
+     */
+    function setProduction($value): void
     {
         $this->data['gc'] = $value;
     }
 
-    private $preview = false;
-
-    public function setPreviewProduction($value)
+    /**
+     * @param int $value
+     */
+    public function setPreviewProduction($value): void
     {
         $this->preview = $value;
     }
 
-    public function getPreviewProduction()
+    public function getPreviewProduction(): int
     {
         return $this->preview;
     }
 
-    public function getPreviewProductionDisplay()
+    public function getPreviewProductionDisplay(): string
     {
         if ($this->getPreviewProduction() <= 0) {
-            return $this->getPreviewProduction();
+            return (string) $this->getPreviewProduction();
         }
         return '+' . $this->getPreviewProduction();
     }
 
-    public function getPreviewProductionCss()
+    public function getPreviewProductionCss(): string
     {
         if ($this->getPreviewProduction() < 0) {
             return 'negative';

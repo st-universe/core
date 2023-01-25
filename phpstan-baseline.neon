@@ -136,26 +136,6 @@ parameters:
 			path: src/Component/Ship/System/Data/AbstractSystemData.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\:\\:getEpsStatusBar\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/EpsSystemData.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\:\\:getEpsStatusBarBig\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/EpsSystemData.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\HullSystemData\\:\\:getHullStatusBar\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/HullSystemData.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\HullSystemData\\:\\:getHullStatusBarBig\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/HullSystemData.php
-
-		-
 			message: "#^Cannot call method get\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Data/TrackerSystemData.php
@@ -751,92 +731,12 @@ parameters:
 			path: src/Lib/ColonyProduction/ColonyProduction.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getCommodityId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getCssClass\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getPreviewProduction\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getPreviewProductionCss\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getPreviewProductionDisplay\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getProductionDisplay\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:lowerProduction\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:lowerProduction\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:setCommodityId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
 			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:setCommodityId\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Lib/ColonyProduction/ColonyProduction.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:setPreviewProduction\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:setPreviewProduction\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:setProduction\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:setProduction\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:upperProduction\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:upperProduction\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
 			message: "#^Property Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:\\$data has no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:\\$preview has no type specified\\.$#"
 			count: 1
 			path: src/Lib/ColonyProduction/ColonyProduction.php
 
@@ -17137,11 +17037,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getRumpId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getFaction\\(\\) should return Stu\\\\Orm\\\\Entity\\\\FactionInterface but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 

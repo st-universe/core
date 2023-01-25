@@ -19,6 +19,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Orm\Entity\BuildingCommodityInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -461,6 +462,7 @@ final class ColonyTick implements ColonyTickInterface
     private function mergeProduction(ColonyInterface $colony, Collection $commodityProduction): void
     {
         $prod = $colony->getProduction();
+        /** @var BuildingCommodityInterface $obj */
         foreach ($commodityProduction as $obj) {
             $commodityId = $obj->getCommodityId();
             if (!array_key_exists($commodityId, $prod)) {
