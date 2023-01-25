@@ -10,8 +10,6 @@ interface DealsInterface
 
     public function setFaction(FactionInterface $faction): DealsInterface;
 
-    public function getFaction(): FactionInterface;
-
     public function setAuction(bool $auction): DealsInterface;
 
     public function getAuction(): bool;

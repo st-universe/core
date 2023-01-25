@@ -188,11 +188,6 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getFaction(): FactionInterface
-    {
-        return $this->faction_id;
-    }
-
     public function setAuction(bool $auction): DealsInterface
     {
 
