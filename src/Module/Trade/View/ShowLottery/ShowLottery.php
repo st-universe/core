@@ -6,18 +6,18 @@ namespace Stu\Module\Trade\View\ShowLottery;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
+use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 
 final class ShowLottery implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_LOTTERY';
 
-    private LotteryTicketRepositoryInterface $lotteryTicketRepository;
+    private LotteryFacadeInterface $lotteryFacade;
 
     public function __construct(
-        LotteryTicketRepositoryInterface $lotteryTicketRepository
+        LotteryFacadeInterface $lotteryFacade
     ) {
-        $this->lotteryTicketRepository = $lotteryTicketRepository;
+        $this->lotteryFacade = $lotteryFacade;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,10 +33,8 @@ final class ShowLottery implements ViewControllerInterface
         $game->setPageTitle(_('/ Handel / Nagus Lotterie'));
         $game->setTemplateFile('html/lottery.xhtml');
 
-        $period = date("Y.m", time());
-
-        $ticketCount = $this->lotteryTicketRepository->getAmountByPeriod($period);
-        $ownCount = $this->lotteryTicketRepository->getAmountByPeriodAndUser($period, $game->getUser()->getId());
+        $ticketCount = $this->lotteryFacade->getTicketAmount(false);
+        $ownCount = $this->lotteryFacade->getTicketAmountByUser($game->getUser()->getId(), false);
 
         $game->setTemplateVar('TICKETCOUNT', $ticketCount);
         $game->setTemplateVar('OWNCOUNT', $ownCount);

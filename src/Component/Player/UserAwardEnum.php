@@ -14,6 +14,7 @@ final class UserAwardEnum
     public const IMPORTANT_ROLE = 17;
     public const RPG_AQUA = 18;
     public const ADVENT = 19;
+    public const LOTTERY_WINNER = 49;
 
 
     //npc awards

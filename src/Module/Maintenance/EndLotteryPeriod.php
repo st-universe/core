@@ -3,14 +3,18 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\TimeConstants;
+use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Trade\TradeEnum;
+use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\AwardRepositoryInterface;
 use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -21,11 +25,17 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
     private TradePostRepositoryInterface $tradepostRepository;
 
+    private AwardRepositoryInterface $awardRepository;
+
     private LotteryFacadeInterface $lotteryFacade;
 
     private UserRepositoryInterface $userRepository;
 
     private TradeLibFactoryInterface $tradeLibFactory;
+
+    private CreateUserAwardInterface $createUserAward;
+
+    private CreatePrestigeLogInterface $createPrestigeLog;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
@@ -34,17 +44,23 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
     public function __construct(
         LotteryTicketRepositoryInterface $lotteryTicketRepository,
         TradePostRepositoryInterface $tradepostRepository,
+        AwardRepositoryInterface $awardRepository,
         LotteryFacadeInterface $lotteryFacade,
         UserRepositoryInterface $userRepository,
         TradeLibFactoryInterface $tradeLibFactory,
+        CreateUserAwardInterface $createUserAward,
+        CreatePrestigeLogInterface $createPrestigeLog,
         PrivateMessageSenderInterface $privateMessageSender,
         StuTime $stuTime
     ) {
         $this->lotteryTicketRepository = $lotteryTicketRepository;
         $this->tradepostRepository = $tradepostRepository;
+        $this->awardRepository = $awardRepository;
         $this->lotteryFacade = $lotteryFacade;
         $this->userRepository = $userRepository;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->createUserAward = $createUserAward;
+        $this->createPrestigeLog = $createPrestigeLog;
         $this->privateMessageSender = $privateMessageSender;
         $this->stuTime = $stuTime;
     }
@@ -58,9 +74,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             return;
         }
 
-        $periodOfLastMonth = date("Y.m", $time - TimeConstants::ONE_DAY_IN_SECONDS);
-
-        $tickets = $this->lotteryTicketRepository->getByPeriod($periodOfLastMonth);
+        $tickets = $this->lotteryFacade->getTicketsOfLastPeriod();
         $ticketCount = count($tickets);
 
         if ($ticketCount === 0) {
@@ -81,6 +95,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             if ($i === $winnerIndex) {
                 $ticket->setIsWinner(true);
                 $winner = $user;
+                $this->createAwardAndPrestige($user, $time);
             } else {
                 $ticket->setIsWinner(false);
                 $losers[$user->getId()] = $user;
@@ -138,5 +153,26 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
             $this->lotteryFacade->createLotteryTicket($user, true);
         }
+    }
+
+    private function createAwardAndPrestige(UserInterface $user, int $time): void
+    {
+        $award = $this->awardRepository->find(UserAwardEnum::LOTTERY_WINNER);
+
+        if ($award !== null) {
+            $this->createUserAward->createAwardForUser(
+                $user,
+                $award
+            );
+        }
+
+        $amount = $this->lotteryFacade->getTicketAmountByUser($user->getId(), true);
+
+        $this->createPrestigeLog->createLog(
+            $amount,
+            sprintf('%1$d Prestige erhalten für den Erwerb von %1$d Losen in der letzten Lotterieziehung', $amount),
+            $user,
+            $time
+        );
     }
 }

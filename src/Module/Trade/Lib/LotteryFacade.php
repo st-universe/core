@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -43,6 +44,37 @@ final class LotteryFacade implements LotteryFacadeInterface
                 'Du hast ein Gratislos für den aktuellen Lotteriezeitraum erhalten. Möge das Glück mit dir sein!',
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
             );
+        }
+    }
+
+    public function getTicketAmount(bool $isLastPeriod): int
+    {
+        return $this->lotteryTicketRepository->getAmountByPeriod(
+            $this->getCurrentOrLastPeriod($isLastPeriod)
+        );
+    }
+
+    public function getTicketAmountByUser(int $userId, bool $isLastPeriod): int
+    {
+        return $this->lotteryTicketRepository->getAmountByPeriodAndUser(
+            $this->getCurrentOrLastPeriod($isLastPeriod),
+            $userId
+        );
+    }
+
+    public function getTicketsOfLastPeriod(): array
+    {
+        return $this->lotteryTicketRepository->getByPeriod($this->getCurrentOrLastPeriod(true));
+    }
+
+    private function getCurrentOrLastPeriod(bool $isLastPeriod): string
+    {
+        $time = $this->stuTime->time();
+
+        if ($isLastPeriod) {
+            return date("Y.m", $time - TimeConstants::ONE_DAY_IN_SECONDS);
+        } else {
+            return date("Y.m", $time);
         }
     }
 }

@@ -38,6 +38,9 @@ final class CreateUserAward implements CreateUserAwardInterface
 
         //create prestige log
         $description = sprintf('%d Prestige erhalten für den Erhalt des Awards "%s"', $award->getPrestige(), $award->getDescription());
-        $this->createPrestigeLog->createLog($award->getPrestige(), $description, $user, time());
+
+        if ($award->getPrestige() !== 0) {
+            $this->createPrestigeLog->createLog($award->getPrestige(), $description, $user, time());
+        }
     }
 }
