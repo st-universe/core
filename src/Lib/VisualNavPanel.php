@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -14,19 +13,40 @@ use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class VisualNavPanel
 {
+    /** @var ShipInterface */
     private $ship;
 
+    /** @var bool */
     private $showOuterMap;
 
+    /** @var UserInterface */
     private $user;
 
     private LoggerUtilInterface $loggerUtil;
 
+    /** @var bool */
     private $isTachyonSystemActive;
 
+    /** @var bool  */
     private $tachyonFresh;
 
+    /** @var StarSystemInterface|null */
     private $system;
+
+    /** @var null|array<int, VisualNavPanelRow> */
+    private $rows = null;
+
+    /** @var null|array<array{value: int}> */
+    private $headRow = null;
+
+    /** @var null|int|float */
+    private $viewport;
+
+    /** @var null|string */
+    private $viewportPerColumn;
+
+    /** @var null|string */
+    private $viewportForFont;
 
     function __construct(
         ShipInterface $ship,
@@ -47,13 +67,14 @@ class VisualNavPanel
             || $this->getShip()->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR;
     }
 
-    function getShip()
+    function getShip(): ShipInterface
     {
         return $this->ship;
     }
 
-    private $rows = null;
-
+    /**
+     * @return array<int, VisualNavPanelRow>
+     */
     function getRows()
     {
         if ($this->rows === null) {
@@ -62,6 +83,23 @@ class VisualNavPanel
         return $this->rows;
     }
 
+    /**
+     * @return iterable<array{
+     *     posx: int,
+     *     posy: int,
+     *     sysid: int,
+     *     shipcount: int,
+     *     cloakcount: int,
+     *     allycolor: string,
+     *     usercolor: string,
+     *     factioncolor: string,
+     *     type: int,
+     *     d1c?: int,
+     *     d2c?: int,
+     *     d3c?: int,
+     *     d4c?: int
+     * }>
+     */
     function getOuterSystemResult()
     {
         $cx = $this->getShip()->getCX();
@@ -75,14 +113,10 @@ class VisualNavPanel
         // @todo refactor
         global $container;
 
-        /**
-         * @var UserLayerRepositoryInterface
-         */
+        /** @var UserLayerRepositoryInterface */
         $userLayerRepo = $container->get(UserLayerRepositoryInterface::class);
 
-        /**
-         * @var UserMapRepositoryInterface
-         */
+        /** @var UserMapRepositoryInterface */
         $repo = $container->get(UserMapRepositoryInterface::class);
 
         if (!$hasSeenLayer) {
@@ -120,6 +154,21 @@ class VisualNavPanel
         );
     }
 
+    /**
+     * @return iterable<array{
+     *     posx: int,
+     *     posy: int,
+     *     sysid: int,
+     *     shipcount: int,
+     *     cloakcount: int,
+     *     shieldstate: bool,
+     *     type: int,
+     *     d1c?: int,
+     *     d2c?: int,
+     *     d3c?: int,
+     *     d4c?: int
+     * }>
+     */
     function getInnerSystemResult()
     {
         // @todo refactor
@@ -132,7 +181,7 @@ class VisualNavPanel
         );
     }
 
-    function loadLSS()
+    function loadLSS(): void
     {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -144,7 +193,6 @@ class VisualNavPanel
         }
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
-            //$this->loggerUtil->log(sprintf("\tloadLSS-query, seconds: %F", $endTime - $startTime));
         }
 
         $currentShip = $this->getShip();
@@ -163,7 +211,7 @@ class VisualNavPanel
             }
             if ($data['posy'] != $y) {
                 $y = $data['posy'];
-                $rows[$y] = new VisualNavPanelRow;
+                $rows[$y] = new VisualNavPanelRow();
                 $entry = new VisualNavPanelEntry();
                 $entry->row = $y;
                 $entry->setCSSClass('th');
@@ -191,8 +239,9 @@ class VisualNavPanel
         $this->rows = $rows;
     }
 
-    private $headRow = null;
-
+    /**
+     * @return array<array{value: int}>
+     */
     function getHeadRow()
     {
         if ($this->headRow === null) {
@@ -222,11 +271,9 @@ class VisualNavPanel
         return $this->headRow;
     }
 
-
-    private $viewport;
-    private $viewportPerColumn;
-    private $viewportForFont;
-
+    /**
+     * @return int|float
+     */
     private function getViewport()
     {
         if (!$this->viewportPerColumn) {
@@ -237,7 +284,7 @@ class VisualNavPanel
         return $this->viewport;
     }
 
-    function getViewportPerColumn()
+    function getViewportPerColumn(): string
     {
         if (!$this->viewportPerColumn) {
             $this->viewportPerColumn = number_format($this->getViewport(), 1);
@@ -245,7 +292,7 @@ class VisualNavPanel
         return $this->viewportPerColumn;
     }
 
-    function getViewportForFont()
+    function getViewportForFont(): string
     {
         if (!$this->viewportForFont) {
             $this->viewportForFont = number_format($this->getViewport() / 2, 1);

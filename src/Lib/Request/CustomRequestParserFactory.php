@@ -9,19 +9,24 @@ use MPScholten\RequestParser\RequestParserFactory;
 
 final class CustomRequestParserFactory implements RequestParserFactory
 {
-    /**
-     * @var array
-     */
+    /** @var array<mixed> */
     private $request;
 
     private $config;
 
+    /**
+     * @param array<mixed> $request
+     * @param $config
+     */
     public function __construct(array $request, $config)
     {
         $this->request = $request;
         $this->config = $config;
     }
 
+    /**
+     * @return RequestParser
+     */
     public function createQueryParser()
     {
         return new RequestParser(
@@ -35,6 +40,9 @@ final class CustomRequestParserFactory implements RequestParserFactory
         );
     }
 
+    /**
+     * @return RequestParser
+     */
     public function createBodyParser()
     {
         return new RequestParser(

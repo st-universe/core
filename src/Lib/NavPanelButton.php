@@ -6,8 +6,10 @@ namespace Stu\Lib;
 
 final class NavPanelButton implements NavPanelButtonInterface
 {
+    /** @var string */
     private $label;
 
+    /** @var bool */
     private $disabled;
 
     public function __construct(

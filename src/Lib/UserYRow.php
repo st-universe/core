@@ -3,19 +3,31 @@
 declare(strict_types=1);
 
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 class UserYRow extends YRow
 {
+    /** @var UserInterface */
     private $user;
 
+    /**
+     * @param int $layerId
+     * @param int $cury
+     * @param int $minx
+     * @param int $maxx
+     * @param int $systemId
+     */
     function __construct(UserInterface $user, $layerId, $cury, $minx, $maxx, $systemId = 0)
     {
         parent::__construct($layerId, $cury, $minx, $maxx, $systemId);
         $this->user = $user;
     }
 
+    /**
+     * @return array<MapInterface>
+     */
     function getFields()
     {
         if ($this->fields === null) {

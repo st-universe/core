@@ -20,6 +20,11 @@ trait CustomControllerHelperTrait
         $this->initRequestParser($request);
     }
 
+    /**
+     * @param array<mixed> $request
+     * @param $config
+     * @return CustomRequestParserFactory
+     */
     protected final function createRequestParserFactory($request, $config)
     {
         return new CustomRequestParserFactory($request, $config);

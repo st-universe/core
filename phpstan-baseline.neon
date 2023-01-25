@@ -1106,52 +1106,12 @@ parameters:
 			path: src/Lib/NavPanel.php
 
 		-
-			message: "#^Property Stu\\\\Lib\\\\NavPanelButton\\:\\:\\$disabled has no type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanelButton.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\NavPanelButton\\:\\:\\$label has no type specified\\.$#"
-			count: 1
-			path: src/Lib/NavPanelButton.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ParserWithImage\\:\\:parse\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ParserWithImage.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ParserWithImage\\:\\:parse\\(\\) has parameter \\$str with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ParserWithImage.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ParserWithImageInterface\\:\\:parse\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ParserWithImageInterface.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ParserWithImageInterface\\:\\:parse\\(\\) has parameter \\$str with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ParserWithImageInterface.php
-
-		-
 			message: "#^Method Stu\\\\Lib\\\\Request\\\\CustomRequestParserFactory\\:\\:__construct\\(\\) has parameter \\$config with no type specified\\.$#"
 			count: 1
 			path: src/Lib/Request/CustomRequestParserFactory.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\Request\\\\CustomRequestParserFactory\\:\\:__construct\\(\\) has parameter \\$request with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Lib/Request/CustomRequestParserFactory.php
-
-		-
 			message: "#^Property Stu\\\\Lib\\\\Request\\\\CustomRequestParserFactory\\:\\:\\$config has no type specified\\.$#"
-			count: 1
-			path: src/Lib/Request/CustomRequestParserFactory.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\Request\\\\CustomRequestParserFactory\\:\\:\\$request type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Lib/Request/CustomRequestParserFactory.php
 
@@ -1356,137 +1316,47 @@ parameters:
 			path: src/Lib/StuBbCodeWithImageDefinitionSet.php
 
 		-
-			message: "#^Method UserYRow\\:\\:__construct\\(\\) has parameter \\$cury with no type specified\\.$#"
+			message: "#^Method UserYRow\\:\\:getFields\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\> but returns array\\<Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\|Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\.$#"
 			count: 1
 			path: src/Lib/UserYRow.php
 
 		-
-			message: "#^Method UserYRow\\:\\:__construct\\(\\) has parameter \\$layerId with no type specified\\.$#"
+			message: "#^Parameter \\#1 \\$layerId of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:hasExplored\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Lib/UserYRow.php
 
 		-
-			message: "#^Method UserYRow\\:\\:__construct\\(\\) has parameter \\$maxx with no type specified\\.$#"
+			message: "#^Parameter \\#2 \\$layerId of method Stu\\\\Orm\\\\Repository\\\\MapRepositoryInterface\\:\\:getExplored\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Lib/UserYRow.php
 
 		-
-			message: "#^Method UserYRow\\:\\:__construct\\(\\) has parameter \\$minx with no type specified\\.$#"
+			message: "#^Property YRow\\:\\:\\$fields \\(array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\|null\\) does not accept array\\<Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\|Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\.$#"
 			count: 1
 			path: src/Lib/UserYRow.php
 
 		-
-			message: "#^Method UserYRow\\:\\:__construct\\(\\) has parameter \\$systemId with no type specified\\.$#"
-			count: 1
-			path: src/Lib/UserYRow.php
-
-		-
-			message: "#^Method UserYRow\\:\\:getFields\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/UserYRow.php
-
-		-
-			message: "#^Property UserYRow\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Lib/UserYRow.php
-
-		-
-			message: "#^Method VisualNavPanel\\:\\:getHeadRow\\(\\) has no return type specified\\.$#"
+			message: "#^Cannot call method getMaxX\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanel.php
 
 		-
-			message: "#^Method VisualNavPanel\\:\\:getInnerSystemResult\\(\\) has no return type specified\\.$#"
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanel.php
 
 		-
-			message: "#^Method VisualNavPanel\\:\\:getOuterSystemResult\\(\\) has no return type specified\\.$#"
+			message: "#^Method VisualNavPanel\\:\\:getRows\\(\\) should return array\\<int, VisualNavPanelRow\\> but returns array\\<int, VisualNavPanelRow\\>\\|null\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanel.php
 
 		-
-			message: "#^Method VisualNavPanel\\:\\:getRows\\(\\) has no return type specified\\.$#"
+			message: "#^Method VisualNavPanel\\:\\:getViewport\\(\\) should return float\\|int but returns float\\|int\\|null\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanel.php
 
 		-
-			message: "#^Method VisualNavPanel\\:\\:getShip\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Method VisualNavPanel\\:\\:getViewport\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Method VisualNavPanel\\:\\:getViewportForFont\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Method VisualNavPanel\\:\\:getViewportPerColumn\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Method VisualNavPanel\\:\\:loadLSS\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$headRow has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$isTachyonSystemActive has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$rows has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$ship has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$showOuterMap has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$system has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$tachyonFresh has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$user has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$viewport has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$viewportForFont has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Property VisualNavPanel\\:\\:\\$viewportPerColumn has no type specified\\.$#"
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\:\\:setLayer\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanel.php
 
@@ -1676,52 +1546,17 @@ parameters:
 			path: src/Lib/VisualNavPanelRow.php
 
 		-
-			message: "#^Method YRow\\:\\:__construct\\(\\) has parameter \\$cury with no type specified\\.$#"
+			message: "#^Method YRow\\:\\:getFields\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\> but returns array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\|null\\.$#"
 			count: 1
 			path: src/Lib/YRow.php
 
 		-
-			message: "#^Method YRow\\:\\:__construct\\(\\) has parameter \\$layerId with no type specified\\.$#"
+			message: "#^Method YRow\\:\\:getSystemFields\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\> but returns array\\|null\\.$#"
 			count: 1
 			path: src/Lib/YRow.php
 
 		-
-			message: "#^Method YRow\\:\\:__construct\\(\\) has parameter \\$maxx with no type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Method YRow\\:\\:__construct\\(\\) has parameter \\$minx with no type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Method YRow\\:\\:__construct\\(\\) has parameter \\$systemId with no type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Method YRow\\:\\:getFields\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Method YRow\\:\\:getRow\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Method YRow\\:\\:getSystemFields\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Property YRow\\:\\:\\$fields has no type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Property YRow\\:\\:\\$layerId has no type specified\\.$#"
+			message: "#^Parameter \\#1 \\$layerId of method Stu\\\\Orm\\\\Repository\\\\MapRepositoryInterface\\:\\:getByCoordinates\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Lib/YRow.php
 
@@ -1996,17 +1831,7 @@ parameters:
 			path: src/Module/Admin/Action/Map/EditField/EditField.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\EditField\\\\EditFieldRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/EditField/EditFieldRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\EditField\\\\EditFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/EditField/EditFieldRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\EditField\\\\EditFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/Map/EditField/EditFieldRequest.php
 
@@ -2021,17 +1846,7 @@ parameters:
 			path: src/Module/Admin/Action/Map/EditSystemField/EditSystemField.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\EditSystemField\\\\EditSystemFieldRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/EditSystemField/EditSystemFieldRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\EditSystemField\\\\EditSystemFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/EditSystemField/EditSystemFieldRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\EditSystemField\\\\EditSystemFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/Map/EditSystemField/EditSystemFieldRequest.php
 
@@ -2331,17 +2146,7 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowSystem/ShowSystem.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\Map\\\\ShowSystem\\\\ShowSystemRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowSystem/ShowSystemRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\Map\\\\ShowSystem\\\\ShowSystemRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowSystem/ShowSystemRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\Map\\\\ShowSystem\\\\ShowSystemRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowSystem/ShowSystemRequest.php
 
@@ -2366,17 +2171,7 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditField.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\Map\\\\ShowSystemEditField\\\\ShowSystemEditFieldRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditFieldRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\Map\\\\ShowSystemEditField\\\\ShowSystemEditFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditFieldRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\Map\\\\ShowSystemEditField\\\\ShowSystemEditFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowSystemEditField/ShowSystemEditFieldRequest.php
 
@@ -2676,17 +2471,7 @@ parameters:
 			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AcceptApplication\\\\AcceptApplicationRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplicationRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AcceptApplication\\\\AcceptApplicationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplicationRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AcceptApplication\\\\AcceptApplicationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplicationRequest.php
 
@@ -2716,17 +2501,7 @@ parameters:
 			path: src/Module/Alliance/Action/AcceptOffer/AcceptOffer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AcceptOffer\\\\AcceptOfferRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptOffer/AcceptOfferRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AcceptOffer\\\\AcceptOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptOffer/AcceptOfferRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AcceptOffer\\\\AcceptOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/AcceptOffer/AcceptOfferRequest.php
 
@@ -2756,17 +2531,7 @@ parameters:
 			path: src/Module/Alliance/Action/AddBoard/AddBoard.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AddBoard\\\\AddBoardRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AddBoard/AddBoardRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AddBoard\\\\AddBoardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AddBoard/AddBoardRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\AddBoard\\\\AddBoardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/AddBoard/AddBoardRequest.php
 
@@ -2796,17 +2561,7 @@ parameters:
 			path: src/Module/Alliance/Action/CancelContract/CancelContract.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CancelContract\\\\CancelContractRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CancelContract/CancelContractRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CancelContract\\\\CancelContractRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CancelContract/CancelContractRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CancelContract\\\\CancelContractRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/CancelContract/CancelContractRequest.php
 
@@ -2836,17 +2591,7 @@ parameters:
 			path: src/Module/Alliance/Action/CancelOffer/CancelOffer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CancelOffer\\\\CancelOfferRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CancelOffer/CancelOfferRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CancelOffer\\\\CancelOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CancelOffer/CancelOfferRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CancelOffer\\\\CancelOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/CancelOffer/CancelOfferRequest.php
 
@@ -2946,17 +2691,7 @@ parameters:
 			path: src/Module/Alliance/Action/CreateAlliance/CreateAlliance.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateAlliance\\\\CreateAllianceRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreateAlliance/CreateAllianceRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateAlliance\\\\CreateAllianceRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreateAlliance/CreateAllianceRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateAlliance\\\\CreateAllianceRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/CreateAlliance/CreateAllianceRequest.php
 
@@ -2986,17 +2721,7 @@ parameters:
 			path: src/Module/Alliance/Action/CreatePost/CreatePost.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreatePost\\\\CreatePostRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreatePost/CreatePostRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreatePost\\\\CreatePostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreatePost/CreatePostRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreatePost\\\\CreatePostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/CreatePost/CreatePostRequest.php
 
@@ -3031,17 +2756,7 @@ parameters:
 			path: src/Module/Alliance/Action/CreateRelation/CreateRelation.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateRelation\\\\CreateRelationRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreateRelation/CreateRelationRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateRelation\\\\CreateRelationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreateRelation/CreateRelationRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateRelation\\\\CreateRelationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/CreateRelation/CreateRelationRequest.php
 
@@ -3081,17 +2796,7 @@ parameters:
 			path: src/Module/Alliance/Action/CreateTopic/CreateTopic.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateTopic\\\\CreateTopicRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreateTopic/CreateTopicRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateTopic\\\\CreateTopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreateTopic/CreateTopicRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\CreateTopic\\\\CreateTopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/CreateTopic/CreateTopicRequest.php
 
@@ -3136,17 +2841,7 @@ parameters:
 			path: src/Module/Alliance/Action/DeclineApplication/DeclineApplication.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeclineApplication\\\\DeclineApplicationRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeclineApplication/DeclineApplicationRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeclineApplication\\\\DeclineApplicationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeclineApplication/DeclineApplicationRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeclineApplication\\\\DeclineApplicationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/DeclineApplication/DeclineApplicationRequest.php
 
@@ -3251,17 +2946,7 @@ parameters:
 			path: src/Module/Alliance/Action/DeleteBoard/DeleteBoard.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeleteBoard\\\\DeleteBoardRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeleteBoard/DeleteBoardRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeleteBoard\\\\DeleteBoardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeleteBoard/DeleteBoardRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeleteBoard\\\\DeleteBoardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/DeleteBoard/DeleteBoardRequest.php
 
@@ -3301,17 +2986,7 @@ parameters:
 			path: src/Module/Alliance/Action/DeleteTopic/DeleteTopic.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeleteTopic\\\\DeleteTopicRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeleteTopic/DeleteTopicRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeleteTopic\\\\DeleteTopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeleteTopic/DeleteTopicRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\DeleteTopic\\\\DeleteTopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/DeleteTopic/DeleteTopicRequest.php
 
@@ -3401,17 +3076,7 @@ parameters:
 			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\EditDetails\\\\EditDetailsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetailsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\EditDetails\\\\EditDetailsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetailsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\EditDetails\\\\EditDetailsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/EditDetails/EditDetailsRequest.php
 
@@ -3461,17 +3126,7 @@ parameters:
 			path: src/Module/Alliance/Action/KickPlayer/KickPlayer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\KickPlayer\\\\KickPlayerRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/KickPlayer/KickPlayerRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\KickPlayer\\\\KickPlayerRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/KickPlayer/KickPlayerRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\KickPlayer\\\\KickPlayerRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/KickPlayer/KickPlayerRequest.php
 
@@ -3551,17 +3206,7 @@ parameters:
 			path: src/Module/Alliance/Action/PromotePlayer/PromotePlayer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\PromotePlayer\\\\PromotePlayerRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/PromotePlayer/PromotePlayerRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\PromotePlayer\\\\PromotePlayerRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/PromotePlayer/PromotePlayerRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\PromotePlayer\\\\PromotePlayerRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/PromotePlayer/PromotePlayerRequest.php
 
@@ -3586,17 +3231,7 @@ parameters:
 			path: src/Module/Alliance/Action/RenameBoard/RenameBoard.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\RenameBoard\\\\RenameBoardRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/RenameBoard/RenameBoardRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\RenameBoard\\\\RenameBoardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/RenameBoard/RenameBoardRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\RenameBoard\\\\RenameBoardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/RenameBoard/RenameBoardRequest.php
 
@@ -3616,17 +3251,7 @@ parameters:
 			path: src/Module/Alliance/Action/RenameTopic/RenameTopic.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\RenameTopic\\\\RenameTopicRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/RenameTopic/RenameTopicRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\RenameTopic\\\\RenameTopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/RenameTopic/RenameTopicRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\RenameTopic\\\\RenameTopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/RenameTopic/RenameTopicRequest.php
 
@@ -3651,17 +3276,7 @@ parameters:
 			path: src/Module/Alliance/Action/SetTopicSticky/SetTopicSticky.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\SetTopicSticky\\\\SetTopicStickyRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/SetTopicSticky/SetTopicStickyRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\SetTopicSticky\\\\SetTopicStickyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/SetTopicSticky/SetTopicStickyRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\SetTopicSticky\\\\SetTopicStickyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/SetTopicSticky/SetTopicStickyRequest.php
 
@@ -3691,17 +3306,7 @@ parameters:
 			path: src/Module/Alliance/Action/Signup/Signup.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\Signup\\\\SignupRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/Signup/SignupRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\Signup\\\\SignupRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/Signup/SignupRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\Signup\\\\SignupRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/Signup/SignupRequest.php
 
@@ -3741,17 +3346,7 @@ parameters:
 			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeace.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\SuggestPeace\\\\SuggestPeaceRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeaceRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\SuggestPeace\\\\SuggestPeaceRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeaceRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\SuggestPeace\\\\SuggestPeaceRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeaceRequest.php
 
@@ -3776,17 +3371,7 @@ parameters:
 			path: src/Module/Alliance/Action/UnsetTopicSticky/UnsetTopicSticky.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\UnsetTopicSticky\\\\UnsetTopicStickyRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/UnsetTopicSticky/UnsetTopicStickyRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\UnsetTopicSticky\\\\UnsetTopicStickyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/UnsetTopicSticky/UnsetTopicStickyRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\UnsetTopicSticky\\\\UnsetTopicStickyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/UnsetTopicSticky/UnsetTopicStickyRequest.php
 
@@ -3851,17 +3436,7 @@ parameters:
 			path: src/Module/Alliance/View/AllianceDetails/AllianceDetails.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\AllianceDetails\\\\AllianceDetailsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/AllianceDetails/AllianceDetailsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\AllianceDetails\\\\AllianceDetailsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/AllianceDetails/AllianceDetailsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\AllianceDetails\\\\AllianceDetailsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/AllianceDetails/AllianceDetailsRequest.php
 
@@ -3911,17 +3486,7 @@ parameters:
 			path: src/Module/Alliance/View/Board/Board.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Board\\\\BoardRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Board/BoardRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Board\\\\BoardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Board/BoardRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Board\\\\BoardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/Board/BoardRequest.php
 
@@ -3941,17 +3506,7 @@ parameters:
 			path: src/Module/Alliance/View/BoardSettings/BoardSettings.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\BoardSettings\\\\BoardSettingsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/BoardSettings/BoardSettingsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\BoardSettings\\\\BoardSettingsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/BoardSettings/BoardSettingsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\BoardSettings\\\\BoardSettingsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/BoardSettings/BoardSettingsRequest.php
 
@@ -4051,17 +3606,7 @@ parameters:
 			path: src/Module/Alliance/View/NewPost/NewPost.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\NewPost\\\\NewPostRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/NewPost/NewPostRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\NewPost\\\\NewPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/NewPost/NewPostRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\NewPost\\\\NewPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/NewPost/NewPostRequest.php
 
@@ -4086,17 +3631,7 @@ parameters:
 			path: src/Module/Alliance/View/NewTopic/NewTopic.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\NewTopic\\\\NewTopicRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/NewTopic/NewTopicRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\NewTopic\\\\NewTopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/NewTopic/NewTopicRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\NewTopic\\\\NewTopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/NewTopic/NewTopicRequest.php
 
@@ -4241,17 +3776,7 @@ parameters:
 			path: src/Module/Alliance/View/Topic/Topic.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Topic\\\\TopicRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Topic/TopicRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Topic\\\\TopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Topic/TopicRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Topic\\\\TopicRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/Topic/TopicRequest.php
 
@@ -4271,17 +3796,7 @@ parameters:
 			path: src/Module/Alliance/View/TopicSettings/TopicSettings.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\TopicSettings\\\\TopicSettingsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/TopicSettings/TopicSettingsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\TopicSettings\\\\TopicSettingsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/TopicSettings/TopicSettingsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\TopicSettings\\\\TopicSettingsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/TopicSettings/TopicSettingsRequest.php
 
@@ -4526,17 +4041,7 @@ parameters:
 			path: src/Module/Colony/Action/CancelShipRepair/CancelShipRepair.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\CancelShipRepair\\\\CancelShipRepairRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/CancelShipRepair/CancelShipRepairRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\CancelShipRepair\\\\CancelShipRepairRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/CancelShipRepair/CancelShipRepairRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\CancelShipRepair\\\\CancelShipRepairRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/CancelShipRepair/CancelShipRepairRequest.php
 
@@ -4561,17 +4066,7 @@ parameters:
 			path: src/Module/Colony/Action/ChangeName/ChangeName.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\ChangeName\\\\ChangeNameRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ChangeName/ChangeNameRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\ChangeName\\\\ChangeNameRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ChangeName/ChangeNameRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\ChangeName\\\\ChangeNameRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/ChangeName/ChangeNameRequest.php
 
@@ -4586,17 +4081,7 @@ parameters:
 			path: src/Module/Colony/Action/ChangeTorpedoType/ChangeTorpedoType.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\ChangeTorpedoType\\\\ChangeTorpedoTypeRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ChangeTorpedoType/ChangeTorpedoTypeRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\ChangeTorpedoType\\\\ChangeTorpedoTypeRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ChangeTorpedoType/ChangeTorpedoTypeRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\ChangeTorpedoType\\\\ChangeTorpedoTypeRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/ChangeTorpedoType/ChangeTorpedoTypeRequest.php
 
@@ -4761,17 +4246,7 @@ parameters:
 			path: src/Module/Colony/Action/GiveUp/GiveUp.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\GiveUp\\\\GiveUpRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/GiveUp/GiveUpRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\GiveUp\\\\GiveUpRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/GiveUp/GiveUpRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\GiveUp\\\\GiveUpRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/GiveUp/GiveUpRequest.php
 
@@ -4956,17 +4431,7 @@ parameters:
 			path: src/Module/Colony/Action/RenameBuildplan/RenameBuildplan.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\RenameBuildplan\\\\RenameBuildplanRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/RenameBuildplan/RenameBuildplanRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\RenameBuildplan\\\\RenameBuildplanRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/RenameBuildplan/RenameBuildplanRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Action\\\\RenameBuildplan\\\\RenameBuildplanRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/RenameBuildplan/RenameBuildplanRequest.php
 
@@ -5796,17 +5261,7 @@ parameters:
 			path: src/Module/Colony/View/ShowAcademy/ShowAcademy.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowAcademy\\\\ShowAcademyRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowAcademy/ShowAcademyRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowAcademy\\\\ShowAcademyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowAcademy/ShowAcademyRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowAcademy\\\\ShowAcademyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowAcademy/ShowAcademyRequest.php
 
@@ -5821,17 +5276,7 @@ parameters:
 			path: src/Module/Colony/View/ShowAirfield/ShowAirfield.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowAirfield\\\\ShowAirfieldRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowAirfield/ShowAirfieldRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowAirfield\\\\ShowAirfieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowAirfield/ShowAirfieldRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowAirfield\\\\ShowAirfieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowAirfield/ShowAirfieldRequest.php
 
@@ -5846,17 +5291,7 @@ parameters:
 			path: src/Module/Colony/View/ShowBeamFrom/ShowBeamFrom.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBeamFrom\\\\ShowBeamFromRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBeamFrom/ShowBeamFromRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBeamFrom\\\\ShowBeamFromRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBeamFrom/ShowBeamFromRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBeamFrom\\\\ShowBeamFromRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowBeamFrom/ShowBeamFromRequest.php
 
@@ -5871,17 +5306,7 @@ parameters:
 			path: src/Module/Colony/View/ShowBeamTo/ShowBeamTo.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBeamTo\\\\ShowBeamToRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBeamTo/ShowBeamToRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBeamTo\\\\ShowBeamToRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBeamTo/ShowBeamToRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBeamTo\\\\ShowBeamToRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowBeamTo/ShowBeamToRequest.php
 
@@ -5896,17 +5321,7 @@ parameters:
 			path: src/Module/Colony/View/ShowBuildMenu/ShowBuildMenu.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildMenu\\\\ShowBuildMenuRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuildMenu/ShowBuildMenuRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildMenu\\\\ShowBuildMenuRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuildMenu/ShowBuildMenuRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildMenu\\\\ShowBuildMenuRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowBuildMenu/ShowBuildMenuRequest.php
 
@@ -5921,17 +5336,7 @@ parameters:
 			path: src/Module/Colony/View/ShowBuildMenuPart/ShowBuildMenuPart.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildMenuPart\\\\ShowBuildMenuPartRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuildMenuPart/ShowBuildMenuPartRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildMenuPart\\\\ShowBuildMenuPartRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuildMenuPart/ShowBuildMenuPartRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildMenuPart\\\\ShowBuildMenuPartRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowBuildMenuPart/ShowBuildMenuPartRequest.php
 
@@ -5946,17 +5351,7 @@ parameters:
 			path: src/Module/Colony/View/ShowBuildPlans/ShowBuildPlans.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildPlans\\\\ShowBuildPlansRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuildPlans/ShowBuildPlansRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildPlans\\\\ShowBuildPlansRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuildPlans/ShowBuildPlansRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildPlans\\\\ShowBuildPlansRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowBuildPlans/ShowBuildPlansRequest.php
 
@@ -5981,17 +5376,7 @@ parameters:
 			path: src/Module/Colony/View/ShowBuilding/ShowBuilding.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuilding\\\\ShowBuildingRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuilding/ShowBuildingRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuilding\\\\ShowBuildingRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuilding/ShowBuildingRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuilding\\\\ShowBuildingRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowBuilding/ShowBuildingRequest.php
 
@@ -6016,17 +5401,7 @@ parameters:
 			path: src/Module/Colony/View/ShowBuildingManagement/ShowBuildingManagement.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildingManagement\\\\ShowBuildingManagementRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuildingManagement/ShowBuildingManagementRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildingManagement\\\\ShowBuildingManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuildingManagement/ShowBuildingManagementRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowBuildingManagement\\\\ShowBuildingManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowBuildingManagement/ShowBuildingManagementRequest.php
 
@@ -6051,17 +5426,7 @@ parameters:
 			path: src/Module/Colony/View/ShowColony/ShowColony.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowColony\\\\ShowColonyRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowColony/ShowColonyRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowColony\\\\ShowColonyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowColony/ShowColonyRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowColony\\\\ShowColonyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowColony/ShowColonyRequest.php
 
@@ -6076,17 +5441,7 @@ parameters:
 			path: src/Module/Colony/View/ShowEpsBar/ShowEpsBar.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowEpsBar\\\\ShowEpsBarRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowEpsBar/ShowEpsBarRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowEpsBar\\\\ShowEpsBarRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowEpsBar/ShowEpsBarRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowEpsBar\\\\ShowEpsBarRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowEpsBar/ShowEpsBarRequest.php
 
@@ -6106,17 +5461,7 @@ parameters:
 			path: src/Module/Colony/View/ShowField/ShowField.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowField\\\\ShowFieldRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowField/ShowFieldRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowField\\\\ShowFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowField/ShowFieldRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowField\\\\ShowFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowField/ShowFieldRequest.php
 
@@ -6131,17 +5476,7 @@ parameters:
 			path: src/Module/Colony/View/ShowFighterShipyard/ShowFighterShipyard.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowFighterShipyard\\\\ShowFighterShipyardRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowFighterShipyard/ShowFighterShipyardRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowFighterShipyard\\\\ShowFighterShipyardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowFighterShipyard/ShowFighterShipyardRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowFighterShipyard\\\\ShowFighterShipyardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowFighterShipyard/ShowFighterShipyardRequest.php
 
@@ -6181,17 +5516,7 @@ parameters:
 			path: src/Module/Colony/View/ShowManagement/ShowManagement.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowManagement\\\\ShowManagementRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowManagement/ShowManagementRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowManagement\\\\ShowManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowManagement/ShowManagementRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowManagement\\\\ShowManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowManagement/ShowManagementRequest.php
 
@@ -6206,17 +5531,7 @@ parameters:
 			path: src/Module/Colony/View/ShowMisc/ShowMisc.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowMisc\\\\ShowMiscRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowMisc/ShowMiscRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowMisc\\\\ShowMiscRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowMisc/ShowMiscRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowMisc\\\\ShowMiscRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowMisc/ShowMiscRequest.php
 
@@ -6231,17 +5546,7 @@ parameters:
 			path: src/Module/Colony/View/ShowModuleCancel/ShowModuleCancel.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleCancel\\\\ShowModuleCancelRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleCancel/ShowModuleCancelRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleCancel\\\\ShowModuleCancelRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleCancel/ShowModuleCancelRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleCancel\\\\ShowModuleCancelRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowModuleCancel/ShowModuleCancelRequest.php
 
@@ -6266,17 +5571,7 @@ parameters:
 			path: src/Module/Colony/View/ShowModuleFab/ShowModuleFab.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleFab\\\\ShowModuleFabRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleFab/ShowModuleFabRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleFab\\\\ShowModuleFabRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleFab/ShowModuleFabRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleFab\\\\ShowModuleFabRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowModuleFab/ShowModuleFabRequest.php
 
@@ -6301,17 +5596,7 @@ parameters:
 			path: src/Module/Colony/View/ShowModuleScreen/ShowModuleScreen.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleScreen\\\\ShowModuleScreenRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleScreen/ShowModuleScreenRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleScreen\\\\ShowModuleScreenRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleScreen/ShowModuleScreenRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleScreen\\\\ShowModuleScreenRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowModuleScreen/ShowModuleScreenRequest.php
 
@@ -6346,17 +5631,7 @@ parameters:
 			path: src/Module/Colony/View/ShowOrbitManagement/ShowOrbitManagement.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowOrbitManagement\\\\ShowOrbitManagementRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowOrbitManagement/ShowOrbitManagementRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowOrbitManagement\\\\ShowOrbitManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowOrbitManagement/ShowOrbitManagementRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowOrbitManagement\\\\ShowOrbitManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowOrbitManagement/ShowOrbitManagementRequest.php
 
@@ -6371,17 +5646,7 @@ parameters:
 			path: src/Module/Colony/View/ShowOrbitShiplist/ShowOrbitShiplist.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowOrbitShiplist\\\\ShowOrbitShiplistRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowOrbitShiplist/ShowOrbitShiplistRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowOrbitShiplist\\\\ShowOrbitShiplistRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowOrbitShiplist/ShowOrbitShiplistRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowOrbitShiplist\\\\ShowOrbitShiplistRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowOrbitShiplist/ShowOrbitShiplistRequest.php
 
@@ -6441,17 +5706,7 @@ parameters:
 			path: src/Module/Colony/View/ShowShipDisassembly/ShowShipDisassembly.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipDisassembly\\\\ShowShipDisassemblyRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipDisassembly/ShowShipDisassemblyRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipDisassembly\\\\ShowShipDisassemblyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipDisassembly/ShowShipDisassemblyRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipDisassembly\\\\ShowShipDisassemblyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowShipDisassembly/ShowShipDisassemblyRequest.php
 
@@ -6471,17 +5726,7 @@ parameters:
 			path: src/Module/Colony/View/ShowShipRepair/ShowShipRepair.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipRepair\\\\ShowShipRepairRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipRepair/ShowShipRepairRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipRepair\\\\ShowShipRepairRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipRepair/ShowShipRepairRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipRepair\\\\ShowShipRepairRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowShipRepair/ShowShipRepairRequest.php
 
@@ -6506,17 +5751,7 @@ parameters:
 			path: src/Module/Colony/View/ShowShipyard/ShowShipyard.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipyard\\\\ShowShipyardRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipyard/ShowShipyardRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipyard\\\\ShowShipyardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipyard/ShowShipyardRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShipyard\\\\ShowShipyardRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowShipyard/ShowShipyardRequest.php
 
@@ -6546,17 +5781,7 @@ parameters:
 			path: src/Module/Colony/View/ShowShuttleManagement/ShowShuttleManagement.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShuttleManagement\\\\ShowShuttleManagementRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShuttleManagement/ShowShuttleManagementRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShuttleManagement\\\\ShowShuttleManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShuttleManagement/ShowShuttleManagementRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowShuttleManagement\\\\ShowShuttleManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowShuttleManagement/ShowShuttleManagementRequest.php
 
@@ -6571,17 +5796,7 @@ parameters:
 			path: src/Module/Colony/View/ShowSocial/ShowSocial.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSocial\\\\ShowSocialRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowSocial/ShowSocialRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSocial\\\\ShowSocialRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowSocial/ShowSocialRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSocial\\\\ShowSocialRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowSocial/ShowSocialRequest.php
 
@@ -6596,17 +5811,7 @@ parameters:
 			path: src/Module/Colony/View/ShowStorage/ShowStorage.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowStorage\\\\ShowStorageRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowStorage/ShowStorageRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowStorage\\\\ShowStorageRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowStorage/ShowStorageRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowStorage\\\\ShowStorageRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowStorage/ShowStorageRequest.php
 
@@ -6651,17 +5856,7 @@ parameters:
 			path: src/Module/Colony/View/ShowSurface/ShowSurface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSurface\\\\ShowSurfaceRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowSurface/ShowSurfaceRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSurface\\\\ShowSurfaceRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowSurface/ShowSurfaceRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowSurface\\\\ShowSurfaceRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowSurface/ShowSurfaceRequest.php
 
@@ -6676,17 +5871,7 @@ parameters:
 			path: src/Module/Colony/View/ShowTorpedoFab/ShowTorpedoFab.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowTorpedoFab\\\\ShowTorpedoFabRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowTorpedoFab/ShowTorpedoFabRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowTorpedoFab\\\\ShowTorpedoFabRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowTorpedoFab/ShowTorpedoFabRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowTorpedoFab\\\\ShowTorpedoFabRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowTorpedoFab/ShowTorpedoFabRequest.php
 
@@ -6711,17 +5896,7 @@ parameters:
 			path: src/Module/Communication/Action/AddKnPlotMember/AddKnPlotMember.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\AddKnPlotMember\\\\AddKnPlotMemberRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/AddKnPlotMember/AddKnPlotMemberRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\AddKnPlotMember\\\\AddKnPlotMemberRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/AddKnPlotMember/AddKnPlotMemberRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\AddKnPlotMember\\\\AddKnPlotMemberRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/AddKnPlotMember/AddKnPlotMemberRequest.php
 
@@ -6756,17 +5931,7 @@ parameters:
 			path: src/Module/Communication/Action/AddKnPost/AddKnPost.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\AddKnPost\\\\AddKnPostRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/AddKnPost/AddKnPostRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\AddKnPost\\\\AddKnPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/AddKnPost/AddKnPostRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\AddKnPost\\\\AddKnPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/AddKnPost/AddKnPostRequest.php
 
@@ -6821,17 +5986,7 @@ parameters:
 			path: src/Module/Communication/Action/CreateKnPlot/CreateKnPlot.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\CreateKnPlot\\\\CreateKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/CreateKnPlot/CreateKnPlotRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\CreateKnPlot\\\\CreateKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/CreateKnPlot/CreateKnPlotRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\CreateKnPlot\\\\CreateKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/CreateKnPlot/CreateKnPlotRequest.php
 
@@ -6851,17 +6006,7 @@ parameters:
 			path: src/Module/Communication/Action/DeleteKnComment/DeleteKnComment.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnComment\\\\DeleteKnCommentRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/DeleteKnComment/DeleteKnCommentRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnComment\\\\DeleteKnCommentRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/DeleteKnComment/DeleteKnCommentRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnComment\\\\DeleteKnCommentRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/DeleteKnComment/DeleteKnCommentRequest.php
 
@@ -6876,17 +6021,7 @@ parameters:
 			path: src/Module/Communication/Action/DeleteKnPlotMember/DeleteKnPlotMember.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnPlotMember\\\\DeleteKnPlotMemberRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/DeleteKnPlotMember/DeleteKnPlotMemberRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnPlotMember\\\\DeleteKnPlotMemberRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/DeleteKnPlotMember/DeleteKnPlotMemberRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnPlotMember\\\\DeleteKnPlotMemberRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/DeleteKnPlotMember/DeleteKnPlotMemberRequest.php
 
@@ -6906,17 +6041,7 @@ parameters:
 			path: src/Module/Communication/Action/DeleteKnPost/DeleteKnPost.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnPost\\\\DeleteKnPostRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/DeleteKnPost/DeleteKnPostRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnPost\\\\DeleteKnPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/DeleteKnPost/DeleteKnPostRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\DeleteKnPost\\\\DeleteKnPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/DeleteKnPost/DeleteKnPostRequest.php
 
@@ -6931,17 +6056,7 @@ parameters:
 			path: src/Module/Communication/Action/EditKnPlot/EditKnPlot.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EditKnPlot\\\\EditKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/EditKnPlot/EditKnPlotRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EditKnPlot\\\\EditKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/EditKnPlot/EditKnPlotRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EditKnPlot\\\\EditKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/EditKnPlot/EditKnPlotRequest.php
 
@@ -6961,17 +6076,7 @@ parameters:
 			path: src/Module/Communication/Action/EditKnPost/EditKnPost.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EditKnPost\\\\EditKnPostRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/EditKnPost/EditKnPostRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EditKnPost\\\\EditKnPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/EditKnPost/EditKnPostRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EditKnPost\\\\EditKnPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/EditKnPost/EditKnPostRequest.php
 
@@ -6986,17 +6091,7 @@ parameters:
 			path: src/Module/Communication/Action/EndKnPlot/EndKnPlot.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EndKnPlot\\\\EndKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/EndKnPlot/EndKnPlotRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EndKnPlot\\\\EndKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/EndKnPlot/EndKnPlotRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\EndKnPlot\\\\EndKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/EndKnPlot/EndKnPlotRequest.php
 
@@ -7031,17 +6126,7 @@ parameters:
 			path: src/Module/Communication/Action/PostKnComment/PostKnComment.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\PostKnComment\\\\PostKnCommentRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/PostKnComment/PostKnCommentRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\PostKnComment\\\\PostKnCommentRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/PostKnComment/PostKnCommentRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\PostKnComment\\\\PostKnCommentRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/PostKnComment/PostKnCommentRequest.php
 
@@ -7061,17 +6146,7 @@ parameters:
 			path: src/Module/Communication/Action/RateKnPost/RateKnPost.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\RateKnPost\\\\RateKnPostRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/RateKnPost/RateKnPostRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\RateKnPost\\\\RateKnPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/RateKnPost/RateKnPostRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\RateKnPost\\\\RateKnPostRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/RateKnPost/RateKnPostRequest.php
 
@@ -7091,17 +6166,7 @@ parameters:
 			path: src/Module/Communication/Action/SetKnMark/SetKnMark.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\SetKnMark\\\\SetKnMarkRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/SetKnMark/SetKnMarkRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\SetKnMark\\\\SetKnMarkRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/SetKnMark/SetKnMarkRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\Action\\\\SetKnMark\\\\SetKnMarkRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/SetKnMark/SetKnMarkRequest.php
 
@@ -7126,17 +6191,7 @@ parameters:
 			path: src/Module/Communication/View/Overview/Overview.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/Overview/OverviewRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/Overview/OverviewRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/View/Overview/OverviewRequest.php
 
@@ -7156,17 +6211,7 @@ parameters:
 			path: src/Module/Communication/View/ShowEditKn/ShowEditKn.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowEditKn\\\\ShowEditKnRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowEditKn/ShowEditKnRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowEditKn\\\\ShowEditKnRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowEditKn/ShowEditKnRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowEditKn\\\\ShowEditKnRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/View/ShowEditKn/ShowEditKnRequest.php
 
@@ -7186,17 +6231,7 @@ parameters:
 			path: src/Module/Communication/View/ShowEditPlot/ShowEditPlot.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowEditPlot\\\\ShowEditPlotRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowEditPlot/ShowEditPlotRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowEditPlot\\\\ShowEditPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowEditPlot/ShowEditPlotRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowEditPlot\\\\ShowEditPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/View/ShowEditPlot/ShowEditPlotRequest.php
 
@@ -7216,17 +6251,7 @@ parameters:
 			path: src/Module/Communication/View/ShowKnComments/ShowKnComments.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowKnComments\\\\ShowKnCommentsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowKnComments/ShowKnCommentsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowKnComments\\\\ShowKnCommentsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowKnComments/ShowKnCommentsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowKnComments\\\\ShowKnCommentsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/View/ShowKnComments/ShowKnCommentsRequest.php
 
@@ -7246,17 +6271,7 @@ parameters:
 			path: src/Module/Communication/View/ShowKnPlot/ShowKnPlot.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowKnPlot\\\\ShowKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowKnPlot/ShowKnPlotRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowKnPlot\\\\ShowKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowKnPlot/ShowKnPlotRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowKnPlot\\\\ShowKnPlotRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/View/ShowKnPlot/ShowKnPlotRequest.php
 
@@ -7281,17 +6296,7 @@ parameters:
 			path: src/Module/Communication/View/ShowSearchResult/ShowPostSearchResult.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowSearchResult\\\\ShowSearchResultRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowSearchResult/ShowSearchResultRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowSearchResult\\\\ShowSearchResultRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowSearchResult/ShowSearchResultRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowSearchResult\\\\ShowSearchResultRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/View/ShowSearchResult/ShowSearchResultRequest.php
 
@@ -7311,17 +6316,7 @@ parameters:
 			path: src/Module/Communication/View/ShowSingleKn/ShowSingleKn.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowSingleKn\\\\ShowSingleKnRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowSingleKn/ShowSingleKnRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowSingleKn\\\\ShowSingleKnRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Communication/View/ShowSingleKn/ShowSingleKnRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Communication\\\\View\\\\ShowSingleKn\\\\ShowSingleKnRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Communication/View/ShowSingleKn/ShowSingleKnRequest.php
 
@@ -8006,17 +7001,7 @@ parameters:
 			path: src/Module/Database/View/Category/Category.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\CategoryRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/Category/CategoryRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\CategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/Category/CategoryRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\Category\\\\CategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/Category/CategoryRequest.php
 
@@ -8111,17 +7096,7 @@ parameters:
 			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\DatabaseEntry\\\\DatabaseEntryRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/DatabaseEntry/DatabaseEntryRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\DatabaseEntry\\\\DatabaseEntryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/DatabaseEntry/DatabaseEntryRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\DatabaseEntry\\\\DatabaseEntryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/DatabaseEntry/DatabaseEntryRequest.php
 
@@ -8161,17 +7136,7 @@ parameters:
 			path: src/Module/Database/View/ShowCommoditiesLocations/ShowCommoditiesLocations.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowCommoditiesLocations\\\\ShowCommoditiesLocationsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowCommoditiesLocations/ShowCommoditiesLocationsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowCommoditiesLocations\\\\ShowCommoditiesLocationsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowCommoditiesLocations/ShowCommoditiesLocationsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowCommoditiesLocations\\\\ShowCommoditiesLocationsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/ShowCommoditiesLocations/ShowCommoditiesLocationsRequest.php
 
@@ -8296,17 +7261,7 @@ parameters:
 			path: src/Module/Database/View/UserList/UserList.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\UserList\\\\UserListRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/UserList/UserListRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\UserList\\\\UserListRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/UserList/UserListRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\UserList\\\\UserListRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/UserList/UserListRequest.php
 
@@ -8321,17 +7276,7 @@ parameters:
 			path: src/Module/History/View/Overview/Overview.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/History/View/Overview/OverviewRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/History/View/Overview/OverviewRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/History/View/Overview/OverviewRequest.php
 
@@ -8356,17 +7301,7 @@ parameters:
 			path: src/Module/Index/Action/CheckInput/CheckInput.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\CheckInput\\\\CheckInputRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/CheckInput/CheckInputRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\CheckInput\\\\CheckInputRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/CheckInput/CheckInputRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\CheckInput\\\\CheckInputRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Index/Action/CheckInput/CheckInputRequest.php
 
@@ -8376,17 +7311,7 @@ parameters:
 			path: src/Module/Index/Action/CheckInput/CheckInputRequest.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\DeletionConfirmation\\\\DeletionConfirmationRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/DeletionConfirmation/DeletionConfirmationRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\DeletionConfirmation\\\\DeletionConfirmationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/DeletionConfirmation/DeletionConfirmationRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\DeletionConfirmation\\\\DeletionConfirmationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Index/Action/DeletionConfirmation/DeletionConfirmationRequest.php
 
@@ -8401,17 +7326,7 @@ parameters:
 			path: src/Module/Index/Action/Login/Login.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\Login\\\\LoginRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/Login/LoginRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\Login\\\\LoginRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/Login/LoginRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\Login\\\\LoginRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Index/Action/Login/LoginRequest.php
 
@@ -8431,17 +7346,7 @@ parameters:
 			path: src/Module/Index/Action/Register/Register.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\Register\\\\RegisterRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/Register/RegisterRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\Register\\\\RegisterRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/Register/RegisterRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\Register\\\\RegisterRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Index/Action/Register/RegisterRequest.php
 
@@ -8456,17 +7361,7 @@ parameters:
 			path: src/Module/Index/Action/ResetPassword/ResetPassword.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\ResetPassword\\\\ResetPasswordRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/ResetPassword/ResetPasswordRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\ResetPassword\\\\ResetPasswordRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/ResetPassword/ResetPasswordRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\ResetPassword\\\\ResetPasswordRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Index/Action/ResetPassword/ResetPasswordRequest.php
 
@@ -8476,17 +7371,7 @@ parameters:
 			path: src/Module/Index/Action/ResetPassword/ResetPasswordRequest.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\SendPassword\\\\SendPasswordRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/SendPassword/SendPasswordRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\SendPassword\\\\SendPasswordRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Index/Action/SendPassword/SendPasswordRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\SendPassword\\\\SendPasswordRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Index/Action/SendPassword/SendPasswordRequest.php
 
@@ -8496,17 +7381,7 @@ parameters:
 			path: src/Module/Index/Action/SendPassword/SendPasswordRequest.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\View\\\\ShowRegistration\\\\ShowRegistrationRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Index/View/ShowRegistration/ShowRegistrationRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Index\\\\View\\\\ShowRegistration\\\\ShowRegistrationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Index/View/ShowRegistration/ShowRegistrationRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\View\\\\ShowRegistration\\\\ShowRegistrationRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Index/View/ShowRegistration/ShowRegistrationRequest.php
 
@@ -8521,17 +7396,7 @@ parameters:
 			path: src/Module/Index/View/ShowResetPassword/ShowResetPassword.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\View\\\\ShowResetPassword\\\\ShowResetPasswordRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Index/View/ShowResetPassword/ShowResetPasswordRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Index\\\\View\\\\ShowResetPassword\\\\ShowResetPasswordRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Index/View/ShowResetPassword/ShowResetPasswordRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\View\\\\ShowResetPassword\\\\ShowResetPasswordRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Index/View/ShowResetPassword/ShowResetPasswordRequest.php
 
@@ -8591,17 +7456,7 @@ parameters:
 			path: src/Module/Maindesk/Action/FirstColony/FirstColony.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Maindesk\\\\Action\\\\FirstColony\\\\FirstColonyRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Maindesk/Action/FirstColony/FirstColonyRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Maindesk\\\\Action\\\\FirstColony\\\\FirstColonyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Maindesk/Action/FirstColony/FirstColonyRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Maindesk\\\\Action\\\\FirstColony\\\\FirstColonyRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Maindesk/Action/FirstColony/FirstColonyRequest.php
 
@@ -8791,17 +7646,7 @@ parameters:
 			path: src/Module/Message/Action/AddContact/AddContact.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\AddContact\\\\AddContactRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/AddContact/AddContactRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\AddContact\\\\AddContactRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/AddContact/AddContactRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\AddContact\\\\AddContactRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/AddContact/AddContactRequest.php
 
@@ -8816,17 +7661,7 @@ parameters:
 			path: src/Module/Message/Action/AddPmCategory/AddPmCategory.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\AddPmCategory\\\\AddPmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/AddPmCategory/AddPmCategoryRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\AddPmCategory\\\\AddPmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/AddPmCategory/AddPmCategoryRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\AddPmCategory\\\\AddPmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/AddPmCategory/AddPmCategoryRequest.php
 
@@ -8851,17 +7686,7 @@ parameters:
 			path: src/Module/Message/Action/DeleteAllPms/DeleteAllPms.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteAllPms\\\\DeleteAllPmsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeleteAllPms/DeleteAllPmsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteAllPms\\\\DeleteAllPmsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeleteAllPms/DeleteAllPmsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteAllPms\\\\DeleteAllPmsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/DeleteAllPms/DeleteAllPmsRequest.php
 
@@ -8876,17 +7701,7 @@ parameters:
 			path: src/Module/Message/Action/DeleteContacts/DeleteContacts.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteContacts\\\\DeleteContactsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeleteContacts/DeleteContactsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteContacts\\\\DeleteContactsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeleteContacts/DeleteContactsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteContacts\\\\DeleteContactsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/DeleteContacts/DeleteContactsRequest.php
 
@@ -8916,17 +7731,7 @@ parameters:
 			path: src/Module/Message/Action/DeleteIgnores/DeleteIgnores.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteIgnores\\\\DeleteIgnoresRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeleteIgnores/DeleteIgnoresRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteIgnores\\\\DeleteIgnoresRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeleteIgnores/DeleteIgnoresRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteIgnores\\\\DeleteIgnoresRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/DeleteIgnores/DeleteIgnoresRequest.php
 
@@ -8951,17 +7756,7 @@ parameters:
 			path: src/Module/Message/Action/DeletePmCategory/DeletePmCategory.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeletePmCategory\\\\DeletePmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeletePmCategory/DeletePmCategoryRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeletePmCategory\\\\DeletePmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeletePmCategory/DeletePmCategoryRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeletePmCategory\\\\DeletePmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/DeletePmCategory/DeletePmCategoryRequest.php
 
@@ -8971,17 +7766,7 @@ parameters:
 			path: src/Module/Message/Action/DeletePmCategory/DeletePmCategoryRequest.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeletePms\\\\DeletePmsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeletePms/DeletePmsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeletePms\\\\DeletePmsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/DeletePms/DeletePmsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeletePms\\\\DeletePmsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/DeletePms/DeletePmsRequest.php
 
@@ -9006,17 +7791,7 @@ parameters:
 			path: src/Module/Message/Action/EditContactComment/EditContactComment.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\EditContactComment\\\\EditContactCommentRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/EditContactComment/EditContactCommentRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\EditContactComment\\\\EditContactCommentRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/EditContactComment/EditContactCommentRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\EditContactComment\\\\EditContactCommentRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/EditContactComment/EditContactCommentRequest.php
 
@@ -9031,17 +7806,7 @@ parameters:
 			path: src/Module/Message/Action/EditPmCategory/EditPmCategory.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\EditPmCategory\\\\EditPmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/EditPmCategory/EditPmCategoryRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\EditPmCategory\\\\EditPmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/EditPmCategory/EditPmCategoryRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\EditPmCategory\\\\EditPmCategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/EditPmCategory/EditPmCategoryRequest.php
 
@@ -9061,17 +7826,7 @@ parameters:
 			path: src/Module/Message/Action/IgnoreUser/IgnoreUser.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\IgnoreUser\\\\IgnoreUserRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/IgnoreUser/IgnoreUserRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\IgnoreUser\\\\IgnoreUserRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/IgnoreUser/IgnoreUserRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\IgnoreUser\\\\IgnoreUserRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/IgnoreUser/IgnoreUserRequest.php
 
@@ -9096,17 +7851,7 @@ parameters:
 			path: src/Module/Message/Action/MovePm/MovePm.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\MovePm\\\\MovePmRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/MovePm/MovePmRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\MovePm\\\\MovePmRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/MovePm/MovePmRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\MovePm\\\\MovePmRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/MovePm/MovePmRequest.php
 
@@ -9121,17 +7866,7 @@ parameters:
 			path: src/Module/Message/Action/SortPmCategories/SortPmCategories.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\SortPmCategories\\\\SortPmCategoriesRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/SortPmCategories/SortPmCategoriesRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\SortPmCategories\\\\SortPmCategoriesRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/SortPmCategories/SortPmCategoriesRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\SortPmCategories\\\\SortPmCategoriesRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/SortPmCategories/SortPmCategoriesRequest.php
 
@@ -9161,17 +7896,7 @@ parameters:
 			path: src/Module/Message/Action/SwitchContactMode/SwitchContactMode.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\SwitchContactMode\\\\SwitchContactModeRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/SwitchContactMode/SwitchContactModeRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\SwitchContactMode\\\\SwitchContactModeRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/SwitchContactMode/SwitchContactModeRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\SwitchContactMode\\\\SwitchContactModeRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/SwitchContactMode/SwitchContactModeRequest.php
 
@@ -9186,17 +7911,7 @@ parameters:
 			path: src/Module/Message/Action/WritePm/WritePm.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\WritePm\\\\WritePmRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/WritePm/WritePmRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\WritePm\\\\WritePmRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/Action/WritePm/WritePmRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\WritePm\\\\WritePmRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/Action/WritePm/WritePmRequest.php
 
@@ -9281,17 +7996,7 @@ parameters:
 			path: src/Module/Message/View/Overview/Overview.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/View/Overview/OverviewRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/View/Overview/OverviewRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\Overview\\\\OverviewRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/View/Overview/OverviewRequest.php
 
@@ -9306,17 +8011,7 @@ parameters:
 			path: src/Module/Message/View/ShowContactList/ShowContactList.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowContactModeSwitch\\\\ShowContactModeSwitchRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/View/ShowContactModeSwitch/ShowContactModeSwitchRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowContactModeSwitch\\\\ShowContactModeSwitchRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/View/ShowContactModeSwitch/ShowContactModeSwitchRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowContactModeSwitch\\\\ShowContactModeSwitchRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/View/ShowContactModeSwitch/ShowContactModeSwitchRequest.php
 
@@ -9331,17 +8026,7 @@ parameters:
 			path: src/Module/Message/View/ShowContactModeSwitch5/ShowContactModeSwitch.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowEditPmCategory\\\\ShowEditCategoryRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/View/ShowEditPmCategory/ShowEditCategoryRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowEditPmCategory\\\\ShowEditCategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/View/ShowEditPmCategory/ShowEditCategoryRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowEditPmCategory\\\\ShowEditCategoryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/View/ShowEditPmCategory/ShowEditCategoryRequest.php
 
@@ -9371,17 +8056,7 @@ parameters:
 			path: src/Module/Message/View/ShowWritePm/ShowWritePm.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowWritePm\\\\ShowWritePmRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Message/View/ShowWritePm/ShowWritePmRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowWritePm\\\\ShowWritePmRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Message/View/ShowWritePm/ShowWritePmRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Message\\\\View\\\\ShowWritePm\\\\ShowWritePmRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Message/View/ShowWritePm/ShowWritePmRequest.php
 
@@ -9506,17 +8181,7 @@ parameters:
 			path: src/Module/Notes/Action/SaveNote/SaveNote.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Notes\\\\Action\\\\SaveNote\\\\SaveNoteRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Notes/Action/SaveNote/SaveNoteRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Notes\\\\Action\\\\SaveNote\\\\SaveNoteRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Notes/Action/SaveNote/SaveNoteRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Notes\\\\Action\\\\SaveNote\\\\SaveNoteRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Notes/Action/SaveNote/SaveNoteRequest.php
 
@@ -9551,17 +8216,7 @@ parameters:
 			path: src/Module/Notes/View/ShowNote/ShowNote.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Notes\\\\View\\\\ShowNote\\\\ShowNoteRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Notes/View/ShowNote/ShowNoteRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Notes\\\\View\\\\ShowNote\\\\ShowNoteRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Notes/View/ShowNote/ShowNoteRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Notes\\\\View\\\\ShowNote\\\\ShowNoteRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Notes/View/ShowNote/ShowNoteRequest.php
 
@@ -9626,17 +8281,7 @@ parameters:
 			path: src/Module/PlayerSetting/Action/ChangeDescription/ChangeDescription.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeDescription\\\\ChangeDescriptionRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeDescription/ChangeDescriptionRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeDescription\\\\ChangeDescriptionRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeDescription/ChangeDescriptionRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeDescription\\\\ChangeDescriptionRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/Action/ChangeDescription/ChangeDescriptionRequest.php
 
@@ -9656,17 +8301,7 @@ parameters:
 			path: src/Module/PlayerSetting/Action/ChangeEmail/ChangeEmail.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeEmail\\\\ChangeEmailRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeEmail/ChangeEmailRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeEmail\\\\ChangeEmailRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeEmail/ChangeEmailRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeEmail\\\\ChangeEmailRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/Action/ChangeEmail/ChangeEmailRequest.php
 
@@ -9691,17 +8326,7 @@ parameters:
 			path: src/Module/PlayerSetting/Action/ChangePassword/ChangePassword.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangePassword\\\\ChangePasswordRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangePassword/ChangePasswordRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangePassword\\\\ChangePasswordRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangePassword/ChangePasswordRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangePassword\\\\ChangePasswordRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/Action/ChangePassword/ChangePasswordRequest.php
 
@@ -9741,17 +8366,7 @@ parameters:
 			path: src/Module/PlayerSetting/Action/ChangeSettings/ChangeSettings.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeSettings\\\\ChangeSettingsRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeSettings/ChangeSettingsRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeSettings\\\\ChangeSettingsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeSettings/ChangeSettingsRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeSettings\\\\ChangeSettingsRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/Action/ChangeSettings/ChangeSettingsRequest.php
 
@@ -9771,17 +8386,7 @@ parameters:
 			path: src/Module/PlayerSetting/Action/ChangeUserName/ChangeUserName.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeUserName\\\\ChangeUserNameRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeUserName/ChangeUserNameRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeUserName\\\\ChangeUserNameRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeUserName/ChangeUserNameRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeUserName\\\\ChangeUserNameRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/Action/ChangeUserName/ChangeUserNameRequest.php
 
@@ -9826,17 +8431,7 @@ parameters:
 			path: src/Module/Research/Action/StartResearch/StartResearch.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\Action\\\\StartResearch\\\\StartResearchRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Research/Action/StartResearch/StartResearchRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Research\\\\Action\\\\StartResearch\\\\StartResearchRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Research/Action/StartResearch/StartResearchRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\Action\\\\StartResearch\\\\StartResearchRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Research/Action/StartResearch/StartResearchRequest.php
 
@@ -9951,17 +8546,7 @@ parameters:
 			path: src/Module/Research/View/ShowResearch/ShowResearch.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\View\\\\ShowResearch\\\\ShowResearchRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Research/View/ShowResearch/ShowResearchRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Research\\\\View\\\\ShowResearch\\\\ShowResearchRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Research/View/ShowResearch/ShowResearchRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Research\\\\View\\\\ShowResearch\\\\ShowResearchRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Research/View/ShowResearch/ShowResearchRequest.php
 
@@ -10486,17 +9071,7 @@ parameters:
 			path: src/Module/Ship/Action/ChangeName/ChangeName.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\ChangeName\\\\ChangeNameRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/ChangeName/ChangeNameRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\ChangeName\\\\ChangeNameRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/ChangeName/ChangeNameRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\ChangeName\\\\ChangeNameRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/ChangeName/ChangeNameRequest.php
 
@@ -10666,17 +9241,7 @@ parameters:
 			path: src/Module/Ship/Action/CreateFleet/CreateFleet.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\CreateFleet\\\\CreateFleetRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/CreateFleet/CreateFleetRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\CreateFleet\\\\CreateFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/CreateFleet/CreateFleetRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\CreateFleet\\\\CreateFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/CreateFleet/CreateFleetRequest.php
 
@@ -10721,17 +9286,7 @@ parameters:
 			path: src/Module/Ship/Action/DeleteFleet/DeleteFleet.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\DeleteFleet\\\\DeleteFleetRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/DeleteFleet/DeleteFleetRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\DeleteFleet\\\\DeleteFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/DeleteFleet/DeleteFleetRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\DeleteFleet\\\\DeleteFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/DeleteFleet/DeleteFleetRequest.php
 
@@ -11111,17 +9666,7 @@ parameters:
 			path: src/Module/Ship/Action/LeaveFleet/LeaveFleet.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveFleet\\\\LeaveFleetRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveFleet/LeaveFleetRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveFleet\\\\LeaveFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveFleet/LeaveFleetRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveFleet\\\\LeaveFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LeaveFleet/LeaveFleetRequest.php
 
@@ -11366,17 +9911,7 @@ parameters:
 			path: src/Module/Ship/Action/OpenAdventDoor/OpenAdventDoor.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\PriorizeFleet\\\\PriorizeFleetRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/PriorizeFleet/PriorizeFleetRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\PriorizeFleet\\\\PriorizeFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/PriorizeFleet/PriorizeFleetRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\PriorizeFleet\\\\PriorizeFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/PriorizeFleet/PriorizeFleetRequest.php
 
@@ -11391,17 +9926,7 @@ parameters:
 			path: src/Module/Ship/Action/RenameCrew/RenameCrew.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\RenameCrew\\\\RenameCrewRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/RenameCrew/RenameCrewRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\RenameCrew\\\\RenameCrewRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/RenameCrew/RenameCrewRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\RenameCrew\\\\RenameCrewRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/RenameCrew/RenameCrewRequest.php
 
@@ -11416,17 +9941,7 @@ parameters:
 			path: src/Module/Ship/Action/RenameFleet/RenameFleet.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\RenameFleet\\\\RenameFleetRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/RenameFleet/RenameFleetRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\RenameFleet\\\\RenameFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/RenameFleet/RenameFleetRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\RenameFleet\\\\RenameFleetRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/RenameFleet/RenameFleetRequest.php
 
@@ -14641,17 +13156,7 @@ parameters:
 			path: src/Module/Starmap/View/ShowSection/ShowSection.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Starmap/View/ShowSection/ShowSectionRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Starmap/View/ShowSection/ShowSectionRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Starmap\\\\View\\\\ShowSection\\\\ShowSectionRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Starmap/View/ShowSection/ShowSectionRequest.php
 
@@ -15076,17 +13581,7 @@ parameters:
 			path: src/Module/Station/View/ShowShipManagement/ShowShipManagement.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowShipManagement\\\\ShowShipManagementRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowShipManagement/ShowShipManagementRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowShipManagement\\\\ShowShipManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowShipManagement/ShowShipManagementRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowShipManagement\\\\ShowShipManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Station/View/ShowShipManagement/ShowShipManagementRequest.php
 
@@ -15111,17 +13606,7 @@ parameters:
 			path: src/Module/Station/View/ShowShuttleManagement/ShowShuttleManagement.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowShuttleManagement\\\\ShowShuttleManagementRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowShuttleManagement/ShowShuttleManagementRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowShuttleManagement\\\\ShowShuttleManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowShuttleManagement/ShowShuttleManagementRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowShuttleManagement\\\\ShowShuttleManagementRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Station/View/ShowShuttleManagement/ShowShuttleManagementRequest.php
 
@@ -15171,17 +13656,7 @@ parameters:
 			path: src/Module/Station/View/ShowStationShiplist/ShowStationShiplist.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowStationShiplist\\\\ShowStationShiplistRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowStationShiplist/ShowStationShiplistRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowStationShiplist\\\\ShowStationShiplistRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowStationShiplist/ShowStationShiplistRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowStationShiplist\\\\ShowStationShiplistRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Station/View/ShowStationShiplist/ShowStationShiplistRequest.php
 
@@ -15466,17 +13941,7 @@ parameters:
 			path: src/Module/Trade/Action/AddShoutBoxEntry/AddShoutBoxEntry.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\AddShoutBoxEntry\\\\AddShoutBoxEntryRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/AddShoutBoxEntry/AddShoutBoxEntryRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\AddShoutBoxEntry\\\\AddShoutBoxEntryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/AddShoutBoxEntry/AddShoutBoxEntryRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\AddShoutBoxEntry\\\\AddShoutBoxEntryRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/AddShoutBoxEntry/AddShoutBoxEntryRequest.php
 
@@ -15546,17 +14011,7 @@ parameters:
 			path: src/Module/Trade/Action/CancelOffer/CancelOffer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CancelOffer\\\\CancelOfferRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/CancelOffer/CancelOfferRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CancelOffer\\\\CancelOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/CancelOffer/CancelOfferRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CancelOffer\\\\CancelOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/CancelOffer/CancelOfferRequest.php
 
@@ -15571,17 +14026,7 @@ parameters:
 			path: src/Module/Trade/Action/ChangeTradePostName/ChangeTradePostName.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\ChangeTradePostName\\\\ChangeTradePostNameRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/ChangeTradePostName/ChangeTradePostNameRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\ChangeTradePostName\\\\ChangeTradePostNameRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/ChangeTradePostName/ChangeTradePostNameRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\ChangeTradePostName\\\\ChangeTradePostNameRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/ChangeTradePostName/ChangeTradePostNameRequest.php
 
@@ -15606,17 +14051,7 @@ parameters:
 			path: src/Module/Trade/Action/CreateLicense/CreateLicense.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CreateLicense\\\\CreateLicenseRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/CreateLicense/CreateLicenseRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CreateLicense\\\\CreateLicenseRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/CreateLicense/CreateLicenseRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CreateLicense\\\\CreateLicenseRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/CreateLicense/CreateLicenseRequest.php
 
@@ -15666,17 +14101,7 @@ parameters:
 			path: src/Module/Trade/Action/CreateOffer/CreateOffer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CreateOffer\\\\CreateOfferRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/CreateOffer/CreateOfferRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CreateOffer\\\\CreateOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/CreateOffer/CreateOfferRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\CreateOffer\\\\CreateOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/CreateOffer/CreateOfferRequest.php
 
@@ -15771,17 +14196,7 @@ parameters:
 			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsBidAuction\\\\DealsBidAuctionRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuctionRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsBidAuction\\\\DealsBidAuctionRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuctionRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsBidAuction\\\\DealsBidAuctionRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuctionRequest.php
 
@@ -15856,17 +14271,7 @@ parameters:
 			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuction.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuctionRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuctionRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuctionRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuctionRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeAuction\\\\DealsTakeAuctionRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/DealsTakeAuction/DealsTakeAuctionRequest.php
 
@@ -15946,17 +14351,7 @@ parameters:
 			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOffer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeOffer\\\\DealsTakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOfferRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeOffer\\\\DealsTakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOfferRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\DealsTakeOffer\\\\DealsTakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/DealsTakeOffer/DealsTakeOfferRequest.php
 
@@ -15981,17 +14376,7 @@ parameters:
 			path: src/Module/Trade/Action/TakeOffer/TakeOffer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\TakeOffer\\\\TakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/TakeOffer/TakeOfferRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\TakeOffer\\\\TakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/TakeOffer/TakeOfferRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\TakeOffer\\\\TakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/TakeOffer/TakeOfferRequest.php
 
@@ -16041,17 +14426,7 @@ parameters:
 			path: src/Module/Trade/Action/TransferCommodities/TransferCommodities.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\TransferCommodities\\\\TransferCommoditiesRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/TransferCommodities/TransferCommoditiesRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\TransferCommodities\\\\TransferCommoditiesRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Action/TransferCommodities/TransferCommoditiesRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Action\\\\TransferCommodities\\\\TransferCommoditiesRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/TransferCommodities/TransferCommoditiesRequest.php
 
@@ -16256,17 +14631,7 @@ parameters:
 			path: src/Module/Trade/View/ShowLicenseInfo/ShowLicenseInfo.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseInfo\\\\ShowLicenseInfoRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowLicenseInfo/ShowLicenseInfoRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseInfo\\\\ShowLicenseInfoRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowLicenseInfo/ShowLicenseInfoRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseInfo\\\\ShowLicenseInfoRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowLicenseInfo/ShowLicenseInfoRequest.php
 
@@ -16281,17 +14646,7 @@ parameters:
 			path: src/Module/Trade/View/ShowLicenseList/ShowLicenseList.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseList\\\\ShowLicenseListRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowLicenseList/ShowLicenseListRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseList\\\\ShowLicenseListRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowLicenseList/ShowLicenseListRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseList\\\\ShowLicenseListRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowLicenseList/ShowLicenseListRequest.php
 
@@ -16301,17 +14656,7 @@ parameters:
 			path: src/Module/Trade/View/ShowLicenseList/ShowLicenseListRequest.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseMenu\\\\ShowLicenseMenuRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowLicenseMenu/ShowLicenseMenuRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseMenu\\\\ShowLicenseMenuRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowLicenseMenu/ShowLicenseMenuRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowLicenseMenu\\\\ShowLicenseMenuRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowLicenseMenu/ShowLicenseMenuRequest.php
 
@@ -16331,17 +14676,7 @@ parameters:
 			path: src/Module/Trade/View/ShowOfferCommodity/ShowOfferCommodity.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferCommodity\\\\ShowOfferCommodityRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowOfferCommodity/ShowOfferCommodityRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferCommodity\\\\ShowOfferCommodityRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowOfferCommodity/ShowOfferCommodityRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferCommodity\\\\ShowOfferCommodityRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowOfferCommodity/ShowOfferCommodityRequest.php
 
@@ -16361,17 +14696,7 @@ parameters:
 			path: src/Module/Trade/View/ShowOfferMenu/ShowOfferMenu.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferMenu\\\\ShowOfferMenuRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowOfferMenu/ShowOfferMenuRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferMenu\\\\ShowOfferMenuRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowOfferMenu/ShowOfferMenuRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferMenu\\\\ShowOfferMenuRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowOfferMenu/ShowOfferMenuRequest.php
 
@@ -16391,17 +14716,7 @@ parameters:
 			path: src/Module/Trade/View/ShowOfferMenuNewOffer/ShowOfferMenuNewOffer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferMenuNewOffer\\\\ShowOfferMenuNewOfferRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowOfferMenuNewOffer/ShowOfferMenuNewOfferRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferMenuNewOffer\\\\ShowOfferMenuNewOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowOfferMenuNewOffer/ShowOfferMenuNewOfferRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowOfferMenuNewOffer\\\\ShowOfferMenuNewOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowOfferMenuNewOffer/ShowOfferMenuNewOfferRequest.php
 
@@ -16456,17 +14771,7 @@ parameters:
 			path: src/Module/Trade/View/ShowShoutBox/ShowShoutBox.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowShoutBox\\\\ShowShoutBoxRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowShoutBox/ShowShoutBoxRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowShoutBox\\\\ShowShoutBoxRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowShoutBox/ShowShoutBoxRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowShoutBox\\\\ShowShoutBoxRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowShoutBox/ShowShoutBoxRequest.php
 
@@ -16481,17 +14786,7 @@ parameters:
 			path: src/Module/Trade/View/ShowShoutBoxList/ShowShoutBoxList.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowShoutBoxList\\\\ShowShoutBoxListRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowShoutBoxList/ShowShoutBoxListRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowShoutBoxList\\\\ShowShoutBoxListRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowShoutBoxList/ShowShoutBoxListRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowShoutBoxList\\\\ShowShoutBoxListRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowShoutBoxList/ShowShoutBoxListRequest.php
 
@@ -16506,17 +14801,7 @@ parameters:
 			path: src/Module/Trade/View/ShowTakeOffer/ShowTakeOffer.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTakeOffer\\\\ShowTakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowTakeOffer/ShowTakeOfferRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTakeOffer\\\\ShowTakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowTakeOffer/ShowTakeOfferRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTakeOffer\\\\ShowTakeOfferRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowTakeOffer/ShowTakeOfferRequest.php
 
@@ -16531,17 +14816,7 @@ parameters:
 			path: src/Module/Trade/View/ShowTradePostInfo/ShowTradePostInfo.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTradePostInfo\\\\ShowTradePostInfoRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowTradePostInfo/ShowTradePostInfoRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTradePostInfo\\\\ShowTradePostInfoRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowTradePostInfo/ShowTradePostInfoRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTradePostInfo\\\\ShowTradePostInfoRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowTradePostInfo/ShowTradePostInfoRequest.php
 
@@ -16576,17 +14851,7 @@ parameters:
 			path: src/Module/Trade/View/ShowTransferMenu/ShowTransferMenu.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTransferMenu\\\\ShowTransferMenueRequest\\:\\:createRequestParserFactory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowTransferMenu/ShowTransferMenueRequest.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTransferMenu\\\\ShowTransferMenueRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/View/ShowTransferMenu/ShowTransferMenueRequest.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\View\\\\ShowTransferMenu\\\\ShowTransferMenueRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/View/ShowTransferMenu/ShowTransferMenueRequest.php
 
