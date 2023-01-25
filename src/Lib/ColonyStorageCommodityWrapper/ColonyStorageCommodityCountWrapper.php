@@ -4,31 +4,34 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ColonyStorageCommodityWrapper;
 
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class ColonyStorageCommodityCountWrapper
-{ #{{{
+use Stu\Orm\Entity\StorageInterface;
 
+class ColonyStorageCommodityCountWrapper
+{
     const CHECK_ONLY = 'x';
 
-    private $storage = null;
-    private $commodityId = null;
+    /** @var array<int, StorageInterface> */
+    private $storage;
+    /** @var int */
+    private $commodityId;
 
     /**
+     * @param array<int, StorageInterface> $storage
+     * @param int $commodityId
      */
     function __construct(&$storage, $commodityId)
-    { #{{{
+    {
         $this->storage = $storage;
         $this->commodityId = $commodityId;
-    } # }}}
+    }
 
     /**
+     * @param int $count
+     *
+     * @return bool
      */
     public function __get($count)
-    { #{{{
+    {
         if (!isset($this->storage[$this->commodityId])) {
             return false;
         }
@@ -39,23 +42,22 @@ class ColonyStorageCommodityCountWrapper
             return false;
         }
         return true;
-    } # }}}
+    }
 
     /**
+     * @return int
      */
     public function getAmount()
-    { #{{{
+    {
         if (!isset($this->storage[$this->commodityId])) {
             return 0;
         }
         return $this->storage[$this->commodityId]->getAmount();
-    } # }}}
+    }
 
-    /**
-     */
     public function __call($name, $arg)
-    { #{{{
+    {
         return $this->__get($name);
-    } # }}}
+    }
 
 }

@@ -3,14 +3,16 @@
 namespace Stu\Component\Ship\System;
 
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
+use Stu\Component\Ship\System\Exception\DeactivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
 use Stu\Component\Ship\System\Exception\SystemCooldownException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
-use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 
 interface ShipSystemManagerInterface
 {
@@ -28,6 +30,7 @@ interface ShipSystemManagerInterface
      * @throws InvalidSystemException
      * @throws SystemNotFoundException
      * @throws DeactivationConditionsNotMetException
+     * @throws AlreadyOffException
      */
     public function deactivate(ShipWrapperInterface $wrapper, int $shipSystemId, bool $force = false): void;
 
@@ -41,5 +44,8 @@ interface ShipSystemManagerInterface
 
     public function handleDamagedSystem(ShipWrapperInterface $wrapper, int $shipSystemId): void;
 
+    /**
+     * @return array<ShipSystemInterface>
+     */
     public function getActiveSystems(ShipInterface $ship, bool $sort = false): array;
 }

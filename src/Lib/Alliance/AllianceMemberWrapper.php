@@ -7,9 +7,11 @@ use Stu\Orm\Entity\UserInterface;
 
 class AllianceMemberWrapper
 {
+    /** @var UserInterface */
+    private $user;
 
-    private $user = null;
-    private $alliance = null;
+    /** @var AllianceInterface */
+    private $alliance;
 
     function __construct(UserInterface $user, AllianceInterface $alliance)
     {
@@ -17,22 +19,22 @@ class AllianceMemberWrapper
         $this->alliance = $alliance;
     }
 
-    function getUser()
+    function getUser(): UserInterface
     {
         return $this->user;
     }
 
-    function getAlliance()
+    function getAlliance(): AllianceInterface
     {
         return $this->alliance;
     }
 
-    function isFounder()
+    function isFounder(): bool
     {
-        return $this->getUser()->getId() == $this->getAlliance()->getFounder()->getUserId();
+        return $this->getUser()->getId() === $this->getAlliance()->getFounder()->getUserId();
     }
 
-    function getUserId()
+    function getUserId(): int
     {
         return $this->getUser()->getId();
     }

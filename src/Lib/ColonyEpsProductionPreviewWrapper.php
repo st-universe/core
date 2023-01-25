@@ -9,16 +9,22 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 class ColonyEpsProductionPreviewWrapper
 {
-    private $colony = null;
+    /** @var ColonyInterface */
+    private $colony;
+
+    /** @var null|int */
+    private $buildingId = null;
+
+    /** @var array<int, ColonyEpsProductionPreviewWrapper> */
+    private $wrappers = [];
+
+    /** @var array<int, int> */
+    private $production = [];
 
     function __construct(ColonyInterface $colony)
     {
         $this->colony = $colony;
     }
-
-    private $buildingId = null;
-
-    private $wrappers = [];
 
     function __get($buildingId)
     {
@@ -34,8 +40,6 @@ class ColonyEpsProductionPreviewWrapper
     {
         return $this->buildingId;
     }
-
-    private $production = [];
 
     private function getPreview()
     {
@@ -57,7 +61,7 @@ class ColonyEpsProductionPreviewWrapper
         return $this->getPreview();
     }
 
-    public function getCSS()
+    public function getCSS(): string
     {
         if ($this->getPreview() > 0) {
             return 'positive';
@@ -65,5 +69,7 @@ class ColonyEpsProductionPreviewWrapper
         if ($this->getPreview() < 0) {
             return 'negative';
         }
+
+        return '';
     }
 }

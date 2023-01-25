@@ -8,12 +8,16 @@ use Stu\Orm\Entity\AllianceRelationInterface;
 
 class AllianceRelationWrapper
 {
+    /** @var AllianceInterface */
+    private $alliance;
 
-    private $alliance = null;
-    private $relation = null;
+    /** @var AllianceRelationInterface */
+    private $relation;
 
-    function __construct(AllianceInterface $alliance, AllianceRelationInterface $relation)
-    {
+    function __construct(
+        AllianceInterface $alliance,
+        AllianceRelationInterface $relation
+    ) {
         $this->alliance = $alliance;
         $this->relation = $relation;
     }

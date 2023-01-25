@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
-use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
@@ -25,14 +24,14 @@ use Stu\Orm\Entity\ShipSystemInterface;
 
 final class ShipSystemManager implements ShipSystemManagerInterface
 {
-
-    /**
-     * @var ShipSystemTypeInterface[]
-     */
+    /** @var array<ShipSystemTypeInterface> */
     private array $systemList;
 
     private StuTime $stuTime;
 
+    /**
+     * @param array<ShipSystemTypeInterface> $systemList
+     */
     public function __construct(
         array $systemList,
         StuTime $stuTime

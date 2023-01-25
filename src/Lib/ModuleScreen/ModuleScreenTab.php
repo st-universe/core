@@ -4,15 +4,23 @@ namespace Stu\Lib\ModuleScreen;
 
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
+use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 
 class ModuleScreenTab
 {
+    /** @var int */
     private $moduleType;
+
+    /** @var ShipBuildplanInterface|null  */
     private $buildplan;
+
+    /** @var ColonyInterface */
     private $colony;
+
+    /** @var ShipRumpInterface */
     private $rump;
 
     public function __construct(
@@ -28,6 +36,7 @@ class ModuleScreenTab
     }
 
     /**
+     * @return int
      */
     public function getModuleType()
     {
@@ -35,6 +44,7 @@ class ModuleScreenTab
     }
 
     /**
+     * @return ColonyInterface
      */
     public function getColony()
     {
@@ -42,22 +52,19 @@ class ModuleScreenTab
     }
 
     /**
+     * @return ShipRumpInterface
      */
     public function getRump()
     {
         return $this->rump;
     }
 
-    /**
-     */
-    public function getTabTitle()
+    public function getTabTitle(): string
     {
         return ModuleTypeDescriptionMapper::getDescription($this->getModuleType());
     }
 
-    /**
-     */
-    public function isMandatory()
+    public function isMandatory(): bool
     {
         if ($this->getModuleType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
             return false;
@@ -65,36 +72,32 @@ class ModuleScreenTab
         return $this->getRump()->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() > 0;
     }
 
-    /**
-     */
-    public function isSpecial()
+    public function isSpecial(): bool
     {
         return $this->getModuleType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL;
     }
 
 
     /**
+     * @return null|ShipBuildplanInterface
      */
     public function getBuildplan()
     {
         return $this->buildplan;
     }
 
-    /**
-     */
-    public function hasBuildplan()
+    public function hasBuildplan(): bool
     {
         return $this->getBuildplan() != false;
     }
 
-    /**
-     */
-    public function hasSelectedModule()
+    public function hasSelectedModule(): bool
     {
         return $this->getSelectedModule() != false;
     }
 
     /**
+     * @return false|array<BuildplanModuleInterface>
      */
     public function getSelectedModule()
     {
@@ -107,15 +110,14 @@ class ModuleScreenTab
         return $this->getBuildplan()->getModulesByType($this->getModuleType());
     }
 
-    /**
-     */
-    public function getCssClass()
+    public function getCssClass(): string
     {
         $class = 'module_select_base';
         if ($this->isMandatory()) {
             if (!$this->hasSelectedModule()) {
                 $class .= ' module_select_base_mandatory';
             } else {
+                /** @var BuildplanModuleInterface $mod */
                 $mod = current($this->getBuildplan()->getModulesByType($this->getModuleType()));
                 $commodityId = $mod->getModule()->getCommodityId();
 
