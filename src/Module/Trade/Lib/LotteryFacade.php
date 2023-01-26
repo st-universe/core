@@ -34,7 +34,7 @@ final class LotteryFacade implements LotteryFacadeInterface
     {
         $ticket = $this->lotteryTicketRepository->prototype();
         $ticket->setUser($user);
-        $ticket->setPeriod(date('Y.m', $this->stuTime->time()));
+        $ticket->setPeriod($this->getCurrentOrLastPeriod(false));
         $this->lotteryTicketRepository->save($ticket);
 
         if ($sendPm) {
