@@ -33,7 +33,7 @@ class ShipLog implements ShipLogInterface
     private $id;
 
     /**
-     * @Column(type="integer") *
+     * @Column(type="integer")
      *
      * @var int
      */
