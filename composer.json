@@ -83,7 +83,14 @@
     "rector:dry": "rector process -n",
     "coverage": "phpunit --warm-coverage-cache tests && XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html build/coverage tests",
     "cs:check": "php-cs-fixer fix --dry-run --diff",
-    "cs:fix": "php-cs-fixer fix"
+    "cs:fix": "php-cs-fixer fix",
+    "qa": [
+      "@composer tests",
+      "@composer stan"
+    ]
+  },
+  "scripts-descriptions": {
+    "qa": "Executes alle qa related action"
   },
   "extra": {
     "installer-paths": {
