@@ -673,7 +673,7 @@ class ShipRump implements ShipRumpInterface
         return $this->sort;
     }
 
-    public function setSort($sort): ShipRumpInterface
+    public function setSort(int $sort): ShipRumpInterface
     {
         $this->sort = $sort;
         return $this;

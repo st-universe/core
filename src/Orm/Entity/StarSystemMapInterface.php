@@ -10,11 +10,11 @@ interface StarSystemMapInterface
 
     public function getSx(): int;
 
-    public function setSx($sx): StarSystemMapInterface;
+    public function setSx(int $sx): StarSystemMapInterface;
 
     public function getSy(): int;
 
-    public function setSy($sy): StarSystemMapInterface;
+    public function setSy(int $sy): StarSystemMapInterface;
 
     public function getSystemId(): int;
 

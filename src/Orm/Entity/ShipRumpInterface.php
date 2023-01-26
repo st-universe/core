@@ -126,7 +126,7 @@ interface ShipRumpInterface
 
     public function getSort(): int;
 
-    public function setSort($sort): ShipRumpInterface;
+    public function setSort(int $sort): ShipRumpInterface;
 
     public function getDatabaseId(): ?int;
 

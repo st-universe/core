@@ -124,7 +124,7 @@ class StarSystemMap implements StarSystemMapInterface
         return $this->sx;
     }
 
-    public function setSx($sx): StarSystemMapInterface
+    public function setSx(int $sx): StarSystemMapInterface
     {
         $this->sx = $sx;
 
@@ -136,7 +136,7 @@ class StarSystemMap implements StarSystemMapInterface
         return $this->sy;
     }
 
-    public function setSy($sy): StarSystemMapInterface
+    public function setSy(int $sy): StarSystemMapInterface
     {
         $this->sy = $sy;
 
