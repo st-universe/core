@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Maintenance;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     DatabaseBackup::class => autowire(DatabaseBackup::class),
@@ -19,6 +20,20 @@ return [
     IdleUserDeletion::class => autowire(IdleUserDeletion::class),
     OldTradeLicenseDeletion::class => autowire(OldTradeLicenseDeletion::class),
     TopFlightsReward::class => autowire(TopFlightsReward::class),
-    EndLotteryPeriod::class => autowire(EndLotteryPeriod::class)
-    //TODO Handler to remove expired trade licenses
+    EndLotteryPeriod::class => autowire(EndLotteryPeriod::class),
+    'maintenance_handler' => [
+        get(DatabaseBackup::class),
+        get(MapCycle::class),
+        get(ExpiredInvitationTokenDeletion::class),
+        get(OldTachyonScanDeletion::class),
+        get(OldTradeOffersDeletion::class),
+        get(CorruptFleetDeletion::class),
+        get(OldFlightSignatureDeletion::class),
+        get(ColonyCorrectorHandler::class),
+        get(EmptyPlotDeletion::class),
+        get(IdleUserDeletion::class),
+        get(OldTradeLicenseDeletion::class),
+        get(TopFlightsReward::class),
+        get(EndLotteryPeriod::class)
+    ]
 ];
