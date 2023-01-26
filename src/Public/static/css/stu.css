@@ -1496,6 +1496,38 @@ div.knGrid img.knUserAvatar {
     height: 80px;
 }
 
+div.colonyEffectContainer,
+div.colonyEffectProduction {
+  white-space: nowrap;
+  margin: 4px;
+}
+
+div.colonyEffectContainer span {
+  white-space: nowrap;
+}
+
+div.colonyEffectContainer img {
+  vertical-align: middle;
+}
+
+div.colonyEffectGrid {
+  display: grid;
+  grid-template-columns: 41% 9% 41% 9%;
+}
+
+td.populationValue div {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+td.populationValue {
+  white-space: nowrap;
+}
+
+td.populationValue img {
+  vertical-align: middle;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
     div.container {
         width: 1000px;
@@ -1541,8 +1573,6 @@ div.knGrid img.knUserAvatar {
     div.container {
         width: 1000px;
     }
-
-
 }
 
 @media (max-height: 1200px) {

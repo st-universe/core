@@ -667,27 +667,28 @@
           <th colspan="5">Bevölkerung</th>
         </tr>
         <tr>
-          <td>
-            <span>Gesamt</span><br />
+          <td class="populationValue">
+            <div>Gesamt</div>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             ${COLONY/getPopulation}
           </td>
-          <td>
-            <span>Arbeiter</span><br />
-            <img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.png" title="Arbeiter" /> ${COLONY/getWorkers}
+          <td class="populationValue">
+            <div>Arbeiter</div>
+            <img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.png" title="Arbeiter" />
+            ${COLONY/getWorkers}
           </td>
-          <td>
-            <span>Verfügbar</span><br />
+          <td class="populationValue">
+            <div>Verfügbar</div>
             <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
             ${COLONY/getWorkless}
           </td>
-          <td>
-            <span>Wohnraum</span><br />
+          <td class="populationValue">
+            <div>Wohnraum</div>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Wohnraum" />
             ${COLONY/getFreeHousing} (${COLONY/getMaxBev})
           </td>
-          <td>
-            <span>Wachstum</span><br />
+          <td class="populationValue">
+            <div>Entwicklung</div>
             <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.png" title="Wachstum" />
             ${IMMIGRATION_SYMBOL}${COLONY/getImmigration}
           </td>
@@ -699,14 +700,16 @@
           <div class="box">
             <div class="box_title">Effekte</div>
             <div class="box_body">
-              <div style="display: grid; grid-template-columns: 41% 9% 41% 9%;">
+              <div class="colonyEffectGrid">
                 <tal:block tal:repeat="data EFFECTS">
-                  <div>
-                    <img src="assets/commodities/${data/commodity/getId}.png" /> <span
-                      tal:content="data/commodity/getName">EFFECT</span>
+                  <div class="colonyEffectContainer">
+                    <img src="assets/commodities/${data/commodity/getId}.png" tal:attributes="title data/commodity/getName"/>
+                    <span tal:content="data/commodity/getName">EFFECT</span>
                   </div>
-                  <div tal:content="data/production/getProductionDisplay"
-                    tal:attributes="class data/production/getCssClass">PROD</div>
+                  <div
+                    tal:content="data/production/getProductionDisplay"
+                    tal:attributes="class string:colonyEffectProduction ${data/production/getCssClass}"
+                  >PROD</div>
                 </tal:block>
               </div>
             </div>
