@@ -1126,42 +1126,7 @@ parameters:
 			path: src/Lib/Session.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:deleteSessionData\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:deleteSessionData\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
 			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:getSessionValue\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:getSessionValue\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:hasSessionValue\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:hasSessionValue\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:storeSessionData\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\Session\\:\\:storeSessionData\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Lib/Session.php
 
@@ -1201,42 +1166,7 @@ parameters:
 			path: src/Lib/Session.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:deleteSessionData\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Lib/SessionInterface.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:deleteSessionData\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/SessionInterface.php
-
-		-
 			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:getSessionValue\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/SessionInterface.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:getSessionValue\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Lib/SessionInterface.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:hasSessionValue\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Lib/SessionInterface.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:hasSessionValue\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/SessionInterface.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:storeSessionData\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Lib/SessionInterface.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\SessionInterface\\:\\:storeSessionData\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Lib/SessionInterface.php
 
@@ -1266,54 +1196,9 @@ parameters:
 			path: src/Lib/SignatureWrapper.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\StorageWrapper\\\\StorageWrapper\\:\\:addAmount\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/StorageWrapper/StorageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\StorageWrapper\\\\StorageWrapper\\:\\:getAmount\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/StorageWrapper/StorageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\StorageWrapper\\\\StorageWrapper\\:\\:getCommodityId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/StorageWrapper/StorageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\StorageWrapper\\\\StorageWrapper\\:\\:setEntityId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/StorageWrapper/StorageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\StorageWrapper\\\\StorageWrapper\\:\\:\\$amount has no type specified\\.$#"
-			count: 1
-			path: src/Lib/StorageWrapper/StorageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\StorageWrapper\\\\StorageWrapper\\:\\:\\$commodityId has no type specified\\.$#"
-			count: 1
-			path: src/Lib/StorageWrapper/StorageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\StorageWrapper\\\\StorageWrapper\\:\\:\\$entityId has no type specified\\.$#"
-			count: 1
-			path: src/Lib/StorageWrapper/StorageWrapper.php
-
-		-
 			message: "#^Property Stu\\\\Lib\\\\StuBbCodeDefinitionSet\\:\\:\\$definitions has no type specified\\.$#"
 			count: 1
 			path: src/Lib/StuBbCodeDefinitionSet.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\StuBbCodeImageValidator\\:\\:isJpgOrPng\\(\\) has parameter \\$input with no type specified\\.$#"
-			count: 1
-			path: src/Lib/StuBbCodeImageValidator.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\StuBbCodeWithImageDefinitionSet\\:\\:\\$definitions has no type specified\\.$#"
-			count: 1
-			path: src/Lib/StuBbCodeWithImageDefinitionSet.php
 
 		-
 			message: "#^Method UserYRow\\:\\:getFields\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\> but returns array\\<Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\|Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\.$#"
@@ -1781,21 +1666,6 @@ parameters:
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:loadMapByCoords\\(\\) has parameter \\$maps with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:shuffle_assoc\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:shuffle_assoc\\(\\) has parameter \\$array with no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
-
-		-
 			message: "#^Parameter \\#2 \\$system of method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:setInfluenceArea\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null given\\.$#"
 			count: 2
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
@@ -1806,29 +1676,9 @@ parameters:
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:\\$mapsByCoords has no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:\\$spreader has no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\CreateInfluenceAreas\\\\CreateInfluenceAreas\\:\\:\\$usedMaps has no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
-
-		-
 			message: "#^Variable \\$new might not be defined\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Map/EditField/EditField.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\Action\\\\Map\\\\EditField\\\\EditFieldRequest\\:\\:createRequestParserFactory\\(\\) has parameter \\$config with no type specified\\.$#"

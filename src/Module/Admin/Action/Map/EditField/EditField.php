@@ -39,6 +39,10 @@ final class EditField implements ActionControllerInterface
         }
 
         $type = $this->mapFieldTypeRepository->find($this->editFieldRequest->getFieldType());
+        if ($type === null) {
+            return;
+        }
+        
         $selectedField->setFieldId($type->getId());
 
         $this->mapRepository->save($selectedField);

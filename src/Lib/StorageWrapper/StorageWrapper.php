@@ -14,9 +14,13 @@ use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 class StorageWrapper
 {
-
+    /** @var int  */
     private $commodityId;
+
+    /** @var int  */
     private $amount;
+
+    /** @var int  */
     private $entityId;
 
     function __construct(int $commodityId, int $amount)
@@ -25,22 +29,22 @@ class StorageWrapper
         $this->amount = $amount;
     }
 
-    public function getCommodityId()
+    public function getCommodityId(): int
     {
         return $this->commodityId;
     }
 
-    function getAmount()
+    function getAmount(): int
     {
         return $this->amount;
     }
 
-    public function addAmount(int $amount)
+    public function addAmount(int $amount): void
     {
         $this->amount += $amount;
     }
 
-    public function setEntityId(int $id)
+    public function setEntityId(int $id): void
     {
         $this->entityId = $id;
     }

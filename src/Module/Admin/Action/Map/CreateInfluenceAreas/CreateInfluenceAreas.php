@@ -8,7 +8,6 @@ use request;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -23,8 +22,13 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    /** @var array<int, array<int, bool>> */
     private $usedMaps = [];
+
+    /** @var array<int, array<int, MapInterface>> */
     private $spreader = [];
+
+    /** @var array<int, array<int, MapInterface>> */
     private $mapsByCoords = [];
 
     public function __construct(
@@ -162,7 +166,10 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
     }
 
-    private function shuffle_assoc(&$array)
+    /**
+     * @param array<int, array<int, MapInterface>> $array
+     */
+    private function shuffle_assoc(&$array): bool
     {
         $keys = array_keys($array);
 
@@ -177,6 +184,9 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         return true;
     }
 
+    /**
+     * @param array<MapInterface> $maps
+     */
     private function loadMapByCoords(array $maps): void
     {
         foreach ($maps as $map) {

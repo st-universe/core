@@ -22,7 +22,7 @@ final class StuBbCodeImageValidator implements InputValidator
         return $urlValidator->validate($input) && $this->isJpgOrPng($input);
     }
 
-    private function isJpgOrPng($input): bool
+    private function isJpgOrPng(string $input): bool
     {
         $imageType = exif_imagetype($input);
 
