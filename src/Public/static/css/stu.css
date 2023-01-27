@@ -691,13 +691,20 @@ table.population td span {
 }
 
 .colmenubutton {
-    width: 13vw;
-    height: 40px;
-    vertical-align: middle;
-    display: table-cell;
-    padding-left: 20px;
-    padding-right: 20px;
-    cursor: pointer;
+  width: 13vw;
+  height: 40px;
+  display: table-cell;
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: pointer;
+}
+
+div.colmenubutton img {
+  vertical-align: middle;
+}
+
+div.colmenubutton span {
+  font-size: 110%;
 }
 
 .colmenubutton:hover {
