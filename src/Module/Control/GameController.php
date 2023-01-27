@@ -47,7 +47,11 @@ use Ubench;
 
 final class GameController implements GameControllerInterface
 {
+    /** @var string */
     public const DEFAULT_VIEW = 'DEFAULT_VIEW';
+
+    /** @var string */
+    private const GAME_VERSION_DEV = 'dev';
 
     private SessionInterface $session;
 
@@ -449,9 +453,14 @@ final class GameController implements GameControllerInterface
 
     public function getJavascriptPath(): string
     {
+        $gameVersion = $this->config->get('game.version');
+        if ($gameVersion === self::GAME_VERSION_DEV) {
+            return '/static';
+        }
+
         return sprintf(
             '/version_%s/static',
-            $this->config->get('game.version')
+            $gameVersion
         );
     }
 

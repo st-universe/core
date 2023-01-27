@@ -1,5 +1,5 @@
 # DEFAULT
-PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs version_link migrateDatabase showDatabaseChanges
+PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs migrateDatabase showDatabaseChanges
 
 SUITE=
 
@@ -40,9 +40,6 @@ dev-start-db:force
 
 dev-stop-db:force
 	docker-compose kill stu-db
-
-version_link:force
-	cd src/Public && ln -s . version_dev
 
 clearCache:force
 	vendor/bin/doctrine orm:clear-cache:metadata
