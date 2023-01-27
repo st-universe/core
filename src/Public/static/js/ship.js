@@ -180,18 +180,31 @@ function switchTransferToAccount(postid) {
 	$('transfertoaccount').addClassName('selected');
 }
 function switchMenuToBroadcast() {
+	$('menuemergency').removeClassName('selected');
 	$('menulogbook').removeClassName('selected');
 	$('menubroadcast').addClassName('selected');
 
 	document.getElementById('broadcast').style.display = "";
 	document.getElementById('logbook').style.display = "none";
+	document.getElementById('emergency').style.display = "none";
 }
 function switchMenuToLogbook() {
 	$('menubroadcast').removeClassName('selected');
+	$('menuemergency').removeClassName('selected');
 	$('menulogbook').addClassName('selected');
 
 	document.getElementById('logbook').style.display = "";
 	document.getElementById('broadcast').style.display = "none";
+	document.getElementById('emergency').style.display = "none";
+}
+function switchMenuToEmergency() {
+	$('menubroadcast').removeClassName('selected');
+	$('menulogbook').removeClassName('selected');
+	$('menuemergency').addClassName('selected');
+
+	document.getElementById('emergency').style.display = "";
+	document.getElementById('broadcast').style.display = "none";
+	document.getElementById('logbook').style.display = "none";
 }
 function switchScanToDetails() {
 	$('menuScanLogbook').removeClassName('selected');

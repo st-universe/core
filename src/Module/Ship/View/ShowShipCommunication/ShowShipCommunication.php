@@ -9,6 +9,7 @@ use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 
 final class ShowShipCommunication implements ViewControllerInterface
 {
@@ -16,13 +17,17 @@ final class ShowShipCommunication implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
+
     private Parser $bbCodeParser;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
         Parser $bbCodeParser
     ) {
         $this->shipLoader = $shipLoader;
+        $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
         $this->bbCodeParser = $bbCodeParser;
     }
 
@@ -47,5 +52,9 @@ final class ShowShipCommunication implements ViewControllerInterface
                 $ship->getSectorString()
             )
         );
+
+        if ($ship->isInEmergency()) {
+            $game->setTemplateVar('EMERGENCYTEXT', $this->spacecraftEmergencyRepository->getByShipId($ship->getId()));
+        }
     }
 }

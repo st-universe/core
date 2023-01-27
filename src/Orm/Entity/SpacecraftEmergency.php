@@ -37,7 +37,7 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
      *
      * @var int
      */
-    private $ship_id = null;
+    private $ship_id = 0;
 
     /**
      * @Column(type="text")
@@ -51,7 +51,7 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
      *
      * @var int
      */
-    private $date = null;
+    private $date = 0;
 
     /**
      * @Column(type="integer", nullable=true)

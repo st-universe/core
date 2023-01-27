@@ -118,7 +118,9 @@ use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
 use Stu\Module\Ship\Action\Shutdown\Shutdown;
+use Stu\Module\Ship\Action\StartEmergency\StartEmergency;
 use Stu\Module\Ship\Action\StartShuttle\StartShuttle;
+use Stu\Module\Ship\Action\StopEmergency\StopEmergency;
 use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\TholianWeb\CancelTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\CreateTholianWeb;
@@ -375,7 +377,9 @@ return [
         SupportTholianWeb::ACTION_IDENTIFIER => autowire(SupportTholianWeb::class),
         UnsupportTholianWeb::ACTION_IDENTIFIER => autowire(UnsupportTholianWeb::class),
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
-        AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class)
+        AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
+        StartEmergency::ACTION_IDENTIFIER => autowire(StartEmergency::class),
+        StopEmergency::ACTION_IDENTIFIER => autowire(StopEmergency::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
