@@ -65,8 +65,6 @@ interface GameControllerInterface
 
     public function setPageTitle(string $title): void;
 
-    public function getQueryCount(): int;
-
     public function getExecuteJS(): array;
 
     public function addExecuteJS(string $value): void;

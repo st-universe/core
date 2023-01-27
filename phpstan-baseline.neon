@@ -351,21 +351,6 @@ parameters:
 			path: src/Component/Ship/System/Utility/TractorMassPayloadUtilInterface.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\Handler\\\\AbstractUpdateLocationHandler\\:\\:addMessagesInternal\\(\\) has parameter \\$msg with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/AbstractUpdateLocationHandler.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\Handler\\\\AbstractUpdateLocationHandler\\:\\:getInternalMsg\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/AbstractUpdateLocationHandler.php
-
-		-
-			message: "#^Property Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\Handler\\\\AbstractUpdateLocationHandler\\:\\:\\$msgInternal type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/AbstractUpdateLocationHandler.php
-
-		-
 			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tractorSystemSurvivedTowing\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
 			count: 1
 			path: src/Component/Ship/UpdateLocation/Handler/PostFlight/PostFlightTractorHandler.php
@@ -406,11 +391,6 @@ parameters:
 			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\Handler\\\\UpdateLocationHandlerInterface\\:\\:getInternalMsg\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/UpdateLocationHandlerInterface.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:informOwnerOfTractoredShip\\(\\) has parameter \\$msg with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
@@ -446,16 +426,6 @@ parameters:
 			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
 
 		-
-			message: "#^Property Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:\\$postMoveHandler type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
-			message: "#^Property Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:\\$preMoveHandler type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequencesInterface\\:\\:updateLocationWithConsequences\\(\\) has parameter \\$messages with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequencesInterface.php
@@ -477,11 +447,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Component/Specials/AdventCycle.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Specials\\\\AdventCycle\\:\\:setRandomLocation\\(\\) has parameter \\$adventDoors with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Component/Specials/AdventCycle.php
 
@@ -2281,11 +2246,6 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
 
 		-
-			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
-
-		-
 			message: "#^Cannot call method getAlliance\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
@@ -2307,16 +2267,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
-
-		-
-			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\AllianceJobRepositoryInterface\\:\\:delete\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface, Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
 
@@ -2366,17 +2316,7 @@ parameters:
 			path: src/Module/Alliance/Action/AddBoard/AddBoard.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AddBoard/AddBoard.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AddBoard/AddBoard.php
-
-		-
-			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface\\:\\:setAlliance\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/AddBoard/AddBoard.php
 
@@ -6326,11 +6266,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getViewContext\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:main\\(\\) has parameter \\$actions with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -6371,11 +6306,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:setView\\(\\) has parameter \\$viewContext with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:showMacro\\(\\) has parameter \\$macro with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -6391,47 +6321,7 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$achievements type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$execjs type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$gameConfig has no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$gameInformations type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$gameStats type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$sanityCheckExceptions has no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$semaphores has no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$siteNavigation type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$viewContext type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -6576,22 +6466,7 @@ parameters:
 			path: src/Module/Control/GameControllerInterface.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Control\\\\Notification\\:\\:\\$link has no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/Notification.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquire\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireMainSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/SemaphoreUtil.php
 
@@ -6601,32 +6476,7 @@ parameters:
 			path: src/Module/Control/SemaphoreUtil.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:release\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtil\\:\\:releaseSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtil.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:acquireMainSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:acquireSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:getSemaphore\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Control/SemaphoreUtilInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\SemaphoreUtilInterface\\:\\:releaseSemaphore\\(\\) has parameter \\$semaphore with no type specified\\.$#"
 			count: 1
 			path: src/Module/Control/SemaphoreUtilInterface.php
 
@@ -10171,31 +10021,6 @@ parameters:
 			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
 
 		-
-			message: "#^Cannot call method setColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
-			message: "#^Cannot call method setShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
-			message: "#^Cannot call method setSlot\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
-			message: "#^Parameter \\#1 \\$element of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int,Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\>\\:\\:removeElement\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
-
-		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TroopTransferUtilityInterface\\:\\:ownCrewOnTarget\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TroopTransfer/TroopTransfer.php
@@ -10976,17 +10801,7 @@ parameters:
 			path: src/Module/Ship/Lib/ShipCreator.php
 
 		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
 			message: "#^Cannot call method getCrewlist\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Cannot call method getShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipLeaver.php
 
@@ -10997,16 +10812,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method setLeadShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Cannot call method setShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Cannot call method setShipId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipLeaver.php
 
@@ -11042,16 +10847,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepositoryInterface\\:\\:delete\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipCrewRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipLeaver.php
 
@@ -15556,11 +15351,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getCrewlist\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getCurrentMapField\\(\\) should return Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but returns Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
@@ -15674,11 +15464,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$tradepost_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getCrewlist\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\UpdateLocation\Handler;
 
-use Stu\Component\Ship\UpdateLocation\Handler\UpdateLocationHandlerInterface;
-
 abstract class AbstractUpdateLocationHandler implements UpdateLocationHandlerInterface
 {
+    /** @var array<string> */
     private array $msgInternal = [];
 
     public function clearMessages(): void
@@ -20,6 +19,9 @@ abstract class AbstractUpdateLocationHandler implements UpdateLocationHandlerInt
         $this->msgInternal[] = $msg;
     }
 
+    /**
+     * @param array<string> $msg
+     */
     public function addMessagesInternal(array $msg): void
     {
         foreach ($msg as $message) {

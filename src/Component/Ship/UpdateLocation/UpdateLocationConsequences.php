@@ -13,7 +13,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class UpdateLocationConsequences implements UpdateLocationConsequencesInterface
 {
+    /** @var array<UpdateLocationHandlerInterface>  */
     private array $preMoveHandler;
+
+    /** @var array<UpdateLocationHandlerInterface> */
     private array $postMoveHandler;
 
     private LoggerUtilInterface $loggerUtil;

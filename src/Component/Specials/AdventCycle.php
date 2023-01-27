@@ -114,6 +114,9 @@ final class AdventCycle implements AdventCycleInterface
         return $result;
     }
 
+    /**
+     * @param array<ShipInterface> $adventDoors
+     */
     private function setRandomLocation(array $adventDoors): void
     {
         foreach ($adventDoors as $adventDoor) {

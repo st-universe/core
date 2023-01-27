@@ -9,6 +9,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -128,9 +129,8 @@ final class ShipLeaver implements ShipLeaverInterface
         }
     }
 
-    public function dumpCrewman(int $shipCrewId): string
+    public function dumpCrewman(ShipCrewInterface $shipCrew): string
     {
-        $shipCrew = $this->shipCrewRepository->find($shipCrewId);
         $ship = $shipCrew->getShip();
 
         //create pods entity

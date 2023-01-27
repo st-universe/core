@@ -11,5 +11,8 @@ interface UpdateLocationHandlerInterface
 
     public function clearMessages(): void;
 
+    /**
+     * @return array<string>
+     */
     public function getInternalMsg(): array;
 }

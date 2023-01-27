@@ -11,9 +11,16 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
+/**
+ * Adds boards to alliance forums
+ */
 final class AddBoard implements ActionControllerInterface
 {
+    /** @var string */
     public const ACTION_IDENTIFIER = 'B_ADD_BOARD';
+
+    /** @var int */
+    private const NAME_LENGTH_CONSTRAINT = 5;
 
     private AddBoardRequestInterface $addBoardRequest;
 
@@ -31,13 +38,23 @@ final class AddBoard implements ActionControllerInterface
         $this->allianceActionManager = $allianceActionManager;
     }
 
+    /**
+     * @throws AccessViolation
+     */
     public function handle(GameControllerInterface $game): void
     {
-        $alliance = $game->getUser()->getAlliance();
+        $user = $game->getUser();
+        $alliance = $user->getAlliance();
 
-        $allianceId = (int) $alliance->getId();
+        // throw if user has no alliance
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
 
-        if (!$this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())) {
+        $allianceId = $alliance->getId();
+
+        // throw if user may not edit alliance
+        if (!$this->allianceActionManager->mayEdit($allianceId, $user->getId())) {
             throw new AccessViolation();
         }
 
@@ -45,7 +62,7 @@ final class AddBoard implements ActionControllerInterface
 
         $name = $this->addBoardRequest->getBoardName();
 
-        if (mb_strlen($name) < 5) {
+        if (mb_strlen($name) < self::NAME_LENGTH_CONSTRAINT) {
             $game->addInformation(_('Der Name muss mindestens 5 Zeichen lang sein'));
             return;
         }

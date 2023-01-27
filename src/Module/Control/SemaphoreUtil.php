@@ -54,6 +54,9 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $this->release($semaphore, $doRemove);
     }
 
+    /**
+     * @param resource $semaphore
+     */
     private function release($semaphore, bool $doRemove): void
     {
         if (!sem_release($semaphore)) {

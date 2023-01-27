@@ -265,6 +265,7 @@ final class TroopTransfer implements ActionControllerInterface
         $crewAssignments = $colony->getCrewAssignments();
 
         for ($i = 0; $i < $amount; $i++) {
+            /** @var ShipCrewInterface $crewAssignment */
             $crewAssignment = $crewAssignments->get(array_rand($crewAssignments->toArray()));
             $crewAssignment->setShip($ship);
             $crewAssignment->setColony(null);

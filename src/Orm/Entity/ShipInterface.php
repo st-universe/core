@@ -184,7 +184,7 @@ interface ShipInterface
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface;
 
     /**
-     * @return Collection<ShipCrewInterface>
+     * @return Collection<int, ShipCrewInterface>
      */
     public function getCrewlist(): Collection;
 

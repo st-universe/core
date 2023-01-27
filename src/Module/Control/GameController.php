@@ -43,6 +43,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
+use Throwable;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -87,31 +88,41 @@ final class GameController implements GameControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    /** @var array<Notification> */
     private array $gameInformations = [];
 
+    /** @var array<string, string> */
     private array $siteNavigation = [];
 
     private string $pagetitle = '';
 
     private string $macro = '';
 
+    /** @var array<string> */
     private array $execjs = [];
 
     private ?GameTurnInterface $currentRound = null;
 
+    /** @var array<string> */
     private array $achievements = [];
 
     private ?int $playercount = null;
 
+    /** @var array<string, mixed> $viewContext */
     private array $viewContext = [];
 
     private ?array $gameStats = null;
 
     private string $loginError = '';
 
+    /** @var array<int, resource> */
     private $semaphores = [];
 
+    /** @var array<Throwable> */
     private $sanityCheckExceptions = [];
+
+    /** @var array<int, GameConfigInterface> */
+    private $gameConfig = null;
 
     public function __construct(
         SessionInterface $session,
@@ -151,6 +162,9 @@ final class GameController implements GameControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
+    /**
+     * @param array<string, mixed> $viewContext
+     */
     public function setView(string $view, array $viewContext = []): void
     {
         request::setVar($view, 1);
@@ -158,6 +172,9 @@ final class GameController implements GameControllerInterface
         $this->viewContext = $viewContext;
     }
 
+    /**
+     * @return array<string, mixed> $viewContext
+     */
     public function getViewContext(): array
     {
         return $this->viewContext;
@@ -370,10 +387,8 @@ final class GameController implements GameControllerInterface
         return $this->playercount;
     }
 
-    private $gameConfig = null;
-
     /**
-     * @return GameConfigInterface[]
+     * @return array<int, GameConfigInterface>
      */
     public function getGameConfig(): array
     {
@@ -413,11 +428,6 @@ final class GameController implements GameControllerInterface
     public function setPageTitle(string $title): void
     {
         $this->pagetitle = $title;
-    }
-
-    public function getQueryCount(): int
-    {
-        return 666;
     }
 
     public function getExecuteJS(): array

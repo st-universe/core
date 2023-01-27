@@ -7,7 +7,6 @@ namespace Stu\Module\Crew\Lib;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Crew\CrewOriginException;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
@@ -84,8 +83,11 @@ final class CrewCreator implements CrewCreatorInterface
         return $crewAssignment;
     }
 
-    public function createShipCrew(ShipInterface $ship, ?ColonyInterface $colony = null, ?ShipInterface $station = null): void
-    {
+    public function createShipCrew(
+        ShipInterface $ship,
+        ?ColonyInterface $colony = null,
+        ?ShipInterface $station = null
+    ): void {
         $crewToSetup = $ship->getBuildPlan()->getCrew();
 
         foreach (CrewEnum::CREW_ORDER as $crewType) {
@@ -122,8 +124,11 @@ final class CrewCreator implements CrewCreatorInterface
         }
     }
 
-    private function getCrewByType(int $crewType, ?ColonyInterface $colony, ?ShipInterface $station): ?ShipCrewInterface
-    {
+    private function getCrewByType(
+        int $crewType,
+        ?ColonyInterface $colony,
+        ?ShipInterface $station
+    ): ?ShipCrewInterface {
         if ($colony === null && $station === null) {
             throw new CrewOriginException('no origin available');
         }
@@ -161,6 +166,7 @@ final class CrewCreator implements CrewCreatorInterface
 
         if ($colony !== null) {
             $crewAssignments = $colony->getCrewAssignments();
+            /** @var ShipCrewInterface $random */
             $random = $crewAssignments->get(array_rand($crewAssignments->toArray()));
 
             //remove from colony

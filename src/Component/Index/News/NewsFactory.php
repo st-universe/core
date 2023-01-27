@@ -18,11 +18,11 @@ final class NewsFactory implements NewsFactoryInterface
     }
 
     public function createNewsItem(
-        NewsInterface $knPost
+        NewsInterface $news
     ): NewsItemInterface {
         return new NewsItem(
             $this->parserWithImage,
-            $knPost
+            $news
         );
     }
 }

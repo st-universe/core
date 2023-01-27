@@ -5,12 +5,9 @@ namespace Stu\Module\Control;
 final class Notification implements NotificationInterface
 {
     private string $text = '';
-    
-    private $link;
 
-    public function __construct(
-    ) {
-    }
+    /** @var null|string */
+    private $link;
 
     public function getText(): string
     {
