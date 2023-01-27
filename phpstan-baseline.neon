@@ -9616,26 +9616,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipMover.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:addFlightSignatures\\(\\) has parameter \\$currentField with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:addFlightSignatures\\(\\) has parameter \\$flightMethod with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:addFlightSignatures\\(\\) has parameter \\$nextField with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:addFlightSignatures\\(\\) has parameter \\$ship with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:addInformation\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipMover.php
@@ -9677,16 +9657,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:checkAndMove\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:createSignature\\(\\) has parameter \\$field with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:createSignature\\(\\) has parameter \\$ship with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipMover.php
 
@@ -9882,11 +9852,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:\\$fieldData has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:\\$flightSignatures has no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipMover.php
 

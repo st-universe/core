@@ -10,9 +10,7 @@ use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
-use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMap;
-use Stu\Orm\Entity\StarSystemMapInterface;
 
 /**
  * @extends EntityRepository<FlightSignature>
@@ -31,6 +29,12 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         foreach ($array as $obj) {
             $em->persist($obj);
         }
+    }
+
+    public function save(FlightSignatureInterface $item): void
+    {
+        $em = $this->getEntityManager();
+        $em->persist($item);
     }
 
     public function getVisibleSignatureCount(ColonyInterface $colony): int

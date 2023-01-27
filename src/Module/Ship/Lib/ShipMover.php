@@ -14,11 +14,9 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMovementComponentsFactoryInterface;
-use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
-use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -40,8 +38,6 @@ final class ShipMover implements ShipMoverInterface
     private ApplyDamageInterface $applyDamage;
 
     private AlertRedHelperInterface $alertRedHelper;
-
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
     private AstroEntryRepositoryInterface $astroEntryRepository;
 
@@ -66,8 +62,6 @@ final class ShipMover implements ShipMoverInterface
     private $leaderMovedToNextField = false;
     private $hasTravelled = false;
 
-    private $flightSignatures = [];
-
     public function __construct(
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
@@ -77,7 +71,6 @@ final class ShipMover implements ShipMoverInterface
         ShipSystemManagerInterface $shipSystemManager,
         ApplyDamageInterface $applyDamage,
         AlertRedHelperInterface $alertRedHelper,
-        FlightSignatureRepositoryInterface $flightSignatureRepository,
         AstroEntryRepositoryInterface $astroEntryRepository,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface  $tractorMassPayloadUtil,
@@ -93,7 +86,6 @@ final class ShipMover implements ShipMoverInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->applyDamage = $applyDamage;
         $this->alertRedHelper = $alertRedHelper;
-        $this->flightSignatureRepository = $flightSignatureRepository;
         $this->astroEntryRepository = $astroEntryRepository;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
@@ -340,8 +332,6 @@ final class ShipMover implements ShipMoverInterface
         } else {
             $this->addInformation(sprintf(_('Die %s fliegt in Sektor %d|%d ein'), $leadShip->getName(), $leadShip->getPosX(), $leadShip->getPosY()));
         }
-
-        $this->saveFlightSignatures();
     }
 
     /**
@@ -601,7 +591,23 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //create flight signatures
-        $this->addFlightSignatures($ship, $flightMethod, $currentField, $nextField, $leadShip->getSystem() !== null);
+        $flightSignatureCreator = $this->shipMovementComponentsFactory->createFlightSignatureCreator();
+        if ($leadShip->getSystem() !== null) {
+            $this->shipMovementComponentsFactory->createFlightSignatureCreator()->createInnerSystemSignatures(
+                $ship,
+                $flightMethod,
+                $currentField,
+                $nextField,
+            );
+        } else {
+            $this->shipMovementComponentsFactory->createFlightSignatureCreator()->createOuterSystemSignatures(
+                $ship,
+                $flightMethod,
+                $currentField,
+                $nextField,
+            );
+        }
+
 
         //check astro stuff
         if ($ship->getSystem() !== null) {
@@ -823,34 +829,6 @@ final class ShipMover implements ShipMoverInterface
         return $this->fieldData[$x . "_" . $y];
     }
 
-    private function addFlightSignatures($ship, $flightMethod, $currentField, $nextField, bool $isSystem): void
-    {
-        $fromSignature = $this->createSignature($ship, $currentField, $isSystem);
-        $toSignature = $this->createSignature($ship, $nextField, $isSystem);
-
-        switch ($flightMethod) {
-            case ShipEnum::DIRECTION_RIGHT:
-                $fromSignature->setToDirection(ShipEnum::DIRECTION_RIGHT);
-                $toSignature->setFromDirection(ShipEnum::DIRECTION_LEFT);
-                break;
-            case ShipEnum::DIRECTION_LEFT:
-                $fromSignature->setToDirection(ShipEnum::DIRECTION_LEFT);
-                $toSignature->setFromDirection(ShipEnum::DIRECTION_RIGHT);
-                break;
-            case ShipEnum::DIRECTION_TOP:
-                $fromSignature->setToDirection(ShipEnum::DIRECTION_TOP);
-                $toSignature->setFromDirection(ShipEnum::DIRECTION_BOTTOM);
-                break;
-            case ShipEnum::DIRECTION_BOTTOM:
-                $fromSignature->setToDirection(ShipEnum::DIRECTION_BOTTOM);
-                $toSignature->setFromDirection(ShipEnum::DIRECTION_TOP);
-                break;
-        }
-
-        $this->flightSignatures[] = $fromSignature;
-        $this->flightSignatures[] = $toSignature;
-    }
-
     private function checkAstronomicalStuff(ShipInterface $ship, StarSystemMapInterface $nextField): void
     {
         if (!$ship->getAstroState()) {
@@ -896,29 +874,5 @@ final class ShipMover implements ShipMoverInterface
         }
 
         $this->astroEntryRepository->save($astroEntry);
-    }
-
-    private function createSignature($ship, $field, bool $isSystem): FlightSignatureInterface
-    {
-        $signature = $this->flightSignatureRepository->prototype();
-
-        $signature->setUserId($ship->getUser()->getId());
-        $signature->setShipId($ship->getId());
-        $signature->setShipName($ship->getName());
-        $signature->setRump($ship->getRump());
-        $signature->setIsCloaked($ship->getCloakState());
-        $signature->setTime(time());
-        if ($isSystem) {
-            $signature->setStarsystemMap($field);
-        } else {
-            $signature->setMap($field);
-        }
-
-        return $signature;
-    }
-
-    private function saveFlightSignatures(): void
-    {
-        $this->flightSignatureRepository->saveAll($this->flightSignatures);
     }
 }

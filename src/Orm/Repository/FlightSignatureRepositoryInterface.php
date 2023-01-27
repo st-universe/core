@@ -23,6 +23,8 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
      */
     public function saveAll(array $array): void;
 
+    public function save(FlightSignatureInterface $item): void;
+
     public function getVisibleSignatureCount(ColonyInterface $colony): int;
 
     /**
