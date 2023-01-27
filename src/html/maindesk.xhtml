@@ -129,7 +129,8 @@
 											<td>${wrapper/get/getText}</td>
 											<td><span tal:replace="datetime:wrapper/get/getDate">DATE</span></td>
 										</tal:block>
-										<tal:block tal:condition="not:wrapper/showDetails">
+										<tal:block tal:condition="not:wrapper/showDetails"
+											tal:define="ship wrapper/get/getShip">
 											<td><span tal:condition="ship/getSectorId">Sektor ${ship/getSectorId}</span>
 											</td>
 											<td></td>
