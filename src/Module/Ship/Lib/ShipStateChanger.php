@@ -46,7 +46,10 @@ final class ShipStateChanger implements ShipStateChangerInterface
         $currentState = $ship->getState();
 
         //nothing to do
-        if ($currentState === $newState) {
+        if (
+            $currentState === ShipStateEnum::SHIP_STATE_DESTROYED
+            || $currentState === $newState
+        ) {
             return;
         }
 

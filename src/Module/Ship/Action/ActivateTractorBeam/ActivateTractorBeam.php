@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivatableException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -22,6 +23,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
@@ -42,6 +44,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private ShipStateChangerInterface $shipStateChanger;
+
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     private EntityManagerInterface $entityManager;
@@ -54,6 +58,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         InteractionCheckerInterface $interactionChecker,
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
+        ShipStateChangerInterface $shipStateChanger,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         EntityManagerInterface $entityManager
     ) {
@@ -64,6 +69,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->interactionChecker = $interactionChecker;
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
+        $this->shipStateChanger = $shipStateChanger;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->entityManager = $entityManager;
     }
@@ -196,6 +202,9 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if ($target->isTractoring()) {
             $this->shipSystemManager->deactivate($targetWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //forced active deactivation
         }
+
+        $this->shipStateChanger->changeShipState($targetWrapper, ShipStateEnum::SHIP_STATE_NONE);
+
         $target->setDockedTo(null);
         $ship->setTractoredShip($target);
         $this->shipRepository->save($ship);

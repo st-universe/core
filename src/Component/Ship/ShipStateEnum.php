@@ -36,6 +36,8 @@ final class ShipStateEnum
                 return _("6_destroyed");
             case self::SHIP_STATE_WEB_SPINNING:
                 return _("7_creatingweb");
+            case self::SHIP_STATE_EMERGENCY:
+                return _("8_in_emergency");
         }
         return 'unknown';
     }
