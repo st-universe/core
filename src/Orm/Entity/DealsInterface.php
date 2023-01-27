@@ -8,8 +8,6 @@ interface DealsInterface
 {
     public function getId(): int;
 
-    public function setFaction(FactionInterface $faction): DealsInterface;
-
     public function setAuction(bool $auction): DealsInterface;
 
     public function getAuction(): bool;
@@ -20,19 +18,11 @@ interface DealsInterface
 
     public function getgiveCommodityId(): ?int;
 
-    public function setgiveCommodityId(CommodityInterface $givecommodity): DealsInterface;
-
     public function getwantCommodityId(): ?int;
 
-    public function setwantCommodityId(CommodityInterface $wantcommodity): DealsInterface;
+    public function getgiveCommodityAmount(): ?int;
 
-    public function getgiveCommodityAmount(): int;
-
-    public function setgiveCommodityAmount(CommodityInterface $givecommodityamount): DealsInterface;
-
-    public function getwantCommodityAmount(): int;
-
-    public function setwantCommodityAmount(CommodityInterface $wantcommodityamount): DealsInterface;
+    public function getwantCommodityAmount(): ?int;
 
     public function getWantPrestige(): ?int;
 
@@ -42,7 +32,7 @@ interface DealsInterface
 
     public function setBuildplanId(int $buildplanid): DealsInterface;
 
-    public function getShip(): bool;
+    public function getShip(): ?bool;
 
     public function setShip(bool $ship): DealsInterface;
 

@@ -181,13 +181,6 @@ class Deals implements DealsInterface
         return $this->id;
     }
 
-    public function setFaction(FactionInterface $faction): DealsInterface
-    {
-        $this->faction_id = $faction;
-
-        return $this;
-    }
-
     public function setAuction(bool $auction): DealsInterface
     {
 
@@ -219,49 +212,20 @@ class Deals implements DealsInterface
         return $this->give_commodity;
     }
 
-
-    public function setgiveCommodityId(CommodityInterface $givecommodity): DealsInterface
-    {
-        $this->give_commodity = $givecommodity;
-
-        return $this;
-    }
-
     public function getwantCommodityId(): ?int
     {
         return $this->want_commodity;
     }
 
-    public function setwantCommodityId(CommodityInterface $wantcommodity): DealsInterface
-    {
-        $this->want_commodity = $wantcommodity;
-
-        return $this;
-    }
-
-    public function getgiveCommodityAmount(): int
+    public function getgiveCommodityAmount(): ?int
     {
         return $this->give_commodity_amonut;
     }
 
 
-    public function setgiveCommodityAmount(CommodityInterface $givecommodityamount): DealsInterface
-    {
-        $this->give_commodity_amonut = $givecommodityamount;
-
-        return $this;
-    }
-
-    public function getwantCommodityAmount(): int
+    public function getwantCommodityAmount(): ?int
     {
         return $this->want_commodity_amount;
-    }
-
-    public function setwantCommodityAmount(CommodityInterface $wantcommodityamount): DealsInterface
-    {
-        $this->want_commodity_amount = $wantcommodityamount;
-
-        return $this;
     }
 
     public function getWantPrestige(): ?int
@@ -288,7 +252,7 @@ class Deals implements DealsInterface
         return $this;
     }
 
-    public function getShip(): bool
+    public function getShip(): ?bool
     {
         return $this->ship;
     }
