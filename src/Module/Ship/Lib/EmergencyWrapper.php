@@ -28,6 +28,12 @@ final class EmergencyWrapper
 
     public function showDetails(): bool
     {
-        return $this->user->isFriend($this->emergency->getShip()->getUser()->getId());
+        $shipUser = $this->emergency->getShip()->getUser();
+
+        if ($shipUser === $this->user) {
+            return true;
+        }
+
+        return $this->user->isFriend($shipUser->getId());
     }
 }
