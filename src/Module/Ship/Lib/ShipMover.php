@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -14,15 +13,15 @@ use Stu\Exception\SanityCheckException;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\Movement\ShipMovementComponentsFactoryInterface;
 use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
+use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
-use Stu\Module\Ship\Lib\AlertRedHelperInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 final class ShipMover implements ShipMoverInterface
 {
@@ -54,6 +53,8 @@ final class ShipMover implements ShipMoverInterface
 
     private TholianWebUtilInterface $tholianWebUtil;
 
+    private ShipMovementComponentsFactoryInterface $shipMovementComponentsFactory;
+
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -81,7 +82,8 @@ final class ShipMover implements ShipMoverInterface
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface  $tractorMassPayloadUtil,
         ShipStateChangerInterface $shipStateChanger,
-        TholianWebUtilInterface $tholianWebUtil
+        TholianWebUtilInterface $tholianWebUtil,
+        ShipMovementComponentsFactoryInterface $shipMovementComponentsFactory
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -97,6 +99,7 @@ final class ShipMover implements ShipMoverInterface
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->shipStateChanger = $shipStateChanger;
         $this->tholianWebUtil = $tholianWebUtil;
+        $this->shipMovementComponentsFactory = $shipMovementComponentsFactory;
     }
 
     private function setDestination(
@@ -250,7 +253,7 @@ final class ShipMover implements ShipMoverInterface
             $nextField = $this->getNextField($leadShip, $flightMethod);
 
             if ($isFixedFleetMode) {
-                $reasons =  $this->reasonsNotAllShipsCanFly($wrappers);
+                $reasons = $this->shipMovementComponentsFactory->createShipMovementBlockingDeterminator()->determine($wrappers);
 
                 if (!empty($reasons)) {
                     $this->updateDestination($leadShip->getPosX(), $leadShip->getPosY());
@@ -742,52 +745,6 @@ final class ShipMover implements ShipMoverInterface
         }
     }
 
-    /**
-     * @param ShipWrapperInterface[] $wrappers
-     */
-    private function reasonsNotAllShipsCanFly(array $wrappers): array
-    {
-        $reasons = [];
-
-        foreach ($wrappers as $wrapper) {
-            $ship = $wrapper->get();
-
-            // zu wenig Crew
-            if (!$ship->hasEnoughCrew()) {
-                $reasons[] = sprintf(
-                    _('Die %s hat ungenügend Crew'),
-                    $ship->getName()
-                );
-
-                continue;
-            }
-
-            $flight_ecost = $ship->getRump()->getFlightEcost();
-
-            //Traktorstrahl Kosten
-            $epsSystem = $wrapper->getEpsSystemData();
-            if ($ship->isTractoring() && $epsSystem->getEps() < ($ship->getTractoredShip()->getRump()->getFlightEcost() + $flight_ecost)) {
-                $reasons[] = sprintf(
-                    _('Die %s hat nicht genug Energie für den Traktor-Flug (%d benötigt)'),
-                    $ship->getName(),
-                    $ship->getTractoredShip()->getRump()->getFlightEcost() + $flight_ecost
-                );
-
-                continue;
-            }
-
-            //zu wenig E zum weiterfliegen
-            if ($epsSystem->getEps() < $flight_ecost) {
-                $reasons[] = sprintf(
-                    _('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),
-                    $ship->getName(),
-                    $flight_ecost
-                );
-            }
-        }
-
-        return $reasons;
-    }
 
     private function updateDestination(&$posx, &$posy)
     {

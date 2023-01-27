@@ -11101,11 +11101,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipMover.php
 
 		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
 			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipMover.php
@@ -11132,7 +11127,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 5
+			count: 3
 			path: src/Module/Ship/Lib/ShipMover.php
 
 		-
@@ -11342,11 +11337,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:moveOneField\\(\\) has parameter \\$nextField with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:reasonsNotAllShipsCanFly\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipMover.php
 
