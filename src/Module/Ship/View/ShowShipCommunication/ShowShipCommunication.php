@@ -60,8 +60,7 @@ final class ShowShipCommunication implements ViewControllerInterface
             if ($emergency !== null) {
                 $game->setTemplateVar('EMERGENCYTEXT', $emergency->getText());
             }
-        } else {
-            $game->setTemplateVar('EMERGENCYTEXTLIMIT', StartEmergency::CHARACTER_LIMIT);
         }
+        $game->setTemplateVar('EMERGENCYTEXTLIMIT', StartEmergency::CHARACTER_LIMIT);
     }
 }
