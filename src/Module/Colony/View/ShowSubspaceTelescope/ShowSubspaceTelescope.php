@@ -9,13 +9,13 @@ use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\RefreshSubspaceSection\RefreshSubspaceSection;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
-use Stu\Module\Starmap\View\Overview\Overview;
 
 final class ShowSubspaceTelescope implements ViewControllerInterface
 {
@@ -53,8 +53,8 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_SUBSPACE_TELESCOPE));
 
-        $mapX =  (int) ceil($colony->getSystem()->getCx() / Overview::FIELDS_PER_SECTION);
-        $mapY =  (int) ceil($colony->getSystem()->getCy() / Overview::FIELDS_PER_SECTION);
+        $mapX =  (int) ceil($colony->getSystem()->getCx() / MapEnum::FIELDS_PER_SECTION);
+        $mapY =  (int) ceil($colony->getSystem()->getCy() / MapEnum::FIELDS_PER_SECTION);
         $layer = $colony->getSystem()->getLayer();
 
         $helper = new MapSectionHelper();
@@ -63,7 +63,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             $layer,
             $mapX,
             $mapY,
-            $mapX + ($mapY - 1) * ((int) ceil($layer->getWidth() / Overview::FIELDS_PER_SECTION)),
+            $mapX + ($mapY - 1) * ((int) ceil($layer->getWidth() / MapEnum::FIELDS_PER_SECTION)),
             ModuleViewEnum::MODULE_VIEW_COLONY,
             RefreshSubspaceSection::VIEW_IDENTIFIER
         );

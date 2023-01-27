@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\LayerInterface;
 use UserYRow;
 
 final class MapSectionHelper
 {
-    private const FIELDS_PER_SECTION = 20;
-
     public function setTemplateVars(
         GameControllerInterface $game,
         LayerInterface $layer,
@@ -25,10 +24,10 @@ final class MapSectionHelper
         $layerWidth = $layer->getWidth();
         $layerHeight = $layer->getHeight();
 
-        $maxx = $xCoordinate * self::FIELDS_PER_SECTION;
-        $minx = $maxx - self::FIELDS_PER_SECTION + 1;
-        $maxy = $yCoordinate * self::FIELDS_PER_SECTION;
-        $miny = $maxy - self::FIELDS_PER_SECTION + 1;
+        $maxx = $xCoordinate * MapEnum::FIELDS_PER_SECTION;
+        $minx = $maxx - MapEnum::FIELDS_PER_SECTION + 1;
+        $maxy = $yCoordinate * MapEnum::FIELDS_PER_SECTION;
+        $miny = $maxy - MapEnum::FIELDS_PER_SECTION + 1;
 
         $fields = [];
         foreach (range($miny, $maxy) as $value) {
@@ -52,7 +51,7 @@ final class MapSectionHelper
                 )
             );
         }
-        if ($yCoordinate * static::FIELDS_PER_SECTION < $layerHeight) {
+        if ($yCoordinate * MapEnum::FIELDS_PER_SECTION < $layerHeight) {
             $game->setTemplateVar(
                 'NAV_DOWN',
                 $this->constructPath(
@@ -60,7 +59,7 @@ final class MapSectionHelper
                     $viewIdentifier,
                     $layerId,
                     $xCoordinate,
-                    $yCoordinate + 1 > $layerHeight / self::FIELDS_PER_SECTION ? $yCoordinate : $yCoordinate + 1,
+                    $yCoordinate + 1 > $layerHeight / MapEnum::FIELDS_PER_SECTION ? $yCoordinate : $yCoordinate + 1,
                     $sectionId + 6
                 )
             );
@@ -78,7 +77,7 @@ final class MapSectionHelper
                 )
             );
         }
-        if ($xCoordinate * static::FIELDS_PER_SECTION < $layerWidth) {
+        if ($xCoordinate * MapEnum::FIELDS_PER_SECTION < $layerWidth) {
             $game->setTemplateVar(
                 'NAV_RIGHT',
 
@@ -86,7 +85,7 @@ final class MapSectionHelper
                     $module,
                     $viewIdentifier,
                     $layerId,
-                    $xCoordinate + 1 > $layerWidth / self::FIELDS_PER_SECTION ? $xCoordinate : $xCoordinate + 1,
+                    $xCoordinate + 1 > $layerWidth / MapEnum::FIELDS_PER_SECTION ? $xCoordinate : $xCoordinate + 1,
                     $yCoordinate,
                     $sectionId + 1
                 )

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map;
 
 use request;
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -12,7 +13,6 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class ShowMapEditor implements ViewControllerInterface
 {
-    private const FIELDS_PER_SECTION = 20;
     public const VIEW_IDENTIFIER = 'SHOW_MAP_EDITOR';
 
     private LayerRepositoryInterface $layerRepository;
@@ -46,15 +46,15 @@ final class ShowMapEditor implements ViewControllerInterface
 
         //HEADROW
         $xHeadRow = [];
-        for ($j = 1; $j <= (int)ceil($layer->getWidth() / static::FIELDS_PER_SECTION); $j++) {
+        for ($j = 1; $j <= (int)ceil($layer->getWidth() / MapEnum::FIELDS_PER_SECTION); $j++) {
             $xHeadRow[] = $j;
         }
 
         //SECTIONS
         $sections = [];
         $k = 1;
-        for ($i = 1; $i <= (int)ceil($layer->getHeight() / self::FIELDS_PER_SECTION); $i++) {
-            for ($j = 1; $j <= (int)ceil($layer->getWidth() / self::FIELDS_PER_SECTION); $j++) {
+        for ($i = 1; $i <= (int)ceil($layer->getHeight() / MapEnum::FIELDS_PER_SECTION); $i++) {
+            for ($j = 1; $j <= (int)ceil($layer->getWidth() / MapEnum::FIELDS_PER_SECTION); $j++) {
                 $sections[$i][$j] = $k;
                 $k++;
             }
@@ -63,7 +63,7 @@ final class ShowMapEditor implements ViewControllerInterface
         $game->setTemplateVar('LAYERS', $layers);
         $game->setTemplateVar('X_HEAD_ROW', $xHeadRow);
         $game->setTemplateVar('SECTIONS', $sections);
-        $game->setTemplateVar('FIELDS_PER_SECTION', static::FIELDS_PER_SECTION);
+        $game->setTemplateVar('FIELDS_PER_SECTION', MapEnum::FIELDS_PER_SECTION);
         $game->setTemplateVar('SYSTEM_LIST', $this->starSystemRepository->getByLayer($layer->getId()));
     }
 }
