@@ -15131,21 +15131,6 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getShip\\(\\) should return bool but returns bool\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getgiveCommodityAmount\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:getwantCommodityAmount\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auctionBids type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AuctionBid\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
@@ -15156,37 +15141,12 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$faction_id \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$giveCommodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$giveCommodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$give_commodity \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$give_commodity_amonut \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_commodity \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/Deals.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$want_commodity_amount \\(int\\|null\\) does not accept Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
