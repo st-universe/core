@@ -32,7 +32,6 @@ use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Station\StationUtility;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Starmap\View\Overview\Overview;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
@@ -1003,6 +1002,11 @@ class Ship implements ShipInterface
             || $this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE;
     }
 
+    public function isInEmergency(): bool
+    {
+        return $this->getState() === ShipStateEnum::SHIP_STATE_EMERGENCY;
+    }
+
     public function getAstroStartTurn(): ?int
     {
         return $this->astro_start_turn;
@@ -1387,6 +1391,15 @@ class Ship implements ShipInterface
         }
     }
 
+    public function getSectorId(): ?int
+    {
+        if ($this->getLayer() === null) {
+            return null;
+        }
+
+        return $this->getLayer()->getSectorId($this->getMapCX(), $this->getMapCY());
+    }
+
     public function getBuildplan(): ?ShipBuildplanInterface
     {
         return $this->buildplan;
@@ -1445,12 +1458,12 @@ class Ship implements ShipInterface
 
     public function getMapCX(): int
     {
-        return (int) ceil($this->getCX() / Overview::FIELDS_PER_SECTION);
+        return (int) ceil($this->getCX() / MapEnum::FIELDS_PER_SECTION);
     }
 
     public function getMapCY(): int
     {
-        return (int) ceil($this->getCY() / Overview::FIELDS_PER_SECTION);
+        return (int) ceil($this->getCY() / MapEnum::FIELDS_PER_SECTION);
     }
 
     public function dockedOnTradePost(): bool

@@ -15,12 +15,15 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Ship\Lib\EmergencyWrapper;
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
+use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -40,6 +43,8 @@ final class Overview implements ViewControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
+
     private KnFactoryInterface $knFactory;
 
     private ColonyLimitCalculatorInterface $colonyLimitCalculator;
@@ -56,6 +61,7 @@ final class Overview implements ViewControllerInterface
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
         UserRepositoryInterface $userRepository,
+        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
         KnFactoryInterface $knFactory,
         ColonyLimitCalculatorInterface $colonyLimitCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory
@@ -67,6 +73,7 @@ final class Overview implements ViewControllerInterface
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
         $this->userRepository = $userRepository;
+        $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
         $this->knFactory = $knFactory;
         $this->colonyLimitCalculator = $colonyLimitCalculator;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -74,6 +81,9 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        /**
+         * @var UserInterface
+         */
         $user = $game->getUser();
         $userId = $user->getId();
 
@@ -130,6 +140,9 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('USER', $user);
         $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
 
+        //emergencies
+        $this->setPotentialEmergencies($game);
+
         //planet
         $game->setTemplateVar('PLANET_LIMIT', $this->colonyLimitCalculator->getColonyLimitWithType($user, ColonyTypeEnum::COLONY_TYPE_PLANET));
         $game->setTemplateVar('PLANET_COUNT', $this->colonyLimitCalculator->getColonyCountWithType($user, ColonyTypeEnum::COLONY_TYPE_PLANET));
@@ -141,5 +154,22 @@ final class Overview implements ViewControllerInterface
         //asteroid
         $game->setTemplateVar('ASTEROID_LIMIT', $this->colonyLimitCalculator->getColonyLimitWithType($user, ColonyTypeEnum::COLONY_TYPE_ASTEROID));
         $game->setTemplateVar('ASTEROID_COUNT', $this->colonyLimitCalculator->getColonyCountWithType($user, ColonyTypeEnum::COLONY_TYPE_ASTEROID));
+    }
+
+    private function setPotentialEmergencies(GameControllerInterface $game): void
+    {
+        $emergencies = $this->spacecraftEmergencyRepository->getActive();
+
+        if (empty($emergencies)) {
+            return;
+        }
+
+        $emergencyWrappers = [];
+
+        foreach ($emergencies as $emergency) {
+            $emergencyWrappers[] = new EmergencyWrapper($emergency, $game->getUser());
+        }
+
+        $game->setTemplateVar('EMERGENCYWRAPPERS', $emergencyWrappers);
     }
 }

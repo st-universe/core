@@ -107,6 +107,41 @@
 						</tal:block>
 					</div>
 					<br />
+					<tal:block tal:condition="exists:EMERGENCYWRAPPERS">
+						<div class="box">
+							<div class="box_title">Notrufe</div>
+							<div class="box_body">
+								<table class="tcal">
+									<tr>
+										<th>Koordinaten</th>
+										<th>Info</th>
+										<th>Notrufsignal</th>
+										<th>Zeitpunkt</th>
+									</tr>
+									<tr tal:repeat="wrapper EMERGENCYWRAPPERS">
+										<tal:block tal:condition="wrapper/showDetails"
+											tal:define="ship wrapper/get/getShip">
+											<td>${ship/getSectorString}</td>
+											<td><span tal:replace="structure bbcode:ship/getName">SHIPNAME</span>
+												von <span
+													tal:replace="structure bbcode:ship/getUser/getName">USERNAME</span>
+											</td>
+											<td>${wrapper/get/getText}</td>
+											<td><span tal:replace="datetime:wrapper/get/getDate">DATE</span></td>
+										</tal:block>
+										<tal:block tal:condition="not:wrapper/showDetails">
+											<td><span tal:condition="ship/getSectorId">Sektor ${ship/getSectorId}</span>
+											</td>
+											<td></td>
+											<td>${wrapper/get/getText}</td>
+											<td><span tal:replace="datetime:wrapper/get/getDate">DATE</span></td>
+										</tal:block>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<br />
+					</tal:block>
 					<div class="box">
 						<div class="box_title">Letzte Ereignisse</div>
 						<div class="box_body">

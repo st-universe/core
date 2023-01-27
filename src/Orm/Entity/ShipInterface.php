@@ -175,6 +175,8 @@ interface ShipInterface
 
     public function isUnderRepair(): bool;
 
+    public function isInEmergency(): bool;
+
     public function getAstroStartTurn(): ?int;
 
     public function setAstroStartTurn(?int $turn): ShipInterface;
@@ -295,6 +297,8 @@ interface ShipInterface
      * return "x|y (System-Name)"
      */
     public function getSectorString(): string;
+
+    public function getSectorId(): ?int;
 
     public function getBuildplan(): ?ShipBuildplanInterface;
 

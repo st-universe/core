@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Component\Map\MapEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\LayerRepository")
@@ -78,5 +79,10 @@ class Layer implements LayerInterface
     public function isHidden(): bool
     {
         return $this->is_hidden;
+    }
+
+    public function getSectorId(int $mapCx, int $mapCy): int
+    {
+        return $mapCx + ($mapCy - 1) * (int)ceil($this->getWidth() / MapEnum::FIELDS_PER_SECTION);
     }
 }

@@ -14,4 +14,6 @@ interface LayerInterface
     public function getHeight(): int;
 
     public function isHidden(): bool;
+
+    public function getSectorId(int $mapCx, int $mapCy): int;
 }
