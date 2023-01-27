@@ -102,6 +102,7 @@ use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipyardShipQueue;
+use Stu\Orm\Entity\SpacecraftEmergency;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemType;
@@ -612,6 +613,11 @@ return [
         ContainerInterface $c
     ): ShipyardShipQueueRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipyardShipQueue::class);
+    },
+    SpacecraftEmergencyRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): SpacecraftEmergencyRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(SpacecraftEmergency::class);
     },
     StarSystemMapRepositoryInterface::class => function (
         ContainerInterface $c

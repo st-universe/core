@@ -2,7 +2,9 @@
 
 namespace Stu\Module\Control;
 
-
+/**
+ * This class adds the possibility to inject a timestamp generator
+ */
 class StuTime
 {
     public function time(): int
