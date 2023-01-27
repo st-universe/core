@@ -8,6 +8,7 @@ use JBBCode\Parser;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Action\StartEmergency\StartEmergency;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 
@@ -59,6 +60,8 @@ final class ShowShipCommunication implements ViewControllerInterface
             if ($emergency !== null) {
                 $game->setTemplateVar('EMERGENCYTEXT', $emergency->getText());
             }
+        } else {
+            $game->setTemplateVar('EMERGENCYTEXTLIMIT', StartEmergency::CHARACTER_LIMIT);
         }
     }
 }

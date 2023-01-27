@@ -17,6 +17,8 @@ final class StartEmergency implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_START_EMERGENCY';
 
+    public const CHARACTER_LIMIT = 250;
+
     private ShipLoaderInterface $shipLoader;
 
     private ShipStateChangerInterface $shipStateChanger;
@@ -49,6 +51,11 @@ final class StartEmergency implements ActionControllerInterface
         }
 
         $text = request::postStringFatal('text');
+
+        if (mb_strlen($text) > self::CHARACTER_LIMIT) {
+            $game->addInformationf(_("Maximal %d Zeichen erlaubt"), self::CHARACTER_LIMIT);
+            return;
+        }
 
         $emergency = $this->spacecraftEmergencyRepository->prototype();
         $emergency->setShip($ship);
