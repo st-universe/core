@@ -54,7 +54,11 @@ final class ShowShipCommunication implements ViewControllerInterface
         );
 
         if ($ship->isInEmergency()) {
-            $game->setTemplateVar('EMERGENCYTEXT', $this->spacecraftEmergencyRepository->getByShipId($ship->getId()));
+            $emergency = $this->spacecraftEmergencyRepository->getByShipId($ship->getId());
+
+            if ($emergency !== null) {
+                $game->setTemplateVar('EMERGENCYTEXT', $emergency->getText());
+            }
         }
     }
 }
