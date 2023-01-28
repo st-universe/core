@@ -14448,11 +14448,6 @@ parameters:
 		-
 			message: "#^Variable \\$container might not be defined\\.$#"
 			count: 4
-			path: src/Public/colony.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
 			path: src/Public/comm.php
 
 		-

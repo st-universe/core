@@ -10,6 +10,10 @@ use Psr\Container\ContainerInterface;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+/**
+ * @deprecated Use new Init class
+ * @see Init.php
+ */
 $builder = new ContainerBuilder();
 
 $builder->addDefinitions(__DIR__ . '/services.php');
