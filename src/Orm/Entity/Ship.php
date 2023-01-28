@@ -32,6 +32,7 @@ use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Station\StationUtility;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")

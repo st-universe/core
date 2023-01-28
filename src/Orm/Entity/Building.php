@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Index;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 
