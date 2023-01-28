@@ -8,14 +8,22 @@ use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
+/** @var ConfigInterface $container */
 $config = $container->get(ConfigInterface::class);
-$session = $container->get(SessionInterface::class);
+
+$isAdminUser = false;
+// load the session handler only if a session has been started
+if (session_id() !== '') {
+    $user = $container->get(SessionInterface::class)->getUser();
+
+    $isAdminUser = $user !== null && $user->isAdmin() === true;
+}
 
 $whoops = new Run();
 
 if (
     $config->get('debug.debug_mode') === true ||
-    ($session->getUser() !== null && $session->getUser()->isAdmin())
+    $isAdminUser
 ) {
     error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
@@ -25,27 +33,26 @@ if (
         $handler = new PrettyPageHandler();
         $handler->setPageTitle('Error - Star Trek Universe');
     }
-
-    $whoops->prependHandler($handler);
 } else {
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
     if (Whoops\Util\Misc::isCommandLine()) {
         $handler = new PlainTextHandler();
     } else {
-        $handler = function (Throwable $e, $inspector, $run) {
+        $handler = function (): void {
             require_once __DIR__ . '/../html/error.html';
         };
     }
-    $whoops->prependHandler($handler);
 }
+
+$whoops->prependHandler($handler);
 
 $logger = new Monolog\Logger('stu');
 $logger->pushHandler(
     new Monolog\Handler\StreamHandler($config->get('debug.logfile_path'))
 );
 
-$whoops->prependHandler(function (Throwable $e, $inspector, $run) use ($logger) {
+$whoops->prependHandler(function (Throwable $e) use ($logger) {
     $logger->error(
         $e->getMessage(),
         [

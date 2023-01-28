@@ -72,7 +72,7 @@ final class Session implements SessionInterface
     public function checkLoginCookie(): void
     {
         $sstr = $_COOKIE['sstr'] ?? '';
-        $uid = intval($_SESSION['uid']);
+        $uid = intval($_SESSION['uid'] ?? 0);
         if ($uid > 0) {
             $this->performCookieLogin($uid, $sstr);
         }
