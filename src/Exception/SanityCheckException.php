@@ -6,23 +6,23 @@ namespace Stu\Exception;
 
 final class SanityCheckException extends StuException
 {
-    private ?string $action;
-    private ?string $view;
+    private ?string $actionIdentifier;
+    private ?string $viewIdentifier;
 
-    public function __construct($message = "", ?string $action = null, ?string $view = null)
+    public function __construct($message = "", ?string $actionIdentifier = null, ?string $viewIdentifier = null)
     {
         $this->message = $message;
-        $this->action = $action;
-        $this->view = $view;
+        $this->actionIdentifier = $actionIdentifier;
+        $this->viewIdentifier = $viewIdentifier;
     }
 
-    public function getAction(): ?string
+    public function getActionIdentifier(): ?string
     {
-        return $this->action;
+        return $this->actionIdentifier;
     }
 
-    public function getView(): ?string
+    public function getViewIdentifier(): ?string
     {
-        return $this->view;
+        return $this->viewIdentifier;
     }
 }

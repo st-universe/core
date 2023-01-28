@@ -545,59 +545,27 @@ final class GameController implements GameControllerInterface
                 }
             }
 
-            if ($this->getUser() !== null) {
-                $gameRequest->setUserId($this->getUser());
-
-                if ($this->getUser()->isLocked()) {
-                    $userLock = $this->getUser()->getUserLock();
-                    $this->session->logout();
-
-                    throw new LoginException(
-                        _('Dein Spieleraccount wurde gesperrt'),
-                        sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
-                    );
-                }
-                if (!request::postString('smscode') && $this->getUser()->getState() === UserEnum::USER_STATE_SMS_VERIFICATION) {
-                    throw new AccountNotVerifiedException();
-                }
-                $gameState = $this->getGameState();
-                if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
-                    throw new TickGameStateException();
-                }
-
-                if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->getUser()->isAdmin()) {
-                    throw new MaintenanceGameStateException();
-                }
-
-                if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION) {
-                    throw new RelocationGameStateException();
-                }
-            }
+            $this->checkUserAndGameState($gameRequest);
 
             // log action & view and time they took
             $startTime = hrtime(true);
             try {
-                $action = $this->executeCallback($actions);
+                $this->executeCallback($actions, $gameRequest);
             } catch (SanityCheckException $e) {
                 $this->sanityCheckExceptions[] = $e;
-                $action = $e->getAction();
             }
-            $gameRequest->unsetParameter($action);
             $actionMs = hrtime(true) - $startTime;
 
             $startTime = hrtime(true);
             try {
-                $view = $this->executeView($views);
+                $this->executeView($views, $gameRequest);
             } catch (SanityCheckException $e) {
                 $this->sanityCheckExceptions[] = $e;
-                $view = $e->getView();
+                $e->getViewIdentifier();
             }
-            $gameRequest->unsetParameter($view);
             $viewMs = hrtime(true) - $startTime;
 
-            $gameRequest->setAction($action);
             $gameRequest->setActionMs((int)$actionMs / 1000000);
-            $gameRequest->setView($view);
             $gameRequest->setViewMs((int)$viewMs / 1000000);
         } catch (SessionInvalidException $e) {
             session_destroy();
@@ -682,6 +650,38 @@ final class GameController implements GameControllerInterface
         $this->logSanityChecks($gameRequestId);
     }
 
+    private function checkUserAndGameState(GameRequestInterface $gameRequest): void
+    {
+        if ($this->getUser() !== null) {
+            $gameRequest->setUserId($this->getUser());
+
+            if ($this->getUser()->isLocked()) {
+                $userLock = $this->getUser()->getUserLock();
+                $this->session->logout();
+
+                throw new LoginException(
+                    _('Dein Spieleraccount wurde gesperrt'),
+                    sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
+                );
+            }
+            if (!request::postString('smscode') && $this->getUser()->getState() === UserEnum::USER_STATE_SMS_VERIFICATION) {
+                throw new AccountNotVerifiedException();
+            }
+            $gameState = $this->getGameState();
+            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
+                throw new TickGameStateException();
+            }
+
+            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->getUser()->isAdmin()) {
+                throw new MaintenanceGameStateException();
+            }
+
+            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION) {
+                throw new RelocationGameStateException();
+            }
+        }
+    }
+
     private function logSanityChecks(int $gameRequestId): void
     {
         $this->loggerUtil->init('sanity', LoggerEnum::LEVEL_WARNING);
@@ -748,37 +748,44 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    private function executeCallback(array $actions): ?string
+    /**
+     * @param array<string, ActionControllerInterface> $actions
+     */
+    private function executeCallback(array $actions, GameRequestInterface $gameRequest): void
     {
-        foreach ($actions as $request_key => $config) {
-            if (request::indString($request_key)) {
-                if ($config->performSessionCheck() === true && !request::isPost()) {
+        foreach ($actions as $actionIdentifier => $actionController) {
+            if (request::indString($actionIdentifier)) {
+
+                $gameRequest->setAction($actionIdentifier);
+
+                if ($actionController->performSessionCheck() === true && !request::isPost()) {
                     if (!$this->sessionStringRepository->isValid(
                         (string)request::indString('sstr'),
                         $this->getUser()->getId()
                     )) {
-                        return null;
+                        return;
                     }
                 }
-                $config->handle($this);
+                $actionController->handle($this);
                 $this->entityManager->flush();
-
-                return $request_key;
             }
         }
-
-        return null;
     }
 
-    private function executeView(array $views): ?string
+    /**
+     * @param array<string, ViewControllerInterface> $views
+     */
+    private function executeView(array $views, GameRequestInterface $gameRequest): void
     {
-        foreach ($views as $request_key => $config) {
+        foreach ($views as $viewIdentifier => $config) {
 
-            if (request::indString($request_key)) {
+            if (request::indString($viewIdentifier)) {
+                $gameRequest->setView($viewIdentifier);
+
                 $config->handle($this);
                 $this->entityManager->flush();
 
-                return $request_key;
+                return;
             }
         }
 
@@ -787,11 +794,7 @@ final class GameController implements GameControllerInterface
         if ($view !== null) {
             $view->handle($this);
             $this->entityManager->flush();
-
-            return static::DEFAULT_VIEW;
         }
-
-        return null;
     }
 
     public function getGameStats(): array

@@ -85,6 +85,10 @@ interface GameControllerInterface
 
     public function sessionAndAdminCheck(): void;
 
+    /**
+     * @param array<string, ActionControllerInterface> $actions
+     * @param array<string, ViewControllerInterface> $views
+     */
     public function main(
         string $module,
         array $actions,

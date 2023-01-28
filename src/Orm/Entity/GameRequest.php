@@ -134,9 +134,11 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    public function setAction(?string $action): GameRequestInterface
+    public function setAction(string $action): GameRequestInterface
     {
         $this->action = $action;
+        $this->unsetParameter($action);
+
         return $this;
     }
 
@@ -146,9 +148,11 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    public function setView(?string $view): GameRequestInterface
+    public function setView(string $view): GameRequestInterface
     {
         $this->view = $view;
+        $this->unsetParameter($view);
+
         return $this;
     }
 

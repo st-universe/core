@@ -14,11 +14,11 @@ interface GameRequestInterface
 
     public function setModule(string $module): GameRequestInterface;
 
-    public function setAction(?string $action): GameRequestInterface;
+    public function setAction(string $action): GameRequestInterface;
 
     public function setActionMs(int $actionMs): GameRequestInterface;
 
-    public function setView(?string $view): GameRequestInterface;
+    public function setView(string $view): GameRequestInterface;
 
     public function setViewMs(int $viewMs): GameRequestInterface;
 
