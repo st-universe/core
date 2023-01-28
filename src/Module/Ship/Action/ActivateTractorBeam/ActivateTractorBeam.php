@@ -225,7 +225,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         //flush to persist activated state
         $this->entityManager->flush();
 
-        // deactivate system
+        //deactivate system
         if (!$this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
             throw new SystemNotDeactivatableException('TRACTOR ERROR');
         }
