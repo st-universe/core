@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Control\StuTime;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradeLicenseRepository")

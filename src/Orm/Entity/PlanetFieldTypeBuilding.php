@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldTypeBuildingRepository")

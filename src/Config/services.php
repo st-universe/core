@@ -6,10 +6,10 @@ namespace Stu\Config;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use Cache\Adapter\Redis\RedisCachePool;
-use Cache\Bridge\Doctrine\DoctrineCacheBridge;
-use Doctrine\ORM\Configuration;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMSetup;
 use Exception;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
@@ -80,30 +80,25 @@ return [
     EntityManagerCreatorInterface::class => autowire(EntityManagerCreator::class),
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
         $config = $c->get(ConfigInterface::class);
-        $cacheDriver = new DoctrineCacheBridge($c->get(CacheItemPoolInterface::class));
 
-        $emConfig = new Configuration();
+        $emConfig = ORMSetup::createAnnotationMetadataConfiguration(
+            [__DIR__ . '/../Orm/Entity/'],
+            $config->get('debug.debug_mode') === true,
+            __DIR__ . '/../OrmProxy/',
+            $c->get(CacheItemPoolInterface::class)
+        );
         $emConfig->setAutoGenerateProxyClasses(0);
-        $emConfig->setMetadataCacheImpl($cacheDriver);
-        $emConfig->setQueryCacheImpl($cacheDriver);
-
-        $driverImpl = $emConfig->newDefaultAnnotationDriver(__DIR__ . '/../Orm/Entity/');
-        $emConfig->setMetadataDriverImpl($driverImpl);
-        $emConfig->setProxyDir(sprintf(
-            '%s/../OrmProxy/',
-            __DIR__
-        ));
         $emConfig->setProxyNamespace($config->get('db.proxy_namespace'));
 
-        $manager = EntityManager::create(
-            [
+        $manager = new EntityManager(
+            DriverManager::getConnection([
                 'driver' => 'pdo_pgsql',
                 'user' => $config->get('db.user'),
                 'password' => $config->get('db.pass'),
                 'dbname' => $config->get('db.database'),
                 'host'  => $config->get('db.host'),
                 'charset' => 'utf8',
-            ],
+            ]),
             $emConfig
         );
 

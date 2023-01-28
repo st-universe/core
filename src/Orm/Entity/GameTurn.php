@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\GameTurnRepository")

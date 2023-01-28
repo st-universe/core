@@ -4,6 +4,7 @@ namespace Stu\Module\Control;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Stu\Exception\SessionInvalidException;
 use Noodlehaus\ConfigInterface;
 use request;

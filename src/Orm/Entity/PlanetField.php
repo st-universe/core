@@ -20,6 +20,7 @@ use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldRepository")
