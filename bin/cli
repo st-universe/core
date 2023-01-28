@@ -40,11 +40,11 @@ Init::run(
         $app->io(new Interactor());
 
         $logo = <<<LOGO
-              .dBBBBP  dBBBBBBP dBP dBP    dBBBP  dBP    dBP
-              BP
-              `BBBBb    dBP   dBP dBP    dBP    dBP    dBP
-                 dBP   dBP   dBP_dBP    dBP    dBP    dBP
-            dBBBBP'   dBP   dBBBBBP    dBBBBP dBBBBP dBP
+          .dBBBBP  dBBBBBBP dBP dBP    dBBBP  dBP    dBP
+          BP
+          `BBBBb    dBP   dBP dBP    dBP    dBP    dBP
+             dBP   dBP   dBP_dBP    dBP    dBP    dBP
+        dBBBBP'   dBP   dBBBBBP    dBBBBP dBBBBP dBP
         LOGO;
 
         $app->logo($logo);
