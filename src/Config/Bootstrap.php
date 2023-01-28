@@ -52,6 +52,7 @@ $builder->addDefinitions(__DIR__ . '/../Component/Specials/services.php');
 $builder->addDefinitions(__DIR__ . '/../Module/Tick/services.php');
 $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php',);
 $builder->addDefinitions(__DIR__ . '/../Module/Maintenance/services.php');
+$builder->addDefinitions(__DIR__ . '/../Component/Cli/services.php');
 
 /** @var ContainerInterface $container */
 $container = $builder->build();

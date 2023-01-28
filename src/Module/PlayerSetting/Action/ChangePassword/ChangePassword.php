@@ -12,6 +12,11 @@ final class ChangePassword implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_PASSWORD';
 
+    /**
+     * @todo Extract into a separate password validator
+     */
+    public const PASSWORD_REGEX = '/[a-zA-Z0-9]{6,20}/';
+
     private ChangePasswordRequestInterface $changePasswordRequest;
 
     private UserRepositoryInterface $userRepository;
@@ -45,7 +50,7 @@ final class ChangePassword implements ActionControllerInterface
             $game->addInformation(_('Es wurde kein neues Passwort eingegeben'));
             return;
         }
-        if (!preg_match('/[a-zA-Z0-9]{6,20}/', $newPassword)) {
+        if (!preg_match(self::PASSWORD_REGEX, $newPassword)) {
             $game->addInformation(_('Das Passwort darf nur aus Zahlen und Buchstaben bestehen und muss zwischen 6 und 20 Zeichen lang sein'));
             return;
         }

@@ -14,6 +14,7 @@ composer, git.
 - make dev-create-db
 - php src/admin/scripts/reset.php
 - make dev-serve
+- Use the cli command to create a new user `./bin/cli user:create--help`
 
 Danach sollte die Software via http://localhost:1337 erreichbar sein, ggf. kann
 es sein, dass der Hostname (stu-db) nicht aufgelöst werden kann. In diesem

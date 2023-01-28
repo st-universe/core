@@ -3,29 +3,44 @@
 declare(strict_types=1);
 
 use Ahc\Cli\IO\Interactor;
+use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Cli\UserCreateCommand;
 use Stu\Config\Init;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 Init::run(
     function (ContainerInterface $dic): void {
+        $em = $dic->get(EntityManagerInterface::class);
+
+        $em->beginTransaction();
+
         $app = new Ahc\Cli\Application(
             'Star Trek Universe CLI',
-            $dic->get(ConfigInterface::class)->get('game.version')
+            $dic->get(ConfigInterface::class)->get('game.version'),
+            function (int $exitCode = 0) use ($em): void {
+                if ($exitCode === 0) {
+                    $em->commit();
+                } else {
+                    $em->rollback();
+                }
+                exit($exitCode);
+            }
         );
         $app->io(new Interactor());
 
         $logo = <<<LOGO
-          .dBBBBP  dBBBBBBP dBP dBP    dBBBP  dBP    dBP
-          BP
-          `BBBBb    dBP   dBP dBP    dBP    dBP    dBP
-             dBP   dBP   dBP_dBP    dBP    dBP    dBP
-        dBBBBP'   dBP   dBBBBBP    dBBBBP dBBBBP dBP
-        LOGO;
+              .dBBBBP  dBBBBBBP dBP dBP    dBBBP  dBP    dBP
+              BP
+              `BBBBb    dBP   dBP dBP    dBP    dBP    dBP
+                 dBP   dBP   dBP_dBP    dBP    dBP    dBP
+            dBBBBP'   dBP   dBBBBBP    dBBBBP dBBBBP dBP
+            LOGO;
 
         $app->logo($logo);
+        $app->add(new UserCreateCommand($dic));
 
         $app->handle($_SERVER['argv']);
     }

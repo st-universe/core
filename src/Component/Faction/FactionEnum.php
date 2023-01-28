@@ -6,6 +6,14 @@ namespace Stu\Component\Faction;
 
 final class FactionEnum
 {
+    /** @var array<string, int> */
+    public const FACTION_NAME_TO_ID_MAP = [
+        'federation' => self::FACTION_FEDERATION,
+        'romulan' => self::FACTION_ROMULAN,
+        'klingon' => self::FACTION_KLINGON,
+        'cardassian' => self::FACTION_CARDASSIAN,
+        'ferengi' => self::FACTION_FERENGI,
+    ];
 
     public const FACTION_FEDERATION = 1;
     public const FACTION_ROMULAN = 2;

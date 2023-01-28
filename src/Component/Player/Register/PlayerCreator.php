@@ -18,11 +18,14 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class PlayerCreator implements PlayerCreatorInterface
+/**
+ * Creates players with registration and optional sms validation
+ */
+class PlayerCreator implements PlayerCreatorInterface
 {
-    private UserRepositoryInterface $userRepository;
+    protected UserRepositoryInterface $userRepository;
 
-    private PlayerDefaultsCreatorInterface $playerDefaultsCreator;
+    protected PlayerDefaultsCreatorInterface $playerDefaultsCreator;
 
     private RegistrationEmailSenderInterface $registrationEmailSender;
 
@@ -73,7 +76,8 @@ final class PlayerCreator implements PlayerCreatorInterface
         $player = $this->createPlayer(
             $loginName,
             $emailAddress,
-            $faction
+            $faction,
+            $this->passwordGenerator->generatePassword()
         );
 
         $invitation->setInvitedUserId($player->getId());
@@ -96,6 +100,7 @@ final class PlayerCreator implements PlayerCreatorInterface
             $loginName,
             $emailAddress,
             $faction,
+            $this->passwordGenerator->generatePassword(),
             $mobileWithDoubleZero,
             $randomHash
         );
@@ -141,6 +146,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         string $loginName,
         string $emailAddress,
         FactionInterface $faction,
+        string $password,
         string $mobile = null,
         string $smsCode = null
     ): UserInterface {
@@ -150,8 +156,6 @@ final class PlayerCreator implements PlayerCreatorInterface
         $player->setFaction($faction);
 
         $this->userRepository->save($player);
-
-        $password = $this->passwordGenerator->generatePassword();
 
         $player->setUsername('Siedler ' . $player->getId());
         $player->setTick(1);
