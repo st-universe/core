@@ -496,11 +496,6 @@ parameters:
 			path: src/Component/Station/StationUtility.php
 
 		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 2
-			path: src/Config/ErrorHandler.php
-
-		-
 			message: "#^Method Stu\\\\Exception\\\\SanityCheckException\\:\\:__construct\\(\\) has parameter \\$message with no type specified\\.$#"
 			count: 1
 			path: src/Exception/SanityCheckException.php
