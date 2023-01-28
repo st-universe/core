@@ -18,6 +18,7 @@ use Stu\Component\Player\Deletion\PlayerDeletion;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Component\Player\Invitation\InvitePlayer;
 use Stu\Component\Player\Invitation\InvitePlayerInterface;
+use Stu\Component\Player\Register\LocalPlayerCreator;
 use Stu\Component\Player\Register\PlayerCreator;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Component\Player\Register\RegistrationEmailSender;
@@ -63,6 +64,7 @@ return [
     LoginValidationInterface::class => create(LoginValidation::class)->constructor([
         autowire(IpIntelValidator::class)
     ]),
+    LocalPlayerCreator::class => autowire(),
     PlayerCreatorInterface::class => autowire(PlayerCreator::class),
     PlayerDefaultsCreatorInterface::class => autowire(PlayerDefaultsCreator::class),
     RegistrationEmailSenderInterface::class => autowire(RegistrationEmailSender::class),

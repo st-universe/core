@@ -80,6 +80,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         $em = $this->getEntityManager();
 
         $em->persist($researched);
+        $em->flush();
     }
 
     public function delete(ResearchedInterface $researched): void
