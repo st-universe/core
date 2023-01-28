@@ -340,6 +340,8 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->shipyardShipQueueRepository->getByShipyard($ship->getId()));
         }
 
+        $firstOrbitShip = null;
+
         /**
          * @var ShipInterface[] $shipList
          */
