@@ -14,13 +14,13 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 Init::run(
     function (ContainerInterface $dic): void {
-      /**
-       * @todo Remove after magic dic calls have been purged
-       */
-      global $container;
-      $container = $dic;
+        /**
+         * @todo Remove after magic dic calls have been purged
+         */
+        global $container;
+        $container = $dic;
 
-      $em = $dic->get(EntityManagerInterface::class);
+        $em = $dic->get(EntityManagerInterface::class);
 
         $em->beginTransaction();
 
@@ -45,7 +45,7 @@ Init::run(
               `BBBBb    dBP   dBP dBP    dBP    dBP    dBP
                  dBP   dBP   dBP_dBP    dBP    dBP    dBP
             dBBBBP'   dBP   dBBBBBP    dBBBBP dBBBBP dBP
-            LOGO;
+        LOGO;
 
         $app->logo($logo);
         $app->add(new UserCreateCommand($dic));
