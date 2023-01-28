@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\Request;
 
+use MPScholten\RequestParser\Config;
 use MPScholten\RequestParser\RequestParser;
 use MPScholten\RequestParser\RequestParserFactory;
 
@@ -16,7 +17,7 @@ final class CustomRequestParserFactory implements RequestParserFactory
 
     /**
      * @param array<mixed> $request
-     * @param $config
+     * @param callable|Config $config
      */
     public function __construct(array $request, $config)
     {

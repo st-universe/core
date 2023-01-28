@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Lib\Request;
 
 use MPScholten\RequestParser\BaseControllerHelperTrait;
+use MPScholten\RequestParser\Config;
 
 trait CustomControllerHelperTrait
 {
@@ -22,7 +23,7 @@ trait CustomControllerHelperTrait
 
     /**
      * @param array<mixed> $request
-     * @param $config
+     * @param callable|Config $config
      * @return CustomRequestParserFactory
      */
     protected final function createRequestParserFactory($request, $config)
@@ -30,7 +31,7 @@ trait CustomControllerHelperTrait
         return new CustomRequestParserFactory($request, $config);
     }
 
-    protected function tidyString($string): string
+    protected function tidyString(string $string): string
     {
         return trim(
             str_replace(

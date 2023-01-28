@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StartEmergency;
 
-use request;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 
+/**
+ * Creates an emergency call for a ship
+ */
 final class StartEmergency implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_START_EMERGENCY';
@@ -25,14 +27,18 @@ final class StartEmergency implements ActionControllerInterface
 
     private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
 
+    private StartEmergencyRequestInterface $startEmergencyRequest;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipStateChangerInterface $shipStateChanger,
-        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository
+        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
+        StartEmergencyRequestInterface $startEmergencyRequest
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipStateChanger = $shipStateChanger;
         $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
+        $this->startEmergencyRequest = $startEmergencyRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,20 +46,21 @@ final class StartEmergency implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
-            request::indInt('id'),
+            $this->startEmergencyRequest->getShipId(),
             $game->getUser()->getId()
         );
 
         $ship = $wrapper->get();
 
+        // stop if emergency call is already active
         if ($ship->isInEmergency()) {
             return;
         }
 
-        $text = request::postStringFatal('text');
+        $text = $this->startEmergencyRequest->getEmergencyText();
 
         if (mb_strlen($text) > self::CHARACTER_LIMIT) {
-            $game->addInformationf(_("Maximal %d Zeichen erlaubt"), self::CHARACTER_LIMIT);
+            $game->addInformationf('Maximal %d Zeichen erlaubt', self::CHARACTER_LIMIT);
             return;
         }
 
@@ -65,7 +72,7 @@ final class StartEmergency implements ActionControllerInterface
 
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_EMERGENCY);
 
-        $game->addInformation(_("Das Notrufsignal wurde gestartet"));
+        $game->addInformation('Das Notrufsignal wurde gestartet');
     }
 
     public function performSessionCheck(): bool

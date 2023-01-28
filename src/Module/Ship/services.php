@@ -119,8 +119,10 @@ use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
 use Stu\Module\Ship\Action\Shutdown\Shutdown;
 use Stu\Module\Ship\Action\StartEmergency\StartEmergency;
+use Stu\Module\Ship\Action\StartEmergency\StartEmergencyRequest;
 use Stu\Module\Ship\Action\StartShuttle\StartShuttle;
 use Stu\Module\Ship\Action\StopEmergency\StopEmergency;
+use Stu\Module\Ship\Action\StopEmergency\StopEmergencyRequest;
 use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\TholianWeb\CancelTholianWeb;
 use Stu\Module\Ship\Action\TholianWeb\CreateTholianWeb;
@@ -378,8 +380,16 @@ return [
         UnsupportTholianWeb::ACTION_IDENTIFIER => autowire(UnsupportTholianWeb::class),
         SendBroadcast::ACTION_IDENTIFIER => autowire(SendBroadcast::class),
         AddShipLog::ACTION_IDENTIFIER => autowire(AddShipLog::class),
-        StartEmergency::ACTION_IDENTIFIER => autowire(StartEmergency::class),
+        StartEmergency::ACTION_IDENTIFIER => autowire(StartEmergency::class)
+            ->constructorParameter(
+                'startEmergencyRequest',
+                autowire(StartEmergencyRequest::class)
+            ),
         StopEmergency::ACTION_IDENTIFIER => autowire(StopEmergency::class)
+            ->constructorParameter(
+                'stopEmergencyRequest',
+                autowire(StopEmergencyRequest::class)
+            )
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
