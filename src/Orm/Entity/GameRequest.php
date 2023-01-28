@@ -170,6 +170,8 @@ class GameRequest implements GameRequestInterface
         $this->unsetParameter('sstr');
         $this->unsetParameter('login');
         $this->unsetParameter('pass');
+        $this->unsetParameter('pass2');
+        $this->unsetParameter('oldpass');
         if ($this->parameterArray !== null && !empty($this->parameterArray)) {
             $string = print_r($this->parameterArray, true);
             $this->params = substr($string, 8, strlen($string) - 11);
