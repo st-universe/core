@@ -43,14 +43,14 @@ dev-stop-db:force
 	docker-compose kill stu-db
 
 clearCache:force
-	vendor/bin/doctrine orm:clear-cache:metadata
-	vendor/bin/doctrine orm:clear-cache:query
+	bin/doctrine orm:clear-cache:metadata
+	bin/doctrine orm:clear-cache:query
 
 migrateDatabase:force
-	vendor/bin/doctrine orm:schema-tool:update --force
-	vendor/bin/doctrine orm:generate-proxies
+	bin/doctrine orm:schema-tool:update --force
+	bin/doctrine orm:generate-proxies
 
 showDatabaseChanges:force
-	vendor/bin/doctrine orm:schema-tool:update --dump-sql
+	bin/doctrine orm:schema-tool:update --dump-sql --complete
 
 force:

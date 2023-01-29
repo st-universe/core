@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use Psr\Container\ContainerInterface;
+use Stu\Config\Init;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+Init::run(static function (ContainerInterface $dic) {
+    ConsoleRunner::run(
+        new SingleManagerProvider($dic->get(EntityManagerInterface::class)),
+    );
+});
