@@ -89,5 +89,8 @@
   "discord": {
     "url": "https://chat.change.me"
   },
-  "partner_banner_path": "sites/"
+  "partner_sites": {
+    "banner_path": "sites/",
+    "items": []
+  }
 }

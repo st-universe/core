@@ -7,10 +7,10 @@
     </div>
     <tal:block tal:repeat="site PARTNERSITES">
       <div style="width: 100%;">
-        <h4>${site/getName}</h4>
-        ${site/getText}<br />
-        <a href="${site/getUrl}">
-          <img tal:attributes="src site/getFullBannerPath" />
+        <h4 tal:content="site/name">NAME</h4>
+		<div tal:content="site/description">DESCRIPTION</div>
+        <a tal:attributes="href site/url">
+          <img tal:attributes="src site/banner_path; alt site/name; title site/name" />
         </a>
         <br />
       </div>
