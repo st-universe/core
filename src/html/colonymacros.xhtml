@@ -547,46 +547,42 @@
         </div>
       </div>
       <br />
-      <div class="box">
-        <div class="box_title">Informationen</div>
-        <div class="box_body">
-          <img src="/assets/planets/${COLONY/getColonyClassId}.png" style="width: 15px; height: 15px;" /> <span>Planet
-            <span tal:replace="COLONY/getPlanetName" /></span> (${COLONY/getSX}|${COLONY/getSY})
-          <span>in Sternensystem</span>
-          <tr>
-            <td>
-              <tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
-                <a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}"
-                  title="Karte des Systems öffnen">
-                  <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png"
-                    style="width: 15px; height: 15px;" />
-                  <span>${COLONY/getSystem/getName}
-                    (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
-                </a>
-              </tal:block>
-              <tal:block tal:condition="not:STARSYSTEM_ENTRY_TAL/wasDiscovered">
-                <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png" style="width: 15px; height: 15px;"
-                  title="Sternensystem" />
-                <span>${COLONY/getSystem/getName}
-                  (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
-              </tal:block>
-            </td>
-          </tr>
-          <br />
-          <tr>
-            <td>
-              <img src="assets/buttons/t_${COLONY/getDayTimePrefix}.png" title="${COLONY/getDayTimeName}" />
+      <div class="colonyInfoContainer">
+        <div class="box">
+          <div class="box_title">Planet</div>
+          <div class="box_body">
+            <div>
+              <img src="/assets/planets/${COLONY/getColonyClassId}.png" style="width: 30px; height: 30px;" />
+              <span tal:replace="COLONY/getPlanetName" />(${COLONY/getSX}|${COLONY/getSY})
+            </div>
+            <div>
+              <img src="assets/buttons/t_${COLONY/getDayTimePrefix}.png" tal:attributes="title COLONY/getDayTimeName" />
               <span>${COLONY/getColonyTimeHour}:${COLONY/getColonyTimeMinute} Uhr</span>
-            </td>
-            <td>
-              <img src="assets/buttons/classm.png" title="Eigenrotationsdauer" /> <span
-                tal:content="formatSeconds:COLONY/getRotationTime">
-                ROTATIONTIME</span>
-            </td>
-          </tr>
+              <img src="assets/buttons/classm.png" title="Eigenrotationsdauer" alt="Eigenrotationsdauer" />
+              <span tal:content="formatSeconds:COLONY/getRotationTime"> ROTATIONTIME</span>
+            </div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box_title">Sternensystem</div>
+          <div class="box_body">
+            <tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
+              <a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}"
+                 title="Karte des Systems öffnen">
+                <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png" title="Sternensystem" />
+                <span>${COLONY/getSystem/getName} (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
+              </a>
+            </tal:block>
+            <tal:block tal:condition="not:STARSYSTEM_ENTRY_TAL/wasDiscovered">
+              <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.png" title="Sternensystem" />
+              <span>${COLONY/getSystem/getName} (${COLONY/getSystem/getCx}|${COLONY/getSystem/getCy})</span>
+            </tal:block>
+            <div>
+              Typ: <span tal:replace="COLONY/getSystem/getSystemType/getDescription">TYPE</span>
+            </div>
+          </div>
         </div>
       </div>
-      <br />
       <tal:block tal:condition="COLONY/getUserDepositMinings">
         <div class="box">
           <div class="box_title">Geschürfte Ressourcen</div>
