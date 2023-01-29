@@ -5046,11 +5046,6 @@ parameters:
 			path: src/Module/Communication/Action/AddKnPost/AddKnPost.php
 
 		-
-			message: "#^Variable \\$plot might not be defined\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/AddKnPost/AddKnPost.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/AddKnPostToPlot/AddKnPostToPlot.php
@@ -5366,16 +5361,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:executeCallback\\(\\) has parameter \\$actions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:executeView\\(\\) has parameter \\$views with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getAchievements\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -5412,16 +5397,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getNavigation\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:main\\(\\) has parameter \\$actions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:main\\(\\) has parameter \\$views with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -5552,16 +5527,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:getViewContext\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:main\\(\\) has parameter \\$actions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameControllerInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Control\\\\GameControllerInterface\\:\\:main\\(\\) has parameter \\$views with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameControllerInterface.php
 
@@ -11041,23 +11006,8 @@ parameters:
 			path: src/Module/Ship/View/ShowShip/ShowShip.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowShip/ShowShip.php
-
-		-
-			message: "#^Ternary operator condition is always true\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowShip/ShowShip.php
-
-		-
 			message: "#^Variable \\$astroEntry might not be defined\\.$#"
 			count: 1
-			path: src/Module/Ship/View/ShowShip/ShowShip.php
-
-		-
-			message: "#^Variable \\$firstOrbitShip might not be defined\\.$#"
-			count: 2
 			path: src/Module/Ship/View/ShowShip/ShowShip.php
 
 		-

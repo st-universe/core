@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPost;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Game\GameEnum;
+use Stu\Module\Communication\Lib\NewKnPostNotificatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
@@ -32,9 +28,7 @@ final class AddKnPost implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
-    private PrivateMessageSenderInterface $privateMessageSender;
-
-    private EntityManagerInterface $entityManager;
+    private NewKnPostNotificatorInterface $newKnPostNotificator;
 
     public function __construct(
         AddKnPostRequestInterface $addKnPostRequest,
@@ -42,22 +36,21 @@ final class AddKnPost implements ActionControllerInterface
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
         UserRepositoryInterface $userRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
-        EntityManagerInterface $entityManager
+        NewKnPostNotificatorInterface $newKnPostNotificator
     ) {
         $this->addKnPostRequest = $addKnPostRequest;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->userRepository = $userRepository;
-        $this->privateMessageSender = $privateMessageSender;
-        $this->entityManager = $entityManager;
+        $this->newKnPostNotificator = $newKnPostNotificator;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
+        $plot = null;
 
         $title = $this->addKnPostRequest->getTitle();
         $text = $this->addKnPostRequest->getText();
@@ -95,10 +88,9 @@ final class AddKnPost implements ActionControllerInterface
         $post->setDate(time());
 
         $this->knPostRepository->save($post);
-        $this->entityManager->flush();
 
         if ($plot !== null) {
-            $this->notifyPlotMembers($post, $plot);
+            $this->newKnPostNotificator->notify($post, $plot);
         }
 
         $game->addInformation(_('Der Beitrag wurde hinzugefügt'));
@@ -110,31 +102,6 @@ final class AddKnPost implements ActionControllerInterface
         }
 
         $game->setView(GameController::DEFAULT_VIEW);
-    }
-
-    private function notifyPlotMembers(KnPostInterface $post, RpgPlotInterface $plot): void
-    {
-        foreach ($plot->getMembers() as $member) {
-            if ($member->getUser() !== $post->getUser()) {
-                $user = $member->getUser();
-
-                $text = sprintf(
-                    _('Der Spieler %s hat einen neuen Beitrag zum Plot "%s" hinzugefügt.'),
-                    $post->getUser()->getName(),
-                    $plot->getTitle()
-                );
-
-                $href = sprintf(_('comm.php?SHOW_SINGLE_KN=1&id=%d'), $post->getId());
-
-                $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
-                    $user->getId(),
-                    $text,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
-                    $href
-                );
-            }
-        }
     }
 
     public function performSessionCheck(): bool

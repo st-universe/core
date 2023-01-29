@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication;
 
-use Stu\Module\Communication\Action\RateKnPost\RateKnPost;
-use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequest;
-use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequestInterface;
-use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
-use Stu\Module\Control\GameController;
 use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMember;
 use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMemberRequest;
 use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMemberRequestInterface;
@@ -42,9 +37,13 @@ use Stu\Module\Communication\Action\KnPostPreview\KnPostPreview;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Communication\Action\PostKnComment\PostKnCommentRequest;
 use Stu\Module\Communication\Action\PostKnComment\PostKnCommentRequestInterface;
+use Stu\Module\Communication\Action\RateKnPost\RateKnPost;
+use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequest;
+use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequestInterface;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
+use Stu\Module\Communication\Lib\NewKnPostNotificator;
 use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
@@ -61,6 +60,7 @@ use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequestInterface;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequest;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequestInterface;
+use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
 use Stu\Module\Communication\View\ShowSearchResult\ShowPostIdSearchResult;
 use Stu\Module\Communication\View\ShowSearchResult\ShowPostSearchResult;
@@ -72,6 +72,7 @@ use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequest;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequestInterface;
 use Stu\Module\Communication\View\ShowUserPlotList\ShowUserPlotList;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
+use Stu\Module\Control\GameController;
 use function DI\autowire;
 
 return [
@@ -96,7 +97,11 @@ return [
     ShowSearchResultRequestInterface::class => autowire(ShowSearchResultRequest::class),
     'COMMUNICATION_ACTIONS' => [
         SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
-        AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class),
+        AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class)
+            ->constructorParameter(
+                'newKnPostNotificator',
+                autowire(NewKnPostNotificator::class)
+            ),
         PostKnComment::ACTION_IDENTIFIER => autowire(PostKnComment::class),
         DeleteKnComment::ACTION_IDENTIFIER => autowire(DeleteKnComment::class),
         EditKnPost::ACTION_IDENTIFIER => autowire(EditKnPost::class),

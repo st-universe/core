@@ -54,4 +54,9 @@ interface KnPostInterface
      * @param array<mixed> $ratings
      */
     public function setRatings(array $ratings): KnPostInterface;
+
+    /**
+     * Returns the relativ url to this posting
+     */
+    public function getUrl(): string;
 }

@@ -236,4 +236,9 @@ class KnPost implements KnPostInterface
         $this->ratings = $ratings;
         return $this;
     }
+
+    public function getUrl(): string
+    {
+        return sprintf('/comm.php?SHOW_SINGLE_KN=1&id=%d', $this->getId());
+    }
 }
