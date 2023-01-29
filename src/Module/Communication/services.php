@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication;
 
+use Stu\Component\Communication\Kn\KnBbCodeDefinitionSet;
 use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMember;
 use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMemberRequest;
 use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMemberRequestInterface;
@@ -124,7 +125,11 @@ return [
         ShowUserPlotList::VIEW_IDENTIFIER => autowire(ShowUserPlotList::class),
         ShowCreatePlot::VIEW_IDENTIFIER => autowire(ShowCreatePlot::class),
         ShowEditPlot::VIEW_IDENTIFIER => autowire(ShowEditPlot::class),
-        ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class),
+        ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class)
+            ->constructorParameter(
+                'codeDefinitionSet',
+                autowire(KnBbCodeDefinitionSet::class)
+            ),
         ShowEditKn::VIEW_IDENTIFIER => autowire(ShowEditKn::class),
         ShowKnRating::VIEW_IDENTIFIER => autowire(ShowKnRating::class),
         ShowSingleKn::VIEW_IDENTIFIER => autowire(ShowSingleKn::class),
