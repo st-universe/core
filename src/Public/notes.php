@@ -1,19 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerInterface;
+use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 
+/**
+ * @deprecated Session handling should be part of the application
+ */
 @session_start();
 
-require_once __DIR__ . '/../Config/Bootstrap.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-$em = $container->get(EntityManagerInterface::class);
-$em->beginTransaction();
+Init::run(function (ContainerInterface $dic) {
+    /**
+     * @deprecated Remove after magic dic-calls have been purged from the source
+     */
+    global $container;
+    $container = $dic;
 
-$container->get(GameControllerInterface::class)->main(
-    'notes',
-    $container->get('NOTES_ACTIONS'),
-    $container->get('NOTES_VIEWS')
-);
+    $em = $dic->get(EntityManagerInterface::class);
+    $em->beginTransaction();
 
-$em->commit();
+    $dic->get(GameControllerInterface::class)->main(
+        'notes',
+        $dic->get('NOTES_ACTIONS'),
+        $dic->get('NOTES_VIEWS')
+    );
+
+    $em->commit();
+});

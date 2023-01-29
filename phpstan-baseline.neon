@@ -14246,16 +14246,6 @@ parameters:
 			path: src/Public/admin/help/createShip.php
 
 		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/admin/index.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/alliance.php
-
-		-
 			message: "#^Argument of an invalid type array\\<int, string\\>\\|false supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: src/Public/assets/generator/building_generator/gen.php
@@ -14354,76 +14344,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$src_im of function imagecopy expects resource, resource\\|false given\\.$#"
 			count: 4
 			path: src/Public/assets/subspace/gen.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/comm.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/database.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/history.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/index.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/maindesk.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/notes.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/options.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/pm.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/research.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 5
-			path: src/Public/ship.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/starmap.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 5
-			path: src/Public/station.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/trade.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/Public/userprofile.php
 
 		-
 			message: "#^Variable \\$container might not be defined\\.$#"
