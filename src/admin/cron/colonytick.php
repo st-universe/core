@@ -6,6 +6,9 @@ use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 
 require_once __DIR__ . '/../../Config/Bootstrap.php';
 
+/**
+ * @deprecated Use cli/new cron system
+ */
 $entityManager = $container->get(EntityManagerInterface::class);
 
 $entityManager->beginTransaction();

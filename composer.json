@@ -38,6 +38,7 @@
     "cache/array-adapter": "^1.0",
     "cache/psr-6-doctrine-bridge": "^3.0",
     "cache/redis-adapter": "^1.0",
+    "crunzphp/crunz": "^3.4",
     "devster/ubench": "^2",
     "doctrine/annotations": "^1.13",
     "doctrine/orm": "^2.6",

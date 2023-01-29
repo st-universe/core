@@ -6,6 +6,7 @@ use Ahc\Cli\IO\Interactor;
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Cli\ColonyTickCommand;
 use Stu\Component\Cli\UserCreateCommand;
 use Stu\Config\Init;
 
@@ -13,7 +14,13 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 Init::run(
     function (ContainerInterface $dic): void {
-        $em = $dic->get(EntityManagerInterface::class);
+      /**
+       * @todo Remove after magic dic calls have been purged
+       */
+      global $container;
+      $container = $dic;
+
+      $em = $dic->get(EntityManagerInterface::class);
 
         $em->beginTransaction();
 
@@ -22,6 +29,7 @@ Init::run(
             (string) $dic->get(ConfigInterface::class)->get('game.version'),
             function (int $exitCode = 0) use ($em): void {
                 if ($exitCode === 0) {
+                    $em->flush();
                     $em->commit();
                 } else {
                     $em->rollback();
@@ -41,6 +49,7 @@ Init::run(
 
         $app->logo($logo);
         $app->add(new UserCreateCommand($dic));
+        $app->add(new ColonyTickCommand($dic));
 
         $app->handle($_SERVER['argv']);
     }
