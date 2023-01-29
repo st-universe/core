@@ -1587,82 +1587,84 @@
     </div>
     <br style="clear: both;" />
     <br />
-    <div style="float: left; width: 350px">
-      <table class="tcal">
-        <tr>
-          <th colspan="4">Crew</th>
-        </tr>
-        <tr>
-          <td colspan="3" class="darkbg">Minimal-Crew</td>
-          <td class="darkbg"><span tal:condition="SHIP/getBuildplan"
-              tal:replace="SHIP/getBuildplan/getCrew">CREW</span><span tal:condition="not:SHIP/getBuildplan">kA</span>
-          </td>
-        </tr>
-        <tr>
-          <td class="darkbg"></td>
-          <td class="darkbg"><strong>Position</strong></td>
-          <td class="darkbg"><strong>Name</strong></td>
-          <td class="darkbg"><strong>Rang</strong></td>
-        </tr>
-        <tr tal:repeat="data SHIP/getCrewlist">
-          <td tal:define="crewusername bbcode2txt:data/getCrew/getUser/getName">
-            <img
-              src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
-            <span tal:condition="data/isForeigner" style="vertical-align: top; color:red; cursor: default;"
-              title="von ${crewusername}">*</span>
-            <a tal:condition="data/isForeigner"
-              href="?B_DUMP_CREWMAN=1&id=${SHIP/getId}&scid=${data/getId}&sstr=${THIS/getSessionString}"
-              onmouseover="cp('dump_${data/getId}','buttons/x2')" onmouseout="cp('dump_${data/getId}','buttons/x1')">
-              <img src="/assets/buttons/x2.png" name="dump_${data/getId}" title="Crewman entfernen" />
-            </a>
-          </td>
-          <td>
-            <div tal:content="data/getPosition">POSITION</div>
-          </td>
-          <td style="vertical-align: middle;">
-            <metal:macro metal:use-macro="crewslot" tal:define="CREW data/getCrew" />
-          </td>
-          <td>
-            <div tal:content="data/getCrew/getTypeDescription">RANG</div>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div style="padding-left: 5px; float: left; width: 220px">
-      <div class="divhead">Informationen</div>
-      <div class="divbody">
-        <span>Ersatzbatterie:</span> <span tal:condition="eps">${eps/getMaxBattery}</span><br />
-        <span>Trefferchance (eff.):</span> ${SHIP/getHitChance}%<br />
-        <span>Ausweichchance (eff.):</span> ${SHIP/getEvadeChance}%<br />
-        <span>Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
-        <span>Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
-        <span>Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />
-        <tal:block tal:condition="SHIP/canMove">
-          <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
-        </tal:block>
-        <span>Beamfaktor</span>: ${SHIP/getRump/getBeamFactor}<br />
-        <span>Raumschiffmasse: </span><span
-          tal:content="numberWithThousandSeperator:SHIP/getRump/getTractorMass">TRACTORMASS</span><br />
-        <span>Traktortraglast: </span><span
-          tal:content="numberWithThousandSeperator:SHIP/getTractorPayload">TRACTORPAYLOAD</span><br />
-        <span>Energiewaffensalven</span>: ${SHIP/getRump/getPhaserVolleys}<br />
-        <span>Energiewaffenbasisschaden</span>: ${SHIP/getBaseDamage}<br />
-        <span>Torpedolevel</span>: ${SHIP/getRump/getTorpedoLevel}<br />
-        <span>Torpedosalven</span>: ${SHIP/getRump/getTorpedoVolleys}<br />
-        <tal:block tal:condition="SHIP/getTorpedo">
-          <span>Torpedobasisschaden</span>: ${SHIP/getTorpedo/getBaseDamage}<br />
-        </tal:block>
-        <span>Torpedokapazität</span>: ${SHIP/getMaxTorpedos}<br />
-        <tal:block tal:condition="SHIP/isBase">
-          <span>Dockplätze</span>: ${SHIP/getRump/getDockingSlots}<br />
-        </tal:block>
+    <div style="display: grid; grid-template-columns: 49% 49%; grid-column-gap: 2%">
+      <div>
+        <table class="tcal">
+          <tr>
+            <th colspan="4">Crew</th>
+          </tr>
+          <tr>
+            <td colspan="3" class="darkbg">Minimal-Crew</td>
+            <td class="darkbg"><span tal:condition="SHIP/getBuildplan"
+                                     tal:replace="SHIP/getBuildplan/getCrew">CREW</span><span tal:condition="not:SHIP/getBuildplan">kA</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="darkbg"></td>
+            <td class="darkbg"><strong>Position</strong></td>
+            <td class="darkbg"><strong>Name</strong></td>
+            <td class="darkbg"><strong>Rang</strong></td>
+          </tr>
+          <tr tal:repeat="data SHIP/getCrewlist">
+            <td tal:define="crewusername bbcode2txt:data/getCrew/getUser/getName">
+              <img
+                      src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
+              <span tal:condition="data/isForeigner" style="vertical-align: top; color:red; cursor: default;"
+                    title="von ${crewusername}">*</span>
+              <a tal:condition="data/isForeigner"
+                 href="?B_DUMP_CREWMAN=1&id=${SHIP/getId}&scid=${data/getId}&sstr=${THIS/getSessionString}"
+                 onmouseover="cp('dump_${data/getId}','buttons/x2')" onmouseout="cp('dump_${data/getId}','buttons/x1')">
+                <img src="/assets/buttons/x2.png" name="dump_${data/getId}" title="Crewman entfernen" />
+              </a>
+            </td>
+            <td>
+              <div tal:content="data/getPosition">POSITION</div>
+            </td>
+            <td style="vertical-align: middle;">
+              <metal:macro metal:use-macro="crewslot" tal:define="CREW data/getCrew" />
+            </td>
+            <td>
+              <div tal:content="data/getCrew/getTypeDescription">RANG</div>
+            </td>
+          </tr>
+        </table>
       </div>
-      <br />
-      <div class="divhead">Systemstatus</div>
-      <div class="divbody">
-        <div tal:repeat="data SHIP/getSystems">
-          <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
-          ${data/getStatus}%
+      <div>
+        <div class="divhead">Informationen</div>
+        <div class="divbody">
+          <span>Ersatzbatterie:</span> <span tal:condition="eps">${eps/getMaxBattery}</span><br />
+          <span>Trefferchance (eff.):</span> ${SHIP/getHitChance}%<br />
+          <span>Ausweichchance (eff.):</span> ${SHIP/getEvadeChance}%<br />
+          <span>Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
+          <span>Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
+          <span>Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />
+          <tal:block tal:condition="SHIP/canMove">
+            <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
+          </tal:block>
+          <span>Beamfaktor</span>: ${SHIP/getRump/getBeamFactor}<br />
+          <span>Raumschiffmasse: </span><span
+                tal:content="numberWithThousandSeperator:SHIP/getRump/getTractorMass">TRACTORMASS</span><br />
+          <span>Traktortraglast: </span><span
+                tal:content="numberWithThousandSeperator:SHIP/getTractorPayload">TRACTORPAYLOAD</span><br />
+          <span>Energiewaffensalven</span>: ${SHIP/getRump/getPhaserVolleys}<br />
+          <span>Energiewaffenbasisschaden</span>: ${SHIP/getBaseDamage}<br />
+          <span>Torpedolevel</span>: ${SHIP/getRump/getTorpedoLevel}<br />
+          <span>Torpedosalven</span>: ${SHIP/getRump/getTorpedoVolleys}<br />
+          <tal:block tal:condition="SHIP/getTorpedo">
+            <span>Torpedobasisschaden</span>: ${SHIP/getTorpedo/getBaseDamage}<br />
+          </tal:block>
+          <span>Torpedokapazität</span>: ${SHIP/getMaxTorpedos}<br />
+          <tal:block tal:condition="SHIP/isBase">
+            <span>Dockplätze</span>: ${SHIP/getRump/getDockingSlots}<br />
+          </tal:block>
+        </div>
+        <br />
+        <div class="divhead">Systemstatus</div>
+        <div class="divbody">
+          <div tal:repeat="data SHIP/getSystems">
+            <img style="vertical-align: middle" title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
+            ${data/getName}: ${data/getStatus}%
+          </div>
         </div>
       </div>
     </div>
