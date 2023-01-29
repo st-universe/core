@@ -27,9 +27,6 @@ use Stu\Component\Player\Register\PlayerDefaultsCreator;
 use Stu\Component\Player\Register\PlayerDefaultsCreatorInterface;
 use Stu\Component\Player\Register\SmsVerificationCodeSender;
 use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
-use Stu\Component\Player\Validation\LoginValidation;
-use Stu\Component\Player\Validation\LoginValidationInterface;
-use Stu\Component\Player\Validation\Validators\IpIntelValidator;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use function DI\autowire;
@@ -39,7 +36,6 @@ use function DI\get;
 return [
     ColonyLimitCalculatorInterface::class => autowire(ColonyLimitCalculator::class),
     ColonizationCheckerInterface::class => autowire(ColonizationChecker::class),
-    IpIntelValidator::class => autowire(IpIntelValidator::class),
     InvitePlayerInterface::class => autowire(InvitePlayer::class),
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
     PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
@@ -61,9 +57,6 @@ return [
             autowire(Handler\UserDeletionHandler::class)
         ]
     ),
-    LoginValidationInterface::class => create(LoginValidation::class)->constructor([
-        autowire(IpIntelValidator::class)
-    ]),
     LocalPlayerCreator::class => autowire(),
     PlayerCreatorInterface::class => autowire(PlayerCreator::class),
     PlayerDefaultsCreatorInterface::class => autowire(PlayerDefaultsCreator::class),

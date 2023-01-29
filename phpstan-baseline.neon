@@ -1086,37 +1086,42 @@ parameters:
 			path: src/Lib/Session.php
 
 		-
+			message: "#^Parameter \\#1 \\$ip of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setIp\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
 			message: "#^Parameter \\#1 \\$name of function setcookie expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Lib/Session.php
 
 		-
+			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\UserRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 2
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$sessionId of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setSessionId\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$sessionId of method Stu\\\\Orm\\\\Repository\\\\UserIpTableRepositoryInterface\\:\\:findBySessionId\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Repository\\\\SessionStringRepositoryInterface\\:\\:truncate\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
+			message: "#^Parameter \\#1 \\$userAgent of method Stu\\\\Orm\\\\Entity\\\\UserIpTableInterface\\:\\:setUserAgent\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Lib/Session.php
+
+		-
 			message: "#^Parameter \\#2 \\$value of function setcookie expects string, int given\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\Session\\:\\:\\$loginValidation has no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\Session\\:\\:\\$sessionStringRepository has no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\Session\\:\\:\\$userIpTableRepository has no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\Session\\:\\:\\$userRepository has no type specified\\.$#"
-			count: 1
-			path: src/Lib/Session.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between mixed and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Lib/Session.php
 

@@ -57,8 +57,7 @@
     "slim/http": "^1.2",
     "slim/psr7": "^0.6",
     "slim/slim": "^4.2",
-    "st-universe/starsystem-generator": "dev-master",
-    "usox/ipintel": "^1.0"
+    "st-universe/starsystem-generator": "dev-master"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.13",

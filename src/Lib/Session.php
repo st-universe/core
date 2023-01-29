@@ -5,50 +5,41 @@ namespace Stu\Lib;
 use DateTimeImmutable;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SessionInvalidException;
-use Stu\Component\Player\Validation\LoginValidationInterface;
 use Stu\Module\Control\StuHashInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Entity\UserLockInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Session implements SessionInterface
 {
+    private UserIpTableRepositoryInterface $userIpTableRepository;
 
-    private $userIpTableRepository;
+    private SessionStringRepositoryInterface $sessionStringRepository;
 
-    private $sessionStringRepository;
-
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     private StuHashInterface $stuHash;
 
-    private $loginValidation;
-
     private LoggerUtilInterface $loggerUtil;
 
-    /**
-     * @var UserInterface|null
-     */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function __construct(
         UserIpTableRepositoryInterface $userIpTableRepository,
         SessionStringRepositoryInterface $sessionStringRepository,
         UserRepositoryInterface $userRepository,
         StuHashInterface $stuHash,
-        LoginValidationInterface $loginValidation,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->userIpTableRepository = $userIpTableRepository;
         $this->sessionStringRepository = $sessionStringRepository;
         $this->userRepository = $userRepository;
         $this->stuHash = $stuHash;
-        $this->loginValidation = $loginValidation;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -115,7 +106,7 @@ final class Session implements SessionInterface
         }
 
         if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {
-            $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
+            $result->setPassword((string) password_hash($password, PASSWORD_DEFAULT));
 
             $this->userRepository->save($result);
         }
@@ -126,7 +117,9 @@ final class Session implements SessionInterface
             $this->userRepository->save($result);
         }
         if ($result->isLocked()) {
+            /** @var UserLockInterface $userLock */
             $userLock = $result->getUserLock();
+
             throw new LoginException(
                 _('Dein Spieleraccount wurde gesperrt'),
                 sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
@@ -134,9 +127,6 @@ final class Session implements SessionInterface
         }
         if ($result->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
             throw new LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
-        }
-        if ($this->loginValidation->validate($result) === false) {
-            throw new LoginException(_('Login fehlgeschlagen'));
         }
 
         if ($result->isVacationMode()) {
@@ -161,9 +151,9 @@ final class Session implements SessionInterface
         // Login verzeichnen
         $ipTableEntry = $this->userIpTableRepository->prototype();
         $ipTableEntry->setUser($result);
-        $ipTableEntry->setIp(getenv('REMOTE_ADDR'));
-        $ipTableEntry->setSessionId(session_id());
-        $ipTableEntry->setUserAgent(getenv('HTTP_USER_AGENT'));
+        $ipTableEntry->setIp((string) getenv('REMOTE_ADDR'));
+        $ipTableEntry->setSessionId((string) session_id());
+        $ipTableEntry->setUserAgent((string) getenv('HTTP_USER_AGENT'));
         $ipTableEntry->setStartDate(new DateTimeImmutable());
 
         $this->userIpTableRepository->save($ipTableEntry);
@@ -277,9 +267,6 @@ final class Session implements SessionInterface
             $this->userIpTableRepository->save($ipTableEntry);
         }
 
-        if ($user === null) {
-            $this->logout();
-        }
         $_SESSION['login'] = 1;
 
         $this->user = $user;
