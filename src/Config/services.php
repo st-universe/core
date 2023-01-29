@@ -7,7 +7,6 @@ namespace Stu\Config;
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use Cache\Adapter\Redis\RedisCachePool;
 use Cache\Bridge\Doctrine\DoctrineCacheBridge;
-use Curl\Curl;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,8 +36,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use Ubench;
-use Usox\IpIntel\IpIntel;
-use Usox\IpIntel\IpIntelInterface;
 use function DI\autowire;
 
 return [
@@ -151,13 +148,5 @@ return [
             ->setOptionValue(ComputerPasswordGenerator::OPTION_LENGTH, 10);
 
         return $generator;
-    },
-    IpIntelInterface::class => function (ContainerInterface $c): IpIntelInterface {
-        return new IpIntel(
-            new Curl(),
-            $c->get(ConfigInterface::class)->get('security.validation.ip_intel_email_address'),
-            null,
-            2
-        );
     },
 ];

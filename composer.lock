@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "34686486601931d19dcb2ab8556e7ddb",
+    "content-hash": "d4b343aee1a2840fecddb2b44546a1bd",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -3151,77 +3151,6 @@
             "time": "2023-01-16T22:05:37+00:00"
         },
         {
-            "name": "php-curl-class/php-curl-class",
-            "version": "8.10.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "c97c96d5d422b4085aba32ace096c3e404dde607"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/c97c96d5d422b4085aba32ace096c3e404dde607",
-                "reference": "c97c96d5d422b4085aba32ace096c3e404dde607",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "ext-gd": "*",
-                "phpunit/phpunit": "*",
-                "squizlabs/php_codesniffer": "*"
-            },
-            "suggest": {
-                "ext-mbstring": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Curl\\": "src/Curl/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Unlicense"
-            ],
-            "authors": [
-                {
-                    "name": "Zach Borboa"
-                }
-            ],
-            "description": "PHP Curl Class makes it easy to send HTTP requests and integrate with web APIs.",
-            "homepage": "https://github.com/php-curl-class/php-curl-class",
-            "keywords": [
-                "API-Client",
-                "api",
-                "class",
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http-client",
-                "http-proxy",
-                "json",
-                "php",
-                "php-curl",
-                "php-curl-library",
-                "proxy",
-                "requests",
-                "restful",
-                "web-scraper",
-                "web-scraping ",
-                "web-service",
-                "xml"
-            ],
-            "support": {
-                "issues": "https://github.com/php-curl-class/php-curl-class/issues",
-                "source": "https://github.com/php-curl-class/php-curl-class/tree/8.10.0"
-            },
-            "time": "2021-06-23T14:34:00+00:00"
-        },
-        {
             "name": "php-di/invoker",
             "version": "2.3.3",
             "source": {
@@ -6137,55 +6066,6 @@
                 }
             ],
             "time": "2023-01-10T18:51:14+00:00"
-        },
-        {
-            "name": "usox/ipintel",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/usox/ipintel.git",
-                "reference": "fcf7fa00a7c8f5468a7ede22b144dec7f7417be5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/usox/ipintel/zipball/fcf7fa00a7c8f5468a7ede22b144dec7f7417be5",
-                "reference": "fcf7fa00a7c8f5468a7ede22b144dec7f7417be5",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": "^7.3||^8",
-                "php-curl-class/php-curl-class": "^8.6"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.2",
-                "phpunit/phpunit": "^8.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Usox\\IpIntel\\": [
-                        "src/IpIntel/",
-                        "tests/IpIntel/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Daniel Jakob",
-                    "email": "github@usox.org"
-                }
-            ],
-            "description": "Client for https://getipintel.net/",
-            "support": {
-                "issues": "https://github.com/usox/ipintel/issues",
-                "source": "https://github.com/usox/ipintel/tree/1.0.1"
-            },
-            "time": "2022-09-25T07:16:41+00:00"
         },
         {
             "name": "webmozart/assert",
