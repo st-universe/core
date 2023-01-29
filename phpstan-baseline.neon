@@ -1211,7 +1211,22 @@ parameters:
 			path: src/Lib/VisualNavPanel.php
 
 		-
-			message: "#^Method VisualNavPanelEntry\\:\\:__construct\\(\\) has parameter \\$entry with no type specified\\.$#"
+			message: "#^Cannot call method canMove\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Lib/VisualNavPanelEntry.php
+
+		-
+			message: "#^Cannot call method getLSSmode\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Lib/VisualNavPanelEntry.php
+
+		-
+			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 2
+			path: src/Lib/VisualNavPanelEntry.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method VisualNavPanelEntry\\:\\:__construct\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanelEntry.php
 
@@ -1311,57 +1326,7 @@ parameters:
 			path: src/Lib/VisualNavPanelEntry.php
 
 		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$cssClass has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$currentShipPosX has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$currentShipPosY has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$currentShipSysId has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$data has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$isTachyonSystemActive has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$row has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$ship has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$system has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$tachyonFresh has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Property VisualNavPanelEntry\\:\\:\\$tachyonRange has no type specified\\.$#"
+			message: "#^Offset 'shieldstate' does not exist on array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanelEntry.php
 

@@ -9,26 +9,66 @@ use Stu\Orm\Entity\StarSystemInterface;
 
 class VisualNavPanelEntry
 {
+    /** @var null|int */
     public $currentShipPosX = null;
+
+    /** @var null|int */
     public $currentShipPosY = null;
+
+    /** @var null|int */
     public $currentShipSysId = null;
+
+    /** @var int */
     public $row;
 
-    //private fields
-    private $data = array();
+    /**
+     * @var array{
+     *     posx: int,
+     *     posy: int,
+     *     sysid: int,
+     *     shipcount: int,
+     *     cloakcount: int,
+     *     allycolor: string,
+     *     usercolor: string,
+     *     factioncolor: string,
+     *     type: int,
+     *     d1c?: int,
+     *     d2c?: int,
+     *     d3c?: int,
+     *     d4c?: int
+     * }
+     */
+    private array $data;
 
-    private $isTachyonSystemActive;
+    private bool $isTachyonSystemActive;
 
-    private $tachyonFresh;
+    private bool $tachyonFresh;
 
-    private $ship;
+    private ?ShipInterface $ship;
 
-    private $tachyonRange;
+    private int $tachyonRange;
 
-    private $system;
+    private ?StarSystemInterface $system;
 
-    private $cssClass = 'lss';
+    private string $cssClass = 'lss';
 
+    /**
+     * @param array{
+     *     posx: int,
+     *     posy: int,
+     *     sysid: int,
+     *     shipcount: int,
+     *     cloakcount: int,
+     *     allycolor: string,
+     *     usercolor: string,
+     *     factioncolor: string,
+     *     type: int,
+     *     d1c?: int,
+     *     d2c?: int,
+     *     d3c?: int,
+     *     d4c?: int
+     * } $entry
+     */
     function __construct(
         &$entry = array(),
         bool $isTachyonSystemActive = false,
@@ -92,7 +132,7 @@ class VisualNavPanelEntry
 
     private function getCode(string $column): int
     {
-        $shipCount = $this->data[$column];
+        $shipCount = $this->data[$column] ?? 0;
 
         if ($shipCount == 0) {
             return 0;
