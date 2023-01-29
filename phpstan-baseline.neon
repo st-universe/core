@@ -13376,11 +13376,6 @@ parameters:
 			path: src/Orm/Entity/MapRegion.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getCostSorted\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Module\\:\\:getResearchId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
@@ -13409,11 +13404,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleCost.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:getCostSorted\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ModuleInterface.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\:\\:hasSpecial\\(\\) has parameter \\$special_id with no type specified\\.$#"

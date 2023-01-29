@@ -24,5 +24,6 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->skip([
        FlipTypeControlToUseExclusiveTypeRector::class,
+        __DIR__ . '/src/OrmProxy'
     ]);
 };
