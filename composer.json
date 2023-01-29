@@ -76,7 +76,7 @@
     },
     "sort-packages": true,
     "allow-plugins": {
-      "mnsami/composer-custom-directory-installer": false,
+      "mnsami/composer-custom-directory-installer": true,
       "phpstan/extension-installer": true
     }
   },
