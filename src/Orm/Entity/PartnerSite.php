@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Noodlehaus\ConfigInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PartnerSiteRepository")
@@ -81,19 +80,5 @@ class PartnerSite implements PartnerSiteInterface
     public function getBanner(): string
     {
         return $this->banner;
-    }
-
-    public function getFullBannerPath(): string
-    {
-        // @todo refactor
-        global $container;
-
-        $config = $container->get(ConfigInterface::class);
-
-        return sprintf(
-            '/%s/%s.png',
-            $config->get('partner_banner_path'),
-            $this->getBanner()
-        );
     }
 }

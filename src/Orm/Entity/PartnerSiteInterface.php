@@ -13,6 +13,4 @@ interface PartnerSiteInterface
     public function getText(): string;
 
     public function getBanner(): string;
-
-    public function getFullBannerPath(): string;
 }
