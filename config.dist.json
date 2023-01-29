@@ -39,7 +39,7 @@
     "cors_sites": "http://change.me"
   },
   "game": {
-    "webroot": "/path/to/webroot",
+    "webroot": "/path/to/webroot/src/Public",
     "temp_dir": "/tmp",
     "base_url": "https://change.me",
     "version": 1337,

@@ -29,6 +29,7 @@ dev-serve:force
 dev-create-db:force
 	docker-compose up -d stu-db
 	sleep 15
+	docker-compose exec -T stu-db sh -c 'exec psql -U stu stu_db -c "create role postgres;"'
 	docker-compose exec -T stu-db sh -c 'exec pg_restore -U stu -d stu_db < /dump/stu.dump'
 
 dev-wipe-db:force

@@ -19,7 +19,7 @@ Init::run(
 
         $app = new Ahc\Cli\Application(
             'Star Trek Universe CLI',
-            $dic->get(ConfigInterface::class)->get('game.version'),
+            (string) $dic->get(ConfigInterface::class)->get('game.version'),
             function (int $exitCode = 0) use ($em): void {
                 if ($exitCode === 0) {
                     $em->commit();
