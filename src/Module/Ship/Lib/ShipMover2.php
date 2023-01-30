@@ -560,7 +560,7 @@ final class ShipMover2 implements ShipMover2Interface
         //tractored ship
         if ($ship->isTractoring()) {
             $tractoredShip = $ship->getTractoredShip();
-            $dmg = $isAbsolutDmg ? $damage : $tractoredShip->getMaxHuell() * $damage / 100;
+            $dmg = $isAbsolutDmg ? $damage : $tractoredShip->getMaxHull() * $damage / 100;
 
             $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $tractoredShip->getName(), $ship->getPosX(), $ship->getPosY()));
             $damageMsg = $this->applyDamage->damage(
@@ -578,7 +578,7 @@ final class ShipMover2 implements ShipMover2Interface
 
         //ship itself
         $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-        $dmg = $isAbsolutDmg ? $damage : $ship->getMaxHuell() * $damage / 100;
+        $dmg = $isAbsolutDmg ? $damage : $ship->getMaxHull() * $damage / 100;
         $damageMsg = $this->applyDamage->damage(
             new DamageWrapper((int) ceil($dmg)),
             $this->shipWrapperFactory->wrapShip($ship)

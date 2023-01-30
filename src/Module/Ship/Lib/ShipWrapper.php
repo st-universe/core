@@ -286,7 +286,7 @@ final class ShipWrapper implements ShipWrapperInterface
             return true;
         }
 
-        return $this->get()->getHull() < $this->get()->getMaxHuell();
+        return $this->get()->getHull() < $this->get()->getMaxHull();
     }
 
     public function getRepairDuration(): int
@@ -326,7 +326,7 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private function getRepairTicks(ShipInterface $ship): int
     {
-        $ticks = (int) ceil(($ship->getMaxHuell() - $ship->getHull()) / $this->get()->getRepairRate());
+        $ticks = (int) ceil(($ship->getMaxHull() - $ship->getHull()) / $this->get()->getRepairRate());
         return max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
     }
 
@@ -336,10 +336,10 @@ final class ShipWrapper implements ShipWrapperInterface
         $neededSystemComponents = 0;
 
         $hull = $this->get()->getHull();
-        $maxHull = $this->get()->getMaxHuell();
+        $maxHull = $this->get()->getMaxHull();
 
         if ($hull < $maxHull) {
-            $ticks = (int) ceil(($this->get()->getMaxHuell() - $this->get()->getHull()) / $this->get()->getRepairRate());
+            $ticks = (int) ceil(($this->get()->getMaxHull() - $this->get()->getHull()) / $this->get()->getRepairRate());
             $neededSpareParts += ((int)($this->get()->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
         }
 

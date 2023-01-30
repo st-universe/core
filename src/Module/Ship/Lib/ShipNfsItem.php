@@ -34,7 +34,7 @@ final class ShipNfsItem
     {
         return $this->values['hull'];
     }
-    public function getMaxHuell()
+    public function getMaxHull()
     {
         return $this->values['maxhull'];
     }

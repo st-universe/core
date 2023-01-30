@@ -199,7 +199,7 @@ class ShipWrapperTest extends StuTestCase
 
     public function testGetRepairDurationWithIntactShipExpectZero(): void
     {
-        $this->ship->shouldReceive('getMaxHuell')
+        $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
         $this->ship->shouldReceive('getHull')
             ->withNoArgs()->once()->andReturn(100);
@@ -221,7 +221,7 @@ class ShipWrapperTest extends StuTestCase
 
     public function testGetRepairDurationWithDamagedHull(): void
     {
-        $this->ship->shouldReceive('getMaxHuell')
+        $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
         $this->ship->shouldReceive('getHull')
             ->withNoArgs()->once()->andReturn(79);
@@ -270,7 +270,7 @@ class ShipWrapperTest extends StuTestCase
         $systems->add($damagedSystem1);
         $systems->add($damagedSystem2);
 
-        $this->ship->shouldReceive('getMaxHuell')
+        $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
         $this->ship->shouldReceive('getHull')
             ->withNoArgs()->once()->andReturn(100);
@@ -294,7 +294,7 @@ class ShipWrapperTest extends StuTestCase
     {
         $systems = new ArrayCollection();
 
-        $this->ship->shouldReceive('getMaxHuell')
+        $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
         $this->ship->shouldReceive('getHull')
             ->withNoArgs()->once()->andReturn(60);
@@ -371,7 +371,7 @@ class ShipWrapperTest extends StuTestCase
         $systems->add($damagedSystem3);
         $systems->add($damagedSystem4);
 
-        $this->ship->shouldReceive('getMaxHuell')
+        $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
         $this->ship->shouldReceive('getHull')
             ->withNoArgs()->once()->andReturn(80);
@@ -397,7 +397,7 @@ class ShipWrapperTest extends StuTestCase
 
     public function testGetRepairDurationPreviewWithDamagedHullAndNotOverColony(): void
     {
-        $this->ship->shouldReceive('getMaxHuell')
+        $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
         $this->ship->shouldReceive('getHull')
             ->withNoArgs()->once()->andReturn(60);
@@ -416,7 +416,7 @@ class ShipWrapperTest extends StuTestCase
 
     public function testGetRepairDurationPreviewWithDamagedHullAndOverColonyWithInactiveRepairStation(): void
     {
-        $this->ship->shouldReceive('getMaxHuell')
+        $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
         $this->ship->shouldReceive('getHull')
             ->withNoArgs()->once()->andReturn(60);
@@ -439,7 +439,7 @@ class ShipWrapperTest extends StuTestCase
 
     public function testGetRepairDurationPreviewWithDamagedHullAndOverColonyWithActiveRepairStation(): void
     {
-        $this->ship->shouldReceive('getMaxHuell')
+        $this->ship->shouldReceive('getMaxHull')
             ->withNoArgs()->once()->andReturn(100);
         $this->ship->shouldReceive('getHull')
             ->withNoArgs()->once()->andReturn(50);

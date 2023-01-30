@@ -49,8 +49,8 @@ final class ApplyDamage implements ApplyDamageInterface
         }
         $disablemessage = false;
         $damage = (int) $damage_wrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_HULL);
-        if ($ship->getCanBeDisabled() && $ship->getHull() - $damage < round($ship->getMaxHuell() / 100 * 10)) {
-            $damage = (int) round($ship->getHull() - $ship->getMaxHuell() / 100 * 10);
+        if ($ship->getCanBeDisabled() && $ship->getHull() - $damage < round($ship->getMaxHull() / 100 * 10)) {
+            $damage = (int) round($ship->getHull() - $ship->getMaxHull() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
             $ship->setDisabled(true);
         }
@@ -67,7 +67,7 @@ final class ApplyDamage implements ApplyDamageInterface
             $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $ship->getHull();
 
             if (!$this->checkForDamagedShipSystems($shipWrapper, $huelleVorher, $msg)) {
-                $this->damageRandomShipSystem($shipWrapper, $msg, (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHuell()));
+                $this->damageRandomShipSystem($shipWrapper, $msg, (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHull()));
             }
 
             if ($disablemessage) {
@@ -124,8 +124,8 @@ final class ApplyDamage implements ApplyDamageInterface
     private function checkForDamagedShipSystems(ShipWrapperInterface $wrapper, int $huelleVorher, &$msg): bool
     {
         $ship = $wrapper->get();
-        $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHuell()) -
-            ceil($ship->getHull() * 6 / $ship->getMaxHuell());
+        $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHull()) -
+            ceil($ship->getHull() * 6 / $ship->getMaxHull());
 
         if ($systemsToDamage == 0) {
             return false;

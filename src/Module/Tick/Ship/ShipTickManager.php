@@ -445,7 +445,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         foreach ($this->tradePostRepository->getByUser(GameEnum::USER_NOONE) as $tradepost) {
             $ship = $tradepost->getShip();
 
-            $lower = (int)ceil($ship->getMaxHuell() / 100);
+            $lower = (int)ceil($ship->getMaxHull() / 100);
 
             if ($ship->getHull() <= $lower) {
                 $this->shipRemover->destroy($this->shipWrapperFactory->wrapShip($ship));
@@ -616,8 +616,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
         $hullRepairRate = $isRepairStationBonus ? $ship->getRepairRate() * 2 : $ship->getRepairRate();
         $ship->setHuell($ship->getHull() + $hullRepairRate);
-        if ($ship->getHull() > $ship->getMaxHuell()) {
-            $ship->setHuell($ship->getMaxHuell());
+        if ($ship->getHull() > $ship->getMaxHull()) {
+            $ship->setHuell($ship->getMaxHull());
         }
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
@@ -669,7 +669,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         if (!$wrapper->canBeRepaired()) {
             $repairFinished = true;
 
-            $ship->setHuell($ship->getMaxHuell());
+            $ship->setHuell($ship->getMaxHull());
             $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 
             $shipOwnerMessage = $isColony ? sprintf(

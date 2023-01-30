@@ -85,7 +85,7 @@ interface ShipInterface
 
     public function setHuell(int $hull): ShipInterface;
 
-    public function getMaxHuell(): int;
+    public function getMaxHull(): int;
 
     public function setMaxHuell(int $maxHull): ShipInterface;
 

@@ -25,7 +25,7 @@ final class TholianWebWeaponPhase extends AbstractWeaponPhase implements Tholian
         );
 
         $damage_wrapper = new DamageWrapper(
-            (int)ceil(rand(65, 85) * $wrapper->get()->getMaxHuell() / 100)
+            (int)ceil(rand(65, 85) * $wrapper->get()->getMaxHull() / 100)
         );
         $damage_wrapper->setCrit(rand(0, 3) === 0);
         $damage_wrapper->setShieldDamageFactor(100);

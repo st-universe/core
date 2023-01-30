@@ -250,7 +250,7 @@ final class ShipTick implements ShipTickInterface
 
             if ($isUnderConstruction) {
                 // raise hull
-                $increase = intdiv($ship->getMaxHuell(), 2 * $ship->getRump()->getBuildtime());
+                $increase = intdiv($ship->getMaxHull(), 2 * $ship->getRump()->getBuildtime());
                 $ship->setHuell($ship->getHull() + $increase);
             }
         }
@@ -281,8 +281,8 @@ final class ShipTick implements ShipTickInterface
 
         //repair hull
         $station->setHuell($station->getHull() + $station->getRepairRate());
-        if ($station->getHull() > $station->getMaxHuell()) {
-            $station->setHuell($station->getMaxHuell());
+        if ($station->getHull() > $station->getMaxHull()) {
+            $station->setHuell($station->getMaxHull());
         }
 
         $wrapper = $this->shipWrapperFactory->wrapShip($station);
@@ -312,7 +312,7 @@ final class ShipTick implements ShipTickInterface
         $this->repairUtil->consumeSpareParts($neededParts, $station, false);
 
         if (!$wrapper->canBeRepaired()) {
-            $station->setHuell($station->getMaxHuell());
+            $station->setHuell($station->getMaxHull());
             $station->setState(ShipStateEnum::SHIP_STATE_NONE);
 
             $shipOwnerMessage = sprintf(

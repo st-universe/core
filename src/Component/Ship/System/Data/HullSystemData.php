@@ -18,7 +18,7 @@ class HullSystemData extends AbstractSystemData
         return $this->getTalStatusBar(
             _('Hülle'),
             $this->ship->getHull(),
-            $this->ship->getMaxHuell(),
+            $this->ship->getMaxHull(),
             StatusBarColorEnum::STATUSBAR_GREEN
         )
             ->render();
@@ -29,7 +29,7 @@ class HullSystemData extends AbstractSystemData
         return $this->getTalStatusBar(
             _('Hülle'),
             $this->ship->getHull(),
-            $this->ship->getMaxHuell(),
+            $this->ship->getMaxHull(),
             StatusBarColorEnum::STATUSBAR_GREEN
         )
             ->setSizeModifier(1.6)

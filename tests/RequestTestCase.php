@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Stu;
 
-/**
- * @template TRequestClass of object
- */
 abstract class RequestTestCase extends StuTestCase
 {
     /**

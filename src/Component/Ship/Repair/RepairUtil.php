@@ -59,7 +59,7 @@ final class RepairUtil implements RepairUtilInterface
         $neededSystemComponents = 0;
 
         $hull = $ship->getHull();
-        $maxHull = $ship->getMaxHuell();
+        $maxHull = $ship->getMaxHull();
 
         if ($hull < $maxHull) {
             $neededSpareParts += (int)($ship->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
@@ -224,7 +224,7 @@ final class RepairUtil implements RepairUtilInterface
         $repairOptions = [];
 
         //check for hull option
-        $hullPercentage = (int) ($ship->getHull() * 100 / $ship->getMaxHuell());
+        $hullPercentage = (int) ($ship->getHull() * 100 / $ship->getMaxHull());
         if ($hullPercentage < RepairTaskEnum::BOTH_MAX) {
             $hullSystem = $this->shipSystemRepository->prototype();
             $hullSystem->setSystemType(ShipSystemTypeEnum::SYSTEM_HULL);
@@ -295,12 +295,12 @@ final class RepairUtil implements RepairUtilInterface
         $result = true;
 
         if ($systemType === ShipSystemTypeEnum::SYSTEM_HULL) {
-            $hullPercentage = (int) ($ship->getHull() * 100 / $ship->getMaxHuell());
+            $hullPercentage = (int) ($ship->getHull() * 100 / $ship->getMaxHull());
 
             if ($hullPercentage > $percentage) {
                 $result = false;
             } else {
-                $ship->setHuell((int)($ship->getMaxHuell() * $percentage / 100));
+                $ship->setHuell((int)($ship->getMaxHull() * $percentage / 100));
             }
         } else {
             $system = $ship->getShipSystem($systemType);

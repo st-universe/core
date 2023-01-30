@@ -7,11 +7,6 @@ namespace Stu\Module\Ship\Action\StartEmergency;
 use MPScholten\RequestParser\NotFoundException;
 use Stu\RequestTestCase;
 
-/**
- * @extends RequestTestCase<StartEmergencyRequest>
- *
- * @runTestsInSeparateProcesses
- */
 class StartEmergencyRequestTest extends RequestTestCase
 {
     public function testGetEmergencyTestReturnsEmptyStringIfNotSet(): void

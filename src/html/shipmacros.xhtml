@@ -246,7 +246,7 @@
       (${ship/getCx}|${ship/getCy})
     </td>
     <td>
-      <span tal:attributes="style string:${ship/getHullColorStyle};">${ship/getHull}</span>/${ship/getMaxHuell}
+      <span tal:attributes="style string:${ship/getHullColorStyle};">${ship/getHull}</span>/${ship/getMaxHull}
     </td>
     <td>
       <span tal:condition="ship/getShieldState" class="activeshield"
@@ -598,7 +598,7 @@
   </tal:block>
   <tal:block tal:condition="not:ship/isTrumfield">
     <td style="width: 160px;">
-      <span tal:replace="ship/getHull"></span>/<span tal:replace="ship/getMaxHuell"></span>
+      <span tal:replace="ship/getHull"></span>/<span tal:replace="ship/getMaxHull"></span>
       <tal:block tal:condition="ship/getShieldState">
         (<span class="activeshield">${ship/getShield}</span>)
       </tal:block>

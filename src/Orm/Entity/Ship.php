@@ -693,7 +693,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getMaxHuell(): int
+    public function getMaxHull(): int
     {
         return $this->max_huelle;
     }
@@ -1799,7 +1799,7 @@ class Ship implements ShipInterface
 
     public function getHullColorStyle(): string
     {
-        return $this->getColorStyle($this->getHull(), $this->getMaxHuell());
+        return $this->getColorStyle($this->getHull(), $this->getMaxHull());
     }
 
     private function getColorStyle(int $actual, int $max): string
