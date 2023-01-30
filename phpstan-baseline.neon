@@ -14196,21 +14196,6 @@ parameters:
 			path: src/Orm/Repository/ShipRepository.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Repository/TachyonScanRepository.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Repository/TachyonScanRepository.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Repository/TholianWebRepository.php
-
-		-
 			message: "#^Cannot call method getMandatoryModulesCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevelInterface\\|null\\.$#"
 			count: 1
 			path: src/Public/admin/help/createBuildplan.php

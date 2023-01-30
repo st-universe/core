@@ -37,7 +37,6 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
     public function getWebAtLocation(ShipInterface $ship): ?TholianWebInterface
     {
         $starSystemMap = $ship->getStarsystemMap();
-        $map = $ship->getMap();
 
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -50,7 +49,7 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
                 $starSystemMap === null ? 'map_id' : 'starsystem_map_id',
             )
         )->setParameters([
-            'mapId' => $starSystemMap === null ? $map->getId() : $starSystemMap->getId()
+            'mapId' => $ship->getCurrentMapField()->getId()
         ])->getOneOrNullResult();
     }
 
