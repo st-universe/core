@@ -13,7 +13,7 @@ trait RequiredRequestTestCaseTrait
      * @dataProvider requiredRequestVarsDataProvider
      */
     public function testRequiredRequestVars(
-        string $methodName,
+        string $methodName
     ): void {
         static::expectException(NotFoundException::class);
 
