@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\Action\ApplyKnPostToPlot;
 
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -121,7 +122,11 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
                     $plot->getTitle()
                 );
 
-                $href = sprintf(_('comm.php?SHOW_SINGLE_KN=1&id=%d'), $post->getId());
+                $href = sprintf(
+                    _('comm.php?%s=1&id=%d'),
+                    ShowSingleKn::VIEW_IDENTIFIER,
+                    $post->getId()
+                );
 
                 $this->privateMessageSender->send(
                     GameEnum::USER_NOONE,

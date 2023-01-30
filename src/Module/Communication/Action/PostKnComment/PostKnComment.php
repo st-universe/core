@@ -8,6 +8,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
+use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -78,7 +79,11 @@ final class PostKnComment implements ActionControllerInterface
                 $post->getId()
             );
 
-            $href = sprintf(_('comm.php?SHOW_SINGLE_KN=1&id=%d'), $post->getId());
+            $href = sprintf(
+                _('comm.php?%s=1&id=%d'),
+                ShowSingleKn::VIEW_IDENTIFIER,
+                $post->getId()
+            );
 
             $this->privateMessageSender->send(
                 GameEnum::USER_NOONE,
@@ -107,7 +112,11 @@ final class PostKnComment implements ActionControllerInterface
                     $post->getId()
                 );
 
-                $href = sprintf(_('comm.php?SHOW_SINGLE_KN=1&id=%d'), $post->getId());
+                $href = sprintf(
+                    _('comm.php?%s=1&id=%d'),
+                    ShowSingleKn::VIEW_IDENTIFIER,
+                    $post->getId()
+                );
 
                 $this->privateMessageSender->send(
                     GameEnum::USER_NOONE,

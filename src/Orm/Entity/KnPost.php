@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\KnPostRepository")
@@ -239,6 +240,10 @@ class KnPost implements KnPostInterface
 
     public function getUrl(): string
     {
-        return sprintf('/comm.php?SHOW_SINGLE_KN=1&id=%d', $this->getId());
+        return sprintf(
+            '/comm.php?%s=1&id=%d',
+            ShowSingleKn::VIEW_IDENTIFIER,
+            $this->getId()
+        );
     }
 }
