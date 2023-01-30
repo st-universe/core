@@ -8,8 +8,8 @@ composer, git.
 - Repository forken und das Source-Code auschecken
 - config.dist.json nach config.json kopieren und anpassen
 - make init
-- vendor/bin/doctrine orm:generate-proxies
 - make dev-create-db
+- make migrateDatabase
 - php src/admin/scripts/reset.php
 - make dev-serve
 - Use the cli command to create a new user `./bin/cli user:create --help`
