@@ -2,34 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Alliance\Action\AcceptOffer;
+namespace Stu\Module\Alliance\Action\CreateTopic;
 
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
 /**
- * @extends RequestTestCase<AcceptOfferRequest>
+ * @extends RequestTestCase<CreateTopicRequest>
  */
-class AcceptOfferRequestTest extends RequestTestCase
+class CreateTopicRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
     protected function getRequestClass(): string
     {
-        return AcceptOfferRequest::class;
+        return CreateTopicRequest::class;
     }
 
     public function requestVarsDataProvider(): array
     {
         return [
-            ['getRelationId', 'al', '666', 666],
+            ['getBoardId', 'bid', (string) 666, 666],
+            ['getTopicTitle', 'tname', '<foo>bar</foo>', 'bar'],
+            ['getText', 'ttext', '<foo>bar</foo>', 'bar'],
         ];
     }
 
     public function requiredRequestVarsDataProvider(): array
     {
         return [
-            ['getRelationId'],
+            ['getBoardId'],
         ];
     }
 }

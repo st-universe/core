@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StopEmergency;
 
-use MPScholten\RequestParser\NotFoundException;
 use Stu\RequestTestCase;
+use Stu\RequiredRequestTestCaseTrait;
 
 /**
  * @extends RequestTestCase<StopEmergencyRequest>
@@ -14,27 +14,24 @@ use Stu\RequestTestCase;
  */
 class StopEmergencyRequestTest extends RequestTestCase
 {
-    public function testGetShipIdErrorsIfNotSet(): void
-    {
-        static::expectException(NotFoundException::class);
-
-        $this->buildRequest()->getShipId();
-    }
-
-    public function testGetShipIdReturnsValue(): void
-    {
-        $shipId = 666;
-
-        $_GET['id'] = (string) $shipId;
-
-        static::assertSame(
-            $shipId,
-            $this->buildRequest()->getShipId()
-        );
-    }
+    use RequiredRequestTestCaseTrait;
 
     protected function getRequestClass(): string
     {
         return StopEmergencyRequest::class;
+    }
+
+    public function requestVarsDataProvider(): array
+    {
+        return [
+            ['getShipId', 'id', '666', 666],
+        ];
+    }
+
+    public function requiredRequestVarsDataProvider(): array
+    {
+        return [
+            ['getShipId'],
+        ];
     }
 }

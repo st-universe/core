@@ -2,34 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Alliance\Action\AcceptOffer;
+namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use Stu\RequestTestCase;
 use Stu\RequiredRequestTestCaseTrait;
 
 /**
- * @extends RequestTestCase<AcceptOfferRequest>
+ * @extends RequestTestCase<CreateRelationRequest>
  */
-class AcceptOfferRequestTest extends RequestTestCase
+class CreateRelationRequestTest extends RequestTestCase
 {
     use RequiredRequestTestCaseTrait;
 
     protected function getRequestClass(): string
     {
-        return AcceptOfferRequest::class;
+        return CreateRelationRequest::class;
     }
 
     public function requestVarsDataProvider(): array
     {
         return [
-            ['getRelationId', 'al', '666', 666],
+            ['getRelationType', 'type', '666', 666],
+            ['getOpponentId', 'oid', '666', 666],
         ];
     }
 
     public function requiredRequestVarsDataProvider(): array
     {
         return [
-            ['getRelationId'],
+            ['getRelationType'],
+            ['getOpponentId'],
         ];
     }
 }

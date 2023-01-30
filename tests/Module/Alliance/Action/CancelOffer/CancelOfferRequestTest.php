@@ -4,32 +4,29 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CancelOffer;
 
-use MPScholten\RequestParser\NotFoundException;
 use Stu\RequestTestCase;
+use Stu\RequiredRequestTestCaseTrait;
 
 class CancelOfferRequestTest extends RequestTestCase
 {
+    use RequiredRequestTestCaseTrait;
+
     protected function getRequestClass(): string
     {
         return CancelOfferRequest::class;
     }
 
-    public function testGetRelationIdErrorsIfNotSet(): void
+    public function requestVarsDataProvider(): array
     {
-        static::expectException(NotFoundException::class);
-
-        $this->buildRequest()->getRelationId();
+        return [
+            ['getRelationId', 'al', '666', 666],
+        ];
     }
 
-    public function testGetRelationIdReturnsValue(): void
+    public function requiredRequestVarsDataProvider(): array
     {
-        $value = 666;
-
-        $_GET['al'] = (string) $value;
-
-        static::assertSame(
-            $value,
-            $this->buildRequest()->getRelationId()
-        );
+        return [
+            ['getRelationId'],
+        ];
     }
 }

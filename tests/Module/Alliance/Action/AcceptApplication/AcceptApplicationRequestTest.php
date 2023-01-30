@@ -4,35 +4,33 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AcceptApplication;
 
-use MPScholten\RequestParser\NotFoundException;
 use Stu\RequestTestCase;
+use Stu\RequiredRequestTestCaseTrait;
 
 /**
  * @extends RequestTestCase<AcceptApplicationRequest>
  */
 class AcceptApplicationRequestTest extends RequestTestCase
 {
+    use RequiredRequestTestCaseTrait;
+
     protected function getRequestClass(): string
     {
         return AcceptApplicationRequest::class;
     }
 
-    public function testGetApplicationIdErrorsIfNotSet(): void
+    public function requestVarsDataProvider(): array
     {
-        static::expectException(NotFoundException::class);
-
-        $this->buildRequest()->getApplicationId();
+        return [
+            ['getApplicationId', 'aid', '666', 666],
+        ];
     }
 
-    public function testGetApplicationIdReturnsValue(): void
+    public function requiredRequestVarsDataProvider(): array
     {
-        $value = 666;
-
-        $_GET['aid'] = (string) $value;
-
-        static::assertSame(
-            $value,
-            $this->buildRequest()->getApplicationId()
-        );
+        return [
+            ['getApplicationId'],
+        ];
+        // TODO: Implement requiredRequestVarsDataProvider() method.
     }
 }

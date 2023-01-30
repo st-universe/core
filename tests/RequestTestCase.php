@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu;
 
+use MPScholten\RequestParser\NotFoundException;
+
 /**
  * @template TRequestClass of object
  */
@@ -33,5 +35,26 @@ abstract class RequestTestCase extends StuTestCase
         $_SERVER = [];
         $_GET = [];
         $_POST = [];
+    }
+
+    abstract public function requestVarsDataProvider(): array;
+
+    /**
+     * @dataProvider requestVarsDataProvider
+     */
+    public function testRequestVars(
+        string $methodName,
+        string $paramName,
+        $testValue,
+        $expectedValue
+    ): void {
+        if ($testValue !== null) {
+            $_GET[$paramName] = $testValue;
+        }
+
+        static::assertSame(
+            $expectedValue,
+            call_user_func_array([$this->buildRequest(), $methodName], [])
+        );
     }
 }

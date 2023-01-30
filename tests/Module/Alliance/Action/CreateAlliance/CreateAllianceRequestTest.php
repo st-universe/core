@@ -4,75 +4,36 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
-use MPScholten\RequestParser\NotFoundException;
 use Stu\RequestTestCase;
+use Stu\RequiredRequestTestCaseTrait;
 
 /**
  * @extends RequestTestCase<CreateAllianceRequest>
  */
 class CreateAllianceRequestTest extends RequestTestCase
 {
+    use RequiredRequestTestCaseTrait;
+
     protected function getRequestClass(): string
     {
         return CreateAllianceRequest::class;
     }
 
-
-    public function testGetFactionModeReturnsDefaultIfNotSet(): void
+    public function requestVarsDataProvider(): array
     {
-        static::assertSame(
-            0,
-            $this->buildRequest()->getFactionMode()
-        );
+        return [
+            ['getDescription', 'description', '<foo>bar</foo>', 'bar'],
+            ['getName', 'name', '<foo>bar</foo>', 'bar'],
+            ['getFactionMode', 'factionid', '666', 666],
+            ['getFactionMode', 'factionid', null, 0],
+        ];
     }
 
-    public function testGetFactionModeReturnsValue(): void
+    public function requiredRequestVarsDataProvider(): array
     {
-        $value = 666;
-
-        $_GET['factionid'] = (string) $value;
-
-        static::assertSame(
-            $value,
-            $this->buildRequest()->getFactionMode()
-        );
-    }
-
-    public function testGetNameErrorsIfNotSet(): void
-    {
-        static::expectException(NotFoundException::class);
-
-        $this->buildRequest()->getName();
-    }
-
-    public function testGetNameReturnsSanitizedString(): void
-    {
-        $value = 'some-name';
-
-        $_GET['name'] = sprintf('<foo>%s</foo>', $value);
-
-        static::assertSame(
-            $value,
-            $this->buildRequest()->getName()
-        );
-    }
-
-    public function testGetDescriptionErrorsIfNotSet(): void
-    {
-        static::expectException(NotFoundException::class);
-
-        $this->buildRequest()->getDescription();
-    }
-
-    public function testGetDescriptionReturnsSanitizedString(): void
-    {
-        $value = 'some-description';
-
-        $_GET['description'] = sprintf('<foo>%s</foo>', $value);
-
-        static::assertSame(
-            $value,
-            $this->buildRequest()->getDescription()
-        );
+        return [
+            ['getDescription'],
+            ['getName'],
+        ];
     }
 }
