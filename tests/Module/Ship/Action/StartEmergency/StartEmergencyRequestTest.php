@@ -9,8 +9,6 @@ use Stu\RequestTestCase;
 
 /**
  * @extends RequestTestCase<StartEmergencyRequest>
- *
- * @runTestsInSeparateProcesses
  */
 class StartEmergencyRequestTest extends RequestTestCase
 {
@@ -21,7 +19,6 @@ class StartEmergencyRequestTest extends RequestTestCase
             $this->buildRequest()->getEmergencyText()
         );
     }
-
 
     public function testGetEmergencyTestReturnsSanitizedValue(): void
     {

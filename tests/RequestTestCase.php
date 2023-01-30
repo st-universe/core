@@ -26,4 +26,12 @@ abstract class RequestTestCase extends StuTestCase
      * @return class-string<TRequestClass>
      */
     abstract protected function getRequestClass(): string;
+
+    protected function tearDown(): void
+    {
+        // reset vars
+        $_SERVER = [];
+        $_GET = [];
+        $_POST = [];
+    }
 }
