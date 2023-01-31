@@ -105,8 +105,6 @@ interface GameControllerInterface
 
     public function getGameStateTextual(): string;
 
-    public function getActualYear(): int;
-
     public function getLoginError(): string;
 
     public function getBenchmarkResult(): array;

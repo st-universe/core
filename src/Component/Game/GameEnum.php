@@ -26,4 +26,23 @@ final class GameEnum
 
     //commnet stuff
     public const KN_PER_SITE = 6;
+
+    /**
+     * Returns the textual representation for a game state
+     */
+    public static function gameStateTypeToDescription(int $stateId): string
+    {
+        switch ($stateId) {
+            case GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE:
+                return 'Online';
+            case GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE:
+                return 'Wartung';
+            case GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION:
+                return 'Umzug';
+            case GameEnum::CONFIG_GAMESTATE_VALUE_TICK:
+                return 'Tick';
+            default:
+                return '';
+        }
+    }
 }

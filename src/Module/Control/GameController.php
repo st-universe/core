@@ -4,7 +4,6 @@ namespace Stu\Module\Control;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Stu\Exception\SessionInvalidException;
 use Noodlehaus\ConfigInterface;
 use request;
@@ -812,22 +811,7 @@ final class GameController implements GameControllerInterface
 
     public function getGameStateTextual(): string
     {
-        switch ($this->getGameState()) {
-            case GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE:
-                return _('Online');
-            case GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE:
-                return _('Wartung');
-            case GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION:
-                return _('Umzug');
-            case GameEnum::CONFIG_GAMESTATE_VALUE_TICK:
-                return _('Tick');
-        }
-        return '';
-    }
-
-    public function getActualYear(): int
-    {
-        return date("Y");
+        return GameEnum::gameStateTypeToDescription($this->getGameState());
     }
 
     public function getLoginError(): string
