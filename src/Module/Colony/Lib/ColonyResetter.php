@@ -15,6 +15,7 @@ use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -36,6 +37,8 @@ final class ColonyResetter implements ColonyResetterInterface
 
     private CrewRepositoryInterface $crewRepository;
 
+    private ShipCrewRepositoryInterface $shipCrewRepository;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
@@ -47,6 +50,7 @@ final class ColonyResetter implements ColonyResetterInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         FleetRepositoryInterface $fleetRepository,
         CrewRepositoryInterface $crewRepository,
+        ShipCrewRepositoryInterface $shipCrewRepository,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyRepository = $colonyRepository;
@@ -57,6 +61,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->planetFieldRepository = $planetFieldRepository;
         $this->fleetRepository = $fleetRepository;
         $this->crewRepository = $crewRepository;
+        $this->shipCrewRepository = $shipCrewRepository;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -118,6 +123,7 @@ final class ColonyResetter implements ColonyResetterInterface
     private function resetCrew(ColonyInterface $colony): void
     {
         foreach ($colony->getCrewAssignments() as $crewAssignment) {
+            $this->shipCrewRepository->delete($crewAssignment);
             $this->crewRepository->delete($crewAssignment->getCrew());
         }
     }
