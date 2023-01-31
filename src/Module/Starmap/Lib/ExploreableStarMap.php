@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use JBBCode\Parser;
 use Stu\Orm\Entity\MapBorderTypeInterface;
 use Stu\Orm\Entity\MapRegionInterface;
