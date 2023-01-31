@@ -42,12 +42,12 @@ final class DeclineApplication implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         if (!$this->allianceActionManager->mayEdit((int) $alliance->getId(), $game->getUser()->getId())) {
-            new AccessViolation;
+            throw new AccessViolation();
         }
 
         $appl = $this->allianceJobRepository->find($this->declineApplicationRequest->getApplicationId());
         if ($appl === null || $appl->getAlliance()->getId() !== $alliance->getId()) {
-            new AccessViolation;
+            throw new AccessViolation();
         }
 
         $this->allianceJobRepository->delete($appl);
