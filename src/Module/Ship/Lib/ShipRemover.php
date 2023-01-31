@@ -19,6 +19,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
@@ -34,6 +35,8 @@ final class ShipRemover implements ShipRemoverInterface
     private StorageRepositoryInterface $storageRepository;
 
     private ShipStorageManagerInterface $shipStorageManager;
+
+    private CrewRepositoryInterface $crewRepository;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
@@ -67,6 +70,7 @@ final class ShipRemover implements ShipRemoverInterface
         ShipSystemRepositoryInterface $shipSystemRepository,
         StorageRepositoryInterface $storageRepository,
         ShipStorageManagerInterface $shipStorageManager,
+        CrewRepositoryInterface $crewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         ShipRepositoryInterface $shipRepository,
         UserRepositoryInterface $userRepository,
@@ -85,6 +89,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipSystemRepository = $shipSystemRepository;
         $this->storageRepository = $storageRepository;
         $this->shipStorageManager = $shipStorageManager;
+        $this->crewRepository = $crewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->shipRepository = $shipRepository;
         $this->userRepository = $userRepository;
@@ -310,7 +315,18 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipTorpedoManager->removeTorpedo($wrapper);
 
         if ($truncateCrew) {
+            $crewArray = [];
+            foreach ($ship->getCrewlist() as $shipCrew) {
+                $crewArray[] = $shipCrew->getCrew();
+            }
+
             $this->shipCrewRepository->truncateByShip($ship->getId());
+
+            foreach ($crewArray as $crew) {
+                $this->crewRepository->delete($crew);
+            }
+
+            $ship->getCrewlist()->clear();
         }
 
         // reset tracker devices
