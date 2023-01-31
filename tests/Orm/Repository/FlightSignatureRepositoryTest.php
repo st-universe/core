@@ -36,7 +36,7 @@ class FlightSignatureRepositoryTest extends StuTestCase
 
     public function testPrototypeReturnsInstance(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             FlightSignature::class,
             $this->subject->prototype()
         );

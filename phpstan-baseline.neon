@@ -8936,41 +8936,6 @@ parameters:
 			path: src/Module/Tick/Colony/ColonyTickInterface.php
 
 		-
-			message: "#^Cannot call method setValue\\(\\) on Stu\\\\Orm\\\\Entity\\\\GameConfigInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Tick/Maintenance/MaintenanceTick.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Tick\\\\Maintenance\\\\MaintenanceTick\\:\\:__construct\\(\\) has parameter \\$handler_list with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Tick/Maintenance/MaintenanceTick.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Tick\\\\Maintenance\\\\MaintenanceTick\\:\\:finishMaintenance\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Tick/Maintenance/MaintenanceTick.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Tick\\\\Maintenance\\\\MaintenanceTick\\:\\:handle\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Tick/Maintenance/MaintenanceTick.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Tick\\\\Maintenance\\\\MaintenanceTick\\:\\:startMaintenance\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Tick/Maintenance/MaintenanceTick.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\GameConfigRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\GameConfigInterface, Stu\\\\Orm\\\\Entity\\\\GameConfigInterface\\|null given\\.$#"
-			count: 2
-			path: src/Module/Tick/Maintenance/MaintenanceTick.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Tick\\\\Maintenance\\\\MaintenanceTick\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Tick/Maintenance/MaintenanceTick.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Tick/Process/FinishBuildJobs.php
@@ -12329,43 +12294,3 @@ parameters:
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Public/admin/help/createShip.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 3
-			path: src/admin/cron/colonytick.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 5
-			path: src/admin/cron/maintenance.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 3
-			path: src/admin/cron/processtick.php
-
-		-
-			message: "#^Function tryTick\\(\\) has parameter \\$container with no type specified\\.$#"
-			count: 1
-			path: src/admin/cron/shiptick.php
-
-		-
-			message: "#^Function tryTick\\(\\) has parameter \\$entityManager with no type specified\\.$#"
-			count: 1
-			path: src/admin/cron/shiptick.php
-
-		-
-			message: "#^Function tryTick\\(\\) has parameter \\$loggerUtil with no type specified\\.$#"
-			count: 1
-			path: src/admin/cron/shiptick.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/admin/cron/shiptick.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 1
-			path: src/admin/cron/tickmanager.php

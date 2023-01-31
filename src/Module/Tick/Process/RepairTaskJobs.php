@@ -12,7 +12,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class RepairTaskJobs implements ProcessTickInterface
+final class RepairTaskJobs implements ProcessTickHandlerInterface
 {
     private RepairTaskRepositoryInterface $repairTaskRepository;
 

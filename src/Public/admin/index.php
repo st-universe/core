@@ -22,6 +22,7 @@ Init::run(function (ContainerInterface $dic) {
     $container = $dic;
 
     $em = $dic->get(EntityManagerInterface::class);
+
     $em->beginTransaction();
 
     $dic->get(GameControllerInterface::class)->main(

@@ -10,7 +10,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
-final class FinishTerraformingJobs implements ProcessTickInterface
+final class FinishTerraformingJobs implements ProcessTickHandlerInterface
 {
     private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
 

@@ -46,6 +46,7 @@ use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\GameController;
 
 use function DI\autowire;
+use function DI\get;
 
 return [
     EditFieldRequestInterface::class => autowire(EditFieldRequest::class),
@@ -57,7 +58,11 @@ return [
         EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
         DoManualColonyTick::ACTION_IDENTIFIER => autowire(DoManualColonyTick::class),
-        DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class),
+        DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class)
+            ->constructorParameter(
+                'handlerList',
+                get('maintenance_handler')
+            ),
         DoManualShipTick::ACTION_IDENTIFIER => autowire(DoManualShipTick::class),
         DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class),
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),

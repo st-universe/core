@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameConfigInterface;
 
@@ -14,11 +16,11 @@ use Stu\Orm\Entity\GameConfigInterface;
 final class GameConfigRepository extends EntityRepository implements GameConfigRepositoryInterface
 {
 
-    public function save(GameConfigInterface $post): void
+    public function save(GameConfigInterface $item): void
     {
         $em = $this->getEntityManager();
 
-        $em->persist($post);
+        $em->persist($item);
         $em->flush();
     }
 
@@ -27,5 +29,21 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
         return $this->findOneBy([
             'option' => $optionId
         ]);
+    }
+
+    public function updateGameState(int $state): void
+    {
+        $this->getEntityManager()->getConnection()->update(
+            GameConfig::TABLE_NAME,
+            [
+                'value' => $state
+            ],
+            [
+                'option' => GameEnum::CONFIG_GAMESTATE
+            ],
+            [
+                'value' => ParameterType::INTEGER
+            ]
+        );
     }
 }
