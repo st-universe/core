@@ -55,3 +55,5 @@ Um alle automatisierte Scripte zu den definierten Zeiten laufen zu lassen, muss 
 ```shell
 * * * * * cd /path/to/stu/core && vendor/bin/crunz schedule:run
 ```
+
+Die Tasks und deren Schedules werden in Dateien innerhalb des `resource/cron` Ordners definiert.

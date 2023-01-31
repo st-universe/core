@@ -22,6 +22,8 @@ use Doctrine\ORM\Mapping\Index;
  **/
 class GameConfig implements GameConfigInterface
 {
+    public const TABLE_NAME = 'stu_game_config';
+
     /**
      * @Id
      * @Column(type="integer")

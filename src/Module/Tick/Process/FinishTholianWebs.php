@@ -19,7 +19,7 @@ use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
-final class FinishTholianWebs implements ProcessTickInterface
+final class FinishTholianWebs implements ProcessTickHandlerInterface
 {
     private TholianWebRepositoryInterface $tholianWebRepository;
 

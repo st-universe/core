@@ -10,7 +10,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
-final class FinishBuildJobs implements ProcessTickInterface
+final class FinishBuildJobs implements ProcessTickHandlerInterface
 {
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 

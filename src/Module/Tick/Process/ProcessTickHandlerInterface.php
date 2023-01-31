@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Tick\Process;
 
-interface ProcessTickInterface
+interface ProcessTickHandlerInterface
 {
     public function work(): void;
 }

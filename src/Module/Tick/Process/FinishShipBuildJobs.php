@@ -11,7 +11,7 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 
-final class FinishShipBuildJobs implements ProcessTickInterface
+final class FinishShipBuildJobs implements ProcessTickHandlerInterface
 {
     private ShipCreatorInterface $shipCreator;
 

@@ -10,7 +10,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class ShieldRegeneration implements ProcessTickInterface
+final class ShieldRegeneration implements ProcessTickHandlerInterface
 {
     private ShipRepositoryInterface $shipRepository;
 

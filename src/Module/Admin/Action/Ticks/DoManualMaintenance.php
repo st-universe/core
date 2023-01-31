@@ -4,33 +4,31 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Maintenance\DatabaseBackup;
-use Stu\Module\Tick\Maintenance\MaintenanceTick;
-use Stu\Orm\Repository\GameConfigRepositoryInterface;
+use Stu\Module\Maintenance\MaintenanceHandlerInterface;
+use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
 
 final class DoManualMaintenance implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MAINTENANCE';
 
-    private GameConfigRepositoryInterface $gameConfigRepository;
+    private MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory;
 
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
+    /** @var array<MaintenanceHandlerInterface> */
+    private array $handlerList;
 
-    private EntityManagerInterface $entityManager;
-
+    /**
+     * @param array<MaintenanceHandlerInterface> $handlerList
+     */
     public function __construct(
-        GameConfigRepositoryInterface $gameConfigRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory,
-        EntityManagerInterface $entityManager
+        MaintenanceTickRunnerFactoryInterface $maintenanceTickRunnerFactory,
+        array $handlerList
     ) {
-        $this->gameConfigRepository = $gameConfigRepository;
-        $this->loggerUtilFactory = $loggerUtilFactory;
-        $this->entityManager = $entityManager;
+        $this->maintenanceTickRunnerFactory = $maintenanceTickRunnerFactory;
+        $this->handlerList = $handlerList;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,27 +37,21 @@ final class DoManualMaintenance implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->getUser()->isAdmin()) {
-            $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->addInformation('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
             return;
         }
 
-        global $container;
-
-        $maintenance = new MaintenanceTick(
-            $this->gameConfigRepository,
-            $this->loggerUtilFactory,
+        // load maintance tick runner without DatabaseBackup maintenance handler
+        $maintenance = $this->maintenanceTickRunnerFactory->createMaintenanceTickRunner(
             array_filter(
-                $container->get('maintenance_handler'),
-                function ($key): bool {
-                    return $key != DatabaseBackup::class;
-                },
-                ARRAY_FILTER_USE_KEY
+                $this->handlerList,
+                fn (MaintenanceHandlerInterface $handler): bool => !($handler instanceof DatabaseBackup)
             )
         );
-        $maintenance->handle();
-        $this->entityManager->flush();
 
-        $game->addInformation("Der Wartungs-Tick wurde durchgeführt!");
+        $maintenance->run();
+
+        $game->addInformation('Der Wartungs-Tick wurde durchgeführt!');
     }
 
     public function performSessionCheck(): bool
