@@ -10,6 +10,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -102,10 +103,15 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
                 $this->payOutLatinum($winner, $jackpot);
             } else {
                 $ticket->setIsWinner(false);
+
                 $losers[$user->getId()] = $user;
             }
 
             $this->lotteryTicketRepository->save($ticket);
+        }
+
+        if ($winner === null) {
+            return;
         }
 
         //PM to winner
@@ -122,6 +128,12 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
         //PM to all losers
         foreach ($losers as $loserId => $user) {
+
+            //skip winner if he had more than one ticket
+            if ($user === $winner) {
+                continue;
+            }
+
             $this->privateMessageSender->send(
                 GameEnum::USER_FERG_NPC,
                 $loserId,
@@ -140,7 +152,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
         //give random users a ticket
         foreach ($this->userRepository->getNonNpcList() as $user) {
 
-            $winRateInPercent = 10 * $user->getId() / $userCount;
+            $winRateInPercent = 10 * ($user->getId() - UserEnum::USER_FIRST_ID) / $userCount;
 
             if (rand(1, 100) > $winRateInPercent) {
                 continue;
