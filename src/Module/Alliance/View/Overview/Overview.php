@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\View\Overview;
 use Lib\Alliance\AllianceMemberWrapper;
 use Lib\Alliance\AllianceRelationWrapper;
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
@@ -31,27 +32,31 @@ final class Overview implements ViewControllerInterface
 
     private ParserWithImageInterface $parserWithImage;
 
+    private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker;
+
     public function __construct(
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         AllianceActionManagerInterface $allianceActionManager,
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRepositoryInterface $allianceRepository,
-        ParserWithImageInterface $parserWithImage
+        ParserWithImageInterface $parserWithImage,
+        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker
     ) {
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRepository = $allianceRepository;
         $this->parserWithImage = $parserWithImage;
+        $this->allianceUserApplicationChecker = $allianceUserApplicationChecker;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
+        $alliance = $user->getAlliance();
 
-        if ($user->getAllianceId() > 0) {
-            $alliance = $user->getAlliance();
-            $allianceId = (int) $alliance->getId();
+        if ($alliance !== null) {
+            $allianceId = $alliance->getId();
             $userId = $user->getId();
 
             $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
@@ -95,15 +100,13 @@ final class Overview implements ViewControllerInterface
             );
             $game->setTemplateVar(
                 'CAN_SIGNUP',
-                $user->maySignup($allianceId)
+                $this->allianceUserApplicationChecker->mayApply($user, $alliance)
             );
 
             $game->setTemplateVar(
                 'MEMBERS',
                 array_map(
-                    function (UserInterface $user) use ($alliance): AllianceMemberWrapper {
-                        return new AllianceMemberWrapper($user, $alliance);
-                    },
+                    fn (UserInterface $user): AllianceMemberWrapper => new AllianceMemberWrapper($user, $alliance),
                     $alliance->getMembers()->toArray()
                 )
             );
@@ -119,18 +122,14 @@ final class Overview implements ViewControllerInterface
             $game->setTemplateVar(
                 'ALLIANCE_LIST_OPEN',
                 array_map(
-                    function (AllianceInterface $alliance): AllianceListItemInterface {
-                        return new AllianceListItem($alliance);
-                    },
+                    fn (AllianceInterface $alliance): AllianceListItemInterface => new AllianceListItem($alliance),
                     $this->allianceRepository->findByApplicationState(true)
                 )
             );
             $game->setTemplateVar(
                 'ALLIANCE_LIST_CLOSED',
                 array_map(
-                    function (AllianceInterface $alliance): AllianceListItemInterface {
-                        return new AllianceListItem($alliance);
-                    },
+                    fn (AllianceInterface $alliance): AllianceListItemInterface => new AllianceListItem($alliance),
                     $this->allianceRepository->findByApplicationState(false)
                 )
             );

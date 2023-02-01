@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceJobInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<AllianceJob>
@@ -40,7 +42,11 @@ interface AllianceJobRepositoryInterface extends ObjectRepository
      */
     public function getByAllianceAndType(int $allianceId, int $typeId): array;
 
-    public function getByUserAndAllianceAndType(int $userId, int $allianceId, int $type): ?AllianceJobInterface;
+    public function getByUserAndAllianceAndType(
+        UserInterface $user,
+        AllianceInterface $alliance,
+        int $type
+    ): ?AllianceJobInterface;
 
     public function getSingleResultByAllianceAndType(int $allianceId, int $typeId): ?AllianceJobInterface;
 }

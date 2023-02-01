@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\View\AllianceDetails;
 use Lib\Alliance\AllianceMemberWrapper;
 use Lib\Alliance\AllianceRelationWrapper;
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -33,13 +34,16 @@ final class AllianceDetails implements ViewControllerInterface
 
     private ParserWithImageInterface $parserWithImage;
 
+    private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker;
+
     public function __construct(
         AllianceDetailsRequestInterface $allianceDetailsRequest,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         AllianceActionManagerInterface $allianceActionManager,
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRepositoryInterface $allianceRepository,
-        ParserWithImageInterface $parserWithImage
+        ParserWithImageInterface $parserWithImage,
+        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker
     ) {
         $this->allianceDetailsRequest = $allianceDetailsRequest;
         $this->allianceRelationRepository = $allianceRelationRepository;
@@ -47,6 +51,7 @@ final class AllianceDetails implements ViewControllerInterface
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRepository = $allianceRepository;
         $this->parserWithImage = $parserWithImage;
+        $this->allianceUserApplicationChecker = $allianceUserApplicationChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -56,8 +61,10 @@ final class AllianceDetails implements ViewControllerInterface
             return;
         }
 
+        $user = $game->getUser();
+
         $allianceId = $alliance->getId();
-        $userId = $game->getUser()->getId();
+        $userId = $user->getId();
 
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
         $userIsFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
@@ -102,14 +109,12 @@ final class AllianceDetails implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'CAN_SIGNUP',
-            $game->getUser()->maySignup($allianceId)
+            $this->allianceUserApplicationChecker->mayApply($user, $alliance)
         );
         $game->setTemplateVar(
             'MEMBERS',
             array_map(
-                function (UserInterface $user) use ($alliance): AllianceMemberWrapper {
-                    return new AllianceMemberWrapper($user, $alliance);
-                },
+                fn(UserInterface $user): AllianceMemberWrapper => new AllianceMemberWrapper($user, $alliance),
                 $alliance->getMembers()->toArray()
             )
         );

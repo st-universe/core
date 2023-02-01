@@ -23,9 +23,7 @@ use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
-use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -897,25 +895,6 @@ class User implements UserInterface
         }
 
         return $this->hasAward(UserAwardEnum::RESEARCHED_STATIONS);
-    }
-
-    public function maySignup(int $allianceId): bool
-    {
-        // @todo refactor
-        global $container;
-
-        $pendingApplication = $container->get(AllianceJobRepositoryInterface::class)->getByUserAndAllianceAndType(
-            $this->getId(),
-            $allianceId,
-            AllianceEnum::ALLIANCE_JOBS_PENDING
-        );
-        if ($pendingApplication !== null) {
-            return false;
-        }
-
-        $alliance = $container->get(AllianceRepositoryInterface::class)->find($allianceId);
-
-        return $alliance->getAcceptApplications() && $this->getAlliance() === null && ($alliance->getFactionId() == 0 || $this->getFactionId() == $alliance->getFactionId());
     }
 
     public function isNpc(): bool

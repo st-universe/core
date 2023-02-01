@@ -2806,7 +2806,7 @@ parameters:
 			path: src/Module/Alliance/Action/Signup/Signup.php
 
 		-
-			message: "#^Cannot call method maySignup\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Alliance\\\\AllianceUserApplicationCheckerInterface\\:\\:mayApply\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/Signup/Signup.php
 
@@ -2906,12 +2906,12 @@ parameters:
 			path: src/Module/Alliance/View/AllianceDetails/AllianceDetails.php
 
 		-
-			message: "#^Cannot call method maySignup\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\AllianceDetails\\\\AllianceDetails\\:\\:getReplacementVars\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/AllianceDetails/AllianceDetails.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\AllianceDetails\\\\AllianceDetails\\:\\:getReplacementVars\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Alliance\\\\AllianceUserApplicationCheckerInterface\\:\\:mayApply\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/AllianceDetails/AllianceDetails.php
 
@@ -3077,17 +3077,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method getAllianceId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/View/Overview/Overview.php
-
-		-
-			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
-			path: src/Module/Alliance/View/Overview/Overview.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
 			path: src/Module/Alliance/View/Overview/Overview.php
 
 		-
@@ -3096,17 +3086,7 @@ parameters:
 			path: src/Module/Alliance/View/Overview/Overview.php
 
 		-
-			message: "#^Cannot call method getMembers\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Overview/Overview.php
-
-		-
 			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Overview/Overview.php
-
-		-
-			message: "#^Cannot call method maySignup\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/Overview/Overview.php
 
@@ -3116,17 +3096,7 @@ parameters:
 			path: src/Module/Alliance/View/Overview/Overview.php
 
 		-
-			message: "#^Parameter \\#1 \\$alliance of class Lib\\\\Alliance\\\\AllianceRelationWrapper constructor expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Overview/Overview.php
-
-		-
-			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Module\\\\Alliance\\\\View\\\\Overview\\\\Overview\\:\\:getReplacementVars\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Overview/Overview.php
-
-		-
-			message: "#^Parameter \\#2 \\$alliance of class Lib\\\\Alliance\\\\AllianceMemberWrapper constructor expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Alliance\\\\AllianceUserApplicationCheckerInterface\\:\\:mayApply\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/Overview/Overview.php
 

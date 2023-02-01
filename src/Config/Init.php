@@ -57,6 +57,7 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/../Module/Maintenance/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Cli/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Tal/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Component/Alliance/services.php');
 
         /** @var ContainerInterface $container */
         $container = $builder->build();

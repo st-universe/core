@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\Signup;
 
+use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -24,16 +25,20 @@ final class Signup implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker;
+
     public function __construct(
         SignupRequestInterface $signupRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRepositoryInterface $allianceRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker
     ) {
         $this->signupRequest = $signupRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRepository = $allianceRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->allianceUserApplicationChecker = $allianceUserApplicationChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,9 +51,7 @@ final class Signup implements ActionControllerInterface
             return;
         }
 
-        $allianceId = (int) $alliance->getId();
-
-        if (!$user->maySignup($allianceId)) {
+        if (!$this->allianceUserApplicationChecker->mayApply($user, $alliance)) {
             throw new AccessViolation();
         }
         $obj = $this->allianceJobRepository->prototype();

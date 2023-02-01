@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceJobInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<AllianceJob>
@@ -80,11 +82,14 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ]);
     }
 
-    public function getByUserAndAllianceAndType(int $userId, int $allianceId, int $type): ?AllianceJobInterface
-    {
+    public function getByUserAndAllianceAndType(
+        UserInterface $user,
+        AllianceInterface $alliance,
+        int $type
+    ): ?AllianceJobInterface {
         return $this->findOneBy([
-            'user_id' => $userId,
-            'alliance_id' => $allianceId,
+            'user' => $user,
+            'alliance' => $alliance,
             'type' => $type,
         ]);
     }
