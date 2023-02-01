@@ -36,7 +36,7 @@ interface ShipRumpRepositoryInterface extends ObjectRepository
     /**
      * @return ShipRumpInterface[]
      */
-    public function getStartableByUserAndColony(int $userId, int $colonyId): array;
+    public function getStartableByColony(int $colonyId): array;
 
     /**
      * @return ShipRumpInterface[]

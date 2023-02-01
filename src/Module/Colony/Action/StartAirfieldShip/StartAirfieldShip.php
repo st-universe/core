@@ -88,7 +88,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         );
 
         $rump_id = (int) request::postInt('startrump');
-        $available_rumps = $this->shipRumpRepository->getStartableByUserAndColony($userId, (int) $colony->getId());
+        $available_rumps = $this->shipRumpRepository->getStartableByColony($userId, (int) $colony->getId());
 
         if (!array_key_exists($rump_id, $available_rumps)) {
             return;

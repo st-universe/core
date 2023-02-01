@@ -96,28 +96,23 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->getResult();
     }
 
-    public function getStartableByUserAndColony(int $userId, int $colonyId): array
+    public function getStartableByColony(int $colonyId): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT r FROM %s r INDEX BY r.id
                     WHERE r.is_buildable = :state
-                    AND r.category_id != :ignoreCategory
-                    AND r.id IN (
-                        SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
-                    ) AND r.commodity_id IN (
+                    AND r.category_id != :ignoreCategory AND r.commodity_id IN (
                         SELECT st.commodity_id FROM %s st WHERE st.colony_id = :colonyId
                     )',
                     ShipRump::class,
-                    ShipRumpUser::class,
                     Storage::class
                 )
             )
             ->setParameters([
                 'state' => 1,
                 'ignoreCategory' => ShipRumpEnum::SHIP_CATEGORY_SHUTTLE,
-                'userId' => $userId,
                 'colonyId' => $colonyId
             ])
             ->getResult();
