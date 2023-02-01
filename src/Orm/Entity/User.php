@@ -887,12 +887,7 @@ class User implements UserInterface
 
     public function hasAward(int $awardId): bool
     {
-        foreach ($this->getAwards() as $userAward) {
-            if ($userAward->getAward()->getId() === $awardId) {
-                return true;
-            }
-        }
-        return false;
+        return $this->awards->containsKey($awardId) === true;
     }
 
     public function hasStationsNavigation(): bool
