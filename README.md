@@ -1,8 +1,8 @@
 # ST-Universe Source
 
 [![Unittests](https://github.com/st-universe/core/actions/workflows/unittests.yml/badge.svg)](https://github.com/st-universe/core/actions/workflows/unittests.yml)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/st-universe/core/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/st-universe/core)
-[![Code Coverage](https://scrutinizer-ci.com/g/st-universe/core/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/st-universe/core/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/st-universe/core/badges/quality-score.png?b=maseter)](https://scrutinizer-ci.com/g/st-universe/core)
+[![Code Coverage](https://scrutinizer-ci.com/g/st-universe/core/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/st-universe/core/?branch=master)
 
 ## Lokales Setup
 
