@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\CrewTrainingInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<CrewTraining>
@@ -49,10 +50,10 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
             ->execute();
     }
 
-    public function getCountByUser(int $userId): int
+    public function getCountByUser(UserInterface $user): int
     {
         return $this->count([
-            'user_id' => $userId
+            'user' => $user
         ]);
     }
 

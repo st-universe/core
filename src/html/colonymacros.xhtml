@@ -143,9 +143,9 @@
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="USER/getCrewAssignedToShipsCount">USED</span>
+            <span tal:replace="CREW_COUNT_SHIPS">USED</span>
             (<a href="javascript:void(0);" onclick="showPodLocationWindow();"><span
-                tal:content="USER/getCrewCountDebrisAndTradeposts" title="Verschollene Crew">DEBRIS</span></a>)
+                tal:content="CREW_COUNT_DEBRIS_AND_TRADE_POSTS" title="Verschollene Crew">DEBRIS</span></a>)
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
@@ -159,11 +159,11 @@
         <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="USER/getInTrainingCrewCount">FREE</span>
+            <span tal:replace="CREW_COUNT_TRAINING">FREE</span>
           </td>
           <td colspan="2">
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="USER/getCrewLeftCount">SLOTS</span>
+            <span tal:replace="CREW_COUNT_REMAINING">SLOTS</span>
           </td>
         </tr>
       </table>
@@ -206,15 +206,15 @@
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
-            <span tal:replace="USER/getTrainableCrewCountMax" />
+            <span tal:replace="CREW_COUNT_TRAINABLE" />
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
-            <span tal:replace="USER/getInTrainingCrewCount" />
+            <span tal:replace="CREW_COUNT_TRAINING" />
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
-            <span tal:replace="USER/getCrewLeftCount" />
+            <span tal:replace="CREW_COUNT_REMAINING" />
           </td>
         </tr>
       </table>

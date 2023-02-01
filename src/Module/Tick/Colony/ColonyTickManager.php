@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Colony;
 
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -29,13 +30,16 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
+    private CrewCountRetrieverInterface $crewCountRetriever;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         CrewCreatorInterface $crewCreator,
         CrewTrainingRepositoryInterface $crewTrainingRepository,
         ColonyRepositoryInterface $colonyRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->colonyTick = $colonyTick;
         $this->crewCreator = $crewCreator;
@@ -43,6 +47,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->colonyRepository = $colonyRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->commodityRepository = $commodityRepository;
+        $this->crewCountRetriever = $crewCountRetriever;
     }
 
     public function work(int $tickId): void
@@ -75,7 +80,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             if (!isset($user[$obj->getUserId()])) {
                 $user[$obj->getUserId()] = 0;
             }
-            if ($user[$obj->getUserId()] >= $obj->getUser()->getTrainableCrewCountMax()) {
+            if ($user[$obj->getUserId()] >= $this->crewCountRetriever->getTrainableCount($obj->getUser())) {
                 continue;
             }
             $colony = $obj->getColony();
@@ -86,8 +91,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
                 continue;
             }
 
-            //user has to much crew
-            if ($obj->getUser()->getGlobalCrewLimit() - $obj->getUser()->getAssignedCrewCount() <= 0) {
+            //user has too much crew
+            if ($obj->getUser()->getGlobalCrewLimit() - $this->crewCountRetriever->getAssignedCount($obj->getUser()) <= 0) {
                 $this->crewTrainingRepository->delete($obj);
                 continue;
             }

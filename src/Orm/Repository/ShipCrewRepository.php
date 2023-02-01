@@ -11,6 +11,7 @@ use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipRump;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<ShipCrew>
@@ -79,10 +80,10 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->getResult();
     }
 
-    public function getAmountByUser(int $userId): int
+    public function getAmountByUser(UserInterface $user): int
     {
         return $this->count([
-            'user_id' => $userId
+            'user' => $user
         ]);
     }
 
@@ -147,30 +148,36 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         )->setParameter('userId', $userId)->getSingleScalarResult();
     }
 
-    public function getAmountByUserOnShips(int $userId): int
+    public function getAmountByUserOnShips(UserInterface $user): int
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT count(ca.id)
-                FROM %s ca
-                WHERE ca.user_id = :userId
-                AND ca.ship_id IS NOT NULL',
-                ShipCrew::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(ca.id)
+                    FROM %s ca
+                    WHERE ca.user = :user
+                    AND ca.ship_id IS NOT NULL',
+                    ShipCrew::class
+                )
             )
-        )->setParameter('userId', $userId)->getSingleScalarResult();
+            ->setParameter('user', $user)
+            ->getSingleScalarResult();
     }
 
-    public function getAmountByUserAtTradeposts(int $userId): int
+    public function getAmountByUserAtTradeposts(UserInterface $user): int
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT count(ca.id)
-                FROM %s ca
-                WHERE ca.user_id = :userId
-                AND ca.tradepost_id IS NOT NULL',
-                ShipCrew::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(ca.id)
+                    FROM %s ca
+                    WHERE ca.user = :user
+                    AND ca.tradepost_id IS NOT NULL',
+                    ShipCrew::class
+                )
             )
-        )->setParameter('userId', $userId)->getSingleScalarResult();
+            ->setParameter('user', $user)
+            ->getSingleScalarResult();
     }
 
     public function getCrewsTop10(): array

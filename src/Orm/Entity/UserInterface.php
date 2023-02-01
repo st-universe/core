@@ -170,19 +170,7 @@ interface UserInterface
 
     public function isContactable(): bool;
 
-    public function getCrewCountDebrisAndTradeposts(): int;
-
-    public function getTrainableCrewCountMax(): int;
-
     public function getGlobalCrewLimit(): int;
-
-    public function getCrewAssignedToShipsCount(): int;
-
-    public function getAssignedCrewCount(): int;
-
-    public function getCrewLeftCount(): int;
-
-    public function getInTrainingCrewCount(): int;
 
     public function hasAward(int $awardId): bool;
 

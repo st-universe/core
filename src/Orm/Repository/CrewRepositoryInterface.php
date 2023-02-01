@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<Crew>
@@ -19,7 +20,10 @@ interface CrewRepositoryInterface extends ObjectRepository
 
     public function delete(CrewInterface $post): void;
 
-    public function getAmountByUserAndShipRumpCategory(int $userId, int $shipRumpCategoryId): int;
+    public function getAmountByUserAndShipRumpCategory(
+        UserInterface $user,
+        int $shipRumpCategoryId
+    ): int;
 
     public function truncateByUser(int $userId): void;
 }

@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\CrewTrainingInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<CrewTraining>
@@ -19,7 +20,7 @@ interface CrewTrainingRepositoryInterface extends ObjectRepository
 
     public function truncateByColony(int $colonyId): void;
 
-    public function getCountByUser(int $userId): int;
+    public function getCountByUser(UserInterface $user): int;
 
     /**
      * @return CrewTrainingInterface[]

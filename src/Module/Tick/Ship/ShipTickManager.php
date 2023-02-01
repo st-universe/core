@@ -261,8 +261,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
             $crewLimit = $user->getGlobalCrewLimit();
             $crewOnColonies = $this->shipCrewRepository->getAmountByUserOnColonies($user->getId());
-            $crewOnShips = $this->shipCrewRepository->getAmountByUserOnShips($user->getId());
-            $crewAtTradeposts = $this->shipCrewRepository->getAmountByUserAtTradeposts($user->getId());
+            $crewOnShips = $this->shipCrewRepository->getAmountByUserOnShips($user);
+            $crewAtTradeposts = $this->shipCrewRepository->getAmountByUserAtTradeposts($user);
 
             $crewToQuit = max(0, $crewOnColonies + $crewOnShips + $crewAtTradeposts - $crewLimit);
 

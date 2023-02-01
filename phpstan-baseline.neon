@@ -3906,22 +3906,22 @@ parameters:
 			path: src/Module/Colony/Action/Terraform/Terraform.php
 
 		-
-			message: "#^Cannot call method getCrewLeftCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/Action/TrainCrew/TrainCrew.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/TrainCrew/TrainCrew.php
 
 		-
-			message: "#^Cannot call method getInTrainingCrewCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getInTrainingCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/TrainCrew/TrainCrew.php
 
 		-
-			message: "#^Cannot call method getTrainableCrewCountMax\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getRemainingCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/TrainCrew/TrainCrew.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getTrainableCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/TrainCrew/TrainCrew.php
 
@@ -4536,22 +4536,22 @@ parameters:
 			path: src/Module/Colony/View/RefreshSubspaceSection/RefreshSubspaceSection.php
 
 		-
-			message: "#^Cannot call method getCrewLeftCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/View/ShowAcademy/ShowAcademy.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowAcademy/ShowAcademy.php
 
 		-
-			message: "#^Cannot call method getInTrainingCrewCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getInTrainingCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowAcademy/ShowAcademy.php
 
 		-
-			message: "#^Cannot call method getTrainableCrewCountMax\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getRemainingCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowAcademy/ShowAcademy.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getTrainableCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowAcademy/ShowAcademy.php
 
@@ -4847,6 +4847,26 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowSocial/ShowSocial.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getAssignedToShipsCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowSocial/ShowSocial.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getDebrisAndTradePostsCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowSocial/ShowSocial.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getInTrainingCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Colony/View/ShowSocial/ShowSocial.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Crew\\\\CrewCountRetrieverInterface\\:\\:getRemainingCount\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowSocial/ShowSocial.php
 

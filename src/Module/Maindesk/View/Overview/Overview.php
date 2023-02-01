@@ -7,6 +7,7 @@ namespace Stu\Module\Maindesk\View\Overview;
 use Stu\Component\Colony\ColonyTypeEnum;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
+use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -53,6 +54,8 @@ final class Overview implements ViewControllerInterface
 
     private int $newAmount;
 
+    private CrewCountRetrieverInterface $crewCountRetriever;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
@@ -64,7 +67,8 @@ final class Overview implements ViewControllerInterface
         SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
         KnFactoryInterface $knFactory,
         ColonyLimitCalculatorInterface $colonyLimitCalculator,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->historyRepository = $historyRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
@@ -77,6 +81,7 @@ final class Overview implements ViewControllerInterface
         $this->knFactory = $knFactory;
         $this->colonyLimitCalculator = $colonyLimitCalculator;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->crewCountRetriever = $crewCountRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -154,6 +159,12 @@ final class Overview implements ViewControllerInterface
         //asteroid
         $game->setTemplateVar('ASTEROID_LIMIT', $this->colonyLimitCalculator->getColonyLimitWithType($user, ColonyTypeEnum::COLONY_TYPE_ASTEROID));
         $game->setTemplateVar('ASTEROID_COUNT', $this->colonyLimitCalculator->getColonyCountWithType($user, ColonyTypeEnum::COLONY_TYPE_ASTEROID));
+
+        // crew count
+        $game->setTemplateVar(
+            'CREW_COUNT_SHIPS',
+            $this->crewCountRetriever->getAssignedToShipsCount($user)
+        );
     }
 
     private function setPotentialEmergencies(GameControllerInterface $game): void

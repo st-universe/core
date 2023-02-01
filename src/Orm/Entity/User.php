@@ -21,13 +21,9 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
-use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
-use Stu\Orm\Repository\CrewRepositoryInterface;
-use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
@@ -306,16 +302,7 @@ class User implements UserInterface
     private $userLock;
 
     /** @var null|int */
-    private $crew_on_ships_count;
-
-    /** @var null|int */
-    private $crew_in_training;
-
-    /** @var null|int */
     private $global_crew_limit;
-
-    /** @var null|int */
-    private $crew_count_debris_and_tradeposts;
 
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
@@ -806,81 +793,16 @@ class User implements UserInterface
         return !in_array($this->getId(), [GameEnum::USER_NOONE]);
     }
 
-    public function getCrewCountDebrisAndTradeposts(): int
-    {
-        if ($this->crew_count_debris_and_tradeposts === null) {
-            // @todo refactor
-            global $container;
-
-            $this->crew_count_debris_and_tradeposts += $container->get(CrewRepositoryInterface::class)
-                ->getAmountByUserAndShipRumpCategory(
-                    (int) $this->getId(),
-                    ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
-                );
-
-            $this->crew_count_debris_and_tradeposts += $container->get(ShipCrewRepositoryInterface::class)
-                ->getAmountByUserAtTradeposts(
-                    (int) $this->getId()
-                );
-        }
-        return $this->crew_count_debris_and_tradeposts;
-    }
-
-    public function getTrainableCrewCountMax(): int
-    {
-        return (int) ceil($this->getGlobalCrewLimit() / 10);
-    }
-
     public function getGlobalCrewLimit(): int
     {
         if ($this->global_crew_limit === null) {
-            $this->global_crew_limit = (int) array_reduce(
+            $this->global_crew_limit = array_reduce(
                 $this->getColonies()->toArray(),
-                function (int $sum, ColonyInterface $colony): int {
-                    return $colony->getCrewLimit() + $sum;
-                },
+                fn (int $sum, ColonyInterface $colony): int => $colony->getCrewLimit() + $sum,
                 0
             );
         }
         return $this->global_crew_limit;
-    }
-
-    public function getCrewAssignedToShipsCount(): int
-    {
-        if ($this->crew_on_ships_count === null) {
-            // @todo refactor
-            global $container;
-
-            $this->crew_on_ships_count = $container->get(ShipCrewRepositoryInterface::class)->getAmountByUserOnShips((int) $this->getId());
-        }
-        return $this->crew_on_ships_count;
-    }
-
-    public function getAssignedCrewCount(): int
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipCrewRepositoryInterface::class)->getAmountByUser((int) $this->getId());
-    }
-
-    public function getCrewLeftCount(): int
-    {
-        return max(
-            0,
-            $this->getGlobalCrewLimit() - $this->getAssignedCrewCount() - $this->getInTrainingCrewCount()
-        );
-    }
-
-    public function getInTrainingCrewCount(): int
-    {
-        if ($this->crew_in_training === null) {
-            // @todo refactor
-            global $container;
-
-            $this->crew_in_training = $container->get(CrewTrainingRepositoryInterface::class)->getCountByUser((int) $this->getId());
-        }
-        return $this->crew_in_training;
     }
 
     public function hasAward(int $awardId): bool

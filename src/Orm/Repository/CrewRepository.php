@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipCrew;
+use Stu\Orm\Entity\ShipRump;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<Crew>
@@ -33,24 +36,28 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
         $em->remove($post);
     }
 
-    public function getAmountByUserAndShipRumpCategory(int $userId, int $shipRumpCategoryId): int
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('amount', 'amount');
-
+    public function getAmountByUserAndShipRumpCategory(
+        UserInterface $user,
+        int $shipRumpCategoryId
+    ): int {
         return (int) $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT COUNT(c.id) as amount FROM stu_crew c WHERE c.user_id = :userId AND c.id IN (
-                    SELECT crew_id FROM stu_crew_assign WHERE ship_id IN (
-                        SELECT id FROM stu_ships WHERE rumps_id IN (
-                            SELECT id FROM stu_rumps WHERE category_id = :categoryId
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(c.id) FROM %s c WHERE c.user = :user AND c.id IN (
+                        SELECT ship.crew_id FROM %s ship WHERE ship.ship_id IN (
+                            SELECT rump.id FROM %s rump WHERE rump.rumps_id IN (
+                                SELECT rump_category.id FROM %s rump_category WHERE rump_category.category_id = :categoryId
+                            )
                         )
-                    )
-                )',
-                $rsm
+                    )',
+                    Crew::class,
+                    ShipCrew::class,
+                    Ship::class,
+                    ShipRump::class
+                )
             )
             ->setParameters([
-                'userId' => $userId,
+                'user' => $user,
                 'categoryId' => $shipRumpCategoryId
             ])
             ->getSingleScalarResult();

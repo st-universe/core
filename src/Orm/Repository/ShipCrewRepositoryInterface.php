@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipCrewInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<ShipCrew>
@@ -46,13 +47,13 @@ interface ShipCrewRepositoryInterface extends ObjectRepository
     public function getByUserAtTradeposts(int $userId): array;
 
     //AMOUNT
-    public function getAmountByUser(int $userId): int;
+    public function getAmountByUser(UserInterface $user): int;
 
-    public function getAmountByUserAtTradeposts(int $userId): int;
+    public function getAmountByUserAtTradeposts(UserInterface $user): int;
 
     public function getAmountByUserOnColonies(int $userId): int;
 
-    public function getAmountByUserOnShips(int $userId): int;
+    public function getAmountByUserOnShips(UserInterface $user): int;
 
     /**
      * @return array<array{user_id: int, race: int, crewc: int}>

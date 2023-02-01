@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\TrainCrew;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -23,20 +24,25 @@ final class TrainCrew implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private CrewCountRetrieverInterface $crewCountRetriever;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CrewTrainingRepositoryInterface $crewTrainingRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->crewTrainingRepository = $crewTrainingRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->crewCountRetriever = $crewCountRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
+        $crewRemainingCount = $this->crewCountRetriever->getRemainingCount($user);
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
@@ -44,9 +50,9 @@ final class TrainCrew implements ActionControllerInterface
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $trainableCrewPerTick = $user->getTrainableCrewCountMax() - $user->getInTrainingCrewCount();
-        if ($trainableCrewPerTick > $user->getCrewLeftCount()) {
-            $trainableCrewPerTick = $user->getCrewLeftCount();
+        $trainableCrewPerTick = $this->crewCountRetriever->getTrainableCount($user) - $this->crewCountRetriever->getInTrainingCount($user);
+        if ($trainableCrewPerTick > $crewRemainingCount) {
+            $trainableCrewPerTick = $crewRemainingCount;
         }
         if ($trainableCrewPerTick < 0) {
             $trainableCrewPerTick = 0;
