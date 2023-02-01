@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Data;
 
 use Stu\Module\Tal\TalStatusBar;
+use Stu\Module\Tal\TalStatusBarInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
@@ -32,7 +33,7 @@ abstract class AbstractSystemData
         $shipSystemRepository->save($system);
     }
 
-    protected function getTalStatusBar(string $label, int $value, int $maxValue, $color): TalStatusBar
+    protected function getTalStatusBar(string $label, int $value, int $maxValue, $color): TalStatusBarInterface
     {
         return (new TalStatusBar())
             ->setColor($color)

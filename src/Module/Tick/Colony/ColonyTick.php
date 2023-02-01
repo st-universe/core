@@ -338,7 +338,7 @@ final class ColonyTick implements ColonyTickInterface
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-        $current_research = $this->researchedRepository->getCurrentResearch($colony->getUserId());
+        $current_research = $this->researchedRepository->getCurrentResearch($colony->getUser());
 
         if ($current_research && $current_research->getActive()) {
             if (isset($production[$current_research->getResearch()->getCommodityId()])) {

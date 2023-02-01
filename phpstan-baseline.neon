@@ -181,11 +181,6 @@ parameters:
 			path: src/Component/Ship/System/Type/AbstractShipSystemType.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\AbstractShipSystemType\\:\\:getTalStatusBar\\(\\) has parameter \\$color with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Type/AbstractShipSystemType.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\AbstractShipSystemType\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Type/AbstractShipSystemType.php
@@ -6751,14 +6746,9 @@ parameters:
 			path: src/Module/PlayerSetting/Action/RequestInvitationToken/RequestInvitationToken.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Repository\\\\ResearchedRepositoryInterface\\:\\:getCurrentResearch\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Research/Action/CancelResearch/CancelResearch.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Research/Action/StartResearch/StartResearch.php
 
 		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Module\\\\Research\\\\TechlistRetrieverInterface\\:\\:getResearchList\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
@@ -6767,6 +6757,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\ResearchedInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Research/Action/StartResearch/StartResearch.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Repository\\\\ResearchedRepositoryInterface\\:\\:getCurrentResearch\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Research/Action/StartResearch/StartResearch.php
 

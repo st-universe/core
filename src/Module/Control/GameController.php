@@ -4,7 +4,6 @@ namespace Stu\Module\Control;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Exception\SessionInvalidException;
 use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
@@ -12,37 +11,35 @@ use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\SanityCheckException;
+use Stu\Exception\SessionInvalidException;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
+use Stu\Exception\StuException;
 use Stu\Exception\TickGameStateException;
+use Stu\Exception\UnallowedUplinkOperation;
+use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Control\Render\GameTalRendererInterface;
+use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
-use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
-use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\GameConfigInterface;
+use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
+use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
-use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
-use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Exception\StuException;
-use Stu\Exception\UnallowedUplinkOperation;
-use Stu\Lib\AccountNotVerifiedException;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Entity\GameRequestInterface;
-use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Throwable;
 use Ubench;
 
@@ -66,15 +63,11 @@ final class GameController implements GameControllerInterface
 
     private GameTurnRepositoryInterface $gameTurnRepository;
 
-    private ResearchedRepositoryInterface $researchedRepository;
-
     private GameConfigRepositoryInterface $gameConfigRepository;
 
     private EntityManagerInterface $entityManager;
 
     private EntityManagerLoggingInterface $entityManagerLogging;
-
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
@@ -106,8 +99,6 @@ final class GameController implements GameControllerInterface
     /** @var array<string> */
     private array $achievements = [];
 
-    private ?int $playercount = null;
-
     /** @var array<string, mixed> $viewContext */
     private array $viewContext = [];
 
@@ -116,13 +107,14 @@ final class GameController implements GameControllerInterface
     private string $loginError = '';
 
     /** @var array<int, resource> */
-    private $semaphores = [];
+    private array $semaphores = [];
 
     /** @var array<Throwable> */
-    private $sanityCheckExceptions = [];
+    private array $sanityCheckExceptions = [];
 
     /** @var array<int, GameConfigInterface> */
-    private $gameConfig = null;
+    private ?array $gameConfig = null;
+    private GameTalRendererInterface $gameTalRenderer;
 
     public function __construct(
         SessionInterface $session,
@@ -131,16 +123,15 @@ final class GameController implements GameControllerInterface
         DatabaseUserRepositoryInterface $databaseUserRepository,
         ConfigInterface $config,
         GameTurnRepositoryInterface $gameTurnRepository,
-        ResearchedRepositoryInterface $researchedRepository,
         GameConfigRepositoryInterface $gameConfigRepository,
         EntityManagerInterface $entityManager,
         EntityManagerLoggingInterface $entityManagerLogging,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
         GameRequestRepositoryInterface $gameRequestRepository,
+        GameTalRendererInterface $gameTalRenderer,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
@@ -149,17 +140,16 @@ final class GameController implements GameControllerInterface
         $this->databaseUserRepository = $databaseUserRepository;
         $this->config = $config;
         $this->gameTurnRepository = $gameTurnRepository;
-        $this->researchedRepository = $researchedRepository;
         $this->gameConfigRepository = $gameConfigRepository;
         $this->entityManager = $entityManager;
         $this->entityManagerLogging = $entityManagerLogging;
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->gameRequestRepository = $gameRequestRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->gameTalRenderer = $gameTalRenderer;
     }
 
     /**
@@ -173,7 +163,7 @@ final class GameController implements GameControllerInterface
     }
 
     /**
-     * @return array<string, mixed> $viewContext
+     * @return array<string, mixed>
      */
     public function getViewContext(): array
     {
@@ -182,7 +172,7 @@ final class GameController implements GameControllerInterface
 
     public function getGameState(): int
     {
-        return (int) $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
+        return $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
     }
 
     public function setTemplateFile(string $tpl): void
@@ -311,80 +301,9 @@ final class GameController implements GameControllerInterface
         $this->talPage->setVar($key, $variable);
     }
 
-    private function render(): void
-    {
-        $user = $this->getUser();
-
-        $this->talPage->setVar('THIS', $this);
-        $this->talPage->setVar('USER', $user);
-
-        if ($user !== null) {
-            $userId = $user->getId();
-
-            $pmFolder = [
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
-            ];
-            $folder = [];
-
-            foreach ($pmFolder as $specialId) {
-                if (
-                    $specialId === PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
-                    && !$user->hasStationsNavigation()
-                ) {
-                    continue;
-                }
-                $folder[$specialId] = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, $specialId);
-            }
-
-            $researchStatusBar = '';
-            $currentResearch = $this->researchedRepository->getCurrentResearch($user->getId());
-
-            if ($currentResearch !== null) {
-                $researchStatusBar = (new TalStatusBar())
-                    ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
-                    ->setLabel(_('Forschung'))
-                    ->setMaxValue($currentResearch->getResearch()->getPoints())
-                    ->setValue($currentResearch->getResearch()->getPoints() - $currentResearch->getActive())
-                    ->setSizeModifier(2)
-                    ->render();
-            }
-
-            $this->talPage->setVar('CURRENT_RESEARCH', $currentResearch);
-            $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
-            $this->talPage->setVar('PM_NAVLET', $folder);
-            $colonies = $userId === GameEnum::USER_NOONE ? [] : $user->getColonies()->toArray();
-
-            $this->talPage->setVar('COLONIES', $colonies);
-            $this->talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
-        }
-
-        $this->talPage->setVar('WIKI', $this->config->get('wiki.base_url'));
-        $this->talPage->setVar('FORUM', $this->config->get('board.base_url'));
-        $this->talPage->setVar('CHAT', $this->config->get('discord.url'));
-
-        $result = $this->talPage->parse();
-
-        ob_start();
-        echo $result;
-        ob_end_flush();
-    }
-
     public function getUser(): ?UserInterface
     {
         return $this->session->getUser();
-    }
-
-    public function getPlayerCount(): int
-    {
-        if ($this->playercount === null) {
-            return $this->userRepository->getActiveAmount();
-        }
-        return $this->playercount;
     }
 
     /**
@@ -395,7 +314,6 @@ final class GameController implements GameControllerInterface
         if ($this->gameConfig === null) {
             $this->gameConfig = [];
 
-            /** @var GameConfigInterface $item */
             foreach ($this->gameConfigRepository->findAll() as $item) {
                 $this->gameConfig[$item->getOption()] = $item;
             }
@@ -561,7 +479,6 @@ final class GameController implements GameControllerInterface
                 $this->executeView($views, $gameRequest);
             } catch (SanityCheckException $e) {
                 $this->sanityCheckExceptions[] = $e;
-                $e->getViewIdentifier();
             }
             $viewMs = hrtime(true) - $startTime;
 
@@ -640,8 +557,14 @@ final class GameController implements GameControllerInterface
 
         // RENDER!
         $startTime = hrtime(true);
-        $this->render();
+
+        $renderResult = $this->gameTalRenderer->render($this, $this->talPage);
+
         $renderMs = hrtime(true) - $startTime;
+
+        ob_start();
+        echo $renderResult;
+        ob_end_flush();
 
         // SAVE META DATA
         $gameRequest->setRenderMs((int)$renderMs / 1000000);
@@ -734,14 +657,7 @@ final class GameController implements GameControllerInterface
                 $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
                 if (!sem_release($sema)) {
                     $this->loggerUtil->log("Error releasing Semaphore!");
-                    continue;
-                    //throw new SemaphoreException("Error releasing Semaphore!");
                 }
-
-                //if (!sem_remove($sema)) {
-                //    $this->loggerUtil->log("Error removing Semaphore!");
-                //throw new SemaphoreException("Error removing Semaphore!");
-                //}
             }
 
             $this->loggerUtil->init('stu');
@@ -802,7 +718,7 @@ final class GameController implements GameControllerInterface
         if ($this->gameStats === null) {
             $this->gameStats = [
                 'turn' => $this->getCurrentRound(),
-                'player' => $this->getPlayerCount(),
+                'player' => $this->userRepository->getActiveAmount(),
                 'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
             ];
         }

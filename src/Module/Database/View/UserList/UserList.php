@@ -103,7 +103,7 @@ final class UserList implements ViewControllerInterface
         if ($mark % static::LIST_LIMIT != 0 || $mark < 0) {
             $mark = 0;
         }
-        $maxcount = $game->getPlayerCount();
+        $maxcount = $this->userRepository->getActiveAmount();
         $maxpage = ceil($maxcount / static::LIST_LIMIT);
         $curpage = floor($mark / static::LIST_LIMIT);
         $ret = [];

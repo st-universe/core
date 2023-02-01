@@ -94,13 +94,4 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
     {
         return null;
     }
-
-    protected function getTalStatusBar(string $label, int $value, int $maxValue, $color): TalStatusBar
-    {
-        return (new TalStatusBar())
-            ->setColor($color)
-            ->setLabel($label)
-            ->setMaxValue($maxValue)
-            ->setValue($value);
-    }
 }

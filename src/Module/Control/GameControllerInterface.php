@@ -51,8 +51,6 @@ interface GameControllerInterface
 
     public function getUser(): ?UserInterface;
 
-    public function getPlayerCount(): int;
-
     public function getGameConfig(): array;
 
     public function getUniqId(): string;

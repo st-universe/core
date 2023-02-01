@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tal;
 
-final class TalStatusBar
+final class TalStatusBar implements TalStatusBarInterface
 {
 
     private string $color = '';
@@ -17,34 +17,38 @@ final class TalStatusBar
 
     private float $sizeModifier = 1;
 
-    public function setColor(string $color): TalStatusBar
+    public function setColor(string $color): TalStatusBarInterface
     {
         $this->color = $color;
         return $this;
     }
 
-    public function setLabel(string $label): TalStatusBar
+    public function setLabel(string $label): TalStatusBarInterface
     {
         $this->label = $label;
         return $this;
     }
 
-    public function setMaxValue(int $maxValue): TalStatusBar
+    public function setMaxValue(int $maxValue): TalStatusBarInterface
     {
         $this->maxValue = $maxValue;
         return $this;
     }
 
-    public function setValue(int $value): TalStatusBar
+    public function setValue(int $value): TalStatusBarInterface
     {
         $this->value = $value;
         return $this;
     }
 
-    public function setSizeModifier(float $modifier): TalStatusBar
+    public function setSizeModifier(float $modifier): TalStatusBarInterface
     {
         $this->sizeModifier = $modifier;
         return $this;
+    }
+
+    public function __toString(): string{
+        return $this->render();
     }
 
     public function render(): string

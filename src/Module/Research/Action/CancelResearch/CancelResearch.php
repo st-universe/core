@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\Action\CancelResearch;
 
-use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\AuthenticatedActionController;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
-final class CancelResearch implements ActionControllerInterface
+/**
+ * Cancels the current research of a user
+ */
+final class CancelResearch extends AuthenticatedActionController
 {
-
     public const ACTION_IDENTIFIER = 'B_CANCEL_CURRENT_RESEARCH';
 
     private ResearchedRepositoryInterface $researchedRepository;
@@ -24,17 +26,13 @@ final class CancelResearch implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $current_research = $this->researchedRepository->getCurrentResearch($game->getUser()->getId());
+        $currentResearch = $this->researchedRepository->getCurrentResearch($game->getUser());
 
-        if ($current_research) {
-            $this->researchedRepository->delete($current_research);
+        if ($currentResearch !== null) {
+            $this->researchedRepository->delete($currentResearch);
+
+            $game->addInformation('Die laufende Forschung wurde abgebrochen');
         }
-        $game->addInformation(_('Die laufende Forschung wurde abgebrochen'));
         $game->setView(GameController::DEFAULT_VIEW);
-    }
-
-    public function performSessionCheck(): bool
-    {
-        return true;
     }
 }
