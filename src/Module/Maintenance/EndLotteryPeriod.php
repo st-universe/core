@@ -95,7 +95,11 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             if ($i === $winnerIndex) {
                 $ticket->setIsWinner(true);
                 $winner = $user;
-                $this->createAwardAndPrestige($user, $time);
+
+                $this->createAwardAndPrestige($winner, $time);
+
+                //jackpot to winner
+                $this->payOutLatinum($winner, $jackpot);
             } else {
                 $ticket->setIsWinner(false);
                 $losers[$user->getId()] = $user;
@@ -103,15 +107,6 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
             $this->lotteryTicketRepository->save($ticket);
         }
-
-        //jackpot to winner
-        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
-        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
-
-        $storageManagerUser->upperStorage(
-            CommodityTypeEnum::COMMODITY_LATINUM,
-            $jackpot
-        );
 
         //PM to winner
         $this->privateMessageSender->send(
@@ -173,6 +168,17 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             sprintf('%1$d Prestige erhalten für den Erwerb von %1$d Losen in der letzten Lotterieziehung', $amount),
             $user,
             $time
+        );
+    }
+
+    private function payOutLatinum(UserInterface $winner, int $jackpot): void
+    {
+        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $winner);
+
+        $storageManagerUser->upperStorage(
+            CommodityTypeEnum::COMMODITY_LATINUM,
+            $jackpot
         );
     }
 }
