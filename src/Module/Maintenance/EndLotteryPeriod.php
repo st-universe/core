@@ -86,6 +86,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
         $winnerIndex = rand(0, $ticketCount - 1);
         $losers = [];
+        $winner = null;
 
         //set winner and loser
         for ($i = 0; $i < $ticketCount; $i++) {
