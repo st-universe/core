@@ -3,6 +3,8 @@ build:
   environment:
     php:
       version: "7.4"
+      pecl_extensions:
+        - redis
     redis: true
   nodes:
     coverage:
