@@ -2,10 +2,15 @@
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
   <tal:block metal:fill-slot="body">
     <tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-    <div style="width: 150px;" tal:condition="not:THIS/getUser/getAllianceId">
-      <div class="divhead">Aktionen</div>
+    <div style="width: 250px;">
+      <div class="divhead">Informationen</div>
       <div class="divbody" style="padding: 10px;">
-        <a href="?CREATE_ALLIANCE=1" class="linkbutton">Allianz gründen</a>
+        <a href="?SHOW_DIPLOMATIC_RELATIONS=1" class="linkbutton">Diplomatische Beziehungen</a>
+        <tal:block tal:condition="not:THIS/getUser/getAllianceId">
+          <br />
+          <br />
+          <a href="?CREATE_ALLIANCE=1" class="linkbutton">Allianz gründen</a>
+        </tal:block>
       </div>
       <br />
     </div>

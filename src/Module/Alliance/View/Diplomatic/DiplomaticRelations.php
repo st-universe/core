@@ -7,7 +7,9 @@ namespace Stu\Module\Alliance\View\Diplomatic;
 use Fhaculty\Graph\Graph;
 use Graphp\GraphViz\GraphViz;
 use JBBCode\Parser;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Module\Alliance\View\AllianceList\AllianceList;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -23,14 +25,18 @@ final class DiplomaticRelations implements ViewControllerInterface
 
     private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
+    private ConfigInterface $config;
+
     public function __construct(
         AllianceRepositoryInterface $allianceRepository,
         Parser $bbCodeParser,
-        AllianceRelationRepositoryInterface $allianceRelationRepository
+        AllianceRelationRepositoryInterface $allianceRelationRepository,
+        ConfigInterface $config
     ) {
         $this->allianceRepository = $allianceRepository;
         $this->bbCodeParser = $bbCodeParser;
         $this->allianceRelationRepository = $allianceRelationRepository;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +45,14 @@ final class DiplomaticRelations implements ViewControllerInterface
 
         $game->appendNavigationPart(
             'alliance.php',
-            _('Allianz')
+            'Allianz'
+        );
+        $game->appendNavigationPart(
+            sprintf(
+                'alliance.php?%s=1',
+                AllianceList::VIEW_IDENTIFIER
+            ),
+            'Allianzliste'
         );
         $game->appendNavigationPart(
             sprintf(
@@ -63,7 +76,14 @@ final class DiplomaticRelations implements ViewControllerInterface
             $vertex->setAttribute('graphviz.fontcolor', '#9d9d9d');
             $vertex->setAttribute('graphviz.shape', 'box');
             $vertex->setAttribute('graphviz.color', '#4b4b4b');
-            $vertex->setAttribute('graphviz.href', 'http://localhost:1337/alliance.php?SHOW_ALLIANCE&id='.$alliance->getId());
+            $vertex->setAttribute(
+                'graphviz.href',
+                sprintf(
+                    '%s/alliance.php?SHOW_ALLIANCE&id=%d',
+                    $this->config->get('game.base_url'),
+                    $alliance->getId()
+                )
+            );
             $vertex->setAttribute('graphviz.target', '_blank');
 
             $vertexes[$alliance->getId()] = $vertex;
