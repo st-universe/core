@@ -61,8 +61,10 @@ final class DiplomaticRelations implements ViewControllerInterface
             $name = str_replace(['&', '<', '>', '"', "'", '\\', "\n"], '', $name);
             $vertex->setAttribute('graphviz.label', $name);
             $vertex->setAttribute('graphviz.fontcolor', '#9d9d9d');
-            $vertex->setAttribute('graphviz.shape', 'hexagon');
+            $vertex->setAttribute('graphviz.shape', 'box');
             $vertex->setAttribute('graphviz.color', '#4b4b4b');
+            $vertex->setAttribute('graphviz.href', 'http://localhost:1337/alliance.php?SHOW_ALLIANCE&id='.$alliance->getId());
+            $vertex->setAttribute('graphviz.target', '_blank');
 
             $vertexes[$alliance->getId()] = $vertex;
         }
@@ -77,19 +79,22 @@ final class DiplomaticRelations implements ViewControllerInterface
 
             switch ($relation->getType()) {
                 case AllianceEnum::ALLIANCE_RELATION_WAR:
-                    $color = 'red';
+                    $color = '#810800';
                     break;
                 case AllianceEnum::ALLIANCE_RELATION_TRADE:
-                    $color = 'yellow';
+                    $color = '#a5a200';
                     break;
                 case AllianceEnum::ALLIANCE_RELATION_PEACE:
                     $color = 'green';
                     break;
                 case AllianceEnum::ALLIANCE_RELATION_ALLIED:
-                    $color = 'blue';
+                    $color = '#005183';
                     break;
                 case AllianceEnum::ALLIANCE_RELATION_FRIENDS:
-                    $color = 'lightblue';
+                    $color = 'lightgreen';
+                    break;
+                case AllianceEnum::ALLIANCE_RELATION_VASSAL:
+                    $color = '#008392';
                     break;
                 default:
                     $color = 'white';
@@ -97,6 +102,8 @@ final class DiplomaticRelations implements ViewControllerInterface
 
             $edge = $vertexes[$allianceId]->createEdge($vertexes[$opponentId]);
             $edge->setAttribute('graphviz.color', $color);
+            $edge->setAttribute('graphviz.tooltip', $relation->getTypeDescription());
+            $edge->setAttribute('graphviz.penwidth', 2);
         }
 
         $graphviz = new GraphViz();
