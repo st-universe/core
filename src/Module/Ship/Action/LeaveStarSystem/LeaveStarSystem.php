@@ -181,10 +181,14 @@ final class LeaveStarSystem implements ActionControllerInterface
     {
         $ship = $wrapper->get();
         $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+
+        /**
+         * @var ShipInterface
+         */
         $tractoredShip = $ship->getTractoredShip();
 
         if (
-            $tractoredShip->getFleetId()
+            $tractoredShip->getFleet() !== null
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();

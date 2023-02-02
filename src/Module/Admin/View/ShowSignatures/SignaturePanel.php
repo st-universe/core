@@ -89,7 +89,7 @@ class SignaturePanel
                 $y = $data['posy'];
                 $rows[$y] = new SignaturePanelRow;
                 $entry = new SignaturePanelEntry();
-                $entry->row = $y;
+                $entry->setRow($y);
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }

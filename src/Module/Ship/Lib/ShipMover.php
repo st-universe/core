@@ -433,7 +433,8 @@ final class ShipMover implements ShipMoverInterface
                 }
             }
             if (
-                $ship->isTractoring() && $ship->getTractoredShip()->getFleetId()
+                $ship->isTractoring()
+                && $ship->getTractoredShip()->getFleet() !== null
                 && $ship->getTractoredShip()->getFleet()->getShipCount() > 1
             ) {
                 $this->deactivateTractorBeam(

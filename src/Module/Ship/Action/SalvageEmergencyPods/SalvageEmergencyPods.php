@@ -351,10 +351,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $distance = (abs($cx1 - $cx2) + abs($cy1 - $cy2)) * 10000;
 
         if ($distance !== 0) {
-            return $distance;
+            return (int)$distance;
         }
 
-        return abs($sx1 - $sx2) + abs($sy1 - $sy2);
+        return (int)abs($sx1 - $sx2) + abs($sy1 - $sy2);
     }
 
     public function performSessionCheck(): bool

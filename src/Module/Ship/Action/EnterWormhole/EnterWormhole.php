@@ -159,7 +159,7 @@ final class EnterWormhole implements ActionControllerInterface
             $game->addInformation("Die Flotte fliegt in das " . $wormhole->getName() . " ein");
             $game->addInformationMerge($msg);
         } else {
-            if ($ship->getFleetId()) {
+            if ($ship->getFleet() !== null) {
                 $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
@@ -184,10 +184,14 @@ final class EnterWormhole implements ActionControllerInterface
     private function enterWormholeTraktor(ShipWrapperInterface $wrapper, StarSystemMapInterface $starsystemMap, GameControllerInterface $game): void
     {
         $ship = $wrapper->get();
+
+        /**
+         * @var ShipInterface
+         */
         $tractoredShip = $ship->getTractoredShip();
 
         if (
-            $tractoredShip->getFleetId()
+            $tractoredShip->getFleet() !== null
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();

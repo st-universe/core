@@ -16,6 +16,7 @@ use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Data\WebEmitterSystemData;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -247,7 +248,7 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function canLandOnCurrentColony(): bool
     {
-        if (!$this->get()->getRump()->getCommodityId()) {
+        if ($this->get()->getRump()->getCommodity() === null) {
             return false;
         }
         if ($this->get()->isShuttle()) {
@@ -398,9 +399,15 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function getHullSystemData(): HullSystemData
     {
-        return $this->getSpecificShipSystem(
+        $hullSystemData = $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_HULL
         );
+
+        if ($hullSystemData === null) {
+            throw new SystemNotFoundException('no hull installed?');
+        }
+
+        return $hullSystemData;
     }
 
     public function getShieldSystemData(): ?ShieldSystemData

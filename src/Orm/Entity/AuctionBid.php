@@ -48,9 +48,9 @@ class AuctionBid implements AuctionBidInterface
     private $user_id;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @Column(type="integer")
      *
-     * @var null|int
+     * @var int
      */
     private $max_amount;
 

@@ -11,6 +11,8 @@ class SignaturePanelEntry
 
     private $data = array();
 
+    private ?int $row = null;
+
     function __construct(
         &$entry = array()
     ) {
@@ -110,22 +112,13 @@ class SignaturePanelEntry
         return $this->cssClass;
     }
 
-    function getOnClick()
-    {
-        if ($this->ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
-            return sprintf(
-                'showSectorScanWindow(this, %d, %d, %d, %s);',
-                $this->getPosX(),
-                $this->getPosY(),
-                $this->system ? $this->system->getId() : 0,
-                $this->system ? 'false' : 'true'
-            );
-        }
-        return sprintf('moveToPosition(%d,%d);', $this->getPosX(), $this->getPosY());
-    }
-
-    function getRow()
+    function getRow(): ?int
     {
         return $this->row;
+    }
+
+    function setRow(int $row): void
+    {
+        $this->row = $row;
     }
 }

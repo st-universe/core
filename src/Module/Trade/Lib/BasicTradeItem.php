@@ -31,7 +31,7 @@ final class BasicTradeItem implements BasicTradeItemInterface
 
     public function getUniqId(): string
     {
-        return $this->basicTrade->getUniqId();
+        return $this->basicTrade === null ? '' : $this->basicTrade->getUniqId();
     }
 
     public function getCommodity(): CommodityInterface

@@ -199,7 +199,10 @@ class VisualNavPanelEntry
         }
 
         // hierarchy based border style
-        if ($this->ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER) {
+        if (
+            $this->ship !== null &&
+            $this->ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER
+        ) {
 
             $factionColor = $this->data['factioncolor'];
             if (!empty($factionColor)) {

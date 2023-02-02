@@ -183,11 +183,11 @@ class Colony implements ColonyInterface
     private $rotation_factor = 1;
 
     /**
-     * @Column(type="integer", length=2, nullable=true)
+     * @Column(type="integer", length=2)
      *
-     * @var null|int
+     * @var int
      */
-    private $surface_width = 1;
+    private $surface_width = 0;
 
     /**
      * @var ColonyClassInterface
@@ -505,6 +505,8 @@ class Colony implements ColonyInterface
 
     public function getTwilightZone(): int
     {
+        $twilightZone = 0;
+
         if ($this->twilightZone === null) {
             $width = $this->getSurfaceWidth();
             $rotationTime = $this->getRotationTime();
@@ -513,28 +515,30 @@ class Colony implements ColonyInterface
             if ($this->getDayTimePrefix() == 1) {
                 $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
                 if ($scaled == 0) {
-                    $this->twilightZone = (int) - (($width) - 1);
+                    $twilightZone = (int) - (($width) - 1);
                 } else {
                     if ((int) - (($width) - ceil($scaled)) == 0) {
-                        $this->twilightZone = -1;
+                        $twilightZone = -1;
                     } else {
-                        $this->twilightZone = (int) - (($width) - $scaled);
+                        $twilightZone = (int) - (($width) - $scaled);
                     }
                 }
             }
             if ($this->getDayTimePrefix() == 2) {
-                $this->twilightZone = $width;
+                $twilightZone = $width;
             }
             if ($this->getDayTimePrefix() == 3) {
                 $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.75)) / 100) * $width);
-                $this->twilightZone = (int) ($width - $scaled);
+                $twilightZone = (int) ($width - $scaled);
             }
             if ($this->getDayTimePrefix() == 4) {
-                $this->twilightZone = 0;
+                $twilightZone = 0;
             }
+
+            $this->twilightZone = $twilightZone;
         }
 
-        return $this->twilightZone;
+        return $twilightZone;
     }
 
     public function hasShields(): bool
@@ -637,7 +641,7 @@ class Colony implements ColonyInterface
         return $daytimename;
     }
 
-    public function getSurfaceWidth(): ?int
+    public function getSurfaceWidth(): int
     {
         return $this->surface_width;
     }

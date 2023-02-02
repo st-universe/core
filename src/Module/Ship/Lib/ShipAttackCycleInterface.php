@@ -3,7 +3,6 @@
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Module\Ship\Lib\Battle\FightMessageCollectionInterface;
-use Stu\Orm\Entity\ShipWrapperInterface;
 
 interface ShipAttackCycleInterface
 {

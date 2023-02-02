@@ -125,8 +125,8 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         return sprintf(
             '%s%s%s',
             $tradepost !== null ? $this->getTradepostTitle($tradepost) : '',
-            $tradepost !== null && $this->mapped ? ' über ' : '',
-            $this->mapped ? $this->system_name . '-System' : ''
+            $tradepost !== null && $this->mapped !== null ? ' über ' : '',
+            $this->mapped !== null ? $this->system_name . '-System' : ''
         );
     }
 
@@ -227,7 +227,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
                 }
             }
         } else {
-            return 'border: 1px solid ' . $this->mapBorderType->getColor();
+            return 'border: 1px solid ' . $borderType->getColor();
         }
 
         return '';

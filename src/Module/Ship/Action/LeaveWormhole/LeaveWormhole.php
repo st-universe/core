@@ -135,7 +135,7 @@ final class LeaveWormhole implements ActionControllerInterface
             $game->addInformation("Die Flotte hat das Wurmloch verlassen");
             $game->addInformationMerge($msg);
         } else {
-            if ($ship->getFleetId()) {
+            if ($ship->getFleet() !== null) {
                 $wrapper->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
@@ -161,10 +161,14 @@ final class LeaveWormhole implements ActionControllerInterface
     {
         $ship = $wrapper->get();
         $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+
+        /**
+         * @var ShipInterface
+         */
         $tractoredShip = $ship->getTractoredShip();
 
         if (
-            $tractoredShip->getFleetId()
+            $tractoredShip->getFleet() !== null
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();

@@ -110,6 +110,11 @@ final class CrewCreator implements CrewCreatorInterface
                 if ($crewAssignment === null) {
                     $crewAssignment = $this->getCrew($colony, $station);
                 }
+
+                if ($crewAssignment === null) {
+                    throw new CrewOriginException('no assignable crew found');
+                }
+
                 $crewAssignment->setShip($ship);
                 $crewAssignment->setColony(null);
                 $crewAssignment->setTradepost(null);
@@ -158,11 +163,13 @@ final class CrewCreator implements CrewCreatorInterface
         }
     }
 
-    private function getCrew(?ColonyInterface $colony, ?ShipInterface $station): ShipCrewInterface
+    private function getCrew(?ColonyInterface $colony, ?ShipInterface $station): ?ShipCrewInterface
     {
         if ($colony === null && $station === null) {
             throw new CrewOriginException('no origin available');
         }
+
+        $random = null;
 
         if ($colony !== null) {
             $crewAssignments = $colony->getCrewAssignments();
@@ -171,15 +178,15 @@ final class CrewCreator implements CrewCreatorInterface
 
             //remove from colony
             $crewAssignments->removeElement($random);
+        }
 
-            return $random;
-        } else if ($station !== null) {
+        if ($station !== null) {
             $crewList = $station->getCrewlist();
             $random = $crewList->get(array_rand($crewList->toArray()));
 
             $crewList->removeElement($random);
-
-            return $random;
         }
+
+        return $random;
     }
 }

@@ -186,10 +186,14 @@ final class EnterStarSystem implements ActionControllerInterface
     private function enterStarSystemTraktor(ShipWrapperInterface $wrapper, StarSystemMapInterface $starsystemMap, GameControllerInterface $game): void
     {
         $ship = $wrapper->get();
+
+        /**
+         * @var ShipInterface
+         */
         $tractoredShip = $ship->getTractoredShip();
 
         if (
-            $tractoredShip->getFleetId()
+            $tractoredShip->getFleet() !== null
             && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
             $name = $tractoredShip->getName();

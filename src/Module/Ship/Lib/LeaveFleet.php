@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -23,13 +22,11 @@ final class LeaveFleet implements LeaveFleetInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipStorageManagerInterface $shipStorageManager,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->shipStorageManager = $shipStorageManager;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;

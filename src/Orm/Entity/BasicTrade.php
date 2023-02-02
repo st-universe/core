@@ -69,9 +69,9 @@ class BasicTrade implements BasicTradeInterface
     private $date_ms;
 
     /**
-     * @Column(type="string", nullable=true)
+     * @Column(type="string")
      *
-     * @var null|string
+     * @var string
      */
     private $uniqid;
 

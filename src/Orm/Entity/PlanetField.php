@@ -468,7 +468,7 @@ class PlanetField implements PlanetFieldInterface
 
     public function getPossibleUpgrades(): array
     {
-        if ($this->isUnderConstruction() || $this->getBuildingId() == 0) {
+        if ($this->isUnderConstruction() || $this->getBuilding() === null) {
             return [];
         }
         if ($this->upgrades === null) {
