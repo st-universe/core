@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Diplomatic;
 
 use Fhaculty\Graph\Graph;
+use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
@@ -12,14 +13,13 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\View\AllianceList\AllianceList;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class DiplomaticRelations implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_DIPLOMATIC_RELATIONS';
-
-    private AllianceRepositoryInterface $allianceRepository;
 
     private Parser $bbCodeParser;
 
@@ -28,12 +28,10 @@ final class DiplomaticRelations implements ViewControllerInterface
     private ConfigInterface $config;
 
     public function __construct(
-        AllianceRepositoryInterface $allianceRepository,
         Parser $bbCodeParser,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         ConfigInterface $config
     ) {
-        $this->allianceRepository = $allianceRepository;
         $this->bbCodeParser = $bbCodeParser;
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->config = $config;
@@ -68,33 +66,16 @@ final class DiplomaticRelations implements ViewControllerInterface
         $graph->setAttribute('graphviz.graph.size', '800,600');
         $vertexes = [];
 
-        foreach ($this->allianceRepository->findAll() as $alliance) {
-            $vertex = $graph->createVertex($alliance->getId());
-            $name = $this->bbCodeParser->parse($alliance->getName())->getAsText();
-            $name = str_replace(['&', '<', '>', '"', "'", '\\', "\n"], '', $name);
-            $vertex->setAttribute('graphviz.label', $name);
-            $vertex->setAttribute('graphviz.fontcolor', '#9d9d9d');
-            $vertex->setAttribute('graphviz.shape', 'box');
-            $vertex->setAttribute('graphviz.color', '#4b4b4b');
-            $vertex->setAttribute(
-                'graphviz.href',
-                sprintf(
-                    '%s/alliance.php?SHOW_ALLIANCE=1&id=%d',
-                    $this->config->get('game.base_url'),
-                    $alliance->getId()
-                )
-            );
-            $vertex->setAttribute('graphviz.target', '_blank');
-
-            $vertexes[$alliance->getId()] = $vertex;
-        }
-
         foreach ($this->allianceRelationRepository->findAll() as $relation) {
             $allianceId = $relation->getAllianceId();
             $opponentId = $relation->getOpponentId();
 
-            if (!array_key_exists($allianceId, $vertexes) || !array_key_exists($opponentId, $vertexes)) {
-                continue;
+            if (!array_key_exists($allianceId, $vertexes)) {
+                $vertexes[$allianceId] = $this->createVertex($graph, $relation->getAlliance());
+            }
+
+            if (!array_key_exists($opponentId, $vertexes)) {
+                $vertexes[$opponentId] = $this->createVertex($graph, $relation->getOpponent());
             }
 
             switch ($relation->getType()) {
@@ -134,5 +115,30 @@ final class DiplomaticRelations implements ViewControllerInterface
             'RELATIONS_IMAGE',
             $graphviz->createImageHtml($graph)
         );
+    }
+
+    private function createVertex(
+        Graph $graph,
+        AllianceInterface $alliance
+    ): Vertex{
+        $vertex = $graph->createVertex($alliance->getId());
+        $name = $this->bbCodeParser->parse($alliance->getName())->getAsText();
+        $name = str_replace(['&', '<', '>', '"', "'", '\\', "\n"], '', $name);
+        $vertex->setAttribute('graphviz.label', $name);
+        $vertex->setAttribute('graphviz.fontcolor', '#9d9d9d');
+        $vertex->setAttribute('graphviz.shape', 'box');
+        $vertex->setAttribute('graphviz.color', '#4b4b4b');
+        $vertex->setAttribute('graphviz.fontname', 'Arial');
+        $vertex->setAttribute(
+            'graphviz.href',
+            sprintf(
+                '%s/alliance.php?SHOW_ALLIANCE=1&id=%d',
+                $this->config->get('game.base_url'),
+                $alliance->getId()
+            )
+        );
+        $vertex->setAttribute('graphviz.target', '_blank');
+
+        return $vertex;
     }
 }
