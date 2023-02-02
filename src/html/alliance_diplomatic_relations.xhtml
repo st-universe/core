@@ -1,0 +1,10 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+
+    <div style="width: 100%" tal:content="structure RELATIONS_IMAGE">TREE</div>
+	</tal:block>
+</tal:block>
+
+</html>

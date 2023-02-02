@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance;
 
 use Stu\Module\Alliance\Lib\AllianceActionManager;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\Diplomatic\DiplomaticRelations;
 use Stu\Module\Control\GameController;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequest;
@@ -45,8 +46,6 @@ use Stu\Module\Alliance\Action\DeleteBoard\DeleteBoard;
 use Stu\Module\Alliance\Action\DeleteBoard\DeleteBoardRequest;
 use Stu\Module\Alliance\Action\DeleteBoard\DeleteBoardRequestInterface;
 use Stu\Module\Alliance\Action\DeletePost\DeletePost;
-use Stu\Module\Alliance\Action\DeletePost\DeletePostRequest;
-use Stu\Module\Alliance\Action\DeletePost\DeletePostRequestInterface;
 use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopic;
 use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopicRequest;
 use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopicRequestInterface;
@@ -127,7 +126,6 @@ return [
     RenameBoardRequestInterface::class => autowire(RenameBoardRequest::class),
     DeleteTopicRequestInterface::class => autowire(DeleteTopicRequest::class),
     DeleteBoardRequestInterface::class => autowire(DeleteBoardRequest::class),
-    DeletePostRequestInterface::class => autowire(DeletePostRequest::class),
     SetTopicStickyRequestInterface::class => autowire(SetTopicStickyRequest::class),
     UnsetTopicStickyRequestInterface::class => autowire(UnsetTopicStickyRequest::class),
     AllianceDetailsRequestInterface::class => autowire(AllianceDetailsRequest::class),
@@ -190,6 +188,7 @@ return [
         Create::VIEW_IDENTIFIER => autowire(Create::class),
         Edit::VIEW_IDENTIFIER => autowire(Edit::class),
         Relations::VIEW_IDENTIFIER => autowire(Relations::class),
-        ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class)
+        ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class),
+        DiplomaticRelations::VIEW_IDENTIFIER => autowire(DiplomaticRelations::class),
     ]
 ];

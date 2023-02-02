@@ -3151,16 +3151,6 @@ parameters:
 			path: src/Module/Alliance/View/TopicSettings/TopicSettings.php
 
 		-
-			message: "#^Class Stu\\\\Module\\\\Alliance\\\\Action\\\\DeletePost\\\\DeletePostRequest not found\\.$#"
-			count: 1
-			path: src/Module/Alliance/services.php
-
-		-
-			message: "#^Class Stu\\\\Module\\\\Alliance\\\\Action\\\\DeletePost\\\\DeletePostRequestInterface not found\\.$#"
-			count: 1
-			path: src/Module/Alliance/services.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Building\\\\BuildingFunctionTypeEnum\\:\\:getModuleFabOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Building/BuildingFunctionTypeEnum.php
