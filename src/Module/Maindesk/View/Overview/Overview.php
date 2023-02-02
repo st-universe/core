@@ -52,8 +52,6 @@ final class Overview implements ViewControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
-    private int $newAmount;
-
     private CrewCountRetrieverInterface $crewCountRetriever;
 
     public function __construct(
@@ -103,21 +101,23 @@ final class Overview implements ViewControllerInterface
             'DISPLAY_FIRST_COLONY_DIALOGUE',
             $user->getState() === UserEnum::USER_STATE_UNCOLONIZED
         );
-        $this->newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
+
+        $newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
+
         $game->setTemplateVar(
             'NEW_KN_POSTING_COUNT',
-            $this->newAmount
+            $newAmount
         );
         $game->setTemplateVar(
             'NEW_KN_POSTINGS',
             array_map(
-                function (KnPostInterface $knPost) use ($user): KnItemInterface {
-                    $this->newAmount--;
+                function (KnPostInterface $knPost) use ($user, $newAmount): KnItemInterface {
+                    $newAmount--;
                     $knItem = $this->knFactory->createKnItem(
                         $knPost,
                         $user
                     );
-                    $knItem->setMark(((int)floor($this->newAmount / GameEnum::KN_PER_SITE)) * 6);
+                    $knItem->setMark(((int)floor($newAmount / GameEnum::KN_PER_SITE)) * 6);
                     return $knItem;
                 },
                 $this->knPostRepository->getNewerThenMark($user->getKNMark())

@@ -93,7 +93,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT p FROM %s p WHERE p.id > :postId',
+                    'SELECT p FROM %s p WHERE p.id > :postId ORDER BY p.id ASC',
                     KnPost::class
                 )
             )
