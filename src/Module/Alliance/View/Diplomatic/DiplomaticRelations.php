@@ -52,7 +52,7 @@ final class DiplomaticRelations implements ViewControllerInterface
         $graph = new Graph();
         $graph->setAttribute('graphviz.graph.charset', 'UTF-8');
         $graph->setAttribute('graphviz.graph.bgcolor', '#121220');
-        $graph->setAttribute('graphviz.graph.width', 600);
+        $graph->setAttribute('graphviz.graph.size', '800,600');
         $vertexes = [];
 
         foreach ($this->allianceRepository->findAll() as $alliance) {
@@ -85,19 +85,19 @@ final class DiplomaticRelations implements ViewControllerInterface
                     $color = '#a5a200';
                     break;
                 case AllianceEnum::ALLIANCE_RELATION_PEACE:
-                    $color = 'green';
+                    $color = '#004608';
                     break;
                 case AllianceEnum::ALLIANCE_RELATION_ALLIED:
                     $color = '#005183';
                     break;
                 case AllianceEnum::ALLIANCE_RELATION_FRIENDS:
-                    $color = 'lightgreen';
+                    $color = '#5cb762';
                     break;
                 case AllianceEnum::ALLIANCE_RELATION_VASSAL:
                     $color = '#008392';
                     break;
                 default:
-                    $color = 'white';
+                    $color = '#ffffff';
             }
 
             $edge = $vertexes[$allianceId]->createEdge($vertexes[$opponentId]);
