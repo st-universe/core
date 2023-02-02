@@ -59,7 +59,7 @@ final class DiplomaticRelations implements ViewControllerInterface
                 'alliance.php?%s=1',
                 static::VIEW_IDENTIFIER,
             ),
-            'Diplomatische Verbindungen'
+            'Diplomatische Beziehungen'
         );
 
         $graph = new Graph();
@@ -79,7 +79,7 @@ final class DiplomaticRelations implements ViewControllerInterface
             $vertex->setAttribute(
                 'graphviz.href',
                 sprintf(
-                    '%s/alliance.php?SHOW_ALLIANCE&id=%d',
+                    '%s/alliance.php?SHOW_ALLIANCE=1&id=%d',
                     $this->config->get('game.base_url'),
                     $alliance->getId()
                 )
