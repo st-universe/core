@@ -1216,11 +1216,6 @@ parameters:
 			path: src/Lib/VisualNavPanelEntry.php
 
 		-
-			message: "#^Cannot call method getLSSmode\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
 			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
 			count: 2
 			path: src/Lib/VisualNavPanelEntry.php
@@ -1941,11 +1936,6 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/ShowSignatures.php
 
 		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:\\$row\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:__construct\\(\\) has parameter \\$entry with no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
@@ -2026,21 +2016,6 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
 
 		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:\\$row\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
-
-		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:\\$ship\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
-
-		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:\\$system\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:__construct\\(\\) has parameter \\$entry with no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
@@ -2071,22 +2046,12 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:getOnClick\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:getPosX\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:getPosY\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelEntry\\:\\:getRow\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelEntry.php
 
@@ -5531,11 +5496,6 @@ parameters:
 			path: src/Module/Crew/Lib/CrewCreator.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Crew\\\\Lib\\\\CrewCreator\\:\\:getCrew\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface but returns Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Crew/Lib/CrewCreator.php
-
-		-
 			message: "#^Parameter \\#1 \\$crewRace of method Stu\\\\Orm\\\\Entity\\\\CrewInterface\\:\\:setRace\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface, Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Crew/Lib/CrewCreator.php
@@ -6866,16 +6826,6 @@ parameters:
 			path: src/Module/Ship/Action/ActivateTractorBeam/ActivateTractorBeam.php
 
 		-
-			message: "#^Parameter \\#1 \\$attackingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/ActivateTractorBeam/ActivateTractorBeam.php
-
-		-
-			message: "#^Parameter \\#2 \\$defendingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/ActivateTractorBeam/ActivateTractorBeam.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/ActivateTractorBeam/ActivateTractorBeam.php
@@ -7091,16 +7041,6 @@ parameters:
 			path: src/Module/Ship/Action/AttackShip/AttackShip.php
 
 		-
-			message: "#^Parameter \\#1 \\$attackingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackShip/AttackShip.php
-
-		-
-			message: "#^Parameter \\#2 \\$defendingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackShip/AttackShip.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/AttackShip/AttackShip.php
@@ -7122,16 +7062,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackTrackedShip\\\\AttackTrackedShip\\:\\:getAttackerDefender\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackTrackedShip/AttackTrackedShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$attackingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackTrackedShip/AttackTrackedShip.php
-
-		-
-			message: "#^Parameter \\#2 \\$defendingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/AttackTrackedShip/AttackTrackedShip.php
 
@@ -7616,27 +7546,7 @@ parameters:
 			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
 
 		-
-			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Cannot call method getFleetId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Cannot call method getShipCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
 
@@ -7651,16 +7561,6 @@ parameters:
 			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
 
 		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Action\\\\EnterStarSystem\\\\EnterStarSystem\\:\\:enterStarSystem\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
 			message: "#^Parameter \\#2 \\$starsystemMap of method Stu\\\\Module\\\\Ship\\\\Action\\\\EnterStarSystem\\\\EnterStarSystem\\:\\:enterStarSystem\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
 			count: 2
 			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
@@ -7668,16 +7568,6 @@ parameters:
 		-
 			message: "#^Parameter \\#2 \\$starsystemMap of method Stu\\\\Module\\\\Ship\\\\Action\\\\EnterStarSystem\\\\EnterStarSystem\\:\\:enterStarSystemTraktor\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
 			count: 2
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tractorSystemSurvivedTowing\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tryToTow\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
 			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
 
 		-
@@ -7696,27 +7586,7 @@ parameters:
 			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
 
 		-
-			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Cannot call method getFleetId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Cannot call method getShipCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
 
@@ -7728,26 +7598,6 @@ parameters:
 		-
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 2
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Action\\\\EnterWormhole\\\\EnterWormhole\\:\\:enterWormhole\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tractorSystemSurvivedTowing\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tryToTow\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
 			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
 
 		-
@@ -7936,32 +7786,12 @@ parameters:
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
 
 		-
-			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
-			message: "#^Cannot call method getFleetId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
 
 		-
 			message: "#^Cannot call method getMapField\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
-			message: "#^Cannot call method getShipCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
 
@@ -7991,11 +7821,6 @@ parameters:
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
 
 		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
 			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveStarSystem\\\\LeaveStarSystem\\:\\:leaveStarSystem\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
@@ -8011,28 +7836,8 @@ parameters:
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
 
 		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tractorSystemSurvivedTowing\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tryToTow\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 2
-			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
-
-		-
-			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
-
-		-
-			message: "#^Cannot call method getFleetId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
 			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
 
 		-
@@ -8041,17 +7846,7 @@ parameters:
 			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
 
 		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
-
-		-
 			message: "#^Cannot call method getRandomWormholeEntry\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
-
-		-
-			message: "#^Cannot call method getShipCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
 
@@ -8066,22 +7861,7 @@ parameters:
 			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
 
 		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
-
-		-
 			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveWormhole\\\\LeaveWormhole\\:\\:leaveWormhole\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tractorSystemSurvivedTowing\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tryToTow\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
 
@@ -8646,16 +8426,6 @@ parameters:
 			path: src/Module/Ship/Lib/AlertRedHelper.php
 
 		-
-			message: "#^Parameter \\#1 \\$attackingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
-			message: "#^Parameter \\#2 \\$defendingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelperInterface\\:\\:checkForAlertRedShips\\(\\) has parameter \\$informations with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/AlertRedHelperInterface.php
@@ -9061,33 +8831,13 @@ parameters:
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
 
 		-
-			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 4
-			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
 			count: 4
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
 
 		-
 			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 2
-			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
-
-		-
-			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
-
-		-
-			message: "#^Cannot call method isFleetLeader\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
 
 		-
@@ -9166,11 +8916,6 @@ parameters:
 			path: src/Module/Ship/Lib/InteractionCheckerInterface.php
 
 		-
-			message: "#^Access to an undefined property Stu\\\\Module\\\\Ship\\\\Lib\\\\LeaveFleet\\:\\:\\$shipStorageManager\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/LeaveFleet.php
-
-		-
 			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/Lib/LeaveFleet.php
@@ -9246,26 +8991,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipAttackCycle.php
 
 		-
-			message: "#^Parameter \\$attackingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:init\\(\\) has invalid type Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
-			message: "#^Parameter \\$defendingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:init\\(\\) has invalid type Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:\\$attacker \\(array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\>\\) does not accept array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:\\$defender \\(array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\>\\) does not accept array\\<Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\>\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipAttackCycle.php
@@ -9277,16 +9002,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:cycle\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycleInterface.php
-
-		-
-			message: "#^Parameter \\$attackingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) has invalid type Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycleInterface.php
-
-		-
-			message: "#^Parameter \\$defendingShips of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:init\\(\\) has invalid type Stu\\\\Orm\\\\Entity\\\\ShipWrapperInterface\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipAttackCycleInterface.php
 
@@ -9421,16 +9136,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipMover.php
 
 		-
-			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getFleetId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
 			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/Lib/ShipMover.php
@@ -9442,7 +9147,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 5
+			count: 4
 			path: src/Module/Ship/Lib/ShipMover.php
 
 		-
@@ -9452,11 +9157,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getShipCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipMover.php
 
@@ -11121,11 +10821,6 @@ parameters:
 			path: src/Module/ShipModule/ModuleTypeDescriptionMapper.php
 
 		-
-			message: "#^Cannot call method getColor\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapBorderTypeInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:getFieldId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
@@ -12451,11 +12146,6 @@ parameters:
 			path: src/Module/Trade/Lib/BasicTradeItem.php
 
 		-
-			message: "#^Cannot call method getUniqId\\(\\) on Stu\\\\Orm\\\\Entity\\\\BasicTradeInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/BasicTradeItem.php
-
-		-
 			message: "#^Cannot call method getValue\\(\\) on Stu\\\\Orm\\\\Entity\\\\BasicTradeInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Trade/Lib/BasicTradeItem.php
@@ -12931,11 +12621,6 @@ parameters:
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:getMaxAmount\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/AuctionBid.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$auction type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Deals\\|null but property expects Stu\\\\Orm\\\\Entity\\\\DealsInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/AuctionBid.php
@@ -12954,11 +12639,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/AuctionBid.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:getUniqId\\(\\) should return string but returns string\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/BasicTrade.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
@@ -13217,11 +12897,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:getOrbitShipList\\(\\) should return array\\<int, array\\{name\\: string, ships\\: array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\}\\> but returns array\\<int\\|string, array\\{ships\\: array\\<int\\|string, mixed\\>, name\\: mixed\\}\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:getTwilightZone\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
@@ -14284,21 +13959,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/RepairTask.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getUpperAsteroidLimit\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getUpperMoonLimit\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Research\\:\\:getUpperPlanetLimit\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/Research.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AwardInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Award\\|null\\.$#"

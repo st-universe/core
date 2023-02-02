@@ -432,16 +432,19 @@ final class ShipMover implements ShipMoverInterface
                     continue;
                 }
             }
+
+            $tractoredShip = $ship->getTractoringShip();
+
             if (
-                $ship->isTractoring()
-                && $ship->getTractoredShip()->getFleet() !== null
-                && $ship->getTractoredShip()->getFleet()->getShipCount() > 1
+                $tractoredShip !== null
+                && $tractoredShip->getFleet() !== null
+                && $tractoredShip->getFleet()->getShipCount() > 1
             ) {
                 $this->deactivateTractorBeam(
                     $wrapper,
                     sprintf(
-                        _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),
-                        $ship->getTractoredShip()->getName()
+                        'Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert',
+                        $tractoredShip->getName()
                     )
                 );
             }
