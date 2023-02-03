@@ -23,7 +23,7 @@ final class DiplomaticRelations implements ViewControllerInterface
 
     public function __construct(
         AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceRelationRendererInterface $allianceRelationRenderer,
+        AllianceRelationRendererInterface $allianceRelationRenderer
     ) {
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceRelationRenderer = $allianceRelationRenderer;
