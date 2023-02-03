@@ -37,7 +37,7 @@ class UserCreateCommandTest extends StuTestCase
     public function testExecuteErrorsDueToInvalidEmailAddress(): void
     {
         static::expectException(InvalidArgumentException::class);
-        static::expectErrorMessage('The provided email address is invalid');
+        static::expectExceptionMessage('The provided email address is invalid');
 
         $this->subject->execute(
             'snafu',
@@ -49,7 +49,7 @@ class UserCreateCommandTest extends StuTestCase
     public function testExecuteErrorsDueToUnknownFaction(): void
     {
         static::expectException(InvalidArgumentException::class);
-        static::expectErrorMessage('The provided faction is invalid');
+        static::expectExceptionMessage('The provided faction is invalid');
 
         $this->subject->execute(
             'snafu',
@@ -61,7 +61,7 @@ class UserCreateCommandTest extends StuTestCase
     public function testExecuteErrorsDueToInvalidPassword(): void
     {
         static::expectException(InvalidArgumentException::class);
-        static::expectErrorMessage('Password does not meet requirements (6-20 alphanumerical characters)');
+        static::expectExceptionMessage('Password does not meet requirements (6-20 alphanumerical characters)');
 
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
