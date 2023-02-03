@@ -10,12 +10,12 @@ use Graphp\GraphViz\GraphViz;
 use JBBCode\Parser;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Alliance\View\AllianceList\AllianceList;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
-use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class DiplomaticRelations implements ViewControllerInterface
 {
@@ -129,8 +129,9 @@ final class DiplomaticRelations implements ViewControllerInterface
         $vertex->setAttribute('graphviz.label', $name);
         $vertex->setAttribute('graphviz.fontcolor', '#9d9d9d');
         $vertex->setAttribute('graphviz.shape', 'box');
+        $vertex->setAttribute('graphviz.color', $this->getFrameColor($alliance));
         $vertex->setAttribute('graphviz.style', 'filled');
-        $vertex->setAttribute('graphviz.fillcolor', $isNpc ? '8b8b8b'  :  '#4b4b4b');
+        $vertex->setAttribute('graphviz.fillcolor', $isNpc ? '#8b8b8b'  :  '#4b4b4b');
         $vertex->setAttribute('graphviz.fontname', 'Arial');
         $vertex->setAttribute(
             'graphviz.href',
@@ -143,5 +144,18 @@ final class DiplomaticRelations implements ViewControllerInterface
         $vertex->setAttribute('graphviz.target', '_blank');
 
         return $vertex;
+    }
+
+    private function getFrameColor(AllianceInterface $alliance): string
+    {
+        if ($alliance->getFactionId() !== null) {
+            return FactionEnum::FACTION_ID_TO_COLOR_MAP[$alliance->getFactionId()];
+        }
+
+        if (strlen($alliance->getRgbCode()) > 0) {
+            return $alliance->getRgbCode();
+        }
+
+        return '#8b8b8b';
     }
 }
