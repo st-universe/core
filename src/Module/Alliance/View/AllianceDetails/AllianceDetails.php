@@ -100,7 +100,7 @@ final class AllianceDetails implements ViewControllerInterface
         $game->setTemplateVar(
             'ALLIANCE_RELATIONS',
             $relations !== []
-                ? $relation
+                ? $relations
                 : null
         );
         $game->setTemplateVar('DESCRIPTION', $parsedDescription);

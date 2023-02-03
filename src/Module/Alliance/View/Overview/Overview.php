@@ -90,7 +90,12 @@ final class Overview implements ViewControllerInterface
             $game->setTemplateFile('html/alliancedetails.xhtml');
 
             $game->setTemplateVar('ALLIANCE', $user->getAlliance());
-            $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
+            $game->setTemplateVar(
+                'ALLIANCE_RELATIONS',
+                $relations !== []
+                    ? $relations
+                    : null
+            );
             $game->setTemplateVar('DESCRIPTION', $parsedDescription);
             $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
             $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);
