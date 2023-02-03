@@ -55,8 +55,20 @@ interface GameControllerInterface
 
     public function getUniqId(): string;
 
+    /**
+     * Sets all navigation items at once
+     *
+     * @param array<array{url: string, title: string}> $navigationItems
+     */
+    public function setNavigation(
+        array $navigationItems
+    ): GameControllerInterface;
+
     public function appendNavigationPart(string $url, string $title): void;
 
+    /**
+     * @return array<string, string>
+     */
     public function getNavigation(): array;
 
     public function getPageTitle(): string;

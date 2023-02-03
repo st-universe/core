@@ -326,6 +326,16 @@ final class GameController implements GameControllerInterface
         return uniqid();
     }
 
+    public function setNavigation(
+        array $navigationItems
+    ): GameControllerInterface {
+        foreach ($navigationItems as $item) {
+            $this->appendNavigationPart($item['url'], $item['title']);
+        }
+
+        return $this;
+    }
+
     public function appendNavigationPart(
         string $url,
         string $title

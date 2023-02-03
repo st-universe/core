@@ -8,6 +8,7 @@ use Lib\Alliance\AllianceMemberWrapper;
 use Lib\Alliance\AllianceRelationWrapper;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
+use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
@@ -33,6 +34,7 @@ final class Overview implements ViewControllerInterface
     private ParserWithImageInterface $parserWithImage;
 
     private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker;
+    private AllianceRelationRendererInterface $allianceRelationRenderer;
 
     public function __construct(
         AllianceRelationRepositoryInterface $allianceRelationRepository,
@@ -40,7 +42,8 @@ final class Overview implements ViewControllerInterface
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRepositoryInterface $allianceRepository,
         ParserWithImageInterface $parserWithImage,
-        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker
+        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker,
+        AllianceRelationRendererInterface $allianceRelationRenderer
     ) {
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
@@ -48,6 +51,7 @@ final class Overview implements ViewControllerInterface
         $this->allianceRepository = $allianceRepository;
         $this->parserWithImage = $parserWithImage;
         $this->allianceUserApplicationChecker = $allianceUserApplicationChecker;
+        $this->allianceRelationRenderer = $allianceRelationRenderer;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -114,6 +118,12 @@ final class Overview implements ViewControllerInterface
             $game->appendNavigationPart(
                 'alliance.php',
                 _('Allianz')
+            );
+            $game->setTemplateVar(
+                'RELATIONS_IMAGE',
+                $this->allianceRelationRenderer->render(
+                    $this->allianceRelationRepository->getActiveByAlliance($alliance->getId())
+                )
             );
         } else {
             $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));

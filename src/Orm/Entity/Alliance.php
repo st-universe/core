@@ -286,4 +286,9 @@ class Alliance implements AllianceInterface
     {
         return $this->members;
     }
+
+    public function isNpcAlliance(): bool
+    {
+        return $this->getFounder()->getUser()->isNpc();
+    }
 }

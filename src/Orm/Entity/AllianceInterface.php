@@ -52,4 +52,9 @@ interface AllianceInterface
      * @return Collection<int, UserInterface>
      */
     public function getMembers(): Collection;
+
+    /**
+     * Returns `true` if the founder is a npc
+     */
+    public function isNpcAlliance(): bool;
 }

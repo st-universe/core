@@ -8,6 +8,7 @@ use Lib\Alliance\AllianceMemberWrapper;
 use Lib\Alliance\AllianceRelationWrapper;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
+use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -35,6 +36,7 @@ final class AllianceDetails implements ViewControllerInterface
     private ParserWithImageInterface $parserWithImage;
 
     private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker;
+    private AllianceRelationRendererInterface $allianceRelationRenderer;
 
     public function __construct(
         AllianceDetailsRequestInterface $allianceDetailsRequest,
@@ -43,7 +45,8 @@ final class AllianceDetails implements ViewControllerInterface
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRepositoryInterface $allianceRepository,
         ParserWithImageInterface $parserWithImage,
-        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker
+        AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker,
+        AllianceRelationRendererInterface $allianceRelationRenderer
     ) {
         $this->allianceDetailsRequest = $allianceDetailsRequest;
         $this->allianceRelationRepository = $allianceRelationRepository;
@@ -52,6 +55,7 @@ final class AllianceDetails implements ViewControllerInterface
         $this->allianceRepository = $allianceRepository;
         $this->parserWithImage = $parserWithImage;
         $this->allianceUserApplicationChecker = $allianceUserApplicationChecker;
+        $this->allianceRelationRenderer = $allianceRelationRenderer;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -93,9 +97,12 @@ final class AllianceDetails implements ViewControllerInterface
         $game->setTemplateFile('html/alliancedetails.xhtml');
 
         $game->setTemplateVar('ALLIANCE', $alliance);
-        if (!empty($relations)) {
-            $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
-        }
+        $game->setTemplateVar(
+            'ALLIANCE_RELATIONS',
+            $relations !== []
+                ? $relation
+                : null
+        );
         $game->setTemplateVar('DESCRIPTION', $parsedDescription);
         $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
         $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);
@@ -114,7 +121,7 @@ final class AllianceDetails implements ViewControllerInterface
         $game->setTemplateVar(
             'MEMBERS',
             array_map(
-                fn(UserInterface $user): AllianceMemberWrapper => new AllianceMemberWrapper($user, $alliance),
+                fn (UserInterface $user): AllianceMemberWrapper => new AllianceMemberWrapper($user, $alliance),
                 $alliance->getMembers()->toArray()
             )
         );
@@ -122,13 +129,19 @@ final class AllianceDetails implements ViewControllerInterface
         if ($game->getUser()->getAllianceId() > 0) {
             $game->appendNavigationPart(
                 'alliance.php',
-                _('Allianz')
+                'Allianz'
             );
         }
         $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
         $game->appendNavigationPart(
             sprintf('alliance.php?SHOW_ALLIANCE=1&id=%d', $alliance->getId()),
-            _('Allianz anzeigen')
+            'Allianz anzeigen'
+        );
+        $game->setTemplateVar(
+            'RELATIONS_IMAGE',
+            $this->allianceRelationRenderer->render(
+                $this->allianceRelationRepository->getActiveByAlliance($alliance->getId())
+            )
         );
     }
 

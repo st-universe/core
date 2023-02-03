@@ -21,9 +21,9 @@ final class AllianceEnum
     public const ALLIANCE_RELATION_VASSAL = 6;
 
     public static function relationTypeToColor(
-        AllianceRelationInterface $relation
+        int $relationType
     ): string {
-        switch ($relation->getType()) {
+        switch ($relationType) {
             case AllianceEnum::ALLIANCE_RELATION_WAR:
                 return '#810800';
             case AllianceEnum::ALLIANCE_RELATION_TRADE:
