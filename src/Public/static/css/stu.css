@@ -1551,7 +1551,7 @@ div.colonyInfoContainer div {
 
 div.allianceDetail {
   display: grid;
-  grid-template-columns: auto 20%;
+  grid-template-columns: auto 30%;
   grid-column-gap: 5px;
   width: 100%;
 }
@@ -1603,9 +1603,14 @@ div.allianceDetail h1 {
 }
 
 @media (max-width: 1025px) {
-    div.container {
-        width: 1000px;
-    }
+  div.allianceDetail {
+    display: block;
+    width: 100%;
+  }
+
+  div.container {
+    width: 1000px;
+  }
 }
 
 @media (max-height: 1200px) {
