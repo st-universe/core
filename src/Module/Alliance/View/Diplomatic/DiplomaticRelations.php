@@ -131,7 +131,7 @@ final class DiplomaticRelations implements ViewControllerInterface
         $vertex->setAttribute('graphviz.shape', 'box');
         $vertex->setAttribute('graphviz.color', $this->getFrameColor($alliance));
         $vertex->setAttribute('graphviz.style', 'filled');
-        $vertex->setAttribute('graphviz.fillcolor', $isNpc ? '#3b3b3b'  :  '#4b4b4b');
+        $vertex->setAttribute('graphviz.fillcolor', $isNpc ? '#2b2b2b'  :  '#4b4b4b');
         $vertex->setAttribute('graphviz.fontname', 'Arial');
         $vertex->setAttribute(
             'graphviz.href',
