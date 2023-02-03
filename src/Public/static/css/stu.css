@@ -1549,6 +1549,18 @@ div.colonyInfoContainer div {
     line-height: 1.8em;
 }
 
+div.allianceDetail {
+  display: grid;
+  grid-template-columns: auto 20%;
+  grid-column-gap: 5px;
+  width: 100%;
+}
+
+div.allianceDetail h1 {
+  font-size: 130%;
+  margin-bottom: 20px;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
     div.container {
         width: 1000px;

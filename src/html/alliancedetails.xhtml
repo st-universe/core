@@ -2,115 +2,114 @@
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<div style="width: 70%; float: left;">
-			<div class="divhead">Informationen</div>
-			<div class="divbody">
-				<span tal:replace="structure bbcode:ALLIANCE/getName">NAME</span><br /><br />
-				Gegründet: ${datetime:ALLIANCE/getDate}
-				<div style="padding-top: 10px; width: 50%; float: left;">
-					<div>
-						<tal:block tal:condition="CAN_EDIT">
-							<a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>
-							<a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
-							<a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
-						</tal:block>
-						<a href="alliance.php?SHOW_LIST=1" class="linkbutton">Allianzliste</a>
-					</div>
-					<div style="margin-top: 10px;" tal:condition="CAN_SIGNUP">
-						<a href="alliance.php?B_SIGNUP_ALLIANCE=1&id=${ALLIANCE/getId}&sstr=${THIS/getSessionString}"
-							class="linkbutton">Bewerben</a>
-					</div>
-					<a tal:condition="php:THIS.getUser().getAllianceId() EQ ALLIANCE.getId()"
-						href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
-					<div style="margin-top: 10px" tal:condition="CAN_MANAGE_FOREIGN_RELATIONS">
-						<a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
-					</div>
-				</div>
-				<div style="padding-top: 10px; width: 50%; text-align: right; float: left">
-					<div style="margin-top: 10px" tal:condition="CAN_LEAVE_ALLIANCE">
-						<a href="alliance.php?B_LEAVE_ALLIANCE=1&sstr=${THIS/getSessionString}"
-							class="linkbutton">Allianz verlassen</a>
-					</div>
-				</div>
-				<br style="clear: both;" />
-			</div>
-			<br />
-			<div class="divhead">Präsident</div>
-			<div class="divbody" tal:define="data ALLIANCE/getFounder">
-				<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
-				<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
-			</div>
-			<br />
-			<div tal:condition="ALLIANCE/getSuccessor">
-				<div class="divhead">Vize-Präsident</div>
-				<div class="divbody" tal:define="data ALLIANCE/getSuccessor">
-					<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
-					<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
-				</div>
-				<br />
-			</div>
-			<div tal:condition="ALLIANCE/getDiplomatic">
-				<div class="divhead">Außenminister</div>
-				<div class="divbody" tal:condition="ALLIANCE/getDiplomatic" tal:define="data ALLIANCE/getDiplomatic">
-					<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
-					<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
-				</div>
-				<br />
-			</div>
-      <table class="tcal">
-        <tr>
-          <th>Beschreibung</th>
-        </tr>
-        <tr>
-          <td tal:content="structure nl2br:DESCRIPTION">DESCRIPTION</td>
-        </tr>
-      </table>
-      <br />
-			<div class="divhead">Beziehungen zu anderen Allianzen</div>
-			<div tal:condition="not:ALLIANCE_RELATIONS" style="text-align: center">
-				Keine Beziehungen vorhanden
-			</div>
-			<div style="width: 100%; display: grid; grid-template-columns: auto 600px; grid-column-gap: 1%" tal:condition="ALLIANCE_RELATIONS">
-				<div>
-					<table class="tcal">
-						<tr tal:repeat="wrapper ALLIANCE_RELATIONS"
-							tal:attributes="class string:row${repeat/wrapper/odd}">
-							<td>
-								<a href="?SHOW_ALLIANCE=1&id=${wrapper/getTargetId}"
-								   tal:content="structure bbcode:wrapper/getDescription">DESCRIPTION</a>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<div style="text-align: center" tal:content="structure RELATIONS_IMAGE">RELATIONS</div>
-			</div>
-		</div>
-		<div style="width: 30%; float: left; padding-left: 5px;">
-			<div style="width: 340px;">
-				<div class="divhead">
-					<span tal:replace="">COUNT</span> Mitglieder
-				</div>
-				<div class="divbody">
-					<table style="width: 100%">
-						<tr tal:repeat="data MEMBERS">
-							<td tal:condition="IS_IN_ALLIANCE" tal:attributes="class data/getOnlineStateCssClass">
-								<img src="assets/rassen/${data/getUser/getFactionId}s.png" />
-								<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
-							</td>
-							<td tal:condition="not:IS_IN_ALLIANCE">
-								<img src="assets/rassen/${data/getUser/getFactionId}s.png" />
-								<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
-							</td>
-							<td style="width: 36px;" tal:define="id data/getUserId">
-								<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
-								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
+    <div class="allianceDetail">
+      <div>
+        <h1 tal:content="structure bbcode:ALLIANCE/getName">NAME</h1>
+        <div class="divhead">Informationen</div>
+        <div class="divbody">
+          Gegründet: ${datetime:ALLIANCE/getDate}
+          <div style="padding-top: 10px; width: 50%; float: left;">
+            <div>
+              <tal:block tal:condition="CAN_EDIT">
+                <a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>
+                <a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
+                <a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
+              </tal:block>
+              <a href="alliance.php?SHOW_LIST=1" class="linkbutton">Allianzliste</a>
+            </div>
+            <div style="margin-top: 10px;" tal:condition="CAN_SIGNUP">
+              <a href="alliance.php?B_SIGNUP_ALLIANCE=1&id=${ALLIANCE/getId}&sstr=${THIS/getSessionString}"
+                 class="linkbutton">Bewerben</a>
+            </div>
+            <a tal:condition="php:THIS.getUser().getAllianceId() EQ ALLIANCE.getId()"
+               href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
+            <div style="margin-top: 10px" tal:condition="CAN_MANAGE_FOREIGN_RELATIONS">
+              <a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
+            </div>
+          </div>
+          <div style="padding-top: 10px; width: 50%; text-align: right; float: left">
+            <div style="margin-top: 10px" tal:condition="CAN_LEAVE_ALLIANCE">
+              <a href="alliance.php?B_LEAVE_ALLIANCE=1&sstr=${THIS/getSessionString}"
+                 class="linkbutton">Allianz verlassen</a>
+            </div>
+          </div>
+          <br style="clear: both;" />
+        </div>
+        <br />
+        <table class="tcal">
+          <tr>
+            <th>Beschreibung</th>
+          </tr>
+          <tr>
+            <td tal:content="structure nl2br:DESCRIPTION">DESCRIPTION</td>
+          </tr>
+        </table>
+        <br />
+        <div class="divhead">Beziehungen zu anderen Allianzen</div>
+        <div tal:condition="not:ALLIANCE_RELATIONS" style="text-align: center">
+          Keine Beziehungen vorhanden
+        </div>
+        <div style="width: 100%; display: grid; grid-template-columns: auto 600px; grid-column-gap: 1%" tal:condition="ALLIANCE_RELATIONS">
+          <div>
+            <table class="tcal">
+              <tr tal:repeat="wrapper ALLIANCE_RELATIONS"
+                  tal:attributes="class string:row${repeat/wrapper/odd}">
+                <td>
+                  <a href="?SHOW_ALLIANCE=1&id=${wrapper/getTargetId}"
+                     tal:content="structure bbcode:wrapper/getDescription">DESCRIPTION</a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div style="text-align: center" tal:content="structure RELATIONS_IMAGE">RELATIONS</div>
+        </div>
+      </div>
+      <div>
+        <div class="divhead">Präsident</div>
+        <div class="divbody" tal:define="data ALLIANCE/getFounder">
+          <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
+          <span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
+        </div>
+        <br />
+        <div tal:condition="ALLIANCE/getSuccessor">
+          <div class="divhead">Vize-Präsident</div>
+          <div class="divbody" tal:define="data ALLIANCE/getSuccessor">
+            <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
+            <span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
+          </div>
+          <br />
+        </div>
+        <div tal:condition="ALLIANCE/getDiplomatic">
+          <div class="divhead">Außenminister</div>
+          <div class="divbody" tal:condition="ALLIANCE/getDiplomatic" tal:define="data ALLIANCE/getDiplomatic">
+            <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
+            <span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
+          </div>
+          <br />
+        </div>
+        <div class="divhead">
+          <span tal:replace="">COUNT</span> Mitglieder
+        </div>
+        <div class="divbody">
+          <table style="width: 100%">
+            <tr tal:repeat="data MEMBERS">
+              <td tal:condition="IS_IN_ALLIANCE" tal:attributes="class data/getOnlineStateCssClass">
+                <img src="assets/rassen/${data/getUser/getFactionId}s.png" />
+                <span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
+              </td>
+              <td tal:condition="not:IS_IN_ALLIANCE">
+                <img src="assets/rassen/${data/getUser/getFactionId}s.png" />
+                <span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
+              </td>
+              <td style="width: 36px;" tal:define="id data/getUserId">
+                <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
+                <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
 	</tal:block>
 </tal:block>
-
 </html>
