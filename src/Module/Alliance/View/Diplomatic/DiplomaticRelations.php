@@ -120,7 +120,9 @@ final class DiplomaticRelations implements ViewControllerInterface
     private function createVertex(
         Graph $graph,
         AllianceInterface $alliance
-    ): Vertex{
+    ): Vertex {
+        $isNpc = $alliance->getFounder()->getUser()->isNpc();
+
         $vertex = $graph->createVertex($alliance->getId());
         $name = $this->bbCodeParser->parse($alliance->getName())->getAsText();
         $name = str_replace(['&', '<', '>', '"', "'", '\\', "\n"], '', $name);
@@ -128,6 +130,7 @@ final class DiplomaticRelations implements ViewControllerInterface
         $vertex->setAttribute('graphviz.fontcolor', '#9d9d9d');
         $vertex->setAttribute('graphviz.shape', 'box');
         $vertex->setAttribute('graphviz.color', '#4b4b4b');
+        $vertex->setAttribute('graphviz.fillcolor', $isNpc ? '8b8b8b'  :  '#4b4b4b');
         $vertex->setAttribute('graphviz.fontname', 'Arial');
         $vertex->setAttribute(
             'graphviz.href',
