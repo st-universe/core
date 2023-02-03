@@ -57,11 +57,20 @@
 				</div>
 				<br />
 			</div>
+      <table class="tcal">
+        <tr>
+          <th>Beschreibung</th>
+        </tr>
+        <tr>
+          <td tal:content="structure nl2br:DESCRIPTION">DESCRIPTION</td>
+        </tr>
+      </table>
+      <br />
 			<div class="divhead">Beziehungen zu anderen Allianzen</div>
 			<div tal:condition="not:ALLIANCE_RELATIONS" style="text-align: center">
 				Keine Beziehungen vorhanden
 			</div>
-			<div style="width: 100%; display: grid; grid-template-columns: 40% 59%; grid-column-gap: 1%" tal:condition="ALLIANCE_RELATIONS">
+			<div style="width: 100%; display: grid; grid-template-columns: auto 600px; grid-column-gap: 1%" tal:condition="ALLIANCE_RELATIONS">
 				<div>
 					<table class="tcal">
 						<tr tal:repeat="wrapper ALLIANCE_RELATIONS"
@@ -75,15 +84,6 @@
 				</div>
 				<div style="text-align: center" tal:content="structure RELATIONS_IMAGE">RELATIONS</div>
 			</div>
-			<br />
-			<table class="tcal">
-				<tr>
-					<th>Beschreibung</th>
-				</tr>
-				<tr>
-					<td tal:content="structure nl2br:DESCRIPTION">DESCRIPTION</td>
-				</tr>
-			</table>
 		</div>
 		<div style="width: 30%; float: left; padding-left: 5px;">
 			<div style="width: 340px;">

@@ -17,6 +17,9 @@ use Stu\StuTestCase;
 
 class AllianceRelationRendererTest extends StuTestCase
 {
+    /** @var float */
+    private const PIXEL_TO_INCH = 0.0104166667;
+
     /** @var MockInterface&GraphVizFactoryInterface */
     private MockInterface $graphVizFactory;
 
@@ -47,6 +50,8 @@ class AllianceRelationRendererTest extends StuTestCase
         $vertex2 = $this->mock(Vertex::class);
         $edge = $this->mock(Undirected::class);
 
+        $width = 666;
+        $height = 42;
         $allianceId = 666;
         $opponentId = 42;
         $result = 'some-result';
@@ -129,6 +134,15 @@ class AllianceRelationRendererTest extends StuTestCase
         $graph->shouldReceive('setAttribute')
             ->with('graphviz.graph.tooltip', 'Diplomatische Beziehungen')
             ->once();
+        $graph->shouldReceive('setAttribute')
+            ->with('graphviz.graph.ratio', 'compress')
+            ->once();
+        $graph->shouldReceive('setAttribute')
+            ->with(
+                'graphviz.graph.size',
+                sprintf('%02f,%02f', $width * self::PIXEL_TO_INCH, $height * self::PIXEL_TO_INCH)
+            )
+            ->once();
 
         $this->relationItemVertexBuilder->shouldReceive('build')
             ->with($graph, $alliance)
@@ -141,7 +155,7 @@ class AllianceRelationRendererTest extends StuTestCase
 
         static::assertSame(
             $result,
-            $this->subject->render([$relation])
+            $this->subject->render([$relation], $width, $height)
         );
     }
 }

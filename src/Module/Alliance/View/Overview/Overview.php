@@ -127,7 +127,9 @@ final class Overview implements ViewControllerInterface
             $game->setTemplateVar(
                 'RELATIONS_IMAGE',
                 $this->allianceRelationRenderer->render(
-                    $this->allianceRelationRepository->getActiveByAlliance($alliance->getId())
+                    $this->allianceRelationRepository->getActiveByAlliance($alliance->getId()),
+                    600,
+                    700
                 )
             );
         } else {

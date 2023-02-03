@@ -15,6 +15,8 @@ interface AllianceRelationRendererInterface
      */
     public function render(
         iterable $relationList,
+        int $width,
+        int $height,
         int $penWidth = 2,
         string $renderFormat = 'svg'
     ): string;

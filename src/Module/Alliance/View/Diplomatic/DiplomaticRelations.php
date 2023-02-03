@@ -15,6 +15,12 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
  */
 final class DiplomaticRelations implements ViewControllerInterface
 {
+    /** @var int */
+    private const GRAPH_WIDTH = 800;
+
+    /** @var int */
+    private const GRAPH_HEIGHT = 700;
+
     public const VIEW_IDENTIFIER = 'SHOW_DIPLOMATIC_RELATIONS';
 
     private AllianceRelationRepositoryInterface $allianceRelationRepository;
@@ -50,7 +56,9 @@ final class DiplomaticRelations implements ViewControllerInterface
         $game->setTemplateVar(
             'RELATIONS_IMAGE',
             $this->allianceRelationRenderer->render(
-                $this->allianceRelationRepository->findAll()
+                $this->allianceRelationRepository->findAll(),
+                self::GRAPH_WIDTH,
+                self::GRAPH_HEIGHT
             )
         );
     }

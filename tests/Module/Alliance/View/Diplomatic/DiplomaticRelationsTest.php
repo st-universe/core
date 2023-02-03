@@ -78,7 +78,7 @@ class DiplomaticRelationsTest extends StuTestCase
             ->andReturn([$relation]);
 
         $this->allianceRelationRenderer->shouldReceive('render')
-            ->with([$relation])
+            ->with([$relation], 800, 700)
             ->once()
             ->andReturn($renderResult);
 
