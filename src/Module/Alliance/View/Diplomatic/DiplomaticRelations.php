@@ -78,31 +78,9 @@ final class DiplomaticRelations implements ViewControllerInterface
                 $vertexes[$opponentId] = $this->createVertex($graph, $relation->getOpponent());
             }
 
-            switch ($relation->getType()) {
-                case AllianceEnum::ALLIANCE_RELATION_WAR:
-                    $color = '#810800';
-                    break;
-                case AllianceEnum::ALLIANCE_RELATION_TRADE:
-                    $color = '#a5a200';
-                    break;
-                case AllianceEnum::ALLIANCE_RELATION_PEACE:
-                    $color = '#004608';
-                    break;
-                case AllianceEnum::ALLIANCE_RELATION_ALLIED:
-                    $color = '#005183';
-                    break;
-                case AllianceEnum::ALLIANCE_RELATION_FRIENDS:
-                    $color = '#5cb762';
-                    break;
-                case AllianceEnum::ALLIANCE_RELATION_VASSAL:
-                    $color = '#008392';
-                    break;
-                default:
-                    $color = '#ffffff';
-            }
 
             $edge = $vertexes[$allianceId]->createEdge($vertexes[$opponentId]);
-            $edge->setAttribute('graphviz.color', $color);
+            $edge->setAttribute('graphviz.color', AllianceEnum::relationTypeToColor($relation));
             $edge->setAttribute('graphviz.tooltip', $relation->getTypeDescription());
             $edge->setAttribute('graphviz.penwidth', 2);
         }

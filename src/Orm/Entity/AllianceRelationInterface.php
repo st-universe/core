@@ -22,6 +22,9 @@ interface AllianceRelationInterface
 
     public function isWar(): bool;
 
+    /**
+     * @return array<array{name: string, value: int}>
+     */
     public function getPossibleTypes(): array;
 
     public function getAlliance(): AllianceInterface;
@@ -32,5 +35,8 @@ interface AllianceRelationInterface
 
     public function setOpponent(AllianceInterface $opponent): AllianceRelationInterface;
 
+    /**
+     * @deprecated Move into AllianceEnum
+     */
     public function getTypeDescription(): string;
 }

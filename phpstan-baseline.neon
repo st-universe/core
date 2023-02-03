@@ -12556,11 +12556,6 @@ parameters:
 			path: src/Orm/Entity/AllianceJob.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:getPossibleTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceRelation.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$alliance type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Alliance\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceRelation.php
@@ -12579,11 +12574,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$opponent type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceInterface but database expects Stu\\\\Orm\\\\Entity\\\\Alliance\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceRelation.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:\\:getPossibleTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/AllianceRelationInterface.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starSystem type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\.$#"
