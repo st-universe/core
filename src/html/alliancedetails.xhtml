@@ -51,10 +51,9 @@
             <div class="namePresident" tal:content="structure bbcode:data/getName">NAME</div>
             <div class="jobDescription">Präsident</div>
           </div>
-          <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getId" />
         </tal:block>
-        <tal:block tal:condition="data" tal:define="data ALLIANCE/getSuccessor/getUser">
-          <div class="allianceMinister">
+        <tal:block tal:condition="ALLIANCE/getSuccessor">
+          <div class="allianceMinister" tal:define="data ALLIANCE/getSuccessor/getUser">
             <div class="avatar">
               <img tal:attributes="src data/getFullAvatarPath" />
             </div>
@@ -62,8 +61,8 @@
             <div class="jobDescription">Vize-Präsident</div>
           </div>
         </tal:block>
-        <tal:block tal:condition="data" tal:define="data ALLIANCE/getDiplomatic/getUser">
-          <div class="allianceMinister">
+        <tal:block tal:condition="ALLIANCE/getDiplomatic">
+          <div class="allianceMinister" tal:define="data ALLIANCE/getDiplomatic/getUser">
             <div class="avatar">
               <img tal:attributes="src data/getFullAvatarPath" />
             </div>
