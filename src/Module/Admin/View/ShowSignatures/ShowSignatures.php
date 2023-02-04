@@ -9,6 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowSignatures implements ViewControllerInterface
 {
@@ -18,12 +19,16 @@ final class ShowSignatures implements ViewControllerInterface
 
     private LoggerUtilFactoryInterface $loggerUtilFactory;
 
+    private ShipRepositoryInterface $shipRepository;
+
     public function __construct(
         FlightSignatureRepositoryInterface $flightSignatureRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->loggerUtilFactory = $loggerUtilFactory;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -56,10 +61,11 @@ final class ShowSignatures implements ViewControllerInterface
         }
 
         $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
+            $this->shipRepository,
             $userId,
             $allyId,
-            current($signatureRange),
-            $this->loggerUtilFactory->getLoggerUtil()
+            $this->loggerUtilFactory->getLoggerUtil(),
+            current($signatureRange)
         ));
 
         $game->setTemplateVar('DONOTHING', false);

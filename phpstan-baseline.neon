@@ -1906,16 +1906,6 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/ShowSignatures.php
 
 		-
-			message: "#^Parameter \\#3 \\$entry of class Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel constructor is passed by reference, so it expects variables only$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/ShowSignatures.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:__construct\\(\\) has parameter \\$entry with no type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:getHeadRow\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
@@ -1947,11 +1937,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:loadLSS\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanel\\:\\:\\$data has no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanel.php
 

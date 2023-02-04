@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -13,16 +12,24 @@ class SignaturePanel
     private int $userId;
     private int $allyId;
 
-    private $data = array();
+    /** @var array{minx: int, maxx: int, miny: int, maxy: int} */
+    private array $data;
 
     private LoggerUtilInterface $loggerUtil;
 
+    private ShipRepositoryInterface $shipRepository;
+
+    /**
+     * @param array{minx: int, maxx: int, miny: int, maxy: int} $entry
+     */
     function __construct(
+        ShipRepositoryInterface $shipRepository,
         int $userId,
         int $allyId,
-        &$entry = array(),
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilInterface $loggerUtil,
+        array $entry
     ) {
+        $this->shipRepository = $shipRepository;
         $this->userId = $userId;
         $this->allyId = $allyId;
         $this->data = $entry;
@@ -41,11 +48,8 @@ class SignaturePanel
 
     function getOuterSystemResult()
     {
-        // @todo refactor
-        global $container;
-
         if ($this->userId) {
-            return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfUser(
+            return $this->shipRepository->getSignaturesOuterSystemOfUser(
                 $this->data['minx'],
                 $this->data['maxx'],
                 $this->data['miny'],
@@ -53,7 +57,7 @@ class SignaturePanel
                 $this->userId
             );
         } else if ($this->allyId) {
-            return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfAlly(
+            return $this->shipRepository->getSignaturesOuterSystemOfAlly(
                 $this->data['minx'],
                 $this->data['maxx'],
                 $this->data['miny'],
