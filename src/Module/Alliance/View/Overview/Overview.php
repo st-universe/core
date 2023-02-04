@@ -6,10 +6,10 @@ namespace Stu\Module\Alliance\View\Overview;
 
 use Lib\Alliance\AllianceMemberWrapper;
 use Lib\Alliance\AllianceRelationWrapper;
+use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
-use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceListItemInterface;
@@ -31,27 +31,24 @@ final class Overview implements ViewControllerInterface
 
     private AllianceRepositoryInterface $allianceRepository;
 
-    private ParserWithImageInterface $parserWithImage;
-
     private AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker;
-    private AllianceRelationRendererInterface $allianceRelationRenderer;
+
+    private AllianceDescriptionRendererInterface $allianceDescriptionRenderer;
 
     public function __construct(
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         AllianceActionManagerInterface $allianceActionManager,
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRepositoryInterface $allianceRepository,
-        ParserWithImageInterface $parserWithImage,
         AllianceUserApplicationCheckerInterface $allianceUserApplicationChecker,
-        AllianceRelationRendererInterface $allianceRelationRenderer
+        AllianceDescriptionRendererInterface $allianceDescriptionRenderer
     ) {
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRepository = $allianceRepository;
-        $this->parserWithImage = $parserWithImage;
         $this->allianceUserApplicationChecker = $allianceUserApplicationChecker;
-        $this->allianceRelationRenderer = $allianceRelationRenderer;
+        $this->allianceDescriptionRenderer = $allianceDescriptionRenderer;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -67,22 +64,12 @@ final class Overview implements ViewControllerInterface
             $userIsFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
                 $allianceId,
                 AllianceEnum::ALLIANCE_JOBS_FOUNDER
-            )->getUserId() === $game->getUser()->getId();
+            )->getUserId() === $userId;
 
             $relations = [];
             foreach ($result as $key => $relation) {
                 $relations[$key] = new AllianceRelationWrapper($alliance, $relation);
             }
-
-            $replacementVars = $this->getReplacementVars($alliance);
-
-            $description = str_replace(
-                array_keys($replacementVars),
-                array_values($replacementVars),
-                $alliance->getDescription()
-            );
-
-            $parsedDescription = $this->parserWithImage->parse($description)->getAsHTML();
 
             $isInAlliance = $alliance->getId() == $game->getUser()->getAllianceId();
 
@@ -96,7 +83,10 @@ final class Overview implements ViewControllerInterface
                     ? $relations
                     : null
             );
-            $game->setTemplateVar('DESCRIPTION', $parsedDescription);
+            $game->setTemplateVar(
+                'DESCRIPTION',
+                $this->allianceDescriptionRenderer->render($alliance)
+            );
             $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
             $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);
             $game->setTemplateVar(
@@ -124,14 +114,6 @@ final class Overview implements ViewControllerInterface
                 'alliance.php',
                 _('Allianz')
             );
-            $game->setTemplateVar(
-                'RELATIONS_IMAGE',
-                $this->allianceRelationRenderer->render(
-                    $this->allianceRelationRepository->getActiveByAlliance($alliance->getId()),
-                    600,
-                    700
-                )
-            );
         } else {
             $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
             $game->setTemplateFile('html/alliancelist.xhtml');
@@ -151,16 +133,5 @@ final class Overview implements ViewControllerInterface
                 )
             );
         }
-    }
-
-    private function getReplacementVars(AllianceInterface $alliance): array
-    {
-        $replacementVars = [];
-        $replacementVars['$ALLIANCE_HOMEPAGE_LINK'] = '<a href="' . $alliance->getHomepage() . '" target="_blank">' . _('Zur Allianz Homepage') . '</a>';
-        $replacementVars['$ALLIANCE_BANNER'] = ($alliance->getAvatar() ? '<img src="' . $alliance->getFullAvatarpath() . '" />' : false);
-        $replacementVars['$ALLIANCE_PRESIDENT'] = $alliance->getFounder()->getUser()->getUserName();
-        $replacementVars['$ALLIANCE_VICEPRESIDENT'] = ($alliance->getSuccessor() ? $alliance->getSuccessor()->getUser()->getUserName() : _('Unbesetzt'));
-        $replacementVars['$ALLIANCE_FOREIGNMINISTER'] = ($alliance->getDiplomatic() ? $alliance->getDiplomatic()->getUser()->getUserName() : _('Unbesetzt'));
-        return $replacementVars;
     }
 }

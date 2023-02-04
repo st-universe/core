@@ -21,5 +21,5 @@ return [
                     autowire(AllianceDataToGraphAttributeConverter::class)
                 )
         ),
-
+    AllianceDescriptionRendererInterface::class => autowire(AllianceDescriptionRenderer::class),
 ];
