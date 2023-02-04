@@ -7,6 +7,7 @@ namespace Stu\Module\Control\Render;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * Executes the render chain for the site template
@@ -31,10 +32,9 @@ final class GameTalRenderer implements GameTalRendererInterface
 
     public function render(
         GameControllerInterface $game,
+        ?UserInterface $user,
         TalPageInterface $talPage
     ): string {
-        $user = $game->getUser();
-
         $talPage->setVar('THIS', $game);
         $talPage->setVar('USER', $user);
         $talPage->setVar('GAME_VERSION', $this->config->get('game.version'));

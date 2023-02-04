@@ -53,7 +53,7 @@ interface ShipBuildplanInterface
     /**
      * @return BuildplanModuleInterface[]
      */
-    public function getModulesByType($type): array;
+    public function getModulesByType(int $type): array;
 
     /**
      * @return Collection<int, BuildplanModuleInterface>

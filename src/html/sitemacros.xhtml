@@ -316,7 +316,7 @@
               <div id="gamestate_${THIS/getGameState}" tal:content="THIS/getGameStateTextual">STATE</div>
             </div>
             <br />
-            <tal:block tal:condition="THIS/getUser">
+            <tal:block tal:condition="THIS/hasUser">
               <div class="sidebar_box_header">Willkommen zurück</div>
               <div class="sidebar_box_content">
                 <span tal:replace="structure bbcode:THIS/getUser/getName" />
@@ -324,7 +324,7 @@
                 <a href="/maindesk.php" class="linkbutton">Zum Maindesk</a>
               </div>
             </tal:block>
-            <tal:block tal:condition="not:THIS/getUser">
+            <tal:block tal:condition="not:THIS/hasUser">
               <div class="sidebar_box_header">Login</div>
               <div class="sidebar_box_content">
                 <div tal:condition="THIS/getLoginError" tal:content="THIS/getLoginError">LOGINERROR</div>

@@ -8,6 +8,7 @@ use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\SemaphoreConstants;
+use Stu\Exception\AccessViolation;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\SanityCheckException;
@@ -301,9 +302,19 @@ final class GameController implements GameControllerInterface
         $this->talPage->setVar($key, $variable);
     }
 
-    public function getUser(): ?UserInterface
+    public function getUser(): UserInterface
     {
-        return $this->session->getUser();
+        $user = $this->session->getUser();
+
+        if ($user === null) {
+            throw new AccessViolation('User not set');
+        }
+        return $user;
+    }
+
+    public function hasUser(): bool
+    {
+        return $this->session->getUser() !== null;
     }
 
     /**
@@ -565,10 +576,14 @@ final class GameController implements GameControllerInterface
             $this->loggerUtil->init('stu');
         }
 
+        $user = $this->hasUser()
+            ? $this->getUser()
+            : null;
+
         // RENDER!
         $startTime = hrtime(true);
 
-        $renderResult = $this->gameTalRenderer->render($this, $this->talPage);
+        $renderResult = $this->gameTalRenderer->render($this, $user, $this->talPage);
 
         $renderMs = hrtime(true) - $startTime;
 
@@ -585,7 +600,7 @@ final class GameController implements GameControllerInterface
 
     private function checkUserAndGameState(GameRequestInterface $gameRequest): void
     {
-        if ($this->getUser() !== null) {
+        if ($this->hasUser()) {
             $gameRequest->setUserId($this->getUser());
 
             if ($this->getUser()->isLocked()) {

@@ -44,11 +44,6 @@ class GameTalRendererTest extends StuTestCase
         $configValueForum = 'some-forum';
         $configValueChat = 'some-chat';
 
-        $game->shouldReceive('getUser')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($user);
-
         $this->renderFragment->shouldReceive('render')
             ->with($user, $talPage)
             ->once();
@@ -95,7 +90,7 @@ class GameTalRendererTest extends StuTestCase
 
         static::assertSame(
             $output,
-            $this->subject->render($game, $talPage)
+            $this->subject->render($game, $user, $talPage)
         );
     }
 }

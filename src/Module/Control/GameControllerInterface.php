@@ -49,7 +49,9 @@ interface GameControllerInterface
 
     public function setTemplateVar(string $key, $variable);
 
-    public function getUser(): ?UserInterface;
+    public function getUser(): UserInterface;
+
+    public function hasUser(): bool;
 
     public function getGameConfig(): array;
 

@@ -236,7 +236,7 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
-    public function getModulesByType($type): array
+    public function getModulesByType(int $type): array
     {
         // @todo refactor
         global $container;

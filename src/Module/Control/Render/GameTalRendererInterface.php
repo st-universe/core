@@ -6,6 +6,7 @@ namespace Stu\Module\Control\Render;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Entity\UserInterface;
 
 interface GameTalRendererInterface
 {
@@ -14,6 +15,7 @@ interface GameTalRendererInterface
      */
     public function render(
         GameControllerInterface $game,
+        ?UserInterface $user,
         TalPageInterface $talPage
     ): string;
 }
