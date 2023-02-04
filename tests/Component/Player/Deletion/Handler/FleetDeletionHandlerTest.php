@@ -12,7 +12,6 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 class FleetDeletionHandlerTest extends MockeryTestCase
 {
-
     /**
      * @var null|FleetRepositoryInterface|MockInterface
      */

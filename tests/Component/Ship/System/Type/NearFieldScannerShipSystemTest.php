@@ -23,7 +23,6 @@ use Stu\StuTestCase;
 
 class NearFieldScannerShipSystemTest extends StuTestCase
 {
-
     /**
      * @var null|LongRangeScannerShipSystem
      */

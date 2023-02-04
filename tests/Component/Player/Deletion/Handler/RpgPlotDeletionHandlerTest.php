@@ -7,7 +7,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Entity\UserInterface;

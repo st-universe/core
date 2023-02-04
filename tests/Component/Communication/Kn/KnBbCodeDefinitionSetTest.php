@@ -8,7 +8,6 @@ use Stu\StuTestCase;
 
 class KnBbCodeDefinitionSetTest extends StuTestCase
 {
-
     /**
      * @var null|KnBbCodeDefinitionSet
      */
@@ -19,7 +18,8 @@ class KnBbCodeDefinitionSetTest extends StuTestCase
         $this->set = new KnBbCodeDefinitionSet();
     }
 
-    public function testCodeDefinitions(): void {
+    public function testCodeDefinitions(): void
+    {
         $definitions = $this->set->getCodeDefinitions();
 
         $tags = ['i', 'b', 'u', 'h2', 'h3'];

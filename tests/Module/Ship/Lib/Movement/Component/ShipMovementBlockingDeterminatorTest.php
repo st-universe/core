@@ -44,7 +44,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
                 sprintf(
                     'Die %s hat ungenügend Crew',
                     $shipName
-                )
+                ),
             ],
             $this->subject->determine([$shipWrapper])
         );
@@ -103,7 +103,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
                     'Die %s hat nicht genug Energie für den Traktor-Flug (%d benötigt)',
                     $shipName,
                     $tractorBeamTargetEnergyCostPerField + $energyCostPerField
-                )
+                ),
             ],
             $this->subject->determine([$shipWrapper])
         );
@@ -155,7 +155,7 @@ class ShipMovementBlockingDeterminatorTest extends StuTestCase
                     'Die %s hat nicht genug Energie für den Flug (%d benötigt)',
                     $shipName,
                     $energyCostPerField
-                )
+                ),
             ],
             $this->subject->determine([$shipWrapper])
         );

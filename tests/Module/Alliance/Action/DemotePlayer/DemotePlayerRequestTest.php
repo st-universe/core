@@ -19,14 +19,14 @@ class DemotePlayerRequestTest extends RequestTestCase
     public function requestVarsDataProvider(): array
     {
         return [
-            ['getPlayerId', 'uid', '666', 666]
+            ['getPlayerId', 'uid', '666', 666],
         ];
     }
 
     public function requiredRequestVarsDataProvider(): array
     {
         return [
-            ['getPlayerId']
+            ['getPlayerId'],
         ];
     }
 }

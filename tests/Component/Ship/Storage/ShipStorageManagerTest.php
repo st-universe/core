@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
 use Stu\Component\Ship\Storage\Exception\QuantityTooSmallException;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
@@ -77,7 +77,7 @@ class ShipStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([
-                $commodityId => $storageItem
+                $commodityId => $storageItem,
             ]));
 
         $storageItem->shouldReceive('getAmount')
@@ -98,7 +98,7 @@ class ShipStorageManagerTest extends StuTestCase
         $commodityId = 42;
 
         $storage = new ArrayCollection([
-            $commodityId => $storageItem
+            $commodityId => $storageItem,
         ]);
 
         $commodity->shouldReceive('getId')
@@ -138,7 +138,7 @@ class ShipStorageManagerTest extends StuTestCase
         $commodityId = 42;
 
         $storage = new ArrayCollection([
-            $commodityId => $storageItem
+            $commodityId => $storageItem,
         ]);
 
         $commodity->shouldReceive('getId')
@@ -241,7 +241,7 @@ class ShipStorageManagerTest extends StuTestCase
         $commodityId = 42;
         $storedAmount = 0;
         $storage = new ArrayCollection([
-            $commodityId => $storageItem
+            $commodityId => $storageItem,
         ]);
 
         $ship->shouldReceive('getStorage')

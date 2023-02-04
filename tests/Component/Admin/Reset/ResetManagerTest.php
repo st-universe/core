@@ -25,7 +25,6 @@ use Stu\StuTestCase;
 
 class ResetManagerTest extends StuTestCase
 {
-
     /**
      * @var null|MockInterface|PlayerDeletionInterface
      */

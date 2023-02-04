@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu;
 
-use MPScholten\RequestParser\NotFoundException;
-
 /**
  * @template TRequestClass of object
  */

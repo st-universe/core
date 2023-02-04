@@ -13,7 +13,6 @@ use Stu\StuTestCase;
 
 class KnFactoryTest extends StuTestCase
 {
-
     /**
      * @var null|MockInterface|Parser
      */
@@ -40,7 +39,8 @@ class KnFactoryTest extends StuTestCase
         );
     }
 
-    public function testCreateKnItemReturnsValue(): void {
+    public function testCreateKnItemReturnsValue(): void
+    {
         $knPost = $this->mock(KnPostInterface::class);
         $user = $this->mock(UserInterface::class);
 

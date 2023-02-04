@@ -21,7 +21,7 @@ class RenameBoardRequestTest extends RequestTestCase
         return [
             ['getBoardId', 'bid', '666', 666],
             ['getTitle', 'tname', '<foo>bar</foo>', 'bar'],
-            ['getTitle', 'tname', null, '']
+            ['getTitle', 'tname', null, ''],
         ];
     }
 

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Stu;
+
 use Ahc\Cli\IO\Interactor;
 use Ahc\Cli\Output\Writer;
 

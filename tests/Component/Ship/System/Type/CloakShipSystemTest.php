@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Mockery;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -18,7 +17,6 @@ use Stu\StuTestCase;
 
 class CloakShipSystemTest extends StuTestCase
 {
-
     /**
      * @var null|CloakShipSystem
      */
@@ -185,7 +183,7 @@ class CloakShipSystemTest extends StuTestCase
             ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY => $this->mock(ShipSystemInterface::class),
             ShipSystemTypeEnum::SYSTEM_SHIELDS => $this->mock(ShipSystemInterface::class),
             ShipSystemTypeEnum::SYSTEM_PHASER => $this->mock(ShipSystemInterface::class),
-            ShipSystemTypeEnum::SYSTEM_TORPEDO => $this->mock(ShipSystemInterface::class)
+            ShipSystemTypeEnum::SYSTEM_TORPEDO => $this->mock(ShipSystemInterface::class),
         ];
         foreach ($systemTypes as $systemType => $system) {
             $this->ship->shouldReceive('hasShipSystem')

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Mockery\MockInterface;
-use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
@@ -18,7 +16,6 @@ use Stu\StuTestCase;
 
 class UserDeletionHandlerTest extends StuTestCase
 {
-
     /**
      * @var null|MockInterface|SessionStringRepositoryInterface
      */

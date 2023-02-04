@@ -19,7 +19,6 @@ use Stu\StuTestCase;
 
 class PlayerDeletionTest extends StuTestCase
 {
-
     /**
      * @var null|MockInterface|UserRepositoryInterface
      */

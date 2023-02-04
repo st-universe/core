@@ -26,7 +26,7 @@ class SignupRequestTest extends RequestTestCase
     public function requiredRequestVarsDataProvider(): array
     {
         return [
-            ['getAllianceId']
+            ['getAllianceId'],
         ];
     }
 }

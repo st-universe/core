@@ -14,7 +14,6 @@ use Stu\StuTestCase;
 
 class EnergyWeaponShipSystemTest extends StuTestCase
 {
-
     /**
      * @var null|EnergyWeaponShipSystem
      */

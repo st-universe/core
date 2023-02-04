@@ -11,7 +11,6 @@ use Stu\StuTestCase;
 
 class KnCommentTalTest extends StuTestCase
 {
-
     /**
      * @var null|MockInterface|KnCommentInterface
      */

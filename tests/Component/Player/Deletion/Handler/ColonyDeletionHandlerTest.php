@@ -6,7 +6,6 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Doctrine\Common\Collections\Collection;
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -16,7 +15,6 @@ use Stu\StuTestCase;
 
 class ColonyDeletionHandlerTest extends StuTestCase
 {
-
     /**
      * @var null|MockInterface|ColonyResetterInterface
      */

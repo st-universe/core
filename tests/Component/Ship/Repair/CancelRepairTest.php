@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Repair;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

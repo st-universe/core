@@ -26,7 +26,7 @@ class KickPlayerRequestTest extends RequestTestCase
     public function requiredRequestVarsDataProvider(): array
     {
         return [
-            ['getPlayeRId']
+            ['getPlayeRId'],
         ];
     }
 }

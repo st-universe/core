@@ -21,7 +21,6 @@ use Stu\StuTestCase;
 
 class LongRangeScannerShipSystemTest extends StuTestCase
 {
-
     /**
      * @var null|LongRangeScannerShipSystem
      */

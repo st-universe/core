@@ -17,12 +17,12 @@ use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
-use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 

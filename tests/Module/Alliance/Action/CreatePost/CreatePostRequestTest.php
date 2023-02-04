@@ -33,7 +33,7 @@ class CreatePostRequestTest extends RequestTestCase
     {
         return [
             ['getBoardId'],
-            ['getTopicId']
+            ['getTopicId'],
         ];
     }
 }

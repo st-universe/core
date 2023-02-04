@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowPartnerSites;
 
-use Generator;
 use Mockery;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
@@ -51,7 +50,8 @@ class ShowPartnerSitesTest extends StuTestCase
         $game->shouldReceive('setTemplateVar')
             ->with(
                 'PARTNERSITES',
-                Mockery::on(fn (array $items): bool =>
+                Mockery::on(
+                    fn (array $items): bool =>
                     $items === [[
                         'name' => $siteName,
                         'description' => $siteDescription,

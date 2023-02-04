@@ -56,8 +56,8 @@ class DiplomaticRelationsTest extends StuTestCase
                 ],
                 [
                     'url' => sprintf('alliance.php?%s=1', DiplomaticRelations::VIEW_IDENTIFIER),
-                    'title' => 'Diplomatische Beziehungen'
-                ]
+                    'title' => 'Diplomatische Beziehungen',
+                ],
             ])
             ->once()
             ->andReturnSelf();

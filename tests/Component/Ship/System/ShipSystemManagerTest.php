@@ -28,21 +28,20 @@ use Stu\StuTestCase;
 
 class ShipSystemManagerTest extends StuTestCase
 {
-
     /**
      * @var MockInterface|ShipInterface
      */
-    private  $ship;
+    private $ship;
 
     /**
      * @var MockInterface|ShipWrapperInterface
      */
-    private  $wrapper;
+    private $wrapper;
 
     /**
      * @var MockInterface|ShipSystemInterface
      */
-    private  $shipSystem;
+    private $shipSystem;
 
     /**
      * @var null|MockInterface|ShipSystemTypeInterface
@@ -71,7 +70,7 @@ class ShipSystemManagerTest extends StuTestCase
         $this->stuTimeMock = $this->mock(StuTime::class);
 
         $this->manager = new ShipSystemManager([
-            $this->system_id => $this->systemType
+            $this->system_id => $this->systemType,
         ], $this->stuTimeMock);
     }
 

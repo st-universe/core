@@ -9,9 +9,6 @@ use JBBCode\Parser;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\System\Data\EpsSystemData;
-use Stu\Component\Ship\System\Data\HullSystemData;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -20,7 +17,6 @@ use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 

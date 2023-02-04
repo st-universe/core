@@ -11,8 +11,8 @@ use Stu\Component\Colony\Storage\Exception\QuantityTooSmallException;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\StuTestCase;
@@ -100,7 +100,7 @@ class ColonyStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([
-                $this->commodityId => $storageItem
+                $this->commodityId => $storageItem,
             ]));
 
         $storageItem->shouldReceive('getAmount')
@@ -119,7 +119,7 @@ class ColonyStorageManagerTest extends StuTestCase
         $this->commodityId = 42;
 
         $storage = new ArrayCollection([
-            $this->commodityId => $storageItem
+            $this->commodityId => $storageItem,
         ]);
 
         $this->commodity->shouldReceive('getId')
@@ -160,7 +160,7 @@ class ColonyStorageManagerTest extends StuTestCase
         $this->commodityId = 42;
 
         $storage = new ArrayCollection([
-            $this->commodityId => $storageItem
+            $this->commodityId => $storageItem,
         ]);
 
         $this->commodity->shouldReceive('getId')
@@ -270,7 +270,7 @@ class ColonyStorageManagerTest extends StuTestCase
         $this->commodityId = 42;
         $storedAmount = 0;
         $storage = new ArrayCollection([
-            $this->commodityId => $storageItem
+            $this->commodityId => $storageItem,
         ]);
 
         $this->loggerUtil->shouldReceive('doLog')

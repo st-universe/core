@@ -14,7 +14,6 @@ use Stu\StuTestCase;
 
 class KnItemTest extends StuTestCase
 {
-
     /**
      * @var null|MockInterface|Parser
      */
@@ -55,7 +54,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetIdReturnsId(): void {
+    public function testGetIdReturnsId(): void
+    {
         $value = 666;
 
         $this->post->shouldReceive('getId')
@@ -69,7 +69,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetUserReturnsValue(): void {
+    public function testGetUserReturnsValue(): void
+    {
         $user = $this->mock(UserInterface::class);
 
         $this->post->shouldReceive('getUser')
@@ -83,7 +84,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetUserIdReturnsValue(): void {
+    public function testGetUserIdReturnsValue(): void
+    {
         $value = 666;
 
         $this->post->shouldReceive('getUserId')
@@ -97,7 +99,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetTitleReturnsValue(): void {
+    public function testGetTitleReturnsValue(): void
+    {
         $value = 'some-title';
 
         $this->post->shouldReceive('getTitle')
@@ -111,7 +114,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetTextReturnsParsedValue(): void {
+    public function testGetTextReturnsParsedValue(): void
+    {
         $value = 'some-text';
         $parsed_value = 'some-parsed-text';
 
@@ -135,7 +139,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetDateReturnsValue(): void {
+    public function testGetDateReturnsValue(): void
+    {
         $value = 42;
 
         $this->post->shouldReceive('getDate')
@@ -149,7 +154,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetEditDateReturnsValue(): void {
+    public function testGetEditDateReturnsValue(): void
+    {
         $value = 42;
 
         $this->post->shouldReceive('getEditDate')
@@ -163,7 +169,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testIsEditableReturnsTrueIfEditable(): void {
+    public function testIsEditableReturnsTrueIfEditable(): void
+    {
         $this->post->shouldReceive('getDate')
             ->withNoArgs()
             ->once()
@@ -178,7 +185,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testIsEditableReturnsFalseIfNotEditable(): void {
+    public function testIsEditableReturnsFalseIfNotEditable(): void
+    {
         $this->post->shouldReceive('getDate')
             ->withNoArgs()
             ->once()
@@ -189,7 +197,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetPlotReturnsPlot(): void {
+    public function testGetPlotReturnsPlot(): void
+    {
         $plot = $this->mock(RpgPlotInterface::class);
 
         $this->post->shouldReceive('getRpgPlot')
@@ -203,7 +212,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetCommentCountReturnsValus(): void {
+    public function testGetCommentCountReturnsValus(): void
+    {
         $amount = 33;
 
         $this->knCommentRepository->shouldReceive('getAmountByPost')
@@ -217,7 +227,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testDisplayContactLinksReturnsTrue(): void {
+    public function testDisplayContactLinksReturnsTrue(): void
+    {
         $user = $this->mock(UserInterface::class);
 
         $this->post->shouldReceive('getUser')
@@ -235,7 +246,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testDisplayContactLinksReturnsFalse(): void {
+    public function testDisplayContactLinksReturnsFalse(): void
+    {
         $this->post->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
@@ -246,7 +258,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetUserNameReturnsValue(): void {
+    public function testGetUserNameReturnsValue(): void
+    {
         $value = 'some-name';
 
         $this->post->shouldReceive('getUsername')
@@ -260,7 +273,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testIsNewerThanMarkReturnsTrueIfNewer(): void {
+    public function testIsNewerThanMarkReturnsTrueIfNewer(): void
+    {
         $postId = 666;
         $markId = 555;
 
@@ -279,7 +293,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testIsNewerThanMarkReturnsFalseIfOlder(): void {
+    public function testIsNewerThanMarkReturnsFalseIfOlder(): void
+    {
         $postId = 555;
         $markId = 666;
 
@@ -298,7 +313,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testUserHasRatedReturnsTrueIfAlreadyRated(): void {
+    public function testUserHasRatedReturnsTrueIfAlreadyRated(): void
+    {
         $userId = 666;
 
         $this->post->shouldReceive('getRatings')
@@ -316,7 +332,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testUserHasRatedReturnsFalseIfHasNotRatedYet(): void {
+    public function testUserHasRatedReturnsFalseIfHasNotRatedYet(): void
+    {
         $userId = 666;
 
         $this->post->shouldReceive('getRatings')
@@ -334,7 +351,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testUserCanRateReturnsFalseIfItsTheSameUser(): void {
+    public function testUserCanRateReturnsFalseIfItsTheSameUser(): void
+    {
         $userId = 666;
 
         $this->post->shouldReceive('getRatings')
@@ -356,7 +374,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testUserCanRateReturnsTrueIfItsRateable(): void {
+    public function testUserCanRateReturnsTrueIfItsRateable(): void
+    {
         $userId = 666;
 
         $this->post->shouldReceive('getRatings')
@@ -378,7 +397,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetRatingReturnsRatingsSum(): void {
+    public function testGetRatingReturnsRatingsSum(): void
+    {
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
             ->once()
@@ -390,7 +410,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetRatingBarReturnsEmptyStringIfNotRatedYet(): void {
+    public function testGetRatingBarReturnsEmptyStringIfNotRatedYet(): void
+    {
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
             ->once()
@@ -402,7 +423,8 @@ class KnItemTest extends StuTestCase
         );
     }
 
-    public function testGetRatingBarReturnsBar(): void {
+    public function testGetRatingBarReturnsBar(): void
+    {
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
             ->twice()

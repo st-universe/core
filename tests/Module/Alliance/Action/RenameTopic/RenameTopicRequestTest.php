@@ -28,7 +28,7 @@ class RenameTopicRequestTest extends RequestTestCase
     public function requiredRequestVarsDataProvider(): array
     {
         return [
-            ['getTopicId']
+            ['getTopicId'],
         ];
     }
 }
