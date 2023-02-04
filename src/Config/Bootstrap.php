@@ -7,6 +7,7 @@ namespace Stu\Config;
 use DI\ContainerBuilder;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Module\Tal\TalHelper;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -68,4 +69,4 @@ $config = $container->get(ConfigInterface::class);
 ini_set('date.timezone', 'Europe/Berlin');
 set_include_path(get_include_path() . PATH_SEPARATOR . $config->get('game.webroot'));
 
-require_once __DIR__ . '/TalesRegistry.php';
+TalHelper::register($container);

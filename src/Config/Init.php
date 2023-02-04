@@ -7,6 +7,7 @@ namespace Stu\Config;
 use DI\ContainerBuilder;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Module\Tal\TalHelper;
 
 /**
  * Inits the application by calling the provided callable and injecting the DIC
@@ -71,7 +72,7 @@ final class Init
         ini_set('date.timezone', 'Europe/Berlin');
         set_include_path(get_include_path() . PATH_SEPARATOR . $config->get('game.webroot'));
 
-        require_once __DIR__ . '/TalesRegistry.php';
+        TalHelper::register($container);
 
         $app($container);
     }
