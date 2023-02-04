@@ -479,7 +479,7 @@ a.linkbutton {
 
 a.linkbutton:hover {
     text-decoration: none;
-    background-color: #161515;
+    background-color: #3c3c3c;
 }
 
 a.linkbutton_red:hover {
@@ -1557,8 +1557,28 @@ div.allianceDetail {
 }
 
 div.allianceDetail h1 {
-  font-size: 130%;
+  font-size: 140%;
   margin-bottom: 20px;
+}
+
+div.allianceDescriptionMissing {
+  font-size: 140%;
+  text-align: center;
+  color: #2d2d2d;
+  padding-top: 100px;
+}
+
+div.allianceActions {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
+div.allianceActionsJoinLeave {
+  text-align: right;
+}
+
+div.allianceDescription {
+  margin-top: 20px;
 }
 
 div.allianceMinister {
@@ -1569,7 +1589,7 @@ div.allianceMinister {
 
 div.allianceMember {
   display: grid;
-  grid-template-columns: 30px auto 50px 10px;
+  grid-template-columns: 25px auto 50px 10px;
   grid-column-gap: 10px;
   margin-bottom: 5px;
 }
@@ -1610,7 +1630,8 @@ div.allianceMinister:not(:first-of-type) {
   padding-top: 20px;
 }
 
-div.allianceMinister div.avatar {
+div.allianceMinister div.avatar,
+div.allianceRelation div.avatar {
   grid-row: span 2;
   text-align: center;
 }
@@ -1642,6 +1663,20 @@ div.alliancePresident div.avatar img {
 div.allianceMinister div.avatar img {
   width: 40px;
   height: 40px;
+}
+
+div.allianceRelation {
+  margin-bottom: 10px;
+}
+
+div.allianceRelation div.allianceRelationOpponentName {
+  font-size: 120%;
+  margin-bottom: 5px;
+}
+
+div.allianceRelation div.allianceRelationDate span {
+  font-size: 90%;
+  font-weight: bold;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {

@@ -47,8 +47,13 @@
 </metal:block>
 <metal:macro metal:define-macro="userprofile_link">
   <a href="userprofile.php?uid=${user/getId}">
-    <img src="runtime" style="width: 50px; height: 50px;"
+    <img style="width: 50px; height: 50px;"
       tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
+  </a>
+</metal:macro>
+<metal:macro metal:define-macro="userprofile_responsive">
+  <a href="/userprofile.php?uid=${user/getId}">
+    <img tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
   </a>
 </metal:macro>
 <metal:macro metal:define-macro="commoditySelection">

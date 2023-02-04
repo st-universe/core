@@ -1,6 +1,6 @@
 <?php
 
-namespace Lib\Alliance;
+namespace Stu\Lib\Alliance;
 
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Orm\Entity\AllianceInterface;
@@ -29,22 +29,22 @@ class AllianceRelationWrapper
         $fromName = $this->relation->getAlliance()->getName();
 
         if ($this->relation->getType() === AllianceEnum::ALLIANCE_RELATION_VASSAL) {
-            if ($this->relation->getAlliance() === $this->alliance) {
+            if ($this->relation->getAlliance()->getId() === $this->alliance->getId()) {
                 return sprintf('Hat die Allianz %s als %s', $toName, $typeDescription);
             } else {
                 return sprintf('Ist %s der Allianz %s', $typeDescription, $fromName);
             }
         }
 
-        if ($this->relation->getAlliance() === $this->alliance) {
+        if ($this->relation->getAlliance()->getId() === $this->alliance->getId()) {
             return sprintf('%s mit %s', $typeDescription, $toName);
         } else {
             return sprintf('%s mit %s', $typeDescription, $fromName);
         }
     }
 
-    public function getTargetId(): int
+    public function getDate(): int
     {
-        return $this->relation->getAlliance() === $this->alliance ? $this->relation->getOpponent()->getId() : $this->relation->getAlliance()->getId();
+        return $this->relation->getDate();
     }
 }

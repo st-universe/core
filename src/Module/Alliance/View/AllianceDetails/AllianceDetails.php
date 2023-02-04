@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\AllianceDetails;
 
 use Lib\Alliance\AllianceMemberWrapper;
-use Lib\Alliance\AllianceRelationWrapper;
+use Stu\Lib\Alliance\AllianceRelationWrapper;
 use Stu\Component\Alliance\AllianceDescriptionRendererInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
