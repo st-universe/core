@@ -76,7 +76,7 @@
         <div class="allianceRelationList" tal:condition="ALLIANCE_RELATIONS">
           <div class="allianceHeader">Diplomatische Beziehungen</div>
           <div tal:repeat="wrapper ALLIANCE_RELATIONS" class="allianceRelation">
-            <div class="allianceRelationOpponentName" tal:content="wrapper/getDescription">NAME</div>
+            <div class="allianceRelationOpponentName" tal:content="structure bbcode:wrapper/getDescription">NAME</div>
             <div class="allianceRelationDate">
               seit <span tal:content="date: wrapper/getDate">DATE</span>
             </div>
