@@ -9,7 +9,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Orm\Repository\UserTagRepositoryInterface;
 
 final class Playerlist implements ViewControllerInterface
 {
@@ -17,14 +16,10 @@ final class Playerlist implements ViewControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
-    private UserTagRepositoryInterface $userTagRepository;
-
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        UserTagRepositoryInterface $userTagRepository
+        UserRepositoryInterface $userRepository
     ) {
         $this->userRepository = $userRepository;
-        $this->userTagRepository = $userTagRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,9 +36,7 @@ final class Playerlist implements ViewControllerInterface
         $game->setTemplateVar(
             'LIST',
             array_map(
-                function (UserInterface $user): UserlistEntry {
-                    return new UserlistEntry($this->userTagRepository, $user);
-                },
+                fn (UserInterface $user): UserlistEntry => new UserlistEntry($user),
                 $this->userRepository->getNonNpcList()
             )
         );

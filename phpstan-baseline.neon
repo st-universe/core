@@ -1676,21 +1676,6 @@ parameters:
 			path: src/Module/Admin/Action/UnlockUser.php
 
 		-
-			message: "#^Cannot call method format\\(\\) on DateTimeInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Admin/Lib/UserlistEntry.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Admin\\\\Lib\\\\UserlistEntry\\:\\:getTags\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/Module/Admin/Lib/UserlistEntry.php
-
-		-
-			message: "#^Parameter \\#2 \\$array of function array_map expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\UserTagInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Admin/Lib/UserlistEntry.php
-
-		-
 			message: "#^'row_0'\\|'row_1'\\|'row_2'\\|'row_3'\\|'row_4'\\|'row_5'\\|non\\-empty\\-list\\<Stu\\\\Orm\\\\Entity\\\\MapFieldType\\> does not accept Stu\\\\Orm\\\\Entity\\\\MapFieldType\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/EditSection/EditSection.php

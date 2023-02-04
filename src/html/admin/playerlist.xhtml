@@ -46,10 +46,6 @@
                   href="/admin/?B_BLOCK_USER=1&uid=${data/getId}&sstr=${THIS/getSessionString}"><img
                     src="/assets/buttons/selfdes2.png" name="block${data/getId}" title="Spieler blockieren" /></a>
               </div>
-              <div>
-                <div tal:repeat="tag user/getTags" tal:content="tag/label" class="userTag userTag${tag/typeId}">LABEL
-                </div>
-              </div>
             </div>
           </div>
         </div>
