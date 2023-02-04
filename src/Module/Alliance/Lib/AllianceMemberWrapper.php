@@ -1,17 +1,15 @@
 <?php
 
-namespace Lib\Alliance;
+namespace Stu\Module\Alliance\Lib;
 
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
 
-class AllianceMemberWrapper
+final class AllianceMemberWrapper
 {
-    /** @var UserInterface */
-    private $user;
+    private UserInterface $user;
 
-    /** @var AllianceInterface */
-    private $alliance;
+    private AllianceInterface $alliance;
 
     function __construct(UserInterface $user, AllianceInterface $alliance)
     {

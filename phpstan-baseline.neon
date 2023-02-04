@@ -2876,11 +2876,6 @@ parameters:
 			path: src/Module/Alliance/View/AllianceDetails/AllianceDetails.php
 
 		-
-			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/AllianceDetails/AllianceDetails.php
-
-		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Alliance\\\\AllianceUserApplicationCheckerInterface\\:\\:mayApply\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/AllianceDetails/AllianceDetails.php
@@ -2996,21 +2991,6 @@ parameters:
 			path: src/Module/Alliance/View/Management/Management.php
 
 		-
-			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Management/Management.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Management\\\\ManagementListItemTal\\:\\:getColonies\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Management/ManagementListItemTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Management\\\\ManagementListItemTal\\:\\:getShipRumpList\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Management/ManagementListItemTal.php
-
-		-
 			message: "#^Cannot call method getAlliance\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/NewPost/NewPost.php
@@ -3052,11 +3032,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Overview/Overview.php
-
-		-
-			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/Overview/Overview.php
 

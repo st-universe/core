@@ -7,6 +7,8 @@ namespace Stu\Module\Alliance;
 use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayer;
 use Stu\Module\Alliance\Lib\AllianceActionManager;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceUiFactory;
+use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Alliance\View\Diplomatic\DiplomaticRelations;
 use Stu\Module\Control\GameController;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
@@ -142,6 +144,7 @@ return [
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
     AcceptOfferRequestInterface::class => autowire(AcceptOfferRequest::class),
     CancelContractRequestInterface::class => autowire(CancelContractRequest::class),
+    AllianceUiFactoryInterface::class => autowire(AllianceUiFactory::class),
     'ALLIANCE_ACTIONS' => [
         AddBoard::ACTION_IDENTIFIER => autowire(AddBoard::class),
         CreateTopic::ACTION_IDENTIFIER => autowire(CreateTopic::class),

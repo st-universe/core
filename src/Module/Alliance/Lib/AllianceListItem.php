@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Lib;
 
 use Stu\Orm\Entity\AllianceInterface;
 
-final class AllianceListItem implements AllianceListItemInterface
+final class AllianceListItem
 {
     private AllianceInterface $alliance;
 

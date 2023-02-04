@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib\Alliance;
+namespace Stu\Module\Alliance\Lib;
 
-use Lib\Alliance\AllianceMemberWrapper;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -25,7 +24,7 @@ class AllianceMemberWrapperTest extends StuTestCase
         $this->user = $this->mock(UserInterface::class);
         $this->alliance = $this->mock(AllianceInterface::class);
 
-        $this->subject = new AllianceMemberWrapper(
+        $this->subject = new \Stu\Module\Alliance\Lib\AllianceMemberWrapper(
             $this->user,
             $this->alliance
         );

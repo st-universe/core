@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\AllianceList;
 
 use Stu\Module\Alliance\Lib\AllianceListItem;
-use Stu\Module\Alliance\Lib\AllianceListItemInterface;
+use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\AllianceInterface;
@@ -17,41 +17,41 @@ final class AllianceList implements ViewControllerInterface
 
     private AllianceRepositoryInterface $allianceRepository;
 
+    private AllianceUiFactoryInterface $allianceUiFactory;
+
     public function __construct(
-        AllianceRepositoryInterface $allianceRepository
+        AllianceRepositoryInterface $allianceRepository,
+        AllianceUiFactoryInterface $allianceUiFactory
     ) {
         $this->allianceRepository = $allianceRepository;
+        $this->allianceUiFactory = $allianceUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setPageTitle(_('Allianzliste'));
+        $game->setPageTitle('Allianzliste');
 
         if ($game->getUser()->getAllianceId() > 0) {
             $game->appendNavigationPart(
                 'alliance.php',
-                _('Allianz')
+                'Allianz'
             );
         }
 
-        $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
+        $game->appendNavigationPart('alliance.php?SHOW_LIST=1', 'Allianzliste');
         $game->setTemplateFile('html/alliancelist.xhtml');
 
         $game->setTemplateVar(
             'ALLIANCE_LIST_OPEN',
             array_map(
-                function (AllianceInterface $alliance): AllianceListItemInterface {
-                    return new AllianceListItem($alliance);
-                },
+                fn (AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
                 $this->allianceRepository->findByApplicationState(true)
             )
         );
         $game->setTemplateVar(
             'ALLIANCE_LIST_CLOSED',
             array_map(
-                function (AllianceInterface $alliance): AllianceListItemInterface {
-                    return new AllianceListItem($alliance);
-                },
+                fn (AllianceInterface $alliance): AllianceListItem => $this->allianceUiFactory->createAllianceListItem($alliance),
                 $this->allianceRepository->findByApplicationState(false)
             )
         );

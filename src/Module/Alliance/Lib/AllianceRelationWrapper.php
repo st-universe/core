@@ -1,18 +1,18 @@
 <?php
 
-namespace Stu\Lib\Alliance;
+declare(strict_types=1);
+
+namespace Stu\Module\Alliance\Lib;
 
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceRelationInterface;
 
-class AllianceRelationWrapper
+final class AllianceRelationWrapper
 {
-    /** @var AllianceInterface */
-    private $alliance;
+    private AllianceInterface $alliance;
 
-    /** @var AllianceRelationInterface */
-    private $relation;
+    private AllianceRelationInterface $relation;
 
     function __construct(
         AllianceInterface $alliance,
