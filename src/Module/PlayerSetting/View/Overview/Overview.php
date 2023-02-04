@@ -24,7 +24,7 @@ final class Overview implements ViewControllerInterface
     public function __construct(
         ConfigInterface $config,
         NewsRepositoryInterface $newsRepository,
-        NewsFactoryInterface $newsFactory,
+        NewsFactoryInterface $newsFactory
     ) {
         $this->config = $config;
         $this->newsRepository = $newsRepository;
