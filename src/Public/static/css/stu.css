@@ -1552,7 +1552,7 @@ div.colonyInfoContainer div {
 div.allianceDetail {
   display: grid;
   grid-template-columns: auto 30%;
-  grid-column-gap: 5px;
+  grid-column-gap: 1%;
   width: 100%;
 }
 
@@ -1567,6 +1567,43 @@ div.allianceMinister {
   grid-column-gap: 10px;
 }
 
+div.allianceMember {
+  display: grid;
+  grid-template-columns: 30px auto 50px 10px;
+  grid-column-gap: 10px;
+  margin-bottom: 5px;
+}
+
+div.allianceMember div.avatar img {
+  width: 25px;
+  height: 25px;
+}
+
+div.allianceMember div.allianceMemberName {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+div.allianceMember div.allianceMemberButtons {
+  text-align: right;
+}
+
+div.allianceMemberList,
+div.allianceLead,
+div.allianceRelationList {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+div.allianceHeader {
+  font-weight: bold;
+  font-size: 160%;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  color: #9d9d9d;
+}
+
 div.allianceMinister:not(:first-of-type) {
   border-top: 1px solid #4a4a4a;
   margin-top: 20px;
@@ -1575,15 +1612,21 @@ div.allianceMinister:not(:first-of-type) {
 
 div.allianceMinister div.avatar {
   grid-row: span 2;
+  text-align: center;
 }
 
 div.allianceMinister div.name {
-  font-size: 120%;
+  font-size: 110%;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 div.allianceMinister div.namePresident {
-  font-size: 150%
+  font-size: 130%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 div.allianceMinister div.jobDescription {
@@ -1591,9 +1634,14 @@ div.allianceMinister div.jobDescription {
   font-size: 90%;
 }
 
+div.alliancePresident div.avatar img {
+  width: 60px !important;
+  height: 60px !important;
+}
+
 div.allianceMinister div.avatar img {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
