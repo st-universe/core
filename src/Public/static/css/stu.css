@@ -1561,6 +1561,41 @@ div.allianceDetail h1 {
   margin-bottom: 20px;
 }
 
+div.allianceMinister {
+  display: grid;
+  grid-template-columns: 60px auto;
+  grid-column-gap: 10px;
+}
+
+div.allianceMinister:not(:first-of-type) {
+  border-top: 1px solid #4a4a4a;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+div.allianceMinister div.avatar {
+  grid-row: span 2;
+}
+
+div.allianceMinister div.name {
+  font-size: 120%;
+  overflow: hidden;
+}
+
+div.allianceMinister div.namePresident {
+  font-size: 150%
+}
+
+div.allianceMinister div.jobDescription {
+  font-weight: bold;
+  font-size: 90%;
+}
+
+div.allianceMinister div.avatar img {
+  width: 60px;
+  height: 60px;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
     div.container {
         width: 1000px;

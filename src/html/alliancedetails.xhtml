@@ -43,28 +43,36 @@
           </div>
           <br />
         </div>
-        <div class="divhead">Präsident</div>
-        <div class="divbody" tal:define="data ALLIANCE/getFounder">
-          <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
-          <span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
-        </div>
+        <tal:block tal:define="data ALLIANCE/getFounder/getUser">
+          <div class="allianceMinister">
+            <div class="avatar">
+              <img tal:attributes="src data/getFullAvatarPath" />
+            </div>
+            <div class="namePresident" tal:content="structure bbcode:data/getName">NAME</div>
+            <div class="jobDescription">Präsident</div>
+          </div>
+          <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getId" />
+        </tal:block>
+        <tal:block tal:condition="data" tal:define="data ALLIANCE/getSuccessor/getUser">
+          <div class="allianceMinister">
+            <div class="avatar">
+              <img tal:attributes="src data/getFullAvatarPath" />
+            </div>
+            <div class="name" tal:content="structure bbcode:data/getName">NAME</div>
+            <div class="jobDescription">Vize-Präsident</div>
+          </div>
+        </tal:block>
+        <tal:block tal:condition="data" tal:define="data ALLIANCE/getDiplomatic/getUser">
+          <div class="allianceMinister">
+            <div class="avatar">
+              <img tal:attributes="src data/getFullAvatarPath" />
+            </div>
+            <div class="name" tal:content="structure bbcode:data/getName">NAME</div>
+            <div class="jobDescription">Außenminister</div>
+          </div>
+        </tal:block>
         <br />
-        <div tal:condition="ALLIANCE/getSuccessor">
-          <div class="divhead">Vize-Präsident</div>
-          <div class="divbody" tal:define="data ALLIANCE/getSuccessor">
-            <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
-            <span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
-          </div>
-          <br />
-        </div>
-        <div tal:condition="ALLIANCE/getDiplomatic">
-          <div class="divhead">Außenminister</div>
-          <div class="divbody" tal:condition="ALLIANCE/getDiplomatic" tal:define="data ALLIANCE/getDiplomatic">
-            <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getUser/getId" />
-            <span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
-          </div>
-          <br />
-        </div>
+        <br />
         <div class="divhead">
           <span tal:replace="">COUNT</span> Mitglieder
         </div>
