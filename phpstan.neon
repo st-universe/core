@@ -5,6 +5,7 @@ parameters:
   excludePaths:
     - src/OrmProxy
     - src/html
+    - src/Public/assets
   ignoreErrors:
     - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) is never written, only read#'
 
