@@ -27,7 +27,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->createQuery(
                 sprintf(
                     'SELECT s.rumps_id as rump_id, r.name, COUNT(s.id) as amount FROM %s s LEFT JOIN %s r WITH
-                    r.id = s.rumps_id WHERE s.user = :user GROUP BY s.rumps_id, r.name ORDER BY s.rumps_id',
+                    r.id = s.rumps_id WHERE s.user = :user GROUP BY s.rumps_id, r.name ORDER BY MIN(r.sort) ASC',
                     Ship::class,
                     ShipRump::class
                 )
