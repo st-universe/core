@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\View\Management;
 
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ManagementListItemTal
@@ -18,7 +19,10 @@ final class ManagementListItemTal
 
     private int $currentUserId;
 
+    private AllianceJobRepositoryInterface $allianceJobRepository;
+
     public function __construct(
+        AllianceJobRepositoryInterface $allianceJobRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         AllianceInterface $alliance,
         UserInterface $user,
@@ -28,6 +32,7 @@ final class ManagementListItemTal
         $this->currentUserId = $currentUserId;
         $this->alliance = $alliance;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->allianceJobRepository = $allianceJobRepository;
     }
 
     public function getId(): int
@@ -68,5 +73,15 @@ final class ManagementListItemTal
     public function getShipRumpList(): array
     {
         return $this->shipRumpRepository->getGroupedInfoByUser($this->user);
+    }
+
+    /**
+     * Returns `true` if the user can be demoted
+     */
+    public function canBeDemoted(): bool
+    {
+        $userId = $this->user->getId();
+
+        return $this->currentUserId !== $userId && $this->allianceJobRepository->getByUser($userId) !== [];
     }
 }

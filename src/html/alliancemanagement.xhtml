@@ -58,13 +58,18 @@
 									class="linkbutton">Präsident</a>
 							</tal:block>
 						</div>
+						<tal:block tal:condition="data/canBeDemoted">
+							<br /><br />
+							<a href="alliance.php?B_DEMOTE_USER=1&uid=${data/getId}&sstr=${THIS/getSessionString}"
+							   class="linkbutton negative">Degradieren</a>
+						</tal:block>
 					</tal:block>
 				</td>
 				<td style="width: 200px;" tal:condition="data/isCurrentUser"></td>
 				<td style="text-align: center;">
 					<a tal:condition="php: !data.isFounder() && !data.isCurrentUser()"
 						href="alliance.php?B_KICK_USER=1&SHOW_MANAGEMENT=1&uid=${data/getId}&sstr=${THIS/getSessionString}"
-						class="linkbutton">Rauswerfen</a>
+						class="linkbutton negative">Rauswerfen</a>
 				</td>
 			</tr>
 		</table>

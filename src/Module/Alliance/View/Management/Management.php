@@ -54,6 +54,7 @@ final class Management implements ViewControllerInterface
         $list = [];
         foreach ($this->userRepository->getByAlliance($alliance) as $member) {
             $list[] = new ManagementListItemTal(
+                $this->allianceJobRepository,
                 $this->shipRumpRepository,
                 $alliance,
                 $member,

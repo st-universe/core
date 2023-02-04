@@ -2523,6 +2523,26 @@ parameters:
 		-
 			message: "#^Cannot call method getAlliance\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
+			path: src/Module/Alliance/Action/DemotePlayer/DemotePlayer.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DemotePlayer/DemotePlayer.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DemotePlayer/DemotePlayer.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Alliance/Action/DemotePlayer/DemotePlayer.php
+
+		-
+			message: "#^Cannot call method getAlliance\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
+			count: 1
 			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
 
 		-

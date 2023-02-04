@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance;
 
+use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayer;
 use Stu\Module\Alliance\Lib\AllianceActionManager;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Diplomatic\DiplomaticRelations;
@@ -170,6 +171,11 @@ return [
         ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
         DeleteAvatar::ACTION_IDENTIFIER => autowire(DeleteAvatar::class),
         DeleteAlliance::ACTION_IDENTIFIER => autowire(DeleteAlliance::class),
+        DemotePlayer::ACTION_IDENTIFIER => autowire(DemotePlayer::class)
+            ->constructorParameter(
+                'demotePlayerRequest',
+                autowire(Action\DemotePlayer\DemotePlayerRequest::class),
+            ),
     ],
     'ALLIANCE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
