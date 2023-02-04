@@ -1,21 +1,31 @@
 <?php
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerInterface;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
+use Stu\Config\Init;
 
-require_once __DIR__ . '/../../Config/Bootstrap.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
-$entityManager = $container->get(EntityManagerInterface::class);
-$playerDeletion = $container->get(PlayerDeletionInterface::class);
+Init::run(function (ContainerInterface $dic): void {
+    /**
+     * @todo Remove $container after magic dic calls have been purged
+     */
+    global $container;
+    $container = $dic;
 
-$entityManager->beginTransaction();
+    $entityManager = $dic->get(EntityManagerInterface::class);
+    $playerDeletion = $dic->get(PlayerDeletionInterface::class);
 
-try {
-    $playerDeletion->handleDeleteable();
+    $entityManager->beginTransaction();
 
-    $entityManager->commit();
-} catch (Throwable $t) {
-    $entityManager->rollback();
+    try {
+        $playerDeletion->handleDeleteable();
 
-    throw $t;
-}
+        $entityManager->commit();
+    } catch (Throwable $t) {
+        $entityManager->rollback();
+
+        throw $t;
+    }
+});

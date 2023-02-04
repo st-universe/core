@@ -1,22 +1,31 @@
 <?php
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerInterface;
+use Stu\Config\Init;
 use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
 
-require_once __DIR__ . '/../../Config/Bootstrap.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
-$entityManager = $container->get(EntityManagerInterface::class);
+Init::run(function (ContainerInterface $dic): void {
+    /**
+     * @todo Remove $container after magic dic calls have been purged
+     */
+    global $container;
+    $container = $dic;
 
-$entityManager->beginTransaction();
+    $entityManager = $dic->get(EntityManagerInterface::class);
+    $colonyCorrector  = $dic->get(ColonyCorrectorInterface::class);
 
-$colonyCorrector  = $container->get(ColonyCorrectorInterface::class);
+    $entityManager->beginTransaction();
 
-try {
-    $colonyCorrector->correct();
+    try {
+        $colonyCorrector->correct();
 
-    $entityManager->commit();
-} catch (Throwable $t) {
-    $entityManager->rollback();
+        $entityManager->commit();
+    } catch (Throwable $t) {
+        $entityManager->rollback();
 
-    throw $t;
-}
+        throw $t;
+    }
+});

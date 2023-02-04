@@ -1,32 +1,42 @@
 <?php
 
+use Psr\Container\ContainerInterface;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
+use Stu\Config\Init;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
 
-require_once __DIR__ . '/../../Config/Bootstrap.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
-$starSystemTypeRepo = $container->get(StarSystemTypeRepositoryInterface::class);
+Init::run(function (ContainerInterface $dic): void {
+    /**
+     * @todo Remove $container after magic dic calls have been purged
+     */
+    global $container;
+    $container = $dic;
 
-$repository = $container->get(DatabaseEntryRepositoryInterface::class);
-$type = $container->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM_TYPE);
-$category = $container->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STAR_SYSTEM_TYPE);
+    $starSystemTypeRepo = $dic->get(StarSystemTypeRepositoryInterface::class);
 
-$result = $starSystemTypeRepo->getWithoutDatabaseEntry();
-foreach ($result as $key => $obj) {
-    $db = $repository->prototype();
-	$db->setCategory($category);
-	$db->setDescription($obj->getDescription());
-	$db->setSort($obj->getId());
-	$db->setData('');
-	$db->setTypeObject($type);
-	$db->setObjectId($obj->getId());
+    $repository = $dic->get(DatabaseEntryRepositoryInterface::class);
+    $type = $dic->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM_TYPE);
+    $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STAR_SYSTEM_TYPE);
 
-	$repository->save($db);
+    $result = $starSystemTypeRepo->getWithoutDatabaseEntry();
+    foreach ($result as $key => $obj) {
+        $db = $repository->prototype();
+        $db->setCategory($category);
+        $db->setDescription($obj->getDescription());
+        $db->setSort($obj->getId());
+        $db->setData('');
+        $db->setTypeObject($type);
+        $db->setObjectId($obj->getId());
 
-	$obj->setDatabaseId($db->getId());
-	$obj->save();
-}
+        $repository->save($db);
+
+        $obj->setDatabaseId($db->getId());
+        $obj->save();
+    }
+});

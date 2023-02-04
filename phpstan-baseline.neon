@@ -15186,11 +15186,6 @@ parameters:
 			path: src/Public/admin/help/createBuildplan.php
 
 		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 8
-			path: src/Public/admin/help/createBuildplan.php
-
-		-
 			message: "#^Cannot call method getMaxBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Public/admin/help/createShip.php
@@ -15203,11 +15198,6 @@ parameters:
 		-
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
-			path: src/Public/admin/help/createShip.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 11
 			path: src/Public/admin/help/createShip.php
 
 		-
@@ -15349,43 +15339,3 @@ parameters:
 			message: "#^Variable \\$container might not be defined\\.$#"
 			count: 1
 			path: src/admin/cron/tickmanager.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 2
-			path: src/admin/scripts/correctColonies.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 2
-			path: src/admin/scripts/deleteUser.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/admin/scripts/generate_colonyclass_dbentries.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/admin/scripts/generate_rump_dbentries.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/admin/scripts/generate_starsystem_dbentries.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/admin/scripts/generate_starsystemtype_dbentries.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 4
-			path: src/admin/scripts/generate_tradepost_dbentries.php
-
-		-
-			message: "#^Variable \\$container might not be defined\\.$#"
-			count: 6
-			path: src/admin/scripts/reset.php
