@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\CheckInput;
 
-use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuHashInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\BlockedUserRepositoryInterface;
-use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CheckInput implements ActionControllerInterface
@@ -29,32 +25,20 @@ final class CheckInput implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
-    private UserInvitationRepositoryInterface $userInvitationRepository;
-
     private BlockedUserRepositoryInterface $blockedUserRepository;
 
     private StuHashInterface $stuHash;
 
-    private ConfigInterface $config;
-
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         CheckInputRequestInterface $checkInputRequest,
         UserRepositoryInterface $userRepository,
-        UserInvitationRepositoryInterface $userInvitationRepository,
         BlockedUserRepositoryInterface $blockedUserRepository,
-        StuHashInterface $stuHash,
-        ConfigInterface $config,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        StuHashInterface $stuHash
     ) {
         $this->checkInputRequest = $checkInputRequest;
         $this->userRepository = $userRepository;
-        $this->userInvitationRepository = $userInvitationRepository;
         $this->blockedUserRepository = $blockedUserRepository;
         $this->stuHash = $stuHash;
-        $this->config = $config;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -88,14 +72,6 @@ final class CheckInput implements ActionControllerInterface
                 }
                 if ($this->blockedUserRepository->getByEmailHash($this->stuHash->hash($value))) {
                     $state = self::REGISTER_STATE_BLK;
-                    break;
-                }
-                $state = self::REGISTER_STATE_OK;
-                break;
-            case 'token':
-                $invitation = $this->userInvitationRepository->getByToken($value);
-
-                if ($invitation === null || !$invitation->isValid($this->config->get('game.invitation.ttl'))) {
                     break;
                 }
                 $state = self::REGISTER_STATE_OK;

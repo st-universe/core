@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\Register;
 
 use Noodlehaus\ConfigInterface;
-use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -37,6 +36,9 @@ final class Register implements ActionControllerInterface
         $this->config = $config;
     }
 
+    /**
+     * @todo add registration without sms
+     */
     public function handle(GameControllerInterface $game): void
     {
         if (!$this->config->get('game.registration.enabled')) {
@@ -58,44 +60,19 @@ final class Register implements ActionControllerInterface
         $loginname = trim(mb_strtolower($this->registerRequest->getLoginName()));
         $email = trim(mb_strtolower($this->registerRequest->getEmailAddress()));
 
-        try {
-            if ($this->config->get('game.registration.sms_code_verification.enabled')) {
-                $mobileNumber = $this->registerRequest->getMobileNumber();
+        $mobileNumber = $this->registerRequest->getMobileNumber();
 
-                if ($mobileNumber === null) {
-                    return;
-                }
-                $this->registerViaSms($loginname, $email, trim($mobileNumber), $factions);
-            } else {
-                $this->registerViaToken($loginname, $email, $factions);
-            }
-        } catch (RegistrationException $e) {
+        if ($mobileNumber === null) {
             return;
         }
-
-        $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
-    }
-
-    private function registerViaSms(string $loginname, string $email, string $mobileNumber, array $factions): void
-    {
         $this->playerCreator->createWithMobileNumber(
             $loginname,
             $email,
             current($factions),
-            $mobileNumber
+            trim($mobileNumber)
         );
-    }
 
-    private function registerViaToken(string $loginname, string $email, array $factions): void
-    {
-        $token = $this->registerRequest->getToken();
-
-        $this->playerCreator->createViaToken(
-            $loginname,
-            $email,
-            current($factions),
-            $token
-        );
+        $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool

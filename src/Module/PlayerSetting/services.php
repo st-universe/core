@@ -24,7 +24,6 @@ use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterfac
 use Stu\Module\PlayerSetting\Action\ActivateVacation\ActivateVacation;
 use Stu\Module\PlayerSetting\Action\ChangeRgbCode\ChangeRgbCode;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
-use Stu\Module\PlayerSetting\Action\RequestInvitationToken\RequestInvitationToken;
 use Stu\Module\PlayerSetting\View\Overview\Overview;
 use function DI\autowire;
 
@@ -35,7 +34,6 @@ return [
     ChangeDescriptionRequestInterface::class => autowire(ChangeDescriptionRequest::class),
     ChangeSettingsRequestInterface::class => autowire(ChangeSettingsRequest::class),
     'PLAYER_SETTING_ACTIONS' => [
-        RequestInvitationToken::ACTION_IDENTIFIER => autowire(RequestInvitationToken::class),
         ChangeUserName::ACTION_IDENTIFIER => autowire(ChangeUserName::class),
         ChangePassword::ACTION_IDENTIFIER => autowire(ChangePassword::class),
         ChangeEmail::ACTION_IDENTIFIER => autowire(ChangeEmail::class),

@@ -1918,16 +1918,6 @@ parameters:
 		-
 			message: "#^Cannot call method isAdmin\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
-			path: src/Module/Admin/View/ShowInvitationTree/ShowInvitationTree.php
-
-		-
-			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/ShowInvitationTree/ShowInvitationTree.php
-
-		-
-			message: "#^Cannot call method isAdmin\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
 			path: src/Module/Admin/View/ShowSignatures/ShowSignatures.php
 
 		-
@@ -5936,24 +5926,9 @@ parameters:
 			path: src/Module/History/View/Overview/OverviewRequestInterface.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Index\\\\Action\\\\CheckInput\\\\CheckInput\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Index/Action/CheckInput/CheckInput.php
-
-		-
 			message: "#^Cannot call method getStartPage\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Index/Action/Login/Login.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\Register\\\\Register\\:\\:registerViaSms\\(\\) has parameter \\$factions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Index/Action/Register/Register.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Index\\\\Action\\\\Register\\\\Register\\:\\:registerViaToken\\(\\) has parameter \\$factions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Index/Action/Register/Register.php
 
 		-
 			message: "#^Parameter \\#1 \\$password of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:setPassword\\(\\) expects string, string\\|false given\\.$#"
@@ -6664,16 +6639,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Player\\\\Deletion\\\\Confirmation\\\\RequestDeletionConfirmation\\:\\:request\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/Action/DeleteAccount/DeleteAccount.php
-
-		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Component\\\\Player\\\\Invitation\\\\InvitePlayerInterface\\:\\:invite\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/RequestInvitationToken/RequestInvitationToken.php
-
-		-
-			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Repository\\\\UserInvitationRepositoryInterface\\:\\:getInvitationsByUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/RequestInvitationToken/RequestInvitationToken.php
 
 		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Repository\\\\ResearchedRepositoryInterface\\:\\:getCurrentResearch\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"

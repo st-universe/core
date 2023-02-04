@@ -8,16 +8,12 @@ use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
-use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\UserInvitationInterface;
-use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 class PlayerCreatorTest extends MockeryTestCase
@@ -44,19 +40,9 @@ class PlayerCreatorTest extends MockeryTestCase
     private $smsVerificationCodeSender;
 
     /**
-     * @var null|MockInterface|UserInvitationRepositoryInterface
-     */
-    private $userInvitationRepository;
-
-    /**
      * @var null|MockInterface|StuHashInterface
      */
     private $stuHash;
-
-    /**
-     * @var null|MockInterface|ConfigInterface
-     */
-    private $config;
 
     /**
      * @var null|MockInterface|PasswordGeneratorInterface
@@ -74,9 +60,7 @@ class PlayerCreatorTest extends MockeryTestCase
         $this->playerDefaultsCreator = Mockery::mock(PlayerDefaultsCreatorInterface::class);
         $this->registrationEmailSender = Mockery::mock(RegistrationEmailSenderInterface::class);
         $this->smsVerificationCodeSender = Mockery::mock(SmsVerificationCodeSenderInterface::class);
-        $this->userInvitationRepository = Mockery::mock(UserInvitationRepositoryInterface::class);
         $this->stuHash = Mockery::mock(StuHashInterface::class);
-        $this->config = Mockery::mock(ConfigInterface::class);
         $this->passwordGenerator = Mockery::mock(PasswordGeneratorInterface::class);
 
         $this->creator = new PlayerCreator(
@@ -84,9 +68,7 @@ class PlayerCreatorTest extends MockeryTestCase
             $this->playerDefaultsCreator,
             $this->registrationEmailSender,
             $this->smsVerificationCodeSender,
-            $this->userInvitationRepository,
             $this->stuHash,
-            $this->config,
             $this->passwordGenerator
         );
     }
@@ -95,11 +77,11 @@ class PlayerCreatorTest extends MockeryTestCase
     {
         $this->expectException(LoginNameInvalidException::class);
 
-        $this->creator->createViaToken(
+        $this->creator->createWithMobileNumber(
             'meh',
             'lol',
             Mockery::mock(FactionInterface::class),
-            'zomg'
+            'mobile'
         );
     }
 
@@ -107,11 +89,11 @@ class PlayerCreatorTest extends MockeryTestCase
     {
         $this->expectException(EmailAddressInvalidException::class);
 
-        $this->creator->createViaToken(
+        $this->creator->createWithMobileNumber(
             'mehzomglol',
             'lol',
             Mockery::mock(FactionInterface::class),
-            'zomg'
+            'mobile'
         );
     }
 
@@ -126,11 +108,11 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturn(Mockery::mock(UserInterface::class));
 
-        $this->creator->createViaToken(
+        $this->creator->createWithMobileNumber(
             $loginname,
             'lol@example.com',
             Mockery::mock(FactionInterface::class),
-            'zomg'
+            'mobile'
         );
     }
 
@@ -150,84 +132,11 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturn(Mockery::mock(UserInterface::class));
 
-        $this->creator->createViaToken(
+        $this->creator->createWithMobileNumber(
             $loginname,
             $email,
             Mockery::mock(FactionInterface::class),
-            'zomg'
-        );
-    }
-
-    public function testCreateThrowsErrorOnNonExistingInvitation(): void
-    {
-        $this->expectException(InvitationTokenInvalidException::class);
-
-        $loginname = 'mehzomglol';
-        $email = 'lol@example.com';
-        $token = 'some-token';
-
-        $this->userRepository->shouldReceive('getByLogin')
-            ->with($loginname)
-            ->once()
-            ->andReturnNull();
-        $this->userRepository->shouldReceive('getByEmail')
-            ->with($email)
-            ->once()
-            ->andReturnNull();
-
-        $this->userInvitationRepository->shouldReceive('getByToken')
-            ->with($token)
-            ->once()
-            ->andReturnNull();
-
-        $this->creator->createViaToken(
-            $loginname,
-            $email,
-            Mockery::mock(FactionInterface::class),
-            $token
-        );
-    }
-
-    public function testCreateThrowsErrorOnInvalidInvitation(): void
-    {
-        $this->expectException(InvitationTokenInvalidException::class);
-
-        $loginname = 'mehzomglol';
-        $email = 'lol@example.com';
-        $token = 'some-token';
-        $ttl = 666;
-
-        $invitation = Mockery::mock(UserInvitationInterface::class);
-
-        $this->userRepository->shouldReceive('getByLogin')
-            ->with($loginname)
-            ->once()
-            ->andReturnNull();
-        $this->userRepository->shouldReceive('getByEmail')
-            ->with($email)
-            ->once()
-            ->andReturnNull();
-
-        $this->userInvitationRepository->shouldReceive('getByToken')
-            ->with($token)
-            ->once()
-            ->andReturn($invitation);
-
-        $this->config->shouldReceive('get')
-            ->with('game.invitation.ttl')
-            ->once()
-            ->andReturn($ttl);
-
-        $invitation->shouldReceive('isValid')
-            ->with($ttl)
-            ->once()
-            ->andReturnFalse();
-
-        $this->creator->createViaToken(
-            $loginname,
-            $email,
-            Mockery::mock(FactionInterface::class),
-            $token
+            'mobile'
         );
     }
 
@@ -235,23 +144,12 @@ class PlayerCreatorTest extends MockeryTestCase
     {
         $loginname = 'mehzomgLoL';
         $email = 'lol@example.com';
-        $token = 'some-token';
-        $ttl = 666;
         $user_id = 42;
-        $generated_password = 'snafu';
+        $password = 'snafu';
 
-        $invitation = Mockery::mock(UserInvitationInterface::class);
         $user = Mockery::mock(UserInterface::class);
         $faction = Mockery::mock(FactionInterface::class);
 
-        $this->userRepository->shouldReceive('getByLogin')
-            ->with($loginname)
-            ->once()
-            ->andReturnNull();
-        $this->userRepository->shouldReceive('getByEmail')
-            ->with($email)
-            ->once()
-            ->andReturnNull();
         $this->userRepository->shouldReceive('save')
             ->with($user)
             ->twice();
@@ -259,24 +157,6 @@ class PlayerCreatorTest extends MockeryTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-
-        $this->userInvitationRepository->shouldReceive('getByToken')
-            ->with($token)
-            ->once()
-            ->andReturn($invitation);
-        $this->userInvitationRepository->shouldReceive('save')
-            ->with($invitation)
-            ->once();
-
-        $this->config->shouldReceive('get')
-            ->with('game.invitation.ttl')
-            ->once()
-            ->andReturn($ttl);
-
-        $invitation->shouldReceive('isValid')
-            ->with($ttl)
-            ->once()
-            ->andReturnTrue();
 
         $user->shouldReceive('setLogin')
             ->with($loginname)
@@ -303,38 +183,29 @@ class PlayerCreatorTest extends MockeryTestCase
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('setPassword')
-            ->with(Mockery::on(function (string $password) use ($generated_password): bool {
-                return password_verify($generated_password, $password);
+            ->with(Mockery::on(function (string $passwordParam) use ($password): bool {
+                return password_verify($password, $passwordParam);
             }))
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('getId')
             ->withNoArgs()
-            ->twice()
-            ->andReturn($user_id);
-
-        $this->passwordGenerator->shouldReceive('generatePassword')
-            ->withNoArgs()
             ->once()
-            ->andReturn($generated_password);
-
-        $invitation->shouldReceive('setInvitedUserId')
-            ->with($user_id)
-            ->once();
+            ->andReturn($user_id);
 
         $this->playerDefaultsCreator->shouldReceive('createDefault')
             ->with($user)
             ->once();
 
         $this->registrationEmailSender->shouldReceive('send')
-            ->with($user, $generated_password)
+            ->with($user, $password)
             ->once();
 
-        $this->creator->createViaToken(
+        $this->creator->createPlayer(
             $loginname,
             $email,
             $faction,
-            $token
+            $password
         );
     }
 }

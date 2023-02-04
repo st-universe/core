@@ -27,15 +27,6 @@
 					<div id="emailblk" style="color: #FFAA00; display: none;">Diese E-Mailadresse ist blockiert</div>
 				</div>
 				<br />
-				<tal:block tal:condition="not:IS_SMS_REGISTRATION">
-					<div class="divhead">Einladungs-Code</div>
-					<div class="divbody">
-						<input tal:attributes="value TOKEN" type="text" class="text" size="25" name="token" id="token"
-							onblur="checkToken(this,this.value)" />
-						<span id="tokenerror" style="display: none; color: #FF0000;">Fehler</span>
-						<span id="tokenok" style="display: none; color: Green;">OK</span>
-					</div>
-				</tal:block>
 				<tal:block tal:condition="IS_SMS_REGISTRATION">
 					<div class="divhead">Mobilfunknummer zur SMS Verifikation (DE/AT/CH)<img
 							title="z.B. +49 176 55555, 0049170666666 oder +491501234567" src="assets/buttons/info2.png"

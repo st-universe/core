@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Control;
+namespace Stu\Module\Index\Action\Register;
 
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
-use Stu\Module\Index\Action\Register\Register;
-use Stu\Module\Index\Action\Register\RegisterRequestInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -134,9 +133,9 @@ class RegisterTest extends StuTestCase
             ->once()
             ->andThrow(new LoginNameInvalidException());
 
-        $this->register->handle($this->gameMock);
+        static::expectException(LoginNameInvalidException::class);
 
-        $this->gameMock->shouldNotHaveBeenCalled();
+        $this->register->handle($this->gameMock);
     }
 
     public function testHandleShowFinishRegistrationIfSmsRegistrationSuccessful(): void
@@ -189,61 +188,6 @@ class RegisterTest extends StuTestCase
         //player creator
         $this->playerCreatorMock->shouldReceive('createWithMobileNumber')
             ->with('login', 'email', $this->factionMock, '12345')
-            ->once();
-
-        $this->register->handle($this->gameMock);
-    }
-
-    public function testHandleShowFinishRegistrationIfTokenRegistrationSuccessful(): void
-    {
-        //config
-        $this->configMock->shouldReceive('get')
-            ->with('game.registration.enabled')
-            ->andReturn(true);
-        $this->configMock->shouldReceive('get')
-            ->with('game.registration.sms_code_verification.enabled')
-            ->andReturn(false);
-
-        //request
-        $this->requestMock->shouldReceive('getFactionId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(5);
-        $this->requestMock->shouldReceive('getLoginName')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(' LOGIN ');
-        $this->requestMock->shouldReceive('getEmailAddress')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(' EMAIL ');
-        $this->requestMock->shouldReceive('getToken')
-            ->withNoArgs()
-            ->once()
-            ->andReturn('token');
-
-        //faction
-        $this->factionRepositoryMock->shouldReceive('getByChooseable')
-            ->with(true)
-            ->once()
-            ->andReturn([$this->factionMock]);
-        $this->factionMock->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(5);
-        $this->factionMock->shouldReceive('hasFreePlayerSlots')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
-
-        //game
-        $this->gameMock->shouldReceive('setView')
-            ->with(ShowFinishRegistration::VIEW_IDENTIFIER)
-            ->once();
-
-        //player creator
-        $this->playerCreatorMock->shouldReceive('createViaToken')
-            ->with('login', 'email', $this->factionMock, 'token')
             ->once();
 
         $this->register->handle($this->gameMock);

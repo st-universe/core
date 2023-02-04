@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Player\Register;
 
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
-use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
-use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\MobileNumberInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
@@ -15,7 +13,6 @@ use Stu\Module\Control\StuHashInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
@@ -31,10 +28,6 @@ class PlayerCreator implements PlayerCreatorInterface
 
     private SmsVerificationCodeSenderInterface $smsVerificationCodeSender;
 
-    private UserInvitationRepositoryInterface $userInvitationRepository;
-
-    private ConfigInterface $config;
-
     private StuHashInterface $stuHash;
 
     private PasswordGeneratorInterface $passwordGenerator;
@@ -44,45 +37,15 @@ class PlayerCreator implements PlayerCreatorInterface
         PlayerDefaultsCreatorInterface $playerDefaultsCreator,
         RegistrationEmailSenderInterface $registrationEmailSender,
         SmsVerificationCodeSenderInterface $smsVerificationCodeSender,
-        UserInvitationRepositoryInterface $userInvitationRepository,
         StuHashInterface $stuHash,
-        ConfigInterface $config,
         PasswordGeneratorInterface $passwordGenerator
     ) {
         $this->userRepository = $userRepository;
         $this->playerDefaultsCreator = $playerDefaultsCreator;
         $this->registrationEmailSender = $registrationEmailSender;
         $this->smsVerificationCodeSender = $smsVerificationCodeSender;
-        $this->userInvitationRepository = $userInvitationRepository;
         $this->stuHash = $stuHash;
-        $this->config = $config;
         $this->passwordGenerator = $passwordGenerator;
-    }
-
-    public function createViaToken(
-        string $loginName,
-        string $emailAddress,
-        FactionInterface $faction,
-        string $token
-    ): void {
-        $this->checkForException($loginName, $emailAddress);
-
-        $invitation = $this->userInvitationRepository->getByToken($token);
-
-        if ($invitation === null || !$invitation->isValid($this->config->get('game.invitation.ttl'))) {
-            throw new InvitationTokenInvalidException();
-        }
-
-        $player = $this->createPlayer(
-            $loginName,
-            $emailAddress,
-            $faction,
-            $this->passwordGenerator->generatePassword()
-        );
-
-        $invitation->setInvitedUserId($player->getId());
-
-        $this->userInvitationRepository->save($invitation);
     }
 
     public function createWithMobileNumber(

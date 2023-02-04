@@ -10,7 +10,6 @@ use function DI\get;
 return [
     DatabaseBackup::class => autowire(DatabaseBackup::class),
     MapCycle::class => autowire(MapCycle::class),
-    ExpiredInvitationTokenDeletion::class => autowire(ExpiredInvitationTokenDeletion::class),
     OldTachyonScanDeletion::class => autowire(OldTachyonScanDeletion::class),
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
     CorruptFleetDeletion::class => autowire(CorruptFleetDeletion::class),
@@ -24,7 +23,6 @@ return [
     'maintenance_handler' => [
         get(DatabaseBackup::class),
         get(MapCycle::class),
-        get(ExpiredInvitationTokenDeletion::class),
         get(OldTachyonScanDeletion::class),
         get(OldTradeOffersDeletion::class),
         get(CorruptFleetDeletion::class),

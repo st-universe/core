@@ -10,38 +10,25 @@ use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\PlayerSetting\Lib\InvitationItem;
 use Stu\Orm\Entity\NewsInterface;
-use Stu\Orm\Entity\UserInvitationInterface;
 use Stu\Orm\Repository\NewsRepositoryInterface;
-use Stu\Orm\Repository\UserInvitationRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-
-    private UserInvitationRepositoryInterface $userInvitationRepository;
-
     private ConfigInterface $config;
 
     private NewsRepositoryInterface $newsRepository;
 
     private NewsFactoryInterface $newsFactory;
 
-    private UserRepositoryInterface $userRepository;
-
     public function __construct(
-        UserInvitationRepositoryInterface $userInvitationRepository,
         ConfigInterface $config,
         NewsRepositoryInterface $newsRepository,
         NewsFactoryInterface $newsFactory,
-        UserRepositoryInterface $userRepository
     ) {
-        $this->userInvitationRepository = $userInvitationRepository;
         $this->config = $config;
         $this->newsRepository = $newsRepository;
         $this->newsFactory = $newsFactory;
-        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -78,26 +65,5 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('WIKI', $this->config->get('wiki.base_url'));
         $game->setTemplateVar('STARTPAGE', $user->getStartPage());
         $game->setTemplateVar('STARTPAGE_VALUES', ModuleViewEnum::MODULE_VIEW_ARRAY);
-
-        $invitations = $this->userInvitationRepository->getInvitationsByUser($user);
-
-        //invitation only possible if sms registration disabled
-        if ($this->config->get('game.registration.sms_code_verification.enabled')) {
-            $game->setTemplateVar('INVITATION_POSSIBLE', false);
-        } else {
-            $game->setTemplateVar(
-                'INVITATION_POSSIBLE',
-                count($invitations) < $this->config->get('game.invitation.tokens_per_user')
-            );
-        }
-        $game->setTemplateVar(
-            'INVITATIONS',
-            array_map(
-                function (UserInvitationInterface $userInvitation): InvitationItem {
-                    return new InvitationItem($this->config, $userInvitation, $this->userRepository);
-                },
-                $invitations
-            )
-        );
     }
 }

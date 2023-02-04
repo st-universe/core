@@ -16,8 +16,6 @@ use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmationInterf
 use Stu\Component\Player\Deletion\Handler;
 use Stu\Component\Player\Deletion\PlayerDeletion;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
-use Stu\Component\Player\Invitation\InvitePlayer;
-use Stu\Component\Player\Invitation\InvitePlayerInterface;
 use Stu\Component\Player\Register\LocalPlayerCreator;
 use Stu\Component\Player\Register\PlayerCreator;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
@@ -36,7 +34,6 @@ use function DI\get;
 return [
     ColonyLimitCalculatorInterface::class => autowire(ColonyLimitCalculator::class),
     ColonizationCheckerInterface::class => autowire(ColonizationChecker::class),
-    InvitePlayerInterface::class => autowire(InvitePlayer::class),
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
     PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
         get(UserRepositoryInterface::class),

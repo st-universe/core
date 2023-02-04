@@ -7,12 +7,9 @@ namespace Stu\Component\Player\Register;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Mockery;
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
-use Psr\Container\ContainerInterface;
 use Stu\Module\Control\StuHashInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -30,14 +27,8 @@ class LocalPlayerCreatorTest extends StuTestCase
     /** @var MockInterface&SmsVerificationCodeSenderInterface */
     private MockInterface $smsVerificationCodeSender;
 
-    /** @var MockInterface&MockInterface */
-    private MockInterface $userInvitationRepository;
-
     /** @var MockInterface&StuHashInterface */
     private MockInterface $stuHash;
-
-    /** @var MockInterface&ConfigInterface */
-    private MockInterface $config;
 
     /** @var MockInterface&PasswordGeneratorInterface */
     private MockInterface $passwordGenerator;
@@ -50,9 +41,7 @@ class LocalPlayerCreatorTest extends StuTestCase
         $this->playerDefaultsCreator = $this->mock(PlayerDefaultsCreatorInterface::class);
         $this->registrationEmailSender = $this->mock(RegistrationEmailSenderInterface::class);
         $this->smsVerificationCodeSender = $this->mock(SmsVerificationCodeSenderInterface::class);
-        $this->userInvitationRepository = $this->mock(UserInvitationRepositoryInterface::class);
         $this->stuHash = $this->mock(StuHashInterface::class);
-        $this->config = $this->mock(ConfigInterface::class);
         $this->passwordGenerator = $this->mock(PasswordGeneratorInterface::class);
 
         $this->subject = new LocalPlayerCreator(
@@ -60,9 +49,7 @@ class LocalPlayerCreatorTest extends StuTestCase
             $this->playerDefaultsCreator,
             $this->registrationEmailSender,
             $this->smsVerificationCodeSender,
-            $this->userInvitationRepository,
             $this->stuHash,
-            $this->config,
             $this->passwordGenerator
         );
     }
