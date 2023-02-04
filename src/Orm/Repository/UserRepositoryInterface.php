@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
@@ -49,9 +50,11 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getByLogin(string $loginName): ?UserInterface;
 
     /**
-     * @return UserInterface[]
+     * Returns all members of the given alliance
+     *
+     * @return array<UserInterface>
      */
-    public function getByAlliance(int $allianceId): iterable;
+    public function getByAlliance(AllianceInterface $alliance): iterable;
 
     /**
      * @return UserInterface[]

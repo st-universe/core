@@ -67,6 +67,6 @@ final class ManagementListItemTal
 
     public function getShipRumpList(): array
     {
-        return $this->shipRumpRepository->getGroupedInfoByUser((int) $this->user->getId());
+        return $this->shipRumpRepository->getGroupedInfoByUser($this->user);
     }
 }

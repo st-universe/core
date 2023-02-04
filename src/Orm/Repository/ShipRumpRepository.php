@@ -9,31 +9,31 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\Storage;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<ShipRump>
  */
 final class ShipRumpRepository extends EntityRepository implements ShipRumpRepositoryInterface
 {
-    public function getGroupedInfoByUser(int $userId): array
+    public function getGroupedInfoByUser(UserInterface $user): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('rump_id', 'rump_id');
-        $rsm->addScalarResult('amount', 'amount');
-        $rsm->addScalarResult('name', 'name');
-
         return $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT r.id as rump_id, r.name, COUNT(r.id) as amount FROM stu_rumps r LEFT JOIN stu_ships s ON
-                    s.rumps_id = r.id WHERE s.user_id = :userId GROUP BY r.id, r.name',
-                $rsm
+            ->createQuery(
+                sprintf(
+                    'SELECT s.rumps_id as rump_id, r.name, COUNT(s.id) as amount FROM %s s LEFT JOIN %s r WITH
+                    r.id = s.rumps_id WHERE s.user = :user GROUP BY s.rumps_id, r.name ORDER BY s.rumps_id',
+                    Ship::class,
+                    ShipRump::class
+                )
             )
             ->setParameters([
-                'userId' => $userId
+                'user' => $user
             ])
             ->getResult();
     }

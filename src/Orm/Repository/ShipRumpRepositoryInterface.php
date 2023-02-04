@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<ShipRump>
@@ -16,7 +17,7 @@ interface ShipRumpRepositoryInterface extends ObjectRepository
     /**
      * @return array<array{rump_id: int, amount: int, name: string}>
      */
-    public function getGroupedInfoByUser(int $userId): array;
+    public function getGroupedInfoByUser(UserInterface $user): array;
 
     /**
      * @return ShipRumpInterface[]

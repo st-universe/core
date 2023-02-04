@@ -9,6 +9,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
@@ -126,11 +127,16 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         ]);
     }
 
-    public function getByAlliance(int $allianceId): iterable
+    public function getByAlliance(AllianceInterface $alliance): iterable
     {
-        return $this->findBy([
-            'allys_id' => $allianceId
-        ]);
+        return $this->findBy(
+            [
+                'alliance' => $alliance
+            ],
+            [
+                'id' => 'ASC'
+            ]
+        );
     }
 
     public function getList(
