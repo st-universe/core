@@ -507,36 +507,34 @@ class Colony implements ColonyInterface
     {
         $twilightZone = 0;
 
-        if ($this->twilightZone === null) {
-            $width = $this->getSurfaceWidth();
-            $rotationTime = $this->getRotationTime();
-            $colonyTimeSeconds = $this->getColonyTimeSeconds();
+        $width = $this->getSurfaceWidth();
+        $rotationTime = $this->getRotationTime();
+        $colonyTimeSeconds = $this->getColonyTimeSeconds();
 
-            if ($this->getDayTimePrefix() == 1) {
-                $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
-                if ($scaled == 0) {
-                    $twilightZone = (int) - (($width) - 1);
+        if ($this->getDayTimePrefix() == 1) {
+            $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
+            if ($scaled == 0) {
+                $twilightZone = (int) - (($width) - 1);
+            } else {
+                if ((int) - (($width) - ceil($scaled)) == 0) {
+                    $twilightZone = -1;
                 } else {
-                    if ((int) - (($width) - ceil($scaled)) == 0) {
-                        $twilightZone = -1;
-                    } else {
-                        $twilightZone = (int) - (($width) - $scaled);
-                    }
+                    $twilightZone = (int) - (($width) - $scaled);
                 }
             }
-            if ($this->getDayTimePrefix() == 2) {
-                $twilightZone = $width;
-            }
-            if ($this->getDayTimePrefix() == 3) {
-                $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.75)) / 100) * $width);
-                $twilightZone = (int) ($width - $scaled);
-            }
-            if ($this->getDayTimePrefix() == 4) {
-                $twilightZone = 0;
-            }
-
-            $this->twilightZone = $twilightZone;
         }
+        if ($this->getDayTimePrefix() == 2) {
+            $twilightZone = $width;
+        }
+        if ($this->getDayTimePrefix() == 3) {
+            $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.75)) / 100) * $width);
+            $twilightZone = (int) ($width - $scaled);
+        }
+        if ($this->getDayTimePrefix() == 4) {
+            $twilightZone = 0;
+        }
+
+        $this->twilightZone = $twilightZone;
 
         return $twilightZone;
     }
