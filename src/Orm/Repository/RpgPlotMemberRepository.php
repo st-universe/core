@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<RpgPlotMember>
@@ -41,10 +42,10 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
         $em->flush();
     }
 
-    public function getByUser(int $userId): array
+    public function getByUser(UserInterface $user): array
     {
         return $this->findBy([
-            'user_id' => $userId
+            'user' => $user
         ]);
     }
 

@@ -307,9 +307,6 @@ class User implements UserInterface
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
 
-    /** @var null|array<UserInterface> */
-    private $friends;
-
     public function __construct()
     {
         $this->awards = new ArrayCollection();
@@ -722,20 +719,6 @@ class User implements UserInterface
             return false;
         }
         return true;
-    }
-
-    public function getFriends(): array
-    {
-        if ($this->friends === null) {
-            // @todo refactor
-            global $container;
-
-            $this->friends = $container->get(UserRepositoryInterface::class)->getFriendsByUserAndAlliance(
-                $this->getId(),
-                (int) $this->getAllianceId()
-            );
-        }
-        return $this->friends;
     }
 
     public function getAlliance(): ?AllianceInterface

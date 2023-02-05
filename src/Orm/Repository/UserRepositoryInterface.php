@@ -67,9 +67,9 @@ interface UserRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @return UserInterface[]
+     * @return iterable<UserInterface>
      */
-    public function getFriendsByUserAndAlliance(int $userId, int $allianceId): iterable;
+    public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable;
 
     /**
      * @return UserInterface[]

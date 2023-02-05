@@ -12071,11 +12071,6 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getFriends\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/User.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\User\\:\\:getSessionDataUnserialized\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
@@ -12134,11 +12129,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserAward.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getFriends\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserInterface.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getSessionDataUnserialized\\(\\) return type has no value type specified in iterable type array\\.$#"

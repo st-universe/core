@@ -15,12 +15,12 @@ use Stu\Orm\Entity\UserProfileVisitorInterface;
  */
 final class UserProfileVisitorRepository extends EntityRepository implements UserProfileVisitorRepositoryInterface
 {
-    public function isVisitRegistered(int $profileUserId, int $userId): bool
+    public function isVisitRegistered(UserInterface $user, UserInterface $visitor): bool
     {
         return $this->count([
-            'user_id' => $userId,
-            'recipient' => $profileUserId,
-        ]) > 0;
+            'user' => $visitor,
+            'opponent' => $user,
+        ]) !== 0;
     }
 
     public function prototype(): UserProfileVisitorInterface

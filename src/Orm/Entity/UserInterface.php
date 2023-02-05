@@ -158,8 +158,6 @@ interface UserInterface
 
     public function isOnline(): bool;
 
-    public function getFriends(): array;
-
     public function getAlliance(): ?AllianceInterface;
 
     public function setAlliance(?AllianceInterface $alliance): UserInterface;

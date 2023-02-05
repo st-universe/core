@@ -12,7 +12,7 @@ use Stu\Orm\Entity\UserProfileVisitorInterface;
  */
 interface UserProfileVisitorRepositoryInterface extends ObjectRepository
 {
-    public function isVisitRegistered(int $profileUserId, int $userId): bool;
+    public function isVisitRegistered(UserInterface $user, UserInterface $visitor): bool;
 
     public function prototype(): UserProfileVisitorInterface;
 

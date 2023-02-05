@@ -162,8 +162,12 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $query->getResult();
     }
 
-    public function getFriendsByUserAndAlliance(int $userId, int $allianceId): iterable
+    public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable
     {
+        $allianceId = $alliance === null
+            ? 0
+            : $alliance->getId();
+
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u WHERE u.id IN (
@@ -175,7 +179,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'mode' => ContactListModeEnum::CONTACT_FRIEND,
-            'userId' => $userId,
+            'userId' => $user->getId(),
             'allianceId' => $allianceId
         ])->getResult();
     }
