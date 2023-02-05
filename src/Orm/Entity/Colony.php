@@ -505,6 +505,7 @@ class Colony implements ColonyInterface
 
     public function getTwilightZone(): int
     {
+        $twilightZone = 0;
 
         if ($this->twilightZone === null) {
             $width = $this->getSurfaceWidth();
