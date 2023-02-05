@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Component\Building;
+namespace Stu\Component\Building;
 
 use Mockery\MockInterface;
-use Stu\Component\Building\BuildingManager;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -21,16 +20,21 @@ class BuildingManagerTest extends StuTestCase
     /** @var MockInterface&ColonyRepositoryInterface */
     private MockInterface $colonyRepository;
 
+    /** @var MockInterface&BuildingPostActionInterface */
+    private MockInterface $buildingPostAction;
+
     private BuildingManager $buildingManager;
 
     public function setUp(): void
     {
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
+        $this->buildingPostAction = $this->mock(BuildingPostActionInterface::class);
 
         $this->buildingManager = new BuildingManager(
             $this->planetFieldRepository,
-            $this->colonyRepository
+            $this->colonyRepository,
+            $this->buildingPostAction
         );
     }
 
@@ -202,8 +206,9 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($housing);
-        $building->shouldReceive('postActivation')
-            ->with($colony)
+
+        $this->buildingPostAction->shouldReceive('handleActivation')
+            ->with($building, $colony)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')
@@ -335,8 +340,9 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($housing);
-        $building->shouldReceive('postDeactivation')
-            ->with($colony)
+
+        $this->buildingPostAction->shouldReceive('handleDeactivation')
+            ->with($building, $colony)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')
@@ -418,8 +424,9 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($housing);
-        $building->shouldReceive('postDeactivation')
-            ->with($colony)
+
+        $this->buildingPostAction->shouldReceive('handleDeactivation')
+            ->with($building, $colony)
             ->once();
 
         $this->planetFieldRepository->shouldReceive('save')

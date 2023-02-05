@@ -100,9 +100,5 @@ interface BuildingInterface
      */
     public function getFunctions(): Collection;
 
-    public function postDeactivation(ColonyInterface $colony): void;
-
-    public function postActivation(ColonyInterface $colony): void;
-
     public function isRemovable(): bool;
 }

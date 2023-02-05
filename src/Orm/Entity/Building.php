@@ -10,11 +10,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\Index;
 use Stu\Component\Building\BuildingEnum;
-use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingRepository")
@@ -407,40 +406,6 @@ class Building implements BuildingInterface
     public function getFunctions(): Collection
     {
         return $this->functions;
-    }
-
-    public function postDeactivation(ColonyInterface $colony): void
-    {
-        // @todo refactor
-        global $container;
-
-        $buildingFunctionActionMapper = $container->get(BuildingFunctionActionMapperInterface::class);
-
-        foreach ($this->getFunctions() as $function) {
-            $buildingFunctionId = $function->getFunction();
-
-            $handler = $buildingFunctionActionMapper->map($buildingFunctionId);
-            if ($handler !== null) {
-                $handler->deactivate($buildingFunctionId, $colony);
-            }
-        }
-    }
-
-    public function postActivation(ColonyInterface $colony): void
-    {
-        // @todo refactor
-        global $container;
-
-        $buildingFunctionActionMapper = $container->get(BuildingFunctionActionMapperInterface::class);
-
-        foreach ($this->getFunctions() as $function) {
-            $buildingFunctionId = $function->getFunction();
-
-            $handler = $buildingFunctionActionMapper->map($buildingFunctionId);
-            if ($handler !== null) {
-                $handler->activate($buildingFunctionId, $colony);
-            }
-        }
     }
 
     public function isRemovable(): bool

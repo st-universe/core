@@ -110,9 +110,7 @@ class AllianceBoard implements AllianceBoardInterface
     {
         return array_reduce(
             $this->topics->toArray(),
-            function (int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int {
-                return $sum + $allianceBoardTopic->getPostCount();
-            },
+            fn (int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
             0
         );
     }

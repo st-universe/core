@@ -19,12 +19,16 @@ final class BuildingManager implements BuildingManagerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private BuildingPostActionInterface $buildingPostAction;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        BuildingPostActionInterface $buildingPostAction
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->buildingPostAction = $buildingPostAction;
     }
 
     public function activate(PlanetFieldInterface $field): void
@@ -60,7 +64,8 @@ final class BuildingManager implements BuildingManagerInterface
         $field->setActive(1);
 
         $this->planetFieldRepository->save($field);
-        $building->postActivation($colony);
+
+        $this->buildingPostAction->handleActivation($building, $colony);
 
         $this->colonyRepository->save($colony);
     }
@@ -86,7 +91,9 @@ final class BuildingManager implements BuildingManagerInterface
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
-        $building->postDeactivation($colony);
+
+        $this->buildingPostAction->handleDeactivation($building, $colony);
+
         $this->colonyRepository->save($colony);
     }
 
