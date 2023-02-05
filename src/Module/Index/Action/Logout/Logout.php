@@ -8,9 +8,11 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Lib\SessionInterface;
 
+/**
+ * Performs a logout for the user
+ */
 final class Logout implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_LOGOUT';
 
     private SessionInterface $session;
@@ -23,7 +25,7 @@ final class Logout implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser() !== null) {
+        if ($game->hasUser()) {
             $this->session->logout();
         }
     }
