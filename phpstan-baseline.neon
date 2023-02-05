@@ -4201,21 +4201,6 @@ parameters:
 			path: src/Module/Database/Lib/DatabaseTopActivTradePost.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\Lib\\\\DatabaseTopLatinum\\:\\:__construct\\(\\) has parameter \\$entry with no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/DatabaseTopLatinum.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\Lib\\\\DatabaseTopLatinum\\:\\:getAmount\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/DatabaseTopLatinum.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\DatabaseTopLatinum\\:\\:\\$amount has no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/DatabaseTopLatinum.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\Lib\\\\DatabaseTopList\\:\\:getUser\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Database/Lib/DatabaseTopList.php
@@ -4419,11 +4404,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\FlightRanking\\\\FlightRanking\\:\\:getTop10\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/FlightRanking/FlightRanking.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\LatinumRanking\\\\LatinumRanking\\:\\:getTop10\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/LatinumRanking/LatinumRanking.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null\\.$#"

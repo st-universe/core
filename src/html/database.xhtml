@@ -144,10 +144,10 @@
 					<tr tal:repeat="entry NAGUS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
 						<td>
 							<metal:macro metal:use-macro="html/macros.xhtml/userprofile"
-								tal:define="id entry/getUserId" />
-							<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
+								tal:define="id entry/user/getId" />
+							<span tal:replace="structure bbcode:entry/user/getUserName">USER</span>
 						</td>
-						<td tal:content="entry/getAmount">AMOUNT</td>
+						<td tal:content="entry/amount">AMOUNT</td>
 					</tr>
 				</table>
 			</div>
