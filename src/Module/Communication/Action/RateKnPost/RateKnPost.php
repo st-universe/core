@@ -80,8 +80,10 @@ final class RateKnPost implements ActionControllerInterface
 
     private function getTitle(KnPostInterface $post): string
     {
-        if ($post->getTitle() !== null) {
-            return $post->getTitle();
+        $title = (string) $post->getTitle();
+
+        if ($title !== '') {
+            return $title;
         }
         if ($post->getRpgPlot() !== null) {
             return $post->getRpgPlot()->getTitle();
