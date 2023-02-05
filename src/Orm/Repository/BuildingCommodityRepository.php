@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\BuildingCommodity;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<BuildingCommodity>
@@ -44,7 +45,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         ])->getResult();
     }
 
-    public function getProductionByCommodityAndUser(int $commodityId, int $userId): int
+    public function getProductionByCommodityAndUser(int $commodityId, UserInterface $user): int
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('gc', 'gc', 'integer');
@@ -65,7 +66,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             $rsm
         )->setParameters([
             'state' => 1,
-            'userId' => $userId,
+            'userId' => $user->getId(),
             'commodityId' => $commodityId
         ])->getSingleScalarResult();
     }

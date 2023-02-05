@@ -8,6 +8,7 @@ use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalComponentFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 /**
@@ -18,12 +19,16 @@ final class ResearchFragment implements RenderFragmentInterface
     private ResearchedRepositoryInterface $researchedRepository;
     private TalComponentFactoryInterface $talComponentFactory;
 
+    private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
+
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
-        TalComponentFactoryInterface $talComponentFactory
+        TalComponentFactoryInterface $talComponentFactory,
+        BuildingCommodityRepositoryInterface $buildingCommodityRepository
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->talComponentFactory = $talComponentFactory;
+        $this->buildingCommodityRepository = $buildingCommodityRepository;
     }
 
     public function render(
@@ -34,7 +39,8 @@ final class ResearchFragment implements RenderFragmentInterface
         $currentResearchReference = $this->researchedRepository->getCurrentResearch($user);
 
         if ($currentResearchReference !== null) {
-            $researchPoints = $currentResearchReference->getResearch()->getPoints();
+            $research = $currentResearchReference->getResearch();
+            $researchPoints = $research->getPoints();
 
             $researchStatusBar = $this
                 ->talComponentFactory
@@ -44,6 +50,17 @@ final class ResearchFragment implements RenderFragmentInterface
                 ->setMaxValue($researchPoints)
                 ->setValue($researchPoints - $currentResearchReference->getActive())
                 ->setSizeModifier(2);
+
+            $talPage->setVar(
+                'CURRENT_RESEARCH_PRODUCTION_COMMODITY',
+                max(
+                    0,
+                    $this->buildingCommodityRepository->getProductionByCommodityAndUser(
+                        $research->getCommodityId(),
+                        $user
+                    )
+                )
+            );
         }
 
         $talPage->setVar('CURRENT_RESEARCH', $currentResearchReference);

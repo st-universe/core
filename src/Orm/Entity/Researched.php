@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchedRepository")
@@ -137,14 +136,5 @@ class Researched implements ResearchedInterface
     public function getProgress(): int
     {
         return $this->getResearch()->getPoints() - $this->getActive();
-    }
-
-    public function getAdditional(): int
-    {
-        global $container;
-
-        $amount = $container->get(BuildingCommodityRepositoryInterface::class)->getProductionByCommodityAndUser($this->getResearch()->getCommodityId(), $this->getUserId());
-
-        return max(0, $amount);
     }
 }

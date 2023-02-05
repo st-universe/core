@@ -10,15 +10,22 @@ use Stu\Module\Tal\TalComponentFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Tal\TalStatusBarInterface;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\StuTestCase;
 
 class ResearchFragmentTest extends StuTestCase
 {
+    /** @var ResearchedRepositoryInterface&MockInterface  */
     private MockInterface $researchedRepository;
 
+    /** @var TalComponentFactoryInterface&MockInterface */
     private MockInterface $talComponentFactory;
+
+    /** @var MockInterface&BuildingCommodityRepositoryInterface */
+    private MockInterface $buildingCommodityRepository;
 
     private ResearchFragment $subject;
 
@@ -26,10 +33,12 @@ class ResearchFragmentTest extends StuTestCase
     {
         $this->researchedRepository = $this->mock(ResearchedRepositoryInterface::class);
         $this->talComponentFactory = $this->mock(TalComponentFactoryInterface::class);
+        $this->buildingCommodityRepository = $this->mock(BuildingCommodityRepositoryInterface::class);
 
         $this->subject = new ResearchFragment(
             $this->researchedRepository,
-            $this->talComponentFactory
+            $this->talComponentFactory,
+            $this->buildingCommodityRepository
         );
     }
 
@@ -59,19 +68,36 @@ class ResearchFragmentTest extends StuTestCase
         $talPage = $this->mock(TalPageInterface::class);
         $researchReference = $this->mock(ResearchedInterface::class);
         $talStatusBar = $this->mock(TalStatusBarInterface::class);
+        $research = $this->mock(ResearchInterface::class);
 
         $points = 666;
         $alreadyResearchedPoints = 42;
+        $researchCommodityId = 33;
+        $productionValue = 123;
 
         $this->researchedRepository->shouldReceive('getCurrentResearch')
             ->with($user)
             ->once()
             ->andReturn($researchReference);
 
-        $researchReference->shouldReceive('getResearch->getPoints')
+        $research->shouldReceive('getPoints')
             ->withNoArgs()
             ->once()
             ->andReturn($points);
+        $research->shouldReceive('getCommodityId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($researchCommodityId);
+
+        $this->buildingCommodityRepository->shouldReceive('getProductionByCommodityAndUser')
+            ->with($researchCommodityId, $user)
+            ->once()
+            ->andReturn($productionValue);
+
+        $researchReference->shouldReceive('getResearch')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($research);
         $researchReference->shouldReceive('getActive')
             ->withNoArgs()
             ->once()
@@ -108,6 +134,12 @@ class ResearchFragmentTest extends StuTestCase
             ->once();
         $talPage->shouldReceive('setVar')
             ->with('CURRENT_RESEARCH_STATUS', $talStatusBar)
+            ->once();
+        $talPage->shouldReceive('setVar')
+            ->with(
+                'CURRENT_RESEARCH_PRODUCTION_COMMODITY',
+                $productionValue
+            )
             ->once();
 
         $this->subject->render($user, $talPage);

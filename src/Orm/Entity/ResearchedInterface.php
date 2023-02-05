@@ -27,6 +27,4 @@ interface ResearchedInterface
     public function getResearchId(): int;
 
     public function getProgress(): int;
-
-    public function getAdditional(): int;
 }
