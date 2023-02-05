@@ -294,9 +294,6 @@ class Colony implements ColonyInterface
     /** @var null|int */
     private $maxShields;
 
-    /** @var null|int */
-    private $twilightZone;
-
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
@@ -533,8 +530,6 @@ class Colony implements ColonyInterface
         if ($this->getDayTimePrefix() == 4) {
             $twilightZone = 0;
         }
-
-        $this->twilightZone = $twilightZone;
 
         return $twilightZone;
     }

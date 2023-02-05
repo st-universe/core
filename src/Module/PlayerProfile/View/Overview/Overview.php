@@ -6,9 +6,9 @@ namespace Stu\Module\PlayerProfile\View\Overview;
 
 use request;
 use Stu\Lib\ParserWithImageInterface;
+use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Maindesk\View\Overview\Overview as MaindeskOverview;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
@@ -24,8 +24,6 @@ final class Overview implements ViewControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
-    private MaindeskOverview $maindesk;
-
     private ParserWithImageInterface $parserWithImage;
 
     public function __construct(
@@ -33,35 +31,30 @@ final class Overview implements ViewControllerInterface
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         ContactRepositoryInterface $contactRepository,
         UserRepositoryInterface $userRepository,
-        MaindeskOverview $maindesk,
         ParserWithImageInterface $parserWithImage
     ) {
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->contactRepository = $contactRepository;
         $this->userRepository = $userRepository;
-        $this->maindesk = $maindesk;
         $this->parserWithImage = $parserWithImage;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setTemplateFile('html/.xhtml');
         $userId = $game->getUser()->getId();
 
         $userIdString = trim(request::getString('uid'));
 
         if (!is_numeric($userIdString) || ((int)$userIdString) < 1) {
-            $game->addInformation(_("Ungültiger Wert angegeben. Muss positive Zahl sein!"));
-            $this->maindesk->handle($game);
-            return;
+            throw new ItemNotFoundException();
         }
 
         $profile = $this->userRepository->find((int) $userIdString);
 
         if ($profile === null) {
-            $game->addInformation(_("Dieser Spieler existiert nicht!"));
-            $this->maindesk->handle($game);
-            return;
+            throw new ItemNotFoundException();
         }
 
         $profileId = $profile->getId();

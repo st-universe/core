@@ -21,6 +21,7 @@ use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTalRendererInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -547,6 +548,9 @@ final class GameController implements GameControllerInterface
         } catch (ShipIsDestroyedException $e) {
             $this->addInformation('Dieses Schiff wurde zerstört!');
             $this->setTemplateFile('html/ship.xhtml');
+        } catch (ItemNotFoundException $e) {
+            $this->addInformation('Das angeforderte Item wurde nicht gefunden');
+            $this->setTemplateFile('html/notfound.xhtml');
         } catch (UnallowedUplinkOperation $e) {
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
