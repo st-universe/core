@@ -48,6 +48,7 @@ return [
             autowire(Handler\KnPostDeletionHandler::class),
             autowire(Handler\RpgPlotDeletionHandler::class),
             autowire(Handler\TradepostDeletionHandler::class),
+            autowire(Handler\CrewDeletionHandler::class),
             autowire(Handler\ShipDeletionHandler::class),
             autowire(Handler\FleetDeletionHandler::class),
             autowire(Handler\ShipBuildplanDeletionHandler::class),

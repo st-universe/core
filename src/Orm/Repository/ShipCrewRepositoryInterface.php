@@ -66,4 +66,6 @@ interface ShipCrewRepositoryInterface extends ObjectRepository
     public function getOrphanedSummaryByUserAtTradeposts(int $userId): array;
 
     public function truncateByShip(int $shipId): void;
+
+    public function truncateByUser(int $userId): void;
 }

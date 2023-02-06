@@ -218,4 +218,17 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             ->setParameter('shipId', $shipId)
             ->execute();
     }
+
+    public function truncateByUser(int $userId): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s sc WHERE sc.user_id = :userId',
+                    ShipCrew::class
+                )
+            )
+            ->setParameter('userId', $userId)
+            ->execute();
+    }
 }
