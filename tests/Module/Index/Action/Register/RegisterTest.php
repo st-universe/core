@@ -113,6 +113,7 @@ class RegisterTest extends StuTestCase
     public function testHandleDoNothingIfRegistrationExceptionOccurs(): void
     {
         $factionId = 4;
+        $mobileNumber = '12345';
 
         $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
@@ -136,7 +137,7 @@ class RegisterTest extends StuTestCase
         $this->registerRequest->shouldReceive('getMobileNumber')
             ->withNoArgs()
             ->once()
-            ->andReturn(' 12345 ');
+            ->andReturn($mobileNumber);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -149,7 +150,7 @@ class RegisterTest extends StuTestCase
             ->andReturn(2);
 
         $this->playerCreator->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->faction, '12345')
+            ->with('login', 'email', $this->faction, $mobileNumber)
             ->once()
             ->andThrow(new LoginNameInvalidException());
 
@@ -202,6 +203,7 @@ class RegisterTest extends StuTestCase
     public function testHandleShowFinishRegistrationIfSmsRegistrationSuccessful(): void
     {
         $factionId = 123;
+        $mobileNumber = '12345';
 
         $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
@@ -225,7 +227,7 @@ class RegisterTest extends StuTestCase
         $this->registerRequest->shouldReceive('getMobileNumber')
             ->withNoArgs()
             ->once()
-            ->andReturn(' 12345 ');
+            ->andReturn($mobileNumber);
 
         $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
@@ -242,7 +244,7 @@ class RegisterTest extends StuTestCase
             ->once();
 
         $this->playerCreator->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->faction, '12345')
+            ->with('login', 'email', $this->faction, $mobileNumber)
             ->once();
 
         $this->subject->handle($this->game);
