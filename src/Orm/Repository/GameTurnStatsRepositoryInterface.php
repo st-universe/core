@@ -32,5 +32,5 @@ interface GameTurnStatsRepositoryInterface extends ObjectRepository
     /**
      * @return GameTurnStatsInterface[]
      */
-    public function getLatestStats(int $amount): array;
+    public function getLatestStats(int $amount, int $divisor): array;
 }

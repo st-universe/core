@@ -77,7 +77,7 @@ final class ShowStatistics implements ViewControllerInterface
      */
     private function createImagesSources(array $graphInfos): array
     {
-        $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT));
+        $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT, 10));
 
         $imageSources = [];
 
