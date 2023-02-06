@@ -10811,6 +10811,11 @@ parameters:
 			path: src/Orm/Entity/ShipRump.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$specialAbilities type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecialInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:getDatabaseId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCategory.php
@@ -10849,6 +10854,11 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpSpecial.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpUser\\:\\:\\$user has no type specified\\.$#"
