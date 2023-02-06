@@ -52,14 +52,14 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
         $rsm->addScalarResult('period', 'period', 'string');
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
-        return $this->getEntityManager()->createQuery(sprintf(
-            'SELECT lt.period as period, count(lt.id) as amount
-            FROM %s lt
-            WHERE lt.is_winner IS not null
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT lt.period AS period, count(lt.id) AS amount
+            FROM stu_lottery_ticket lt
+            WHERE lt.is_winner IS NOT NULL
             GROUP BY lt.period
-            ORDER BY lt.period DESC',
-            LotteryTicket::class
-        ))->setResultSetMapping($rsm)->setMaxResults(20)
-            ->getResult();
+            ORDER BY lt.period DESC
+            LIMIT 24',
+            $rsm
+        )->getResult();
     }
 }
