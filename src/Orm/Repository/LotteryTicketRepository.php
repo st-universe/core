@@ -53,7 +53,7 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
         return $this->getEntityManager()->createQuery(sprintf(
-            'SELECT lt.period as period, count(*) as amount
+            'SELECT lt.period as period, count(lt.id) as amount
             FROM %s lt
             WHERE lt.is_winner IS not null
             GROUP BY lt.period
