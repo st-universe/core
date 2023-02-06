@@ -7,6 +7,7 @@ namespace Stu\Module\Database\View\ShowStatistics;
 use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use IntlDateFormatter;
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\GraphInfo;
@@ -18,6 +19,25 @@ final class ShowStatistics implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_STATISTICS';
 
     private const ENTRY_COUNT = 10;
+
+    private const PERIODS = [
+        [
+            'divisor' => 1,
+            'text' => 'Tick'
+        ],
+        [
+            'divisor' => 5,
+            'text' => 'Täglich'
+        ],
+        [
+            'divisor' => 35,
+            'text' => 'Wöchentlich'
+        ],
+        [
+            'divisor' => 150,
+            'text' => 'Monatlich'
+        ]
+    ];
 
     private int $minY;
     private int $maxY;
@@ -32,6 +52,14 @@ final class ShowStatistics implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $period = request::getInt('period');
+        if ($period && $period > 0 && $period <= 100) {
+            $game->setTemplateVar('SELECTEDPERIOD', request::getInt('period'));
+        } else {
+            $period = 1;
+        }
+        $game->setTemplateVar('PERIODS', self::PERIODS);
+
         $graphInfos = [
             new GraphInfo('Spieleranzahl', [
                 new PlotInfo('getUserCount'),
@@ -53,7 +81,7 @@ final class ShowStatistics implements ViewControllerInterface
             ], true)
         ];
 
-        $imageSources = $this->createImagesSources($graphInfos);
+        $imageSources = $this->createImagesSources($graphInfos, $period);
 
         $game->appendNavigationPart(
             'database.php',
@@ -75,9 +103,9 @@ final class ShowStatistics implements ViewControllerInterface
     /**
      * @param GraphInfo[] $graphInfos
      */
-    private function createImagesSources(array $graphInfos): array
+    private function createImagesSources(array $graphInfos, int $divisor): array
     {
-        $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT, 10));
+        $stats = array_reverse($this->gameTurnStatsRepository->getLatestStats(self::ENTRY_COUNT, $divisor));
 
         $imageSources = [];
 
