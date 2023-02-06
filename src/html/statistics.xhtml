@@ -2,7 +2,7 @@
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
   <tal:block metal:fill-slot="body">
     <tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-    <div class="box" style="width: 10vw;">
+    <div class="box" style="width: fit-content;">
       <div class="box_title">Zeiteinheit</div>
       <div class="box_body">
         <select onchange="window.location.href='?SHOW_STATISTICS=1&period=' + this.value">
