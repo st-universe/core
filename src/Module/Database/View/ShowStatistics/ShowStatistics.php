@@ -53,11 +53,10 @@ final class ShowStatistics implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $period = request::getInt('period');
-        if ($period && $period > 0 && $period <= 100) {
-            $game->setTemplateVar('SELECTEDPERIOD', request::getInt('period'));
-        } else {
+        if (!$period || $period > 0 || $period <= 100) {
             $period = 1;
         }
+        $game->setTemplateVar('SELECTEDPERIOD', $period);
         $game->setTemplateVar('PERIODS', self::PERIODS);
 
         $graphInfos = [
