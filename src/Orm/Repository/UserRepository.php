@@ -69,7 +69,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                  AND (u.delmark = :deletionMark
                         OR (u.vac_active = false AND u.lastaction > 0 AND u.lastaction < :idleTimeThreshold)
                         OR (u.vac_active = true AND u.lastaction > 0 AND u.lastaction < :idleTimeVacationThreshold)
-                    )',
+                    )
+                 ORDER BY u.id ASC',
                 User::class
             )
         )->setParameters([
