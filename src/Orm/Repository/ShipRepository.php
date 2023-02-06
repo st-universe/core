@@ -451,7 +451,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'scrapping' => ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
             'firstUserId' => UserEnum::USER_FIRST_ID
-        ])->getResult();
+        ])->toIterable();
     }
 
     public function getNpcShipsForTick(): iterable
