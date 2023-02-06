@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -301,6 +302,13 @@ class ShipRump implements ShipRumpInterface
     private $shipRumpRole;
 
     /**
+     * @var Collection<int, ShipRumpSpecialInterface>
+     *
+     * @OneToMany(targetEntity="ShipRumpSpecial", mappedBy="shipRump", indexBy="special")
+     */
+    private Collection $specialAbilities;
+
+    /**
      * @var ShipRumpCategoryInterface
      *
      * @ManyToOne(targetEntity="ShipRumpCategory")
@@ -330,9 +338,6 @@ class ShipRump implements ShipRumpInterface
     /** @var null|ShipRumpCategoryRoleCrewInterface */
     private $crewobj;
 
-    /** @var null|array<int> */
-    private $specialAbilities;
-
     /**
      * @var ArrayCollection<int, ShipRumpCostInterface>
      *
@@ -343,6 +348,7 @@ class ShipRump implements ShipRumpInterface
     public function __construct()
     {
         $this->buildingCosts = new ArrayCollection();
+        $this->specialAbilities = new ArrayCollection();
     }
 
     public function getId(): int
@@ -803,18 +809,7 @@ class ShipRump implements ShipRumpInterface
 
     public function hasSpecialAbility(int $value): bool
     {
-        if ($this->specialAbilities === null) {
-            // @todo refactor
-            global $container;
-
-            $this->specialAbilities = array_map(
-                function (ShipRumpSpecialInterface $shipRumpSpecial): int {
-                    return $shipRumpSpecial->getSpecialId();
-                },
-                $container->get(ShipRumpSpecialRepositoryInterface::class)->getByShipRump((int) $this->getId())
-            );
-        }
-        return in_array($value, $this->specialAbilities);
+        return $this->specialAbilities->containsKey($value);
     }
 
     private function getBaseCrewCount(): int
@@ -862,5 +857,13 @@ class ShipRump implements ShipRumpInterface
     public function isAdventDoor(): ?int
     {
         return $this->getRoleId() === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR ? (int)date("j") : null;
+    }
+
+    /**
+     * @return Collection<int, ShipRumpSpecialInterface>
+     */
+    public function getSpecialAbilities(): Collection
+    {
+        return $this->specialAbilities;
     }
 }

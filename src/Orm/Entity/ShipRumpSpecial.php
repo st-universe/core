@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
 
@@ -44,6 +46,12 @@ class ShipRumpSpecial implements ShipRumpSpecialInterface
      * @var int
      */
     private $special = 0;
+
+    /**
+     * @ManyToOne(targetEntity="ShipRump", inversedBy="specialAbilities")
+     * @JoinColumn(name="rumps_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private ?ShipRumpInterface $shipRump;
 
     public function getId(): int
     {
