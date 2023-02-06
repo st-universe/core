@@ -1679,6 +1679,32 @@ div.allianceRelation div.allianceRelationDate span {
   font-weight: bold;
 }
 
+div.statisticTopList {
+  width: 600px;
+  display: grid;
+  grid-template-columns: 40px 60px auto 50px;
+  margin-bottom: 20px;
+}
+
+div.statisticTopList div.placement {
+  font-size: 140%;
+  text-align: center;
+  grid-row: span 2;
+}
+
+div.statisticTopList div.userprofile {
+  grid-row: span 2;
+}
+
+div.statisticTopList span.placement1 {
+  font-size: 170%;
+  font-weight: bold;
+}
+
+div.statisticTopList div.userName {
+  font-size: 130%;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
     div.container {
         width: 1000px;

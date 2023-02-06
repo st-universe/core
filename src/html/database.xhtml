@@ -135,22 +135,22 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div style="float: left; width: 30%;">
-				<table class="tcal">
-					<tr>
-						<th>Siedler</th>
-						<th>Latinum</th>
-					</tr>
-					<tr tal:repeat="entry NAGUS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
-						<td>
-							<metal:macro metal:use-macro="html/macros.xhtml/userprofile"
-								tal:define="id entry/user/getId" />
-							<span tal:replace="structure bbcode:entry/user/getUserName">USER</span>
-						</td>
-						<td tal:content="entry/amount">AMOUNT</td>
-					</tr>
-				</table>
-			</div>
+      <div tal:repeat="entry NAGUS_LIST" class="statisticTopList">
+        <div class="placement">
+          <span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+        </div>
+        <div class="userprofile">
+          <tal:block metal:use-macro="html/macros.xhtml/userprofile_link" tal:define="user entry/user" />
+        </div>
+        <div class="userName" tal:content="structure bbcode:entry/user/getUserName">USER</div>
+        <div>
+          <img src="assets/commodities/20.png" title="Latinum" />
+          <span tal:content="entry/amount">AMOUNT</span>
+        </div>
+        <div>
+          <tal:macro metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id entry/user/getId" />
+        </div>
+      </div>
 		</tal:block>
 	</tal:block>
 </metal:macro>
