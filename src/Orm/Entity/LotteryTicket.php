@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\LotteryTicketRepository")
  * @Table(
- *     name="stu_lottery_ticket"
+ *     name="stu_lottery_ticket",
  *     indexes={
  *         @Index(name="lottery_ticket_period_idx", columns={"period"})
  *     }
