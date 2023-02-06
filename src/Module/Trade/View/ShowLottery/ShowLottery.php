@@ -7,6 +7,7 @@ namespace Stu\Module\Trade\View\ShowLottery;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\LotteryFacadeInterface;
+use Stu\Orm\Repository\LotteryTicketRepositoryInterface;
 
 final class ShowLottery implements ViewControllerInterface
 {
@@ -14,10 +15,14 @@ final class ShowLottery implements ViewControllerInterface
 
     private LotteryFacadeInterface $lotteryFacade;
 
+    private LotteryTicketRepositoryInterface $lotteryTicketRepository;
+
     public function __construct(
-        LotteryFacadeInterface $lotteryFacade
+        LotteryFacadeInterface $lotteryFacade,
+        LotteryTicketRepositoryInterface $lotteryTicketRepository
     ) {
         $this->lotteryFacade = $lotteryFacade;
+        $this->lotteryTicketRepository = $lotteryTicketRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,5 +44,7 @@ final class ShowLottery implements ViewControllerInterface
         $game->setTemplateVar('TICKETCOUNT', $ticketCount);
         $game->setTemplateVar('OWNCOUNT', $ownCount);
         $game->setTemplateVar('WINCHANCE', $ticketCount === 0 || $ownCount === 0 ? '-' : (int)ceil($ownCount / $ticketCount * 100));
+
+        $game->setTemplateVar('HISTORY', $this->lotteryTicketRepository->getLotteryHistory());
     }
 }

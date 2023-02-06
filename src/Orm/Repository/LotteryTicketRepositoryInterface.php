@@ -25,4 +25,9 @@ interface LotteryTicketRepositoryInterface extends ObjectRepository
      * @return LotteryTicketInterface[]
      */
     public function getByPeriod(string $period): array;
+
+    /**
+     * @return array<int, string>
+     */
+    public function getLotteryHistory(): array;
 }
