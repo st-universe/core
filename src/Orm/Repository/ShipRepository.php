@@ -416,7 +416,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ShipRump::class
             )
         )->setParameters([
-            'catId', ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION,
+            'catId' => ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION,
             'firstUserId' => UserEnum::USER_FIRST_ID
         ])
             ->getResult();
