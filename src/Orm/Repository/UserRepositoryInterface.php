@@ -21,8 +21,6 @@ interface UserRepositoryInterface extends ObjectRepository
 
     public function delete(UserInterface $post): void;
 
-    public function getAmountByFaction(int $factionId): int;
-
     public function getByResetToken(string $resetToken): ?UserInterface;
 
     /**

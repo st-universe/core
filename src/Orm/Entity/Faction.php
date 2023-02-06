@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\FactionRepository")
@@ -164,19 +163,6 @@ class Faction implements FactionInterface
         $this->start_building_id = $startBuildingId;
 
         return $this;
-    }
-
-    public function getPlayerAmount(): int
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(UserRepositoryInterface::class)->getAmountByFaction($this->getId());
-    }
-
-    public function hasFreePlayerSlots(): bool
-    {
-        return $this->getPlayerLimit() === 0 || $this->getPlayerAmount() < $this->getPlayerLimit();
     }
 
     public function getStartResearch(): ?ResearchInterface

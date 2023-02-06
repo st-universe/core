@@ -41,13 +41,6 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $em->flush();
     }
 
-    public function getAmountByFaction(int $factionId): int
-    {
-        return $this->count([
-            'race' => $factionId,
-        ]);
-    }
-
     public function getByResetToken(string $resetToken): ?UserInterface
     {
         return $this->findOneBy([

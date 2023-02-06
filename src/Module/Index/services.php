@@ -24,6 +24,8 @@ use Stu\Module\Index\Action\ResetPassword\ResetPasswordRequestInterface;
 use Stu\Module\Index\Action\SendPassword\SendPassword;
 use Stu\Module\Index\Action\SendPassword\SendPasswordRequest;
 use Stu\Module\Index\Action\SendPassword\SendPasswordRequestInterface;
+use Stu\Module\Index\Lib\UiItemFactory;
+use Stu\Module\Index\Lib\UiItemFactoryInterface;
 use Stu\Module\Index\View\Overview\Overview;
 use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
 use Stu\Module\Index\View\ShowHelp\ShowHelp;
@@ -65,5 +67,6 @@ return [
         ShowLostPassword::VIEW_IDENTIFIER => autowire(ShowLostPassword::class),
         ShowResetPassword::VIEW_IDENTIFIER => autowire(ShowResetPassword::class),
         ShowPartnerSites::VIEW_IDENTIFIER => autowire(ShowPartnerSites::class)
-    ]
+    ],
+    UiItemFactoryInterface::class => autowire(UiItemFactory::class),
 ];

@@ -53,4 +53,11 @@ class LogoutTest extends StuTestCase
 
         $this->subject->handle($game);
     }
+
+    public function testPerformSessionCheckReturnsFalse(): void
+    {
+        static::assertFalse(
+            $this->subject->performSessionCheck()
+        );
+    }
 }

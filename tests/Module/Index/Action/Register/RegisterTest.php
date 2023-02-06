@@ -16,180 +16,242 @@ use Stu\StuTestCase;
 
 class RegisterTest extends StuTestCase
 {
-    private Register $register;
+    private Register $subject;
 
-    //Mocks
-    private MockInterface $requestMock;
-    private MockInterface $factionRepositoryMock;
-    private MockInterface $playerCreatorMock;
-    private MockInterface $configMock;
-    private MockInterface $gameMock;
-    private MockInterface $factionMock;
+    /** @var RegisterRequestInterface&MockInterface&MockInterface */
+    private MockInterface $registerRequest;
+
+    /** @var FactionRepositoryInterface&MockInterface&MockInterface */
+    private MockInterface $factionRepository;
+
+    /** @var PlayerCreatorInterface&MockInterface&MockInterface */
+    private MockInterface $playerCreator;
+
+    /** @var ConfigInterface&MockInterface */
+    private MockInterface $config;
+
+    /** @var GameControllerInterface&MockInterface&MockInterface */
+    private MockInterface $game;
+
+    /** @var FactionInterface&MockInterface&MockInterface */
+    private MockInterface $faction;
 
     public function setUp(): void
     {
-        $this->requestMock = $this->mock(RegisterRequestInterface::class);
-        $this->factionRepositoryMock = $this->mock(FactionRepositoryInterface::class);
-        $this->playerCreatorMock = $this->mock(PlayerCreatorInterface::class);
-        $this->configMock = $this->mock(ConfigInterface::class);
-        $this->gameMock = $this->mock(GameControllerInterface::class);
-        $this->factionMock = $this->mock(FactionInterface::class);
+        $this->registerRequest = $this->mock(RegisterRequestInterface::class);
+        $this->factionRepository = $this->mock(FactionRepositoryInterface::class);
+        $this->playerCreator = $this->mock(PlayerCreatorInterface::class);
+        $this->config = $this->mock(ConfigInterface::class);
+        $this->game = $this->mock(GameControllerInterface::class);
+        $this->faction = $this->mock(FactionInterface::class);
 
-        $this->register = new Register(
-            $this->requestMock,
-            $this->factionRepositoryMock,
-            $this->playerCreatorMock,
-            $this->configMock
+        $this->subject = new Register(
+            $this->registerRequest,
+            $this->factionRepository,
+            $this->playerCreator,
+            $this->config
         );
     }
 
     public function testHandleDoNothingIfRegistrationDisabled(): void
     {
-        $this->configMock->shouldReceive('get')
+        $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
+            ->once()
             ->andReturn(false);
 
-        $this->register->handle($this->gameMock);
+        $this->subject->handle($this->game);
+    }
 
-        $this->gameMock->shouldNotHaveBeenCalled();
+    public function testHandleDoNothingIfFactioWasNotFound(): void
+    {
+        $factionId = 5;
+
+        $this->config->shouldReceive('get')
+            ->with('game.registration.enabled')
+            ->andReturn(true);
+
+        $this->registerRequest->shouldReceive('getFactionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($factionId);
+
+        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([]);
+
+        $this->subject->handle($this->game);
     }
 
     public function testHandleDoNothingIfNoFreeFactionSlots(): void
     {
-        $this->configMock->shouldReceive('get')
+        $factionId = 5;
+
+        $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
             ->andReturn(true);
 
-        //request
-        $this->requestMock->shouldReceive('getFactionId')
+        $this->registerRequest->shouldReceive('getFactionId')
             ->withNoArgs()
             ->once()
-            ->andReturn(5);
+            ->andReturn($factionId);
 
-        //faction
-        $this->factionRepositoryMock->shouldReceive('getByChooseable')
-            ->with(true)
-            ->once()
-            ->andReturn([$this->factionMock]);
-        $this->factionMock->shouldReceive('getId')
+        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
             ->once()
-            ->andReturn(5);
-        $this->factionMock->shouldReceive('hasFreePlayerSlots')
+            ->andReturn([$factionId => ['faction' => $this->faction, 'count' => 1]]);
+
+        $this->faction->shouldReceive('getPlayerLimit')
             ->withNoArgs()
             ->once()
-            ->andReturn(false);
+            ->andReturn(1);
 
-        $this->register->handle($this->gameMock);
-
-        $this->gameMock->shouldNotHaveBeenCalled();
+        $this->subject->handle($this->game);
     }
 
     public function testHandleDoNothingIfRegistrationExceptionOccurs(): void
     {
-        //config
-        $this->configMock->shouldReceive('get')
+        $factionId = 4;
+
+        $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
             ->andReturn(true);
-        $this->configMock->shouldReceive('get')
+        $this->config->shouldReceive('get')
             ->with('game.registration.sms_code_verification.enabled')
             ->andReturn(true);
 
-        //request
-        $this->requestMock->shouldReceive('getFactionId')
+        $this->registerRequest->shouldReceive('getFactionId')
             ->withNoArgs()
             ->once()
-            ->andReturn(5);
-        $this->requestMock->shouldReceive('getLoginName')
+            ->andReturn($factionId);
+        $this->registerRequest->shouldReceive('getLoginName')
             ->withNoArgs()
             ->once()
             ->andReturn(' LOGIN ');
-        $this->requestMock->shouldReceive('getEmailAddress')
+        $this->registerRequest->shouldReceive('getEmailAddress')
             ->withNoArgs()
             ->once()
             ->andReturn(' EMAIL ');
-        $this->requestMock->shouldReceive('getMobileNumber')
+        $this->registerRequest->shouldReceive('getMobileNumber')
             ->withNoArgs()
             ->once()
             ->andReturn(' 12345 ');
 
-        //faction
-        $this->factionRepositoryMock->shouldReceive('getByChooseable')
-            ->with(true)
-            ->once()
-            ->andReturn([$this->factionMock]);
-        $this->factionMock->shouldReceive('getId')
+        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
             ->once()
-            ->andReturn(5);
-        $this->factionMock->shouldReceive('hasFreePlayerSlots')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
+            ->andReturn([$factionId => ['faction' => $this->faction, 'count' => 1]]);
 
-        //player creator
-        $this->playerCreatorMock->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->factionMock, '12345')
+        $this->faction->shouldReceive('getPlayerLimit')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+
+        $this->playerCreator->shouldReceive('createWithMobileNumber')
+            ->with('login', 'email', $this->faction, '12345')
             ->once()
             ->andThrow(new LoginNameInvalidException());
 
         static::expectException(LoginNameInvalidException::class);
 
-        $this->register->handle($this->gameMock);
+        $this->subject->handle($this->game);
+    }
+
+    public function testHandleDoeaNothingIfMobileNumberIsEmpty(): void
+    {
+        $factionId = 4;
+
+        $this->config->shouldReceive('get')
+            ->with('game.registration.enabled')
+            ->andReturn(true);
+        $this->config->shouldReceive('get')
+            ->with('game.registration.sms_code_verification.enabled')
+            ->andReturn(true);
+
+        $this->registerRequest->shouldReceive('getFactionId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($factionId);
+        $this->registerRequest->shouldReceive('getLoginName')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(' LOGIN ');
+        $this->registerRequest->shouldReceive('getEmailAddress')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(' EMAIL ');
+        $this->registerRequest->shouldReceive('getMobileNumber')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('');
+
+        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([$factionId => ['faction' => $this->faction, 'count' => 1]]);
+
+        $this->faction->shouldReceive('getPlayerLimit')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+
+        $this->subject->handle($this->game);
     }
 
     public function testHandleShowFinishRegistrationIfSmsRegistrationSuccessful(): void
     {
-        //config
-        $this->configMock->shouldReceive('get')
+        $factionId = 123;
+
+        $this->config->shouldReceive('get')
             ->with('game.registration.enabled')
             ->andReturn(true);
-        $this->configMock->shouldReceive('get')
+        $this->config->shouldReceive('get')
             ->with('game.registration.sms_code_verification.enabled')
             ->andReturn(true);
 
-        //request
-        $this->requestMock->shouldReceive('getFactionId')
+        $this->registerRequest->shouldReceive('getFactionId')
             ->withNoArgs()
             ->once()
-            ->andReturn(5);
-        $this->requestMock->shouldReceive('getLoginName')
+            ->andReturn($factionId);
+        $this->registerRequest->shouldReceive('getLoginName')
             ->withNoArgs()
             ->once()
             ->andReturn(' LOGIN ');
-        $this->requestMock->shouldReceive('getEmailAddress')
+        $this->registerRequest->shouldReceive('getEmailAddress')
             ->withNoArgs()
             ->once()
             ->andReturn(' EMAIL ');
-        $this->requestMock->shouldReceive('getMobileNumber')
+        $this->registerRequest->shouldReceive('getMobileNumber')
             ->withNoArgs()
             ->once()
             ->andReturn(' 12345 ');
 
-        //faction
-        $this->factionRepositoryMock->shouldReceive('getByChooseable')
-            ->with(true)
-            ->once()
-            ->andReturn([$this->factionMock]);
-        $this->factionMock->shouldReceive('getId')
+        $this->factionRepository->shouldReceive('getPlayableFactionsPlayerCount')
             ->withNoArgs()
             ->once()
-            ->andReturn(5);
-        $this->factionMock->shouldReceive('hasFreePlayerSlots')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
+            ->andReturn([$factionId => ['faction' => $this->faction, 'count' => 1]]);
 
-        //game
-        $this->gameMock->shouldReceive('setView')
+        $this->faction->shouldReceive('getPlayerLimit')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
+
+        $this->game->shouldReceive('setView')
             ->with(ShowFinishRegistration::VIEW_IDENTIFIER)
             ->once();
 
-        //player creator
-        $this->playerCreatorMock->shouldReceive('createWithMobileNumber')
-            ->with('login', 'email', $this->factionMock, '12345')
+        $this->playerCreator->shouldReceive('createWithMobileNumber')
+            ->with('login', 'email', $this->faction, '12345')
             ->once();
 
-        $this->register->handle($this->gameMock);
+        $this->subject->handle($this->game);
+    }
+
+    public function testPerformSessionCheckReturnsFalse(): void
+    {
+        static::assertFalse(
+            $this->subject->performSessionCheck()
+        );
     }
 }

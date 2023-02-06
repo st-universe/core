@@ -76,13 +76,13 @@
 				<div class="divhead">Fraktion wählen</div>
 				<tal:block tal:repeat="data POSSIBLE_FACTIONS">
 					<div class="divbody"
-						style="display: block; cursor: pointer; background-color: ${data/getDarkerColor}"
+						style="display: block; cursor: pointer; background-color: ${data/getColor}"
 						onclick="toggleFaction(${data/getId}); selectFaction(${data/getId});"
 						tal:condition="data/hasFreePlayerSlots">
 						<metal:macro metal:use-macro="faction_entry" />
 					</div>
 					<div class="divbody"
-						style="display: block; cursor: pointer; background-color: ${data/getDarkerColor}"
+						style="display: block; cursor: pointer; background-color: ${data/getColor}"
 						tal:condition="not:data/hasFreePlayerSlots" onclick="toggleFaction(${data/getId})">
 						<metal:macro metal:use-macro="faction_entry" />
 					</div>
@@ -94,7 +94,7 @@
 		<div id="fachead_${data/getId}">
 			<img src="assets/rassen/${data/getId}s.png" /> <strong tal:content="data/getName">NAME</strong>
 			<span tal:condition="data/getPlayerLimit">
-				(<span tal:replace="data/getPlayerAmount">AMOUNT</span>/<span
+				(<span tal:replace="data/getPlayerCount">AMOUNT</span>/<span
 					tal:replace="data/getPlayerLimit">LIMIT</span>)
 			</span>
 		</div>

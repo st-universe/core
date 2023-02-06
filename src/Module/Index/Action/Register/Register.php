@@ -47,13 +47,19 @@ final class Register implements ActionControllerInterface
 
         $factionId = $this->registerRequest->getFactionId();
 
-        $factions = array_filter(
-            $this->factionRepository->getByChooseable(true),
-            function (FactionInterface $faction) use ($factionId): bool {
-                return $factionId === $faction->getId() && $faction->hasFreePlayerSlots();
-            }
-        );
-        if ($factions === []) {
+        /** @var null|array{faction: FactionInterface, count: int} $faction */
+        $faction = $this->factionRepository->getPlayableFactionsPlayerCount()[$factionId] ?? null;
+
+        if ($faction === null) {
+            return;
+        }
+
+        $playerLimit = $faction['faction']->getPlayerLimit();
+
+        if (
+            $playerLimit !== 0
+            && $playerLimit <= $faction['count']
+        ) {
             return;
         }
 
@@ -62,14 +68,14 @@ final class Register implements ActionControllerInterface
 
         $mobileNumber = $this->registerRequest->getMobileNumber();
 
-        if ($mobileNumber === null) {
+        if ($mobileNumber === '') {
             return;
         }
         $this->playerCreator->createWithMobileNumber(
             $loginname,
             $email,
-            current($factions),
-            trim($mobileNumber)
+            $faction['faction'],
+            $mobileNumber
         );
 
         $game->setView(ShowFinishRegistration::VIEW_IDENTIFIER);

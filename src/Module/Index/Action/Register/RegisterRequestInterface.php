@@ -8,7 +8,7 @@ interface RegisterRequestInterface
 
     public function getEmailAddress(): string;
 
-    public function getMobileNumber(): ?string;
+    public function getMobileNumber(): string;
 
     public function getFactionId(): int;
 
