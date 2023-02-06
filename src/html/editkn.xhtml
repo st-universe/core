@@ -10,16 +10,15 @@
 			<table class="tcal">
 				<tr>
 					<td>
-						<div id="writekntitle" tal:condition="not:POST/getPlotId" class="selected"
-							style="float: left; width: 100px; padding: 5px;">Titel</div>
-						<div id="writeknplot" tal:condition="POST/getPlotId" class="selected"
-							style="float: left; width: 100px; padding: 5px;">Plot</div>
-						<br style="clear: both;" />
-						<div tal:condition="not:POST/getPlotId" id="writekntitleinput"
-							style="clear: both; margin: 5px;">
+						<div id="writekntitle" class="selected" style="float: left; width: 100px; padding: 5px;">Titel
+						</div>
+						<div id="writekntitleinput" style="clear: both; margin: 5px;">
 							<input type="text" name="title" style="width: 100%;"
 								tal:attributes="value structure POST/getTitle" />
 						</div>
+						<div id="writeknplot" tal:condition="POST/getPlotId" class="selected"
+							style="float: left; width: 100px; padding: 5px;">Plot</div>
+						<br style="clear: both;" />
 						<div id="writeknplotselect" tal:condition="POST/getPlotId" style="margin: 5px;">
 							<metal:macro metal:use-macro="plotselect" />
 						</div>
