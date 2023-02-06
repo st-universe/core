@@ -410,12 +410,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 JOIN %s r
                 WITH s.rumps_id = r.id
-                WHERE s.user_id > 100
+                WHERE s.user_id > :firstUserId
                 AND r.category_id = :catId',
                 Ship::class,
                 ShipRump::class
             )
-        )->setParameter('catId', ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION)
+        )->setParameters([
+            'catId', ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION,
+            'firstUserId' => UserEnum::USER_FIRST_ID
+        ])
             ->getResult();
     }
 
@@ -429,7 +432,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WITH s.plans_id = p.id
                 JOIN %s u
                 WITH s.user_id = u.id
-                WHERE s.user_id > 100
+                WHERE s.user_id > :firstUserId
                 AND (   ((SELECT count(sc.id)
                         FROM %s sc
                         WHERE sc.ship_id = s.id) > 0)
@@ -446,7 +449,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameters([
             'underConstruction' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
             'scrapping' => ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING,
-            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
+            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+            'firstUserId' => UserEnum::USER_FIRST_ID
         ])->getResult();
     }
 
@@ -454,10 +458,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT s FROM %s s WHERE s.user_id BETWEEN 2 AND 100',
+                'SELECT s FROM %s s WHERE s.user_id BETWEEN 2 AND (:firstUserId - 1)',
                 Ship::class
             )
-        )->getResult();
+        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
     }
 
     private const FLIGHT_SIGNATURE_STAR_COUNT =

@@ -74,7 +74,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT tp FROM %s tp WHERE tp.user_id < 100 AND tp.id IN (
+                    'SELECT tp FROM %s tp WHERE tp.user_id < :firstUserId AND tp.id IN (
                         SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId AND tl.expired > :actime
                     )',
                     TradePost::class,
@@ -83,7 +83,8 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             )
             ->setParameters([
                 'userId' => $userId,
-                'actime' => $time
+                'actime' => $time,
+                'firstUserId' => UserEnum::USER_FIRST_ID
             ])
             ->getResult();
     }

@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Trade\TradeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradeOfferInterface;
@@ -159,14 +160,15 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
                 sprintf(
                     'SELECT to FROM %s to
                      WHERE to.date < :maxAge
-                     AND to.user_id > 100
+                     AND to.user_id > :firstUserId
                      ORDER BY to.user_id ASC, to.posts_id ASC
                     ',
                     TradeOffer::class
                 )
             )
             ->setParameters([
-                'maxAge' => time() - $threshold
+                'maxAge' => time() - $threshold,
+                'firstUserId' => UserEnum::USER_FIRST_ID
             ])
             ->getResult();
     }

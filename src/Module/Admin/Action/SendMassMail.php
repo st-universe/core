@@ -75,7 +75,7 @@ final class SendMassMail implements ActionControllerInterface
         $count = 0;
 
         foreach ($this->userRepository->findAll() as $user) {
-            if ($user->getId() < 100) {
+            if ($user->isNpc()) {
                 continue;
             }
 

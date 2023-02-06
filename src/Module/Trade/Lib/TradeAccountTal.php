@@ -72,7 +72,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
 
     public function getTradePostIsNPC(): bool
     {
-        return $this->tradePost->getUserId() < 100;
+        return $this->tradePost->getUser()->isNpc();
     }
 
     public function getStorage(): array

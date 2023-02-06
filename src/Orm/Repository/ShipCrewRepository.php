@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipCrewInterface;
@@ -195,13 +196,13 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             FROM stu_crew_assign sc
             JOIN stu_ships s
             ON sc.ship_id = s.id
-            WHERE sc.user_id > 100
+            WHERE sc.user_id > :firstUserId
             AND sc.user_id = s.user_id
             GROUP BY sc.user_id
             ORDER BY 2 DESC
             LIMIT 10',
             $rsm
-        )
+        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
             ->getResult();
     }
 

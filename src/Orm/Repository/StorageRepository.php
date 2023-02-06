@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
@@ -265,13 +266,14 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         return $this->getEntityManager()->createNativeQuery(
             'SELECT s.user_id, sum(count) as amount
             FROM stu_storage s
-            WHERE s.commodity_id = 50 AND s.user_id > 100
+            WHERE s.commodity_id = 50 AND s.user_id > :firstUserId
             GROUP BY s.user_id
             ORDER BY 2 DESC
             LIMIT 10',
             $rsm
         )->setParameters([
-            'latId' => CommodityTypeEnum::COMMODITY_LATINUM
+            'latId' => CommodityTypeEnum::COMMODITY_LATINUM,
+            'firstUserId' => UserEnum::USER_FIRST_ID
         ])->getResult();
     }
 

@@ -171,13 +171,16 @@ final class AttackTrackedShip implements ActionControllerInterface
             $defender = [];
 
             // only uncloaked defenders fight
+            /**
+             * @var ShipInterface $defShip
+             */
             foreach ($target->getFleet()->getShips()->toArray() as $defShip) {
                 if (!$defShip->getCloakState()) {
                     $defender[$defShip->getId()] = $defShip;
 
                     if (
                         $defShip->getDockedTo() !== null
-                        && $defShip->getDockedTo()->getUser()->getId() > 100
+                        && !$defShip->getDockedTo()->getUser()->isNpc()
                         && $defShip->getDockedTo()->canAttack()
                     ) {
                         $defender[$defShip->getDockedTo()->getId()] = $defShip->getDockedTo();
@@ -196,7 +199,7 @@ final class AttackTrackedShip implements ActionControllerInterface
 
             if (
                 $target->getDockedTo() !== null
-                && $target->getDockedTo()->getUser()->getId() > 100
+                && !$target->getDockedTo()->getUser()->isNpc()
                 && $target->getDockedTo()->canAttack()
             ) {
                 $defender[$target->getDockedTo()->getId()] = $target->getDockedTo();

@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -73,9 +74,9 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.user_id > 100',
+                'SELECT f FROM %s f WHERE f.user_id > :firstUserId',
                 Fleet::class
             )
-        )->getResult();
+        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
     }
 }

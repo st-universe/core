@@ -55,7 +55,7 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         $this->databaseUserRepository->save($userEntry);
 
 
-        if ($user->getId() > 100) {
+        if (!$user->isNpc()) {
 
             //create prestige log
             $this->createPrestigeLog->createLogForDatabaseEntry($databaseEntry, $user, $userEntry->getDate());

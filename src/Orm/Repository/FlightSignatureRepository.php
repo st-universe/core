@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
@@ -156,14 +157,17 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 count(distinct ship_id) as shipc
             FROM stu_flight_sig fs
             WHERE fs.to_direction != 0
-            AND fs.user_id > 100
+            AND fs.user_id > :firstUserId
             AND fs.time > :maxAge
             GROUP BY fs.user_id
             ORDER BY 2 DESC
             LIMIT 10',
             $rsm
         )
-            ->setParameter('maxAge', time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED)
+            ->setParameters([
+                'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
+                'firstUserId' => UserEnum::USER_FIRST_ID
+            ])
             ->getResult();
     }
 }

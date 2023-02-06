@@ -804,7 +804,7 @@ class User implements UserInterface
 
     public function isNpc(): bool
     {
-        return $this->getId() < 100;
+        return $this->getId() < UserEnum::USER_FIRST_ID;
     }
 
     public function isAdmin(): bool

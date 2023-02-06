@@ -63,7 +63,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u
-                 WHERE u.id > 100
+                 WHERE u.id > :firstUserId
                  AND u.id NOT IN (:ignoreIds)
                  AND u.delmark != :deletionForbidden
                  AND (u.delmark = :deletionMark
@@ -77,7 +77,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'idleTimeVacationThreshold' => $idleTimeVacationThreshold,
             'ignoreIds' => $ignoreIds,
             'deletionMark' => UserEnum::DELETION_CONFIRMED,
-            'deletionForbidden' => UserEnum::DELETION_FORBIDDEN
+            'deletionForbidden' => UserEnum::DELETION_FORBIDDEN,
+            'firstUserId' => UserEnum::USER_FIRST_ID
         ])->getResult();
     }
 
@@ -147,7 +148,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     ): iterable {
         $query = $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id > 100 ORDER BY u.%s %s',
+                'SELECT u FROM %s u WHERE u.id >= :firstUserId ORDER BY u.%s %s',
                 User::class,
                 $sortField,
                 $sortOrder
@@ -159,7 +160,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             $query->setMaxResults($limit);
         }
 
-        return $query->getResult();
+        return $query->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
     }
 
     public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable
@@ -190,7 +191,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             sprintf(
                 'SELECT u FROM %s u
                 WHERE u.id != :ignoreUserId
-                AND u.id > 100
+                AND u.id > :firstUserId
                 AND (u.show_online_status = :allowStart OR u.id IN (
                         SELECT cl.user_id FROM %s cl WHERE cl.mode = :contactListModeFriend AND cl.recipient = :ignoreUserId
                     )
@@ -202,7 +203,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'ignoreUserId' => $ignoreUserId,
             'contactListModeFriend' => (string) ContactListModeEnum::CONTACT_FRIEND,
             'lastActionThreshold' => $lastActionThreshold,
-            'allowStart' => 1
+            'allowStart' => 1,
+            'firstUserId' => UserEnum::USER_FIRST_ID
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -212,10 +214,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(u.id) FROM %s u WHERE u.id > 100',
+                'SELECT COUNT(u.id) FROM %s u WHERE u.id >= :firstUserId',
                 User::class
             )
-        )->getSingleScalarResult();
+        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getSingleScalarResult();
     }
 
     public function getInactiveAmount(int $days): int
@@ -223,11 +225,14 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(u.id) FROM %s u
-                WHERE u.id > 100
+                WHERE u.id >= :firstUserId
                 AND u.lastaction < :threshold',
                 User::class
             )
-        )->setParameter('threshold', time() - $days * TimeConstants::ONE_DAY_IN_SECONDS)
+        )->setParameters([
+            'threshold' => time() - $days * TimeConstants::ONE_DAY_IN_SECONDS,
+            'firstUserId' => UserEnum::USER_FIRST_ID
+        ])
             ->getSingleScalarResult();
     }
 
@@ -236,12 +241,15 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(u.id) FROM %s u
-                WHERE u.id > 100
+                WHERE u.id >= :firstUserId
                 AND u.vac_active = true
                 AND u.vac_request_date < :vacThreshold',
                 User::class
             )
-        )->setParameter('vacThreshold', time() - UserEnum::VACATION_DELAY_IN_SECONDS)
+        )->setParameters([
+            'vacThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
+            'firstUserId' => UserEnum::USER_FIRST_ID
+        ])
             ->getSingleScalarResult();
     }
 
@@ -249,11 +257,12 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(u.id) FROM %s u WHERE u.id > 100 AND u.lastaction > :threshold',
+                'SELECT COUNT(u.id) FROM %s u WHERE u.id >= :firstUserId AND u.lastaction > :threshold',
                 User::class
             )
         )->setParameters([
-            'threshold' => $threshold
+            'threshold' => $threshold,
+            'firstUserId' => UserEnum::USER_FIRST_ID
         ])->getSingleScalarResult();
     }
 
@@ -271,10 +280,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id > 100 ORDER BY u.id ASC',
+                'SELECT u FROM %s u WHERE u.id >= :firstUserId ORDER BY u.id ASC',
                 User::class
             )
-        )->getResult();
+        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
     }
 
     public function getFallbackUser(): UserInterface
