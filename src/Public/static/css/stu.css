@@ -1680,10 +1680,12 @@ div.allianceRelation div.allianceRelationDate span {
 }
 
 div.statisticTopList {
-  width: 600px;
+  width: 700px;
   display: grid;
-  grid-template-columns: 40px 60px auto 50px;
+  grid-template-columns: 40px 60px auto 80px;
   margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #4a4a4a;
 }
 
 div.statisticTopList div.placement {
