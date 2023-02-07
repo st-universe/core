@@ -4866,11 +4866,6 @@ parameters:
 			path: src/Module/Notes/View/ShowNote/ShowNote.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\UserInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ActivateVacation/ActivateVacation.php
-
-		-
 			message: "#^Parameter \\#1 \\$dst_im of function imagecopy expects resource, resource\\|false given\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/Action/ChangeAvatar/ChangeAvatar.php
