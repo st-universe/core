@@ -1680,9 +1680,9 @@ div.allianceRelation div.allianceRelationDate span {
 }
 
 ul.statistics div.userGrid {
-  width: 700px;
+  width: 750px;
   display: grid;
-  grid-template-columns: 40px 60px auto 80px;
+  grid-template-columns: 40px 60px auto 100px;
 }
 
 ul.statistics img.commodity {
@@ -1725,7 +1725,7 @@ ul.statistics li:not(:first-of-type) {
 
 div.statisticsToplist {
   display: grid;
-  grid-template-columns: minmax(700px, 50%) minmax(400px, 500px);
+  grid-template-columns: minmax(750px, 50%) minmax(400px, 500px);
 }
 
 div.statisticsToplist h1 {

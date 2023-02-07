@@ -71,7 +71,7 @@
 								</div>
 								<div class="userName" tal:content="structure bbcode:entry/getUser/getUserName">USER</div>
 								<div>
-									Punkte <span tal:content="entry/getPoints">AMOUNT</span>
+									Punkte: <span tal:content="entry/getPoints">AMOUNT</span>
 								</div>
 								<div>
 									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id entry/getUser/getId" />
