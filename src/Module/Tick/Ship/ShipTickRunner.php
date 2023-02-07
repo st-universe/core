@@ -20,21 +20,21 @@ final class ShipTickRunner implements TickRunnerInterface
     /** @var int */
     private const ATTEMPTS = 5;
 
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
-
     private EntityManagerInterface $entityManager;
 
     private FailureEmailSenderInterface $failureEmailSender;
 
     private ShipTickManagerInterface $shipTickManager;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
-        LoggerUtilFactoryInterface $loggerUtilFactory,
         EntityManagerInterface $entityManager,
         FailureEmailSenderInterface $failureEmailSender,
-        ShipTickManagerInterface $shipTickManager
+        ShipTickManagerInterface $shipTickManager,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
-        $this->loggerUtilFactory = $loggerUtilFactory;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->entityManager = $entityManager;
         $this->failureEmailSender = $failureEmailSender;
         $this->shipTickManager = $shipTickManager;
@@ -42,20 +42,19 @@ final class ShipTickRunner implements TickRunnerInterface
 
     public function run(): void
     {
-        $loggerUtil = $this->loggerUtilFactory->getLoggerUtil();
-        $loggerUtil->init('mail', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init('mail', LoggerEnum::LEVEL_ERROR);
 
         /**
          * There seems to be some sort of locking-problem. Because of that, the tick gets retried several times
          */
         for ($i = 1; $i <= self::ATTEMPTS; $i++) {
-            $exception = $this->execute($loggerUtil);
+            $exception = $this->execute($this->loggerUtil);
 
             if ($exception === null) {
                 break;
             } else {
                 // logging problem
-                $loggerUtil->log(sprintf(
+                $this->loggerUtil->log(sprintf(
                     "Shiptick caused an exception. Remaing tries: %d\nException-Message: %s\nException-Trace: %s",
                     self::ATTEMPTS - $i,
                     $exception->getMessage(),
@@ -89,6 +88,9 @@ final class ShipTickRunner implements TickRunnerInterface
 
             $this->entityManager->flush();
             $this->entityManager->commit();
+
+            $this->loggerUtil->init('COLOTICK', LoggerEnum::LEVEL_WARNING);
+            $this->loggerUtil->log('shiptick finished');
 
             return null;
         } catch (Throwable $e) {

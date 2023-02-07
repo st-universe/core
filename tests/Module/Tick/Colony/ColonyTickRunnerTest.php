@@ -33,7 +33,8 @@ class ColonyTickRunnerTest extends StuTestCase
         $this->subject = new ColonyTickRunner(
             $this->entityManager,
             $this->colonyTickManager,
-            $this->failureEmailSender
+            $this->failureEmailSender,
+            $this->initLoggerUtil()
         );
     }
 
