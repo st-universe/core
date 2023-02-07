@@ -89,7 +89,7 @@ final class ShipTickRunner implements TickRunnerInterface
             $this->entityManager->flush();
             $this->entityManager->commit();
 
-            $this->loggerUtil->init('COLOTICK', LoggerEnum::LEVEL_WARNING);
+            $this->loggerUtil->init('SHIPTICK', LoggerEnum::LEVEL_WARNING);
             $this->loggerUtil->log('shiptick finished');
 
             return null;
