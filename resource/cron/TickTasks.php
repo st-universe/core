@@ -14,7 +14,7 @@ use Stu\Module\Tick\Ship\ShipTickRunner;
 $schedule = new Schedule();
 
 $schedule
-    ->run(function(): void {
+    ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
             /** @todo remove after magic container-calls have been purged from the game */
             global $container;
@@ -23,12 +23,11 @@ $schedule
             $dic->get(ColonyTickRunner::class)->run();
         });
     })
-    ->everyThreeHours()
-    ->between('12:00', '0:00')
+    ->hour(12, 15, 18, 21, 00)
     ->description('ColonyTick');
 
 $schedule
-    ->run(function(): void {
+    ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
             /** @todo remove after magic container-calls have been purged from the game */
             global $container;
@@ -37,12 +36,11 @@ $schedule
             $dic->get(ShipTickRunner::class)->run();
         });
     })
-    ->everyThreeHours()
-    ->between('12:00', '0:00')
+    ->hour(12, 15, 18, 21, 00)
     ->description('ShipTick');
 
 $schedule
-    ->run(function(): void {
+    ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
             /** @todo remove after magic container-calls have been purged from the game */
             global $container;
@@ -51,12 +49,11 @@ $schedule
             $dic->get(TickManagerRunner::class)->run();
         });
     })
-    ->everyThreeHours()
-    ->between('12:00', '0:00')
+    ->hour(12, 15, 18, 21, 00)
     ->description('TickManagerTick');
 
 $schedule
-    ->run(function(): void {
+    ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
             /** @todo remove after magic container-calls have been purged from the game */
             global $container;
@@ -69,7 +66,7 @@ $schedule
     ->description('MaintenanceTick');
 
 $schedule
-    ->run(function(): void {
+    ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
             /** @todo remove after magic container-calls have been purged from the game */
             global $container;
