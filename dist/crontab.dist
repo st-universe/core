@@ -1,9 +1,5 @@
 #stu tick crons
-* * * * *             root cd /path/to/stuniverse-source && php src/admin/cron/processtick.php
-0 12,15,18,21,0 * * * root cd /path/to/stuniverse-source && php src/admin/cron/tickmanager.php
-0 12,15,18,21,0 * * * root cd /path/to/stuniverse-source && php src/admin/cron/colonytick.php
-0 12,15,18,21,0 * * * root cd /path/to/stuniverse-source && php src/admin/cron/shiptick.php
-0 3 * * *             root cd /path/to/stuniverse-source && php src/admin/cron/maintenance.php
+* * * * *             root cd /path/to/stu/core && vendor/bin/crunz schedule:run
 
 #stu sync cron
 * * * * *             root cd /path/to/stuniverse-source && git fetch && ./sync.sh
