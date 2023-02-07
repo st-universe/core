@@ -135,22 +135,35 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-      <div tal:repeat="entry NAGUS_LIST" class="statisticTopList">
-        <div class="placement">
-          <span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
-        </div>
-        <div class="userprofile">
-          <tal:block metal:use-macro="html/macros.xhtml/userprofile_link" tal:define="user entry/user" />
-        </div>
-        <div class="userName" tal:content="structure bbcode:entry/user/getUserName">USER</div>
-        <div>
-          <img src="assets/commodities/20.png" title="Latinum" />
-          <span tal:content="entry/amount">AMOUNT</span>
-        </div>
-        <div>
-          <tal:macro metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id entry/user/getId" />
-        </div>
-      </div>
+			<div class="statisticsLatinum">
+				<div>
+					<ul class="statistics">
+						<li tal:repeat="entry NAGUS_LIST">
+							<div class="userGrid">
+								<div class="placement">
+									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+								</div>
+								<div class="userprofile">
+									<tal:block metal:use-macro="html/macros.xhtml/userprofile_link" tal:define="user entry/user" />
+								</div>
+								<div class="userName" tal:content="structure bbcode:entry/user/getUserName">USER</div>
+								<div>
+									<img class="commodity" src="assets/commodities/50.png" title="Latinum" />
+									<span tal:content="entry/amount">AMOUNT</span>
+								</div>
+								<div>
+									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id entry/user/getId" />
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<h1>Latinum</h1>
+					<p>In dieser Liste werden die 10 Spieler mit dem höchsten Besitz an Latinum - der zentralen Handelswährung im Spiel - aufgeführt.</p>
+					<p>Weitere Informationen zu Latinum findest Du <a href="https://wiki.stuniverse.de/index.php?title=Waren#Latinum" target="_blank">hier</a>.</p>
+				</div>
+			</div>
 		</tal:block>
 	</tal:block>
 </metal:macro>

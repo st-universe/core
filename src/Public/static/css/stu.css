@@ -104,13 +104,13 @@ input.text {
 }
 
 a:link {
-    color: #a2a2a2;
-    text-decoration: none;
+  color: #909090;
+  text-decoration: none;
 }
 
 a:visited {
-    COLOR: #dddddd;
-    TEXT-DECORATION: none
+  color: #909090;
+  TEXT-DECORATION: none
 }
 
 a:hover {
@@ -1679,32 +1679,58 @@ div.allianceRelation div.allianceRelationDate span {
   font-weight: bold;
 }
 
-div.statisticTopList {
+ul.statistics div.userGrid {
   width: 700px;
   display: grid;
   grid-template-columns: 40px 60px auto 80px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #4a4a4a;
 }
 
-div.statisticTopList div.placement {
-  font-size: 140%;
+ul.statistics img.commodity {
+    vertical-align: middle;
+}
+
+ul.statistics div.placement {
+  font-size: 130%;
   text-align: center;
   grid-row: span 2;
 }
 
-div.statisticTopList div.userprofile {
+ul.statistics div.placement > span {
+  line-height: 50px;
+}
+
+ul.statistics div.userprofile {
   grid-row: span 2;
 }
 
-div.statisticTopList span.placement1 {
-  font-size: 170%;
-  font-weight: bold;
+ul.statistics {
+    list-style-type: none;
+    width: 700px;
 }
 
-div.statisticTopList div.userName {
-  font-size: 130%;
+ul.statistics li:first-of-type {
+    font-size: 120%;
+    margin-bottom: 30px;
+}
+
+ul.statistics li:first-of-type div.placement {
+    font-weight: bold;
+}
+
+ul.statistics li:not(:first-of-type) {
+    border-top: 1px solid #4a4a4a;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+
+div.statisticsLatinum {
+  display: grid;
+  grid-template-columns: minmax(700px, 50%) minmax(400px, 500px);
+}
+
+div.statisticsLatinum h1 {
+  font-size: 140%;
+  margin-bottom: 20px;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
