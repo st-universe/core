@@ -57,3 +57,8 @@ Um alle automatisierte Scripte zu den definierten Zeiten laufen zu lassen, muss 
 ```
 
 Die Tasks und deren Schedules werden in Dateien innerhalb des `resource/cron` Ordners definiert.
+
+## Command Line Interface (cli)
+
+Mittels dem Shell-Befehl `./bin/cli` kann das STU CLI gestartet werden. Hier können diverse Befehle ausgeführt werden,
+z.B. das manuelle Auslösen der Rundenwechsel. Alle verfügbaren Befehle können via `./bin/cli --help` eingesehen werden.
