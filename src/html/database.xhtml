@@ -57,8 +57,7 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-
-			<div class="statisticsToplist">
+			<div class="statisticsToplist" phptal:cache="1h">
 				<div>
 					<ul class="statistics">
 						<li tal:repeat="entry DISCOVERER_LIST">
@@ -87,6 +86,8 @@
 						und danach im <a href="/database.php">Datenbank-Bereich</a> eingesehen werden können.</p>
 					<br />
 					<p>Dein eigener Punktstand: <span tal:replace="USER_COUNT">POINTS</span></p>
+          <br />
+          <p>Diese Liste wird jede Stunde aktualisiert.</p>
 				</div>
 			</div>
 		</tal:block>
@@ -96,22 +97,41 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div style="float: left; width: 30%;">
-				<table class="tcal">
-					<tr>
-						<th>Fraktion</th>
-						<th>Beteiligte Schiffe</th>
-						<th>Geflogene Felder</th>
-					</tr>
-					<tr tal:repeat="entry FLIGHTS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
-						<td>
-							<img src="assets/rassen/${entry/getFaction}s.png" />
-						</td>
-						<td tal:content="entry/getShipCount">SHIPS</td>
-						<td tal:content="entry/getSignatures">POINTS</td>
-					</tr>
-				</table>
-			</div>
+      <div class="statisticsToplist" phptal:cache="1h">
+        <div>
+          <ul class="statistics">
+            <li tal:repeat="entry FLIGHTS_LIST">
+              <div class="userGrid">
+                <div class="placement">
+                  <span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+                </div>
+                <div class="userprofile">
+                  <img src="assets/rassen/${entry/getFaction}kn.png" />
+                </div>
+                <div class="userName">
+                  Unbekannt
+                </div>
+                <div>
+                  <img src="assets/buttons/menu_ships0.png" title="Anzahl Felder / Schiffe" />
+                  <span tal:content="entry/getSignatures">POINTS</span> /
+                  <span tal:content="entry/getShipCount">SHIPS</span>
+                </div>
+                <div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h1>Vielflieger</h1>
+          <p>In dieser Liste werden die 10 Spieler mit den meisten Flugbewegungen in den letzten 48 Stunden aufgeführt.</p>
+          <p>Die erste Zahl steht für die insgesamt geflogenen Felder, die zweite Zahl für die Anzahl der beteiligten Schiffe.</p>
+          <p>Da es sich dabei um sensible Informationen handelt, werden keine Spielernamen angezeigt. Zudem zählen Flugbewegungen
+            getarnter Schiffe nicht hinzu.</p>
+          <br />
+          <p>Diese Liste wird jede Stunde aktualisiert.</p>
+        </div>
+      </div>
 		</tal:block>
 	</tal:block>
 </metal:macro>
@@ -140,7 +160,7 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div class="statisticsToplist">
+			<div class="statisticsToplist" phptal:cache="1h">
 				<div>
 					<ul class="statistics">
 						<li tal:repeat="entry NAGUS_LIST">
@@ -167,6 +187,8 @@
 					<h1>Latinum</h1>
 					<p>In dieser Liste werden die 10 Spieler mit dem höchsten Besitz an Latinum - der zentralen Handelswährung im Spiel - aufgeführt.</p>
 					<p>Weitere Informationen zu Latinum findest Du <a href="https://wiki.stuniverse.de/index.php?title=Waren#Latinum" target="_blank">hier</a>.</p>
+          <br />
+          <p>Diese Liste wird jede Stunde aktualisiert.</p>
 				</div>
 			</div>
 		</tal:block>

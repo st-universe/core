@@ -149,8 +149,10 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm->addScalarResult('race', 'race', 'integer');
         $rsm->addScalarResult('shipc', 'shipc', 'integer');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT fs.user_id, count(*) as sc,
+        return $this
+            ->getEntityManager()
+            ->createNativeQuery(
+                'SELECT fs.user_id, count(*) as sc,
                 (SELECT race
                 FROM stu_user u
                 WHERE fs.user_id = u.id),
@@ -162,8 +164,8 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             GROUP BY fs.user_id
             ORDER BY 2 DESC
             LIMIT 10',
-            $rsm
-        )
+                $rsm
+            )
             ->setParameters([
                 'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
                 'firstUserId' => UserEnum::USER_FIRST_ID
