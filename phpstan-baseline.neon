@@ -4366,11 +4366,6 @@ parameters:
 			path: src/Module/Database/View/Category/Tal/DatabaseCategoryTalInterface.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\CrewRanking\\\\CrewRanking\\:\\:getTop10\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/CrewRanking/CrewRanking.php
-
-		-
 			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
@@ -4494,11 +4489,6 @@ parameters:
 			message: "#^Parameter \\$stats of method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createPlots\\(\\) has invalid type Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\GameTurnStatsInterface\\.$#"
 			count: 1
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\TradePostActivity\\\\TradePostActivity\\:\\:getTop10\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/TradePostActivity/TradePostActivity.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\UserList\\\\UserList\\:\\:getUserListNavigation\\(\\) return type has no value type specified in iterable type array\\.$#"

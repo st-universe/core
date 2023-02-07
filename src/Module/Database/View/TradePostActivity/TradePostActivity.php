@@ -11,7 +11,6 @@ use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class TradePostActivity implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_TOP_ACTIV_TRADEPOST';
 
     private TradeTransactionRepositoryInterface $tradeTransactionRepository;
@@ -24,30 +23,25 @@ final class TradePostActivity implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->appendNavigationPart(
-            'database.php',
-            _('Datenbank')
-        );
-        $game->appendNavigationPart(
-            sprintf(
-                'database.php?%s=1',
-                static::VIEW_IDENTIFIER
-            ),
-            _('Die Top 10 der Handelsposten')
-        );
+        $game->setNavigation([
+            [
+                'url' => 'database.php',
+                'title' =>'Datenbank'
+            ],
+            [
+                'url' => sprintf('database.php?%s=1', static::VIEW_IDENTIFIER),
+                'title' => 'Die Top 10 der Handelsposten'
+            ]
+        ]);
         $game->setPageTitle(_('/ Datenbank / Die Top 10 der Handelsposten'));
         $game->showMacro('html/database.xhtml/top_activ_tradeposts');
 
-        $game->setTemplateVar('ACTIV_TRADEPOST', $this->getTop10());
-    }
-
-    private function getTop10()
-    {
-        return array_map(
-            function (array $data): DatabaseTopActivTradePost {
-                return new DatabaseTopActivTradePost($data);
-            },
-            $this->tradeTransactionRepository->getTradePostsTop10()
+        $game->setTemplateVar(
+            'ACTIV_TRADEPOST',
+            array_map(
+                fn (array $data): DatabaseTopActivTradePost => new DatabaseTopActivTradePost($data),
+                $this->tradeTransactionRepository->getTradePostsTop10()
+            )
         );
     }
 }

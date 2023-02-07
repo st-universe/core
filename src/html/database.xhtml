@@ -216,20 +216,36 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div style="float: left; width: 30%;">
-				<table class="tcal">
-					<tr>
-						<th>Handelsposten</th>
-						<th>Transaktionen</th>
-					</tr>
-					<tr tal:repeat="entry ACTIV_TRADEPOST" tal:attributes="class string:row${repeat/entry/odd}">
-						<td>
-							<span tal:replace="structure bbcode:entry/getName">NAME</span>
-						</td>
-						<td tal:content="entry/getTransactions">TRANSACTIONS</td>
-					</tr>
-				</table>
-			</div>
+      <div class="statisticsToplist" phptal:cache="1h">
+        <div>
+          <ul class="statistics">
+            <li tal:repeat="entry ACTIV_TRADEPOST">
+              <div class="userGrid">
+                <div class="placement">
+                  <span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+                </div>
+                <div class="userprofile">
+                </div>
+                <div class="userName">
+                  <span tal:replace="structure bbcode:entry/getName">NAME</span>
+                </div>
+                <div>
+                  <img src="assets/buttons/menu_trade0.png" title="Anzahl Transaktionen" />
+                  <span tal:content="entry/getTransactions">TRANSACTIONS</span>
+                </div>
+                <div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h1>Handelsposten</h1>
+          <p>In dieser Liste werden die 10 Handelsposten mit den meisten Transaktionen in den letzten 7 Tagen aufgeführt.</p>
+          <br />
+          <p>Diese Liste wird jede Stunde aktualisiert.</p>
+        </div>
+      </div>
 		</tal:block>
 	</tal:block>
 </metal:macro>
