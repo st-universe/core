@@ -8,22 +8,22 @@ use Ahc\Cli\Application;
 use Mockery\MockInterface;
 use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
-use Stu\Module\Tick\Colony\ColonyTickRunner;
+use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\StuTestCase;
 
-class ColonyTickCommandTest extends StuTestCase
+class MaintenanceTickCommandTest extends StuTestCase
 {
     /** @var MockInterface&ContainerInterface */
     private MockInterface $dic;
 
-    private ColonyTickCommand $subject;
+    private MaintenanceTickCommand $subject;
 
     protected function setUp(): void
     {
         $this->dic = $this->mock(ContainerInterface::class);
 
-        $this->subject = new ColonyTickCommand(
+        $this->subject = new MaintenanceTickCommand(
             $this->dic
         );
     }
@@ -32,7 +32,7 @@ class ColonyTickCommandTest extends StuTestCase
     {
         $app = $this->mock(Application::class);
         $interactor = $this->mock(CliInteractorHelper::class);
-        $colonyTickRunner = $this->mock(TickRunnerInterface::class);
+        $tickRunner = $this->mock(TickRunnerInterface::class);
 
         $this->subject->bind($app);
 
@@ -43,17 +43,17 @@ class ColonyTickCommandTest extends StuTestCase
 
         $interactor->shouldReceive('ok')
             ->with(
-                'Colony tick has been executed',
+                'Maintenance tick has been executed',
                 true
             )
             ->once();
 
         $this->dic->shouldReceive('get')
-            ->with(ColonyTickRunner::class)
+            ->with(MaintenanceTickRunner::class)
             ->once()
-            ->andReturn($colonyTickRunner);
+            ->andReturn($tickRunner);
 
-        $colonyTickRunner->shouldReceive('run')
+        $tickRunner->shouldReceive('run')
             ->withNoArgs()
             ->once();
 

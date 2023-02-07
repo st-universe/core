@@ -8,22 +8,22 @@ use Ahc\Cli\Application;
 use Mockery\MockInterface;
 use Psr\Container\ContainerInterface;
 use Stu\CliInteractorHelper;
-use Stu\Module\Tick\Colony\ColonyTickRunner;
+use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\TickRunnerInterface;
 use Stu\StuTestCase;
 
-class ColonyTickCommandTest extends StuTestCase
+class ProcessTickCommandTest extends StuTestCase
 {
     /** @var MockInterface&ContainerInterface */
     private MockInterface $dic;
 
-    private ColonyTickCommand $subject;
+    private ProcessTickCommand $subject;
 
     protected function setUp(): void
     {
         $this->dic = $this->mock(ContainerInterface::class);
 
-        $this->subject = new ColonyTickCommand(
+        $this->subject = new ProcessTickCommand(
             $this->dic
         );
     }
@@ -43,13 +43,13 @@ class ColonyTickCommandTest extends StuTestCase
 
         $interactor->shouldReceive('ok')
             ->with(
-                'Colony tick has been executed',
+                'Process tick has been executed',
                 true
             )
             ->once();
 
         $this->dic->shouldReceive('get')
-            ->with(ColonyTickRunner::class)
+            ->with(ProcessTickRunner::class)
             ->once()
             ->andReturn($colonyTickRunner);
 

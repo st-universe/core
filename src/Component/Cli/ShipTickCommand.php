@@ -6,12 +6,12 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
 use Psr\Container\ContainerInterface;
-use Stu\Module\Tick\Colony\ColonyTickRunner;
+use Stu\Module\Tick\Ship\ShipTickRunner;
 
 /**
- * Provides cli method for manual colony ticks
+ * Provides cli method for manual ship ticks
  */
-final class ColonyTickCommand extends Command
+final class ShipTickCommand extends Command
 {
     private ContainerInterface $dic;
 
@@ -21,23 +21,23 @@ final class ColonyTickCommand extends Command
         $this->dic = $dic;
 
         parent::__construct(
-            'tick:colony',
-            'Runs the colony tick'
+            'tick:ship',
+            'Runs the ship tick'
         );
 
         $this
             ->usage(
-                '<bold>  $0 tick:colony</end> <comment></end> ## Runs the colony tick<eol/>'
+                '<bold>  $0 tick:ship</end> <comment></end> ## Runs the ship tick<eol/>'
             );
     }
 
     public function execute(): void
     {
-        $tickRunner = $this->dic->get(ColonyTickRunner::class);
+        $tickRunner = $this->dic->get(ShipTickRunner::class);
         $tickRunner->run();
 
         $this->io()->ok(
-            'Colony tick has been executed',
+            'Ship tick has been executed',
             true
         );
     }

@@ -6,12 +6,12 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
 use Psr\Container\ContainerInterface;
-use Stu\Module\Tick\Colony\ColonyTickRunner;
+use Stu\Module\Tick\Manager\TickManagerRunner;
 
 /**
- * Provides cli method for manual colony ticks
+ * Provides cli method for manual manager ticks
  */
-final class ColonyTickCommand extends Command
+final class ManagerTickCommand extends Command
 {
     private ContainerInterface $dic;
 
@@ -21,23 +21,23 @@ final class ColonyTickCommand extends Command
         $this->dic = $dic;
 
         parent::__construct(
-            'tick:colony',
-            'Runs the colony tick'
+            'tick:manager',
+            'Runs the manager tick'
         );
 
         $this
             ->usage(
-                '<bold>  $0 tick:colony</end> <comment></end> ## Runs the colony tick<eol/>'
+                '<bold>  $0 tick:manager</end> <comment></end> ## Runs the manager tick<eol/>'
             );
     }
 
     public function execute(): void
     {
-        $tickRunner = $this->dic->get(ColonyTickRunner::class);
+        $tickRunner = $this->dic->get(TickManagerRunner::class);
         $tickRunner->run();
 
         $this->io()->ok(
-            'Colony tick has been executed',
+            'Manager tick has been executed',
             true
         );
     }

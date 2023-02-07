@@ -7,6 +7,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Cli\ColonyTickCommand;
+use Stu\Component\Cli\MaintenanceTickCommand;
+use Stu\Component\Cli\ManagerTickCommand;
+use Stu\Component\Cli\ProcessTickCommand;
+use Stu\Component\Cli\ShipTickCommand;
 use Stu\Component\Cli\UserCreateCommand;
 use Stu\Config\Init;
 
@@ -50,6 +54,10 @@ Init::run(
         $app->logo($logo);
         $app->add(new UserCreateCommand($dic));
         $app->add(new ColonyTickCommand($dic));
+        $app->add(new ShipTickCommand($dic));
+        $app->add(new MaintenanceTickCommand($dic));
+        $app->add(new ProcessTickCommand($dic));
+        $app->add(new ManagerTickCommand($dic));
 
         $app->handle($_SERVER['argv']);
     }

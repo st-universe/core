@@ -6,12 +6,12 @@ namespace Stu\Component\Cli;
 
 use Ahc\Cli\Input\Command;
 use Psr\Container\ContainerInterface;
-use Stu\Module\Tick\Colony\ColonyTickRunner;
+use Stu\Module\Tick\Process\ProcessTickRunner;
 
 /**
- * Provides cli method for manual colony ticks
+ * Provides cli method for manual process ticks
  */
-final class ColonyTickCommand extends Command
+final class ProcessTickCommand extends Command
 {
     private ContainerInterface $dic;
 
@@ -21,23 +21,23 @@ final class ColonyTickCommand extends Command
         $this->dic = $dic;
 
         parent::__construct(
-            'tick:colony',
-            'Runs the colony tick'
+            'tick:process',
+            'Runs the process tick'
         );
 
         $this
             ->usage(
-                '<bold>  $0 tick:colony</end> <comment></end> ## Runs the colony tick<eol/>'
+                '<bold>  $0 tick:process</end> <comment></end> ## Runs the process tick<eol/>'
             );
     }
 
     public function execute(): void
     {
-        $tickRunner = $this->dic->get(ColonyTickRunner::class);
+        $tickRunner = $this->dic->get(ProcessTickRunner::class);
         $tickRunner->run();
 
         $this->io()->ok(
-            'Colony tick has been executed',
+            'Process tick has been executed',
             true
         );
     }
