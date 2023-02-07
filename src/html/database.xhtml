@@ -57,32 +57,37 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div style="float: left; width: 30%;">
-				<table class="tcal">
-					<tr>
-						<th>Siedler</th>
-						<th>Punkte</th>
-					</tr>
-					<tr tal:repeat="entry DISCOVERER_LIST" tal:attributes="class string:row${repeat/entry/odd}">
-						<td>
-							<metal:macro metal:use-macro="html/macros.xhtml/userprofile"
-								tal:define="id entry/getUserId" />
-							<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
-						</td>
-						<td tal:content="entry/getPoints">POINTS</td>
-					</tr>
-					<tal:block tal:condition="exists: USER_COUNT">
-						<tr>
-							<td colspan="2"></td>
-						</tr>
-						<tr>
-							<td>
-								Eigene Punkte:
-							</td>
-							<td tal:content="USER_COUNT">POINTS</td>
-						</tr>
-					</tal:block>
-				</table>
+
+			<div class="statisticsToplist">
+				<div>
+					<ul class="statistics">
+						<li tal:repeat="entry DISCOVERER_LIST">
+							<div class="userGrid">
+								<div class="placement">
+									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+								</div>
+								<div class="userprofile">
+									<tal:block metal:use-macro="html/macros.xhtml/userprofile_link" tal:define="user entry/getUser" />
+								</div>
+								<div class="userName" tal:content="structure bbcode:entry/getUser/getUserName">USER</div>
+								<div>
+									Punkte <span tal:content="entry/getPoints">AMOUNT</span>
+								</div>
+								<div>
+									<tal:macro metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id entry/getUser/getId" />
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<h1>Entdecker</h1>
+					<p>In dieser Liste werden die 10 Spieler mit den meisten Entdeckungen im Spiel aufgeführt.</p>
+					<p>Zu Entdeckungen zählen Sternensysteme, Schiffs-Typen, Handelsposten uvm., die unter anderem durch das Scannen bestimmer Objekte erlangt
+						und danach im <a href="/database.php">Datenbank-Bereich</a> eingesehen werden können.</p>
+					<br />
+					<p>Dein eigener Punktstand: <span tal:replace="USER_COUNT">POINTS</span></p>
+				</div>
 			</div>
 		</tal:block>
 	</tal:block>
@@ -135,7 +140,7 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div class="statisticsLatinum">
+			<div class="statisticsToplist">
 				<div>
 					<ul class="statistics">
 						<li tal:repeat="entry NAGUS_LIST">

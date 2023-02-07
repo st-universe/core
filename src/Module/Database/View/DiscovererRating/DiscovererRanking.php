@@ -26,40 +26,25 @@ final class DiscovererRanking implements ViewControllerInterface
     {
         $game->appendNavigationPart(
             'database.php',
-            _('Datenbank')
+            'Datenbank'
         );
         $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1',
                 static::VIEW_IDENTIFIER
             ),
-            _('Die 10 besten Entdecker')
+            'Die 10 besten Entdecker'
         );
-        $game->setPageTitle(_('/ Datenbank / Die 10 besten Entdecker'));
+        $game->setPageTitle('/ Datenbank / Die 10 besten Entdecker');
         $game->showMacro('html/database.xhtml/top_research_user');
+        $game->setTemplateVar(
+            'DISCOVERER_LIST',
 
-        $topList = $this->getTopResearchUser();
-        $game->setTemplateVar('DISCOVERER_LIST', $topList);
-
-        $containsUser = false;
-        foreach ($topList as $element) {
-            if ($element->getUserId() === $game->getUser()->getId()) {
-                $containsUser = true;
-            }
-        }
-
-        if (!$containsUser) {
-            $game->setTemplateVar('USER_COUNT', $this->databaseUserRepository->getCountForUser($game->getUser()->getId()));
-        }
-    }
-
-    private function getTopResearchUser()
-    {
-        return array_map(
-            function (array $data): DatabaseTopListDiscover {
-                return new DatabaseTopListDiscover($data);
-            },
-            $this->databaseUserRepository->getTopList()
+            array_map(
+                fn (array $data): DatabaseTopListDiscover => new DatabaseTopListDiscover($data),
+                $this->databaseUserRepository->getTopList()
+            )
         );
+        $game->setTemplateVar('USER_COUNT', $this->databaseUserRepository->getCountForUser($game->getUser()->getId()));
     }
 }

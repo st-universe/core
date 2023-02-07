@@ -4396,11 +4396,6 @@ parameters:
 			path: src/Module/Database/View/DatabaseEntry/DatabaseEntry.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\DiscovererRating\\\\DiscovererRanking\\:\\:getTopResearchUser\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/DiscovererRating/DiscovererRanking.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\FlightRanking\\\\FlightRanking\\:\\:getTop10\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/FlightRanking/FlightRanking.php
