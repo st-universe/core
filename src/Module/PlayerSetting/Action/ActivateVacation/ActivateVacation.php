@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ActivateVacation;
 
+use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -28,10 +29,6 @@ final class ActivateVacation implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser() === null) {
-            return;
-        }
-
         //wenn die letzte Aktivierung älter als eine Woche ist
         if ((time() - $game->getUser()->getVacationRequestDate()) > TimeConstants::SEVEN_DAYS_IN_SECONDS) {
             $user = $game->getUser();
@@ -42,6 +39,8 @@ final class ActivateVacation implements ActionControllerInterface
             $this->userRepository->save($user);
 
             $this->session->logout();
+
+            $game->redirectTo(sprintf('/%s.php', ModuleViewEnum::MODULE_VIEW_INDEX));
         } else {
             $game->addInformation(
                 _('Urlaubsmodus ist noch gesperrt. Letzte Aktivierung ist weniger als eine Woche her!')
