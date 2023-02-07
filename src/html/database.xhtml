@@ -57,8 +57,8 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div class="statisticsToplist" phptal:cache="1h">
-				<div>
+			<div class="statisticsToplist">
+				<div phptal:cache="1h">
 					<ul class="statistics">
 						<li tal:repeat="entry DISCOVERER_LIST">
 							<div class="userGrid">
@@ -139,20 +139,38 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div style="float: left; width: 30%;">
-				<table class="tcal">
-					<tr>
-						<th>Fraktion</th>
-						<th>Crew auf Schiffen/Stationen</th>
-					</tr>
-					<tr tal:repeat="entry CREWS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
-						<td>
-							<img src="assets/rassen/${entry/getFaction}s.png" />
-						</td>
-						<td tal:content="entry/getCrewCount">CREWS</td>
-					</tr>
-				</table>
-			</div>
+      <div class="statisticsToplist" phptal:cache="1h">
+        <div>
+          <ul class="statistics">
+            <li tal:repeat="entry CREWS_LIST">
+              <div class="userGrid">
+                <div class="placement">
+                  <span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
+                </div>
+                <div class="userprofile">
+                  <img src="assets/rassen/${entry/getFaction}kn.png" />
+                </div>
+                <div class="userName">
+                  Unbekannt
+                </div>
+                <div>
+                  <img src="assets/buttons/crew.png" title="Crew auf Schiffen / Stationen" />
+                  <span tal:content="entry/getCrewCount">CREW</span>
+                </div>
+                <div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h1>Ausbilder</h1>
+          <p>In dieser Liste werden die 10 Spieler mit der meisten Crew auf Schiffen/Stationen dargestellt.</p>
+          <p>Da es sich dabei um sensible Informationen handelt, werden keine Spielernamen angezeigt.</p>
+          <br />
+          <p>Diese Liste wird jede Stunde aktualisiert.</p>
+        </div>
+      </div>
 		</tal:block>
 	</tal:block>
 </metal:macro>
