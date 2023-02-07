@@ -24,6 +24,7 @@ $schedule
         });
     })
     ->hour(12, 15, 18, 21, 00)
+    ->minute(00)
     ->description('ColonyTick');
 
 $schedule
@@ -37,6 +38,7 @@ $schedule
         });
     })
     ->hour(12, 15, 18, 21, 00)
+    ->minute(00)
     ->description('ShipTick');
 
 $schedule
@@ -50,6 +52,7 @@ $schedule
         });
     })
     ->hour(12, 15, 18, 21, 00)
+    ->minute(00)
     ->description('TickManagerTick');
 
 $schedule
