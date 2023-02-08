@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<Storage>
@@ -21,34 +22,34 @@ interface StorageRepositoryInterface extends ObjectRepository
     public function delete(StorageInterface $storage): void;
 
     /**
-     * @return iterable<array{commodity_id: int, amount: int}>
+     * @return array<array{commodity_id: int, amount: int}>
      */
-    public function getByUserAccumulated(int $userId): iterable;
+    public function getByUserAccumulated(UserInterface $user): array;
 
     /**
-     * @return iterable<array{commodity_id: int, colonies_id: int, amount: int}>
+     * @return array<array{commodity_id: int, colonies_id: int, amount: int}>
      */
-    public function getColonyStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
+    public function getColonyStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
-     * @return iterable<array{commodity_id: int, ships_id: int, amount: int}>
+     * @return array<array{commodity_id: int, ships_id: int, amount: int}>
      */
-    public function getShipStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
+    public function getShipStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
      * @return StorageInterface[]
      */
-    public function getTradePostStorageByUserAndCommodity(int $userId, int $commodityId): array;
+    public function getTradePostStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
-     * @return iterable<array{commodity_id: int, posts_id: int, amount: int}>
+     * @return array<array{commodity_id: int, posts_id: int, amount: int}>
      */
-    public function getTradeOfferStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
+    public function getTradeOfferStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
-     * @return iterable<array{commodity_id: int, ship_id: int, amount: int}>
+     * @return array<array{commodity_id: int, ship_id: int, amount: int}>
      */
-    public function getTorpdeoStorageByUserAndCommodity(int $userId, int $commodityId): iterable;
+    public function getTorpdeoStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
      * @return StorageInterface[]

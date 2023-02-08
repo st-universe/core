@@ -250,28 +250,28 @@
 	</tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="commodities_overview">
-	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
-		<tal:block metal:fill-slot="body">
-			<metal:macro metal:use-macro="html/databasemacros.xhtml/initial_js" />
-			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<table class="tcal">
-				<tr>
-					<th>Anzahl</th>
-					<th>Ware</th>
-				</tr>
-				<tr tal:repeat="entry COMMODITIES_LIST" tal:attributes="class string:row${repeat/entry/odd}">
-					<td tal:content="entry/getAmount">AMOUNT</td>
-					<td>
-						<a href="javascript:void(0);" onclick="getCommodityLocations(${entry/getCommodityId})">
-							<img src="assets/commodities/${entry/getCommodityId}.png"
-								tal:attributes="title entry/getCommodity/getName" /><span
-								tal:replace="entry/getCommodity/getName">NAME</span>
-						</a>
-					</td>
-				</tr>
-			</table>
-		</tal:block>
-	</tal:block>
+  <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+    <tal:block metal:fill-slot="body">
+      <metal:macro metal:use-macro="html/databasemacros.xhtml/initial_js" />
+      <tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+      <table class="tcal">
+        <tr>
+          <th>Anzahl</th>
+          <th>Ware</th>
+        </tr>
+        <tr tal:repeat="entry COMMODITIES_LIST" tal:attributes="class string:row${repeat/entry/odd}">
+          <td tal:content="entry/getAmount">AMOUNT</td>
+          <td>
+            <a href="javascript:void(0);" onclick="getCommodityLocations(${entry/getCommodityId})">
+              <img style="vertical-align: middle" src="assets/commodities/${entry/getCommodityId}.png"
+                   tal:attributes="title entry/getCommodity/getName" />
+              <span tal:replace="entry/getCommodity/getName">NAME</span>
+            </a>
+          </td>
+        </tr>
+      </table>
+    </tal:block>
+  </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="prestige_log">
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">

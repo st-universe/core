@@ -13,6 +13,7 @@ use Stu\Orm\Entity\Storage;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<Storage>
@@ -38,7 +39,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         $em->remove($storage);
     }
 
-    public function getByUserAccumulated(int $userId): iterable
+    public function getByUserAccumulated(UserInterface $user): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -54,11 +55,11 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ORDER BY g.sort ASC',
             $rsm
         )->setParameters([
-            'userId' => $userId
+            'userId' => $user->getId()
         ])->getResult();
     }
 
-    public function getColonyStorageByUserAndCommodity(int $userId, int $commodityId): iterable
+    public function getColonyStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -74,12 +75,12 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ORDER BY s.count DESC',
             $rsm
         )->setParameters([
-            'userId' => $userId,
+            'userId' => $user->getId(),
             'commodityId' => $commodityId
         ])->getResult();
     }
 
-    public function getShipStorageByUserAndCommodity(int $userId, int $commodityId): iterable
+    public function getShipStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -96,30 +97,30 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             ORDER BY s.count DESC',
             $rsm
         )->setParameters([
-            'userId' => $userId,
+            'userId' => $user->getId(),
             'commodityId' => $commodityId
         ])->getResult();
     }
 
-    public function getTradePostStorageByUserAndCommodity(int $userId, int $commodityId): array
+    public function getTradePostStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s
                 FROM %s s
                 WHERE s.commodity_id = :commodityId
-                AND s.user_id = :userId
+                AND s.user = :user
                 AND s.tradepost_id IS NOT NULL
                 ORDER BY s.count DESC',
                 Storage::class
             )
         )->setParameters([
             'commodityId' => $commodityId,
-            'userId' => $userId
+            'user' => $user
         ])->getResult();
     }
 
-    public function getTradeOfferStorageByUserAndCommodity(int $userId, int $commodityId): iterable
+    public function getTradeOfferStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -139,12 +140,12 @@ final class StorageRepository extends EntityRepository implements StorageReposit
                 ORDER BY amount DESC',
             $rsm
         )->setParameters([
-            'userId' => $userId,
+            'userId' => $user->getId(),
             'commodityId' => $commodityId
         ])->getResult();
     }
 
-    public function getTorpdeoStorageByUserAndCommodity(int $userId, int $commodityId): iterable
+    public function getTorpdeoStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
@@ -164,7 +165,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
                 ORDER BY amount DESC',
             $rsm
         )->setParameters([
-            'userId' => $userId,
+            'userId' => $user->getId(),
             'commodityId' => $commodityId
         ])->getResult();
     }

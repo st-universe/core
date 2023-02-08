@@ -7,6 +7,8 @@ namespace Stu\Module\Database;
 use Stu\Module\Control\GameController;
 use Stu\Module\Database\Lib\CreateDatabaseEntry;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
+use Stu\Module\Database\Lib\DatabaseUiFactory;
+use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactory;
@@ -55,5 +57,6 @@ return [
         ShowStatistics::VIEW_IDENTIFIER => autowire(ShowStatistics::class),
         TradePostActivity::VIEW_IDENTIFIER => autowire(TradePostActivity::class),
         UserList::VIEW_IDENTIFIER => autowire(UserList::class)
-    ]
+    ],
+    DatabaseUiFactoryInterface::class => autowire(DatabaseUiFactory::class),
 ];
