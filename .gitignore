@@ -14,3 +14,4 @@ build
 OrmProxy
 src/lang/*/*/*.mo
 .php-cs-fixer.cache
+.githooks
