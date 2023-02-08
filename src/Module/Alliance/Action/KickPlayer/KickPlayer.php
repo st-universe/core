@@ -8,6 +8,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -85,6 +86,8 @@ final class KickPlayer implements ActionControllerInterface
         );
 
         $this->privateMessageSender->send(GameEnum::USER_NOONE, $playerId, $text);
+
+        $game->setView(Management::VIEW_IDENTIFIER);
 
         $game->addInformation(_('Der Siedler wurde rausgeworfen'));
     }

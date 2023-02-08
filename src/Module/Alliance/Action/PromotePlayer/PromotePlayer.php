@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -134,6 +135,8 @@ final class PromotePlayer implements ActionControllerInterface
         }
 
         $this->privateMessageSender->send($userId, $playerId, $text);
+
+        $game->setView(Management::VIEW_IDENTIFIER);
 
         $game->addInformation(_('Das Mitglied wurde befördert'));
     }

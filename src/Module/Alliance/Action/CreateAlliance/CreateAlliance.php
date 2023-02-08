@@ -47,7 +47,7 @@ final class CreateAlliance implements ActionControllerInterface
 
         if (mb_strlen($name) < 5) {
             $game->setView(Create::VIEW_IDENTIFIER);
-            $game->addInformation(_('Der Name muss aus mindestens 5 Zeichen bestehen'));
+            $game->addInformation('Der Name muss aus mindestens 5 Zeichen bestehen');
             return;
         }
 
@@ -74,7 +74,9 @@ final class CreateAlliance implements ActionControllerInterface
 
         $this->allianceJobRepository->save($job);
 
-        $game->addInformation(_('Die Allianz wurde gegründet'));
+        $alliance->getJobs()->offsetSet(AllianceEnum::ALLIANCE_JOBS_FOUNDER, $job);
+
+        $game->addInformation('Die Allianz wurde gegründet');
     }
 
     public function performSessionCheck(): bool

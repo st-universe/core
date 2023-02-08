@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AllianceRepository")
@@ -106,23 +106,14 @@ class Alliance implements AllianceInterface
      *
      * @OneToMany(targetEntity="User", mappedBy="alliance")
      */
-    private $members;
+    private Collection $members;
 
     /**
      * @var ArrayCollection<int, AllianceJobInterface>
      *
-     * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance")
+     * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance", indexBy="type")
      */
-    private $jobs;
-
-    /** @var null|AllianceJobInterface */
-    private $founder;
-
-    /** @var null|AllianceJobInterface */
-    private $successor;
-
-    /** @var null|AllianceJobInterface */
-    private $diplomatic;
+    private Collection $jobs;
 
     public function __construct()
     {
@@ -237,49 +228,27 @@ class Alliance implements AllianceInterface
         return $this;
     }
 
+    /**
+     * @throws AllianceFounderNotSetException
+     */
     public function getFounder(): AllianceJobInterface
     {
-        if ($this->founder === null) {
-            // @todo refactor
-            global $container;
-
-            $this->founder = $container->get(AllianceJobRepositoryInterface::class)
-                ->getSingleResultByAllianceAndType(
-                    $this->getId(),
-                    AllianceEnum::ALLIANCE_JOBS_FOUNDER
-                );
+        $job = $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+        if ($job === null) {
+            // alliance without founder? this should not happen
+            throw new AllianceFounderNotSetException();
         }
-        return $this->founder;
+        return $job;
     }
 
     public function getSuccessor(): ?AllianceJobInterface
     {
-        if ($this->successor === null) {
-            // @todo refactor
-            global $container;
-
-            $this->successor = $container->get(AllianceJobRepositoryInterface::class)
-                ->getSingleResultByAllianceAndType(
-                    $this->getId(),
-                    AllianceEnum::ALLIANCE_JOBS_SUCCESSOR
-                );
-        }
-        return $this->successor;
+        return $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
     }
 
     public function getDiplomatic(): ?AllianceJobInterface
     {
-        if ($this->diplomatic === null) {
-            // @todo refactor
-            global $container;
-
-            $this->diplomatic = $container->get(AllianceJobRepositoryInterface::class)
-                ->getSingleResultByAllianceAndType(
-                    $this->getId(),
-                    AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC
-                );
-        }
-        return $this->diplomatic;
+        return $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
     }
 
     public function getMembers(): Collection
@@ -290,5 +259,10 @@ class Alliance implements AllianceInterface
     public function isNpcAlliance(): bool
     {
         return $this->getFounder()->getUser()->isNpc();
+    }
+
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
     }
 }

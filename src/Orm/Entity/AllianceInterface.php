@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
 
 interface AllianceInterface
 {
@@ -42,6 +43,9 @@ interface AllianceInterface
 
     public function setRgbCode(string $rgbCode): AllianceInterface;
 
+    /**
+     * @throws AllianceFounderNotSetException
+     */
     public function getFounder(): AllianceJobInterface;
 
     public function getSuccessor(): ?AllianceJobInterface;
@@ -57,4 +61,11 @@ interface AllianceInterface
      * Returns `true` if the founder is a npc
      */
     public function isNpcAlliance(): bool;
+
+    /**
+     * Returns the alliance jobs, indexed by type
+     *
+     * @return Collection<int, AllianceJobInterface>
+     */
+    public function getJobs(): Collection;
 }

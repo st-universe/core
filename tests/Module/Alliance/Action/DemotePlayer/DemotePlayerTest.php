@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\Action\DemotePlayer;
 use Mockery\MockInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\AllianceInterface;
@@ -208,6 +209,9 @@ class DemotePlayerTest extends StuTestCase
 
         $this->game->shouldReceive('addInformation')
             ->with('Das Mitglied wurde von seinem Posten enthoben')
+            ->once();
+        $this->game->shouldReceive('setView')
+            ->with(Management::VIEW_IDENTIFIER)
             ->once();
 
         $this->subject->handle($this->game);

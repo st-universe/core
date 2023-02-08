@@ -75,7 +75,7 @@ final class Management implements ViewControllerInterface
         $game->setTemplateVar('MEMBER_LIST', $list);
         $game->setTemplateVar(
             'USER_IS_FOUNDER',
-            $alliance->getFounder()->getId() === $userId
+            $alliance->getFounder()->getUserId() === $userId
         );
     }
 }

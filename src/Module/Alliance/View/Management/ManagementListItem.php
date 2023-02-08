@@ -110,7 +110,7 @@ final class ManagementListItem
     {
         $userId = $this->user->getId();
 
-        return $this->isCurrentUser()
+        return $this->isCurrentUser() === false
             && $this->allianceJobRepository->getByUser($userId) !== [];
     }
 

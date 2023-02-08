@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\DemotePlayer;
 
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -78,6 +79,8 @@ final class DemotePlayer implements ActionControllerInterface
                 $alliance->getName()
             )
         );
+
+        $game->setView(Management::VIEW_IDENTIFIER);
 
         $game->addInformation('Das Mitglied wurde von seinem Posten enthoben');
     }
