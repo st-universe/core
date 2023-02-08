@@ -22,7 +22,7 @@ class KnBbCodeDefinitionSetTest extends StuTestCase
     {
         $definitions = $this->set->getCodeDefinitions();
 
-        $tags = ['i', 'b', 'u', 'h2', 'h3'];
+        $tags = ['i', 'b', 'u', 'h2', 'h3', 'quote'];
 
         foreach ($definitions as $definition) {
             $this->assertTrue(
