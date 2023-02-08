@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuilding;
 
-use Stu\Lib\ColonyEpsProductionPreviewWrapper;
-use Stu\Lib\ColonyProductionPreviewWrapper;
+use Stu\Module\Colony\Lib\ColonyEpsProductionPreviewWrapper;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
-use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ShowBuilding implements ViewControllerInterface
 {
@@ -28,11 +28,14 @@ final class ShowBuilding implements ViewControllerInterface
 
     private BuildingRepositoryInterface $buildingRepository;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ShowBuildingRequestInterface $showBuildingRequest,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
+        ColonyLibFactoryInterface $colonyLibFactory,
         BuildingRepositoryInterface $buildingRepository
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -40,6 +43,7 @@ final class ShowBuilding implements ViewControllerInterface
         $this->showBuildingRequest = $showBuildingRequest;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
         $this->buildingRepository = $buildingRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -113,11 +117,11 @@ final class ShowBuilding implements ViewControllerInterface
         $game->setTemplateVar('USEABLE_FIELD_TYPES', $useableFieldTypes);
         $game->setTemplateVar(
             'ENERGY_PRODUCTION_PREVIEW',
-            new ColonyEpsProductionPreviewWrapper($colony)
+            $this->colonyLibFactory->createEpsProductionPreviewWrapper($colony)
         );
         $game->setTemplateVar(
             'COMMODITY_PRODUCTION_PREVIEW',
-            new ColonyProductionPreviewWrapper($colony->getProduction())
+            $this->colonyLibFactory->createColonyProductionPreviewWrapper($colony->getProduction())
         );
     }
 }

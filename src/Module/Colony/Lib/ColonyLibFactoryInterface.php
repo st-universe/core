@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -27,4 +28,15 @@ interface ColonyLibFactoryInterface
         ShipRumpInterface $shipRump,
         UserInterface $currentUser
     ): BuildableRumpListItemInterface;
+
+    /**
+     * @param array<ColonyProduction> $production
+     */
+    public function createColonyProductionPreviewWrapper(
+        array $production
+    ): ColonyProductionPreviewWrapper;
+
+    public function createEpsProductionPreviewWrapper(
+        ColonyInterface $colony
+    ): ColonyEpsProductionPreviewWrapper;
 }

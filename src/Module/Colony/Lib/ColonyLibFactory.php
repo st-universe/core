@@ -10,6 +10,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
@@ -42,6 +43,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private LoggerUtilFactoryInterface $loggerUtilFactory;
 
+    private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
@@ -53,6 +56,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         PlanetGeneratorInterface $planetGenerator,
         EntityManagerInterface $entityManager,
+        BuildingCommodityRepositoryInterface $buildingCommodityRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
@@ -66,6 +70,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->planetGenerator = $planetGenerator;
         $this->entityManager = $entityManager;
         $this->loggerUtilFactory = $loggerUtilFactory;
+        $this->buildingCommodityRepository = $buildingCommodityRepository;
     }
 
     public function createBuildingFunctionTal(
@@ -112,6 +117,24 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->shipBuildplanRepository,
             $shipRump,
             $currentUser
+        );
+    }
+
+    public function createColonyProductionPreviewWrapper(
+        array $production
+    ): ColonyProductionPreviewWrapper {
+        return new ColonyProductionPreviewWrapper(
+            $this->buildingCommodityRepository,
+            $production
+        );
+    }
+
+    public function createEpsProductionPreviewWrapper(
+        ColonyInterface $colony
+    ): ColonyEpsProductionPreviewWrapper {
+        return new ColonyEpsProductionPreviewWrapper(
+            $this->buildingRepository,
+            $colony
         );
     }
 }

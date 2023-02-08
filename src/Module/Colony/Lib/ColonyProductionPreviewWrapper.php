@@ -2,32 +2,45 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib;
+namespace Stu\Module\Colony\Lib;
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 class ColonyProductionPreviewWrapper
 {
-    private $production = null;
+    private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
 
-    function __construct(&$production)
-    {
+    /** @var array<ColonyProduction> */
+    private array $production;
+
+    /**
+     * @param array<ColonyProduction> $production
+     */
+    function __construct(
+        BuildingCommodityRepositoryInterface $buildingCommodityRepository,
+        array $production
+    ) {
+        $this->buildingCommodityRepository = $buildingCommodityRepository;
         $this->production = $production;
     }
 
-
-    function __get($buildingId)
+    /**
+     * @param int|string $buildingId
+     *
+     * @return array<ColonyProduction>
+     */
+    public function __get($buildingId): array
     {
-        return $this->getPreview($buildingId);
+        return $this->getPreview((int) $buildingId);
     }
 
-    private function getPreview($buildingId)
+    /**
+     * @return array<ColonyProduction>
+     */
+    private function getPreview(int $buildingId): array
     {
-        // @todo refactor
-        global $container;
-
-        $bcommodities = $container->get(BuildingCommodityRepositoryInterface::class)->getByBuilding((int)$buildingId);
+        $bcommodities = $this->buildingCommodityRepository->getByBuilding((int)$buildingId);
         $ret = [];
         foreach ($bcommodities as $commodityId => $prod) {
             $commodityId = $prod->getCommodityId();

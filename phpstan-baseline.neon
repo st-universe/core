@@ -526,41 +526,6 @@ parameters:
 			path: src/Lib/CleanTextUtils.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\:\\:__get\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyEpsProductionPreviewWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\:\\:__get\\(\\) has parameter \\$buildingId with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyEpsProductionPreviewWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\:\\:getBuildingId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyEpsProductionPreviewWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\:\\:getDisplay\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyEpsProductionPreviewWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\:\\:getPreview\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyEpsProductionPreviewWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\:\\:\\$production \\(array\\<int, int\\>\\) does not accept array\\<int\\|string, \\(float\\|int\\)\\>\\.$#"
-			count: 1
-			path: src/Lib/ColonyEpsProductionPreviewWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\:\\:\\$wrappers \\(array\\<int, Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\>\\) does not accept array\\<int\\|string, Stu\\\\Lib\\\\ColonyEpsProductionPreviewWrapper\\>\\.$#"
-			count: 1
-			path: src/Lib/ColonyEpsProductionPreviewWrapper.php
-
-		-
 			message: "#^Method ColonyMenu\\:\\:__construct\\(\\) has parameter \\$selectedColonyMenu with no type specified\\.$#"
 			count: 1
 			path: src/Lib/ColonyMenu.php
@@ -599,36 +564,6 @@ parameters:
 			message: "#^Property Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:\\$data has no type specified\\.$#"
 			count: 1
 			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProductionPreviewWrapper\\:\\:__construct\\(\\) has parameter \\$production with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProductionPreviewWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProductionPreviewWrapper\\:\\:__get\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProductionPreviewWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProductionPreviewWrapper\\:\\:__get\\(\\) has parameter \\$buildingId with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProductionPreviewWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProductionPreviewWrapper\\:\\:getPreview\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProductionPreviewWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProductionPreviewWrapper\\:\\:getPreview\\(\\) has parameter \\$buildingId with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProductionPreviewWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\ColonyProductionPreviewWrapper\\:\\:\\$production has no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProductionPreviewWrapper.php
 
 		-
 			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityCountWrapper\\:\\:__call\\(\\) has no return type specified\\.$#"
@@ -3612,11 +3547,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getBuilding\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternativeInterface\\|false\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowBuilding/ShowBuilding.php
-
-		-
-			message: "#^Parameter \\#1 \\$production of class Stu\\\\Lib\\\\ColonyProductionPreviewWrapper constructor is passed by reference, so it expects variables only$#"
 			count: 1
 			path: src/Module/Colony/View/ShowBuilding/ShowBuilding.php
 
