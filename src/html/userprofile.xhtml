@@ -98,7 +98,7 @@
 							<div tal:condition="not:FRIENDS" class="darkbg" style="text-align: center;">Keine
 							</div>
 							<a href="userprofile.php?uid=${data/getId}" tal:condition="FRIENDS"
-								tal:repeat="FRIENDS" style="padding: 5px;"><img src="runtime"
+								tal:repeat="data FRIENDS" style="padding: 5px;"><img src="runtime"
 									tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getName"
 									title="runtime" style="width: 55px; height: 55px;" /></a>
 						</td>
