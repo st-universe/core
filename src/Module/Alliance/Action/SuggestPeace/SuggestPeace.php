@@ -35,9 +35,14 @@ final class SuggestPeace implements ActionControllerInterface
     {
         $relation = $this->allianceRelationRepository->find($this->suggestPeaceRequest->getRelationId());
         $alliance = $game->getUser()->getAlliance();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $allianceId = (int) $alliance->getId();
 
-        if ($relation === null || !$this->allianceActionManager->mayManageForeignRelations($allianceId, $game->getUser()->getId())) {
+        if ($relation === null || !$this->allianceActionManager->mayManageForeignRelations($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
 

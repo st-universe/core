@@ -1866,67 +1866,7 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
-
-		-
-			message: "#^Cannot call method getMembers\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptApplication/AcceptApplication.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptOffer/AcceptOffer.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/AcceptOffer/AcceptOffer.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CancelContract/CancelContract.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CancelContract/CancelContract.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CancelOffer/CancelOffer.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CancelOffer/CancelOffer.php
-
-		-
 			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Cannot call method getAvatar\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Cannot call method setAvatar\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
 
@@ -1937,11 +1877,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$im of function imagepng expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\AllianceRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
 
@@ -1977,21 +1912,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/CreateRelation/CreateRelation.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Alliance/Action/CreateRelation/CreateRelation.php
-
-		-
-			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:\\:setAlliance\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/CreateRelation/CreateRelation.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/CreateTopic/CreateTopic.php
 
@@ -2007,26 +1927,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/DeclineApplication/DeclineApplication.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeclineApplication/DeclineApplication.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeclineOffer/DeclineOffer.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeclineOffer/DeclineOffer.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/DeleteAlliance/DeleteAlliance.php
 
@@ -2034,26 +1934,6 @@ parameters:
 			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/DeleteAlliance/DeleteAlliance.php
-
-		-
-			message: "#^Cannot call method getAvatar\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/DeleteAvatar/DeleteAvatar.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeleteAvatar/DeleteAvatar.php
-
-		-
-			message: "#^Cannot call method setAvatar\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeleteAvatar/DeleteAvatar.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\AllianceRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DeleteAvatar/DeleteAvatar.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
@@ -2088,51 +1968,6 @@ parameters:
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
-			path: src/Module/Alliance/Action/DemotePlayer/DemotePlayer.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/DemotePlayer/DemotePlayer.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Cannot call method setAcceptApplications\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Cannot call method setDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Cannot call method setFaction\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Cannot call method setHomepage\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Cannot call method setName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Cannot call method setRgbCode\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
 			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
 
 		-
@@ -2142,16 +1977,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Action\\\\EditDetails\\\\EditDetails\\:\\:validHex\\(\\) has parameter \\$hex with no type specified\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceActionManagerInterface\\:\\:mayEditFactionMode\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\AllianceRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/EditDetails/EditDetails.php
 
@@ -2206,22 +2031,7 @@ parameters:
 			path: src/Module/Alliance/Action/SetTopicSticky/SetTopicSticky.php
 
 		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeace.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeace.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeace.php
-
-		-
-			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:\\:setAlliance\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/SuggestPeace/SuggestPeace.php
 
@@ -2236,11 +2046,6 @@ parameters:
 			path: src/Module/Alliance/Action/UnsetTopicSticky/UnsetTopicSticky.php
 
 		-
-			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Lib/AllianceActionManager.php
-
-		-
 			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\:\\:setAlliance\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Alliance/Lib/AllianceActionManager.php
@@ -2251,29 +2056,9 @@ parameters:
 			path: src/Module/Alliance/Lib/AllianceActionManager.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceActionManager\\:\\:\\$allianceBoardRepository is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Alliance/Lib/AllianceActionManager.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceActionManager\\:\\:\\$allianceRelationRepository is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Alliance/Lib/AllianceActionManager.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceListItem\\:\\:getMembers\\(\\) return type has no value type specified in iterable type iterable\\.$#"
 			count: 1
 			path: src/Module/Alliance/Lib/AllianceListItem.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/View/Applications/Applications.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Board/Board.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface and null will always evaluate to false\\.$#"
@@ -2284,21 +2069,6 @@ parameters:
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/BoardSettings/BoardSettings.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Boards/Boards.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Edit/Edit.php
-
-		-
-			message: "#^Parameter \\#1 \\$alliance of method Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceActionManagerInterface\\:\\:mayEditFactionMode\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface, Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Edit/Edit.php
 
 		-
 			message: "#^Parameter \\#2 \\$factionId of method Stu\\\\Module\\\\Alliance\\\\Lib\\\\AllianceActionManagerInterface\\:\\:mayEditFactionMode\\(\\) expects int, int\\|null given\\.$#"
@@ -2327,33 +2097,13 @@ parameters:
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Relations/Relations.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Alliance/View/ShowEditPost/ShowEditPost.php
-
-		-
-			message: "#^Cannot call method getAlliance\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/View/ShowMemberRumpInfo/ShowMemberRumpInfo.php
-
-		-
-			message: "#^Cannot call method getUserName\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/ShowMemberRumpInfo/ShowMemberRumpInfo.php
 
 		-
 			message: "#^Parameter \\#1 \\$ships of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShips\\(\\) expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/ShowMemberRumpInfo/ShowMemberRumpInfo.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/Topic/Topic.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Topic\\\\Topic\\:\\:getTopicNavigation\\(\\) return type has no value type specified in iterable type array\\.$#"

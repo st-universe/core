@@ -64,12 +64,10 @@ final class Overview implements ViewControllerInterface
                 $relations[$key] = $this->allianceUiFactory->createAllianceRelationWrapper($alliance, $relation);
             }
 
-            $isInAlliance = $alliance === $game->getUser()->getAlliance();
-
             $game->setPageTitle(_('Allianz'));
             $game->setTemplateFile('html/alliancedetails.xhtml');
 
-            $game->setTemplateVar('ALLIANCE', $user->getAlliance());
+            $game->setTemplateVar('ALLIANCE', $alliance);
             $game->setTemplateVar(
                 'ALLIANCE_RELATIONS',
                 $relations !== []
@@ -80,15 +78,15 @@ final class Overview implements ViewControllerInterface
                 'DESCRIPTION',
                 $this->allianceDescriptionRenderer->render($alliance)
             );
-            $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
-            $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);
+            $game->setTemplateVar('IS_IN_ALLIANCE', true);
+            $game->setTemplateVar('CAN_LEAVE_ALLIANCE', !$userIsFounder);
             $game->setTemplateVar(
                 'CAN_EDIT',
-                $this->allianceActionManager->mayEdit($allianceId, $userId)
+                $this->allianceActionManager->mayEdit($alliance, $user)
             );
             $game->setTemplateVar(
                 'CAN_MANAGE_FOREIGN_RELATIONS',
-                $this->allianceActionManager->mayManageForeignRelations($allianceId, $userId)
+                $this->allianceActionManager->mayManageForeignRelations($alliance, $user)
             );
             $game->setTemplateVar(
                 'CAN_SIGNUP',

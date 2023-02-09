@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Boards;
 
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -28,6 +29,11 @@ final class Boards implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $allianceId = (int) $alliance->getId();
 
         $game->setPageTitle(_('Allianzforum'));
@@ -47,7 +53,7 @@ final class Boards implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'EDITABLE',
-            $this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())
+            $this->allianceActionManager->mayEdit($alliance, $game->getUser())
         );
     }
 }

@@ -37,9 +37,14 @@ final class Relations implements ViewControllerInterface
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $allianceId = (int) $alliance->getId();
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $user->getId())) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
             throw new AccessViolation();
         }
 

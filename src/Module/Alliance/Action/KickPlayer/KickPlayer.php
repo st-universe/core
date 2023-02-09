@@ -57,7 +57,7 @@ final class KickPlayer implements ActionControllerInterface
 
         $playerId = $this->kickPlayerRequest->getPlayerId();
 
-        if (!$this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())) {
+        if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
             throw new AccessViolation();
         }
 

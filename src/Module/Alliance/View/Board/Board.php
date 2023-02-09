@@ -39,6 +39,11 @@ final class Board implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $allianceId = $alliance->getId();
 
         /** @var AllianceBoardInterface $board */
@@ -74,7 +79,7 @@ final class Board implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'EDITABLE',
-            $this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())
+            $this->allianceActionManager->mayEdit($alliance, $game->getUser())
         );
         $game->setTemplateVar('BOARD_ID', $boardId);
     }

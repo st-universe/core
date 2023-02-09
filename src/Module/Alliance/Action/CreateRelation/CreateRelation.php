@@ -44,10 +44,15 @@ final class CreateRelation implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $allianceId = $alliance->getId();
         $userId = $game->getUser()->getId();
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $userId)) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
 

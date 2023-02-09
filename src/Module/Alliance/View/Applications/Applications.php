@@ -31,7 +31,11 @@ final class Applications implements ViewControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
 
-        if (!$this->allianceActionManager->mayEdit((int) $alliance->getId(), $game->getUser()->getId())) {
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
+        if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
         $game->setPageTitle(_('Allianz anzeigen'));
@@ -46,7 +50,7 @@ final class Applications implements ViewControllerInterface
         $game->setTemplateFile('html/allianceapplications.xhtml');
         $game->setTemplateVar(
             'APPLICATIONS',
-			$this->allianceJobRepository->getByAllianceAndType(
+            $this->allianceJobRepository->getByAllianceAndType(
                 (int) $alliance->getId(),
                 AllianceEnum::ALLIANCE_JOBS_PENDING
             )

@@ -40,11 +40,16 @@ final class CancelContract implements ActionControllerInterface
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $allianceId = $alliance->getId();
 
         $relation = $this->allianceRelationRepository->find($this->cancelContractRequest->getRelationId());
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $user->getId())) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
             throw new AccessViolation();
         }
 

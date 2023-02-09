@@ -63,9 +63,6 @@ class AddBoardTest extends StuTestCase
         $game = $this->mock(GameControllerInterface::class);
         $alliance = $this->mock(AllianceInterface::class);
 
-        $userId = 666;
-        $allianceId = 42;
-
         $game->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
@@ -75,18 +72,9 @@ class AddBoardTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alliance);
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
-
-        $alliance->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($allianceId);
 
         $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($allianceId, $userId)
+            ->with($alliance, $user)
             ->once()
             ->andReturnFalse();
 
@@ -98,9 +86,6 @@ class AddBoardTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $game = $this->mock(GameControllerInterface::class);
         $alliance = $this->mock(AllianceInterface::class);
-
-        $userId = 666;
-        $allianceId = 42;
 
         $game->shouldReceive('getUser')
             ->withNoArgs()
@@ -117,18 +102,9 @@ class AddBoardTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alliance);
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
-
-        $alliance->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($allianceId);
 
         $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($allianceId, $userId)
+            ->with($alliance, $user)
             ->once()
             ->andReturnTrue();
 
@@ -147,8 +123,6 @@ class AddBoardTest extends StuTestCase
         $alliance = $this->mock(AllianceInterface::class);
         $board = $this->mock(AllianceBoardInterface::class);
 
-        $userId = 666;
-        $allianceId = 42;
         $name = 'abcdc';
 
         $game->shouldReceive('getUser')
@@ -166,18 +140,9 @@ class AddBoardTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($alliance);
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
-
-        $alliance->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($allianceId);
 
         $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($allianceId, $userId)
+            ->with($alliance, $user)
             ->once()
             ->andReturnTrue();
 

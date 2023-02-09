@@ -78,7 +78,7 @@ class DemotePlayerTest extends StuTestCase
         $this->createBasicExpectation();
 
         $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($this->allianceId, $this->userId)
+            ->with($this->alliance, $this->user)
             ->once()
             ->andReturnFalse();
 
@@ -92,7 +92,7 @@ class DemotePlayerTest extends StuTestCase
         $this->createBasicExpectation();
 
         $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($this->allianceId, $this->userId)
+            ->with($this->alliance, $this->user)
             ->once()
             ->andReturnTrue();
 
@@ -113,7 +113,7 @@ class DemotePlayerTest extends StuTestCase
         $this->createBasicExpectation();
 
         $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($this->allianceId, $this->userId)
+            ->with($this->alliance, $this->user)
             ->once()
             ->andReturnTrue();
 
@@ -139,7 +139,7 @@ class DemotePlayerTest extends StuTestCase
         $this->createBasicExpectation();
 
         $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($this->allianceId, $this->userId)
+            ->with($this->alliance, $this->user)
             ->once()
             ->andReturnTrue();
 
@@ -169,7 +169,7 @@ class DemotePlayerTest extends StuTestCase
         $this->createBasicExpectation();
 
         $this->allianceActionManager->shouldReceive('mayEdit')
-            ->with($this->allianceId, $this->userId)
+            ->with($this->alliance, $this->user)
             ->once()
             ->andReturnTrue();
 
@@ -232,11 +232,6 @@ class DemotePlayerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->alliance);
-
-        $this->alliance->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($this->allianceId);
 
         $this->demotePlayerRequest->shouldReceive('getPlayerId')
             ->withNoArgs()

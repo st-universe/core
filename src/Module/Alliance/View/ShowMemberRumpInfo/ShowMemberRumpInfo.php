@@ -48,7 +48,7 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         $game->setTemplateVar('ERROR', true);
 
@@ -56,14 +56,16 @@ final class ShowMemberRumpInfo implements ViewControllerInterface
         $rumpId = request::getIntFatal('rid');
 
         $member = $this->userRepository->find($memberId);
-
-        if ($member->getAlliance() === null) {
+        if ($member === null) {
             return;
         }
 
-        $allianceId = $member->getAlliance()->getId();
+        $memberAlliance = $member->getAlliance();
+        if ($memberAlliance === null) {
+            return;
+        }
 
-        if (!$this->allianceActionManager->mayEdit($allianceId, $userId)) {
+        if (!$this->allianceActionManager->mayEdit($memberAlliance, $user)) {
             return;
         }
 

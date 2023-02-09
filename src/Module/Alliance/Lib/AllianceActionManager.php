@@ -10,9 +10,8 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
-use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -20,10 +19,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class AllianceActionManager implements AllianceActionManagerInterface
 {
     private AllianceJobRepositoryInterface $allianceJobRepository;
-
-    private AllianceRelationRepositoryInterface $allianceRelationRepository;
-
-    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
     private AllianceRepositoryInterface $allianceRepository;
 
@@ -37,8 +32,6 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceBoardRepositoryInterface $allianceBoardRepository,
         AllianceRepositoryInterface $allianceRepository,
         DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
         \Stu\Module\Message\Lib\PrivateMessageSenderInterface $privateMessageSender,
@@ -46,8 +39,6 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         ConfigInterface $config
     ) {
         $this->allianceJobRepository = $allianceJobRepository;
-        $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->allianceBoardRepository = $allianceBoardRepository;
         $this->allianceRepository = $allianceRepository;
         $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
         $this->privateMessageSender = $privateMessageSender;
@@ -96,32 +87,29 @@ final class AllianceActionManager implements AllianceActionManagerInterface
                     '%s/%s/%s.png',
                     $this->config->get('game.webroot'),
                     $this->config->get('game.alliance_avatar_path'),
-                    $alliance->getAvatar())
+                    $alliance->getAvatar()
+                )
             );
         }
 
         $this->allianceRepository->delete($alliance);
     }
 
-    public function mayEdit(int $allianceId, int $userId): bool
+    public function mayEdit(AllianceInterface $alliance, UserInterface $user): bool
     {
-        $successor = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
-            AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
-        $founder = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
-            AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+        $successor = $alliance->getSuccessor();
+        $founder = $alliance->getFounder();
 
-        return (
-                $successor !== null && $userId === $successor->getUserId()
-            ) || $userId === $founder->getUserId();
+        return ($successor !== null && $user === $successor->getUser()
+        ) || $user === $founder->getUser();
     }
 
-    public function mayManageForeignRelations(int $allianceId, int $userId): bool
+    public function mayManageForeignRelations(AllianceInterface $alliance, UserInterface $user): bool
     {
-        $job = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
-            AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
+        $diplomatic = $alliance->getDiplomatic();
 
-        if ($job === null || $job->getUserId() !== $userId) {
-            return $this->mayEdit($allianceId, $userId);
+        if ($diplomatic === null || $diplomatic->getUser() !== $user) {
+            return $this->mayEdit($alliance, $user);
         }
 
         return true;

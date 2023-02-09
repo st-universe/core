@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\UserInterface;
 
 interface AllianceActionManagerInterface
 {
@@ -12,9 +13,9 @@ interface AllianceActionManagerInterface
 
     public function delete(int $allianceId, bool $sendMessage = true): void;
 
-    public function mayEdit(int $allianceId, int $userId): bool;
+    public function mayEdit(AllianceInterface $alliance, UserInterface $user): bool;
 
-    public function mayManageForeignRelations(int $allianceId, int $userId): bool;
+    public function mayManageForeignRelations(AllianceInterface $alliance, UserInterface $user): bool;
 
     public function sendMessage(int $allianceId, string $text): void;
 

@@ -38,7 +38,11 @@ final class ChangeAvatar implements ActionControllerInterface
         $user = $game->getUser();
         $alliance = $user->getAlliance();
 
-        if (!$this->allianceActionManager->mayEdit((int) $alliance->getId(), $user->getId())) {
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
+        if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
             new AccessViolation;
         }
 

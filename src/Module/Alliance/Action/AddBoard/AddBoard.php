@@ -51,10 +51,8 @@ final class AddBoard implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $allianceId = $alliance->getId();
-
         // throw if user may not edit alliance
-        if (!$this->allianceActionManager->mayEdit($allianceId, $user->getId())) {
+        if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
             throw new AccessViolation();
         }
 

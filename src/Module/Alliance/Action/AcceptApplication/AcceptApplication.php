@@ -49,7 +49,11 @@ final class AcceptApplication implements ActionControllerInterface
 
         $alliance = $game->getUser()->getAlliance();
 
-        if (!$this->allianceActionManager->mayEdit((int) $alliance->getId(), $userId)) {
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
+        if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
 

@@ -41,7 +41,11 @@ final class DeclineApplication implements ActionControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
 
-        if (!$this->allianceActionManager->mayEdit((int) $alliance->getId(), $game->getUser()->getId())) {
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
+        if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
 

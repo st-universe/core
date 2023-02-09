@@ -39,11 +39,16 @@ final class CancelOffer implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $allianceId = $alliance->getId();
 
         $relation = $this->allianceRelationRepository->find($this->cancelOfferRequest->getRelationId());
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $game->getUser()->getId())) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
 

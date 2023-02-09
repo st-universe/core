@@ -42,6 +42,11 @@ final class Topic implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
         $alliance = $game->getUser()->getAlliance();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $topicId = $this->topicRequest->getTopicId();
         $allianceId = $alliance->getId();
 
@@ -96,7 +101,7 @@ final class Topic implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'IS_MODERATOR',
-            $this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())
+            $this->allianceActionManager->mayEdit($alliance, $game->getUser())
         );
         $game->setTemplateVar('USERID', $game->getUser()->getId());
     }

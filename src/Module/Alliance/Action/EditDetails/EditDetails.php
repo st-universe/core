@@ -55,7 +55,11 @@ final class EditDetails implements ActionControllerInterface
         $alliance = $user->getAlliance();
         $allianceId = (int) $alliance->getId();
 
-        if (!$this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())) {
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
+        if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
 

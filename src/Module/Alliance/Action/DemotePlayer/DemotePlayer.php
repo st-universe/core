@@ -52,10 +52,13 @@ final class DemotePlayer implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
         $alliance = $user->getAlliance();
-        $allianceId = $alliance->getId();
         $playerId = $this->promotePlayerRequest->getPlayerId();
 
-        if (!$this->allianceActionManager->mayEdit($allianceId, $userId)) {
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
+        if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
             throw new AccessViolation();
         }
 

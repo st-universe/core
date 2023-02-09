@@ -91,11 +91,11 @@ final class AllianceDetails implements ViewControllerInterface
         $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);
         $game->setTemplateVar(
             'CAN_EDIT',
-            $this->allianceActionManager->mayEdit($allianceId, $userId)
+            $this->allianceActionManager->mayEdit($alliance, $user)
         );
         $game->setTemplateVar(
             'CAN_MANAGE_FOREIGN_RELATIONS',
-            $this->allianceActionManager->mayManageForeignRelations($allianceId, $userId)
+            $this->allianceActionManager->mayManageForeignRelations($alliance, $user)
         );
         $game->setTemplateVar(
             'CAN_SIGNUP',

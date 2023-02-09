@@ -31,10 +31,14 @@ final class DeclineOffer implements ActionControllerInterface
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
-        $userId = $user->getId();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
         $allianceId = $alliance->getId();
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $userId)) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
             throw new AccessViolation();
         }
 
