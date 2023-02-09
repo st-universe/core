@@ -9,13 +9,14 @@ use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Tick\TickRunnerInterface;
+use Stu\Module\Tick\AbstractTickRunner;
 use Throwable;
+use Ubench;
 
 /**
  * Executes the shiptick
  */
-final class ShipTickRunner implements TickRunnerInterface
+final class ShipTickRunner extends AbstractTickRunner
 {
     /** @var int */
     private const ATTEMPTS = 5;
@@ -26,17 +27,21 @@ final class ShipTickRunner implements TickRunnerInterface
 
     private ShipTickManagerInterface $shipTickManager;
 
+    private Ubench $benchmark;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         FailureEmailSenderInterface $failureEmailSender,
         ShipTickManagerInterface $shipTickManager,
+        Ubench $benchmark,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->entityManager = $entityManager;
         $this->failureEmailSender = $failureEmailSender;
+        $this->benchmark = $benchmark;
         $this->shipTickManager = $shipTickManager;
     }
 
@@ -90,7 +95,7 @@ final class ShipTickRunner implements TickRunnerInterface
             $this->entityManager->commit();
 
             $this->loggerUtil->init('SHIPTICK', LoggerEnum::LEVEL_WARNING);
-            $this->loggerUtil->log('shiptick finished');
+            $this->logBenchmarkResult();
 
             return null;
         } catch (Throwable $e) {
@@ -100,5 +105,15 @@ final class ShipTickRunner implements TickRunnerInterface
 
             return $e;
         }
+    }
+
+    protected function getBenchmark(): Ubench
+    {
+        return $this->benchmark;
+    }
+
+    protected function getLoggerUtil(): LoggerUtilInterface
+    {
+        return $this->loggerUtil;
     }
 }

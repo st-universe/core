@@ -9,6 +9,7 @@ use Exception;
 use Mockery\MockInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\StuTestCase;
+use Ubench;
 
 class ShipTickRunnerTest extends StuTestCase
 {
@@ -21,6 +22,9 @@ class ShipTickRunnerTest extends StuTestCase
     /** @var MockInterface&ShipTickManagerInterface */
     private MockInterface $shipTickManager;
 
+    /** @var MockInterface&Ubench */
+    private MockInterface $benchmark;
+
     private ShipTickRunner $subject;
 
     protected function setUp(): void
@@ -28,11 +32,13 @@ class ShipTickRunnerTest extends StuTestCase
         $this->entityManager = $this->mock(EntityManagerInterface::class);
         $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
         $this->shipTickManager = $this->mock(ShipTickManagerInterface::class);
+        $this->benchmark = $this->mock(Ubench::class);
 
         $this->subject = new ShipTickRunner(
             $this->entityManager,
             $this->failureEmailSender,
             $this->shipTickManager,
+            $this->benchmark,
             $this->initLoggerUtil()
         );
     }
@@ -85,6 +91,19 @@ class ShipTickRunnerTest extends StuTestCase
             ->once();
 
         $this->shipTickManager->shouldReceive('work')
+            ->withNoArgs()
+            ->once();
+
+        $this->benchmark->shouldReceive('end')
+            ->withNoArgs()
+            ->once();
+        $this->benchmark->shouldReceive('getTime')
+            ->withNoArgs()
+            ->once();
+        $this->benchmark->shouldReceive('getMemoryUsage')
+            ->withNoArgs()
+            ->once();
+        $this->benchmark->shouldReceive('getMemoryPeak')
             ->withNoArgs()
             ->once();
 
