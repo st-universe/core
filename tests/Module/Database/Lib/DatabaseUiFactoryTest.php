@@ -9,6 +9,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
 class DatabaseUiFactoryTest extends StuTestCase
@@ -25,6 +26,9 @@ class DatabaseUiFactoryTest extends StuTestCase
     /** @var MockInterface&TradePostRepositoryInterface */
     private MockInterface $tradePostRepository;
 
+    /** @var MockInterface&UserRepositoryInterface */
+    private MockInterface $userRepository;
+
     private DatabaseUiFactory $subject;
 
     protected function setUp(): void
@@ -33,11 +37,13 @@ class DatabaseUiFactoryTest extends StuTestCase
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->tradePostRepository = $this->mock(TradePostRepositoryInterface::class);
+        $this->userRepository = $this->mock(UserRepositoryInterface::class);
 
         $this->subject = new DatabaseUiFactory(
             $this->commodityRepository,
             $this->shipRepository,
             $this->colonyRepository,
+            $this->userRepository,
             $this->tradePostRepository
         );
     }
@@ -47,6 +53,38 @@ class DatabaseUiFactoryTest extends StuTestCase
         static::assertInstanceOf(
             StorageWrapper::class,
             $this->subject->createStorageWrapper(666, 42, 33)
+        );
+    }
+
+    public function testCreateDatabaseTopActivTradePostReturnsInstance(): void
+    {
+        static::assertInstanceOf(
+            DatabaseTopActivTradePost::class,
+            $this->subject->createDatabaseTopActivTradePost(['id' => 666])
+        );
+    }
+
+    public function testCreateDatabaseTopListCrewReturnsInstance(): void
+    {
+        static::assertInstanceOf(
+            DatabaseTopListCrew::class,
+            $this->subject->createDatabaseTopListCrew(['user_id' => 42])
+        );
+    }
+
+    public function testCreateDatabaseTopListDiscovererReturnsInstance(): void
+    {
+        static::assertInstanceOf(
+            DatabaseTopListDiscover::class,
+            $this->subject->createDatabaseTopListDiscoverer(['user_id' => 666])
+        );
+    }
+
+    public function testCreateDatabaseTopListFlightReturnsInstance(): void
+    {
+        static::assertInstanceOf(
+            DatabaseTopListFlights::class,
+            $this->subject->createDatabaseTopListFlights(['user_id' => 666])
         );
     }
 }

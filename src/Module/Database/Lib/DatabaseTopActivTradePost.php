@@ -4,25 +4,34 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
+use Stu\Orm\Repository\UserRepositoryInterface;
+
 class DatabaseTopActivTradePost extends DatabaseTopList
 {
-    private $name = null;
-    private $transactions = null;
+    /** @var array{id: int, name: string, transactions: int} */
+    private array $entry;
 
-    function __construct($entry)
-    {
-        parent::__construct($entry['id']);
-        $this->name = $entry['name'];
-        $this->transactions = $entry['transactions'];
+    /**
+     * @param array{id: int, name: string, transactions: int} $entry
+     */
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        array $entry
+    ) {
+        parent::__construct(
+            $userRepository,
+            $entry['id']
+        );
+        $this->entry = $entry;
     }
 
-    function getTransactions()
+    public function getTransactions(): int
     {
-        return $this->transactions;
+        return $this->entry['transactions'];
     }
 
-    function getName()
+    public function getName(): string
     {
-        return $this->name;
+        return $this->entry['name'];
     }
 }

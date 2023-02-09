@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 abstract class DatabaseTopList
 {
+    private int $user_id;
 
-    private $user_id = null;
+    private UserRepositoryInterface $userRepository;
 
-    function __construct(int $user_id)
-    {
+    function __construct(
+        UserRepositoryInterface $userRepository,
+        int $user_id
+    ) {
         $this->user_id = $user_id;
+        $this->userRepository = $userRepository;
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    public function getUser()
+    public function getUser(): ?UserInterface
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(UserRepositoryInterface::class)->find($this->user_id);
+        return $this->userRepository->find($this->user_id);
     }
 }

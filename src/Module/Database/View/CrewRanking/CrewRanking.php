@@ -7,6 +7,7 @@ namespace Stu\Module\Database\View\CrewRanking;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListCrew;
+use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class CrewRanking implements ViewControllerInterface
@@ -15,10 +16,14 @@ final class CrewRanking implements ViewControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
+    private DatabaseUiFactoryInterface $databaseUiFactory;
+
     public function __construct(
+        DatabaseUiFactoryInterface $databaseUiFactory,
         ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->databaseUiFactory = $databaseUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +44,7 @@ final class CrewRanking implements ViewControllerInterface
         $game->setTemplateVar(
             'CREWS_LIST',
             array_map(
-                fn (array $data): DatabaseTopListCrew => new DatabaseTopListCrew($data),
+                fn (array $data): DatabaseTopListCrew => $this->databaseUiFactory->createDatabaseTopListCrew($data),
                 $this->shipCrewRepository->getCrewsTop10()
             )
         );

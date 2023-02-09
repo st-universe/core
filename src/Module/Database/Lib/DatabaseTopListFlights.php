@@ -4,33 +4,39 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\Lib;
 
+use Stu\Orm\Repository\UserRepositoryInterface;
+
 class DatabaseTopListFlights extends DatabaseTopList
 {
+    /** @var array{user_id: int, sc: int, race: int, shipc: int} */
+    private array $entry;
 
-    private $signatures = null;
-    private $shipcount = null;
-    private $faction = null;
-
-    function __construct($entry)
-    {
-        parent::__construct($entry['user_id']);
-        $this->signatures = $entry['sc'];
-        $this->shipcount = $entry['shipc'];
-        $this->faction = $entry['race'];
+    /**
+     * @param array{user_id: int, sc: int, race: int, shipc: int} $entry
+     */
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        array $entry
+    ) {
+        parent::__construct(
+            $userRepository,
+            $entry['user_id']
+        );
+        $this->entry = $entry;
     }
 
-    function getSignatures()
+    public function getSignatures(): int
     {
-        return $this->signatures;
+        return $this->entry['sc'];
     }
 
-    function getShipCount()
+    public function getShipCount(): int
     {
-        return $this->shipcount;
+        return $this->entry['shipc'];
     }
 
-    function getFaction()
+    public function getFaction(): int
     {
-        return $this->faction;
+        return $this->entry['race'];
     }
 }

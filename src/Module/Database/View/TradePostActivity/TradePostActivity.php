@@ -7,6 +7,7 @@ namespace Stu\Module\Database\View\TradePostActivity;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopActivTradePost;
+use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class TradePostActivity implements ViewControllerInterface
@@ -15,10 +16,14 @@ final class TradePostActivity implements ViewControllerInterface
 
     private TradeTransactionRepositoryInterface $tradeTransactionRepository;
 
+    private DatabaseUiFactoryInterface $databaseUiFactory;
+
     public function __construct(
+        DatabaseUiFactoryInterface $databaseUiFactory,
         TradeTransactionRepositoryInterface $tradeTransactionRepository
     ) {
         $this->tradeTransactionRepository = $tradeTransactionRepository;
+        $this->databaseUiFactory = $databaseUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +44,7 @@ final class TradePostActivity implements ViewControllerInterface
         $game->setTemplateVar(
             'ACTIV_TRADEPOST',
             array_map(
-                fn (array $data): DatabaseTopActivTradePost => new DatabaseTopActivTradePost($data),
+                fn (array $data): DatabaseTopActivTradePost => $this->databaseUiFactory->createDatabaseTopActivTradePost($data),
                 $this->tradeTransactionRepository->getTradePostsTop10()
             )
         );

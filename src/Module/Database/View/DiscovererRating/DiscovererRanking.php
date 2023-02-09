@@ -7,6 +7,7 @@ namespace Stu\Module\Database\View\DiscovererRating;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListDiscover;
+use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class DiscovererRanking implements ViewControllerInterface
@@ -16,10 +17,14 @@ final class DiscovererRanking implements ViewControllerInterface
 
     private DatabaseUserRepositoryInterface $databaseUserRepository;
 
+    private DatabaseUiFactoryInterface $databaseUiFactory;
+
     public function __construct(
+        DatabaseUiFactoryInterface $databaseUiFactory,
         DatabaseUserRepositoryInterface $databaseUserRepository
     ) {
         $this->databaseUserRepository = $databaseUserRepository;
+        $this->databaseUiFactory = $databaseUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,9 +44,8 @@ final class DiscovererRanking implements ViewControllerInterface
         $game->showMacro('html/database.xhtml/top_research_user');
         $game->setTemplateVar(
             'DISCOVERER_LIST',
-
             array_map(
-                fn (array $data): DatabaseTopListDiscover => new DatabaseTopListDiscover($data),
+                fn (array $data): DatabaseTopListDiscover => $this->databaseUiFactory->createDatabaseTopListDiscoverer($data),
                 $this->databaseUserRepository->getTopList()
             )
         );

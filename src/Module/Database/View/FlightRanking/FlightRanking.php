@@ -7,6 +7,7 @@ namespace Stu\Module\Database\View\FlightRanking;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\DatabaseTopListFlights;
+use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class FlightRanking implements ViewControllerInterface
@@ -15,10 +16,14 @@ final class FlightRanking implements ViewControllerInterface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
+    private DatabaseUiFactoryInterface $databaseUiFactory;
+
     public function __construct(
+        DatabaseUiFactoryInterface $databaseUiFactory,
         FlightSignatureRepositoryInterface $flightSignatureRepository
     ) {
         $this->flightSignatureRepository = $flightSignatureRepository;
+        $this->databaseUiFactory = $databaseUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +44,7 @@ final class FlightRanking implements ViewControllerInterface
         $game->setTemplateVar(
             'FLIGHTS_LIST',
             array_map(
-                fn(array $data): DatabaseTopListFlights => new DatabaseTopListFlights($data),
+                fn (array $data): DatabaseTopListFlights => $this->databaseUiFactory->createDatabaseTopListFlights($data),
                 $this->flightSignatureRepository->getFlightsTop10()
             )
         );

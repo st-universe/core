@@ -11,4 +11,32 @@ interface DatabaseUiFactoryInterface
         int $amount,
         ?int $entityId = null
     ): StorageWrapper;
+
+    /**
+     * @param array{id: int, name: string, transactions: int} $item
+     */
+    public function createDatabaseTopActivTradePost(
+        array $item
+    ): DatabaseTopActivTradePost;
+
+    /**
+     * @param array{user_id: int, race: int, crewc: int} $item
+     */
+    public function createDatabaseTopListCrew(
+        array $item
+    ): DatabaseTopListCrew;
+
+    /**
+     * @param array{user_id: int, points: int} $item
+     */
+    public function createDatabaseTopListDiscoverer(
+        array $item
+    ): DatabaseTopListDiscover;
+
+    /**
+     * @param array{user_id: int, sc: int, race: int, shipc: int} $item
+     */
+    public function createDatabaseTopListFlights(
+        array $item
+    ): DatabaseTopListFlights;
 }
