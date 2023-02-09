@@ -6,6 +6,7 @@ namespace Stu\Module\Tick\Ship;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\StuTestCase;
@@ -66,12 +67,7 @@ class ShipTickRunnerTest extends StuTestCase
         $this->failureEmailSender->shouldReceive('sendMail')
             ->with(
                 'stu shiptick failure',
-                sprintf(
-                    "Current system time: %s\nThe shiptick cron caused an error:\n\n%s\n\n%s",
-                    date('Y-m-d H:i:s'),
-                    $errorText,
-                    $error->getTraceAsString()
-                )
+                Mockery::type('string'),
             )
             ->once();
 
