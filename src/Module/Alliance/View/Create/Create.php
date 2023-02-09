@@ -16,7 +16,7 @@ final class Create implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        if ($user->getAllianceId() !== null) {
+        if ($user->getAlliance() !== null) {
             throw new AccessViolation();
         }
 

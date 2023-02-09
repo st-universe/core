@@ -48,10 +48,10 @@
 						<span tal:replace="structure bbcode:PROFILE/getName">NAME</span>
 					</div>
 					<br />
-					<tal:block tal:condition="PROFILE/getAllianceId">
+					<tal:block tal:condition="PROFILE/getAlliance">
 						<div class="divhead">Allianz</div>
 						<div class="divbody">
-							<a href="alliance.php?SHOW_ALLIANCE=1&id=${PROFILE/getAllianceId}"
+							<a href="alliance.php?SHOW_ALLIANCE=1&id=${PROFILE/getAlliance/getId}"
 								tal:content="structure bbcode:PROFILE/getAlliance/getName">ALLIANZ</a>
 						</div>
 					</tal:block>

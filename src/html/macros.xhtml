@@ -33,7 +33,7 @@
       <div class="darkbg">
         <span tal:replace="structure bbcode:data/getName">NAME</span>
       </div>
-      <a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getAllianceId}" tal:condition="data/getAllianceId"
+      <a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getAlliance/getId}" tal:condition="data/getAlliance"
         tal:content="structure bbcode:data/getAlliance/getName">NAME</a>
       <br />
       Spielt seit: ${datetime:data/getCreationDate}
@@ -47,8 +47,7 @@
 </metal:block>
 <metal:macro metal:define-macro="userprofile_link">
   <a href="userprofile.php?uid=${user/getId}">
-    <img style="width: 50px; height: 50px;"
-      tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
+    <img style="width: 50px; height: 50px;" tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
   </a>
 </metal:macro>
 <metal:macro metal:define-macro="userprofile_responsive">

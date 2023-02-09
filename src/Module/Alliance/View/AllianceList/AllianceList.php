@@ -31,7 +31,7 @@ final class AllianceList implements ViewControllerInterface
     {
         $game->setPageTitle('Allianzliste');
 
-        if ($game->getUser()->getAllianceId() > 0) {
+        if ($game->getUser()->getAlliance() !== null) {
             $game->appendNavigationPart(
                 'alliance.php',
                 'Allianz'

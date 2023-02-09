@@ -152,10 +152,10 @@ class DemotePlayerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->playerId);
-        $player->shouldReceive('getAllianceId')
+        $player->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
-            ->andReturn(12345);
+            ->andReturn(null);
 
         $this->subject->handle($this->game);
     }
@@ -182,10 +182,10 @@ class DemotePlayerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($this->playerId);
-        $player->shouldReceive('getAllianceId')
+        $player->shouldReceive('getAlliance')
             ->withNoArgs()
             ->once()
-            ->andReturn($this->allianceId);
+            ->andReturn($this->alliance);
 
         $this->allianceJobRepository->shouldReceive('truncateByUser')
             ->with($this->playerId)

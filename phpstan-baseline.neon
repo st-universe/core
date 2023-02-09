@@ -2166,26 +2166,6 @@ parameters:
 			path: src/Module/Alliance/Action/EditPost/EditPost.php
 
 		-
-			message: "#^Cannot call method getFounder\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/KickPlayer/KickPlayer.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/KickPlayer/KickPlayer.php
-
-		-
-			message: "#^Cannot call method getMembers\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/KickPlayer/KickPlayer.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/KickPlayer/KickPlayer.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/Leave/Leave.php
@@ -2199,21 +2179,6 @@ parameters:
 			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Alliance/Action/Leave/Leave.php
-
-		-
-			message: "#^Cannot call method getFounder\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/PromotePlayer/PromotePlayer.php
-
-		-
-			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Alliance/Action/PromotePlayer/PromotePlayer.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Alliance/Action/PromotePlayer/PromotePlayer.php
 
 		-
 			message: "#^Cannot call method getUserId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\|null\\.$#"

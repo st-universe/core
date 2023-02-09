@@ -400,11 +400,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAllianceId(): ?int
-    {
-        return $this->allys_id;
-    }
-
     public function getFactionId(): ?int
     {
         return $this->race;
@@ -734,19 +729,33 @@ class User implements UserInterface
 
     public function isFriend(int $userId): bool
     {
+        $alliance = $this->getAlliance();
+
         // @todo refactor
         global $container;
 
-        $user = $container->get(UserRepositoryInterface::class)->find($userId);
-        if ($this->getAllianceId() > 0) {
-            if ($this->getAllianceId() == $user->getAllianceId()) {
+        /**
+         * @var UserInterface
+         */
+        $otherUser = $container->get(UserRepositoryInterface::class)->find($userId);
+        $otherUserAlliance = $otherUser->getAlliance();
+
+        if ($alliance !== null && $otherUserAlliance !== null) {
+            if ($alliance == $otherUserAlliance) {
                 return true;
             }
 
+            /**
+             * @var ?AllianceRelationInterface
+             */
             $result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
-                [AllianceEnum::ALLIANCE_RELATION_FRIENDS, AllianceEnum::ALLIANCE_RELATION_ALLIED, AllianceEnum::ALLIANCE_RELATION_VASSAL],
-                (int) $user->getAllianceId(),
-                (int) $this->getAllianceId()
+                [
+                    AllianceEnum::ALLIANCE_RELATION_FRIENDS,
+                    AllianceEnum::ALLIANCE_RELATION_ALLIED,
+                    AllianceEnum::ALLIANCE_RELATION_VASSAL
+                ],
+                $otherUserAlliance->getId(),
+                $alliance->getId()
             );
             if ($result !== null) {
                 return true;

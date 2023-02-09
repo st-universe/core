@@ -48,7 +48,12 @@ final class KickPlayer implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
         $alliance = $user->getAlliance();
-        $allianceId = (int) $alliance->getId();
+
+        if ($alliance === null) {
+            throw new AccessViolation();
+        }
+
+        $allianceId = $alliance->getId();
 
         $playerId = $this->kickPlayerRequest->getPlayerId();
 
@@ -58,7 +63,7 @@ final class KickPlayer implements ActionControllerInterface
 
         $player = $this->userRepository->find($playerId);
 
-        if ($player === null || $player->getAllianceId() != $alliance->getId()) {
+        if ($player === null || $player->getAlliance() !== $alliance) {
             throw new AccessViolation();
         }
 

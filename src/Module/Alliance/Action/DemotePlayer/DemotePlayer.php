@@ -64,7 +64,7 @@ final class DemotePlayer implements ActionControllerInterface
         if (
             $player === null
             || $player->getId() === $userId
-            || $player->getAllianceId() !== $allianceId
+            || $player->getAlliance() !== $alliance
         ) {
             throw new AccessViolation();
         }

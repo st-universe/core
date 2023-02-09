@@ -140,7 +140,8 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'RECENT_ALLIANCE_BOARD_TOPICS',
-            $this->allianceBoardTopicRepository->getRecentByAlliance((int) $user->getAllianceId())
+            $user->getAlliance() === null ? [] :
+                $this->allianceBoardTopicRepository->getRecentByAlliance($user->getAlliance()->getId())
         );
         $game->setTemplateVar('USER', $user);
         $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());

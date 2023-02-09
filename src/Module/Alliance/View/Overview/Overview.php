@@ -64,7 +64,7 @@ final class Overview implements ViewControllerInterface
                 $relations[$key] = $this->allianceUiFactory->createAllianceRelationWrapper($alliance, $relation);
             }
 
-            $isInAlliance = $alliance->getId() == $game->getUser()->getAllianceId();
+            $isInAlliance = $alliance === $game->getUser()->getAlliance();
 
             $game->setPageTitle(_('Allianz'));
             $game->setTemplateFile('html/alliancedetails.xhtml');

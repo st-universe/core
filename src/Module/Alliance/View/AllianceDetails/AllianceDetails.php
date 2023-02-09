@@ -71,7 +71,7 @@ final class AllianceDetails implements ViewControllerInterface
             $relations[$key] = $this->allianceUiFactory->createAllianceRelationWrapper($alliance, $relation);
         }
 
-        $isInAlliance = $alliance->getId() == $game->getUser()->getAllianceId();
+        $isInAlliance = $alliance === $game->getUser()->getAlliance();
 
         $game->setPageTitle(_('Allianz anzeigen'));
         $game->setTemplateFile('html/alliancedetails.xhtml');
@@ -108,7 +108,7 @@ final class AllianceDetails implements ViewControllerInterface
             )
         );
 
-        if ($game->getUser()->getAllianceId() > 0) {
+        if ($game->getUser()->getAlliance() !== null) {
             $game->appendNavigationPart(
                 'alliance.php',
                 'Allianz'
