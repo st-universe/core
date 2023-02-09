@@ -13,6 +13,7 @@ use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Lib\ModuleScreen\MyWrapper;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -27,12 +28,16 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
+        ColonyLibFactoryInterface $colonyLibFactory,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,7 +64,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $moduleSelectors = [];
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             if ($i == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                $moduleSelectors[$i] = new ModuleSelectorSpecial(
+                $moduleSelectors[$i] = $this->colonyLibFactory->createModuleSelectorSpecial(
                     $i,
                     $colony,
                     null,
@@ -68,7 +73,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                     $plan
                 );
             } else {
-                $moduleSelectors[$i] = new ModuleSelector(
+                $moduleSelectors[$i] = $this->colonyLibFactory->createModuleSelector(
                     $i,
                     $colony,
                     null,

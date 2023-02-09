@@ -5,19 +5,26 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {
@@ -45,6 +52,12 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
 
+    private ModuleRepositoryInterface $moduleRepository;
+
+    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
+
+    private TalPageInterface $talPage;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
@@ -57,6 +70,9 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         PlanetGeneratorInterface $planetGenerator,
         EntityManagerInterface $entityManager,
         BuildingCommodityRepositoryInterface $buildingCommodityRepository,
+        ModuleRepositoryInterface $moduleRepository,
+        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        TalPageInterface $talPage,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
@@ -71,6 +87,9 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->entityManager = $entityManager;
         $this->loggerUtilFactory = $loggerUtilFactory;
         $this->buildingCommodityRepository = $buildingCommodityRepository;
+        $this->moduleRepository = $moduleRepository;
+        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
+        $this->talPage = $talPage;
     }
 
     public function createBuildingFunctionTal(
@@ -135,6 +154,48 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         return new ColonyEpsProductionPreviewWrapper(
             $this->buildingRepository,
             $colony
+        );
+    }
+
+    public function createModuleSelector(
+        int $moduleType,
+        ?ColonyInterface $colony,
+        ?ShipInterface $ship,
+        ShipRumpInterface $rump,
+        int $userId,
+        ?ShipBuildplanInterface $buildplan = null
+    ): ModuleSelector {
+        return new ModuleSelector(
+            $this->moduleRepository,
+            $this->shipRumpModuleLevelRepository,
+            $this->talPage,
+            $moduleType,
+            $colony,
+            $ship,
+            $rump,
+            $userId,
+            $buildplan
+        );
+    }
+
+    public function createModuleSelectorSpecial(
+        int $moduleType,
+        ?ColonyInterface $colony,
+        ?ShipInterface $ship,
+        ShipRumpInterface $rump,
+        int $userId,
+        ?ShipBuildplanInterface $buildplan = null
+    ): ModuleSelectorSpecial {
+        return new ModuleSelectorSpecial(
+            $this->moduleRepository,
+            $this->shipRumpModuleLevelRepository,
+            $this->talPage,
+            $moduleType,
+            $colony,
+            $ship,
+            $rump,
+            $userId,
+            $buildplan
         );
     }
 }

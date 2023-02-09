@@ -3,7 +3,11 @@
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -39,4 +43,22 @@ interface ColonyLibFactoryInterface
     public function createEpsProductionPreviewWrapper(
         ColonyInterface $colony
     ): ColonyEpsProductionPreviewWrapper;
+
+    public function createModuleSelector(
+        int $moduleType,
+        ?ColonyInterface $colony,
+        ?ShipInterface $ship,
+        ShipRumpInterface $rump,
+        int $userId,
+        ?ShipBuildplanInterface $buildplan = null
+    ): ModuleSelector;
+
+    public function createModuleSelectorSpecial(
+        int $moduleType,
+        ?ColonyInterface $colony,
+        ?ShipInterface $ship,
+        ShipRumpInterface $rump,
+        int $userId,
+        ?ShipBuildplanInterface $buildplan = null
+    ): ModuleSelectorSpecial;
 }

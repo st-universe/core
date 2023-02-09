@@ -12,6 +12,7 @@ use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -28,18 +29,18 @@ final class ShowModuleScreen implements ViewControllerInterface
 
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private ColonyStorageManagerInterface $colonyStorageManager;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowModuleScreenRequestInterface $showModuleScreenRequest,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleScreenRequest = $showModuleScreenRequest;
         $this->shipRumpRepository = $shipRumpRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -65,7 +66,7 @@ final class ShowModuleScreen implements ViewControllerInterface
         $moduleSelectors = [];
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             if ($i == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                $moduleSelectors[] = new ModuleSelectorSpecial(
+                $moduleSelectors[] = $this->colonyLibFactory->createModuleSelectorSpecial(
                     $i,
                     $colony,
                     null,
@@ -73,7 +74,7 @@ final class ShowModuleScreen implements ViewControllerInterface
                     $userId
                 );
             } else {
-                $moduleSelectors[] = new ModuleSelector(
+                $moduleSelectors[] = $this->colonyLibFactory->createModuleSelector(
                     $i,
                     $colony,
                     null,

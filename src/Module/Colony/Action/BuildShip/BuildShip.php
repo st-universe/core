@@ -8,7 +8,7 @@ use request;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
-use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -47,6 +47,8 @@ final class BuildShip implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
@@ -56,6 +58,7 @@ final class BuildShip implements ActionControllerInterface
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyLibFactoryInterface $colonyLibFactory,
         ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -67,6 +70,7 @@ final class BuildShip implements ActionControllerInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -178,7 +182,13 @@ final class BuildShip implements ActionControllerInterface
                 $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
-            $selector = new ModuleSelector($module->getType(), $colony, null, $rump, $userId);
+            $selector = $this->colonyLibFactory->createModuleSelector(
+                $module->getType(),
+                $colony,
+                null,
+                $rump,
+                $userId
+            );
             if (!array_key_exists($module->getId(), $selector->getAvailableModules())) {
                 return;
             }

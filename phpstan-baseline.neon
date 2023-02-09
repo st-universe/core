@@ -896,11 +896,6 @@ parameters:
 			path: src/Lib/ModuleScreen/ModuleSelector.php
 
 		-
-			message: "#^Property Stu\\\\Lib\\\\ModuleScreen\\\\ModuleSelector\\:\\:\\$template has no type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/ModuleSelector.php
-
-		-
 			message: "#^Property Stu\\\\Lib\\\\ModuleScreen\\\\ModuleSelector\\:\\:\\$templateFile has no type specified\\.$#"
 			count: 1
 			path: src/Lib/ModuleScreen/ModuleSelector.php
@@ -3247,11 +3242,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$storage of class Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper constructor is passed by reference, so it expects variables only$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleScreen/ShowModuleScreen.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleScreen\\\\ShowModuleScreen\\:\\:\\$colonyStorageManager is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowModuleScreen/ShowModuleScreen.php
 

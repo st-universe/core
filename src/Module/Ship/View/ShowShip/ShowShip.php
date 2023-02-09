@@ -15,6 +15,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\ColonyStorageCommodityWrapper\ColonyStorageCommodityWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
@@ -65,6 +66,8 @@ final class ShowShip implements ViewControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
@@ -77,6 +80,7 @@ final class ShowShip implements ViewControllerInterface
         ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
         StationUtilityInterface $stationUtility,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        ColonyLibFactoryInterface $colonyLibFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
@@ -92,6 +96,7 @@ final class ShowShip implements ViewControllerInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtilFactory = $loggerUtilFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -297,8 +302,7 @@ final class ShowShip implements ViewControllerInterface
 
             $moduleSelectors = [];
             foreach ($plans as $plan) {
-
-                $ms = new ModuleSelectorSpecial(
+                $ms = $this->colonyLibFactory->createModuleSelectorSpecial(
                     ShipModuleTypeEnum::MODULE_TYPE_SPECIAL,
                     null,
                     $ship,

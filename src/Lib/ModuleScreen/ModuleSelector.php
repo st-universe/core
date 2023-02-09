@@ -24,12 +24,20 @@ class ModuleSelector implements ModuleSelectorInterface
     private $userId;
     private $macro = 'html/modulescreen.xhtml/moduleselector';
     private $templateFile = 'html/ajaxempty.xhtml';
-    private $template;
     private $colony;
     private $ship;
     private $buildplan;
 
+    private ModuleRepositoryInterface $moduleRepository;
+
+    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
+
+    private TalPageInterface $talPage;
+
     public function __construct(
+        ModuleRepositoryInterface $moduleRepository,
+        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
+        TalPageInterface $talPage,
         $moduleType,
         ?ColonyInterface $colony,
         ?ShipInterface $ship,
@@ -43,24 +51,14 @@ class ModuleSelector implements ModuleSelectorInterface
         $this->colony = $colony;
         $this->ship = $ship;
         $this->buildplan = $buildplan;
+        $this->moduleRepository = $moduleRepository;
+        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
+        $this->talPage = $talPage;
     }
 
     public function allowMultiple(): bool
     {
         return false;
-    }
-
-    private function getTemplate(): TalPageInterface
-    {
-        if ($this->template === null) {
-            // @todo refactor
-            global $container;
-
-            $this->template = $container->get(TalPageInterface::class);
-            $this->template->setTemplate($this->templateFile);
-            $this->template->setVar('THIS', $this);
-        }
-        return $this->template;
     }
 
     public function getMacro(): string
@@ -70,7 +68,9 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function render(): string
     {
-        return $this->getTemplate()->parse();
+        $this->talPage->setTemplate($this->templateFile);
+        $this->talPage->setVar('THIS', $this);
+        return $this->talPage->parse();
     }
 
     public function getModuleType(): int
@@ -105,20 +105,18 @@ class ModuleSelector implements ModuleSelectorInterface
      */
     public function getAvailableModules(): array
     {
-        // @todo refactor
-        global $container;
         if ($this->modules === null) {
             $this->modules = [];
             if ($this->getModuleType() == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 if ($this->getColony() !== null) {
-                    $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeColonyAndRump(
+                    $modules = $this->moduleRepository->getBySpecialTypeColonyAndRump(
                         (int)$this->getColony()->getId(),
                         (int)$this->getModuleType(),
                         $this->getRump()->getId(),
                         $this->getRump()->getShipRumpRole()->getId()
                     );
                 } else {
-                    $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeShipAndRump(
+                    $modules = $this->moduleRepository->getBySpecialTypeShipAndRump(
                         (int)$this->ship->getId(),
                         (int)$this->getModuleType(),
                         $this->getRump()->getId(),
@@ -126,14 +124,14 @@ class ModuleSelector implements ModuleSelectorInterface
                     );
                 }
             } else {
-                $mod_level = $container->get(ShipRumpModuleLevelRepositoryInterface::class)->getByShipRump(
+                $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
                     $this->getRump()->getId()
                 );
 
                 $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
                 $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
 
-                $modules = $container->get(ModuleRepositoryInterface::class)->getByTypeColonyAndLevel(
+                $modules = $this->moduleRepository->getByTypeColonyAndLevel(
                     (int)$this->getColony()->getId(),
                     (int)$this->getModuleType(),
                     $this->getRump()->getShipRumpRole()->getId(),
