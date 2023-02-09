@@ -25,12 +25,13 @@ class VisualNavPanelEntry
      * @var array{
      *     posx: int,
      *     posy: int,
-     *     sysid: int,
+     *     sysid: null|int,
      *     shipcount: int,
      *     cloakcount: int,
      *     allycolor: string,
      *     usercolor: string,
      *     factioncolor: string,
+     *     shieldstate: null|bool,
      *     type: int,
      *     d1c?: int,
      *     d2c?: int,
@@ -56,12 +57,13 @@ class VisualNavPanelEntry
      * @param array{
      *     posx: int,
      *     posy: int,
-     *     sysid: int,
+     *     sysid: ?int,
      *     shipcount: int,
      *     cloakcount: int,
      *     allycolor: string,
      *     usercolor: string,
      *     factioncolor: string,
+     *     shieldstate: null|bool,
      *     type: int,
      *     d1c?: int,
      *     d2c?: int,
@@ -96,7 +98,7 @@ class VisualNavPanelEntry
 
     function getSystemId()
     {
-        return $this->data['sysid'];
+        return $this->data['sysid'] ?? 0;
     }
 
     function getMapfieldType()
@@ -116,7 +118,7 @@ class VisualNavPanelEntry
 
     function getShieldState()
     {
-        return $this->data['shieldstate'];
+        return $this->data['shieldstate'] ?? false;
     }
 
     function hasShips()

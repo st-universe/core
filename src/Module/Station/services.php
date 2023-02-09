@@ -22,6 +22,8 @@ use Stu\Module\Station\Action\Scrapping\Scrapping;
 use Stu\Module\Station\Action\StationRepair\StationRepair;
 use Stu\Module\Station\Action\ToggleBatteryReload\ToggleBatteryReload;
 use Stu\Module\Station\Action\UndockStationShip\UndockStationShip;
+use Stu\Module\Station\Lib\StationUiFactory;
+use Stu\Module\Station\Lib\StationUiFactoryInterface;
 use Stu\Module\Station\View\Overview\Overview;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Station\View\ShowDockingPrivilegesConfig\ShowDockingPrivilegesConfig;
@@ -81,4 +83,5 @@ return [
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
         ShowScrapping::VIEW_IDENTIFIER => autowire(ShowScrapping::class)
     ],
+    StationUiFactoryInterface::class => autowire(StationUiFactory::class),
 ];

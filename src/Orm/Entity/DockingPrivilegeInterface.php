@@ -18,12 +18,6 @@ interface DockingPrivilegeInterface
 
     public function setPrivilegeMode(int $privilegeMode): DockingPrivilegeInterface;
 
-    public function getPrivilegeModeString(): string;
-
-    public function isDockingAllowed(): bool;
-
-    public function getTargetName(): string;
-
     public function getShip(): ShipInterface;
 
     public function setShip(ShipInterface $ship): DockingPrivilegeInterface;

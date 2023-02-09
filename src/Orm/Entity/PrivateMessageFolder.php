@@ -153,15 +153,6 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
         );
     }
 
-    public function appendToSorting(): void
-    {
-        // @todo refactor
-        global $container;
-
-        $sort = $container->get(PrivateMessageFolderRepositoryInterface::class)->getMaxOrderIdByUser($this->getUserId());
-        $this->setSort($sort + 1);
-    }
-
     public function isPMOutDir(): bool
     {
         return $this->getSpecial() == PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT;

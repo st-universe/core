@@ -28,8 +28,6 @@ interface PrivateMessageFolderInterface
 
     public function getCategoryCountNew(): int;
 
-    public function appendToSorting(): void;
-
     public function isPMOutDir(): bool;
 
     public function isDropable(): bool;

@@ -1126,7 +1126,7 @@ parameters:
 			path: src/Lib/VisualNavPanelEntry.php
 
 		-
-			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method VisualNavPanelEntry\\:\\:__construct\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
+			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method VisualNavPanelEntry\\:\\:__construct\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int\\|null, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanelEntry.php
 
@@ -1222,11 +1222,6 @@ parameters:
 
 		-
 			message: "#^Method VisualNavPanelEntry\\:\\:setCSSClass\\(\\) has parameter \\$class with no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Offset 'shieldstate' does not exist on array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanelEntry.php
 

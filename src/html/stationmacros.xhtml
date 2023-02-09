@@ -346,7 +346,7 @@
           <th>Modus</th>
           <th></th>
         </tr>
-        <tr tal:repeat="data SHIP/getDockPrivileges">
+        <tr tal:repeat="data DOCKING_PRIVILEGES">
           <td tal:content="structure bbcode:data/getTargetName">NAME</td>
           <td class="positive" tal:condition="data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE</td>
           <td class="negative" tal:condition="not:data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE

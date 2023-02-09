@@ -8,15 +8,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\Index;
-use Stu\Component\Ship\ShipEnum;
-use Stu\Orm\Repository\AllianceRepositoryInterface;
-use Stu\Orm\Repository\FactionRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\DockingPrivilegeRepository")
@@ -110,38 +105,6 @@ class DockingPrivilege implements DockingPrivilegeInterface
     {
         $this->privilege_mode = $privilegeMode;
         return $this;
-    }
-
-    public function getPrivilegeModeString(): string
-    {
-        // @todo refactor
-        if ($this->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW) {
-            return _('Erlaubt');
-        }
-        return _('Verboten');
-    }
-
-    public function isDockingAllowed(): bool
-    {
-        return $this->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW;
-    }
-
-    public function getTargetName(): string
-    {
-        // @todo refactor
-        global $container;
-        switch ($this->getPrivilegeType()) {
-            case ShipEnum::DOCK_PRIVILEGE_USER:
-                $user = $container->get(UserRepositoryInterface::class)->find((int)$this->getTargetId());
-                return $user === null ? 'nicht mehr vorhanden' : $user->getUserName();
-            case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
-                $ally = $container->get(AllianceRepositoryInterface::class)->find((int)$this->getTargetId());
-                return $ally === null ? 'nicht mehr vorhanden' : $ally->getName();
-            case ShipEnum::DOCK_PRIVILEGE_FACTION:
-                $faction = $container->get(FactionRepositoryInterface::class)->find((int)$this->getTargetId());
-                return $faction === null ? 'nicht mehr vorhanden' : $faction->getName();
-        }
-        return $container->get(ShipRepositoryInterface::class)->find($this->getTargetId())->getName();
     }
 
     public function getShip(): ShipInterface

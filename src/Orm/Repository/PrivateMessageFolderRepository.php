@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends EntityRepository<PrivateMessageFolder>
@@ -51,15 +52,15 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         ]);
     }
 
-    public function getMaxOrderIdByUser(int $userId): int
+    public function getMaxOrderIdByUser(UserInterface $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT MAX(pmf.sort) FROM %s pmf WHERE pmf.user_id = :userId',
+                'SELECT MAX(pmf.sort) FROM %s pmf WHERE pmf.user = :user',
                 PrivateMessageFolder::class
             )
         )->setParameters([
-            'userId' => $userId
+            'user' => $user
         ])->getSingleScalarResult();
     }
 }

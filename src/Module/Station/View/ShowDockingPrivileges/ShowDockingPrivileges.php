@@ -8,6 +8,9 @@ use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Station\Lib\DockingPrivilegeItem;
+use Stu\Module\Station\Lib\StationUiFactoryInterface;
+use Stu\Orm\Entity\DockingPrivilegeInterface;
 
 final class ShowDockingPrivileges implements ViewControllerInterface
 {
@@ -15,10 +18,14 @@ final class ShowDockingPrivileges implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private StationUiFactoryInterface $stationUiFactory;
+
     public function __construct(
+        StationUiFactoryInterface $stationUiFactory,
         ShipLoaderInterface $shipLoader
     ) {
         $this->shipLoader = $shipLoader;
+        $this->stationUiFactory = $stationUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,5 +40,12 @@ final class ShowDockingPrivileges implements ViewControllerInterface
         $game->showMacro('html/stationmacros.xhtml/dockprivilegelist');
 
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar(
+            'DOCKING_PRIVILEGES',
+            $ship->getDockPrivileges()->map(
+                fn (DockingPrivilegeInterface $dockingPrivilege): DockingPrivilegeItem =>
+                    $this->stationUiFactory->createDockingPrivilegeItem($dockingPrivilege)
+            )
+        );
     }
 }

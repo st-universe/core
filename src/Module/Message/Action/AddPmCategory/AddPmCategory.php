@@ -33,10 +33,15 @@ final class AddPmCategory implements ActionControllerInterface
         if (mb_strlen($name) < 1) {
             return;
         }
+
+        $user = $game->getUser();
+
+        $sort = $this->privateMessageFolderRepository->getMaxOrderIdByUser($user);
+
         $cat = $this->privateMessageFolderRepository->prototype();
-        $cat->setUser($game->getUser());
-        $cat->appendToSorting();
+        $cat->setUser($user);
         $cat->setDescription($name);
+        $cat->setSort($sort + 1);
 
         $this->privateMessageFolderRepository->save($cat);
 

@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @extends ObjectRepository<PrivateMessageFolder>
@@ -26,5 +27,5 @@ interface PrivateMessageFolderRepositoryInterface extends ObjectRepository
 
     public function getByUserAndSpecial(int $userId, int $specialId): ?PrivateMessageFolderInterface;
 
-    public function getMaxOrderIdByUser(int $userId): int;
+    public function getMaxOrderIdByUser(UserInterface $user): int;
 }
