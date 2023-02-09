@@ -423,8 +423,7 @@ final class ColonyTick implements ColonyTickInterface
     private function proceedImmigration(ColonyInterface $colony): void
     {
         // @todo
-        $im = (int)ceil($colony->getImmigration() * $colony->getLifeStandardPercentage() / 100);
-        $colony->setWorkless($colony->getWorkless() + $im);
+        $colony->setWorkless($colony->getWorkless() + $colony->getImmigration());
     }
 
     private function proceedEmigration(ColonyInterface $colony)
