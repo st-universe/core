@@ -34,7 +34,7 @@ interface DatabaseUiFactoryInterface
     ): DatabaseTopListDiscover;
 
     /**
-     * @param array{user_id: int, sc: int, race: int, shipc: int} $item
+     * @param array{user_id: int, sc: int, race: null|int, shipc: int} $item
      */
     public function createDatabaseTopListFlights(
         array $item
