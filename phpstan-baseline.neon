@@ -4546,11 +4546,6 @@ parameters:
 			path: src/Module/Maintenance/OldTradeOffersDeletion.php
 
 		-
-			message: "#^Parameter \\#3 \\$user of method Stu\\\\Module\\\\Prestige\\\\Lib\\\\CreatePrestigeLogInterface\\:\\:createLog\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Maintenance/TopFlightsReward.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Message\\\\Action\\\\DeleteContacts\\\\DeleteContactsRequest\\:\\:getContactIds\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Message/Action/DeleteContacts/DeleteContactsRequest.php

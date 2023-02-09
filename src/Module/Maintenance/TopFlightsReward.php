@@ -32,10 +32,16 @@ final class TopFlightsReward implements MaintenanceHandlerInterface
         $index = 0;
 
         foreach ($ranking as $entry) {
+            $user = $this->userRepository->find($entry['user_id']);
+
+            if ($user === null) {
+                continue;
+            }
+
             $this->createPrestigeLog->createLog(
                 self::PRESTIGE_REWARDS[$index],
                 sprintf('%d Prestige erhalten für Platz %d unter den Vielfliegern', self::PRESTIGE_REWARDS[$index++], $index),
-                $this->userRepository->find($entry['user_id']),
+                $user,
                 time()
             );
         }
