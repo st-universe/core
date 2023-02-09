@@ -36,23 +36,23 @@ class AllianceDataToGraphAttributeConverterTest extends StuTestCase
     {
         $name = 'some-name';
         $parsedName = 'some-parsed-name';
-        $specialCharacters = '<>&"\'\\'.PHP_EOL;
+        $specialCharacters = '<>&"\'\\' . PHP_EOL;
 
         $alliance = $this->mock(AllianceInterface::class);
 
         $alliance->shouldReceive('getName')
             ->withNoArgs()
             ->once()
-            ->andReturn($name);
+            ->andReturn($name . $specialCharacters);
 
         $this->bbCodeParser->shouldReceive('parse')
-            ->with($name)
+            ->with($name . $specialCharacters)
             ->once()
             ->andReturnSelf();
         $this->bbCodeParser->shouldReceive('getAsText')
             ->withNoArgs()
             ->once()
-            ->andReturn($parsedName.$specialCharacters);
+            ->andReturn($parsedName);
 
         static::assertSame(
             $parsedName,
