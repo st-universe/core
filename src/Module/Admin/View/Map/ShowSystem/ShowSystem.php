@@ -6,8 +6,9 @@ namespace Stu\Module\Admin\View\Map\ShowSystem;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
-use YRow;
+use Stu\Module\Starmap\Lib\YRow;
 
 final class ShowSystem implements ViewControllerInterface
 {
@@ -17,12 +18,16 @@ final class ShowSystem implements ViewControllerInterface
 
     private StarSystemRepositoryInterface $starSystemRepository;
 
+    private StarmapUiFactoryInterface $starmapUiFactory;
+
     public function __construct(
         ShowSystemRequestInterface $showSystemRequest,
+        StarmapUiFactoryInterface $starmapUiFactory,
         StarSystemRepositoryInterface $starSystemRepository
     ) {
         $this->showSystemRequest = $showSystemRequest;
         $this->starSystemRepository = $starSystemRepository;
+        $this->starmapUiFactory = $starmapUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,12 +40,12 @@ final class ShowSystem implements ViewControllerInterface
 
         $fields = [];
         foreach (range(1, $system->getMaxY()) as $value) {
-            $fields[] = new YRow(null, $value, 1, $system->getMaxX(), $system->getId());
+            $fields[] = $this->starmapUiFactory->createYRow(0, $value, 1, $system->getMaxX(), $system->getId());
         }
 
         $game->setTemplateFile('html/admin/mapeditor_system.xhtml');
         $game->appendNavigationPart(sprintf(
-            '/admin/?SHOW_MAP_EDITOR=1&layerid=',
+            '/admin/?SHOW_MAP_EDITOR=1&layerid=%d',
             $system->getLayer()->getId()
         ), _('Karteneditor'));
         $game->appendNavigationPart(

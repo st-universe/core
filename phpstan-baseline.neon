@@ -1081,26 +1081,6 @@ parameters:
 			path: src/Lib/StuBbCodeDefinitionSet.php
 
 		-
-			message: "#^Method UserYRow\\:\\:getFields\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\> but returns array\\<Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\|Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\.$#"
-			count: 1
-			path: src/Lib/UserYRow.php
-
-		-
-			message: "#^Parameter \\#1 \\$layerId of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:hasExplored\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Lib/UserYRow.php
-
-		-
-			message: "#^Parameter \\#2 \\$layerId of method Stu\\\\Orm\\\\Repository\\\\MapRepositoryInterface\\:\\:getExplored\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Lib/UserYRow.php
-
-		-
-			message: "#^Property YRow\\:\\:\\$fields \\(array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\|null\\) does not accept array\\<Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\|Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\.$#"
-			count: 1
-			path: src/Lib/UserYRow.php
-
-		-
 			message: "#^Cannot call method getMaxX\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanel.php
@@ -1269,41 +1249,6 @@ parameters:
 			message: "#^Property VisualNavPanelRow\\:\\:\\$entries has no type specified\\.$#"
 			count: 1
 			path: src/Lib/VisualNavPanelRow.php
-
-		-
-			message: "#^Method YRow\\:\\:getFields\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\> but returns array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\>\\|null\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Method YRow\\:\\:getSystemFields\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\MapInterface\\> but returns array\\|null\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Parameter \\#1 \\$layerId of method Stu\\\\Orm\\\\Repository\\\\MapRepositoryInterface\\:\\:getByCoordinates\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Property YRow\\:\\:\\$maxx has no type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Property YRow\\:\\:\\$minx has no type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Property YRow\\:\\:\\$row has no type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
-
-		-
-			message: "#^Property YRow\\:\\:\\$systemId has no type specified\\.$#"
-			count: 1
-			path: src/Lib/YRow.php
 
 		-
 			message: "#^Method request\\:\\:getInt\\(\\) has parameter \\$std with no type specified\\.$#"
@@ -1719,11 +1664,6 @@ parameters:
 			message: "#^Parameter \\#4 \\$col of function imagefill expects int, int\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
-
-		-
-			message: "#^Call to sprintf contains 0 placeholders, 1 value given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowSystem/ShowSystem.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"

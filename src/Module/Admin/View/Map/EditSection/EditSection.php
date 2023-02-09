@@ -7,10 +7,12 @@ namespace Stu\Module\Admin\View\Map\EditSection;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Starmap\Lib\StarmapUiFactory;
+use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
-use YRow;
+use Stu\Module\Starmap\Lib\YRow;
 
 final class EditSection implements ViewControllerInterface
 {
@@ -22,14 +24,18 @@ final class EditSection implements ViewControllerInterface
 
     private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
+    private StarmapUiFactoryInterface $starmapUiFactory;
+
     public function __construct(
         ShowSectionRequestInterface $request,
         LayerRepositoryInterface $layerRepository,
+        StarmapUiFactoryInterface $starmapUiFactory,
         MapFieldTypeRepositoryInterface $mapFieldTypeRepository
     ) {
         $this->request = $request;
         $this->layerRepository = $layerRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
+        $this->starmapUiFactory = $starmapUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,13 +54,13 @@ final class EditSection implements ViewControllerInterface
 
         $fields = [];
         foreach (range($miny, $maxy) as $key => $value) {
-            $fields[] = new YRow($layerId, $value, $minx, $maxx);
+            $fields[] = $this->starmapUiFactory->createYRow($layerId, $value, $minx, $maxx);
         }
 
         if ($yCoordinate - 1 >= 1) {
             $game->setTemplateVar(
                 'TOP_PREVIEW_ROW',
-                (new YRow($layerId, $yCoordinate * MapEnum::FIELDS_PER_SECTION - MapEnum::FIELDS_PER_SECTION, $minx, $maxx))->getFields()
+                $this->starmapUiFactory->createYRow($layerId, $yCoordinate * MapEnum::FIELDS_PER_SECTION - MapEnum::FIELDS_PER_SECTION, $minx, $maxx)->getFields()
             );
         } else {
             $game->setTemplateVar('TOP_PREVIEW_ROW', false);
@@ -62,7 +68,7 @@ final class EditSection implements ViewControllerInterface
         if ($yCoordinate * MapEnum::FIELDS_PER_SECTION + 1 <= $layer->getHeight()) {
             $game->setTemplateVar(
                 'BOTTOM_PREVIEW_ROW',
-                (new YRow($layerId, $yCoordinate * MapEnum::FIELDS_PER_SECTION + 1, $minx, $maxx))->getFields()
+                $this->starmapUiFactory->createYRow($layerId, $yCoordinate * MapEnum::FIELDS_PER_SECTION + 1, $minx, $maxx)->getFields()
             );
         } else {
             $game->setTemplateVar(
@@ -73,7 +79,7 @@ final class EditSection implements ViewControllerInterface
         if ($xCoordinate - 1 >= 1) {
             $row = [];
             for ($i = $miny; $i <= $maxy; $i++) {
-                $row[] = new YRow($layerId, $i, $minx - 1, $minx - 1);
+                $row[] = $this->starmapUiFactory->createYRow($layerId, $i, $minx - 1, $minx - 1);
             }
 
             $game->setTemplateVar(
@@ -90,7 +96,7 @@ final class EditSection implements ViewControllerInterface
         if ($xCoordinate * MapEnum::FIELDS_PER_SECTION + 1 <= $layer->getWidth()) {
             $row = [];
             for ($i = $miny; $i <= $maxy; $i++) {
-                $row[] = new YRow($layerId, $i, $maxx + 1, $maxx + 1);
+                $row[] = $this->starmapUiFactory->createYRow($layerId, $i, $maxx + 1, $maxx + 1);
             }
 
             $game->setTemplateVar(

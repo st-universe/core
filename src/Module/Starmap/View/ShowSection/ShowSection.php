@@ -9,6 +9,7 @@ use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
+use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
@@ -20,12 +21,16 @@ final class ShowSection implements ViewControllerInterface
 
     private LayerRepositoryInterface $layerRepository;
 
+    private StarmapUiFactoryInterface $starmapUiFactory;
+
     public function __construct(
         ShowSectionRequestInterface $showSectionRequest,
+        StarmapUiFactoryInterface $starmapUiFactory,
         LayerRepositoryInterface $layerRepository
     ) {
         $this->showSectionRequest = $showSectionRequest;
         $this->layerRepository = $layerRepository;
+        $this->starmapUiFactory = $starmapUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -56,7 +61,7 @@ final class ShowSection implements ViewControllerInterface
         );
         $game->setPageTitle(_('Sektion anzeigen'));
 
-        $helper = new MapSectionHelper();
+        $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(
             $game,
             $layer,

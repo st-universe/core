@@ -16,6 +16,7 @@ use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\RefreshSubspaceSection\RefreshSubspaceSection;
 use Stu\Module\Starmap\Lib\MapSectionHelper;
+use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 
 final class ShowSubspaceTelescope implements ViewControllerInterface
 {
@@ -25,12 +26,16 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 
     private ColonyGuiHelperInterface $colonyGuiHelper;
 
+    private StarmapUiFactoryInterface $starmapUiFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
+        StarmapUiFactoryInterface $starmapUiFactory,
         ColonyGuiHelperInterface $colonyGuiHelper
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->starmapUiFactory = $starmapUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,7 +62,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
         $mapY =  (int) ceil($colony->getSystem()->getCy() / MapEnum::FIELDS_PER_SECTION);
         $layer = $colony->getSystem()->getLayer();
 
-        $helper = new MapSectionHelper();
+        $helper = $this->starmapUiFactory->createMapSectionHelper();
         $helper->setTemplateVars(
             $game,
             $layer,

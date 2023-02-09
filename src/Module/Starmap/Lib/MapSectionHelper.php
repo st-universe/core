@@ -7,10 +7,17 @@ namespace Stu\Module\Starmap\Lib;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\LayerInterface;
-use UserYRow;
 
 final class MapSectionHelper
 {
+    private StarmapUiFactoryInterface $starmapUiFactory;
+
+    public function __construct(
+        StarmapUiFactoryInterface $starmapUiFactory
+    ) {
+        $this->starmapUiFactory = $starmapUiFactory;
+    }
+
     public function setTemplateVars(
         GameControllerInterface $game,
         LayerInterface $layer,
@@ -31,7 +38,7 @@ final class MapSectionHelper
 
         $fields = [];
         foreach (range($miny, $maxy) as $value) {
-            $fields[] = new UserYRow($game->getUser(), $layerId, $value, $minx, $maxx);
+            $fields[] = $this->starmapUiFactory->createUserYRow($game->getUser(), $layerId, $value, $minx, $maxx);
         }
 
         $game->setTemplateVar('SECTION_ID', $sectionId);
