@@ -9,8 +9,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use VisualNavPanel;
 
 final class ShowSystemSensorScan implements ViewControllerInterface
 {
@@ -22,14 +22,18 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 
     private LoggerUtilFactoryInterface $loggerUtilFactory;
 
+    private ShipUiFactoryInterface $shipUiFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         MapRepositoryInterface $mapRepository,
+        ShipUiFactoryInterface $shipUiFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->mapRepository = $mapRepository;
         $this->loggerUtilFactory = $loggerUtilFactory;
+        $this->shipUiFactory = $shipUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -73,7 +77,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
         }
 
         if ($ship->getLss()) {
-            $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel(
+            $game->setTemplateVar('VISUAL_NAV_PANEL', $this->shipUiFactory->createVisualNavPanel(
                 $ship,
                 $game->getUser(),
                 $this->loggerUtilFactory->getLoggerUtil(),

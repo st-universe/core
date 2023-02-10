@@ -192,6 +192,8 @@ use Stu\Module\Ship\Lib\TholianWebUtil;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtility;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
+use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -425,4 +427,5 @@ return [
         ShowWebEmitter::VIEW_IDENTIFIER => autowire(ShowWebEmitter::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
+    ShipUiFactoryInterface::class =>autowire(ShipUiFactory::class),
 ];

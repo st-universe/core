@@ -16,9 +16,6 @@ class VisualNavPanel
     /** @var ShipInterface */
     private $ship;
 
-    /** @var bool */
-    private $showOuterMap;
-
     /** @var UserInterface */
     private $user;
 
@@ -48,7 +45,7 @@ class VisualNavPanel
     /** @var null|string */
     private $viewportForFont;
 
-    function __construct(
+    public function __construct(
         ShipInterface $ship,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
@@ -62,9 +59,6 @@ class VisualNavPanel
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
         $this->system = $system;
-
-        $this->showOuterMap = $this->getShip()->getSystem() === null
-            || $this->getShip()->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR;
     }
 
     function getShip(): ShipInterface
@@ -186,7 +180,7 @@ class VisualNavPanel
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-        if ($this->system === null && $this->showOuterMap) {
+        if ($this->system === null && $this->showOuterMap()) {
             $result = $this->getOuterSystemResult();
         } else {
             $result = $this->getInnerSystemResult();
@@ -245,7 +239,7 @@ class VisualNavPanel
     function getHeadRow()
     {
         if ($this->headRow === null) {
-            $cx = $this->showOuterMap ? $this->getShip()->getCx() : $this->getShip()->getPosX();
+            $cx = $this->showOuterMap() ? $this->getShip()->getCx() : $this->getShip()->getPosX();
             $range = $this->getShip()->getSensorRange();
             $min = $this->system ? 1 : $cx - $range;
             $max = $this->system ? $this->system->getMaxX() : $cx + $range;
@@ -255,10 +249,10 @@ class VisualNavPanel
                     continue;
                 }
                 if ($this->system === null) {
-                    if ($this->showOuterMap && $min > $this->getShip()->getLayer()->getWidth()) {
+                    if ($this->showOuterMap() && $min > $this->getShip()->getLayer()->getWidth()) {
                         break;
                     }
-                    if (!$this->showOuterMap && $min > $this->getShip()->getSystem()->getMaxX()) {
+                    if (!$this->showOuterMap() && $min > $this->getShip()->getSystem()->getMaxX()) {
                         break;
                     }
                 }
@@ -298,5 +292,11 @@ class VisualNavPanel
             $this->viewportForFont = number_format($this->getViewport() / 2, 1);
         }
         return $this->viewportForFont;
+    }
+
+    private function showOuterMap(): bool
+    {
+        return $this->ship->getSystem() === null
+            || $this->ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR;
     }
 }

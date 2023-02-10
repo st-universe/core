@@ -27,6 +27,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\Ui\ShipUiFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StationShipRepairInterface;
@@ -34,7 +35,6 @@ use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
-use VisualNavPanel;
 
 final class ShowShip implements ViewControllerInterface
 {
@@ -68,6 +68,8 @@ final class ShowShip implements ViewControllerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private ShipUiFactoryInterface $shipUiFactory;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
@@ -81,6 +83,7 @@ final class ShowShip implements ViewControllerInterface
         StationUtilityInterface $stationUtility,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         ColonyLibFactoryInterface $colonyLibFactory,
+        ShipUiFactoryInterface $shipUiFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
@@ -97,6 +100,7 @@ final class ShowShip implements ViewControllerInterface
         $this->loggerUtilFactory = $loggerUtilFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->shipUiFactory = $shipUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -179,7 +183,7 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
         if ($ship->getLss()) {
-            $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel(
+            $game->setTemplateVar('VISUAL_NAV_PANEL', $this->shipUiFactory->createVisualNavPanel(
                 $ship,
                 $game->getUser(),
                 $this->loggerUtilFactory->getLoggerUtil(),
