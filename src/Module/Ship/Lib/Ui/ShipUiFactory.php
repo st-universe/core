@@ -26,7 +26,7 @@ final class ShipUiFactory implements ShipUiFactoryInterface
     public function __construct(
         UserLayerRepositoryInterface $userLayerRepository,
         UserMapRepositoryInterface $userMapRepository,
-        ShipRepositoryInterface $shipRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->userLayerRepository = $userLayerRepository;
         $this->userMapRepository = $userMapRepository;
