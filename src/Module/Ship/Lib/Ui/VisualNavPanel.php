@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Stu\Module\Ship\Lib\Ui;
+
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -24,7 +26,7 @@ class VisualNavPanel
     /** @var bool */
     private $isTachyonSystemActive;
 
-    /** @var bool  */
+    /** @var bool */
     private $tachyonFresh;
 
     /** @var StarSystemInterface|null */
@@ -45,7 +47,19 @@ class VisualNavPanel
     /** @var null|string */
     private $viewportForFont;
 
+    private UserLayerRepositoryInterface $userLayerRepository;
+
+    private UserMapRepositoryInterface $userMapRepository;
+
+    private ShipRepositoryInterface $shipRepository;
+
+    private ShipUiFactoryInterface $shipUiFactory;
+
     public function __construct(
+        ShipUiFactoryInterface $shipUiFactory,
+        UserLayerRepositoryInterface $userLayerRepository,
+        UserMapRepositoryInterface $userMapRepository,
+        ShipRepositoryInterface $shipRepository,
         ShipInterface $ship,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
@@ -53,12 +67,16 @@ class VisualNavPanel
         bool $tachyonFresh,
         StarSystemInterface $system = null
     ) {
+        $this->userLayerRepository = $userLayerRepository;
+        $this->userMapRepository = $userMapRepository;
+        $this->shipRepository = $shipRepository;
         $this->ship = $ship;
         $this->user = $user;
         $this->loggerUtil = $loggerUtil;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
         $this->system = $system;
+        $this->shipUiFactory = $shipUiFactory;
     }
 
     function getShip(): ShipInterface
@@ -104,25 +122,18 @@ class VisualNavPanel
         $hasSeenLayer = $this->user->hasSeen($layerId);
         $hasExploredLayer = $this->user->hasExplored($layerId);
 
-        // @todo refactor
-        global $container;
-
-        /** @var UserLayerRepositoryInterface */
-        $userLayerRepo = $container->get(UserLayerRepositoryInterface::class);
-
-        /** @var UserMapRepositoryInterface */
-        $repo = $container->get(UserMapRepositoryInterface::class);
-
         if (!$hasSeenLayer) {
-            $userLayer = $userLayerRepo->prototype();
+            $userLayer = $this->userLayerRepository->prototype();
             $userLayer->setLayer($this->ship->getLayer());
             $userLayer->setUser($this->user);
-            $userLayerRepo->save($userLayer);
+
+            $this->userLayerRepository->save($userLayer);
+
             $this->user->getUserLayers()->set($layerId, $userLayer);
         }
 
         if ($hasExploredLayer) {
-            $repo->deleteMapFieldsForUser(
+            $this->userMapRepository->deleteMapFieldsForUser(
                 $this->user->getId(),
                 $layerId,
                 $cx,
@@ -130,7 +141,7 @@ class VisualNavPanel
                 $range
             );
         } else {
-            $repo->insertMapFieldsForUser(
+            $this->userMapRepository->insertMapFieldsForUser(
                 $this->user->getId(),
                 $layerId,
                 $cx,
@@ -139,7 +150,7 @@ class VisualNavPanel
             );
         }
 
-        return $container->get(ShipRepositoryInterface::class)->getSensorResultOuterSystem(
+        return $this->shipRepository->getSensorResultOuterSystem(
             $cx,
             $cy,
             $range,
@@ -165,10 +176,7 @@ class VisualNavPanel
      */
     function getInnerSystemResult()
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipRepositoryInterface::class)->getSensorResultInnerSystem(
+        return $this->shipRepository->getSensorResultInnerSystem(
             $this->getShip(),
             $this->user->getId(),
             $this->system
@@ -205,13 +213,13 @@ class VisualNavPanel
             }
             if ($data['posy'] != $y) {
                 $y = $data['posy'];
-                $rows[$y] = new VisualNavPanelRow();
-                $entry = new VisualNavPanelEntry();
+                $rows[$y] = $this->shipUiFactory->createVisualNavPanelRow();
+                $entry = $this->shipUiFactory->createVisualNavPanelEntry();
                 $entry->row = $y;
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }
-            $entry = new VisualNavPanelEntry(
+            $entry = $this->shipUiFactory->createVisualNavPanelEntry(
                 $data,
                 $this->isTachyonSystemActive,
                 $this->tachyonFresh,

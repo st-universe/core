@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-use Stu\Component\Ship\ShipRumpEnum;
+namespace Stu\Module\Ship\Lib\Ui;
+
 use Stu\Component\Ship\ShipLSSModeEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 
@@ -71,8 +73,8 @@ class VisualNavPanelEntry
      *     d4c?: int
      * } $entry
      */
-    function __construct(
-        &$entry = array(),
+    public function __construct(
+        array &$entry = array(),
         bool $isTachyonSystemActive = false,
         bool $tachyonFresh = false,
         ShipInterface $ship = null,
@@ -253,7 +255,7 @@ class VisualNavPanelEntry
         return false;
     }
 
-    function getOnClick()
+    public function getOnClick(): string
     {
         if ($this->ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
             return sprintf(
@@ -267,7 +269,7 @@ class VisualNavPanelEntry
         return sprintf('moveToPosition(%d,%d);', $this->getPosX(), $this->getPosY());
     }
 
-    function getRow()
+    public function getRow(): ?int
     {
         return $this->row;
     }

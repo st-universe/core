@@ -1076,171 +1076,6 @@ parameters:
 			path: src/Lib/StuBbCodeDefinitionSet.php
 
 		-
-			message: "#^Cannot call method getMaxX\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Method VisualNavPanel\\:\\:getRows\\(\\) should return array\\<int, VisualNavPanelRow\\> but returns array\\<int, VisualNavPanelRow\\>\\|null\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Method VisualNavPanel\\:\\:getViewport\\(\\) should return float\\|int but returns float\\|int\\|null\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\:\\:setLayer\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Variable \\$row might not be defined\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Variable \\$rows might not be defined\\.$#"
-			count: 2
-			path: src/Lib/VisualNavPanel.php
-
-		-
-			message: "#^Cannot call method canMove\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 2
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method VisualNavPanelEntry\\:\\:__construct\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int\\|null, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getBorder\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getCSSClass\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getCacheValue\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getDisplayCount\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getMapfieldType\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getOnClick\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getPosX\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getPosY\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getRow\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getShieldState\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getShipCount\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getSubspaceCode\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:getSystemId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:hasCloakedShips\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:hasShips\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:isClickAble\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:isCurrentShipPosition\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:setCSSClass\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelEntry\\:\\:setCSSClass\\(\\) has parameter \\$class with no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelEntry.php
-
-		-
-			message: "#^Method VisualNavPanelRow\\:\\:addEntry\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelRow.php
-
-		-
-			message: "#^Method VisualNavPanelRow\\:\\:addEntry\\(\\) has parameter \\$data with no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelRow.php
-
-		-
-			message: "#^Method VisualNavPanelRow\\:\\:getEntries\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelRow.php
-
-		-
-			message: "#^Property VisualNavPanelRow\\:\\:\\$entries has no type specified\\.$#"
-			count: 1
-			path: src/Lib/VisualNavPanelRow.php
-
-		-
 			message: "#^Method request\\:\\:getInt\\(\\) has parameter \\$std with no type specified\\.$#"
 			count: 1
 			path: src/Lib/request.php
@@ -7449,6 +7284,151 @@ parameters:
 			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/TroopTransferUtility.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\ShipUiFactory\\:\\:createVisualNavPanelEntry\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/ShipUiFactory.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\ShipUiFactoryInterface\\:\\:createVisualNavPanelEntry\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/ShipUiFactoryInterface.php
+
+		-
+			message: "#^Cannot call method getMaxX\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanel.php
+
+		-
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanel.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanel\\:\\:getRows\\(\\) should return array\\<int, Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelRow\\> but returns array\\<int, Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelRow\\>\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanel.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanel\\:\\:getViewport\\(\\) should return float\\|int but returns float\\|int\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanel.php
+
+		-
+			message: "#^Parameter \\#1 \\$layer of method Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\:\\:setLayer\\(\\) expects Stu\\\\Orm\\\\Entity\\\\LayerInterface, Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanel.php
+
+		-
+			message: "#^Variable \\$row might not be defined\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanel.php
+
+		-
+			message: "#^Variable \\$rows might not be defined\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/Ui/VisualNavPanel.php
+
+		-
+			message: "#^Cannot call method canMove\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$entry \\(array\\{\\}\\) of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:__construct\\(\\) is incompatible with type array\\{posx\\: int, posy\\: int, sysid\\: int\\|null, shipcount\\: int, cloakcount\\: int, allycolor\\: string, usercolor\\: string, factioncolor\\: string, \\.\\.\\.\\}\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getBorder\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getCSSClass\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getCacheValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getDisplayCount\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getMapfieldType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getPosX\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getPosY\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getShieldState\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getShipCount\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getSubspaceCode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:getSystemId\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:hasCloakedShips\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:hasShips\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:isClickAble\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:isCurrentShipPosition\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:setCSSClass\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Ui\\\\VisualNavPanelEntry\\:\\:setCSSClass\\(\\) has parameter \\$class with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
 
 		-
 			message: "#^Parameter \\#1 \\$fleets of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapFleets\\(\\) expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\FleetInterface\\> given\\.$#"
