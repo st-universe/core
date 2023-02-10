@@ -224,14 +224,6 @@ class PlanetField implements PlanetFieldInterface
         return $container->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($this->getFieldType());
     }
 
-    private function getFieldTypeCategory(): int
-    {
-        // @todo remove
-        global $container;
-
-        return $container->get(PlanetFieldTypeRetrieverInterface::class)->getCategory($this->getFieldType());
-    }
-
     public function getBuildtime(): int
     {
         return $this->getActive();
@@ -484,16 +476,6 @@ class PlanetField implements PlanetFieldInterface
     public function isColonizeAble(): bool
     {
         return in_array($this->getFieldType(), $this->getColony()->getColonyClass()->getColonizeableFields());
-    }
-
-    public function isOrbit(): bool
-    {
-        return $this->getFieldTypeCategory() === ColonyFieldTypeCategoryEnum::FIELD_TYPE_CATEGORY_ORBIT;
-    }
-
-    public function isUnderground(): bool
-    {
-        return $this->getFieldTypeCategory() === ColonyFieldTypeCategoryEnum::FIELD_TYPE_CATEGORY_UNDERGROUND;
     }
 
     public function hasUpgradeOrTerraformingOption(): bool

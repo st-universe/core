@@ -24,7 +24,7 @@ interface EnergyWeaponPhaseInterface
     public function fireAtBuilding(
         ShipWrapperInterface $attackerWrapper,
         PlanetFieldInterface $target,
-        $isOrbitField
+        bool $isOrbitField
     ): array;
 
     public function getEnergyWeaponEnergyCosts(): int;

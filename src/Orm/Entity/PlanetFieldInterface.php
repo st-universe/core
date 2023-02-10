@@ -44,8 +44,6 @@ interface PlanetFieldInterface
 
     public function hasHighDamage(): bool;
 
-    public function isOrbit(): bool;
-
     public function isUnderConstruction(): bool;
 
     public function hasBuilding(): bool;
@@ -93,8 +91,6 @@ interface PlanetFieldInterface
     public function getPossibleUpgrades(): array;
 
     public function isColonizeAble(): bool;
-
-    public function isUnderground(): bool;
 
     public function hasUpgradeOrTerraformingOption(): bool;
 

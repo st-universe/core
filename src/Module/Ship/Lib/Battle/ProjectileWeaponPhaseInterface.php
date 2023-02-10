@@ -22,7 +22,7 @@ interface ProjectileWeaponPhaseInterface
     public function fireAtBuilding(
         ShipWrapperInterface $attackerWrapper,
         PlanetFieldInterface $target,
-        $isOrbitField,
+        bool $isOrbitField,
         &$antiParticleCount
     ): array;
 }

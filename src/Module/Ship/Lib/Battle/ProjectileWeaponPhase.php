@@ -137,7 +137,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
     public function fireAtBuilding(
         ShipWrapperInterface $attackerWrapper,
         PlanetFieldInterface $target,
-        $isOrbitField,
+        bool $isOrbitField,
         &$antiParticleCount
     ): array {
         $msg = [];

@@ -141,7 +141,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
     public function fireAtBuilding(
         ShipWrapperInterface $attackerWrapper,
         PlanetFieldInterface $target,
-        $isOrbitField
+        bool $isOrbitField
     ): array {
         $msg = [];
 

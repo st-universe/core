@@ -58,6 +58,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private TalPageInterface $talPage;
 
+    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
@@ -73,6 +75,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ModuleRepositoryInterface $moduleRepository,
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         TalPageInterface $talPage,
+        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
@@ -90,6 +93,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->moduleRepository = $moduleRepository;
         $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
         $this->talPage = $talPage;
+        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
     }
 
     public function createBuildingFunctionTal(
@@ -111,6 +115,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->planetGenerator,
             $this->entityManager,
             $this->loggerUtilFactory->getLoggerUtil(),
+            $this->planetFieldTypeRetriever,
             $colony,
             $buildingId,
             $showUnderground

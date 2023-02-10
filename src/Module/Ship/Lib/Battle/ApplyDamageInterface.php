@@ -16,7 +16,7 @@ interface ApplyDamageInterface
     public function damageBuilding(
         DamageWrapper $damage_wrapper,
         PlanetField $target,
-        $isOrbitField
+        bool $isOrbitField
     ): array;
 
     public function damageShipSystem(

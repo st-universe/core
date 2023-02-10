@@ -5636,11 +5636,6 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageBuilding\\(\\) has parameter \\$isOrbitField with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:damageBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ApplyDamage.php
@@ -5672,11 +5667,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageBuilding\\(\\) has parameter \\$isOrbitField with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
 
@@ -5741,11 +5731,6 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:fireAtBuilding\\(\\) has parameter \\$isOrbitField with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:fireAtBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
@@ -5782,11 +5767,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhaseInterface\\:\\:fire\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhaseInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhaseInterface\\:\\:fireAtBuilding\\(\\) has parameter \\$isOrbitField with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhaseInterface.php
 
@@ -5896,11 +5876,6 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:fireAtBuilding\\(\\) has parameter \\$isOrbitField with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:fireAtBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
@@ -5947,11 +5922,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhaseInterface\\:\\:fireAtBuilding\\(\\) has parameter \\$antiParticleCount with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhaseInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhaseInterface\\:\\:fireAtBuilding\\(\\) has parameter \\$isOrbitField with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhaseInterface.php
 

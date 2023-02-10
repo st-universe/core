@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -45,6 +46,8 @@ final class BuildOnField implements ActionControllerInterface
 
     private EntityManagerInterface $entityManager;
 
+    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
@@ -54,6 +57,7 @@ final class BuildOnField implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         BuildingActionInterface $buildingAction,
+        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         EntityManagerInterface $entityManager
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -65,6 +69,7 @@ final class BuildOnField implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->buildingAction = $buildingAction;
         $this->entityManager = $entityManager;
+        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -115,7 +120,10 @@ final class BuildOnField implements ActionControllerInterface
             }
         }
 
-        if ($field->isOrbit() && $colony->isBlocked()) {
+        if (
+            $this->planetFieldTypeRetriever->isOrbitField($field)
+            && $colony->isBlocked()
+        ) {
             $game->addInformation(_('Der Orbit kann nicht bebaut werden während die Kolonie blockiert wird'));
             return;
         }

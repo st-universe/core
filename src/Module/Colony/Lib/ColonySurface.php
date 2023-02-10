@@ -42,6 +42,8 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private bool $showUnderground;
 
+    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
@@ -50,6 +52,7 @@ final class ColonySurface implements ColonySurfaceInterface
         PlanetGeneratorInterface $planetGenerator,
         EntityManagerInterface $entityManager,
         LoggerUtilInterface $loggerUtil,
+        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         ColonyInterface $colony,
         ?int $buildingId = null,
         bool $showUnderground = true
@@ -64,6 +67,7 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtil;
         $this->showUnderground = $showUnderground;
+        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
     }
 
     public function getSurface(): array
@@ -82,9 +86,7 @@ final class ColonySurface implements ColonySurfaceInterface
         if (!$this->showUnderground) {
             $fields = array_filter(
                 $fields,
-                function (PlanetFieldInterface $field): bool {
-                    return !$field->isUnderground();
-                }
+                fn(PlanetFieldInterface $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
             );
         }
 

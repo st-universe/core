@@ -6,12 +6,17 @@ namespace Stu\Module\Colony\Lib;
 
 use Cache\Adapter\Common\CacheItem;
 use Psr\Cache\CacheItemPoolInterface;
+use Stu\Component\Colony\ColonyFieldTypeCategoryEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\PlanetFieldTypeRepositoryInterface;
 
+/**
+ * Provides service methods to determine field types and -descriptions
+ */
 final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterface
 {
     private const CACHE_KEY_NAME = 'planet_field_type_list';
@@ -41,7 +46,7 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
             $this->fillCache(static::CACHE_KEY_NAME, 'getDescription');
         }
 
-        return  $this->cache->getItem(static::CACHE_KEY_NAME)->get()[$fieldTypeId] ?? '';
+        return $this->cache->getItem(static::CACHE_KEY_NAME)->get()[$fieldTypeId] ?? '';
     }
 
     public function getCategory(int $fieldTypeId): int
@@ -57,7 +62,32 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
             $this->loggerUtil->log(sprintf('could not retrieve category for fieldTypeId: %s', $fieldTypeId));
         }
 
-        return  $result ?? 0;
+        return $result ?? 0;
+    }
+
+    public function isUndergroundField(
+        PlanetFieldInterface $planetField
+    ): bool {
+        return $this->isTypeOf(
+            $planetField,
+            ColonyFieldTypeCategoryEnum::FIELD_TYPE_CATEGORY_UNDERGROUND
+        );
+    }
+
+    public function isOrbitField(
+        PlanetFieldInterface $planetField
+    ): bool {
+        return $this->isTypeOf(
+            $planetField,
+            ColonyFieldTypeCategoryEnum::FIELD_TYPE_CATEGORY_ORBIT
+        );
+    }
+
+    private function isTypeOf(
+        PlanetFieldInterface $planetField,
+        int $fieldCategory
+    ): bool {
+        return $this->getCategory($planetField->getFieldType()) === $fieldCategory;
     }
 
     private function fillCache(string $cacheKey, string $method): void

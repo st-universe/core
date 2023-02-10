@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\RepairBuilding;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -25,16 +26,20 @@ final class RepairBuilding implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
+        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
+        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,7 +69,10 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($field->isOrbit() && $colony->isBlocked()) {
+        if (
+            $this->planetFieldTypeRetriever->isOrbitField($field)
+            && $colony->isBlocked()
+        ) {
             $game->addInformation(_('Gebäude im Orbit können nicht repariert werden während die Kolonie blockiert wird'));
             return;
         }

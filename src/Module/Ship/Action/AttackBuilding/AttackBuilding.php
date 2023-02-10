@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\AttackBuilding;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -54,6 +55,8 @@ final class AttackBuilding implements ActionControllerInterface
 
     private array $messages = [];
 
+    private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -66,6 +69,7 @@ final class AttackBuilding implements ActionControllerInterface
         ModuleRepositoryInterface $moduleRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
         AlertRedHelperInterface $alertRedHelper,
+        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -80,6 +84,7 @@ final class AttackBuilding implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->alertRedHelper = $alertRedHelper;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -182,7 +187,7 @@ final class AttackBuilding implements ActionControllerInterface
         }
 
         // OFFENSE OF ATTACKING SHIPS
-        $isOrbitField = $field->isOrbit();
+        $isOrbitField = $this->planetFieldTypeRetriever->isOrbitField($field);
         $attackerPool = $this->fightLib->filterInactiveShips($attacker);
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE) * 6;
 

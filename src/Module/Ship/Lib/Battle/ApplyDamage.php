@@ -89,7 +89,7 @@ final class ApplyDamage implements ApplyDamageInterface
     public function damageBuilding(
         DamageWrapper $damage_wrapper,
         PlanetFieldInterface $target,
-        $isOrbitField
+        bool $isOrbitField
     ): array {
         $msg = [];
         $colony = $target->getColony();
