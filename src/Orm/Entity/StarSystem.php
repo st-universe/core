@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -128,8 +133,18 @@ class StarSystem implements StarSystemInterface
      */
     private $base;
 
-    /** @var null|array<StarSystemMapInterface> */
-    private $fields;
+    /**
+     * @var Collection<int, StarSystemMapInterface>
+     *
+     * @OneToMany(targetEntity="StarSystemMap", mappedBy="starSystem")
+     * @OrderBy({"sy" = "ASC", "sx" = "ASC"})
+     */
+    private Collection $fields;
+
+    public function __construct()
+    {
+        $this->fields = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -256,14 +271,8 @@ class StarSystem implements StarSystemInterface
         return $this->base;
     }
 
-    public function getFields(): array
+    public function getFields(): Collection
     {
-        if ($this->fields === null) {
-            // @todo refactor
-            global $container;
-
-            $this->fields = $container->get(StarSystemMapRepositoryInterface::class)->getBySystemOrdered($this->getId());
-        }
         return $this->fields;
     }
 

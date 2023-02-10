@@ -10986,6 +10986,11 @@ parameters:
 			path: src/Orm/Entity/StarSystem.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$fields type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Map\\|null but property expects Stu\\\\Orm\\\\Entity\\\\MapInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php

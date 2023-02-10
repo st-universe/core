@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface StarSystemInterface
 {
     public function getId(): int;
@@ -47,9 +49,9 @@ interface StarSystemInterface
     public function getBase(): ?ShipInterface;
 
     /**
-     * @return array<StarSystemMapInterface>
+     * @return Collection<int, StarSystemMapInterface>
      */
-    public function getFields(): array;
+    public function getFields(): Collection;
 
     public function isWormhole(): bool;
 }

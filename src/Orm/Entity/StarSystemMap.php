@@ -66,7 +66,7 @@ class StarSystemMap implements StarSystemMapInterface
     /**
      * @var StarSystemInterface
      *
-     * @ManyToOne(targetEntity="StarSystem")
+     * @ManyToOne(targetEntity="StarSystem", inversedBy="fields")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
     private $starSystem;
