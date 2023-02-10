@@ -21,6 +21,4 @@ interface PlanetFieldTypeBuildingInterface
     public function getView(): bool;
 
     public function setView(bool $view): PlanetFieldTypeBuildingInterface;
-
-    public function getFieldTypeDescription(): string;
 }

@@ -8,11 +8,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
-use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldTypeBuildingRepository")
@@ -122,13 +121,5 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
         $this->view = $view;
 
         return $this;
-    }
-
-    public function getFieldTypeDescription(): string
-    {
-        // @todo remove
-        global $container;
-
-        return $container->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($this->getFieldTypeId());
     }
 }

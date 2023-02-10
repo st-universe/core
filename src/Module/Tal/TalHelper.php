@@ -8,10 +8,12 @@ use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Psr\Container\ContainerInterface;
+use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Tal\Exception\DiContainerNotSetException;
+use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 
-final class TalHelper implements TalHelperInterface
+final class TalHelper
 {
     private static ?ContainerInterface $dic = null;
 
@@ -98,6 +100,12 @@ final class TalHelper implements TalHelperInterface
         return number_format(floatval($number), 0, '', '.');
     }
 
+    public static function getPlanetFieldTypeDescription(
+        PlanetFieldTypeBuildingInterface $planetFieldTypeBuilding
+    ): string {
+        return self::getDic()->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($planetFieldTypeBuilding->getFieldTypeId());
+    }
+
     /**
      * Registers global available tal methods
      */
@@ -107,81 +115,59 @@ final class TalHelper implements TalHelperInterface
 
         TalesRegistry::registerPrefix(
             'clmodeDescription',
-            function ($src, $nothrow): string {
-                return '\Stu\Module\Tal\TalHelper::getContactListModeDescription((int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
-            }
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::getContactListModeDescription((int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
         TalesRegistry::registerPrefix(
             'addPlusCharacter',
-            function ($src, $nothrow): string {
-                return '\Stu\Module\Tal\TalHelper::addPlusCharacter((int)' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
-            }
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::addPlusCharacter((int)' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
         TalesRegistry::registerPrefix(
             'isPositive',
-            function ($src, $nothrow): string {
-                return '(int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ' > 0';
-            }
+            fn ($src, $nothrow): string => '(int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ' > 0'
         );
         TalesRegistry::registerPrefix(
             'isNegative',
-            function ($src, $nothrow): string {
-                return '(int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ' < 0';
-            }
+            fn ($src, $nothrow): string => '(int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ' < 0'
         );
         TalesRegistry::registerPrefix(
             'numberWithThousandSeperator',
-            function ($src, $nothrow): string {
-                return '\Stu\Module\Tal\TalHelper::getNumberWithThousandSeperator(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
-            }
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::getNumberWithThousandSeperator(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
         TalesRegistry::registerPrefix(
             'bbcode',
-            function ($src, $nothrow): string {
-                return '\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsHtml()';
-            }
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsHtml()'
         );
         TalesRegistry::registerPrefix(
             'bbcode2txt',
-            function ($src, $nothrow): string {
-                return '\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsText()';
-            }
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsText()'
         );
         TalesRegistry::registerPrefix(
             'jsquote',
-            function ($src, $nothrow): string {
-                return '\Stu\Module\Tal\TalHelper::jsquote(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
-            }
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::jsquote(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
         TalesRegistry::registerPrefix(
             'datetime',
-            function ($src, $nothrow): string {
-                return 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370) . " " . date("H:i", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
-            }
+            fn ($src, $nothrow): string => 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370) . " " . date("H:i", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
         TalesRegistry::registerPrefix(
             'date',
-            function ($src, $nothrow): string {
-                return 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370)';
-            }
+            fn ($src, $nothrow): string => 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370)'
         );
         TalesRegistry::registerPrefix(
             'nl2br',
-            function ($src, $nothrow): string {
-                return 'nl2br(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
-            }
+            fn ($src, $nothrow): string => 'nl2br(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
         TalesRegistry::registerPrefix(
             'nl2brBbCode',
-            function ($src, $nothrow): string {
-                return 'nl2br(\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsHtml())';
-            }
+            fn ($src, $nothrow): string => 'nl2br(\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsHtml())'
         );
         TalesRegistry::registerPrefix(
             'formatSeconds',
-            function ($src, $nothrow): string {
-                return '\Stu\Module\Tal\TalHelper::formatSeconds(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
-            }
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::formatSeconds(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
+        );
+        TalesRegistry::registerPrefix(
+            'planetFieldTypeDescription',
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::getPlanetFieldTypeDescription(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
     }
 }

@@ -1328,7 +1328,7 @@
           <strong>Baubar</strong><br />
           <strong>Anzahl:</strong> <span id="counter">${buildingcount}</span><br />
           <img src="#" tal:repeat="field USEABLE_FIELD_TYPES"
-            tal:attributes="src string:assets/generated/fields/t${field/getFieldTypeId}.png; title field/getFieldTypeDescription"
+            tal:attributes="src string:assets/generated/fields/t${field/getFieldTypeId}.png; title planetFieldTypeDescription:field"
             style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
         </td>
         <td style="vertical-align: top; width: 110px;">
