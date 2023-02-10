@@ -14,8 +14,6 @@ interface ColonyShipRepairInterface
 
     public function getFieldId(): int;
 
-    public function getField(): PlanetFieldInterface;
-
     public function getColony(): ColonyInterface;
 
     public function setColony(ColonyInterface $colony): ColonyShipRepairInterface;

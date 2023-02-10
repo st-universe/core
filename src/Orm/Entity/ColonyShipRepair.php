@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyShipRepairRepository")
@@ -66,9 +65,6 @@ class ColonyShipRepair implements ColonyShipRepairInterface
      */
     private $ship;
 
-    /** @var null|PlanetFieldInterface */
-    private $field;
-
     public function getId(): int
     {
         return $this->id;
@@ -94,20 +90,6 @@ class ColonyShipRepair implements ColonyShipRepairInterface
     public function getFieldId(): int
     {
         return $this->field_id;
-    }
-
-    public function getField(): PlanetFieldInterface
-    {
-        if ($this->field === null) {
-            // @todo refactor
-            global $container;
-
-            $this->field = $container->get(PlanetFieldRepositoryInterface::class)->getByColonyAndFieldId(
-                $this->getColonyId(),
-                $this->getFieldId()
-            );
-        }
-        return $this->field;
     }
 
     public function getColony(): ColonyInterface

@@ -25,6 +25,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
@@ -70,6 +71,7 @@ final class ShipTickManager implements ShipTickManagerInterface
     private EntryCreatorInterface $entryCreator;
 
     private LoggerUtilInterface $loggerUtil;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
@@ -90,6 +92,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         AdventCycleInterface $adventCycle,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         EntryCreatorInterface $entryCreator,
+        PlanetFieldRepositoryInterface $planetFieldRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -111,6 +114,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->entryCreator = $entryCreator;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function work(): void
@@ -550,7 +554,16 @@ final class ShipTickManager implements ShipTickManagerInterface
                 continue;
             }
 
-            if (!$obj->getField()->isActive()) {
+            $field = $this->planetFieldRepository->getByColonyAndFieldId(
+                $obj->getColonyId(),
+                $obj->getFieldId()
+            );
+
+            if ($field === null) {
+                continue;
+            }
+
+            if (!$field->isActive()) {
                 continue;
             }
 
@@ -563,12 +576,12 @@ final class ShipTickManager implements ShipTickManagerInterface
             //already repaired a ship on this colony field, max is one without repair station
             if (
                 !$isRepairStationBonus
-                && array_key_exists($obj->getField()->getFieldId(), $usedShipyards[$colony->getId()])
+                && array_key_exists($field->getFieldId(), $usedShipyards[$colony->getId()])
             ) {
                 continue;
             }
 
-            $usedShipyards[$colony->getId()][$obj->getField()->getFieldId()] = [$obj->getField()->getFieldId()];
+            $usedShipyards[$colony->getId()][$field->getFieldId()] = [$field->getFieldId()];
 
             if ($this->repairShipOnEntity($ship, $colony, true, $isRepairStationBonus)) {
                 $this->colonyShipRepairRepository->delete($obj);
