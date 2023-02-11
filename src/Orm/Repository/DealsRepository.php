@@ -67,7 +67,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     AND d.auction = FALSE AND d.want_prestige IS NULL
                     AND d.buildplan_id IS NULL AND d.ship = FALSE
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -89,7 +89,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     AND d.auction = FALSE AND d.want_prestige IS NULL
                     AND d.buildplan_id > 0 AND d.ship = TRUE
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -110,7 +110,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE
                     AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -132,7 +132,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     AND d.auction = FALSE AND d.want_commodity IS NULL
                     AND d.buildplan_id IS NULL AND d.ship = FALSE
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -154,7 +154,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      AND d.auction = FALSE AND d.want_commodity IS NULL
                      AND d.buildplan_id > 0 AND d.ship = TRUE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -175,7 +175,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      WHERE d.start < :actime AND d.end > :actime AND d.auction = FALSE
                      AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -217,7 +217,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                      AND d.want_prestige IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -239,7 +239,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                      AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -261,7 +261,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                     AND d.want_prestige IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -283,7 +283,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                     AND d.want_commodity IS NULL AND d.buildplan_id IS NULL AND d.ship = FALSE
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -305,7 +305,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                     WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                     AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = TRUE
                     AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
@@ -327,7 +327,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
                      WHERE d.start < :actime AND d.end > :actime AND d.auction = TRUE
                      AND d.want_commodity IS NULL AND d.buildplan_id > 0 AND d.ship = FALSE
                      AND (d.faction_id = (SELECT u.race FROM %s u WHERE u.id = :userId)
-                        OR d.faction_id IS NULL)',
+                        OR d.faction_id IS NULL) ORDER BY d.start ASC',
                     Deals::class,
                     User::class
                 )
