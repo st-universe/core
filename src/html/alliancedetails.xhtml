@@ -8,8 +8,8 @@
         <div class="allianceActions">
           <div>
             <a href="alliance.php?SHOW_LIST=1" class="linkbutton">Allianzliste</a>
-            <a tal:condition="php:THIS.getUser().getAlliance().getId() EQ ALLIANCE.getId()"
-              href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
+            <a tal:condition="php:THIS.getUser().getAlliance() EQ ALLIANCE" href="alliance.php?SHOW_BOARDS=1"
+              class="linkbutton">Forum</a>
             <a tal:condition="CAN_MANAGE_FOREIGN_RELATIONS" href="alliance.php?SHOW_RELATIONS=1"
               class="linkbutton">Diplomatie</a>
             <tal:block tal:condition="CAN_EDIT">
