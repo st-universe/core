@@ -589,8 +589,9 @@
 					<tal:block tal:define="user SHIP/getCurrentMapField/getInfluenceArea/getBase/getUser">
 						<a tal:condition="user/getAlliance"
 							href="alliance.php?SHOW_ALLIANCE=1&id=${user/getAlliance/getId}">
-							<img style="height: 20px;" src="runtime"
-								tal:attributes="src user/getAlliance/getFullAvatarpath" />
+							<div class="shipTerritoryView">
+								<metal:macro metal:use-macro="alliancemacros.xhtml/alliance_avatar" tal:define="alliance user/getAlliance" />
+							</div>
 							<span tal:condition="not:SHIP/getCurrentMapField/getAdministratedRegion">Territorium der
 								Allianz
 								<span tal:replace="structure bbcode:user/getAlliance/getName">NAME</span></span>
