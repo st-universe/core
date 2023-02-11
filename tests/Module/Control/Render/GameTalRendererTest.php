@@ -43,6 +43,8 @@ class GameTalRendererTest extends StuTestCase
         $configValueWiki = 'some-wiki';
         $configValueForum = 'some-forum';
         $configValueChat = 'some-chat';
+        $configValueUserAvatarPath = 'some-user-path';
+        $configValueAllianceAvatarPath = 'some-avatar-path';
 
         $this->renderFragment->shouldReceive('render')
             ->with($user, $talPage)
@@ -70,6 +72,15 @@ class GameTalRendererTest extends StuTestCase
         $talPage->shouldReceive('setVar')
             ->with('CHAT', $configValueChat)
             ->once();
+        $talPage->shouldReceive('setVar')
+            ->with(
+                'ASSET_PATHS',
+                [
+                    'alliance' => $configValueAllianceAvatarPath,
+                    'user' => $configValueUserAvatarPath,
+                ]
+            )
+            ->once();
 
         $this->config->shouldReceive('get')
             ->with('game.version')
@@ -87,6 +98,14 @@ class GameTalRendererTest extends StuTestCase
             ->with('discord.url')
             ->once()
             ->andReturn($configValueChat);
+        $this->config->shouldReceive('get')
+            ->with('game.alliance_avatar_path')
+            ->once()
+            ->andReturn($configValueAllianceAvatarPath);
+        $this->config->shouldReceive('get')
+            ->with('game.user_avatar_path')
+            ->once()
+            ->andReturn($configValueUserAvatarPath);
 
         static::assertSame(
             $output,

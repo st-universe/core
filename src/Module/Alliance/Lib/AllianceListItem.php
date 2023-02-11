@@ -46,9 +46,9 @@ final class AllianceListItem
         return $this->alliance->getAvatar() !== '';
     }
 
-    public function getAvatarPath(): string
+    public function getAvatar(): string
     {
-        return $this->alliance->getFullAvatarPath();
+        return $this->alliance->getAvatar();
     }
 
     public function getMembers(): iterable

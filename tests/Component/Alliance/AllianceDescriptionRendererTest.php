@@ -6,6 +6,7 @@ namespace Stu\Component\Alliance;
 
 use JBBCode\Parser;
 use Mockery\MockInterface;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Orm\Entity\AllianceInterface;
@@ -27,6 +28,9 @@ class AllianceDescriptionRendererTest extends StuTestCase
     /** @var MockInterface&AllianceInterface */
     private MockInterface $alliance;
 
+    /** @var MockInterface&ConfigInterface */
+    private MockInterface $config;
+
     private AllianceDescriptionRenderer $subject;
 
     protected function setUp(): void
@@ -34,12 +38,14 @@ class AllianceDescriptionRendererTest extends StuTestCase
         $this->parserWithImage = $this->mock(ParserWithImageInterface::class);
         $this->allianceRelationRenderer = $this->mock(AllianceRelationRendererInterface::class);
         $this->allianceRelationRepository = $this->mock(AllianceRelationRepositoryInterface::class);
+        $this->config = $this->mock(ConfigInterface::class);
 
         $this->alliance = $this->mock(AllianceInterface::class);
 
         $this->subject = new AllianceDescriptionRenderer(
             $this->parserWithImage,
             $this->allianceRelationRenderer,
+            $this->config,
             $this->allianceRelationRepository
         );
     }
@@ -62,19 +68,21 @@ class AllianceDescriptionRendererTest extends StuTestCase
     public function testRenderReplacesBannerWithAvater(): void
     {
         $avatar = 'avatar_path';
+        $base_path = 'base_path';
 
-        $this->alliance->shouldReceive('getFullAvatarPath')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($avatar);
         $this->alliance->shouldReceive('getAvatar')
             ->withNoArgs()
             ->once()
             ->andReturn($avatar);
 
+        $this->config->shouldReceive('get')
+            ->with('game.alliance_avatar_path')
+            ->once()
+            ->andReturn($base_path);
+
         $this->createRendererExpectations(
             'ALLIANCE_BANNER',
-            sprintf('<img src="%s" />', $avatar)
+            sprintf('<img src="%s/%s.png" />', $base_path, $avatar)
         );
     }
 

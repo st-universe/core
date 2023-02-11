@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Orm\Entity\AllianceInterface;
@@ -23,14 +24,18 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
 
     private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
+    private ConfigInterface $config;
+
     public function __construct(
         ParserWithImageInterface $parserWithImage,
         AllianceRelationRendererInterface $allianceRelationRenderer,
+        ConfigInterface $config,
         AllianceRelationRepositoryInterface $allianceRelationRepository
     ) {
         $this->parserWithImage = $parserWithImage;
         $this->allianceRelationRenderer = $allianceRelationRenderer;
         $this->allianceRelationRepository = $allianceRelationRepository;
+        $this->config = $config;
     }
 
     public function render(
@@ -61,10 +66,13 @@ final class AllianceDescriptionRenderer implements AllianceDescriptionRendererIn
         return [
             'ALLIANCE_HOMEPAGE_LINK' => fn (AllianceInterface $alliance): string =>
                 sprintf('<a href="%s" target="_blank">%s</a>', $alliance->getHomepage(), 'Zur Allianz Homepage'),
-            'ALLIANCE_BANNER' => fn (AllianceInterface $alliance): string =>
-                $alliance->getAvatar() !== ''
-                    ? sprintf('<img src="%s" />', $alliance->getFullAvatarpath())
-                    : '',
+            'ALLIANCE_BANNER' => function (AllianceInterface $alliance): string {
+                $avatar = $alliance->getAvatar();
+
+                return $avatar !== ''
+                    ? sprintf('<img src="%s/%s.png" />', $this->config->get('game.alliance_avatar_path'), $avatar)
+                    : '';
+            },
             'ALLIANCE_PRESIDENT' => fn (AllianceInterface $alliance): string =>
                 $alliance->getFounder()->getUser()->getUserName(),
             'ALLIANCE_VICEPRESIDENT' => fn (AllianceInterface $alliance): string =>

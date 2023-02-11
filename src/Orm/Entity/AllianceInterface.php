@@ -37,8 +37,6 @@ interface AllianceInterface
 
     public function setAvatar(string $avatar): AllianceInterface;
 
-    public function getFullAvatarPath(): string;
-
     public function getRgbCode(): string;
 
     public function setRgbCode(string $rgbCode): AllianceInterface;

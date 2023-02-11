@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\Exception\AllianceFounderNotSetException;
 
@@ -201,20 +200,6 @@ class Alliance implements AllianceInterface
     {
         $this->avatar = $avatar;
         return $this;
-    }
-
-    public function getFullAvatarPath(): string
-    {
-        // @todo refactor
-        global $container;
-
-        $config = $container->get(ConfigInterface::class);
-
-        return sprintf(
-            '%s/%s.png',
-            $config->get('game.alliance_avatar_path'),
-            $this->getAvatar()
-        );
     }
 
     public function getRgbCode(): string

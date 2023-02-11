@@ -74,8 +74,7 @@
 						</tr>
 						<tr tal:condition="ALLIANCE/getAvatar">
 							<td>
-								<img src="runtime" tal:attributes="src ALLIANCE/getFullAvatarPath"
-									tal:condition="ALLIANCE/getAvatar" />
+								<metal:block metal:use-macro="alliancemacros.xhtml/alliance_avatar" tal:define="alliance ALLIANCE" />
 							</td>
 						</tr>
 					</table>

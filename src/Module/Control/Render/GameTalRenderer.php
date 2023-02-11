@@ -11,6 +11,8 @@ use Stu\Orm\Entity\UserInterface;
 
 /**
  * Executes the render chain for the site template
+ *
+ * Also registers a set of default variables for rendering
  */
 final class GameTalRenderer implements GameTalRendererInterface
 {
@@ -41,6 +43,13 @@ final class GameTalRenderer implements GameTalRendererInterface
         $talPage->setVar('WIKI', $this->config->get('wiki.base_url'));
         $talPage->setVar('FORUM', $this->config->get('board.base_url'));
         $talPage->setVar('CHAT', $this->config->get('discord.url'));
+        $talPage->setVar(
+            'ASSET_PATHS',
+            [
+                'alliance' => $this->config->get('game.alliance_avatar_path'),
+                'user' => $this->config->get('game.user_avatar_path'),
+            ]
+        );
 
         // render fragments are user related, so render them only if a user is available
         if ($user !== null) {

@@ -25,8 +25,8 @@
           <metal:macro tal:repeat="USER data/getMembers" metal:use-macro="html/macros.xhtml/useravatar" />
         </div>
         <div class="allianceListItemBanner">
-          <a tal:condition="data/hasAvatar" href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}">
-            <img tal:attributes="src data/getAvatarPath" title="Zur Allianz" />
+          <a tal:condition="data/hasAvatar" href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}" title="Zur Allianz">
+            <metal:macro metal:use-macro="alliancemacros.xhtml/alliance_avatar" tal:define="alliance data" />
           </a>
         </div>
       </div>
@@ -42,8 +42,8 @@
           <metal:macro tal:repeat="USER data/getMembers" metal:use-macro="html/macros.xhtml/useravatar" />
         </div>
         <div class="allianceListItemBanner">
-          <a tal:condition="data/hasAvatar" href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}">
-            <img tal:attributes="src data/getAvatarPath" title="Zur Allianz" />
+          <a tal:condition="data/hasAvatar" href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}" title="Zur Allianz">
+            <metal:macro metal:use-macro="alliancemacros.xhtml/alliance_avatar" tal:define="alliance data" />
           </a>
         </div>
       </div>
