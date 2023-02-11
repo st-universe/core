@@ -585,6 +585,7 @@
         <metal:macro metal:use-macro="shipimage" />
       </a>
     </td>
+    <td><img tal:condition="ship/hasLogBook" src="assets/buttons/info1.png" title="Logbuch verfügbar" /></td>
     <td>
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span tal:content="structure bbcode:ship/getName">.</span></a>
     </td>
@@ -593,11 +594,11 @@
     <td tal:attributes="style ship/getHoldingWebBackgroundStyle" class="nbsshipimage">
       <metal:macro metal:use-macro="shipimage" />
     </td>
+    <td><img tal:condition="ship/hasLogBook" src="assets/buttons/info1.png" title="Logbuch verfügbar" /></td>
     <td>
       <span tal:content="structure bbcode:ship/getName">.</span>
     </td>
   </tal:block>
-  <td><img tal:condition="ship/hasLogBook" src="assets/buttons/info1.png" title="Logbuch verfügbar" /></td>
   <tal:block tal:condition="not:ship/isTrumfield">
     <td style="width: 160px;">
       <span tal:replace="ship/getHull"></span>/<span tal:replace="ship/getMaxHull"></span>
