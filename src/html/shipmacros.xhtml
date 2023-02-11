@@ -424,6 +424,7 @@
   <tr>
     <td class="darkbg" style="font-weight: bold; width: 60px;" colspan="2">Aktionen</td>
     <td class="darkbg"></td>
+    <td class="darkbg"></td>
     <td class="darkbg" style="font-weight: bold;">Name</td>
     <td class="darkbg" style="font-weight: bold;">Zustand</td>
     <td class="darkbg" style="font-weight: bold;">Siedler</td>
@@ -596,6 +597,7 @@
       <span tal:content="structure bbcode:ship/getName">.</span>
     </td>
   </tal:block>
+  <td><img tal:condition="ship/hasLogBook" src="assets/buttons/info1.png" title="Logbuch verfügbar" /></td>
   <tal:block tal:condition="not:ship/isTrumfield">
     <td style="width: 160px;">
       <span tal:replace="ship/getHull"></span>/<span tal:replace="ship/getMaxHull"></span>

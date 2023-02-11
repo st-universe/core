@@ -143,4 +143,9 @@ final class ShipNfsItem
     {
         return $this->values['rumproleid'] === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR ? (int)date("j") : null;
     }
+
+    public function hasLogBook(): bool
+    {
+        return $this->values['hasLogBook'];
+    }
 }
