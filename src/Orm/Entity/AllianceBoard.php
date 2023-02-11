@@ -10,12 +10,12 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\Index;
-use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AllianceBoardRepository")
@@ -52,18 +52,19 @@ class AllianceBoard implements AllianceBoardInterface
     private $name = '';
 
     /**
-     * @var ArrayCollection<int, AllianceBoardTopicInterface>
+     * @var Collection<int, AllianceBoardTopicInterface>
      *
      * @OneToMany(targetEntity="AllianceBoardTopic", mappedBy="board")
      */
-    private $topics;
+    private Collection $topics;
 
     /**
      * @var ArrayCollection<int, AllianceBoardPostInterface>
      *
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="board")
+     * @OrderBy({"date" = "DESC"})
      */
-    private $posts;
+    private Collection $posts;
 
     /**
      * @var AllianceInterface
@@ -109,7 +110,7 @@ class AllianceBoard implements AllianceBoardInterface
     public function getPostCount(): int
     {
         return array_reduce(
-            $this->topics->toArray(),
+            $this->getTopics()->toArray(),
             fn (int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
             0
         );
@@ -117,9 +118,11 @@ class AllianceBoard implements AllianceBoardInterface
 
     public function getLatestPost(): ?AllianceBoardPostInterface
     {
-        global $container;
+        $post = $this->getPosts()->first();
 
-        return $container->get(AllianceBoardPostRepositoryInterface::class)->getRecentByBoard($this->getId());
+        return $post === false
+            ? null
+            : $post;
     }
 
     public function getTopics(): Collection
@@ -137,5 +140,10 @@ class AllianceBoard implements AllianceBoardInterface
         $this->alliance = $alliance;
 
         return $this;
+    }
+
+    public function getPosts(): Collection
+    {
+        return $this->posts;
     }
 }

@@ -28,4 +28,9 @@ interface AllianceBoardInterface
     public function getAlliance(): AllianceInterface;
 
     public function setAlliance(AllianceInterface $alliance): AllianceBoardInterface;
+
+    /**
+     * @return Collection<int, AllianceBoardPostInterface>
+     */
+    public function getPosts(): Collection;
 }

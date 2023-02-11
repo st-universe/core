@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
 use Stu\Module\Alliance\View\Topic\Topic;
@@ -109,8 +110,9 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
      * @var ArrayCollection<int, AllianceBoardPostInterface>
      *
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="topic")
+     * @OrderBy({"date" = "DESC"})
      */
-    private $posts;
+    private Collection $posts;
 
     public function __construct()
     {
@@ -193,7 +195,7 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
 
     public function getPages(): ?array
     {
-        $postCount = count($this->posts);
+        $postCount = count($this->getPosts());
 
         if ($postCount <= Topic::ALLIANCEBOARDLIMITER) {
             return null;
@@ -213,9 +215,11 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
 
     public function getLatestPost(): ?AllianceBoardPostInterface
     {
-        global $container;
+        $post = $this->getPosts()->first();
 
-        return $container->get(AllianceBoardPostRepositoryInterface::class)->getRecentByTopic((int) $this->getId());
+        return $post === false
+            ? null
+            : $post;
     }
 
     public function getBoard(): AllianceBoardInterface

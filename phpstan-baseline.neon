@@ -8881,7 +8881,7 @@ parameters:
 			path: src/Orm/Entity/AllianceBoard.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$topics type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$topics type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceBoard.php
 
