@@ -73,7 +73,7 @@ interface DealsInterface
 
     public function getBuildplanName(): string;
 
-    public function getCrew(): int;
+    public function getCrew(): ?int;
 
     /**
      * @return Collection<int, AuctionBidInterface>
