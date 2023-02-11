@@ -68,7 +68,7 @@ class ProcessTickRunnerTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->run();
+        $this->subject->run(1, 1);
     }
 
     public function testRunRuns(): void
@@ -87,6 +87,6 @@ class ProcessTickRunnerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->subject->run();
+        $this->subject->run(1, 1);
     }
 }

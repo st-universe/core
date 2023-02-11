@@ -54,7 +54,7 @@ final class DoManualColonyTick implements ActionControllerInterface
 
         //check if single or all colonies
         if (!request::getVarByMethod(request::postvars(), 'colonytickid')) {
-            $this->colonyTickManager->work(1);
+            $this->colonyTickManager->work(1, 1, 1);
             $game->addInformation("Der Kolonie-Tick für alle Kolonien wurde durchgeführt!");
         } else {
             $commodityArray = $this->commodityRepository->getAll();

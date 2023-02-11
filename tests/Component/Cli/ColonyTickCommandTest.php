@@ -54,7 +54,7 @@ class ColonyTickCommandTest extends StuTestCase
             ->andReturn($colonyTickRunner);
 
         $colonyTickRunner->shouldReceive('run')
-            ->withNoArgs()
+            ->with(1, 1)
             ->once();
 
         $this->subject->execute();

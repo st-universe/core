@@ -82,7 +82,7 @@ class MaintenanceTickRunnerTest extends StuTestCase
             ->once()
             ->andThrow($error);
 
-        $this->subject->run();
+        $this->subject->run(1, 1);
     }
 
     public function testRunRuns(): void
@@ -108,6 +108,6 @@ class MaintenanceTickRunnerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->subject->run();
+        $this->subject->run(1, 1);
     }
 }

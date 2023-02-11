@@ -54,7 +54,7 @@ class MaintenanceTickCommandTest extends StuTestCase
             ->andReturn($tickRunner);
 
         $tickRunner->shouldReceive('run')
-            ->withNoArgs()
+            ->with(1, 1)
             ->once();
 
         $this->subject->execute();

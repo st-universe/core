@@ -50,18 +50,18 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->crewCountRetriever = $crewCountRetriever;
     }
 
-    public function work(int $tickId): void
+    public function work(int $tickId, int $batchGroup, int $batchGroupCount): void
     {
         $this->setLock($tickId);
-        $this->colonyLoop($tickId);
+        $this->colonyLoop($tickId, $batchGroup, $batchGroupCount);
         $this->proceedCrewTraining($tickId);
         $this->clearLock($tickId);
     }
 
-    private function colonyLoop(int $tickId): void
+    private function colonyLoop(int $tickId, int $batchGroup, int $batchGroupCount): void
     {
         $commodityArray = $this->commodityRepository->getAll();
-        $colonyList = $this->colonyRepository->getByTick($tickId);
+        $colonyList = $this->colonyRepository->getByTick($tickId, $batchGroup, $batchGroupCount);
 
         foreach ($colonyList as $colony) {
             //echo "Processing Colony ".$colony->getId()." at ".microtime()."\n";

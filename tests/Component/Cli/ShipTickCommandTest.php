@@ -54,7 +54,7 @@ class ShipTickCommandTest extends StuTestCase
             ->andReturn($shipTickRunner);
 
         $shipTickRunner->shouldReceive('run')
-            ->withNoArgs()
+            ->with(1, 1)
             ->once();
 
         $this->subject->execute();
