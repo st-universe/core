@@ -174,7 +174,5 @@ interface UserInterface
 
     public function isNpc(): bool;
 
-    public function isAdmin(): bool;
-
     public function getUserLock(): ?UserLockInterface;
 }

@@ -46,7 +46,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
 
         // only Admins can trigger this
-        if (!$game->getUser()->isAdmin()) {
+        if (!$game->isAdmin()) {
             $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }

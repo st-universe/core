@@ -109,6 +109,8 @@ interface GameControllerInterface
         bool $admin_check = false
     ): void;
 
+    public function isAdmin(): bool;
+
     public function isSemaphoreAlreadyAcquired(int $key): bool;
 
     public function addSemaphore(int $key, $semaphore): void;

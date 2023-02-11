@@ -4,6 +4,7 @@ namespace Stu\Module\Control;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
@@ -454,7 +455,7 @@ final class GameController implements GameControllerInterface
     {
         $this->session->createSession(true);
 
-        if (!$this->getUser()->isAdmin()) {
+        if (!$this->isAdmin()) {
             header('Location: /');
         }
     }
@@ -479,10 +480,11 @@ final class GameController implements GameControllerInterface
                 $this->session->checkLoginCookie();
             }
 
-            if ($admin_check === true) {
-                if (!$this->getUser()->isAdmin()) {
-                    header('Location: /');
-                }
+            if (
+                $admin_check === true
+                && $this->isAdmin() === false
+            ) {
+                header('Location: /');
             }
 
             $this->checkUserAndGameState($gameRequest);
@@ -624,7 +626,7 @@ final class GameController implements GameControllerInterface
                 throw new TickGameStateException();
             }
 
-            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->getUser()->isAdmin()) {
+            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE && !$this->isAdmin()) {
                 throw new MaintenanceGameStateException();
             }
 
@@ -632,6 +634,19 @@ final class GameController implements GameControllerInterface
                 throw new RelocationGameStateException();
             }
         }
+    }
+
+    public function isAdmin(): bool
+    {
+        if ($this->hasUser() === false) {
+            return false;
+        }
+
+        return in_array(
+            $this->getUser()->getId(),
+            array_map('intval', $this->config->get('game.admins')),
+            true
+        );
     }
 
     private function logSanityChecks(int $gameRequestId): void

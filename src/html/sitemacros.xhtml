@@ -514,7 +514,7 @@
     tal:define="title string:Ereignisse; url string:history.php; icon_url string:history" />
   <metal:macro metal:use-macro="navigation_item"
     tal:define="title string:Karte; url string:starmap.php; icon_url string:map" />
-  <tal:block tal:condition="THIS/getUser/isAdmin">
+  <tal:block tal:condition="THIS/isAdmin">
     <metal:macro metal:use-macro="navigation_item"
       tal:define="title string:Admin; url string:/admin; icon_url string:ticks" />
   </tal:block>

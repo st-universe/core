@@ -36,7 +36,7 @@ final class DoManualMaintenance implements ActionControllerInterface
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
 
         // only Admins can trigger ticks
-        if (!$game->getUser()->isAdmin()) {
+        if (!$game->isAdmin()) {
             $game->addInformation('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]');
             return;
         }

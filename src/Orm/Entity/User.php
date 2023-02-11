@@ -816,13 +816,6 @@ class User implements UserInterface
         return $this->getId() < UserEnum::USER_FIRST_ID;
     }
 
-    public function isAdmin(): bool
-    {
-        // @todo refactor
-        global $container;
-        return in_array($this->getId(),  $container->get(ConfigInterface::class)->get('game.admins'));
-    }
-
     public function getUserLock(): ?UserLockInterface
     {
         return $this->userLock;
@@ -830,6 +823,6 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return sprintf('userName: %s', $this->getName());
+        return sprintf('userName: %s', $this->getUserName());
     }
 }

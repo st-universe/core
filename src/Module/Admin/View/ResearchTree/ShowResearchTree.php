@@ -31,7 +31,7 @@ final class ShowResearchTree implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         // only Admins can show it
-        if (!$game->getUser()->isAdmin()) {
+        if (!$game->isAdmin()) {
             $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }

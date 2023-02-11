@@ -16,7 +16,12 @@ $isAdminUser = false;
 if (session_id() !== '') {
     $user = $container->get(SessionInterface::class)->getUser();
 
-    $isAdminUser = $user !== null && $user->isAdmin() === true;
+    $isAdminUser = $user !== null
+        && in_array(
+            $user->getId(),
+            array_map('intval', $config->get('game.admins')),
+            true
+        );
 }
 
 $whoops = new Run();
