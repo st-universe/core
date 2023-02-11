@@ -366,9 +366,13 @@ class Deals implements DealsInterface
         return $rumpid;
     }
 
-    public function getCrew(): ?int
+    public function getCrew(): int
     {
-        $crew = $this->getBuildplan()->getCrew();
+        if ($this->getBuildplan() == null) {
+            $crew = 0;
+        } else {
+            $crew = $this->getBuildplan()->getCrew();
+        }
         return $crew;
     }
 
