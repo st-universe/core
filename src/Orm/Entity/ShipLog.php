@@ -59,7 +59,7 @@ class ShipLog implements ShipLogInterface
      *
      * @var null|bool
      */
-    private $private = false;
+    private $is_private = false;
 
     /**
      * @Column(type="integer", nullable=true)
