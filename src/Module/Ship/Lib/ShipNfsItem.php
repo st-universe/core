@@ -146,6 +146,6 @@ final class ShipNfsItem
 
     public function hasLogBook(): bool
     {
-        return $this->values['hasLogBook'];
+        return $this->values['haslogbook'];
     }
 }

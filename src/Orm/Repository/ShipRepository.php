@@ -809,7 +809,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('rumpcategoryid', 'rumpcategoryid', 'integer');
         $rsm->addScalarResult('rumpname', 'rumpname', 'string');
         $rsm->addScalarResult('rumproleid', 'rumproleid', 'integer');
-        $rsm->addScalarResult('hasLogBook', 'hasLogBook', 'boolean');
+        $rsm->addScalarResult('haslogbook', 'haslogbook', 'boolean');
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
@@ -818,7 +818,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed,
                     s.type as spacecrafttype, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as hasLogBook
+                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as haslogbook
                 FROM stu_ships s
                 LEFT JOIN stu_ship_system ss
                 ON s.id = ss.ship_id
@@ -889,7 +889,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('rumpcategoryid', 'rumpcategoryid', 'integer');
         $rsm->addScalarResult('rumpname', 'rumpname', 'string');
         $rsm->addScalarResult('rumproleid', 'rumproleid', 'integer');
-        $rsm->addScalarResult('hasLogBook', 'hasLogBook', 'boolean');
+        $rsm->addScalarResult('haslogbook', 'haslogbook', 'boolean');
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
@@ -897,7 +897,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed, s.type as spacecrafttype, s.name as shipname,
                     s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,
-                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as hasLogBook
+                    (SELECT count(*) > 0 FROM stu_ship_log sl WHERE sl.ship_id = s.id AND sl.is_private = false) as haslogbook
                 FROM stu_ships s
                 LEFT JOIN stu_ship_system ss
                 ON s.id = ss.ship_id
