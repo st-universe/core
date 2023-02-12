@@ -130,6 +130,22 @@ final class ShowWriteQuickPm implements ViewControllerInterface
                 break;
         }
 
+        switch ($recipient->getRpgBehavior()) {
+            case 0:
+                $rpgtext = 'Der Spieler hat seine Rollenspieleinstellung nicht gesetzt';
+                break;
+            case 1:
+                $rpgtext = 'Der Spieler betreibt gerne Rollenspiel';
+                break;
+            case 2:
+                $rpgtext = 'Der Spieler betreibt gelegentlich Rollenspiel';
+                break;
+            case 3:
+                $rpgtext = 'Der Spieler betreibt ungern Rollenspiel';
+                break;
+        }
+
+        $game->setTemplateVar('RPGTEXT', $rpgtext);
         $game->setTemplateVar('RECIPIENT', $recipient);
         $game->setTemplateVar(
             'TEMPLATETEXT',

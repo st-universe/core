@@ -254,7 +254,8 @@
   <form id="quickpm" tal:condition="exists: RECIPIENT">
     <table class="tcal" id="quickpm_compose">
       <tr>
-        <td><span>Empfänger:</span> <span tal:replace="structure bbcode:RECIPIENT/getName"></span></td>
+        <td><span>Empfänger:</span> <span tal:replace="structure bbcode:RECIPIENT/getName"></span> <img
+            src="/assets/buttons/alert${RECIPIENT/getRpgBehavior}.png" name="${RPGTEXT}" /></td>
       </tr>
       <tr>
         <th>Text</th>
