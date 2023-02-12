@@ -145,7 +145,9 @@ final class ShowWriteQuickPm implements ViewControllerInterface
                     $rpgtext = 'Der Spieler betreibt ungern Rollenspiel';
                     break;
             }
+        }
 
+        if ($rpgtext !== null) {
             $game->setTemplateVar('RPGTEXT', $rpgtext);
         }
 

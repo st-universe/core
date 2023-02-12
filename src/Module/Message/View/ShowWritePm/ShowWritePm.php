@@ -70,10 +70,11 @@ final class ShowWritePm implements ViewControllerInterface
                     $rpgtext = 'Der Spieler betreibt ungern Rollenspiel';
                     break;
             }
-            $game->setTemplateVar('RPGTEXT', $rpgtext);
         }
 
-
+        if ($rpgtext !== null) {
+            $game->setTemplateVar('RPGTEXT', $rpgtext);
+        }
         $game->setTemplateFile('html/writepm.xhtml');
         $game->setPageTitle('Neue private Nachricht');
         $game->appendNavigationPart(
