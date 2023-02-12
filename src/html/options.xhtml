@@ -207,6 +207,21 @@
                                         </td>
                                 </tr>
                                 <tr>
+                                        <td>
+                                                <select name="rpgbehavior">
+                                                        <option value="0">----------------------</option>
+                                                        <tal:block tal:repeat="value RPG_BEHAVIOR_VALUES">
+                                                                <option tal:content="value/title"
+                                                                        tal:attributes="value value/rpg; selected php:RPGBEHAVIOR==value['rpg']">
+                                                                        RPGBEHAVIOR</option>
+                                                        </tal:block>
+                                                </select>
+                                        </td>
+                                        <td>
+                                                Information für andere Spieler ob man selbst gern Rollenspiel betreibt.
+                                        </td>
+                                </tr>
+                                <tr>
                                         <td colspan="4">
                                                 <input type="submit" class="button" value="Einstellungen ändern"
                                                         name="B_CHANGE_SETTINGS" />

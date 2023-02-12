@@ -44,4 +44,9 @@ final class ChangeSettingsRequest implements ChangeSettingsRequestInterface
     {
         return $this->queryParameter('startpage')->string()->defaultsTo('');
     }
+
+    public function getRpgBehavior(): int
+    {
+        return $this->queryParameter('rpgbehavior')->int()->defaultsTo(0);
+    }
 }

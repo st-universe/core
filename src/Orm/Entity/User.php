@@ -256,6 +256,13 @@ class User implements UserInterface
     private $start_page;
 
     /**
+     * @Column(type="integer") *
+     *
+     * @var int
+     */
+    private $rpg_behavior = 0;
+
+    /**
      * @var null|AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
@@ -678,6 +685,17 @@ class User implements UserInterface
     public function setStartPage(string $startPage): UserInterface
     {
         $this->start_page = $startPage;
+        return $this;
+    }
+
+    public function getRpgBehavior(): int
+    {
+        return $this->rpg_behavior;
+    }
+
+    public function setRpgBehavior(int $RPGbehavior): UserInterface
+    {
+        $this->rpg_behavior = $RPGbehavior;
         return $this;
     }
 
