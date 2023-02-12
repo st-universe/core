@@ -55,19 +55,22 @@ final class ShowWritePm implements ViewControllerInterface
             );
         }
 
-        switch ($reply->getSender()->getRpgBehavior()) {
-            case 0:
-                $rpgtext = 'Der Spieler hat seine Rollenspieleinstellung nicht gesetzt';
-                break;
-            case 1:
-                $rpgtext = 'Der Spieler betreibt gerne Rollenspiel';
-                break;
-            case 2:
-                $rpgtext = 'Der Spieler betreibt gelegentlich Rollenspiel';
-                break;
-            case 3:
-                $rpgtext = 'Der Spieler betreibt ungern Rollenspiel';
-                break;
+        if ($reply !== null) {
+            switch ($reply->getSender()->getRpgBehavior()) {
+                case 0:
+                    $rpgtext = 'Der Spieler hat seine Rollenspieleinstellung nicht gesetzt';
+                    break;
+                case 1:
+                    $rpgtext = 'Der Spieler betreibt gerne Rollenspiel';
+                    break;
+                case 2:
+                    $rpgtext = 'Der Spieler betreibt gelegentlich Rollenspiel';
+                    break;
+                case 3:
+                    $rpgtext = 'Der Spieler betreibt ungern Rollenspiel';
+                    break;
+            }
+            $game->setTemplateVar('RPGTEXT', $rpgtext);
         }
 
 
@@ -82,7 +85,6 @@ final class ShowWritePm implements ViewControllerInterface
             $recipientId === 0 ? '' : $recipientId
         );
         $game->setTemplateVar('REPLY', $reply);
-        $game->setTemplateVar('RPGTEXT', $rpgtext);
         $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($userId));
         $game->setTemplateVar('CORRESPONDENCE', $correspondence);
         $game->setTemplateVar('PM_CATEGORIES', $this->privateMessageFolderRepository->getOrderedByUser($userId));
