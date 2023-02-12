@@ -15,7 +15,6 @@ final class UserRpgEnum
     public const RPG_BEHAVIOR_NONE = 3;
 
     public const RPG_BEHAVIOR = [
-        self::RPG_BEHAVIOR_NOT_SET => ['rpg' => self::RPG_BEHAVIOR_NOT_SET, 'title' => 'Nicht gesetzt'],
         self::RPG_BEHAVIOR_ACTIVE => ['rpg' => self::RPG_BEHAVIOR_ACTIVE, 'title' => 'Aktiver Rollenspieler'],
         self::RPG_BEHAVIOR_OPEN => ['rpg' => self::RPG_BEHAVIOR_OPEN, 'title' => 'Offen für Rollenspiel'],
         self::RPG_BEHAVIOR_NONE => ['rpg' => self::RPG_BEHAVIOR_NONE, 'title' => 'Kein Rollenspieler'],
