@@ -26,7 +26,8 @@
 							<input type="hidden" name="recipient" value="runtime"
 								tal:attributes="value REPLY/getSender/getId" />
 							<span tal:replace="structure bbcode:REPLY/getSender/getName">NAME</span> (<span
-								tal:replace="REPLY/getSender/getId">ID</span>)
+								tal:replace="REPLY/getSender/getId">ID</span>) <img
+								src="/assets/buttons/alert${REPLY/getSender/getRpgBehavior}.png" title="${RPGTEXT}" />
 						</td>
 					</tr>
 					<tr>
