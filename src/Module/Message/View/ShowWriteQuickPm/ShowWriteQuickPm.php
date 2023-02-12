@@ -57,6 +57,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
         $toId =  request::getIntFatal('toid');
         $fromType = request::getIntFatal('fromtype');
         $toType = request::getIntFatal('totype');
+        $rpgtext = '';
 
         $setTemplateText = true;
 
@@ -147,9 +148,8 @@ final class ShowWriteQuickPm implements ViewControllerInterface
             }
         }
 
-        if ($rpgtext !== null) {
-            $game->setTemplateVar('RPGTEXT', $rpgtext);
-        }
+        $game->setTemplateVar('RPGTEXT', $rpgtext);
+
 
         $game->setTemplateVar('RECIPIENT', $recipient);
         $game->setTemplateVar(

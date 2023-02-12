@@ -39,6 +39,7 @@ final class ShowWritePm implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
         $recipientId = $this->showWritePmRequest->getRecipientId();
+        $rpgtext = '';
 
         $pm = $this->privateMessageRepository->find($this->showWritePmRequest->getReplyPmId());
         if ($pm === null || $pm->getRecipientId() != $userId) {
@@ -72,9 +73,9 @@ final class ShowWritePm implements ViewControllerInterface
             }
         }
 
-        if ($rpgtext !== null) {
-            $game->setTemplateVar('RPGTEXT', $rpgtext);
-        }
+
+        $game->setTemplateVar('RPGTEXT', $rpgtext);
+
         $game->setTemplateFile('html/writepm.xhtml');
         $game->setPageTitle('Neue private Nachricht');
         $game->appendNavigationPart(
