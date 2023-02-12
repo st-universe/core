@@ -8398,12 +8398,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "d9857038ae311334e45b524ac92b681d647491e4"
+                "reference": "2fcdf6318f7a4419077db3c0a9573a5154693c8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/d9857038ae311334e45b524ac92b681d647491e4",
-                "reference": "d9857038ae311334e45b524ac92b681d647491e4",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/2fcdf6318f7a4419077db3c0a9573a5154693c8f",
+                "reference": "2fcdf6318f7a4419077db3c0a9573a5154693c8f",
                 "shasum": ""
             },
             "require": {
@@ -8421,7 +8421,7 @@
                 "source": "https://github.com/st-universe/assets/tree/master",
                 "issues": "https://github.com/st-universe/assets/issues"
             },
-            "time": "2023-02-01T07:54:08+00:00"
+            "time": "2023-02-12T12:51:28+00:00"
         },
         {
             "name": "symfony/finder",
