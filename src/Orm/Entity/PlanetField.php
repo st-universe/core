@@ -320,19 +320,6 @@ class PlanetField implements PlanetFieldInterface
 
     public function clearBuilding(): void
     {
-        // @todo refactor
-        global $container;
-
-        $buildingFunctionActionMapper = $container->get(BuildingFunctionActionMapperInterface::class);
-
-        foreach ($this->getBuilding()->getFunctions() as $function) {
-            $buildingFunctionId = $function->getFunction();
-
-            $handler = $buildingFunctionActionMapper->map($buildingFunctionId);
-            if ($handler !== null) {
-                $handler->destruct((int) $this->getColonyId(), $buildingFunctionId);
-            }
-        }
         $this->setBuilding(null);
         $this->setIntegrity(0);
         $this->setActive(0);

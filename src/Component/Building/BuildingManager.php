@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -21,13 +22,17 @@ final class BuildingManager implements BuildingManagerInterface
 
     private BuildingPostActionInterface $buildingPostAction;
 
+    private BuildingFunctionActionMapperInterface $buildingFunctionActionMapper;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyRepositoryInterface $colonyRepository,
+        BuildingFunctionActionMapperInterface $buildingFunctionActionMapper,
         BuildingPostActionInterface $buildingPostAction
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->buildingFunctionActionMapper = $buildingFunctionActionMapper;
         $this->buildingPostAction = $buildingPostAction;
     }
 
@@ -120,12 +125,22 @@ final class BuildingManager implements BuildingManagerInterface
         }
 
         $colony = $field->getColony();
+        $colonyId = $colony->getId();
 
         if (!$field->isUnderConstruction()) {
             $this->deactivate($field);
             $colony
                 ->setMaxStorage($colony->getMaxStorage() - $building->getStorage())
                 ->setMaxEps($colony->getMaxEps() - $building->getEpsStorage());
+        }
+
+        foreach ($building->getFunctions() as $function) {
+            $buildingFunctionId = $function->getFunction();
+
+            $handler = $this->buildingFunctionActionMapper->map($buildingFunctionId);
+            if ($handler !== null) {
+                $handler->destruct($colonyId, $buildingFunctionId);
+            }
         }
 
         $field->clearBuilding();
