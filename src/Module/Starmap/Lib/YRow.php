@@ -21,7 +21,7 @@ class YRow
 
     protected int $systemId;
 
-    /** @var null|array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExploreableStarMapInterface|null> */
+    /** @var null|array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExplorableStarMapItemInterface|null> */
     protected $fields = null;
 
     private MapRepositoryInterface $mapRepository;
@@ -47,9 +47,9 @@ class YRow
     }
 
     /**
-     * @return array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExploreableStarMapInterface|null>
+     * @return array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExplorableStarMapItemInterface|null>
      */
-    function getFields()
+    public function getFields(): iterable
     {
         if ($this->fields === null) {
             $this->fields = [];
@@ -65,7 +65,7 @@ class YRow
     }
 
     /**
-     * @return array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExploreableStarMapInterface|null>
+     * @return array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExplorableStarMapItemInterface|null>
      */
     function getSystemFields()
     {

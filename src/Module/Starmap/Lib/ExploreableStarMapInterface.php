@@ -2,6 +2,9 @@
 
 namespace Stu\Module\Starmap\Lib;
 
+use Stu\Orm\Entity\MapBorderTypeInterface;
+use Stu\Orm\Entity\MapRegionInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\TradePostInterface;
 
 interface ExploreableStarMapInterface
@@ -18,13 +21,15 @@ interface ExploreableStarMapInterface
 
     public function getUserId(): ?int;
 
-    public function getTitle(): ?string;
+    public function getMapped(): ?int;
 
-    public function getIcon(): ?string;
+    public function getSystemName(): ?string;
 
-    public function getHref(): ?string;
+    public function getTradePostId(): ?int;
 
-    public function setHide(bool $hide): ExploreableStarMapInterface;
+    public function getMapBorderType(): ?MapBorderTypeInterface;
 
-    public function getFieldStyle(): string;
+    public function getAdminRegion(): ?MapRegionInterface;
+
+    public function getInfluenceArea(): ?StarSystemInterface;
 }

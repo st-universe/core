@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\Lib;
 
+use JBBCode\Parser;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 /**
  * Creates ui and starmap related items
@@ -17,13 +19,20 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
 
     private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
+    private TradePostRepositoryInterface $tradePostRepository;
+
+    private Parser $parser;
+
     public function __construct(
         MapRepositoryInterface $mapRepository,
+        TradePostRepositoryInterface $tradePostRepository,
+        Parser $parser,
         StarSystemMapRepositoryInterface $starSystemMapRepository
-    )
-    {
+    ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->tradePostRepository = $tradePostRepository;
+        $this->parser = $parser;
     }
 
     public function createMapSectionHelper(): MapSectionHelper
@@ -60,6 +69,7 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
         int $systemId = 0
     ): UserYRow {
         return new UserYRow(
+            $this,
             $this->mapRepository,
             $this->starSystemMapRepository,
             $user,
@@ -68,6 +78,16 @@ final class StarmapUiFactory implements StarmapUiFactoryInterface
             $minx,
             $maxx,
             $systemId
+        );
+    }
+
+    public function createExplorableStarmapItem(
+        ExploreableStarMapInterface $exploreableStarMap
+    ): ExplorableStarMapItem {
+        return new ExplorableStarMapItem(
+            $this->tradePostRepository,
+            $this->parser,
+            $exploreableStarMap
         );
     }
 }

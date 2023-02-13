@@ -7791,11 +7791,6 @@ parameters:
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$tradepost has no type specified\\.$#"
-			count: 1
-			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$tradepost_id is never written, only read\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
