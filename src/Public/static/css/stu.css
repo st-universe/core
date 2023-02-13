@@ -1764,7 +1764,9 @@ div.userProfileView {
 }
 
 div.recentProfileVisitors div.userAvatar,
+div.user_box_avatar div.userAvatar,
 div.randomOnlineUsers div.userAvatar,
+div.maindeskNewsItemAvatar div.userAvatar,
 div.boardUserAvatar div.userAvatar {
   background: transparent;
   border: 0;
