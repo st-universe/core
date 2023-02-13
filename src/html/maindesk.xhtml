@@ -36,10 +36,7 @@
 							<tal:block tal:condition="posts" tal:repeat="data posts">
 								<tr>
 									<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
-										<a href="userprofile.php?uid=${data/getUser/getId}">
-											<img src="runtime" style="width: 50px; height: 50px;"
-												tal:attributes="src data/getUser/getFullAvatarPath" />
-										</a>
+										<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data/getUser" />
 									</td>
 									<td>
 										<tal:block tal:condition="data/getPlot">
@@ -80,10 +77,7 @@
 									<tal:block tal:define="RECENT_POST data/getLatestPost">
 										<tr>
 											<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
-												<a href="userprofile.php?uid=${RECENT_POST/getUser/getId}">
-													<img src="runtime" style="width: 50px; height: 50px;"
-														tal:attributes="src RECENT_POST/getUser/getFullAvatarPath" />
-												</a>
+												<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER RECENT_POST/getUser" />
 											</td>
 											<td>
 												<span>Thema:</span>
@@ -194,12 +188,9 @@
 									tal:condition="not:RECENT_PROFILE_VISITORS">
 									Keine Besucher
 								</div>
-								<a style="padding: 5px;" href="userprofile.php?uid=${data/getUser/getId}"
-									tal:repeat="data RECENT_PROFILE_VISITORS">
-									<img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55"
-										height="55"
-										tal:attributes="src data/getUser/getFullAvatarPath;title bbcode2txt:data/getUser/getName" />
-								</a>
+								<tal:block tal:repeat="data RECENT_PROFILE_VISITORS">
+									<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data/getUser" />
+								</tal:block>
 							</div>
 						</div>
 						<br />
@@ -210,8 +201,9 @@
 									Kein Spieler online
 								</div>
 								<div tal:condition="RANDOM_ONLINE_USER">
-									<metal:macro metal:use-macro="html/macros.xhtml/userlist_pictures"
-										tal:define="userlist RANDOM_ONLINE_USER" />
+									<tal:block tal:repeat="USER RANDOM_ONLINE_USER">
+										<metal:macro metal:use-macro="macros.xhtml/useravatar" />
+									</tal:block>
 								</div>
 							</div>
 						</div>

@@ -1245,18 +1245,6 @@ div.allianceListItem div.allianceListItemMembers {
   width: 100%;
 }
 
-div.userAvatar {
-  display: inline-block;
-  background-color: #000000;
-  width: 48px;
-  padding: 3px;
-  border: 1px solid #262323;
-}
-
-div.userAvatar img {
-  width: 40px;
-}
-
 div.userBoxDetailName {
   width: 220px;
   overflow: hidden;
@@ -1751,6 +1739,36 @@ div.shipTerritoryView {
 
 div.shipTerritoryView img {
   height: 20px;
+}
+
+div.userProfileView {
+  width: 180px;
+  float: left;
+  text-align: center;
+}
+
+div.userProfileView div.userAvatar,
+div.optionsView div.userAvatar {
+  width: 150px;
+  height: 150px;
+  border: 0;
+}
+
+div.userProfileView div.userAvatar img,
+div.optionsView div.userAvatar img {
+  width: 130px;
+  height: 130px;
+}
+
+div.userAvatar {
+  display: inline-block;
+  background-color: #000000;
+  padding: 3px;
+  border: 1px solid #262323;
+}
+
+div.userAvatar img {
+  width: 48px;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {

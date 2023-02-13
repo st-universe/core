@@ -78,6 +78,7 @@ class GameTalRendererTest extends StuTestCase
                 [
                     'alliance' => $configValueAllianceAvatarPath,
                     'user' => $configValueUserAvatarPath,
+                    'faction' => '/assets/rassen/',
                 ]
             )
             ->once();
