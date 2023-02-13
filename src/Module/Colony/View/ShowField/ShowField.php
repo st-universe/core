@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowField;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
+use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 final class ShowField implements ViewControllerInterface
 {
@@ -33,6 +35,10 @@ final class ShowField implements ViewControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private TerraformingRepositoryInterface $terraformingRepository;
+
+    private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
@@ -40,6 +46,8 @@ final class ShowField implements ViewControllerInterface
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         PlanetFieldRepositoryInterface $planetFieldRepository,
+        TerraformingRepositoryInterface $terraformingRepository,
+        BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -49,6 +57,8 @@ final class ShowField implements ViewControllerInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->terraformingRepository = $terraformingRepository;
+        $this->buildingUpgradeRepository = $buildingUpgradeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -69,22 +79,36 @@ final class ShowField implements ViewControllerInterface
             return;
         }
 
+        $terraformingOptions = $this->terraformingRepository->getBySourceFieldTypeAndUser(
+            $field->getFieldType(),
+            $userId
+        );
+
         $shipRepairProgress = array_map(
-            function (ColonyShipRepairInterface $repair): ShipWrapperInterface {
-                return $this->shipWrapperFactory->wrapShip($repair->getShip());
-            },
+            fn (ColonyShipRepairInterface $repair): ShipWrapperInterface => $this->shipWrapperFactory->wrapShip($repair->getShip()),
             $this->colonyShipRepairRepository->getByColonyField(
                 $colony->getId(),
                 $field->getFieldId()
             )
         );
 
+        if (
+            !$field->isUnderConstruction()
+            && $field->getBuilding() !== null
+        ) {
+            $upgradeOptions = $this
+                ->buildingUpgradeRepository
+                ->getByBuilding((int) $field->getBuildingId(), $userId);
+        } else {
+            $upgradeOptions = [];
+        }
+
         $game->setPageTitle(sprintf('Feld %d - Informationen', $field->getFieldId()));
         $game->setMacroInAjaxWindow('html/colonymacros.xhtml/fieldaction');
 
         $game->setTemplateVar('FIELD', $field);
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColony((int) $colony->getId()));
+        $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColony($colony->getId()));
         $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);
         if ($field->hasBuilding()) {
             $game->setTemplateVar(
@@ -93,5 +117,23 @@ final class ShowField implements ViewControllerInterface
             );
         }
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar(
+            'HAS_UPGRADE_OR_TERRAFORMING_OPTION',
+            (
+                !$field->isUnderConstruction()
+                && $upgradeOptions !== []
+            ) || (
+                $terraformingOptions !== []
+                && !$field->hasBuilding()
+            )
+        );
+        $game->setTemplateVar(
+            'TERRAFORMING_OPTIONS',
+            $terraformingOptions
+        );
+        $game->setTemplateVar(
+            'UPGRADE_OPTIONS',
+            $upgradeOptions
+        );
     }
 }

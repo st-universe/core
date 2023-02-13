@@ -8,19 +8,14 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Colony\ColonyFieldTypeCategoryEnum;
-use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
-use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
-use Stu\Orm\Repository\TerraformingRepositoryInterface;
-use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldRepository")
@@ -129,12 +124,6 @@ class PlanetField implements PlanetFieldInterface
 
     /** @var null|ColonyTerraformingInterface */
     private $terraformingState;
-
-    /** @var null|iterable<TerraformingInterface> */
-    private $terraformingopts;
-
-    /** @var null|iterable<BuildingUpgradeInterface> */
-    private $upgrades;
 
     public function getId(): int
     {
@@ -373,22 +362,6 @@ class PlanetField implements PlanetFieldInterface
         return $this->terraformingState;
     }
 
-    public function getTerraformingOptions(): array
-    {
-        if ($this->terraformingopts === null) {
-            // @todo refactor
-            global $container;
-
-            $userId = $container->get(GameControllerInterface::class)->getUser()->getId();
-
-            $this->terraformingopts = $container->get(TerraformingRepositoryInterface::class)->getBySourceFieldTypeAndUser(
-                (int) $this->getFieldType(),
-                (int) $userId
-            );
-        }
-        return $this->terraformingopts;
-    }
-
     public function getTitleString(): string
     {
         if (!$this->hasBuilding()) {
@@ -445,29 +418,9 @@ class PlanetField implements PlanetFieldInterface
         return $this->getBuildingId() . "/" . $this->getBuilding()->getBuildingType() . $this->getBuildingState();
     }
 
-    public function getPossibleUpgrades(): array
-    {
-        if ($this->isUnderConstruction() || $this->getBuilding() === null) {
-            return [];
-        }
-        if ($this->upgrades === null) {
-            // @todo refactor
-            global $container;
-            $this->upgrades = $container
-                ->get(BuildingUpgradeRepositoryInterface::class)
-                ->getByBuilding((int) $this->getBuildingId(), (int) $this->getColony()->getUserId());
-        }
-        return $this->upgrades;
-    }
-
     public function isColonizeAble(): bool
     {
         return in_array($this->getFieldType(), $this->getColony()->getColonyClass()->getColonizeableFields());
-    }
-
-    public function hasUpgradeOrTerraformingOption(): bool
-    {
-        return (!$this->isUnderConstruction() && count($this->getPossibleUpgrades()) > 0) || (count($this->getTerraformingOptions()) > 0 && !$this->hasBuilding());
     }
 
     /**

@@ -1634,9 +1634,9 @@
           <br />
         </div>
       </td>
-      <td rowspan="2" tal:condition="FIELD/hasUpgradeOrTerraformingOption" style="width: 200px; vertical-align: top;">
-        <div tal:condition="FIELD/getPossibleUpgrades">
-          <div tal:repeat="data FIELD/getPossibleUpgrades">
+      <td rowspan="2" tal:condition="HAS_UPGRADE_OR_TERRAFORMING_OPTION" style="width: 200px; vertical-align: top;">
+        <div tal:condition="UPGRADE_OPTIONS">
+          <div tal:repeat="data UPGRADE_OPTIONS">
             <table class="tcal">
               <tr>
                 <th tal:content="data/getDescription" colspan="4">DESCRIPTION</th>
@@ -1697,8 +1697,8 @@
             </table>
           </tal:block>
           <tal:block tal:condition="not:FIELD/getTerraforming">
-            <div tal:condition="FIELD/getTerraformingOptions">
-              <table class="use" style="width: 250px;" tal:repeat="data FIELD/getTerraformingOptions">
+            <div tal:condition="TERRAFORMING_OPTIONS">
+              <table class="use" style="width: 250px;" tal:repeat="data TERRAFORMING_OPTIONS">
                 <tr>
                   <th colspan="4" tal:content="data/getDescription">DESCRIPTION</th>
                 </tr>

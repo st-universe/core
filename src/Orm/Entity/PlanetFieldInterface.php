@@ -72,11 +72,6 @@ interface PlanetFieldInterface
 
     public function getTerraformingState(): ?ColonyTerraformingInterface;
 
-    /**
-     * @return array<TerraformingInterface>
-     */
-    public function getTerraformingOptions(): array;
-
     public function getTitleString(): string;
 
     public function getBuildProgress(): int;
@@ -85,14 +80,7 @@ interface PlanetFieldInterface
 
     public function getPictureType(): string;
 
-    /**
-     * @return array<BuildingUpgradeInterface>
-     */
-    public function getPossibleUpgrades(): array;
-
     public function isColonizeAble(): bool;
-
-    public function hasUpgradeOrTerraformingOption(): bool;
 
     public function getConstructionStatusBar(): string;
 
