@@ -44,6 +44,9 @@ class LockManagerTest extends StuTestCase
         $this->assertTrue($this->lockManager->isLocked(42, $lockType));
         $this->assertFalse($this->lockManager->isLocked(41, $lockType));
         $this->assertFalse($this->lockManager->isLocked(40, $lockType));
+        $this->assertTrue($this->lockManager->isLocked(39, $lockType));
+        $this->assertFalse($this->lockManager->isLocked(38, $lockType));
+        $this->assertFalse($this->lockManager->isLocked(37, $lockType));
 
         $this->lockManager->clearLock(1, $lockType);
         $this->assertFalse($this->lockManager->isLocked(42, $lockType));
