@@ -1763,6 +1763,13 @@ div.userProfileView {
   text-align: center;
 }
 
+div.recentProfileVisitors div.userAvatar,
+div.randomOnlineUsers div.userAvatar,
+div.boardUserAvatar div.userAvatar {
+  background: transparent;
+  border: 0;
+}
+
 div.userProfileView div.userAvatar,
 div.optionsView div.userAvatar,
 div.boardUserAvatar div.userAvatar {

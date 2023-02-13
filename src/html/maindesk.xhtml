@@ -188,9 +188,11 @@
 									tal:condition="not:RECENT_PROFILE_VISITORS">
 									Keine Besucher
 								</div>
-								<tal:block tal:repeat="data RECENT_PROFILE_VISITORS">
-									<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data/getUser" />
-								</tal:block>
+								<div class="recentProfileVisitors">
+									<tal:block tal:repeat="data RECENT_PROFILE_VISITORS">
+										<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data/getUser" />
+									</tal:block>
+								</div>
 							</div>
 						</div>
 						<br />
@@ -200,7 +202,7 @@
 								<div style="width: 100%; text-align: center;" tal:condition="not:RANDOM_ONLINE_USER">
 									Kein Spieler online
 								</div>
-								<div tal:condition="RANDOM_ONLINE_USER">
+								<div class="randomOnlineUsers" tal:condition="RANDOM_ONLINE_USER">
 									<tal:block tal:repeat="USER RANDOM_ONLINE_USER">
 										<metal:macro metal:use-macro="macros.xhtml/useravatar" />
 									</tal:block>
