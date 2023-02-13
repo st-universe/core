@@ -242,7 +242,7 @@ class User implements UserInterface
     private $rgb_code = '';
 
     /**
-     * @Column(type="integer") *
+     * @Column(type="integer")
      *
      * @var int
      */
@@ -256,7 +256,7 @@ class User implements UserInterface
     private $start_page;
 
     /**
-     * @Column(type="integer") *
+     * @Column(type="integer", options={"default" : 0})
      *
      * @var int
      */
@@ -706,7 +706,6 @@ class User implements UserInterface
     {
         return $this->getUserName();
     }
-
 
     public function getFullAvatarPath(): string
     {
