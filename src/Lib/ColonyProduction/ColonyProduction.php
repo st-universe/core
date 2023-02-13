@@ -10,10 +10,19 @@ class ColonyProduction
     /** @var int */
     private $preview = 0;
 
-    private $data = null;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    function __construct(&$data = array())
-    {
+    /** @var array{gc?: int, pc?: int, commodity_id?: int} */
+    private array $data;
+
+    /**
+     * @param array{gc?: int, pc?: int, commodity_id?: int} $data
+     */
+    public function __construct(
+        CommodityRepositoryInterface $commodityRepository,
+        &$data = []
+    ) {
+        $this->commodityRepository = $commodityRepository;
         $this->data = $data;
 
         if (!empty($data)) {
@@ -110,9 +119,6 @@ class ColonyProduction
 
     public function getCommodity(): CommodityInterface
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(CommodityRepositoryInterface::class)->find((int) $this->getCommodityId());
+        return $this->commodityRepository->find($this->getCommodityId());
     }
 }

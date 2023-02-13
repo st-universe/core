@@ -23,6 +23,7 @@ use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -789,7 +790,7 @@ class Colony implements ColonyInterface
             $this->production = [];
             foreach ($result as $data) {
                 if (($data['gc'] + $data['pc']) != 0) {
-                    $this->production[$data['commodity_id']] = new ColonyProduction($data);
+                    $this->production[(int) $data['commodity_id']] = $container->get(ColonyLibFactoryInterface::class)->createColonyProduction($data);
                 }
             }
         }

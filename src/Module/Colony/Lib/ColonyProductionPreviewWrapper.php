@@ -9,7 +9,10 @@ use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 class ColonyProductionPreviewWrapper
 {
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
+
 
     /** @var array<ColonyProduction> */
     private array $production;
@@ -17,10 +20,12 @@ class ColonyProductionPreviewWrapper
     /**
      * @param array<ColonyProduction> $production
      */
-    function __construct(
+    public function __construct(
+        ColonyLibFactoryInterface $colonyLibFactory,
         BuildingCommodityRepositoryInterface $buildingCommodityRepository,
         array $production
     ) {
+        $this->colonyLibFactory = $colonyLibFactory;
         $this->buildingCommodityRepository = $buildingCommodityRepository;
         $this->production = $production;
     }
@@ -48,7 +53,7 @@ class ColonyProductionPreviewWrapper
                 $ret[$commodityId] = clone $this->production[$commodityId];
                 $ret[$commodityId]->upperProduction($prod->getAmount());
             } else {
-                $obj = new ColonyProduction();
+                $obj = $this->colonyLibFactory->createColonyProduction();
                 $obj->setCommodityId($commodityId);
                 $obj->setProduction($prod->getAmount());
                 $ret[$commodityId] = $obj;

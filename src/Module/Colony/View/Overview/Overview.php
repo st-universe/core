@@ -78,7 +78,7 @@ final class Overview implements ViewControllerInterface
                     $data['pc'] = 0;
                     $data['commodity_id'] = $commodityId;
 
-                    $colonyProduction = new ColonyProduction($data);
+                    $colonyProduction = $this->colonyLibFactory->createColonyProduction($data);
                     $productionOverview[$commodityId] = $colonyProduction;
                 }
             }
