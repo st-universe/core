@@ -6,7 +6,7 @@
       <tal:block tal:repeat="user LIST">
         <div class="userListItem" tal:define="data user/getUser">
           <div>
-            <metal:macro metal:use-macro="html/macros.xhtml/useravatar" tal:define="USER data" />
+            <metal:macro metal:use-macro="../macros.xhtml/useravatar" tal:define="USER data" />
           </div>
           <div>
             <div class="userListItemName">

@@ -147,8 +147,8 @@
 <metal:macro metal:define-macro="useravatar">
   <div class="userAvatar">
     <a href="/userprofile.php?uid=${USER/getId}">
-      <img tal:condition="USER/getAvatar" tal:attributes="src string:${ASSET_PATHS/user}/${USER/getAvatar}.png; title bbcode2txt:USER/getUserName" />
-      <img tal:condition="not:USER/getAvatar" tal:attributes="src string:${ASSET_PATHS/faction}/${USER/getFactionId}kn.png; title bbcode2txt:USER/getUserName" />
+      <img tal:condition="USER/getAvatar" tal:attributes="src string:/${ASSET_PATHS/user}/${USER/getAvatar}.png; title bbcode2txt:USER/getUserName" />
+      <img tal:condition="not:USER/getAvatar" tal:attributes="src string:/${ASSET_PATHS/faction}/${USER/getFactionId}kn.png; title bbcode2txt:USER/getUserName" />
     </a>
   </div>
 </metal:macro>

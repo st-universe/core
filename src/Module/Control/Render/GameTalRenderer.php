@@ -48,7 +48,7 @@ final class GameTalRenderer implements GameTalRendererInterface
             [
                 'alliance' => $this->config->get('game.alliance_avatar_path'),
                 'user' => $this->config->get('game.user_avatar_path'),
-                'faction' => '/assets/rassen/',
+                'faction' => 'assets/rassen/',
             ]
         );
 
