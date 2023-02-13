@@ -658,6 +658,17 @@ a.tradebutton:hover {
   margin-bottom: 5px;
 }
 
+div.user_box_avatar {
+  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+
+div.userTerritory img {
+  width: 20px !important;
+}
+
 .online {
   background-color: #002a00;
 }
@@ -1155,11 +1166,6 @@ div.userList div.userListItem {
   background-color: #171616;
 }
 
-img.userListItemImage {
-  width: 70px;
-  height: 70px;
-}
-
 img.sysStatus0 {
   border: 1px solid #ff0000;
 }
@@ -1492,10 +1498,15 @@ div.headerBottom {
   border-radius: 3px 3px 0 0;
 }
 
-div.pmGrid img.pmUserAvatar,
-div.knGrid img.knUserAvatar {
+div.pmGrid div.pmUserAvatar img,
+div.knGrid div.knUserAvatar img {
   width: 80px;
   height: 80px;
+}
+
+div.knUserAvatar div.userAvatar,
+div.pmUserAvatar div.userAvatar {
+  border: 0;
 }
 
 div.colonyEffectContainer,
@@ -1589,9 +1600,13 @@ div.allianceMember {
   margin-bottom: 5px;
 }
 
-div.allianceMember div.avatar img {
+div.allianceMember div.userAvatar img {
   width: 25px;
   height: 25px;
+}
+
+div.allianceMember div.userAvatar {
+  border: 0;
 }
 
 div.allianceMember div.allianceMemberName {
@@ -1625,10 +1640,11 @@ div.allianceMinister:not(:first-of-type) {
   padding-top: 20px;
 }
 
-div.allianceMinister div.avatar,
-div.allianceRelation div.avatar {
+div.allianceMinister div.userAvatar,
+div.allianceRelation div.userAvatar {
   grid-row: span 2;
   text-align: center;
+  border: 0;
 }
 
 div.allianceMinister div.name {
@@ -1748,7 +1764,8 @@ div.userProfileView {
 }
 
 div.userProfileView div.userAvatar,
-div.optionsView div.userAvatar {
+div.optionsView div.userAvatar,
+div.boardUserAvatar div.userAvatar {
   width: 150px;
   height: 150px;
   border: 0;
@@ -1758,6 +1775,27 @@ div.userProfileView div.userAvatar img,
 div.optionsView div.userAvatar img {
   width: 130px;
   height: 130px;
+}
+
+div.userListItemAvatar div.userAvatar {
+  width: 70px;
+  height: 70px;
+  border: 0;
+  background: none;
+}
+
+div.userprofile div.userAvatar {
+  border: 0;
+}
+
+div.userListItemAvatar img {
+  width: 70px !important;
+  height: 70px !important;
+}
+
+div.boardUserAvatar div.userAvatar img {
+  width: 150px;
+  height: 150px;
 }
 
 div.userAvatar {

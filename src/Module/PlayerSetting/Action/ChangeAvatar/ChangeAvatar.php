@@ -44,8 +44,16 @@ final class ChangeAvatar implements ActionControllerInterface
 
         $user = $game->getUser();
 
-        if ($user->getAvatar() !== '') {
-            @unlink($user->getFullAvatarPath());
+        $avatar = $user->getAvatar();
+        if ($avatar !== '') {
+            $path = sprintf(
+                '/%s/%s.png',
+                $this->config->get('game.user_avatar_path'),
+                $avatar
+            );
+            if (file_exists($path)) {
+                @unlink($path);
+            }
         }
         $imageName = md5($user->getId() . "_" . time());
 

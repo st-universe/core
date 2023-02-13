@@ -6,9 +6,7 @@
       <tal:block tal:repeat="user LIST">
         <div class="userListItem" tal:define="data user/getUser">
           <div>
-            <a href="/userprofile.php?uid=${data/getId}">
-              <img class="userListItemImage" tal:attributes="src data/getFullAvatarPath" />
-            </a>
+            <metal:macro metal:use-macro="html/macros.xhtml/useravatar" tal:define="USER data" />
           </div>
           <div>
             <div class="userListItemName">

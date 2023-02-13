@@ -5,33 +5,32 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Mockery\MockInterface;
+use Noodlehaus\ConfigInterface;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
 
 class KnCommentTalTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|KnCommentInterface
-     */
-    private $comment;
+    /** @var MockInterface&KnCommentInterface */
+    private MockInterface $comment;
 
-    /**
-     * @var null|MockInterface|UserInterface
-     */
-    private $user;
+    /** @var MockInterface&UserInterface */
+    private MockInterface $user;
 
-    /**
-     * @var null|KnCommentTal
-     */
-    private $tal;
+    /** @var MockInterface&ConfigInterface */
+    private MockInterface $config;
 
-    public function setUp(): void
+    private KnCommentTal $tal;
+
+    protected function setUp(): void
     {
         $this->comment = $this->mock(KnCommentInterface::class);
         $this->user = $this->mock(UserInterface::class);
+        $this->config = $this->mock(ConfigInterface::class);
 
         $this->tal = new KnCommentTal(
+            $this->config,
             $this->comment,
             $this->user
         );
@@ -46,7 +45,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->tal->getId()
         );
@@ -61,7 +60,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->tal->getPostId()
         );
@@ -76,7 +75,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->tal->getText()
         );
@@ -91,7 +90,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->tal->getDate()
         );
@@ -106,7 +105,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn($value);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->tal->getUserId()
         );
@@ -121,7 +120,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn($userName);
 
-        $this->assertSame(
+        static::assertSame(
             $userName,
             $this->tal->getDisplayUserName()
         );
@@ -141,7 +140,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn('');
 
-        $this->assertSame(
+        static::assertSame(
             $userName,
             $this->tal->getDisplayUserName()
         );
@@ -154,7 +153,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn('some-name');
 
-        $this->assertSame(
+        static::assertSame(
             '',
             $this->tal->getUserAvatarPath()
         );
@@ -164,19 +163,29 @@ class KnCommentTalTest extends StuTestCase
     public function testGetUserAvatarPathReturnsActualUserAvatarPath(): void
     {
         $avatarPath = 'some-path';
+        $basePath = 'some-base-path';
 
         $this->comment->shouldReceive('getUsername')
             ->withNoArgs()
             ->once()
             ->andReturn('');
 
-        $this->comment->shouldReceive('getUser->getFullAvatarPath')
+        $this->comment->shouldReceive('getUser->getAvatar')
             ->withNoArgs()
             ->once()
             ->andReturn($avatarPath);
 
-        $this->assertSame(
-            $avatarPath,
+        $this->config->shouldReceive('get')
+            ->with('game.user_avatar_path')
+            ->once()
+            ->andReturn($basePath);
+
+        static::assertSame(
+            sprintf(
+                '/%s/%s.png',
+                $basePath,
+                $avatarPath
+            ),
             $this->tal->getUserAvatarPath()
         );
     }
@@ -190,7 +199,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn($otherUser);
 
-        $this->assertFalse(
+        static::assertFalse(
             $this->tal->isDeleteable()
         );
     }
@@ -202,7 +211,7 @@ class KnCommentTalTest extends StuTestCase
             ->once()
             ->andReturn($this->user);
 
-        $this->assertTrue(
+        static::assertTrue(
             $this->tal->isDeleteable()
         );
     }

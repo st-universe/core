@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
+use Noodlehaus\Config;
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -18,12 +20,16 @@ final class ShowKnComments implements ViewControllerInterface
 
     private KnPostRepositoryInterface $knPostRepository;
 
+    private ConfigInterface $config;
+
     public function __construct(
         ShowKnCommentsRequestInterface $showKnCommentsRequest,
+        ConfigInterface $config,
         KnPostRepositoryInterface $knPostRepository
     ) {
         $this->showKnCommentsRequest = $showKnCommentsRequest;
         $this->knPostRepository = $knPostRepository;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,7 +46,11 @@ final class ShowKnComments implements ViewControllerInterface
         $list = [];
         foreach ($post->getComments() as $comment) {
             if (!$comment->isDeleted()) {
-                $list[] = new KnCommentTal($comment, $user);
+                $list[] = new KnCommentTal(
+                    $this->config,
+                    $comment,
+                    $user
+                );
             }
         }
 

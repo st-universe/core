@@ -50,10 +50,11 @@
                   </div>
                   <div class="segment">
                     <div tal:condition="post/getSender/isNpc">NPC</div>
-                    <a href="/userprofile.php?uid=${post/getSender/getId}">
-                      <img class="pmUserAvatar" title="Siedlerprofil ansehen"
-                        tal:attributes="src post/getSender/getFullAvatarpath" />
-                    </a>
+                    <div class="pmUserAvatar">
+                      <a href="/userprofile.php?uid=${post/getSender/getId}">
+                        <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER post/getSender" />
+                      </a>
+                    </div>
                   </div>
                   <div class="segment" tal:define="id post/getSender/getId">
                     <tal:block tal:condition="post/displayUserLinks">

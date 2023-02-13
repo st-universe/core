@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\MapEnum;
@@ -705,24 +704,6 @@ class User implements UserInterface
     public function getName(): string
     {
         return $this->getUserName();
-    }
-
-    public function getFullAvatarPath(): string
-    {
-        if (!$this->getAvatar()) {
-            return "/assets/rassen/" . $this->getFactionId() . "kn.png";
-        }
-
-        // @todo refactor
-        global $container;
-
-        $config = $container->get(ConfigInterface::class);
-
-        return sprintf(
-            '/%s/%s.png',
-            $config->get('game.user_avatar_path'),
-            $this->getAvatar()
-        );
     }
 
     public function isOnline(): bool

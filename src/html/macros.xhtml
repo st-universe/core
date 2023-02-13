@@ -27,7 +27,7 @@
 <metal:block metal:define-macro="userbox">
   <div class="divbody userbox">
     <div style="float: left; width: 50px;">
-      <metal:macro metal:use-macro="userprofile_link" tal:define="user data" />
+      <metal:macro metal:use-macro="useravatar" tal:define="USER data" />
     </div>
     <div style="float: left; width: 250px; margin-left: 5px;">
       <div class="darkbg">
@@ -45,16 +45,6 @@
     </div>
   </div>
 </metal:block>
-<metal:macro metal:define-macro="userprofile_link">
-  <a href="userprofile.php?uid=${user/getId}">
-    <img style="width: 50px; height: 50px;" tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
-  </a>
-</metal:macro>
-<metal:macro metal:define-macro="userprofile_responsive">
-  <a href="/userprofile.php?uid=${user/getId}">
-    <img tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
-  </a>
-</metal:macro>
 <metal:macro metal:define-macro="commoditySelection">
   <table style="width: 100%;">
     <tr>

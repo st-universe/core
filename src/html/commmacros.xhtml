@@ -317,8 +317,7 @@
     <table class="tcal">
       <tr>
         <td rowspan="2" style="width: 40px">
-          <img tal:condition="data/getUserAvatarPath" src="runtime" tal:attributes="src data/getUserAvatarPath"
-            style="width: 40px" />
+          <img tal:condition="data/getUserAvatarPath" src="runtime" tal:attributes="src data/getUserAvatarPath" style="width: 40px" />
         </td>
         <th style="text-align: center;">
           <span tal:replace="structure bbcode:data/getDisplayUserName">NAME</span>
@@ -409,7 +408,9 @@
               </div>
               <div class="segment">
                 <div tal:condition="post/getUser/isNpc">NPC</div>
-                <img class="knUserAvatar" src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br />
+                <div class="knUserAvatar">
+                  <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER post/getUser" />
+                </div>
                 <span title="Beitrag-ID" tal:replace="post/getId">POSTID</span>
                 <br />
               </div>

@@ -585,7 +585,6 @@
 				</tal:block>
 				<tal:block
 					tal:condition="php: SHIP.getCurrentMapField().getInfluenceArea() AND SHIP.getCurrentMapField().getInfluenceArea().getBase()">
-					<br />
 					<tal:block tal:define="user SHIP/getCurrentMapField/getInfluenceArea/getBase/getUser">
 						<a tal:condition="user/getAlliance"
 							href="alliance.php?SHOW_ALLIANCE=1&id=${user/getAlliance/getId}">
@@ -599,17 +598,21 @@
 								Allianz
 								<span tal:replace="structure bbcode:user/getAlliance/getName">NAME</span></span>
 						</a>
-						<a tal:condition="not:user/getAlliance" href="userprofile.php?uid=${user/getId}">
-							<img style="height: 20px;" src="runtime" tal:attributes="src user/getFullAvatarpath" />
-							<span tal:condition="not:SHIP/getCurrentMapField/getAdministratedRegion">Territorium des
+						<div tal:condition="not:user/getAlliance" tal:define="user THIS/getUser" class="userTerritory">
+							<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER user" />
+							<a href="userprofile.php?uid=${user/getId}">
+								<span tal:condition="not:SHIP/getCurrentMapField/getAdministratedRegion">Territorium des
 								Siedlers
 								<span tal:replace="structure bbcode:user/getName">NAME</span></span>
-							<span tal:condition="SHIP/getCurrentMapField/getAdministratedRegion">Einflussbereich des
+								<span tal:condition="SHIP/getCurrentMapField/getAdministratedRegion">Einflussbereich des
 								Siedlers
 								<span tal:replace="structure bbcode:user/getName">NAME</span></span>
-						</a>
+							</a>
+						</div>
 					</tal:block>
 				</tal:block>
+				<a>
+				</a>
 			</td>
 			<td tal:condition="SHIP/getSystem">
 				<tal:block tal:condition="not:SHIP/getSystem/isWormhole">

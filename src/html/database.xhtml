@@ -66,7 +66,7 @@
 									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
 								</div>
 								<div class="userprofile">
-									<tal:block metal:use-macro="html/macros.xhtml/userprofile_link" tal:define="user entry/getUser" />
+									<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER entry/getUser" />
 								</div>
 								<div class="userName" tal:content="structure bbcode:entry/getUser/getUserName">USER</div>
 								<div>
@@ -187,7 +187,7 @@
 									<span class="placement${repeat/entry/number}">${repeat/entry/number}.</span>
 								</div>
 								<div class="userprofile">
-									<tal:block metal:use-macro="html/macros.xhtml/userprofile_link" tal:define="user entry/user" />
+									<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER entry/user" />
 								</div>
 								<div class="userName" tal:content="structure bbcode:entry/user/getUserName">USER</div>
 								<div>

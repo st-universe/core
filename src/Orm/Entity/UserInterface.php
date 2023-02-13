@@ -156,8 +156,6 @@ interface UserInterface
      */
     public function getName(): string;
 
-    public function getFullAvatarPath(): string;
-
     public function isOnline(): bool;
 
     public function getAlliance(): ?AllianceInterface;
