@@ -7,6 +7,7 @@ use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Config\Init;
 use Stu\Module\Tick\Colony\ColonyTickRunner;
+use Stu\Module\Tick\Lock\LockEnum;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Manager\TickManagerRunner;
 use Stu\Module\Tick\Process\ProcessTickRunner;
@@ -23,7 +24,7 @@ $config = $container->get(ConfigInterface::class);
 $schedule = new Schedule();
 
 //split colony tick into groups
-$colonyTickGroupCount = (int)$config->get('game.colony.tick_worker');
+$colonyTickGroupCount = (int)$config->get(LockEnum::getLockGroupConfigPath(LockEnum::LOCK_TYPE_COLONY_GROUP));
 for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
     $schedule
         ->run(function () use ($groupId, $colonyTickGroupCount): void {

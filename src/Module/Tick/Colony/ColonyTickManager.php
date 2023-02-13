@@ -10,14 +10,14 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Tick\Lock\LockEnum;
+use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 final class ColonyTickManager implements ColonyTickManagerInterface
 {
-    public const LOCKFILE_DIR = '/var/tmp/';
-
     private ColonyTickInterface $colonyTick;
 
     private CrewCreatorInterface $crewCreator;
@@ -32,6 +32,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private CrewCountRetrieverInterface $crewCountRetriever;
 
+    private LockManagerInterface $lockManager;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         CrewCreatorInterface $crewCreator,
@@ -39,7 +41,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         ColonyRepositoryInterface $colonyRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         CommodityRepositoryInterface $commodityRepository,
-        CrewCountRetrieverInterface $crewCountRetriever
+        CrewCountRetrieverInterface $crewCountRetriever,
+        LockManagerInterface $lockManager
     ) {
         $this->colonyTick = $colonyTick;
         $this->crewCreator = $crewCreator;
@@ -48,20 +51,24 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->commodityRepository = $commodityRepository;
         $this->crewCountRetriever = $crewCountRetriever;
+        $this->lockManager = $lockManager;
     }
 
-    public function work(int $tickId, int $batchGroup, int $batchGroupCount): void
+    public function work(int $batchGroup, int $batchGroupCount): void
     {
-        $this->setLock($tickId);
-        $this->colonyLoop($tickId, $batchGroup, $batchGroupCount);
-        $this->proceedCrewTraining($tickId);
-        $this->clearLock($tickId);
+        $this->setLock($batchGroup);
+        try {
+            $this->colonyLoop($batchGroup, $batchGroupCount);
+            $this->proceedCrewTraining($batchGroup, $batchGroupCount);
+        } finally {
+            $this->clearLock($batchGroup);
+        }
     }
 
-    private function colonyLoop(int $tickId, int $batchGroup, int $batchGroupCount): void
+    private function colonyLoop(int $batchGroup, int $batchGroupCount): void
     {
         $commodityArray = $this->commodityRepository->getAll();
-        $colonyList = $this->colonyRepository->getByTick($tickId, $batchGroup, $batchGroupCount);
+        $colonyList = $this->colonyRepository->getByBatchGroup($batchGroup, $batchGroupCount);
 
         foreach ($colonyList as $colony) {
             //echo "Processing Colony ".$colony->getId()." at ".microtime()."\n";
@@ -73,10 +80,11 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         }
     }
 
-    private function proceedCrewTraining(int $tickId): void
+    private function proceedCrewTraining(int $batchGroup, int $batchGroupCount): void
     {
-        $user = array();
-        foreach ($this->crewTrainingRepository->getByTick($tickId) as $obj) {
+        $user = [];
+
+        foreach ($this->crewTrainingRepository->getByBatchGroup($batchGroup, $batchGroupCount) as $obj) {
             if (!isset($user[$obj->getUserId()])) {
                 $user[$obj->getUserId()] = 0;
             }
@@ -125,13 +133,13 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         }
     }
 
-    private function setLock(int $tickId): void
+    private function setLock(int $batchGroupId): void
     {
-        @touch(self::LOCKFILE_DIR . $tickId . '.lock');
+        $this->lockManager->setLock($batchGroupId, LockEnum::LOCK_TYPE_COLONY_GROUP);
     }
 
-    private function clearLock(int $tickId): void
+    private function clearLock(int $batchGroupId): void
     {
-        @unlink(self::LOCKFILE_DIR . $tickId . '.lock');
+        $this->lockManager->clearLock($batchGroupId, LockEnum::LOCK_TYPE_COLONY_GROUP);
     }
 }

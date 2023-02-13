@@ -18,9 +18,6 @@ use Ubench;
  */
 final class ColonyTickRunner extends AbstractTickRunner
 {
-    // currently, there is just a single process - so hardcode it
-    private const COLONY_TICK_ID = 1;
-
     private EntityManagerInterface $entityManager;
     private ColonyTickManagerInterface $colonyTickManager;
     private FailureEmailSenderInterface $failureEmailSender;
@@ -46,7 +43,7 @@ final class ColonyTickRunner extends AbstractTickRunner
         $this->entityManager->beginTransaction();
 
         try {
-            $this->colonyTickManager->work(self::COLONY_TICK_ID, $batchGroup, $batchGroupCount);
+            $this->colonyTickManager->work($batchGroup, $batchGroupCount);
 
             $this->entityManager->flush();
             $this->entityManager->commit();

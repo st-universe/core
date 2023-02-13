@@ -25,5 +25,5 @@ interface CrewTrainingRepositoryInterface extends ObjectRepository
     /**
      * @return CrewTrainingInterface[]
      */
-    public function getByTick(int $tickId): array;
+    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array;
 }

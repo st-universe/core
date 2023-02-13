@@ -4,5 +4,5 @@ namespace Stu\Module\Tick\Colony;
 
 interface ColonyTickManagerInterface
 {
-    public function work(int $tickId, int $batchGroup, int $batchGroupCount): void;
+    public function work(int $batchGroup, int $batchGroupCount): void;
 }

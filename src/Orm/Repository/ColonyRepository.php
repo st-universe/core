@@ -115,11 +115,8 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         ])->getResult();
     }
 
-    public function getByTick(int $tick, int $batchGroup, int $batchGroupCount): iterable
+    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): iterable
     {
-        /**
-         * @todo the tick value is not in use atm
-         */
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT c FROM %s c
@@ -130,7 +127,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         )->setParameters([
             'groupId' => $batchGroup,
             'groupCount' => $batchGroupCount,
-            'userId' => GameEnum::USER_NOONE,
+            'userId' => GameEnum::USER_NOONE
         ])->getResult();
     }
 
