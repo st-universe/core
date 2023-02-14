@@ -289,9 +289,6 @@ class Colony implements ColonyInterface
     /** @var null|int */
     private $productionsum;
 
-    /** @var null|array<int, array{name: string, ships: array<int, ShipInterface>}> */
-    private $shiplist;
-
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
@@ -799,34 +796,6 @@ class Colony implements ColonyInterface
             $this->productionsum = $sum;
         }
         return $this->productionsum;
-    }
-
-    public function getOrbitShipList(int $userId): array
-    {
-        if ($this->shiplist === null) {
-            $this->shiplist = [];
-
-            // @todo refactor
-            global $container;
-
-            $shipRepo = $container->get(ShipRepositoryInterface::class);
-            $shiplist = $shipRepo->getByLocation(
-                $this->getStarsystemMap(),
-                null
-            );
-
-            foreach ($shiplist as $obj) {
-                $this->shiplist[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
-                if (!array_key_exists('name', $this->shiplist[$obj->getFleetId()])) {
-                    if ($obj->getFleetId() == 0) {
-                        $this->shiplist[$obj->getFleetId()]['name'] = _('Einzelschiffe');
-                    } else {
-                        $this->shiplist[$obj->getFleetId()]['name'] = $obj->getFleet()->getName();
-                    }
-                }
-            }
-        }
-        return $this->shiplist;
     }
 
     public function isFree(): bool

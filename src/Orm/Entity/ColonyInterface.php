@@ -178,11 +178,6 @@ interface ColonyInterface
 
     public function getProductionSum(): int;
 
-    /**
-     * @return array<int, array{name: string, ships: array<int, ShipInterface>}>
-     */
-    public function getOrbitShipList(int $userId): array;
-
     public function isFree(): bool;
 
     public function getUser(): UserInterface;

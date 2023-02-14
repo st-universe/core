@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitShiplist;
 
+use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -19,14 +20,18 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowOrbitShiplistRequestInterface $showOrbitShiplistRequest,
+        OrbitShipListRetrieverInterface $orbitShipListRetriever,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showOrbitShiplistRequest = $showOrbitShiplistRequest;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->orbitShipListRetriever = $orbitShipListRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,7 +45,7 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 
         $orbitShipList = [];
 
-        foreach ($colony->getOrbitShipList($userId) as $array) {
+        foreach ($this->orbitShipListRetriever->retrieve($colony) as $array) {
             foreach ($array['ships'] as $ship) {
                 $orbitShipList[] = $this->shipWrapperFactory->wrapShip($ship);
             }

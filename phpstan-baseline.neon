@@ -9286,11 +9286,6 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:getOrbitShipList\\(\\) should return array\\<int, array\\{name\\: string, ships\\: array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\}\\> but returns array\\<int\\|string, array\\{ships\\: array\\<int\\|string, mixed\\>, name\\: mixed\\}\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:hasBuildingWithFunction\\(\\) has parameter \\$states with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
@@ -9338,16 +9333,6 @@ parameters:
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$planetFields type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\PlanetField\\>\\.$#"
 			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$shiplist \\(array\\<int, array\\{name\\: string, ships\\: array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\}\\>\\|null\\) does not accept non\\-empty\\-array\\<int\\|string, array\\{ships\\: array\\<int\\|string, mixed\\>, name\\: mixed\\}\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$shiplist \\(array\\<int, array\\{name\\: string, ships\\: array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\}\\>\\|null\\) does not accept non\\-empty\\-array\\<int\\|string, mixed\\>\\.$#"
-			count: 2
 			path: src/Orm/Entity/Colony.php
 
 		-

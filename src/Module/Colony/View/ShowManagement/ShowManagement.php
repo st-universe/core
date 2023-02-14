@@ -9,6 +9,7 @@ use request;
 
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -36,6 +37,8 @@ final class ShowManagement implements ViewControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
@@ -43,6 +46,7 @@ final class ShowManagement implements ViewControllerInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
+        OrbitShipListRetrieverInterface $orbitShipListRetriever,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -52,6 +56,7 @@ final class ShowManagement implements ViewControllerInterface
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->orbitShipListRetriever = $orbitShipListRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -67,7 +72,7 @@ final class ShowManagement implements ViewControllerInterface
 
         $firstOrbitShip = null;
 
-        $shipList = $colony->getOrbitShipList($userId);
+        $shipList = $this->orbitShipListRetriever->retrieve($colony);
         if ($shipList !== []) {
             // if selected, return the current target
             $target = request::postInt('target');
