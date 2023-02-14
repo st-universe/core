@@ -7631,11 +7631,6 @@ parameters:
 			path: src/Module/Ship/View/ShowTorpedoTransfer/ShowTorpedoTransfer.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTorpedoTransfer/ShowTorpedoTransfer.php
-
-		-
 			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowTradeMenu/ShowTradeMenu.php

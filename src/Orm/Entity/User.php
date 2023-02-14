@@ -16,14 +16,10 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
-use Stu\Orm\Repository\ContactRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserRepository")
@@ -723,48 +719,6 @@ class User implements UserInterface
     {
         $this->alliance = $alliance;
         return $this;
-    }
-
-    public function isFriend(int $userId): bool
-    {
-        $alliance = $this->getAlliance();
-
-        // @todo refactor
-        global $container;
-
-        /**
-         * @var UserInterface
-         */
-        $otherUser = $container->get(UserRepositoryInterface::class)->find($userId);
-        $otherUserAlliance = $otherUser->getAlliance();
-
-        if ($alliance !== null && $otherUserAlliance !== null) {
-            if ($alliance == $otherUserAlliance) {
-                return true;
-            }
-
-            /**
-             * @var ?AllianceRelationInterface
-             */
-            $result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
-                [
-                    AllianceEnum::ALLIANCE_RELATION_FRIENDS,
-                    AllianceEnum::ALLIANCE_RELATION_ALLIED,
-                    AllianceEnum::ALLIANCE_RELATION_VASSAL
-                ],
-                $otherUserAlliance->getId(),
-                $alliance->getId()
-            );
-            if ($result !== null) {
-                return true;
-            }
-        }
-        $contact = $container->get(ContactRepositoryInterface::class)->getByUserAndOpponent(
-            $this->getId(),
-            (int) $userId
-        );
-
-        return $contact !== null && $contact->isFriendly();
     }
 
     public function getSessionDataUnserialized(): array

@@ -16,6 +16,8 @@ use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmationInterf
 use Stu\Component\Player\Deletion\Handler;
 use Stu\Component\Player\Deletion\PlayerDeletion;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
+use Stu\Component\Player\PlayerRelationDeterminator;
+use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Component\Player\Register\LocalPlayerCreator;
 use Stu\Component\Player\Register\PlayerCreator;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
@@ -59,5 +61,6 @@ return [
     PlayerCreatorInterface::class => autowire(PlayerCreator::class),
     PlayerDefaultsCreatorInterface::class => autowire(PlayerDefaultsCreator::class),
     RegistrationEmailSenderInterface::class => autowire(RegistrationEmailSender::class),
-    SmsVerificationCodeSenderInterface::class => autowire(SmsVerificationCodeSender::class)
+    SmsVerificationCodeSenderInterface::class => autowire(SmsVerificationCodeSender::class),
+    PlayerRelationDeterminatorInterface::class => autowire(PlayerRelationDeterminator::class),
 ];
