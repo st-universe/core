@@ -1763,21 +1763,11 @@ div.userProfileView {
   text-align: center;
 }
 
-div.recentProfileVisitors div.userAvatar,
-div.user_box_avatar div.userAvatar,
-div.randomOnlineUsers div.userAvatar,
-div.maindeskNewsItemAvatar div.userAvatar,
-div.boardUserAvatar div.userAvatar {
-  background: transparent;
-  border: 0;
-}
-
 div.userProfileView div.userAvatar,
 div.optionsView div.userAvatar,
 div.boardUserAvatar div.userAvatar {
   width: 150px;
   height: 150px;
-  border: 0;
 }
 
 div.userProfileView div.userAvatar img,
@@ -1789,12 +1779,6 @@ div.optionsView div.userAvatar img {
 div.userListItemAvatar div.userAvatar {
   width: 70px;
   height: 70px;
-  border: 0;
-  background: none;
-}
-
-div.userprofile div.userAvatar {
-  border: 0;
 }
 
 div.userListItemAvatar img {
@@ -1809,9 +1793,7 @@ div.boardUserAvatar div.userAvatar img {
 
 div.userAvatar {
   display: inline-block;
-  background-color: #000000;
   padding: 3px;
-  border: 1px solid #262323;
 }
 
 div.userAvatar img {

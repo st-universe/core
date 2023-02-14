@@ -20,7 +20,7 @@
         <span tal:condition="plot/isActive">Aktiv</span>
       </div>
     </div>
-    <div>
+    <div class="plotMember">
       <tal:block tal:repeat="member plot/getMembers">
         <metal:macro metal:use-macro="html/macros.xhtml/useravatar" tal:define="USER member/getUser" />
       </tal:block>
