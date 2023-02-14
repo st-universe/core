@@ -15,6 +15,7 @@ use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowColony implements ViewControllerInterface
@@ -35,6 +36,8 @@ final class ShowColony implements ViewControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
@@ -42,6 +45,7 @@ final class ShowColony implements ViewControllerInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
+        PlanetFieldRepositoryInterface $planetFieldRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -51,6 +55,7 @@ final class ShowColony implements ViewControllerInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -126,5 +131,10 @@ final class ShowColony implements ViewControllerInterface
 
         $particlePhalanxCount = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX, [0, 1]);
         $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', $particlePhalanxCount > 0 ? $this->torpedoTypeRepository->getForUser($userId) : null);
+
+        $game->setTemplateVar(
+            'MAX_SHIELDS',
+            $this->planetFieldRepository->getMaxShieldsOfColony($colony->getId())
+        );
     }
 }

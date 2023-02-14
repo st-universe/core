@@ -292,9 +292,6 @@ class Colony implements ColonyInterface
     /** @var null|array<int, array{name: string, ships: array<int, ShipInterface>}> */
     private $shiplist;
 
-    /** @var null|int */
-    private $maxShields;
-
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
@@ -486,19 +483,6 @@ class Colony implements ColonyInterface
     {
         $this->shields = $shields;
         return $this;
-    }
-
-    public function getMaxShields(): int
-    {
-        if (!isset($this->maxShields)) {
-            // @todo refactor
-            global $container;
-
-            $this->maxShields = $container
-                ->get(PlanetFieldRepositoryInterface::class)
-                ->getMaxShieldsOfColony($this->getId());
-        }
-        return $this->maxShields;
     }
 
     public function getTwilightZone(): int

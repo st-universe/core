@@ -172,9 +172,9 @@ final class ColonySurface implements ColonySurfaceInterface
     public function getShieldBoxTitleString(): string
     {
         return sprintf(
-            _('Schildstärke: %d/%d'),
+            'Schildstärke: %d/%d',
             $this->colony->getShields(),
-            $this->colony->getMaxShields()
+            $this->planetFieldRepository->getMaxShieldsOfColony($this->colony->getId())
         );
     }
 

@@ -10,15 +10,20 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
 {
     private CommodityRepositoryInterface $commodityRepository;
 
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
+
     public function __construct(
+        PlanetFieldRepositoryInterface $planetFieldRepository,
         CommodityRepositoryInterface $commodityRepository
     ) {
         $this->commodityRepository = $commodityRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function getColonyMenu(int $menuId): string
@@ -150,16 +155,18 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         $bars = array();
         $width = 360;
 
+        $maxShields = $this->planetFieldRepository->getMaxShieldsOfColony($colony->getId());
+
         if ($colony->getShieldState()) {
             $bars[StatusBarColorEnum::STATUSBAR_SHIELD_ON] = $colony->getShields();
         } else {
             $bars[StatusBarColorEnum::STATUSBAR_SHIELD_OFF] = $colony->getShields();
         }
-        $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxShields() - $colony->getShields();
+        $bars[StatusBarColorEnum::STATUSBAR_GREY] = $maxShields - $colony->getShields();
 
         foreach ($bars as $color => $value) {
-            if ($colony->getMaxShields() < $value) {
-                $value = $colony->getMaxShields();
+            if ($maxShields < $value) {
+                $value = $maxShields;
             }
             if ($value <= 0) {
                 continue;
@@ -167,7 +174,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             $shieldBar[] = sprintf(
                 '<img src="assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
                 $color,
-                round($width / 100 * (100 / $colony->getMaxShields() * $value)),
+                round($width / 100 * (100 / $maxShields * $value)),
                 _('Schildstärke')
             );
         }

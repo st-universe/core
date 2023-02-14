@@ -73,8 +73,6 @@ interface ColonyInterface
 
     public function setShields(?int $shields): ColonyInterface;
 
-    public function getMaxShields(): int;
-
     public function getTwilightZone(): int;
 
     public function hasShields(): bool;
