@@ -40,6 +40,7 @@
     "cache/redis-adapter": "^1.0",
     "crunzphp/crunz": "^3.4",
     "devster/ubench": "^2",
+    "doctrine/annotations": "^1",
     "doctrine/orm": "^2.6",
     "filp/whoops": "^2.5",
     "graphp/graphviz": "^0.2.1",
