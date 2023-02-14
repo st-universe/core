@@ -136,5 +136,5 @@ return [
         ShowPostSearchResult::VIEW_IDENTIFIER => autowire(ShowPostSearchResult::class),
         ShowUserSearchResult::VIEW_IDENTIFIER => autowire(ShowUserSearchResult::class),
         ShowPostIdSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdSearchResult::class)
-    ]
+    ],
 ];

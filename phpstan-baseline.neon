@@ -4021,11 +4021,6 @@ parameters:
 			path: src/Module/Message/Lib/PrivateMessageSender.php
 
 		-
-			message: "#^Cannot call method getCategoryCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Message/View/Overview/Overview.php
-
-		-
 			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Message/View/Overview/Overview.php
@@ -4033,6 +4028,11 @@ parameters:
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
 			count: 2
+			path: src/Module/Message/View/Overview/Overview.php
+
+		-
+			message: "#^Parameter \\#1 \\$privateMessageFolder of method Stu\\\\Orm\\\\Repository\\\\PrivateMessageRepositoryInterface\\:\\:getAmountByFolder\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface, Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null given\\.$#"
+			count: 1
 			path: src/Module/Message/View/Overview/Overview.php
 
 		-
@@ -4104,11 +4104,6 @@ parameters:
 			message: "#^Variable \\$whoText might not be defined\\.$#"
 			count: 1
 			path: src/Module/Message/View/ShowWriteQuickPm/ShowWriteQuickPm.php
-
-		-
-			message: "#^Array has 2 duplicate keys with value 'DEFAULT_VIEW' \\(\\\\Stu\\\\Module\\\\Control\\\\GameController\\:\\:DEFAULT_VIEW, \\\\Stu\\\\Module\\\\Message\\\\View\\\\Overview\\\\Overview\\:\\:VIEW_IDENTIFIER\\)\\.$#"
-			count: 1
-			path: src/Module/Message/services.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\NoteInterface and null will always evaluate to false\\.$#"

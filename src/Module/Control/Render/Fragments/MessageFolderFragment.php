@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
+use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
@@ -16,10 +18,14 @@ final class MessageFolderFragment implements RenderFragmentInterface
 {
     private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
+    private PrivateMessageUiFactoryInterface $commUiFactory;
+
     public function __construct(
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        PrivateMessageUiFactoryInterface $privateMessageUiFactory
     ){
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->commUiFactory = $privateMessageUiFactory;
     }
 
     public function render(
@@ -45,7 +51,11 @@ final class MessageFolderFragment implements RenderFragmentInterface
             ) {
                 continue;
             }
-            $folder[$specialId] = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, $specialId);
+
+            /** @var PrivateMessageFolderInterface $specialFolder */
+            $specialFolder = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, $specialId);
+
+            $folder[$specialId] = $this->commUiFactory->createPrivateMessageFolderItem($specialFolder);
         }
 
         $talPage->setVar('PM_NAVLET', $folder);

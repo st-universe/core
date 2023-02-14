@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
+use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 
 /**
@@ -82,17 +83,18 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         );
     }
 
-    public function getAmountByFolder(int $folderId): int
+    public function getAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int
     {
         return $this->count([
-            'cat_id' => $folderId, 'deleted' => NULL
+            'category' => $privateMessageFolder,
+            'deleted' => NULL
         ]);
     }
 
-    public function getNewAmountByFolder(int $folderId): int
+    public function getNewAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int
     {
         return $this->count([
-            'cat_id' => $folderId,
+            'category' => $privateMessageFolder,
             'new' => 1,
             'deleted' => NULL
         ]);
