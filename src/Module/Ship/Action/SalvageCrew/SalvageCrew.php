@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SalvageCrew;
 
 use request;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -37,12 +38,15 @@ final class SalvageCrew implements ActionControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipCrewRepositoryInterface $shipCrewRepository,
         TroopTransferUtilityInterface  $troopTransferUtility,
         ActivatorDeactivatorHelperInterface $helper,
         CancelRepairInterface $cancelRepair,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -51,6 +55,7 @@ final class SalvageCrew implements ActionControllerInterface
         $this->helper = $helper;
         $this->cancelRepair = $cancelRepair;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -118,7 +123,10 @@ final class SalvageCrew implements ActionControllerInterface
             $crewToTransfer--;
         }
 
-        if ($ship->getCrewCount() > $ship->getRump()->getMaxCrewCount() && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
+        if (
+            $ship->getCrewCount() > $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump())
+            && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF
+        ) {
             if (!$this->helper->activate($shipId, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
                 throw new SystemNotActivatableException();
             }

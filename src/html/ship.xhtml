@@ -1331,9 +1331,9 @@
 									tal:condition="SHIP/getBuildplan"
 									tal:replace="SHIP/getBuildplan/getCrew">MIN</span><span
 									tal:condition="not:SHIP/getBuildplan">kA</span>,<span
-									tal:condition="SHIP/getRump/getCrewObj"
-									tal:replace="SHIP/getMaxCrewCount">MAX</span><span
-									tal:condition="not:SHIP/getRump/getCrewObj">kA</span>)
+									tal:condition="MAX_CREW_COUNT"
+									tal:replace="MAX_CREW_COUNT">MAX</span><span
+									tal:condition="not:MAX_CREW_COUNT">kA</span>)
 							</td>
 							<td style="text-align: center;">
 								<input type="text" name="shipname" size="25" tal:attributes="value SHIP/getName"

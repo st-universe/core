@@ -1056,7 +1056,7 @@
         <td>Minimalcrew des Ziels: ${target/getBuildplan/getCrew}</td>
       </tr>
       <tr tal:condition="php: NOT IS_COLONY AND target.getBuildplan()">
-        <td>Maximalcrew des Ziels: ${target/getMaxCrewCount}</td>
+        <td>Maximalcrew des Ziels: ${SHIP_MAX_CREW_COUNT}</td>
       </tr>
       <tr>
         <td>Beambare Truppen: ${MAXIMUM}</td>

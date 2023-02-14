@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\BuildShip;
 use request;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
@@ -49,6 +50,8 @@ final class BuildShip implements ActionControllerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
@@ -59,6 +62,7 @@ final class BuildShip implements ActionControllerInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyLibFactoryInterface $colonyLibFactory,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -71,6 +75,7 @@ final class BuildShip implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -172,7 +177,7 @@ final class BuildShip implements ActionControllerInterface
             $modules[current($module)] = $mod;
             $sigmod[$i] = $mod->getId();
         }
-        if ($crew_usage > $rump->getMaxCrewCount()) {
+        if ($crew_usage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
             return;
         }

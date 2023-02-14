@@ -7681,31 +7681,6 @@ parameters:
 			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
 
 		-
-			message: "#^Cannot call method getCrewAssignmentAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
-			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
-			message: "#^Cannot call method hasUplink\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TroopTransferUtilityInterface\\:\\:getFreeQuarters\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
-			message: "#^Parameter \\#2 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TroopTransferUtilityInterface\\:\\:ownCrewOnTarget\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
 			message: "#^Cannot call method getCooldown\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowWebEmitter/ShowWebEmitter.php

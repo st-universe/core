@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
@@ -20,19 +21,17 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
-use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Station\StationUtility;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
@@ -1054,20 +1053,6 @@ class Ship implements ShipInterface
     public function getCrewCount(): int
     {
         return $this->getCrewlist()->count();
-    }
-
-    public function getMaxCrewCount(): int
-    {
-        $result = $this->getRump()->getMaxCrewCount();
-
-        if ($this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
-            if ($this->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE) {
-                $result += TroopQuartersShipSystem::QUARTER_COUNT_BASE;
-            } else {
-                $result += TroopQuartersShipSystem::QUARTER_COUNT;
-            }
-        }
-        return $result;
     }
 
     public function getExcessCrewCount(): int

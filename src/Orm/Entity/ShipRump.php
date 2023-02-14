@@ -6,20 +6,17 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;
-use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpRepository")
@@ -334,9 +331,6 @@ class ShipRump implements ShipRumpInterface
 
     /** @var null|ShipRumpModuleLevelInterface */
     private $module_levels;
-
-    /** @var null|ShipRumpCategoryRoleCrewInterface */
-    private $crewobj;
 
     /**
      * @var ArrayCollection<int, ShipRumpCostInterface>
@@ -810,42 +804,6 @@ class ShipRump implements ShipRumpInterface
     public function hasSpecialAbility(int $value): bool
     {
         return $this->specialAbilities->containsKey($value);
-    }
-
-    private function getBaseCrewCount(): int
-    {
-        $count = $this->getBaseCrew();
-        if ($this->getCrewObj() !== null) {
-            foreach ([1, 2, 3, 4, 5, 7] as $slot) {
-                $crew_func = 'getJob' . $slot . 'Crew';
-                $count += $this->getCrewObj()->$crew_func();
-            }
-        }
-        return $count;
-    }
-
-    public function getMaxCrewCount(): int
-    {
-        if ($this->getCrewObj() === null) {
-            return $this->getBaseCrewCount();
-        } else {
-            return $this->getBaseCrewCount() + $this->getCrewObj()->getJob6Crew();
-        }
-    }
-
-    public function getCrewObj(): ?ShipRumpCategoryRoleCrewInterface
-    {
-        if ($this->crewobj === null) {
-            // @todo refactor
-            global $container;
-
-            $this->crewobj = $container->get(ShipRumpCategoryRoleCrewRepositoryInterface::class)
-                ->getByShipRumpCategoryAndRole(
-                    (int) $this->getCategoryId(),
-                    (int) $this->getRoleId()
-                );
-        }
-        return $this->crewobj;
     }
 
     public function getFractionId(): int

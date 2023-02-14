@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\CreateBuildplan;
 
 use request;
 
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Control\ActionControllerInterface;
@@ -42,12 +43,15 @@ final class CreateBuildplan implements ActionControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleRepositoryInterface $moduleRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         EntityManagerInterface $entityManager,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
@@ -56,6 +60,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
     private function exitOnError(GameControllerInterface $game): void
@@ -154,7 +159,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
 
         $this->loggerUtil->log('E');
-        if ($crew_usage > $rump->getMaxCrewCount()) {
+        if ($crew_usage > $this->shipCrewCalculator->getMaxCrewCountByRump($rump)) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
             $this->loggerUtil->log('F');
             $this->exitOnError($game);
