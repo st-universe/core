@@ -31,8 +31,8 @@ class LockManagerTest extends StuTestCase
         $lockType = LockEnum::LOCK_TYPE_COLONY_GROUP;
 
         $this->config->shouldReceive('get')
-            ->with('game.colony.tick_worker')
-            ->andReturn(3);
+            ->with('game.colony.tick_worker', 1)
+            ->andReturn("3");
 
         $this->config->shouldReceive('get')
             ->with('game.temp_dir')

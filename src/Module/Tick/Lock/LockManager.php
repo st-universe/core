@@ -8,6 +8,8 @@ use Noodlehaus\ConfigInterface;
 
 final class LockManager implements LockManagerInterface
 {
+    private const DEFAULT_GROUP_COUNT = 1;
+
     private ConfigInterface $config;
 
     public function __construct(ConfigInterface $config)
@@ -42,6 +44,6 @@ final class LockManager implements LockManagerInterface
 
     private function getGroupCount(int $lockType): int
     {
-        return (int)$this->config->get(LockEnum::getLockGroupConfigPath($lockType));
+        return (int)$this->config->get(LockEnum::getLockGroupConfigPath($lockType), self::DEFAULT_GROUP_COUNT);
     }
 }
