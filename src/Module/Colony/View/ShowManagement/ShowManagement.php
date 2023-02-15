@@ -17,6 +17,7 @@ use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowManagement implements ViewControllerInterface
@@ -35,9 +36,11 @@ final class ShowManagement implements ViewControllerInterface
 
     private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     private OrbitShipListRetrieverInterface $orbitShipListRetriever;
+
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
+
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
@@ -47,6 +50,7 @@ final class ShowManagement implements ViewControllerInterface
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
         OrbitShipListRetrieverInterface $orbitShipListRetriever,
+        PlanetFieldRepositoryInterface $planetFieldRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -55,8 +59,9 @@ final class ShowManagement implements ViewControllerInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
-        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->orbitShipListRetriever = $orbitShipListRetriever;
+        $this->planetFieldRepository = $planetFieldRepository;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -115,5 +120,10 @@ final class ShowManagement implements ViewControllerInterface
 
         $particlePhalanxCount = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX, [0, 1]);
         $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', $particlePhalanxCount > 0 ? $this->torpedoTypeRepository->getForUser($userId) : null);
+
+        $game->setTemplateVar(
+            'MAX_SHIELDS',
+            $this->planetFieldRepository->getMaxShieldsOfColony($colony->getId())
+        );
     }
 }
