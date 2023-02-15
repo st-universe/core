@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -27,6 +26,7 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {

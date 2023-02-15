@@ -56,6 +56,7 @@
     "scn/phptal": "^3",
     "slim/http": "^1.2",
     "slim/slim": "^4.2",
+    "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master"
   },
   "require-dev": {
@@ -100,11 +101,5 @@
         "st-universe/assets"
       ]
     }
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:st-universe/assets.git"
-    }
-  ]
+  }
 }

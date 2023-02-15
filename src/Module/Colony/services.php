@@ -81,8 +81,6 @@ use Stu\Module\Colony\Lib\ColonyGuiHelper;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoader;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGenerator;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Colony\View\Overview\Overview;
 use Stu\Module\Colony\View\RefreshColonyEps\RefreshColonyEps;
 use Stu\Module\Colony\View\RefreshSubspaceSection\RefreshSubspaceSection;
@@ -176,6 +174,8 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Module\Control\GameController;
 
+use Stu\PlanetGenerator\PlanetGenerator;
+use Stu\PlanetGenerator\PlanetGeneratorInterface;
 use function DI\autowire;
 
 return [

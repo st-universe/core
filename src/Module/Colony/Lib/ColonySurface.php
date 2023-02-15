@@ -8,8 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorFileMissingException;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -18,6 +16,8 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\PlanetGenerator\Exception\PlanetGeneratorException;
+use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 final class ColonySurface implements ColonySurfaceInterface
 {
@@ -75,7 +75,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
             try {
                 $this->updateSurface();
-            } catch (PlanetGeneratorFileMissingException $e) {
+            } catch (PlanetGeneratorException $e) {
                 return $this->colony->getPlanetFields()->toArray();
             }
         }
