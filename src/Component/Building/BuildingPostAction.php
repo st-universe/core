@@ -28,7 +28,7 @@ final class BuildingPostAction implements BuildingPostActionInterface
     ): void {
         $this->handle(
             $building,
-            function (BuildingActionHandlerInterface $handler, int $buildingFunctionId) use ($colony): void {
+            static function (BuildingActionHandlerInterface $handler, int $buildingFunctionId) use ($colony) : void {
                 $handler->deactivate($buildingFunctionId, $colony);
             }
         );
@@ -40,7 +40,7 @@ final class BuildingPostAction implements BuildingPostActionInterface
     ): void {
         $this->handle(
             $building,
-            function (BuildingActionHandlerInterface $handler, int $buildingFunctionId) use ($colony): void {
+            static function (BuildingActionHandlerInterface $handler, int $buildingFunctionId) use ($colony) : void {
                 $handler->activate($buildingFunctionId, $colony);
             }
         );

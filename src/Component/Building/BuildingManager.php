@@ -43,12 +43,15 @@ final class BuildingManager implements BuildingManagerInterface
         if ($building === null) {
             return;
         }
+
         if (!$field->isActivateable()) {
             return;
         }
+
         if ($field->isActive()) {
             return;
         }
+
         if ($field->hasHighDamage()) {
             return;
         }
@@ -86,6 +89,7 @@ final class BuildingManager implements BuildingManagerInterface
         if (!$field->isActivateable()) {
             return;
         }
+
         if (!$field->isActive()) {
             return;
         }

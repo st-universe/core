@@ -9,15 +9,54 @@ use Stu\Orm\Entity\AllianceRelationInterface;
 final class AllianceEnum
 {
 
+    /**
+     * @var int
+     */
     public const ALLIANCE_JOBS_FOUNDER = 1;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_JOBS_SUCCESSOR = 2;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_JOBS_DIPLOMATIC = 3;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_JOBS_PENDING = 4;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_RELATION_WAR = 1;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_RELATION_PEACE = 2;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_RELATION_FRIENDS = 3;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_RELATION_ALLIED = 4;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_RELATION_TRADE = 5;
+
+    /**
+     * @var int
+     */
     public const ALLIANCE_RELATION_VASSAL = 6;
 
     public static function relationTypeToColor(
