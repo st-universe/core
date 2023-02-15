@@ -6,11 +6,13 @@ namespace Stu\Module\Colony\View\ShowBuildPlans;
 
 use ColonyMenu;
 use Stu\Component\Colony\ColonyEnum;
+use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Entity\BuildingFunctionInterface;
+use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
@@ -28,7 +30,10 @@ final class ShowBuildPlans implements ViewControllerInterface
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
+    private BuildPlanDeleterInterface $buildPlanDeleter;
+
     public function __construct(
+        BuildPlanDeleterInterface $buildPlanDeleter,
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
         ShowBuildPlansRequestInterface $showBuildPlansRequest,
@@ -40,6 +45,7 @@ final class ShowBuildPlans implements ViewControllerInterface
         $this->showBuildPlansRequest = $showBuildPlansRequest;
         $this->buildingFunctionRepository = $buildingFunctionRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->buildPlanDeleter = $buildPlanDeleter;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,9 +70,15 @@ final class ShowBuildPlans implements ViewControllerInterface
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_BUILDPLANS));
         $game->setTemplateVar(
             'AVAILABLE_BUILDPLANS',
-            $this->shipBuildplanRepository->getByUserAndBuildingFunction(
-                $userId,
-                $buildingFunction->getFunction()
+            array_map(
+                fn (ShipBuildplanInterface $plan): array => [
+                    'plan' => $plan,
+                    'deletable' => $this->buildPlanDeleter->isDeletable($plan)
+                ],
+                $this->shipBuildplanRepository->getByUserAndBuildingFunction(
+                    $userId,
+                    $buildingFunction->getFunction()
+                )
             )
         );
     }

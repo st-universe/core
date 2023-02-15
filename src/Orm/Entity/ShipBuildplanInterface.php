@@ -37,8 +37,6 @@ interface ShipBuildplanInterface
 
     public function setCrew(int $crew): ShipBuildplanInterface;
 
-    public function isDeleteable(): bool;
-
     public function getShipCount(): int;
 
     /**

@@ -9,6 +9,8 @@ use Stu\Module\Colony\Action\ChangeName\ChangeNameRequestInterface;
 use Stu\Module\Colony\Action\DisassembleShip\DisassembleShip;
 use Stu\Module\Colony\Lib\BuildingMassActionConfiguration;
 use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
+use Stu\Module\Colony\Lib\BuildPlanDeleter;
+use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Colony\Lib\ColonyCorrector;
 use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
@@ -308,5 +310,6 @@ return [
         RefreshSubspaceSection::VIEW_IDENTIFIER => autowire(RefreshSubspaceSection::class),
         ShowSubspaceTelescopeScan::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescopeScan::class),
         RefreshColonyEps::VIEW_IDENTIFIER => autowire(RefreshColonyEps::class)
-    ]
+    ],
+    BuildPlanDeleterInterface::class => autowire(BuildPlanDeleter::class),
 ];

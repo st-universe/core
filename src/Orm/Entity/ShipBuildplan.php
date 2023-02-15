@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
-use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipBuildplanRepository")
@@ -80,11 +79,11 @@ class ShipBuildplan implements ShipBuildplanInterface
     private $crew = 0;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var Collection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="buildplan", fetch="EXTRA_LAZY")
      */
-    private $ships;
+    private Collection $ships;
 
     /**
      * @var ShipRumpInterface
@@ -103,11 +102,11 @@ class ShipBuildplan implements ShipBuildplanInterface
     private $user;
 
     /**
-     * @var ArrayCollection<int, BuildplanModuleInterface>
+     * @var Collection<int, BuildplanModuleInterface>
      *
      * @OneToMany(targetEntity="BuildplanModule", mappedBy="buildplan", indexBy="module_id", fetch="EXTRA_LAZY")
      */
-    private $modules;
+    private Collection $modules;
 
     public function __construct()
     {
@@ -175,16 +174,6 @@ class ShipBuildplan implements ShipBuildplanInterface
     public function getShipCount(): int
     {
         return $this->getShiplist()->count();
-    }
-
-    public function isDeleteable(): bool
-    {
-        // @todo refactor
-        global $container;
-
-        $array = $container->get(ColonyShipQueueRepositoryInterface::class)->getByBuildplan($this->getId());
-
-        return $this->getShipCount() == 0 && count($array) == 0;
     }
 
     /**

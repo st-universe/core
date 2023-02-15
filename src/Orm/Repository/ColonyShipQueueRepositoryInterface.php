@@ -34,10 +34,7 @@ interface ColonyShipQueueRepositoryInterface extends ObjectRepository
      */
     public function getByUser(int $userId): array;
 
-    /**
-     * @return ColonyShipQueueInterface[]
-     */
-    public function getByBuildplan(int $buildplanId): array;
+    public function getCountByBuildplan(int $buildplanId): int;
 
     /**
      * @return ColonyShipQueueInterface[]

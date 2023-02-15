@@ -2146,11 +2146,6 @@ parameters:
 			path: src/Module/Colony/Action/DeactivateBuildings/DeactivateBuildings.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DeleteBuildPlan/DeleteBuildPlan.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Colony\\\\Action\\\\DenyImmigration\\\\DenyImmigration\\:\\:\\$colonyGuiHelper is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/DenyImmigration/DenyImmigration.php
@@ -10286,7 +10281,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$modules type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$modules type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
@@ -10301,7 +10296,7 @@ parameters:
 			path: src/Orm/Entity/ShipBuildplan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$ships type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$ships type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
