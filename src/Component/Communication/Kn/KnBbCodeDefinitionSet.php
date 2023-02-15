@@ -31,6 +31,7 @@ final class KnBbCodeDefinitionSet implements CodeDefinitionSet
                 (new CodeDefinitionBuilder('quote', '<blockquote class="kn">{param}</blockquote>'))->build(),
             ];
         }
+
         return $this->definitions;
     }
 }

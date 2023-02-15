@@ -41,6 +41,7 @@ final class OrbitShipListRetriever implements OrbitShipListRetrieverInterface
                     $fleet = $ship->getFleet();
                     $name = $fleet->getName();
                 }
+
                 $result[$fleetId] = ['ships' => [], 'name' => $name];
             }
 

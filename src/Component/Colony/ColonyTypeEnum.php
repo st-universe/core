@@ -6,7 +6,18 @@ namespace Stu\Component\Colony;
 
 final class ColonyTypeEnum
 {
+    /**
+     * @var int
+     */
     public const COLONY_TYPE_PLANET = 1;
+
+    /**
+     * @var int
+     */
     public const COLONY_TYPE_MOON = 2;
+
+    /**
+     * @var int
+     */
     public const COLONY_TYPE_ASTEROID = 3;
 }

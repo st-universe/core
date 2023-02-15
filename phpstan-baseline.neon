@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Variable \\$startTime might not be defined\\.$#"
-			count: 2
-			path: src/Component/Colony/Storage/ColonyStorageManager.php
-
-		-
 			message: "#^Parameter \\#1 \\$password of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:setPassword\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Component/Player/Register/PlayerCreator.php
