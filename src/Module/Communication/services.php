@@ -75,6 +75,7 @@ use Stu\Module\Communication\View\ShowUserPlotList\ShowUserPlotList;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
 use Stu\Module\Control\GameController;
 use function DI\autowire;
+use function DI\get;
 
 return [
     RateKnPostRequestInterface::class => autowire(RateKnPostRequest::class),
@@ -116,6 +117,10 @@ return [
         EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
         RateKnPost::ACTION_IDENTIFIER => autowire(RateKnPost::class),
         KnPostPreview::ACTION_IDENTIFIER => autowire(KnPostPreview::class)
+            ->constructorParameter(
+                'bbcodeParser',
+                get('kn_bbcode_parser')
+            )
     ],
     'COMMUNICATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
