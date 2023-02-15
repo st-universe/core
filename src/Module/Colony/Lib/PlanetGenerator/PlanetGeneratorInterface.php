@@ -2,11 +2,25 @@
 
 namespace Stu\Module\Colony\Lib\PlanetGenerator;
 
-use Stu\Orm\Entity\ColonyInterface;
-
 interface PlanetGeneratorInterface
 {
-    public function loadColonyClassConfig(int $colonyClassId): array;
+    /**
+     * @return array{
+     *     sizew: int,
+     *     sizeh: int,
+     *     0: array<mixed>,
+     *     1: array<mixed>,
+     *     2: array<mixed>,
+     *     3: array<mixed>
+     *  }
+     */
+    public function loadColonyClassConfig(int $planetTypeId): array;
 
-    public function generateColony(ColonyInterface $colony): array;
+    /**
+     * @return array{surfaceWidth: int, surfaceFields: array<int, int>}
+     */
+    public function generateColony(
+        int $planetTypeId,
+        int $bonusFieldAmount
+    ): array;
 }

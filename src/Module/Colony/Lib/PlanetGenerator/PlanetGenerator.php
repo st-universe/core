@@ -3,11 +3,6 @@
 namespace Stu\Module\Colony\Lib\PlanetGenerator;
 
 use Exception;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class PlanetGenerator implements PlanetGeneratorInterface
 {
@@ -56,21 +51,9 @@ final class PlanetGenerator implements PlanetGeneratorInterface
     private const CONFIG_BASEFIELD_ORBIT = 2;
     private const CONFIG_BASEFIELD_UNDERGROUND = 3;
 
-    private ColonyRepositoryInterface $colonyRepository;
-
-    private LoggerUtilInterface $loggerUtil;
-
-    public function __construct(
-        ColonyRepositoryInterface $colonyRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        $this->colonyRepository = $colonyRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-    }
-
-    public function loadColonyClassConfig(int $colonyClassId): array
+    public function loadColonyClassConfig(int $planetTypeId): array
     {
-        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasGround, $hasOrbit) = $this->loadColonyClass($colonyClassId);
+        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasGround, $hasOrbit) = $this->loadColonyClass($planetTypeId);
 
         return [
             [$ophase, $phase, $uphase, $hasGround, $hasOrbit],
@@ -82,23 +65,18 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         ];
     }
 
-    public function generateColony(ColonyInterface $colony): array
-    {
+    public function generateColony(
+        int $planetTypeId,
+        int $bonusFieldAmount
+    ): array {
         $bonusdata = [];
 
-        $bonusfields = $colony->getSystem()->getBonusFieldAmount();
-
-        //if ($id === 221) {
-        //    $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        //    $this->loggerUtil->log(print_r($ophase, true));
-        //}
-
-        $config = $this->loadColonyClassConfig($colony->getColonyClassId());
+        $config = $this->loadColonyClassConfig($planetTypeId);
         [$ophase, $phase, $uphase, $hasGround, $hasOrbit] = $config[0];
 
         // start bonus
         if ($config[self::CONFIG_COLGEN_SIZEW] != 10) {
-            $bonusfields = $bonusfields - 1;
+            $bonusFieldAmount = $bonusFieldAmount - 1;
         }
 
         $bftaken = 0;
@@ -108,23 +86,23 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         $phasesResourceCount = 0;
         $phasesOther = 0;
 
-        if (($bftaken < $bonusfields) && (rand(1, 100) <= 15)) {
+        if (($bftaken < $bonusFieldAmount) && (rand(1, 100) <= 15)) {
             $phaseSuperCount += 1;
             $bftaken += 1;
         }
-        if (($bftaken < $bonusfields) && (rand(1, 100) <= 80)) {
+        if (($bftaken < $bonusFieldAmount) && (rand(1, 100) <= 80)) {
             $phasesResourceCount += 1;
             $bftaken += 1;
         }
         if (($phaseSuperCount == 0) && ($config[self::CONFIG_COLGEN_SIZEW] > 7)) {
-            if (($bftaken < $bonusfields) && (rand(1, 100) <= 10)) {
+            if (($bftaken < $bonusFieldAmount) && (rand(1, 100) <= 10)) {
                 $phasesResourceCount += 1;
                 $bftaken += 1;
             }
         }
 
-        if ($bftaken < $bonusfields) {
-            $restcount = $bonusfields - $bftaken;
+        if ($bftaken < $bonusFieldAmount) {
+            $restcount = $bonusFieldAmount - $bftaken;
 
             $phasesOther += $restcount;
             $bftaken += $restcount;
@@ -177,13 +155,10 @@ final class PlanetGenerator implements PlanetGeneratorInterface
 
         [$colonyFields, $orbitFields, $undergroundFields] = $this->doPhases($config, $phases, $hasGround, $hasOrbit);
 
-        $surface = $this->combine($colonyFields, $orbitFields, $undergroundFields);
-        $colony->setMask(base64_encode(serialize($surface)));
-        $colony->setSurfaceWidth($config[self::CONFIG_COLGEN_SIZEW]);
-
-        $this->colonyRepository->save($colony);
-
-        return $surface;
+        return [
+            'surfaceWidth' => $config[self::CONFIG_COLGEN_SIZEW],
+            'surfaceFields' => $this->combine($colonyFields, $orbitFields, $undergroundFields),
+        ];
     }
 
     private function doPhases(array $config, array $phases, bool $hasGround, bool $hasOrbit): array
@@ -655,8 +630,12 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         return $fields;
     }
 
-    private function combine($col, $orb, $gnd)
+    /**
+     * @return array<int, int>
+     */
+    private function combine($col, $orb, $gnd): array
     {
+        $res = [];
 
         $q = 0;
         for ($i = 0; $i < $orb[self::COLGEN_Y]; $i++) {

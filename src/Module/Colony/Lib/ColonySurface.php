@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGenerator;
 use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorFileMissingException;
 use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -136,7 +135,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurfaceTileStyle(): string
     {
-        $width = $this->planetGenerator->loadColonyClassConfig($this->colony->getColonyClassId())[PlanetGenerator::CONFIG_COLGEN_SIZEW];
+        $width = $this->planetGenerator->loadColonyClassConfig($this->colony->getColonyClassId())['sizew'];
         $gridArray = [];
         for ($i = 0; $i < $width; $i++) {
             $gridArray[] = '43px';
@@ -244,10 +243,13 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         if ($this->colony->getMask() === null) {
 
-            $surface = $this->planetGenerator->generateColony(
-                $this->colony
+            $planetConfig = $this->planetGenerator->generateColony(
+                $this->colony->getColonyClassId(),
+                $this->colony->getSystem()->getBonusFieldAmount()
             );
-            $this->colony->setMask(base64_encode(serialize($surface)));
+
+            $this->colony->setMask(base64_encode(serialize($planetConfig['surfaceFields'])));
+            $this->colony->setSurfaceWidth($planetConfig['surfaceWidth']);
 
             $this->colonyRepository->save($this->colony);
         }

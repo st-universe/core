@@ -2706,11 +2706,6 @@ parameters:
 			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:combine\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:combine\\(\\) has parameter \\$col with no type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
@@ -2762,11 +2757,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:doPhases\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:generateColony\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
 
@@ -2836,11 +2826,6 @@ parameters:
 			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:loadColonyClassConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:shadd\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
@@ -2881,17 +2866,7 @@ parameters:
 			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Variable \\$res might not be defined\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
 
@@ -2899,16 +2874,6 @@ parameters:
 			message: "#^Variable \\$ta might not be defined\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGeneratorInterface\\:\\:generateColony\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGeneratorInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGeneratorInterface\\:\\:loadColonyClassConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGeneratorInterface.php
 
 		-
 			message: "#^Variable \\$ophase might not be defined\\.$#"
