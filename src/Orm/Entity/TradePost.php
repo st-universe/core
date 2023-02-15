@@ -10,15 +10,14 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradePostRepository")
@@ -121,11 +120,11 @@ class TradePost implements TradePostInterface
     private $ship;
 
     /**
-     * @var ArrayCollection<int, ShipCrewInterface>
+     * @var Collection<int, ShipCrewInterface>
      *
      * @OneToMany(targetEntity="ShipCrew", mappedBy="tradepost")
      */
-    private $crewAssignments;
+    private Collection $crewAssignments;
 
     public function __construct()
     {
@@ -268,15 +267,13 @@ class TradePost implements TradePostInterface
         return $this->crewAssignments;
     }
 
-    public function getCrewCountOfCurrentUser(): int
-    {
-        global $container;
-        $currentUser = $container->get(GameControllerInterface::class)->getUser();
-
+    public function getCrewCountOfUser(
+        UserInterface $user
+    ): int {
         $count = 0;
 
-        foreach ($this->crewAssignments as $crewAssignment) {
-            if ($crewAssignment->getUser() === $currentUser) {
+        foreach ($this->getCrewAssignments() as $crewAssignment) {
+            if ($crewAssignment->getUser() === $user) {
                 $count++;
             }
         }

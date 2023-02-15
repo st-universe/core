@@ -10931,7 +10931,7 @@ parameters:
 			path: src/Orm/Entity/TradeOffer.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$crewAssignments type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipCrew\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$crewAssignments type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipCrew\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradePost.php
 

@@ -61,7 +61,8 @@ final class SalvageCrew implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
@@ -92,7 +93,7 @@ final class SalvageCrew implements ActionControllerInterface
             return;
         }
 
-        if ($tradepost->getCrewCountOfCurrentUser() === 0) {
+        if ($tradepost->getCrewCountOfUser($user) === 0) {
             throw new SanityCheckException('no crew to rescue', self::ACTION_IDENTIFIER);
         }
         $epsSystem = $wrapper->getEpsSystemData();
@@ -104,7 +105,10 @@ final class SalvageCrew implements ActionControllerInterface
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
 
-        $crewToTransfer = min($this->troopTransferUtility->getFreeQuarters($ship), $tradepost->getCrewCountOfCurrentUser());
+        $crewToTransfer = min(
+            $this->troopTransferUtility->getFreeQuarters($ship),
+            $tradepost->getCrewCountOfUser($user)
+        );
 
         $game->addInformation(sprintf('Es wurden %d Crewman geborgen', $crewToTransfer));
 

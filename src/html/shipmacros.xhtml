@@ -1304,14 +1304,13 @@
               </td>
             </tr>
           </table>
-          <table class="tcal"
-            tal:condition="php: targetShip.getTradePost() AND targetShip.getTradePost().getCrewCountOfCurrentUser() > 0">
+          <table class="tcal" tal:condition="TRADE_POST_CREW_COUNT">
             <tr>
               <th>Eigene Crew bergen</th>
             </tr>
             <tr>
               <td style="width: 450px;">
-                <span>Es befinden sich <span tal:replace="targetShip/getTradePost/getCrewCountOfCurrentUser" />
+                <span>Es befinden sich <span tal:replace="TRADE_POST_CREW_COUNT" />
                   eigene
                   Crewman an Bord des Handelsposten</span><br /><br />
                 <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
