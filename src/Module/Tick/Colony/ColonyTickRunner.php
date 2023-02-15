@@ -48,7 +48,11 @@ final class ColonyTickRunner extends AbstractTickRunner
             $this->entityManager->flush();
             $this->entityManager->commit();
 
-            $this->loggerUtil->init('COLOTICK', LoggerEnum::LEVEL_WARNING);
+            $this->loggerUtil->init(sprintf(
+                'COLOTICK_%dof%d',
+                $batchGroup,
+                $batchGroupCount
+            ), LoggerEnum::LEVEL_WARNING);
             $this->logBenchmarkResult();
         } catch (Throwable $e) {
             $this->entityManager->rollback();
