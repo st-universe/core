@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use JsonMapper\JsonMapperInterface;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -58,7 +59,10 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private $effectiveEpsProduction;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipInterface $ship,
         ShipSystemManagerInterface $shipSystemManager,
         ShipRepositoryInterface $shipRepository,
@@ -82,6 +86,7 @@ final class ShipWrapper implements ShipWrapperInterface
         $this->jsonMapper = $jsonMapper;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->shipSystemDataFactory = $shipSystemDataFactory;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function get(): ShipInterface
@@ -299,7 +304,7 @@ final class ShipWrapper implements ShipWrapperInterface
         //check if repair station is active
         $colonyRepair = $this->colonyShipRepairRepository->getByShip($ship->getId());
         if ($colonyRepair !== null) {
-            $isRepairStationBonus = $colonyRepair->getColony()->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colonyRepair->getColony(), BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
             if ($isRepairStationBonus) {
                 $ticks = (int)ceil($ticks / 2);
             }
@@ -316,7 +321,7 @@ final class ShipWrapper implements ShipWrapperInterface
 
         $colony = $ship->isOverColony();
         if ($colony !== null) {
-            $isRepairStationBonus = $colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
             if ($isRepairStationBonus) {
                 $ticks = (int)ceil($ticks / 2);
             }

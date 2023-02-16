@@ -9,6 +9,7 @@ use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
@@ -61,6 +62,8 @@ class ShipWrapperTest extends StuTestCase
 
     private JsonMapperInterface $jsonMapper;
 
+    private MockInterface $colonyFunctionManager;
+
     private ShipWrapper $shipWrapper;
 
     private ShipSystemInterface $shipSystem;
@@ -79,10 +82,11 @@ class ShipWrapperTest extends StuTestCase
         $this->jsonMapper = (new JsonMapperFactory())->bestFit();
         $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
-
+        $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
         $this->shipSystem = $this->mock(ShipSystemInterface::class);
 
         $this->shipWrapper = new ShipWrapper(
+            $this->colonyFunctionManager,
             $this->ship,
             $this->shipSystemManager,
             $this->shipRepository,
@@ -307,11 +311,20 @@ class ShipWrapperTest extends StuTestCase
             ->withNoArgs()->once()->andReturn(42);
 
         $colonyShipRepair = $this->mock(ColonyShipRepairInterface::class);
+        $colony = $this->mock(ColonyInterface::class);
+
         $this->colonyShipRepairRepository->shouldReceive('getByShip')
             ->with(42)->once()->andReturn($colonyShipRepair);
-        $colonyShipRepair->shouldReceive('getColony->hasActiveBuildingWithFunction')
-            ->with(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)->once()
-            ->andReturn(false);
+
+        $colonyShipRepair->shouldReceive('getColony')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colony);
+
+        $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
+            ->with($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+            ->once()
+            ->andReturnFalse();
 
         $duration = $this->shipWrapper->getRepairDuration();
 
@@ -384,11 +397,19 @@ class ShipWrapperTest extends StuTestCase
             ->withNoArgs()->once()->andReturn(42);
 
         $colonyShipRepair = $this->mock(ColonyShipRepairInterface::class);
+        $colony = $this->mock(ColonyInterface::class);
+
         $this->colonyShipRepairRepository->shouldReceive('getByShip')
             ->with(42)->once()->andReturn($colonyShipRepair);
-        $colonyShipRepair->shouldReceive('getColony->hasActiveBuildingWithFunction')
-            ->with(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)->once()
-            ->andReturn(true);
+        $colonyShipRepair->shouldReceive('getColony')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colony);
+
+        $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
+            ->with($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+            ->once()
+            ->andReturnTrue();
 
         $duration = $this->shipWrapper->getRepairDuration();
 
@@ -426,9 +447,12 @@ class ShipWrapperTest extends StuTestCase
             ->withNoArgs()->once()->andReturn(new ArrayCollection());
 
         $colony = $this->mock(ColonyInterface::class);
-        $colony->shouldReceive('hasActiveBuildingWithFunction')
-            ->with(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)->once()
-            ->andReturn(false);
+
+        $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
+            ->with($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+            ->once()
+            ->andReturnFalse();
+
         $this->ship->shouldReceive('isOverColony')
             ->withNoArgs()->once()->andReturn($colony);
 
@@ -449,9 +473,12 @@ class ShipWrapperTest extends StuTestCase
             ->withNoArgs()->once()->andReturn(new ArrayCollection());
 
         $colony = $this->mock(ColonyInterface::class);
-        $colony->shouldReceive('hasActiveBuildingWithFunction')
-            ->with(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)->once()
-            ->andReturn(true);
+
+        $this->colonyFunctionManager->shouldReceive('hasActiveFunction')
+            ->with($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD)
+            ->once()
+            ->andReturnTrue();
+
         $this->ship->shouldReceive('isOverColony')
             ->withNoArgs()->once()->andReturn($colony);
 

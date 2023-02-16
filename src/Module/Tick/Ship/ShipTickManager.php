@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Ship;
 
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
@@ -12,11 +13,10 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Specials\AdventCycleInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -71,7 +71,10 @@ final class ShipTickManager implements ShipTickManagerInterface
     private EntryCreatorInterface $entryCreator;
 
     private LoggerUtilInterface $loggerUtil;
+
     private PlanetFieldRepositoryInterface $planetFieldRepository;
+
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
@@ -93,6 +96,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         ShipWrapperFactoryInterface $shipWrapperFactory,
         EntryCreatorInterface $entryCreator,
         PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -115,6 +119,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->entryCreator = $entryCreator;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function work(): void
@@ -517,7 +522,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             ) {
                 $colony = $queue->getColony();
 
-                if ($colony->hasActiveBuildingWithFunction($buildingFunction)) {
+                if ($this->colonyFunctionManager->hasActiveFunction($colony, $buildingFunction)) {
                     $this->colonyStorageManager->upperStorage(
                         $colony,
                         $queue->getModule()->getCommodity(),
@@ -571,7 +576,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                 $usedShipyards[$colony->getId()] = [];
             }
 
-            $isRepairStationBonus = $colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
+            $isRepairStationBonus = $this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_REPAIR_SHIPYARD);
 
             //already repaired a ship on this colony field, max is one without repair station
             if (

@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\BuildShip;
 
 use request;
 
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -55,7 +56,10 @@ final class BuildShip implements ActionControllerInterface
 
     private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
@@ -81,6 +85,7 @@ final class BuildShip implements ActionControllerInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->shipCrewCalculator = $shipCrewCalculator;
         $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -100,7 +105,7 @@ final class BuildShip implements ActionControllerInterface
 
         $building_function = null;
         foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($rump) as $bfunc) {
-            if ($colony->hasActiveBuildingWithFunction($bfunc->getBuildingFunction())) {
+            if ($this->colonyFunctionManager->hasActiveFunction($colony, $bfunc->getBuildingFunction())) {
                 $building_function = $bfunc;
             }
         }

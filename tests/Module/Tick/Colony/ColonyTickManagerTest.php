@@ -6,6 +6,7 @@ namespace Stu\Module\Tick\Colony;
 
 use Exception;
 use Mockery\MockInterface;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -42,6 +43,9 @@ class ColonyTickManagerTest extends StuTestCase
     /** @var MockInterface&LockManagerInterface */
     private LockManagerInterface $lockManager;
 
+    /** @var ColonyFunctionManagerInterface&MockInterface */
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     private ColonyTickManagerInterface $subject;
 
     protected function setUp(): void
@@ -54,6 +58,7 @@ class ColonyTickManagerTest extends StuTestCase
         $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
         $this->crewCountRetriever = $this->mock(CrewCountRetrieverInterface::class);
         $this->lockManager = $this->mock(LockManagerInterface::class);
+        $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
 
         $this->subject = new ColonyTickManager(
             $this->colonyTick,
@@ -63,6 +68,7 @@ class ColonyTickManagerTest extends StuTestCase
             $this->privateMessageSender,
             $this->commodityRepository,
             $this->crewCountRetriever,
+            $this->colonyFunctionManager,
             $this->lockManager
         );
     }

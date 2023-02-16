@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector;
+use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -26,6 +27,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         SimplifyBoolIdenticalTrueRector::class,
         FlipTypeControlToUseExclusiveTypeRector::class,
+        PostIncDecToPreIncDecRector::class,
         __DIR__ . '/src/OrmProxy'
     ]);
 };

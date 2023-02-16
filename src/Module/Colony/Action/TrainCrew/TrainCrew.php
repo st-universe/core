@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\TrainCrew;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -26,7 +27,10 @@ final class TrainCrew implements ActionControllerInterface
 
     private CrewCountRetrieverInterface $crewCountRetriever;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         ColonyLoaderInterface $colonyLoader,
         CrewTrainingRepositoryInterface $crewTrainingRepository,
         ColonyRepositoryInterface $colonyRepository,
@@ -36,6 +40,7 @@ final class TrainCrew implements ActionControllerInterface
         $this->crewTrainingRepository = $crewTrainingRepository;
         $this->colonyRepository = $colonyRepository;
         $this->crewCountRetriever = $crewCountRetriever;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -74,7 +79,7 @@ final class TrainCrew implements ActionControllerInterface
         if ($count <= 0) {
             return;
         }
-        if (!$colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
+        if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
             $game->addInformation(_('Es befindet sich keine aktivierte Akademie auf diesen Planeten'));
             return;
         }

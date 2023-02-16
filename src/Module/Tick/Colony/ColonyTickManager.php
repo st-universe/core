@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Colony;
 
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -34,6 +35,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private LockManagerInterface $lockManager;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         CrewCreatorInterface $crewCreator,
@@ -42,6 +45,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         CommodityRepositoryInterface $commodityRepository,
         CrewCountRetrieverInterface $crewCountRetriever,
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         LockManagerInterface $lockManager
     ) {
         $this->colonyTick = $colonyTick;
@@ -52,6 +56,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->commodityRepository = $commodityRepository;
         $this->crewCountRetriever = $crewCountRetriever;
         $this->lockManager = $lockManager;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function work(int $batchGroup, int $batchGroupCount): void
@@ -106,7 +111,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             }
 
             //no academy online
-            if (!$colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
+            if (!$this->colonyFunctionManager->hasActiveFunction($colony, BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
                 continue;
             }
             $this->crewCreator->create($obj->getUserId(), $colony);

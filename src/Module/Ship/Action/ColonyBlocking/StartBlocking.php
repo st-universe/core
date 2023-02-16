@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\ColonyBlocking;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -27,7 +28,10 @@ final class StartBlocking implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipLoaderInterface $shipLoader,
         ColonyRepositoryInterface $colonyRepository,
         FleetRepositoryInterface $fleetRepository,
@@ -37,6 +41,7 @@ final class StartBlocking implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->fleetRepository = $fleetRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -82,9 +87,9 @@ final class StartBlocking implements ActionControllerInterface
         }
 
         if (
-            $currentColony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX)
-            || $currentColony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX)
-            || $currentColony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE)
+            $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX)
+            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX)
+            || $this->colonyFunctionManager->hasActiveFunction($currentColony, BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE)
         ) {
             $game->addInformation(_('Aktion nicht möglich, die Kolonie verfügt über aktive Orbitalverteidigung'));
             return;

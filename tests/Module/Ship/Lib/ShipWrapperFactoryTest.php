@@ -6,6 +6,8 @@ namespace Stu\Module\Ship\Lib;
 
 use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
+use Mockery\MockInterface;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -39,6 +41,9 @@ class ShipWrapperFactoryTest extends StuTestCase
 
     private ShipSystemDataFactoryInterface $shipSystemDataFactory;
 
+    /** @var MockInterface&ColonyFunctionManagerInterface */
+    private MockInterface $colonyFunctionManager;
+
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function setUp(): void
@@ -53,8 +58,10 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->game = $this->mock(GameControllerInterface::class);
         $this->jsonMapper = (new JsonMapperFactory())->bestFit();
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
+        $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
 
         $this->shipWrapperFactory = new ShipWrapperFactory(
+            $this->colonyFunctionManager,
             $this->shipSystemManager,
             $this->shipRepository,
             $this->colonyShipRepairRepository,
