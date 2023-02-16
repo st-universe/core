@@ -166,8 +166,6 @@ interface ShipRumpInterface
 
     public function isShipyard(): bool;
 
-    public function getModuleLevels(): ?ShipRumpModuleLevelInterface;
-
     /**
      * @return Collection<int, ShipRumpCostInterface>
      */

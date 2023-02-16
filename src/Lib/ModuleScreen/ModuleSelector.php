@@ -13,6 +13,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
@@ -80,7 +81,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function allowEmptySlot(): bool
     {
-        return $this->getRump()->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() == ShipModuleTypeEnum::MODULE_OPTIONAL;
+        return $this->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() == ShipModuleTypeEnum::MODULE_OPTIONAL;
     }
 
     public function getModuleDescription(): string
@@ -162,10 +163,12 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module): string
     {
-        if ($rump->getModuleLevels()->{'getModuleLevel' . $module->getModule()->getType()}() > $module->getModule()->getLevel()) {
+        $moduleLevels = $this->getModuleLevels();
+
+        if ($moduleLevels->{'getModuleLevel' . $module->getModule()->getType()}() > $module->getModule()->getLevel()) {
             return 'module_positive';
         }
-        if ($rump->getModuleLevels()->{'getModuleLevel' . $module->getModule()->getType()}() < $module->getModule()->getLevel()) {
+        if ($moduleLevels->{'getModuleLevel' . $module->getModule()->getType()}() < $module->getModule()->getLevel()) {
             return 'module_negative';
         }
         return '';
@@ -174,5 +177,10 @@ class ModuleSelector implements ModuleSelectorInterface
     public function getModuleValueCalculator(): ModuleValueCalculatorInterface
     {
         return new ModuleValueCalculator();
+    }
+
+    public function getModuleLevels(): ?ShipRumpModuleLevelInterface
+    {
+        return $this->shipRumpModuleLevelRepository->getByShipRump($this->rump->getId());
     }
 }

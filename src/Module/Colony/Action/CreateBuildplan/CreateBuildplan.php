@@ -17,6 +17,7 @@ use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Exception\AccessViolation;
@@ -45,7 +46,10 @@ final class CreateBuildplan implements ActionControllerInterface
 
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
+    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
+
     public function __construct(
+        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleRepositoryInterface $moduleRepository,
@@ -61,6 +65,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->shipCrewCalculator = $shipCrewCalculator;
+        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
     }
 
     private function exitOnError(GameControllerInterface $game): void
@@ -93,6 +98,8 @@ final class CreateBuildplan implements ActionControllerInterface
             ));
         }
 
+        $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
+
         $modules = array();
         $sigmod = array();
         $crew_usage = $rump->getBaseCrew();
@@ -102,7 +109,7 @@ final class CreateBuildplan implements ActionControllerInterface
             $module = request::postArray('mod_' . $i);
             if (
                 $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
-                && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
+                && $moduleLevels->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
                 && count($module) == 0
             ) {
                 $game->addInformationf(
@@ -145,7 +152,7 @@ final class CreateBuildplan implements ActionControllerInterface
                     $crew_usage += $mod->getCrew();
                 }
             } else {
-                if (!$rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
+                if (!$moduleLevels->{'getModuleLevel' . $i}()) {
                     $this->exitOnError($game);
                     return;
                 }

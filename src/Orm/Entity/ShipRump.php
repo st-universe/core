@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpRepository")
@@ -328,9 +327,6 @@ class ShipRump implements ShipRumpInterface
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
     private $databaseEntry;
-
-    /** @var null|ShipRumpModuleLevelInterface */
-    private $module_levels;
 
     /**
      * @var ArrayCollection<int, ShipRumpCostInterface>
@@ -781,19 +777,6 @@ class ShipRump implements ShipRumpInterface
     {
         return $this->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_STATION
             && $this->getRoleId() === ShipRumpEnum::SHIP_ROLE_SHIPYARD;
-    }
-
-    public function getModuleLevels(): ?ShipRumpModuleLevelInterface
-    {
-        if ($this->module_levels === null) {
-            // @todo refactor
-            global $container;
-
-            $this->module_levels = $container->get(ShipRumpModuleLevelRepositoryInterface::class)->getByShipRump(
-                (int) $this->getId()
-            );
-        }
-        return $this->module_levels;
     }
 
     public function getBuildingCosts(): Collection

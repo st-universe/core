@@ -24,6 +24,7 @@ use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class BuildShip implements ActionControllerInterface
@@ -52,7 +53,10 @@ final class BuildShip implements ActionControllerInterface
 
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
+    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
+
     public function __construct(
+        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
@@ -76,6 +80,7 @@ final class BuildShip implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->shipCrewCalculator = $shipCrewCalculator;
+        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -124,6 +129,8 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
 
+        $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
+
         $modules = array();
         $sigmod = array();
         $crew_usage = $rump->getBaseCrew();
@@ -131,7 +138,7 @@ final class BuildShip implements ActionControllerInterface
             $module = request::postArray('mod_' . $i);
             if (
                 $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
-                && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
+                && $moduleLevels->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
                 && count($module) == 0
             ) {
                 $game->addInformationf(
@@ -170,7 +177,7 @@ final class BuildShip implements ActionControllerInterface
                     $crew_usage += $mod->getCrew();
                 }
             } else {
-                if (!$rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
+                if (!$moduleLevels->{'getModuleLevel' . $i}()) {
                     return;
                 }
             }

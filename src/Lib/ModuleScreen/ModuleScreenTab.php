@@ -8,9 +8,12 @@ use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 class ModuleScreenTab
 {
+    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
+
     /** @var int */
     private $moduleType;
 
@@ -24,11 +27,13 @@ class ModuleScreenTab
     private $rump;
 
     public function __construct(
+        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         int $moduleType,
         ColonyInterface $colony,
         ShipRumpInterface $rump,
         ?ShipBuildplanInterface $buildplan = null
     ) {
+        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
         $this->moduleType = $moduleType;
         $this->buildplan = $buildplan;
         $this->colony = $colony;
@@ -69,14 +74,15 @@ class ModuleScreenTab
         if ($this->getModuleType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
             return false;
         }
-        return $this->getRump()->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() > 0;
+        $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($this->rump->getId());
+
+        return $moduleLevels->{'getModuleMandatory' . $this->getModuleType()}() > 0;
     }
 
     public function isSpecial(): bool
     {
         return $this->getModuleType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL;
     }
-
 
     /**
      * @return null|ShipBuildplanInterface

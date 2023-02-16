@@ -6,6 +6,7 @@ use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
 
 interface ModuleSelectorInterface
 {
@@ -39,4 +40,6 @@ interface ModuleSelectorInterface
     public function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module): string;
 
     public function getModuleValueCalculator(): ModuleValueCalculatorInterface;
+
+    public function getModuleLevels(): ?ShipRumpModuleLevelInterface;
 }

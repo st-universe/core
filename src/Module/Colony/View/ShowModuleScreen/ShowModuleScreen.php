@@ -15,6 +15,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowModuleScreen implements ViewControllerInterface
@@ -31,13 +32,17 @@ final class ShowModuleScreen implements ViewControllerInterface
 
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
+    private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
+
     public function __construct(
+        ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         ColonyLoaderInterface $colonyLoader,
         ShowModuleScreenRequestInterface $showModuleScreenRequest,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipCrewCalculatorInterface $shipCrewCalculator,
         ColonyLibFactoryInterface $colonyLibFactory
     ) {
+        $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
         $this->colonyLoader = $colonyLoader;
         $this->showModuleScreenRequest = $showModuleScreenRequest;
         $this->shipRumpRepository = $shipRumpRepository;
@@ -62,7 +67,7 @@ final class ShowModuleScreen implements ViewControllerInterface
 
         $moduleScreenTabs = new ModuleScreenTabWrapper;
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
-            $moduleScreenTabs->register(new ModuleScreenTab($i, $colony, $rump));
+            $moduleScreenTabs->register(new ModuleScreenTab($this->shipRumpModuleLevelRepository, $i, $colony, $rump));
         }
 
         $moduleSelectors = [];
