@@ -7,6 +7,7 @@ namespace Stu;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
+use ReflectionClass;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
@@ -24,6 +25,14 @@ abstract class StuTestCase extends MockeryTestCase
         /** @var MockInterface&TClass $result */
         $result = Mockery::mock($className);
         return $result;
+    }
+
+    protected function getMethod($subject, string $methodName)
+    {
+        $class = new ReflectionClass($subject);
+        $method = $class->getMethod($methodName);
+        $method->setAccessible(true);
+        return $method;
     }
 
     protected function initLoggerUtil(): LoggerUtilFactoryInterface
