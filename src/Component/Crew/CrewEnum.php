@@ -7,16 +7,54 @@ namespace Stu\Component\Crew;
 final class CrewEnum
 {
 
+    /**
+     * @var int
+     */
     public const CREW_TYPE_COMMAND = 1;
+
+    /**
+     * @var int
+     */
     public const CREW_TYPE_SECURITY = 2;
+
+    /**
+     * @var int
+     */
     public const CREW_TYPE_SCIENCE = 3;
+
+    /**
+     * @var int
+     */
     public const CREW_TYPE_TECHNICAL = 4;
+
+    /**
+     * @var int
+     */
     public const CREW_TYPE_NAVIGATION = 5;
+
+    /**
+     * @var int
+     */
     public const CREW_TYPE_CREWMAN = 6;
+
+    /**
+     * @var int
+     */
     public const CREW_TYPE_CAPTAIN = 7;
+
+    /**
+     * @var int
+     */
     public const CREW_GENDER_MALE = 1;
+
+    /**
+     * @var int
+     */
     public const CREW_GENDER_FEMALE = 2;
 
+    /**
+     * @var int[]
+     */
     public const CREW_ORDER = [
         CrewEnum::CREW_TYPE_CAPTAIN,
         CrewEnum::CREW_TYPE_COMMAND,
@@ -45,6 +83,7 @@ final class CrewEnum
             case self::CREW_TYPE_CREWMAN:
                 return _("Crewman");
         }
+
         return '';
     }
 }

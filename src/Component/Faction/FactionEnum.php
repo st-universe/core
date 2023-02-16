@@ -24,10 +24,33 @@ final class FactionEnum
         self::FACTION_FERENGI => '#943100',
     ];
 
+    /**
+     * @var int
+     */
     public const FACTION_FEDERATION = 1;
+
+    /**
+     * @var int
+     */
     public const FACTION_ROMULAN = 2;
+
+    /**
+     * @var int
+     */
     public const FACTION_KLINGON = 3;
+
+    /**
+     * @var int
+     */
     public const FACTION_CARDASSIAN = 4;
+
+    /**
+     * @var int
+     */
     public const FACTION_FERENGI = 5;
+
+    /**
+     * @var int
+     */
     public const FACTION_PAKLED = 6;
 }
