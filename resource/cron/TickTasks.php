@@ -3,28 +3,19 @@
 declare(strict_types=1);
 
 use Crunz\Schedule;
-use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Config\Init;
 use Stu\Module\Tick\Colony\ColonyTickRunner;
-use Stu\Module\Tick\Lock\LockEnum;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Manager\TickManagerRunner;
 use Stu\Module\Tick\Process\ProcessTickRunner;
 use Stu\Module\Tick\Ship\ShipTickRunner;
 
-/** @todo remove after magic container-calls have been purged from the game */
-global $container;
-
-/**
- * @var ConfigInterface
- */
-$config = $container->get(ConfigInterface::class);
-
 $schedule = new Schedule();
 
 //split colony tick into groups
-$colonyTickGroupCount = (int)$config->get(LockEnum::getLockGroupConfigPath(LockEnum::LOCK_TYPE_COLONY_GROUP));
+//TODO replace with StuConfig getter
+$colonyTickGroupCount = 1;
 for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
     $schedule
         ->run(function () use ($groupId, $colonyTickGroupCount): void {
