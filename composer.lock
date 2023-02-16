@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46eb81dedb7cb1da94a7baf0433cb90d",
+    "content-hash": "332bf74021c58325946d14f10751fa22",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -4019,12 +4019,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/planet-generator.git",
-                "reference": "d053fed88d82e9d0968e39742b06c750df40802e"
+                "reference": "95f400217a3fb2e0c65a6ff3d856a18f2b153049"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/d053fed88d82e9d0968e39742b06c750df40802e",
-                "reference": "d053fed88d82e9d0968e39742b06c750df40802e",
+                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/95f400217a3fb2e0c65a6ff3d856a18f2b153049",
+                "reference": "95f400217a3fb2e0c65a6ff3d856a18f2b153049",
                 "shasum": ""
             },
             "require": {
@@ -4060,7 +4060,7 @@
                 "issues": "https://github.com/st-universe/planet-generator/issues",
                 "source": "https://github.com/st-universe/planet-generator/tree/master"
             },
-            "time": "2023-02-15T19:00:21+00:00"
+            "time": "2023-02-15T19:51:15+00:00"
         },
         {
             "name": "st-universe/starsystem-generator",
@@ -8576,12 +8576,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "2fcdf6318f7a4419077db3c0a9573a5154693c8f"
+                "reference": "3ef3bb167fa9697087def0c456a706e4a6dab208"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/2fcdf6318f7a4419077db3c0a9573a5154693c8f",
-                "reference": "2fcdf6318f7a4419077db3c0a9573a5154693c8f",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/3ef3bb167fa9697087def0c456a706e4a6dab208",
+                "reference": "3ef3bb167fa9697087def0c456a706e4a6dab208",
                 "shasum": ""
             },
             "require": {
@@ -8600,7 +8600,7 @@
                 "issues": "https://github.com/st-universe/assets/issues",
                 "source": "https://github.com/st-universe/assets/tree/master"
             },
-            "time": "2023-02-12T12:51:28+00:00"
+            "time": "2023-02-15T19:32:40+00:00"
         },
         {
             "name": "symfony/finder",
