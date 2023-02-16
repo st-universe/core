@@ -2046,11 +2046,11 @@
         <div>
           <div>
             <img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime"
-              tal:attributes="title field/getTitleString"
+              tal:attributes="title planetFieldTitle:field"
               src="assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png" />
             <a tal:condition="field/isColonizeAble"
               href="?id=${SHIP/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
-              <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString"
+              <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title planetFieldTitle:field"
                 src="assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png" />
             </a>
           </div>
@@ -2093,7 +2093,7 @@
             <div style="width: 40px; height: 40px;" id="field${field/getFieldId}">
               <div>
                 <div>
-                  <img style="width: 40px; height: 40px;" tal:attributes="title field/getTitleString"
+                  <img style="width: 40px; height: 40px;" tal:attributes="title planetFieldTitle:field"
                     src="assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png" />
                 </div>
               </div>
@@ -2106,7 +2106,7 @@
               <div>
                 <div>
                   <img class="action" style="width: 40px; height: 40px;" title="runtime"
-                    tal:attributes="title field/getTitleString"
+                    tal:attributes="title planetFieldTitle:field"
                     src="assets/terraform/${field/getTerraforming/getId}/${field/getDayNightPrefix}.png" />
                 </div>
               </div>
@@ -2122,7 +2122,7 @@
                 <div>
                   <a
                     href="?id=${SHIP/getId}&B_ATTACK_BUILDING=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
-                    <img style="width: 40px; height: 40px;" title="Gebäude bombardieren: ${field/getTitleString}"
+                    <img style="width: 40px; height: 40px;" title="Gebäude bombardieren: ${planetFieldTitle:field}"
                       src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${field/getDayNightPrefix}.png" />
                   </a>
                 </div>
@@ -2136,7 +2136,7 @@
               <div
                 style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${field/getPictureType}${field/getDayNightPrefix}.png)">
                 <div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img
-                    style="width: 40px; height: 40px;" tal:attributes="title field/getTitleString"
+                    style="width: 40px; height: 40px;" tal:attributes="title planetFieldTitle:field"
                     src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${field/getDayNightPrefix}.png" />
                 </div>
               </div>

@@ -34,8 +34,6 @@ interface PlanetFieldInterface
 
     public function setBuildMode(bool $value): void;
 
-    public function getFieldTypeName(): string;
-
     public function getBuildtime(): int;
 
     public function isActive(): bool;
@@ -71,8 +69,6 @@ interface PlanetFieldInterface
     public function getDayNightPrefix(): string;
 
     public function getTerraformingState(): ?ColonyTerraformingInterface;
-
-    public function getTitleString(): string;
 
     public function getBuildProgress(): int;
 

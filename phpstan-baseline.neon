@@ -9851,17 +9851,7 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Cannot call method getDuration\\(\\) on Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Cannot call method getFinishDate\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyTerraformingInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
@@ -9871,22 +9861,12 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 6
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Cannot call method getProgress\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyTerraformingInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
 		-
 			message: "#^Cannot call method isActivateable\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
@@ -9907,11 +9887,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraforming type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Terraforming\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetField.php
 

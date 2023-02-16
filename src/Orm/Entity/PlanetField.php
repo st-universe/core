@@ -205,14 +205,6 @@ class PlanetField implements PlanetFieldInterface
         $this->buildmode = $value;
     }
 
-    public function getFieldTypeName(): string
-    {
-        // @todo remove
-        global $container;
-
-        return $container->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($this->getFieldType());
-    }
-
     public function getBuildtime(): int
     {
         return $this->getActive();
@@ -360,44 +352,6 @@ class PlanetField implements PlanetFieldInterface
             );
         }
         return $this->terraformingState;
-    }
-
-    public function getTitleString(): string
-    {
-        if (!$this->hasBuilding()) {
-            if ($this->getTerraformingId() !== null) {
-                return sprintf(
-                    "%s läuft bis %s",
-                    $this->getTerraforming()->getDescription(),
-                    date('d.m.Y H:i', $this->getTerraformingState()->getFinishDate())
-                );
-            }
-            return $this->getFieldTypeName();
-        }
-        if ($this->isUnderConstruction()) {
-            return sprintf(
-                _('In Bau: %s auf %s - Fertigstellung: %s'),
-                $this->getBuilding()->getName(),
-                $this->getFieldTypeName(),
-                date('d.m.Y H:i', $this->getBuildtime())
-            );
-        }
-        if (!$this->isActivateable()) {
-            return $this->getBuilding()->getName() . " auf " . $this->getFieldTypeName();
-        }
-        if ($this->isActive()) {
-            if ($this->isDamaged()) {
-                return $this->getBuilding()->getName() . " (aktiviert, beschädigt) auf " . $this->getFieldTypeName();
-            }
-            return $this->getBuilding()->getName() . " (aktiviert) auf " . $this->getFieldTypeName();
-        }
-        if ($this->hasHighDamage()) {
-            return $this->getBuilding()->getName() . " (stark beschädigt) auf " . $this->getFieldTypeName();
-        }
-        if ($this->isActivateable()) {
-            return $this->getBuilding()->getName() . " (deaktiviert) auf " . $this->getFieldTypeName();
-        }
-        return $this->getBuilding()->getName() . " auf " . $this->getFieldTypeName();
     }
 
     public function getBuildProgress(): int

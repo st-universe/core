@@ -11,6 +11,7 @@ use Psr\Container\ContainerInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Tal\Exception\DiContainerNotSetException;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 
 final class TalHelper
@@ -101,9 +102,54 @@ final class TalHelper
     }
 
     public static function getPlanetFieldTypeDescription(
-        PlanetFieldTypeBuildingInterface $planetFieldTypeBuilding
+        int $fieldTypeId
     ): string {
-        return self::getDic()->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($planetFieldTypeBuilding->getFieldTypeId());
+        return self::getDic()->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($fieldTypeId);
+    }
+
+    public static function getPlanetFieldTitle(
+        PlanetFieldInterface $planetField
+    ): string {
+        $fieldTypeName = self::getPlanetFieldTypeDescription($planetField->getFieldType());
+
+        $building = $planetField->getBuilding();
+
+        if ($building === null) {
+            $terraFormingState = $planetField->getTerraformingState();
+            if ($terraFormingState !== null) {
+                return sprintf(
+                    '%s läuft bis %s',
+                    $terraFormingState->getTerraforming()->getDescription(),
+                    date('d.m.Y H:i', $terraFormingState->getFinishDate())
+                );
+            }
+            return $fieldTypeName;
+        }
+
+        if ($planetField->isUnderConstruction()) {
+            return sprintf(
+                'In Bau: %s auf %s - Fertigstellung: %s',
+                $building->getName(),
+                $fieldTypeName,
+                date('d.m.Y H:i', $planetField->getBuildtime())
+            );
+        }
+        if (!$planetField->isActivateable()) {
+            return $building->getName() . " auf " . $fieldTypeName;
+        }
+
+        if ($planetField->isActive()) {
+            if ($planetField->isDamaged()) {
+                return $building->getName() . " (aktiviert, beschädigt) auf " . $fieldTypeName;
+            }
+            return $building->getName() . " (aktiviert) auf " . $fieldTypeName;
+        }
+
+        if ($planetField->hasHighDamage()) {
+            return $building->getName() . " (stark beschädigt) auf " . $fieldTypeName;
+        }
+
+        return $building->getName() . " (deaktiviert) auf " . $fieldTypeName;
     }
 
     /**
@@ -168,6 +214,10 @@ final class TalHelper
         TalesRegistry::registerPrefix(
             'planetFieldTypeDescription',
             fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::getPlanetFieldTypeDescription(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
+        );
+        TalesRegistry::registerPrefix(
+            'planetFieldTitle',
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::getPlanetFieldTitle(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
     }
 }

@@ -1330,7 +1330,7 @@
           <strong>Baubar</strong><br />
           <strong>Anzahl:</strong> <span id="counter">${buildingcount}</span><br />
           <img src="#" tal:repeat="field USEABLE_FIELD_TYPES"
-            tal:attributes="src string:assets/generated/fields/t${field/getFieldTypeId}.png; title planetFieldTypeDescription:field"
+            tal:attributes="src string:assets/generated/fields/t${field/getFieldTypeId}.png; title planetFieldTypeDescription:field/getFieldTypeId"
             style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
         </td>
         <td style="vertical-align: top; width: 110px;">
@@ -1419,7 +1419,7 @@
             <div>
               <div><img onmouseover="fieldMouseOver(this,${field/getFieldId},0,${field/getFieldType})"
                   onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px;"
-                  title="runtime" tal:attributes="title field/getTitleString"
+                  title="runtime" tal:attributes="title planetFieldTitle:field"
                   src="assets/generated/fields/${field/getDayNightPrefix}${field/getFieldType}.png" /></div>
             </div>
           </div>
@@ -1430,7 +1430,7 @@
             onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}">
             <div>
               <div><img class="action" style="width: 40px; height: 40px;" title="runtime"
-                  tal:attributes="title field/getTitleString"
+                  tal:attributes="title planetFieldTitle:field"
                   src="assets/terraform/${field/getTerraforming/getId}/${field/getDayNightPrefix}.png" /></div>
             </div>
           </div>
@@ -1443,7 +1443,7 @@
             onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}">
             <div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})"
               onmouseout="fieldMouseOut(this,${field/getFieldType})">
-              <div><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString"
+              <div><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title planetFieldTitle:field"
                   src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${field/getDayNightPrefix}.png" />
               </div>
             </div>
@@ -1457,7 +1457,7 @@
               onmouseout="fieldMouseOut(this,${field/getFieldType})"
               style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${field/getPictureType}${field/getDayNightPrefix}.png)">
               <div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img
-                  style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString"
+                  style="width: 40px; height: 40px;" title="runtime" tal:attributes="title planetFieldTitle:field"
                   src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${field/getDayNightPrefix}.png" />
               </div>
             </div>
@@ -1477,14 +1477,14 @@
             <div
               style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${FIELD/getPictureType}${FIELD/getDayNightPrefix}.png)">
               <div style="height: 40px; overflow: hidden; width: ${FIELD/getOverlayWidth}px;">
-                <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString"
+                <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title planetFieldTitle:FIELD"
                   src="assets/generated/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}a${FIELD/getDayNightPrefix}.png" />
               </div>
             </div>
           </div>
           <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
             <span style="font-weight: bold;">${FIELD/getBuilding/getName}</span><br />
-            <span>auf</span> ${FIELD/getFieldTypeName}
+            <span>auf</span> ${planetFieldTypeDescription:FIELD/getFieldType}
           </div>
           <div>
             <div style="display: table-cell; padding-top: 5px;" tal:content="structure FIELD/getConstructionStatusBar">
@@ -1511,20 +1511,20 @@
               <img src="assets/generated/fields/t${FIELD/getFieldType}.png" /><br />
             </div>
             <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
-              ${FIELD/getFieldTypeName}
+              ${planetFieldTypeDescription:FIELD/getFieldType}
             </div>
           </div>
           <div tal:condition="FIELD/hasBuilding">
             <div style="display: table-cell">
               <div
                 style="background-image: url(assets/generated/fields/t${FIELD/getFieldType}.png); width: 40px; height: 40px;">
-                <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString"
+                <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title planetFieldTitle:FIELD"
                   src="assets/generated/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}${FIELD/getBuildingState}${FIELD/getDayNightPrefix}.png" />
               </div>
             </div>
             <div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
               <span style="font-weight: bold;">${FIELD/getBuilding/getName}</span><br />
-              <span>auf</span> ${FIELD/getFieldTypeName}<br />
+              <span>auf</span> ${planetFieldTypeDescription:FIELD/getFieldType}<br />
               <span>Integrität</span>: ${FIELD/getIntegrity}/${FIELD/getBuilding/getIntegrity}
             </div>
             <br /><br />
