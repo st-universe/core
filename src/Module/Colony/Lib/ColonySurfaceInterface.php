@@ -24,6 +24,8 @@ interface ColonySurfaceInterface
 
     public function getProductionSumClass(): string;
 
+    public function getEnergyProduction(): int;
+
     public function hasShipyard(): bool;
 
     public function hasModuleFab(): bool;

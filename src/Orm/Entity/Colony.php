@@ -669,14 +669,6 @@ class Colony implements ColonyInterface
         return $this->getStarsystemMap()->getSystem();
     }
 
-    public function getEpsProduction(): int
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(PlanetFieldRepositoryInterface::class)->getEnergyProductionByColony($this->getId());
-    }
-
     public function getBeamFactor(): int
     {
         return 10;

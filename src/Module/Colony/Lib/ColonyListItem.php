@@ -90,7 +90,7 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->colony->getMaxEps();
     }
 
-    public function getEpsProduction(): int
+    public function getEnergyProduction(): int
     {
         return $this->planetFieldRepository->getEnergyProductionByColony($this->colony->getId());
     }

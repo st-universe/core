@@ -119,8 +119,6 @@ interface ColonyInterface
 
     public function getSystem(): StarSystemInterface;
 
-    public function getEpsProduction(): int;
-
     public function getBeamFactor(): int;
 
     /**

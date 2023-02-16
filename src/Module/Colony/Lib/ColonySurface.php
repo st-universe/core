@@ -19,6 +19,9 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\PlanetGenerator\Exception\PlanetGeneratorException;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
+/**
+ * Provides access to several colony surface related methods
+ */
 final class ColonySurface implements ColonySurfaceInterface
 {
     private PlanetFieldRepositoryInterface $planetFieldRepository;
@@ -42,6 +45,8 @@ final class ColonySurface implements ColonySurfaceInterface
     private bool $showUnderground;
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
+
+    private ?int $energyProduction = null;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -145,9 +150,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getEpsBoxTitleString(): string
     {
-        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony(
-            $this->colony->getId()
-        );
+        $energyProduction = $this->getEnergyProduction();
 
         $forecast = $this->colony->getEps() + $energyProduction;
 
@@ -289,6 +292,16 @@ final class ColonySurface implements ColonySurfaceInterface
             return 'positive';
         }
         return '';
+    }
+
+    public function getEnergyProduction(): int
+    {
+        if ($this->energyProduction === null) {
+            $this->energyProduction = $this->planetFieldRepository->getEnergyProductionByColony(
+                $this->colony->getId()
+            );
+        }
+        return $this->energyProduction;
     }
 
     public function hasShipyard(): bool

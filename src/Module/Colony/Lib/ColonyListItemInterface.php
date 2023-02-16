@@ -31,7 +31,7 @@ interface ColonyListItemInterface
 
     public function getMaxEps(): int;
 
-    public function getEpsProduction(): int;
+    public function getEnergyProduction(): int;
 
     public function getStorageSum(): int;
 

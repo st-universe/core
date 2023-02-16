@@ -2106,7 +2106,7 @@
     <div class="box_body">
       <img src="/assets/buttons/e_trans2.png" title="Energie" style="width: 12px; height: 12px;" /> <span
         tal:repeat="bar EPS_STATUS_BAR" tal:content="structure bar">BAR</span>
-      ${addPlusCharacter:COLONY/getEpsProduction}
+      ${addPlusCharacter:COLONY_SURFACE/getEnergyProduction}
     </div>
   </div>
 </metal:block>
