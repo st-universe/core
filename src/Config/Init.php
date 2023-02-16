@@ -21,20 +21,21 @@ final class Init
     {
         $builder = new ContainerBuilder();
         $builder->addDefinitions(__DIR__ . '/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Module/Alliance/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Award/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Module/Config/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Module/Crew/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Database/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Module/History/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Research/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Maindesk/services.php');
-        $builder->addDefinitions(__DIR__ . '/../Module/Crew/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Notes/services.php');
-        $builder->addDefinitions(__DIR__ . '/../Module/History/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/PlayerProfile/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Prestige/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Trade/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/PlayerSetting/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Ship/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Station/services.php');
-        $builder->addDefinitions(__DIR__ . '/../Module/Alliance/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Colony/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Starmap/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Index/services.php');
