@@ -11,23 +11,28 @@ use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyClassInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyListItem implements ColonyListItemInterface
 {
     private ColonyInterface $colony;
 
-    private $signatureCount;
+    private int $signatureCount;
 
     private CommodityConsumptionInterface $commodityConsumption;
 
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
+
     public function __construct(
+        PlanetFieldRepositoryInterface $planetFieldRepository,
         CommodityConsumptionInterface $commodityConsumption,
         ColonyInterface $colony,
-        $signatureCount
+        int $signatureCount
     ) {
         $this->commodityConsumption = $commodityConsumption;
         $this->colony = $colony;
         $this->signatureCount = $signatureCount;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function getId(): int
@@ -87,7 +92,7 @@ final class ColonyListItem implements ColonyListItemInterface
 
     public function getEpsProduction(): int
     {
-        return $this->colony->getEpsProduction();
+        return $this->planetFieldRepository->getEnergyProductionByColony($this->colony->getId());
     }
 
     public function getStorageSum(): int

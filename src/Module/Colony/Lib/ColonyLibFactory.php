@@ -131,6 +131,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ColonyInterface $colony
     ): ColonyListItemInterface {
         return new ColonyListItem(
+            $this->planetFieldRepository,
             $this->commodityConsumption,
             $colony,
             $this->flightSignatureRepository->getVisibleSignatureCount($colony)
@@ -163,6 +164,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ColonyInterface $colony
     ): ColonyEpsProductionPreviewWrapper {
         return new ColonyEpsProductionPreviewWrapper(
+            $this->planetFieldRepository,
             $this->buildingRepository,
             $colony
         );

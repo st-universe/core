@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 class ColonyEpsProductionPreviewWrapper
 {
@@ -23,10 +24,14 @@ class ColonyEpsProductionPreviewWrapper
 
     private BuildingRepositoryInterface $buildingRepository;
 
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
+
     public function __construct(
+        PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         ColonyInterface $colony
     ) {
+        $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
         $this->colony = $colony;
     }
@@ -59,7 +64,7 @@ class ColonyEpsProductionPreviewWrapper
                 return 0;
             }
 
-            $this->production[$buildingId] = $this->colony->getEpsProduction() + $building->getEpsProduction();
+            $this->production[$buildingId] = $this->planetFieldRepository->getEnergyProductionByColony($this->colony->getId()) + $building->getEpsProduction();
         }
         return $this->production[$buildingId];
     }

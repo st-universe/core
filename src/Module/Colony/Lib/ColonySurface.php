@@ -145,7 +145,9 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getEpsBoxTitleString(): string
     {
-        $energyProduction = $this->colony->getEpsProduction();
+        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony(
+            $this->colony->getId()
+        );
 
         $forecast = $this->colony->getEps() + $energyProduction;
 

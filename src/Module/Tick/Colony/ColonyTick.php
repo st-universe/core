@@ -179,8 +179,11 @@ final class ColonyTick implements ColonyTickInterface
                 $this->deactivateBuilding($colony, $field, $this->commodityArray[$commodityId]);
                 $rewind = 1;
             }
-            if ($rewind == 0 && $colony->getEpsProduction() < 0 && $colony->getEps() + $colony->getEpsProduction() < 0) {
-                $field = $this->getBuildingToDeactivateByEpsUsage($colony,);
+
+            $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
+
+            if ($rewind == 0 && $energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
+                $field = $this->getBuildingToDeactivateByEpsUsage($colony);
                 //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
                 $this->deactivateBuilding($colony, $field);
                 $rewind = 1;
@@ -196,7 +199,12 @@ final class ColonyTick implements ColonyTickInterface
             }
             break;
         }
-        $colony->setEps(min($colony->getMaxEps(), $colony->getEps() + $colony->getEpsProduction()));
+        $colony->setEps(
+            min(
+                $colony->getMaxEps(),
+                $colony->getEps() + $this->planetFieldRepository->getEnergyProductionByColony($colony->getId())
+            )
+        );
 
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);

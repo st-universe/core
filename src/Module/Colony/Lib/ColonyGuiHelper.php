@@ -48,7 +48,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
 
     public function register(ColonyInterface $colony, GameControllerInterface $game)
     {
-        $energyProduction = $colony->getEpsProduction();
+        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
         $width = 360;
         $bars = array();
         $epsBar = [];
