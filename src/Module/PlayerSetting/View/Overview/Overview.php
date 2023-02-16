@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting\View\Overview;
 
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\ModuleViewEnum;
+use Stu\Component\Player\UserRpgEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -65,5 +66,7 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('WIKI', $this->config->get('wiki.base_url'));
         $game->setTemplateVar('STARTPAGE', $user->getStartPage());
         $game->setTemplateVar('STARTPAGE_VALUES', ModuleViewEnum::MODULE_VIEW_ARRAY);
+        $game->setTemplateVar('RPGBEHAVIOR', $user->getRpgBehavior());
+        $game->setTemplateVar('RPG_BEHAVIOR_VALUES', UserRpgEnum::RPG_BEHAVIOR);
     }
 }

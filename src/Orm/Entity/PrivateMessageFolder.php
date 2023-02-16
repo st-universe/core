@@ -133,26 +133,6 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
         return $this;
     }
 
-    public function getCategoryCount(): int
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(PrivateMessageRepositoryInterface::class)->getAmountByFolder(
-            $this->getId(),
-        );
-    }
-
-    public function getCategoryCountNew(): int
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(PrivateMessageRepositoryInterface::class)->getNewAmountByFolder(
-            $this->getId(),
-        );
-    }
-
     public function isPMOutDir(): bool
     {
         return $this->getSpecial() == PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT;

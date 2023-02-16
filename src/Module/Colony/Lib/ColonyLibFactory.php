@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -18,6 +18,7 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -25,6 +26,7 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {
@@ -59,6 +61,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     private TalPageInterface $talPage;
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
+    private CommodityRepositoryInterface $commodityRepository;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -76,6 +79,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         TalPageInterface $talPage,
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
+        CommodityRepositoryInterface $commodityRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
@@ -94,6 +98,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
         $this->talPage = $talPage;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function createBuildingFunctionTal(
@@ -148,6 +153,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         array $production
     ): ColonyProductionPreviewWrapper {
         return new ColonyProductionPreviewWrapper(
+            $this,
             $this->buildingCommodityRepository,
             $production
         );
@@ -201,6 +207,15 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $rump,
             $userId,
             $buildplan
+        );
+    }
+
+    public function createColonyProduction(
+        array &$production = []
+    ): ColonyProduction {
+        return new ColonyProduction(
+            $this->commodityRepository,
+            $production
         );
     }
 }

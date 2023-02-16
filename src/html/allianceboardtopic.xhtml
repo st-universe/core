@@ -37,7 +37,10 @@
 			<table class="tcal">
 				<tr>
 					<td style="width: 150px; text-align: center; vertical-align: top;">
-						<img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
+						<div class="boardUserAvatar">
+							<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER post/getUser" />
+						</div>
+						<br />
 						<span style="color: Red;" tal:condition="not:post/getUser/isOnline">Offline</span>
 						<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
 					</td>

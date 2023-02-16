@@ -585,12 +585,12 @@
 				</tal:block>
 				<tal:block
 					tal:condition="php: SHIP.getCurrentMapField().getInfluenceArea() AND SHIP.getCurrentMapField().getInfluenceArea().getBase()">
-					<br />
 					<tal:block tal:define="user SHIP/getCurrentMapField/getInfluenceArea/getBase/getUser">
 						<a tal:condition="user/getAlliance"
 							href="alliance.php?SHOW_ALLIANCE=1&id=${user/getAlliance/getId}">
 							<div class="shipTerritoryView">
-								<metal:macro metal:use-macro="alliancemacros.xhtml/alliance_avatar" tal:define="alliance user/getAlliance" />
+								<metal:macro metal:use-macro="alliancemacros.xhtml/alliance_avatar"
+									tal:define="alliance user/getAlliance" />
 							</div>
 							<span tal:condition="not:SHIP/getCurrentMapField/getAdministratedRegion">Territorium der
 								Allianz
@@ -599,17 +599,21 @@
 								Allianz
 								<span tal:replace="structure bbcode:user/getAlliance/getName">NAME</span></span>
 						</a>
-						<a tal:condition="not:user/getAlliance" href="userprofile.php?uid=${user/getId}">
-							<img style="height: 20px;" src="runtime" tal:attributes="src user/getFullAvatarpath" />
-							<span tal:condition="not:SHIP/getCurrentMapField/getAdministratedRegion">Territorium des
-								Siedlers
-								<span tal:replace="structure bbcode:user/getName">NAME</span></span>
-							<span tal:condition="SHIP/getCurrentMapField/getAdministratedRegion">Einflussbereich des
-								Siedlers
-								<span tal:replace="structure bbcode:user/getName">NAME</span></span>
-						</a>
+						<div tal:condition="not:user/getAlliance" class="userTerritory">
+							<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER user" />
+							<a href="userprofile.php?uid=${user/getId}">
+								<span tal:condition="not:SHIP/getCurrentMapField/getAdministratedRegion">Territorium des
+									Siedlers
+									<span tal:replace="structure bbcode:user/getName">NAME</span></span>
+								<span tal:condition="SHIP/getCurrentMapField/getAdministratedRegion">Einflussbereich des
+									Siedlers
+									<span tal:replace="structure bbcode:user/getName">NAME</span></span>
+							</a>
+						</div>
 					</tal:block>
 				</tal:block>
+				<a>
+				</a>
 			</td>
 			<td tal:condition="SHIP/getSystem">
 				<tal:block tal:condition="not:SHIP/getSystem/isWormhole">
@@ -1327,9 +1331,9 @@
 									tal:condition="SHIP/getBuildplan"
 									tal:replace="SHIP/getBuildplan/getCrew">MIN</span><span
 									tal:condition="not:SHIP/getBuildplan">kA</span>,<span
-									tal:condition="SHIP/getRump/getCrewObj"
-									tal:replace="SHIP/getMaxCrewCount">MAX</span><span
-									tal:condition="not:SHIP/getRump/getCrewObj">kA</span>)
+									tal:condition="MAX_CREW_COUNT"
+									tal:replace="MAX_CREW_COUNT">MAX</span><span
+									tal:condition="not:MAX_CREW_COUNT">kA</span>)
 							</td>
 							<td style="text-align: center;">
 								<input type="text" name="shipname" size="25" tal:attributes="value SHIP/getName"

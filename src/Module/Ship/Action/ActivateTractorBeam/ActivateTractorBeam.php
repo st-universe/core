@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
 use Doctrine\ORM\EntityManagerInterface;
 use request;
+use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
@@ -50,6 +51,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private EntityManagerInterface $entityManager;
 
+    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
@@ -60,6 +63,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         ShipSystemManagerInterface $shipSystemManager,
         ShipStateChangerInterface $shipStateChanger,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
@@ -72,11 +76,13 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->shipStateChanger = $shipStateChanger;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->entityManager = $entityManager;
+        $this->playerRelationDeterminator = $playerRelationDeterminator;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
@@ -137,7 +143,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
         if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED)
             && $target->getUser()->getId() !== $userId
-            && !$target->getUser()->isFriend($userId)
+            && !$this->playerRelationDeterminator->isFriend($target->getUser(), $user)
         ) {
             $defender = [$ship->getId() => $ship];
 

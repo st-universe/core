@@ -12,7 +12,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
-use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
@@ -20,26 +19,22 @@ final class Overview implements ViewControllerInterface
 
     private KnPostRepositoryInterface $knPostRepository;
 
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
-
     private KnFactoryInterface $knFactory;
 
     public function __construct(
         OverviewRequestInterface $overviewRequest,
         KnPostRepositoryInterface $knPostRepository,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         KnFactoryInterface $knFactory
     ) {
         $this->overviewRequest = $overviewRequest;
         $this->knPostRepository = $knPostRepository;
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->knFactory = $knFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $userKnMark = (int) $user->getKNMark();
+        $userKnMark = $user->getKNMark();
 
         $newKnPostCount = $this->knPostRepository->getAmountSince($userKnMark);
         $knPostCount = $this->knPostRepository->getAmount();
@@ -110,10 +105,6 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
         $game->setTemplateVar('USER_KN_MARK', $userKnMark);
-        $game->setTemplateVar(
-            'PM_CATEGORIES',
-            $this->privateMessageFolderRepository->getOrderedByUser($game->getUser()->getId())
-        );
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
     }
 }

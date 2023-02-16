@@ -57,10 +57,8 @@
     <br />
     <div class="userList">
       <div class="userListItem" tal:repeat="data LIST">
-        <div>
-          <a href="userprofile.php?uid=${data/getId}">
-            <img class="userListItemImage" tal:attributes="src data/getFullAvatarPath" />
-          </a>
+        <div class="userListItemAvatar">
+          <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data" />
         </div>
         <div>
           <div class="userListItemName">

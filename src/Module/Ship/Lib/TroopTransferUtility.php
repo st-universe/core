@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class TroopTransferUtility implements TroopTransferUtilityInterface
 {
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
+    public function __construct(
+        ShipCrewCalculatorInterface $shipCrewCalculator
+    ) {
+        $this->shipCrewCalculator = $shipCrewCalculator;
+    }
+
     public function getFreeQuarters(ShipInterface $ship): int
     {
-        $free = $ship->getMaxCrewCount() - $ship->getCrewCount();
+        $free = $this->shipCrewCalculator->getMaxCrewCountByShip($ship) - $ship->getCrewCount();
 
         return max(0, $free);
     }

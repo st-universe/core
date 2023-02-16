@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipRepair;
 
+use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -31,12 +32,15 @@ final class ShowShipRepair implements ViewControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowShipRepairRequestInterface $showShipRepairRequest,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
+        OrbitShipListRetrieverInterface $orbitShipListRetriever,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -45,6 +49,7 @@ final class ShowShipRepair implements ViewControllerInterface
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->orbitShipListRetriever = $orbitShipListRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -72,7 +77,7 @@ final class ShowShipRepair implements ViewControllerInterface
         if ($colonySurface->hasShipyard()) {
 
             $repairableShips = [];
-            foreach ($colony->getOrbitShipList($userId) as $fleet) {
+            foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
                 /** @var ShipInterface $ship */
                 foreach ($fleet['ships'] as $ship) {
                     $wrapper = $this->shipWrapperFactory->wrapShip($ship);

@@ -24,7 +24,7 @@ final class KnItem implements KnItemInterface
 
     private UserInterface $currentUser;
 
-    private ?int $mark;
+    private ?int $mark = null;
 
     private bool $isHighlighted = false;
 
@@ -141,9 +141,7 @@ final class KnItem implements KnItemInterface
         return (int) array_sum(
             array_filter(
                 $this->post->getRatings(),
-                function (int $value): bool {
-                    return $value > 0;
-                }
+                static fn(int $value): bool => $value > 0
             )
         );
     }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render\Fragments;
 
 use Mockery\MockInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -17,14 +19,19 @@ class MessageFolderFragmentTest extends StuTestCase
     /** @var MockInterface&PrivateMessageFolderRepositoryInterface */
     private MockInterface $privateMessageFolderRepository;
 
+    /** @var MockInterface&PrivateMessageUiFactoryInterface */
+    private MockInterface $privateMessageUiFactory;
+
     private MessageFolderFragment $subject;
 
     protected function setUp(): void
     {
         $this->privateMessageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);
+        $this->privateMessageUiFactory = $this->mock(PrivateMessageUiFactoryInterface::class);
 
         $this->subject = new MessageFolderFragment(
-            $this->privateMessageFolderRepository
+            $this->privateMessageFolderRepository,
+            $this->privateMessageUiFactory
         );
     }
 
@@ -33,6 +40,7 @@ class MessageFolderFragmentTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $talPage = $this->mock(TalPageInterface::class);
         $folder = $this->mock(PrivateMessageFolderInterface::class);
+        $folderItem = $this->mock(PrivateMessageFolderItem::class);
 
         $userId = 666;
 
@@ -51,6 +59,11 @@ class MessageFolderFragmentTest extends StuTestCase
                 ->andReturn($folder);
         }
 
+        $this->privateMessageUiFactory->shouldReceive('createPrivateMessageFolderItem')
+            ->with($folder)
+            ->times(count($folderTypeIds))
+            ->andReturn($folderItem);
+
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -64,11 +77,11 @@ class MessageFolderFragmentTest extends StuTestCase
             ->with(
                 'PM_NAVLET',
                 [
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM => $folder,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM => $folderItem,
                 ]
             )
             ->once();
@@ -81,6 +94,7 @@ class MessageFolderFragmentTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
         $talPage = $this->mock(TalPageInterface::class);
         $folder = $this->mock(PrivateMessageFolderInterface::class);
+        $folderItem = $this->mock(PrivateMessageFolderItem::class);
 
         $userId = 666;
 
@@ -100,6 +114,11 @@ class MessageFolderFragmentTest extends StuTestCase
                 ->andReturn($folder);
         }
 
+        $this->privateMessageUiFactory->shouldReceive('createPrivateMessageFolderItem')
+            ->with($folder)
+            ->times(count($folderTypeIds))
+            ->andReturn($folderItem);
+
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -113,12 +132,12 @@ class MessageFolderFragmentTest extends StuTestCase
             ->with(
                 'PM_NAVLET',
                 [
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE => $folder,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM => $folder,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE => $folderItem,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM => $folderItem,
                 ]
             )
             ->once();

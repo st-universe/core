@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -27,11 +28,14 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
+
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipAttackCycleInterface $shipAttackCycle,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -39,6 +43,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->shipAttackCycle = $shipAttackCycle;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->playerRelationDeterminator = $playerRelationDeterminator;
     }
 
     public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): array
@@ -137,14 +142,14 @@ final class AlertRedHelper implements AlertRedHelperInterface
         foreach ($shipsOnLocation as $shipOnLocation) {
 
             //ships of friends from tractoring ship dont attack
-            if ($tractoringShip !== null &&  $shipOnLocation->getUser()->isFriend($tractoringShip->getUser()->getId())) {
+            if ($tractoringShip !== null && $this->playerRelationDeterminator->isFriend($shipOnLocation->getUser(), $tractoringShip->getUser())) {
                 $user = $shipOnLocation->getUser();
                 $userId = $user->getId();
 
                 if (
                     !array_key_exists($userId, $usersToInformAboutTrojanHorse)
                     && $user !== $leadShip->getUser()
-                    && !$user->isFriend($leadShip->getUser()->getId())
+                    && !$this->playerRelationDeterminator->isFriend($user, $leadShip->getUser())
                 ) {
                     $txt = sprintf(
                         _('Die %s von Spieler %s ist in Sektor %s eingeflogen und hat dabei die %s von Spieler %s gezogen'),
@@ -160,7 +165,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             }
 
             //ships of friends dont attack
-            if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId())) {
+            if ($this->playerRelationDeterminator->isFriend($shipOnLocation->getUser(), $leadShip->getUser())) {
                 continue;
             }
 

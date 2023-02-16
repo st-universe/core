@@ -147,20 +147,20 @@ interface UserInterface
 
     public function setStartPage(string $startPage): UserInterface;
 
+    public function getRpgBehavior(): int;
+
+    public function setRpgBehavior(int $RPGbehavior): UserInterface;
+
     /**
      * @deprecated
      */
     public function getName(): string;
-
-    public function getFullAvatarPath(): string;
 
     public function isOnline(): bool;
 
     public function getAlliance(): ?AllianceInterface;
 
     public function setAlliance(?AllianceInterface $alliance): UserInterface;
-
-    public function isFriend(int $userId): bool;
 
     public function getSessionDataUnserialized(): array;
 

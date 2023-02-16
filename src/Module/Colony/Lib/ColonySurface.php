@@ -8,9 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGenerator;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorFileMissingException;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -19,6 +16,8 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\PlanetGenerator\Exception\PlanetGeneratorException;
+use Stu\PlanetGenerator\PlanetGeneratorInterface;
 
 final class ColonySurface implements ColonySurfaceInterface
 {
@@ -76,7 +75,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
             try {
                 $this->updateSurface();
-            } catch (PlanetGeneratorFileMissingException $e) {
+            } catch (PlanetGeneratorException $e) {
                 return $this->colony->getPlanetFields()->toArray();
             }
         }
@@ -136,7 +135,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurfaceTileStyle(): string
     {
-        $width = $this->planetGenerator->loadColonyClassConfig($this->colony->getColonyClassId())[PlanetGenerator::CONFIG_COLGEN_SIZEW];
+        $width = $this->planetGenerator->loadColonyClassConfig($this->colony->getColonyClassId())['sizew'];
         $gridArray = [];
         for ($i = 0; $i < $width; $i++) {
             $gridArray[] = '43px';
@@ -172,9 +171,9 @@ final class ColonySurface implements ColonySurfaceInterface
     public function getShieldBoxTitleString(): string
     {
         return sprintf(
-            _('Schildstärke: %d/%d'),
+            'Schildstärke: %d/%d',
             $this->colony->getShields(),
-            $this->colony->getMaxShields()
+            $this->planetFieldRepository->getMaxShieldsOfColony($this->colony->getId())
         );
     }
 
@@ -244,10 +243,13 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         if ($this->colony->getMask() === null) {
 
-            $surface = $this->planetGenerator->generateColony(
-                $this->colony
+            $planetConfig = $this->planetGenerator->generateColony(
+                $this->colony->getColonyClassId(),
+                $this->colony->getSystem()->getBonusFieldAmount()
             );
-            $this->colony->setMask(base64_encode(serialize($surface)));
+
+            $this->colony->setMask(base64_encode(serialize($planetConfig['surfaceFields'])));
+            $this->colony->setSurfaceWidth($planetConfig['surfaceWidth']);
 
             $this->colonyRepository->save($this->colony);
         }

@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\View\ShowTroopTransfer;
 
 use request;
 
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -27,16 +28,20 @@ final class ShowTroopTransfer implements ViewControllerInterface
 
     private TroopTransferUtilityInterface $transferUtility;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         TroopTransferUtilityInterface $transferUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
         $this->transferUtility = $transferUtility;
+        $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,6 +64,9 @@ final class ShowTroopTransfer implements ViewControllerInterface
 
         if ($isColony) {
             $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
+            if ($target === null) {
+                return;
+            }
 
             if ($isUnload) {
                 $game->setPageTitle(_('Truppen zur Kolonie beamen'));
@@ -72,6 +80,10 @@ final class ShowTroopTransfer implements ViewControllerInterface
             }
         } else {
             $target = $this->shipRepository->find((int)request::getIntFatal('target'));
+            if ($target === null) {
+                return;
+            }
+
             $ownCrewOnTarget = $this->transferUtility->ownCrewOnTarget($user, $target);
 
             if ($target->getUser() !== $user) {
@@ -96,11 +108,16 @@ final class ShowTroopTransfer implements ViewControllerInterface
                 );
                 $game->setPageTitle(_('Truppen von Schiff beamen'));
             }
+
+            $game->setTemplateVar(
+                'SHIP_MAX_CREW_COUNT',
+                $this->shipCrewCalculator->getMaxCrewCountByShip($target)
+            );
         }
 
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
-        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, $isColony)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, $isColony)) {
             return;
         }
 

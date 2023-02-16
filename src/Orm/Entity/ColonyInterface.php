@@ -73,8 +73,6 @@ interface ColonyInterface
 
     public function setShields(?int $shields): ColonyInterface;
 
-    public function getMaxShields(): int;
-
     public function getTwilightZone(): int;
 
     public function hasShields(): bool;
@@ -179,11 +177,6 @@ interface ColonyInterface
     public function setProduction(array $array): void;
 
     public function getProductionSum(): int;
-
-    /**
-     * @return array<int, array{name: string, ships: array<int, ShipInterface>}>
-     */
-    public function getOrbitShipList(int $userId): array;
 
     public function isFree(): bool;
 

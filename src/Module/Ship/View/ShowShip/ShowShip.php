@@ -8,6 +8,7 @@ use NavPanel;
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -70,6 +71,8 @@ final class ShowShip implements ViewControllerInterface
 
     private ShipUiFactoryInterface $shipUiFactory;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
@@ -84,6 +87,7 @@ final class ShowShip implements ViewControllerInterface
         ShipWrapperFactoryInterface $shipWrapperFactory,
         ColonyLibFactoryInterface $colonyLibFactory,
         ShipUiFactoryInterface $shipUiFactory,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
@@ -101,6 +105,7 @@ final class ShowShip implements ViewControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->colonyLibFactory = $colonyLibFactory;
         $this->shipUiFactory = $shipUiFactory;
+        $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -137,10 +142,12 @@ final class ShowShip implements ViewControllerInterface
             $tachyonActive = $this->nbsUtility->isTachyonActive($ship);
         }
 
+        $rump = $ship->getRump();
+
         $colony = $this->getColony($ship);
         $canColonize = false;
         if ($colony) {
-            if ($ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
+            if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
                 $canColonize = $this->colonizationChecker->canColonize($user, $colony);
             }
             $ownsCurrentColony = $colony->getUser() === $user;
@@ -235,6 +242,15 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
+
+        $crewObj = $this->shipCrewCalculator->getCrewObj($rump);
+
+        $game->setTemplateVar(
+            'MAX_CREW_COUNT',
+            $crewObj === null
+                ? null
+                : $this->shipCrewCalculator->getMaxCrewCountByShip($ship)
+        );
 
         $this->loggerUtil->log(sprintf('ShowShip.php-end, timestamp: %F', microtime(true)));
     }

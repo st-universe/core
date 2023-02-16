@@ -627,7 +627,7 @@
                     onkeydown="event.key == 'Enter' &&  $('loadshield_button').click()" />
                   <input type="submit" class="button" value="laden" name="B_LOAD_SHIELDS" id="loadshield_button" />
                   <input type="button" class="button" value="max"
-                    onclick="$('loadshield_value').value = '${COLONY/getMaxShields}'; $('loadshield_button').click()" />
+                    onclick="$('loadshield_value').value = '${MAX_SHIELDS}'; $('loadshield_button').click()" />
                 </td>
               </tr>
               <tr>
@@ -1091,53 +1091,55 @@
           <th></th>
           <th style="width: 20px;"></th>
         </tr>
-        <tal:block tal:repeat="data AVAILABLE_BUILDPLANS">
-          <tr tal:attributes="class string:row${repeat/data/odd}" style="cursor: pointer;" title="Details">
-            <td tal:content="data/getName" class="selectable"
-              onclick="toggleTableRowVisible('buildplan_${data/getId}');">NAME</td>
-            <td tal:content="data/getShipCount" class="selectable"
-              onclick="toggleTableRowVisible('buildplan_${data/getId}');">ANZAHL</td>
-            <td tal:content="formatSeconds:data/getBuildtime"
-              onclick="toggleTableRowVisible('buildplan_${data/getId}');">BUILDTIME</td>
-            <td style="text-align: center;">
-              <a class="linkbutton"
-                href="?id=${COLONY/getId}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=${data/getId}">Bauplan auswählen</a>
-            </td>
-            <td style="text-align: center;">
-              <a tal:condition="data/isDeleteable" class="linkbutton linkbutton_red"
-                href="?id=${COLONY/getId}&B_DEL_BUILDPLAN=1&planid=${data/getId}&sstr=${THIS/getSessionString}"
-                title="Löschen">X</a>
-            </td>
-          </tr>
-          <tr title="Details schließen" onclick="toggleTableRowVisible('buildplan_${data/getId}');"
-            id="buildplan_${data/getId}" style="cursor: pointer; display: none;"
-            tal:attributes="class string:row${repeat/data/odd}">
-            <td colspan="4">
-              <table style="width: 100%">
-                <tr>
-                  <td>Rumpf</td>
-                  <td>
-                    <div style="display: table-cell;">
-                      <img src="assets/ships/${data/getRump/getId}.png" />
-                    </div>
-                    <span style="display: table-cell; vertical-align: middle;"
-                      tal:content="data/getRump/getName">NAME</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Module</td>
-                  <td>
-                    <img src="assets/commodities/${module/getModule/getCommodityId}.png"
-                      tal:attributes="name module/getModule/getName" tal:repeat="module data/getModules" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Crewbedarf</td>
-                  <td tal:content="data/getCrew">CREW</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
+        <tal:block tal:repeat="item AVAILABLE_BUILDPLANS">
+          <tal:block tal:define="data item/plan">
+            <tr tal:attributes="class string:row${repeat/item/odd}" style="cursor: pointer;" title="Details">
+              <td tal:content="data/getName" class="selectable"
+                  onclick="toggleTableRowVisible('buildplan_${data/getId}');">NAME</td>
+              <td tal:content="data/getShipCount" class="selectable"
+                  onclick="toggleTableRowVisible('buildplan_${data/getId}');">ANZAHL</td>
+              <td tal:content="formatSeconds:data/getBuildtime"
+                  onclick="toggleTableRowVisible('buildplan_${data/getId}');">BUILDTIME</td>
+              <td style="text-align: center;">
+                <a class="linkbutton"
+                   href="?id=${COLONY/getId}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=${data/getId}">Bauplan auswählen</a>
+              </td>
+              <td style="text-align: center;">
+                <a tal:condition="item/deletable" class="linkbutton linkbutton_red"
+                   href="?id=${COLONY/getId}&B_DEL_BUILDPLAN=1&planid=${data/getId}&sstr=${THIS/getSessionString}"
+                   title="Löschen">X</a>
+              </td>
+            </tr>
+            <tr title="Details schließen" onclick="toggleTableRowVisible('buildplan_${data/getId}');"
+                id="buildplan_${data/getId}" style="cursor: pointer; display: none;"
+                tal:attributes="class string:row${repeat/item/odd}">
+              <td colspan="4">
+                <table style="width: 100%">
+                  <tr>
+                    <td>Rumpf</td>
+                    <td>
+                      <div style="display: table-cell;">
+                        <img src="assets/ships/${data/getRump/getId}.png" />
+                      </div>
+                      <span style="display: table-cell; vertical-align: middle;"
+                            tal:content="data/getRump/getName">NAME</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Module</td>
+                    <td>
+                      <img src="assets/commodities/${module/getModule/getCommodityId}.png"
+                           tal:attributes="name module/getModule/getName" tal:repeat="module data/getModules" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Crewbedarf</td>
+                    <td tal:content="data/getCrew">CREW</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </tal:block>
         </tal:block>
       </table>
     </div>
@@ -1634,9 +1636,9 @@
           <br />
         </div>
       </td>
-      <td rowspan="2" tal:condition="FIELD/hasUpgradeOrTerraformingOption" style="width: 200px; vertical-align: top;">
-        <div tal:condition="FIELD/getPossibleUpgrades">
-          <div tal:repeat="data FIELD/getPossibleUpgrades">
+      <td rowspan="2" tal:condition="HAS_UPGRADE_OR_TERRAFORMING_OPTION" style="width: 200px; vertical-align: top;">
+        <div tal:condition="UPGRADE_OPTIONS">
+          <div tal:repeat="data UPGRADE_OPTIONS">
             <table class="tcal">
               <tr>
                 <th tal:content="data/getDescription" colspan="4">DESCRIPTION</th>
@@ -1697,8 +1699,8 @@
             </table>
           </tal:block>
           <tal:block tal:condition="not:FIELD/getTerraforming">
-            <div tal:condition="FIELD/getTerraformingOptions">
-              <table class="use" style="width: 250px;" tal:repeat="data FIELD/getTerraformingOptions">
+            <div tal:condition="TERRAFORMING_OPTIONS">
+              <table class="use" style="width: 250px;" tal:repeat="data TERRAFORMING_OPTIONS">
                 <tr>
                   <th colspan="4" tal:content="data/getDescription">DESCRIPTION</th>
                 </tr>

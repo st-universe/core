@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\PrivateMessage;
+use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 
 /**
@@ -48,9 +49,9 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
         int $limit
     ): iterable;
 
-    public function getAmountByFolder(int $folderId): int;
+    public function getAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
 
-    public function getNewAmountByFolder(int $folderId): int;
+    public function getNewAmountByFolder(PrivateMessageFolderInterface $privateMessageFolder): int;
 
     public function setDeleteTimestampByFolder(int $folderId, int $timestamp): void;
 }

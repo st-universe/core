@@ -61,4 +61,11 @@ interface ColonyLibFactoryInterface
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
     ): ModuleSelectorSpecial;
+
+    /**
+     * @param array{gc?: int, pc?: int, commodity_id?: int} $production
+     */
+    public function createColonyProduction(
+        array &$production = []
+    ): ColonyProduction;
 }

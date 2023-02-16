@@ -4,8 +4,8 @@
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 
 		<div style="width: 530px; float: left;">
-			<div style="width: 180px; float: left; text-align: center;">
-				<img src="runtime" style="width:150px;height:150px;" tal:attributes="src PROFILE/getFullAvatarPath" />
+			<div class="userProfileView">
+				<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER PROFILE" />
 				<div style="width: 100%;" tal:condition="not:IS_PROFILE_CURRENT_USER">
 					<br />
 					<br />
@@ -97,10 +97,11 @@
 						<td>
 							<div tal:condition="not:FRIENDS" class="darkbg" style="text-align: center;">Keine
 							</div>
-							<a href="userprofile.php?uid=${data/getId}" tal:condition="FRIENDS"
-								tal:repeat="data FRIENDS" style="padding: 5px;"><img src="runtime"
-									tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getName"
-									title="runtime" style="width: 55px; height: 55px;" /></a>
+							<div tal:condition="FRIENDS">
+								<tal:block tal:repeat="USER FRIENDS">
+									<metal:macro metal:use-macro="macros.xhtml/useravatar" />
+								</tal:block>
+							</div>
 						</td>
 					</tr>
 				</table>

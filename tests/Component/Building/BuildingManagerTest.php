@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
+use Stu\Module\Building\Action\BuildingActionHandlerInterface;
+use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
+use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -23,6 +27,9 @@ class BuildingManagerTest extends StuTestCase
     /** @var MockInterface&BuildingPostActionInterface */
     private MockInterface $buildingPostAction;
 
+    /** @var MockInterface&BuildingFunctionActionMapperInterface  */
+    private MockInterface $buildingFunctionActionMapper;
+
     private BuildingManager $buildingManager;
 
     public function setUp(): void
@@ -30,10 +37,12 @@ class BuildingManagerTest extends StuTestCase
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->buildingPostAction = $this->mock(BuildingPostActionInterface::class);
+        $this->buildingFunctionActionMapper = $this->mock(BuildingFunctionActionMapperInterface::class);
 
         $this->buildingManager = new BuildingManager(
             $this->planetFieldRepository,
             $this->colonyRepository,
+            $this->buildingFunctionActionMapper,
             $this->buildingPostAction
         );
     }
@@ -475,11 +484,15 @@ class BuildingManagerTest extends StuTestCase
         $field = $this->mock(PlanetFieldInterface::class);
         $building = $this->mock(BuildingInterface::class);
         $colony = $this->mock(ColonyInterface::class);
+        $function = $this->mock(BuildingFunctionInterface::class);
+        $buildingAction = $this->mock(BuildingActionHandlerInterface::class);
 
         $currentStorage = 555;
         $storage = 44;
         $currentEps = 33;
         $eps = 22;
+        $functionId = 123;
+        $colonyId = 456;
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -513,6 +526,24 @@ class BuildingManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($eps);
+        $building->shouldReceive('getFunctions')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(new ArrayCollection([$function]));
+
+        $function->shouldReceive('getFunction')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($functionId);
+
+        $this->buildingFunctionActionMapper->shouldReceive('map')
+            ->with($functionId)
+            ->once()
+            ->andReturn($buildingAction);
+
+        $buildingAction->shouldReceive('destruct')
+            ->with($colonyId, $functionId)
+            ->once();
 
         $colony->shouldReceive('getMaxStorage')
             ->withNoArgs()
@@ -529,6 +560,10 @@ class BuildingManagerTest extends StuTestCase
         $colony->shouldReceive('setMaxEps')
             ->with($currentEps - $eps)
             ->once();
+        $colony->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($colonyId);
 
         $this->planetFieldRepository->shouldReceive('save')
             ->with($field)

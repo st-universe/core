@@ -53,7 +53,9 @@ interface TradePostInterface
      */
     public function getCrewAssignments(): Collection;
 
-    public function getCrewCountOfCurrentUser(): int;
+    public function getCrewCountOfUser(
+        UserInterface $user
+    ): int;
 
     public function isNpcTradepost(): bool;
 }

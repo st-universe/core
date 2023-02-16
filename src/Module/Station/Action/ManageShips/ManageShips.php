@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\ManageShips;
 
 use Exception;
 use request;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -60,6 +61,8 @@ final class ManageShips implements ActionControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
@@ -74,6 +77,7 @@ final class ManageShips implements ActionControllerInterface
         ReactorUtilInterface $reactorUtil,
         StationUtilityInterface $stationUtility,
         ShipTorpedoManagerInterface $shipTorpedoManager,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -90,6 +94,7 @@ final class ManageShips implements ActionControllerInterface
         $this->stationUtility = $stationUtility;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -214,7 +219,7 @@ final class ManageShips implements ActionControllerInterface
             if (
                 isset($unman[$shipobj->getId()]) && $shipobj->getUser()->getId() == $userId && $shipobj->getCrewCount() > 0
             ) {
-                if ($shipobj->getCrewCount() > $station->getMaxCrewCount() - $station->getCrewCount()) {
+                if ($shipobj->getCrewCount() > $this->shipCrewCalculator->getMaxCrewCountByShip($station) - $station->getCrewCount()) {
                     $msg[] = sprintf(
                         _('%s: Nicht genügend freie Quartiere auf Station vorhanden (%d benötigt)'),
                         $shipobj->getName(),

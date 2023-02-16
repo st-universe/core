@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Variable \\$startTime might not be defined\\.$#"
-			count: 2
-			path: src/Component/Colony/Storage/ColonyStorageManager.php
-
-		-
 			message: "#^Parameter \\#1 \\$password of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:setPassword\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Component/Player/Register/PlayerCreator.php
@@ -551,7 +546,7 @@ parameters:
 			path: src/Lib/ColonyMenu.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:__construct\\(\\) has parameter \\$data with no type specified\\.$#"
+			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getCommodity\\(\\) should return Stu\\\\Orm\\\\Entity\\\\CommodityInterface but returns Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
 			count: 1
 			path: src/Lib/ColonyProduction/ColonyProduction.php
 
@@ -561,7 +556,17 @@ parameters:
 			path: src/Lib/ColonyProduction/ColonyProduction.php
 
 		-
-			message: "#^Property Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:\\$data has no type specified\\.$#"
+			message: "#^Offset 'commodity_id' might not exist on array\\{gc\\?\\: int, pc\\?\\: int, commodity_id\\?\\: int\\}\\.$#"
+			count: 1
+			path: src/Lib/ColonyProduction/ColonyProduction.php
+
+		-
+			message: "#^Offset 'gc' might not exist on array\\{gc\\?\\: int, pc\\?\\: int, commodity_id\\?\\: int\\}\\.$#"
+			count: 2
+			path: src/Lib/ColonyProduction/ColonyProduction.php
+
+		-
+			message: "#^Offset 'pc' might not exist on array\\{gc\\?\\: int, pc\\?\\: int, commodity_id\\?\\: int\\}\\.$#"
 			count: 1
 			path: src/Lib/ColonyProduction/ColonyProduction.php
 
@@ -2136,11 +2141,6 @@ parameters:
 			path: src/Module/Colony/Action/DeactivateBuildings/DeactivateBuildings.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/DeleteBuildPlan/DeleteBuildPlan.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Colony\\\\Action\\\\DenyImmigration\\\\DenyImmigration\\:\\:\\$colonyGuiHelper is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/DenyImmigration/DenyImmigration.php
@@ -2669,326 +2669,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Colony\\\\Storage\\\\ColonyStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetColonization.php
-
-		-
-			message: "#^Call to function unset\\(\\) contains undefined variable \\$taken\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Cannot access offset int\\<0, 1\\> on 0\\|non\\-empty\\-array\\<int\\<0, 1\\>, mixed\\>\\.$#"
-			count: 2
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Comparison operation \"\\<\" between 0 and 0 is always false\\.$#"
-			count: 2
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:combine\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:combine\\(\\) has parameter \\$col with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:combine\\(\\) has parameter \\$gnd with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:combine\\(\\) has parameter \\$orb with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:createBonusPhase\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:createBonusPhase\\(\\) has parameter \\$btype with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:doPhase\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:doPhase\\(\\) has parameter \\$fields with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:doPhase\\(\\) has parameter \\$phase with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:doPhases\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:doPhases\\(\\) has parameter \\$phases with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:doPhases\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:generateColony\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getBonusFieldTransformations\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getBonusFieldTransformations\\(\\) has parameter \\$btype with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getWeightingList\\(\\) has parameter \\$adjacent with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getWeightingList\\(\\) has parameter \\$fields with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getWeightingList\\(\\) has parameter \\$from with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getWeightingList\\(\\) has parameter \\$mode with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getWeightingList\\(\\) has parameter \\$no_adjacent with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getWeightingList\\(\\) has parameter \\$noadjacentlimit with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getWeightingList\\(\\) has parameter \\$to with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:getWeightingList\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:initFields\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:initFields\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:loadColonyClass\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:loadColonyClassConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:shadd\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:shadd\\(\\) has parameter \\$arr with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:shadd\\(\\) has parameter \\$bonus with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:shadd\\(\\) has parameter \\$fld with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:weightedDraw\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:weightedDraw\\(\\) has parameter \\$a with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:weightedDraw\\(\\) has parameter \\$fragmentation with no type specified\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Parameter \\#2 \\$max of function rand expects int, float given\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGenerator\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Variable \\$res might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Variable \\$ta might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGenerator.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGeneratorInterface\\:\\:generateColony\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGeneratorInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetGenerator\\\\PlanetGeneratorInterface\\:\\:loadColonyClassConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/PlanetGeneratorInterface.php
-
-		-
-			message: "#^Variable \\$ophase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/209.php
-
-		-
-			message: "#^Variable \\$ophase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/217.php
-
-		-
-			message: "#^Variable \\$ophase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/223.php
-
-		-
-			message: "#^Variable \\$ophase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/407.php
-
-		-
-			message: "#^Variable \\$ophase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/409.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/417.php
-
-		-
-			message: "#^Variable \\$ophase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/423.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/701.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/702.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/703.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/704.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/705.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/706.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/707.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/708.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/709.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/716.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/717.php
-
-		-
-			message: "#^Variable \\$uphase might not be defined\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetGenerator/coldata/718.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\Overview\\\\Overview\\:\\:fetchModuleList\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -4006,11 +3686,6 @@ parameters:
 			path: src/Module/Message/Lib/PrivateMessageSender.php
 
 		-
-			message: "#^Cannot call method getCategoryCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Message/View/Overview/Overview.php
-
-		-
 			message: "#^Cannot call method getDescription\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Message/View/Overview/Overview.php
@@ -4018,6 +3693,11 @@ parameters:
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null\\.$#"
 			count: 2
+			path: src/Module/Message/View/Overview/Overview.php
+
+		-
+			message: "#^Parameter \\#1 \\$privateMessageFolder of method Stu\\\\Orm\\\\Repository\\\\PrivateMessageRepositoryInterface\\:\\:getAmountByFolder\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface, Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\|null given\\.$#"
+			count: 1
 			path: src/Module/Message/View/Overview/Overview.php
 
 		-
@@ -4089,11 +3769,6 @@ parameters:
 			message: "#^Variable \\$whoText might not be defined\\.$#"
 			count: 1
 			path: src/Module/Message/View/ShowWriteQuickPm/ShowWriteQuickPm.php
-
-		-
-			message: "#^Array has 2 duplicate keys with value 'DEFAULT_VIEW' \\(\\\\Stu\\\\Module\\\\Control\\\\GameController\\:\\:DEFAULT_VIEW, \\\\Stu\\\\Module\\\\Message\\\\View\\\\Overview\\\\Overview\\:\\:VIEW_IDENTIFIER\\)\\.$#"
-			count: 1
-			path: src/Module/Message/services.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\NoteInterface and null will always evaluate to false\\.$#"
@@ -7616,11 +7291,6 @@ parameters:
 			path: src/Module/Ship/View/ShowTorpedoTransfer/ShowTorpedoTransfer.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTorpedoTransfer/ShowTorpedoTransfer.php
-
-		-
 			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowTradeMenu/ShowTradeMenu.php
@@ -7669,31 +7339,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TradePostInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
-
-		-
-			message: "#^Cannot call method getCrewAssignmentAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
-			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
-			message: "#^Cannot call method hasUplink\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TroopTransferUtilityInterface\\:\\:getFreeQuarters\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
-
-		-
-			message: "#^Parameter \\#2 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\TroopTransferUtilityInterface\\:\\:ownCrewOnTarget\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTroopTransfer/ShowTroopTransfer.php
 
 		-
 			message: "#^Cannot call method getCooldown\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
@@ -7772,11 +7417,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$system_name is never written, only read\\.$#"
-			count: 1
-			path: src/Module/Starmap/Lib/ExploreableStarMap.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$tradepost has no type specified\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
@@ -9306,11 +8946,6 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:getOrbitShipList\\(\\) should return array\\<int, array\\{name\\: string, ships\\: array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\}\\> but returns array\\<int\\|string, array\\{ships\\: array\\<int\\|string, mixed\\>, name\\: mixed\\}\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:hasBuildingWithFunction\\(\\) has parameter \\$states with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
@@ -9358,21 +8993,6 @@ parameters:
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$planetFields type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\PlanetField\\>\\.$#"
 			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$production \\(array\\<int, Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\>\\|null\\) does not accept array\\<int\\|string, Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$shiplist \\(array\\<int, array\\{name\\: string, ships\\: array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\}\\>\\|null\\) does not accept non\\-empty\\-array\\<int\\|string, array\\{ships\\: array\\<int\\|string, mixed\\>, name\\: mixed\\}\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$shiplist \\(array\\<int, array\\{name\\: string, ships\\: array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\}\\>\\|null\\) does not accept non\\-empty\\-array\\<int\\|string, mixed\\>\\.$#"
-			count: 2
 			path: src/Orm/Entity/Colony.php
 
 		-
@@ -10246,11 +9866,6 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Cannot call method getIntegrity\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 2
 			path: src/Orm/Entity/PlanetField.php
@@ -10661,7 +10276,7 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$modules type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$modules type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
@@ -10676,7 +10291,7 @@ parameters:
 			path: src/Orm/Entity/ShipBuildplan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$ships type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$ships type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipBuildplan.php
 
@@ -11306,7 +10921,7 @@ parameters:
 			path: src/Orm/Entity/TradeOffer.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$crewAssignments type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipCrew\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$crewAssignments type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipCrew\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradePost.php
 

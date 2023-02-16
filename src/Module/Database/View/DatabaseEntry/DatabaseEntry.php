@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\DatabaseEntry;
 
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -41,6 +42,8 @@ final class DatabaseEntry implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     public function __construct(
         DatabaseEntryRequestInterface $databaseEntryRequest,
         DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
@@ -49,6 +52,7 @@ final class DatabaseEntry implements ViewControllerInterface
         MapRegionRepositoryInterface $mapRegionRepository,
         StarSystemRepositoryInterface $starSystemRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         ShipRepositoryInterface $shipRepository
     ) {
         $this->databaseEntryRequest = $databaseEntryRequest;
@@ -59,6 +63,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $this->starSystemRepository = $starSystemRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipRepository = $shipRepository;
+        $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -122,7 +127,16 @@ final class DatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('REGION', $this->mapRegionRepository->find($entry_object_id));
                 break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP:
-                $game->setTemplateVar('RUMP', $this->shipRumpRepository->find($entry_object_id));
+                $rump = $this->shipRumpRepository->find($entry_object_id);
+                if ($rump === null) {
+                    return;
+                }
+
+                $game->setTemplateVar('RUMP', $rump);
+                $game->setTemplateVar(
+                    'MAX_CREW_COUNT',
+                    $this->shipCrewCalculator->getMaxCrewCountByRump($rump)
+                );
                 break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM:
                 $starSystem = $this->starSystemRepository->find($entry_object_id);

@@ -36,14 +36,14 @@ final class ShowScan implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
         $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
             $shipId,
-            $userId,
+            $user->getId(),
             $targetId
         );
 
@@ -100,6 +100,14 @@ final class ShowScan implements ViewControllerInterface
         ) {
             $game->setTemplateVar('ADVENT_DAY', date("d.m.y"));
         }
+
+        $tradePostCrewCount = null;
+        $targetTradePost = $target->getTradePost();
+
+        if ($targetTradePost !== null) {
+            $tradePostCrewCount = $targetTradePost->getCrewCountOfUser($user);
+        }
+        $game->setTemplateVar('TRADE_POST_CREW_COUNT', $tradePostCrewCount);
     }
 
     private function calculateShieldPercentage(ShipInterface $target): int

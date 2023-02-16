@@ -26,4 +26,8 @@ interface StarmapUiFactoryInterface
         int $maxx,
         int $systemId = 0
     ): UserYRow;
+
+    public function createExplorableStarmapItem(
+        ExploreableStarMapInterface $exploreableStarMap
+    ): ExplorableStarMapItem;
 }

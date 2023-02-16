@@ -6,10 +6,13 @@ namespace Stu\Module\Message\View\Overview;
 
 use request;
 use Stu\Module\Control\GameController;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageListItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderItem;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageListItem;
+use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
@@ -32,11 +35,14 @@ final class Overview implements ViewControllerInterface
 
     private ContactRepositoryInterface $contactRepository;
 
+    private PrivateMessageUiFactoryInterface $privateMessageUiFactory;
+
     public function __construct(
         OverviewRequestInterface $showPmCategoryRequest,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         IgnoreListRepositoryInterface $ignoreListRepository,
+        PrivateMessageUiFactoryInterface $privateMessageUiFactory,
         ContactRepositoryInterface $contactRepository
     ) {
         $this->showPmCategoryRequest = $showPmCategoryRequest;
@@ -44,6 +50,7 @@ final class Overview implements ViewControllerInterface
         $this->privateMessageRepository = $privateMessageRepository;
         $this->ignoreListRepository = $ignoreListRepository;
         $this->contactRepository = $contactRepository;
+        $this->privateMessageUiFactory = $privateMessageUiFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -71,7 +78,7 @@ final class Overview implements ViewControllerInterface
         if ($mark % static::PMLIMITER != 0 || $mark < 0) {
             $mark = 0;
         }
-        $maxcount = $category->getCategoryCount();
+        $maxcount = $this->privateMessageRepository->getAmountByFolder($category);
         $maxpage = ceil($maxcount / static::PMLIMITER);
         $curpage = floor($mark / static::PMLIMITER);
         $pmNavigation = [];
@@ -123,6 +130,13 @@ final class Overview implements ViewControllerInterface
             )
         );
         $game->setTemplateVar('PM_NAVIGATION', $pmNavigation);
-        $game->setTemplateVar('PM_CATEGORIES', $this->privateMessageFolderRepository->getOrderedByUser($userId));
+        $game->setTemplateVar(
+            'PM_CATEGORIES',
+            array_map(
+                fn (PrivateMessageFolderInterface $folder): PrivateMessageFolderItem =>
+                    $this->privateMessageUiFactory->createPrivateMessageFolderItem($folder),
+                $this->privateMessageFolderRepository->getOrderedByUser($userId)
+            )
+        );
     }
 }

@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreen;
 
-use Stu\Exception\AccessViolation;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Exception\AccessViolation;
 use Stu\Lib\ColonyStorageCommodityWrapper\ColonyStorageCommodityWrapper;
 use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
-use Stu\Lib\ModuleScreen\ModuleSelector;
-use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowModuleScreen implements ViewControllerInterface
@@ -31,16 +29,20 @@ final class ShowModuleScreen implements ViewControllerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private ShipCrewCalculatorInterface $shipCrewCalculator;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowModuleScreenRequestInterface $showModuleScreenRequest,
         ShipRumpRepositoryInterface $shipRumpRepository,
+        ShipCrewCalculatorInterface $shipCrewCalculator,
         ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleScreenRequest = $showModuleScreenRequest;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -114,5 +116,9 @@ final class ShowModuleScreen implements ViewControllerInterface
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
         $game->setTemplateVar('PLAN', false);
         $game->setTemplateVar('HAS_STORAGE', new ColonyStorageCommodityWrapper($colony->getStorage()));
+        $game->setTemplateVar(
+            'MAX_CREW_COUNT',
+            $this->shipCrewCalculator->getMaxCrewCountByRump($rump)
+        );
     }
 }

@@ -175,10 +175,6 @@ interface ShipRumpInterface
 
     public function hasSpecialAbility(int $value): bool;
 
-    public function getMaxCrewCount(): int;
-
-    public function getCrewObj(): ?ShipRumpCategoryRoleCrewInterface;
-
     public function getFractionId(): int;
 
     public function isAdventDoor(): ?int;

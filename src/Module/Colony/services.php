@@ -9,6 +9,8 @@ use Stu\Module\Colony\Action\ChangeName\ChangeNameRequestInterface;
 use Stu\Module\Colony\Action\DisassembleShip\DisassembleShip;
 use Stu\Module\Colony\Lib\BuildingMassActionConfiguration;
 use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
+use Stu\Module\Colony\Lib\BuildPlanDeleter;
+use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
 use Stu\Module\Colony\Lib\ColonyCorrector;
 use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
@@ -81,8 +83,6 @@ use Stu\Module\Colony\Lib\ColonyGuiHelper;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoader;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGenerator;
-use Stu\Module\Colony\Lib\PlanetGenerator\PlanetGeneratorInterface;
 use Stu\Module\Colony\View\Overview\Overview;
 use Stu\Module\Colony\View\RefreshColonyEps\RefreshColonyEps;
 use Stu\Module\Colony\View\RefreshSubspaceSection\RefreshSubspaceSection;
@@ -176,6 +176,8 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Module\Control\GameController;
 
+use Stu\PlanetGenerator\PlanetGenerator;
+use Stu\PlanetGenerator\PlanetGeneratorInterface;
 use function DI\autowire;
 
 return [
@@ -308,5 +310,6 @@ return [
         RefreshSubspaceSection::VIEW_IDENTIFIER => autowire(RefreshSubspaceSection::class),
         ShowSubspaceTelescopeScan::VIEW_IDENTIFIER => autowire(ShowSubspaceTelescopeScan::class),
         RefreshColonyEps::VIEW_IDENTIFIER => autowire(RefreshColonyEps::class)
-    ]
+    ],
+    BuildPlanDeleterInterface::class => autowire(BuildPlanDeleter::class),
 ];

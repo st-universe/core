@@ -27,7 +27,7 @@
 <metal:block metal:define-macro="userbox">
   <div class="divbody userbox">
     <div style="float: left; width: 50px;">
-      <metal:macro metal:use-macro="userprofile_link" tal:define="user data" />
+      <metal:macro metal:use-macro="useravatar" tal:define="USER data" />
     </div>
     <div style="float: left; width: 250px; margin-left: 5px;">
       <div class="darkbg">
@@ -45,16 +45,6 @@
     </div>
   </div>
 </metal:block>
-<metal:macro metal:define-macro="userprofile_link">
-  <a href="userprofile.php?uid=${user/getId}">
-    <img style="width: 50px; height: 50px;" tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
-  </a>
-</metal:macro>
-<metal:macro metal:define-macro="userprofile_responsive">
-  <a href="/userprofile.php?uid=${user/getId}">
-    <img tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
-  </a>
-</metal:macro>
 <metal:macro metal:define-macro="commoditySelection">
   <table style="width: 100%;">
     <tr>
@@ -72,7 +62,7 @@
   </table>
 </metal:macro>
 <metal:block metal:define-macro="starmap">
-  <div style="float: left">
+  <div>
     <table cellpadding="0" cellspacing="0">
       <tr>
         <td>&nbsp;</td>
@@ -154,15 +144,11 @@
   <img phptal:cache="1d per crew/getId"
     src="assets/crew/${crew/getRace/getGfxPath}/${crew/getGenderShort}/1_${crew/getType}.png" />
 </metal:block>
-<metal:macro metal:define-macro="userlist_pictures">
-  <img onclick="goToUrl('userprofile.php?uid=${user/getId}')" class="action" tal:repeat="user userlist"
-    tal:attributes="src user/getFullAvatarPath; title bbcode2txt:user/getName" height="40" width="40"
-    style="margin: 5px" />
-</metal:macro>
 <metal:macro metal:define-macro="useravatar">
   <div class="userAvatar">
-    <a href="/userprofile.php?uid=${USER/getId}" target="_blank">
-      <img tal:attributes="src USER/getFullAvatarPath; title bbcode2txt:USER/getUserName" />
+    <a href="/userprofile.php?uid=${USER/getId}">
+      <img tal:condition="USER/getAvatar" tal:attributes="src string:/${ASSET_PATHS/user}/${USER/getAvatar}.png; title bbcode2txt:USER/getUserName" />
+      <img tal:condition="not:USER/getAvatar" tal:attributes="src string:/${ASSET_PATHS/faction}/${USER/getFactionId}kn.png; title bbcode2txt:USER/getUserName" />
     </a>
   </div>
 </metal:macro>

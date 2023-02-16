@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship;
 
+use Stu\Component\Ship\Crew\ShipCrewCalculator;
+use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Nbs\NbsUtility;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\Repair\CancelRepair;
@@ -117,7 +119,7 @@ return [
             'AstroMappingHandler' => autowire(AstroMappingHandler::class),
             'ShipPostFlightTractorHandlerRepairHandler' => autowire(PostFlightTractorHandler::class)
         ],
-
         get(LoggerUtilFactoryInterface::class),
     ),
+    ShipCrewCalculatorInterface::class => autowire(ShipCrewCalculator::class),
 ];

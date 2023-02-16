@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Orm\Entity\SpacecraftEmergencyInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -13,10 +14,14 @@ final class EmergencyWrapper
 
     private UserInterface $user;
 
+    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
+
     public function __construct(
+        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         SpacecraftEmergencyInterface $emergency,
         UserInterface $user
     ) {
+        $this->playerRelationDeterminator = $playerRelationDeterminator;
         $this->emergency = $emergency;
         $this->user = $user;
     }
@@ -34,6 +39,6 @@ final class EmergencyWrapper
             return true;
         }
 
-        return $this->user->isFriend($shipUser->getId());
+        return $this->playerRelationDeterminator->isFriend($this->user, $shipUser);
     }
 }

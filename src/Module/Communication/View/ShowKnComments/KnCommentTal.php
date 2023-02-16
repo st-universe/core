@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -13,12 +14,16 @@ final class KnCommentTal implements KnCommentTalInterface
 
     private UserInterface $currentUser;
 
+    private ConfigInterface $config;
+
     public function __construct(
+        ConfigInterface $config,
         KnCommentInterface $comment,
         UserInterface $currentUser
     ) {
         $this->comment = $comment;
         $this->currentUser = $currentUser;
+        $this->config = $config;
     }
 
     public function getId(): int
@@ -62,7 +67,11 @@ final class KnCommentTal implements KnCommentTalInterface
             return '';
         }
 
-        return $this->comment->getUser()->getFullAvatarPath();
+        return sprintf(
+            '/%s/%s.png',
+            $this->config->get('game.user_avatar_path'),
+            $this->comment->getUser()->getAvatar()
+        );
     }
 
     public function isDeleteable(): bool

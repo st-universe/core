@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class LoadShields implements ActionControllerInterface
 {
@@ -21,12 +22,16 @@ final class LoadShields implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
+        PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyRepository = $colonyRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,8 +51,10 @@ final class LoadShields implements ActionControllerInterface
             $load = $colony->getEps() * ColonyEnum::SHIELDS_PER_EPS;
         }
 
-        if ($load > $colony->getMaxShields() - $colony->getShields()) {
-            $load = $colony->getMaxShields() - $colony->getShields();
+        $maxShields = $this->planetFieldRepository->getMaxShieldsOfColony($colony->getId());
+
+        if ($load > $maxShields - $colony->getShields()) {
+            $load = $maxShields - $colony->getShields();
         }
 
         if ($load < 1) {

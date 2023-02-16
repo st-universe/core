@@ -17,4 +17,6 @@ interface ChangeSettingsRequestInterface
     public function getFleetsFixedDefault(): int;
 
     public function getStartpage(): string;
+
+    public function getRpgBehavior(): int;
 }

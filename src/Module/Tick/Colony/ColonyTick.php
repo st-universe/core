@@ -6,17 +6,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Game\GameEnum;
-use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\BuildingCommodityInterface;
@@ -68,10 +68,11 @@ final class ColonyTick implements ColonyTickInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     private array $commodityArray;
 
     private array $msg = [];
-
 
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
@@ -90,6 +91,7 @@ final class ColonyTick implements ColonyTickInterface
         CreateUserAwardInterface $createUserAward,
         ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         EntityManagerInterface $entityManager,
+        ColonyLibFactoryInterface $colonyLibFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->researchedRepository = $researchedRepository;
@@ -109,6 +111,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function work(ColonyInterface $colony, array $commodityArray): void
@@ -465,7 +468,7 @@ final class ColonyTick implements ColonyTickInterface
         foreach ($commodityProduction as $obj) {
             $commodityId = $obj->getCommodityId();
             if (!array_key_exists($commodityId, $prod)) {
-                $data = new ColonyProduction;
+                $data = $this->colonyLibFactory->createColonyProduction();
                 $data->setCommodityId($commodityId);
                 $data->setProduction($obj->getAmount() * -1);
 

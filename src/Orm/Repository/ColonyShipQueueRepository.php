@@ -90,9 +90,9 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         ]);
     }
 
-    public function getByBuildplan(int $buildplanId): array
+    public function getCountByBuildplan(int $buildplanId): int
     {
-        return $this->findBy([
+        return $this->count([
             'buildplan_id' => $buildplanId
         ]);
     }

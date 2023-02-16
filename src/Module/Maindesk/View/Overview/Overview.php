@@ -10,6 +10,7 @@ use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
+use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -54,6 +55,8 @@ final class Overview implements ViewControllerInterface
 
     private CrewCountRetrieverInterface $crewCountRetriever;
 
+    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
@@ -66,6 +69,7 @@ final class Overview implements ViewControllerInterface
         KnFactoryInterface $knFactory,
         ColonyLimitCalculatorInterface $colonyLimitCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory,
+        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->historyRepository = $historyRepository;
@@ -80,6 +84,7 @@ final class Overview implements ViewControllerInterface
         $this->colonyLimitCalculator = $colonyLimitCalculator;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->crewCountRetriever = $crewCountRetriever;
+        $this->playerRelationDeterminator = $playerRelationDeterminator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -179,7 +184,7 @@ final class Overview implements ViewControllerInterface
         $emergencyWrappers = [];
 
         foreach ($emergencies as $emergency) {
-            $emergencyWrappers[] = new EmergencyWrapper($emergency, $game->getUser());
+            $emergencyWrappers[] = new EmergencyWrapper($this->playerRelationDeterminator, $emergency, $game->getUser());
         }
 
         $game->setTemplateVar('EMERGENCYWRAPPERS', $emergencyWrappers);

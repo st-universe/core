@@ -24,10 +24,6 @@ interface PrivateMessageFolderInterface
 
     public function setSpecial(int $special): PrivateMessageFolderInterface;
 
-    public function getCategoryCount(): int;
-
-    public function getCategoryCountNew(): int;
-
     public function isPMOutDir(): bool;
 
     public function isDropable(): bool;

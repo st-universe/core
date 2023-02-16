@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message;
 
+use Stu\Module\Message\Lib\PrivateMessageUiFactory;
+use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageSender;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\GameController;
@@ -113,13 +115,12 @@ return [
         EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class),
     ],
     'MESSAGE_VIEWS' => [
-        GameController::DEFAULT_VIEW => autowire(OverviewRequest::class),
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowNewPm::VIEW_IDENTIFIER => autowire(ShowNewPm::class),
         ShowWriteQuickPm::VIEW_IDENTIFIER => autowire(ShowWriteQuickPm::class),
         ShowWritePm::VIEW_IDENTIFIER => autowire(ShowWritePm::class),
         ShowContactList::VIEW_IDENTIFIER => autowire(ShowContactList::class),
         ShowIgnoreList::VIEW_IDENTIFIER => autowire(ShowIgnoreList::class),
-        Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowNewPmCategory::VIEW_IDENTIFIER => autowire(ShowNewPmCategory::class),
         ShowPmCategoryList::VIEW_IDENTIFIER => autowire(ShowPmCategoryList::class),
         ShowEditPmCategory::VIEW_IDENTIFIER => autowire(ShowEditPmCategory::class),
@@ -127,5 +128,6 @@ return [
         ShowContactModeSwitch::VIEW_IDENTIFIER => autowire(ShowContactModeSwitch::class),
         ShowContactMode::VIEW_IDENTIFIER => autowire(ShowContactMode::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
-    ]
+    ],
+    PrivateMessageUiFactoryInterface::class => autowire(PrivateMessageUiFactory::class),
 ];

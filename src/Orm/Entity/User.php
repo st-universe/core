@@ -16,15 +16,10 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Noodlehaus\ConfigInterface;
-use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
-use Stu\Orm\Repository\ContactRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserRepository")
@@ -242,7 +237,7 @@ class User implements UserInterface
     private $rgb_code = '';
 
     /**
-     * @Column(type="integer") *
+     * @Column(type="integer")
      *
      * @var int
      */
@@ -254,6 +249,13 @@ class User implements UserInterface
      * @var string|null
      */
     private $start_page;
+
+    /**
+     * @Column(type="integer", options={"default" : 0})
+     *
+     * @var int
+     */
+    private $rpg_behavior = 0;
 
     /**
      * @var null|AllianceInterface
@@ -681,31 +683,23 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getRpgBehavior(): int
+    {
+        return $this->rpg_behavior;
+    }
+
+    public function setRpgBehavior(int $RPGbehavior): UserInterface
+    {
+        $this->rpg_behavior = $RPGbehavior;
+        return $this;
+    }
+
     /**
      * @deprecated
      */
     public function getName(): string
     {
         return $this->getUserName();
-    }
-
-
-    public function getFullAvatarPath(): string
-    {
-        if (!$this->getAvatar()) {
-            return "/assets/rassen/" . $this->getFactionId() . "kn.png";
-        }
-
-        // @todo refactor
-        global $container;
-
-        $config = $container->get(ConfigInterface::class);
-
-        return sprintf(
-            '/%s/%s.png',
-            $config->get('game.user_avatar_path'),
-            $this->getAvatar()
-        );
     }
 
     public function isOnline(): bool
@@ -725,48 +719,6 @@ class User implements UserInterface
     {
         $this->alliance = $alliance;
         return $this;
-    }
-
-    public function isFriend(int $userId): bool
-    {
-        $alliance = $this->getAlliance();
-
-        // @todo refactor
-        global $container;
-
-        /**
-         * @var UserInterface
-         */
-        $otherUser = $container->get(UserRepositoryInterface::class)->find($userId);
-        $otherUserAlliance = $otherUser->getAlliance();
-
-        if ($alliance !== null && $otherUserAlliance !== null) {
-            if ($alliance == $otherUserAlliance) {
-                return true;
-            }
-
-            /**
-             * @var ?AllianceRelationInterface
-             */
-            $result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
-                [
-                    AllianceEnum::ALLIANCE_RELATION_FRIENDS,
-                    AllianceEnum::ALLIANCE_RELATION_ALLIED,
-                    AllianceEnum::ALLIANCE_RELATION_VASSAL
-                ],
-                $otherUserAlliance->getId(),
-                $alliance->getId()
-            );
-            if ($result !== null) {
-                return true;
-            }
-        }
-        $contact = $container->get(ContactRepositoryInterface::class)->getByUserAndOpponent(
-            $this->getId(),
-            (int) $userId
-        );
-
-        return $contact !== null && $contact->isFriendly();
     }
 
     public function getSessionDataUnserialized(): array

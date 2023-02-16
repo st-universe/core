@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\RepairShip;
 
 use request;
+use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -37,6 +38,8 @@ final class RepairShip implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private OrbitShipListRetrieverInterface $orbitShipListRetriever;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
@@ -44,6 +47,7 @@ final class RepairShip implements ActionControllerInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ShipRepositoryInterface $shipRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        OrbitShipListRetrieverInterface $orbitShipListRetriever,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -53,6 +57,7 @@ final class RepairShip implements ActionControllerInterface
         $this->shipRepository = $shipRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
+        $this->orbitShipListRetriever = $orbitShipListRetriever;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -78,10 +83,8 @@ final class RepairShip implements ActionControllerInterface
         $fieldFunctions = $field->getBuilding()->getFunctions()->toArray();
 
         $repairableShiplist = [];
-        foreach ($colony->getOrbitShipList($userId) as $fleet) {
-            /**
-             * @var ShipInterface $ship
-             */
+        foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
+            /** @var ShipInterface $ship */
             foreach ($fleet['ships'] as $ship) {
                 $wrapper = $this->shipWrapperFactory->wrapShip($ship);
                 if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {

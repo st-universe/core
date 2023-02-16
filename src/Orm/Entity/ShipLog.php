@@ -55,6 +55,13 @@ class ShipLog implements ShipLogInterface
     private $date;
 
     /**
+     * @Column(type="boolean", options={"default" : false})
+     *
+     * @var bool
+     */
+    private $is_private = false;
+
+    /**
      * @Column(type="integer", nullable=true)
      *
      * @var null|int

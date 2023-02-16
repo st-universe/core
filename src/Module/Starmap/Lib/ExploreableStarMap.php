@@ -9,12 +9,9 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use JBBCode\Parser;
 use Stu\Orm\Entity\MapBorderTypeInterface;
 use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\TradePostInterface;
-use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 /**
  * @Entity
@@ -53,10 +50,6 @@ class ExploreableStarMap implements ExploreableStarMapInterface
 
     /** @Column(type="integer", nullable=true) * */
     private ?int $tradepost_id;
-
-    private $tradepost;
-
-    private bool $hide = false;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\MapBorderType")
@@ -109,139 +102,33 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         return $this->user_id;
     }
 
-    private function getMapped(): ?int
+    public function getMapped(): ?int
     {
         return $this->mapped;
     }
 
-    public function getTitle(): ?string
+    public function getSystemName(): ?string
     {
-        if ($this->hide === true) {
-            return null;
-        }
-
-        $tradepost = $this->getTradepost();
-
-        return sprintf(
-            '%s%s%s',
-            $tradepost !== null ? $this->getTradepostTitle($tradepost) : '',
-            $tradepost !== null && $this->mapped !== null ? ' über ' : '',
-            $this->mapped !== null ? $this->system_name . '-System' : ''
-        );
+        return $this->system_name;
     }
 
-    private function getTradepostTitle(TradePostInterface $tradepost): string
+    public function getTradePostId(): ?int
     {
-        $licenseInfo = $tradepost->getLatestLicenseInfo();
-
-        if ($licenseInfo === null) {
-            return $this->getStringWithoutBbCode($tradepost->getName());
-        }
-
-        return sprintf(
-            '%s (Lizenz für %d Tage: %d %s)',
-            $this->getStringWithoutBbCode($tradepost->getName()),
-            $licenseInfo->getDays(),
-            $licenseInfo->getAmount(),
-            $licenseInfo->getCommodity()->getName()
-        );
+        return $this->tradepost_id;
     }
 
-    private function getStringWithoutBbCode(string $string): string
+    public function getMapBorderType(): ?MapBorderTypeInterface
     {
-        // @todo refactor
-        global $container;
-
-        $parser = $container->get(Parser::class);
-
-        return  $parser->parse($string)->getAsText();
+        return $this->mapBorderType;
     }
 
-    public function getIcon(): ?string
+    public function getAdminRegion(): ?MapRegionInterface
     {
-        if ($this->hide === true) {
-            return null;
-        }
-
-        $tradepost = $this->getTradepost();
-
-        if ($tradepost === null && $this->mapped === null) {
-            return null;
-        }
-
-        return sprintf(
-            '%s%s',
-            $tradepost !== null && !$tradepost->isNpcTradepost() ? 'tradepost' : '',
-            $this->mapped ? 'mapped' : ''
-        );
+        return $this->adminRegion;
     }
 
-    public function getHref(): ?string
+    public function getInfluenceArea(): ?StarSystemInterface
     {
-        return $this->mapped ? sprintf('database.php?SHOW_ENTRY=1&cat=7&ent=%d', $this->getMapped()) : null;
-    }
-
-    private function getTradepost(): ?TradePostInterface
-    {
-        if ($this->tradepost_id === null) {
-            return null;
-        }
-
-        if ($this->tradepost === null) {
-            // @todo refactor
-            global $container;
-
-            $this->tradepost = $container->get(TradePostRepositoryInterface::class)->find($this->tradepost_id);
-        }
-
-        return $this->tradepost;
-    }
-
-
-    public function setHide(bool $hide): ExploreableStarMapInterface
-    {
-        $this->hide = $hide;
-
-        return $this;
-    }
-
-    private function getBorder(): string
-    {
-        $borderType = $this->mapBorderType;
-        if ($borderType === null) {
-            if ($this->adminRegion === null) {
-                if ($this->influenceArea !== null) {
-                    $influenceArea = $this->influenceArea;
-                    $base = $influenceArea->getBase();
-
-                    if ($base !== null) {
-                        $user = $base->getUser();
-                        $ally = $user->getAlliance();
-
-                        if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
-                            return 'border: 1px solid ' . $ally->getRgbCode();
-                        } else if (strlen($user->getRgbCode()) > 0) {
-                            return 'border: 1px solid ' . $user->getRgbCode();
-                        }
-                    }
-                }
-            }
-        } else {
-            return 'border: 1px solid ' . $borderType->getColor();
-        }
-
-        return '';
-    }
-    public function getFieldStyle(): string
-    {
-        if ($this->hide === true) {
-            $type = 0;
-        } else {
-            $type = $this->getFieldId();
-        }
-
-        $style = "background-image: url('assets/map/" . $type . ".png');";
-        $style .= $this->getBorder();
-        return $style;
+        return $this->influenceArea;
     }
 }

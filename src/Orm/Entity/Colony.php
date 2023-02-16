@@ -23,6 +23,7 @@ use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -288,12 +289,6 @@ class Colony implements ColonyInterface
     /** @var null|int */
     private $productionsum;
 
-    /** @var null|array<int, array{name: string, ships: array<int, ShipInterface>}> */
-    private $shiplist;
-
-    /** @var null|int */
-    private $maxShields;
-
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
@@ -485,19 +480,6 @@ class Colony implements ColonyInterface
     {
         $this->shields = $shields;
         return $this;
-    }
-
-    public function getMaxShields(): int
-    {
-        if (!isset($this->maxShields)) {
-            // @todo refactor
-            global $container;
-
-            $this->maxShields = $container
-                ->get(PlanetFieldRepositoryInterface::class)
-                ->getMaxShieldsOfColony($this->getId());
-        }
-        return $this->maxShields;
     }
 
     public function getTwilightZone(): int
@@ -789,7 +771,7 @@ class Colony implements ColonyInterface
             $this->production = [];
             foreach ($result as $data) {
                 if (($data['gc'] + $data['pc']) != 0) {
-                    $this->production[$data['commodity_id']] = new ColonyProduction($data);
+                    $this->production[(int) $data['commodity_id']] = $container->get(ColonyLibFactoryInterface::class)->createColonyProduction($data);
                 }
             }
         }
@@ -814,34 +796,6 @@ class Colony implements ColonyInterface
             $this->productionsum = $sum;
         }
         return $this->productionsum;
-    }
-
-    public function getOrbitShipList(int $userId): array
-    {
-        if ($this->shiplist === null) {
-            $this->shiplist = [];
-
-            // @todo refactor
-            global $container;
-
-            $shipRepo = $container->get(ShipRepositoryInterface::class);
-            $shiplist = $shipRepo->getByLocation(
-                $this->getStarsystemMap(),
-                null
-            );
-
-            foreach ($shiplist as $obj) {
-                $this->shiplist[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
-                if (!array_key_exists('name', $this->shiplist[$obj->getFleetId()])) {
-                    if ($obj->getFleetId() == 0) {
-                        $this->shiplist[$obj->getFleetId()]['name'] = _('Einzelschiffe');
-                    } else {
-                        $this->shiplist[$obj->getFleetId()]['name'] = $obj->getFleet()->getName();
-                    }
-                }
-            }
-        }
-        return $this->shiplist;
     }
 
     public function isFree(): bool

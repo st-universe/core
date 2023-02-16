@@ -28,8 +28,7 @@
           <div style="margin: 5px">
             <div class="user_box_grid">
               <div class="user_box_avatar">
-                <img src="runtime" style="margin-right: 5px; width: 50px; height: 50px;" align="left"
-                  tal:attributes="src THIS/getUser/getFullAvatarPath" />
+                <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER THIS/getUser" />
               </div>
               <div class="user_box_details">
                 <div class="userBoxDetailName" tal:content="structure bbcode:THIS/getUser/getName">NAME</div>
@@ -181,8 +180,7 @@
           <div style="margin: 5px">
             <div class="user_box_grid">
               <div class="user_box_avatar">
-                <img src="runtime" style="margin-right: 5px; width: 50px; height: 50px;" align="left"
-                  tal:attributes="src THIS/getUser/getFullAvatarPath" />
+                <metal:macro metal:use-macro="html/macros.xhtml/useravatar" tal:define="USER THIS/getUser" />
               </div>
               <div class="user_box_details">
                 <div class="userBoxDetailName" tal:content="structure bbcode:THIS/getUser/getName">NAME</div>

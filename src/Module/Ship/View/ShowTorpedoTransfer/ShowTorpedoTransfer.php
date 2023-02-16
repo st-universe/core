@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\View\ShowTorpedoTransfer;
 
 use request;
 
+use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -23,12 +24,16 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->playerRelationDeterminator = $playerRelationDeterminator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -56,7 +61,7 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
             return;
         }
-        if ($target === null || !InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
+        if (!InteractionChecker::canInteractWith($ship, $target, $game, false, true)) {
             return;
         }
 
@@ -81,7 +86,7 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
 
         if (
             $target->getUser() !== $ship->getUser()
-            && !$target->getUser()->isFriend($ship->getUser()->getId())
+            && !$this->playerRelationDeterminator->isFriend($target->getUser(), $ship->getUser())
         ) {
             return;
         }
