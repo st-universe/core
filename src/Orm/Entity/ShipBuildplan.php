@@ -227,13 +227,11 @@ class ShipBuildplan implements ShipBuildplanInterface
 
     public function getModulesByType(int $type): array
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(BuildplanModuleRepositoryInterface::class)->getByBuildplanAndModuleType(
-            (int) $this->getId(),
-            (int) $type
-        );
+        return $this->getModules()
+            ->filter(
+                fn (BuildplanModuleInterface $buildplanModule): bool => $buildplanModule->getModuleType() === $type
+            )
+            ->toArray();
     }
 
     public function getModules(): Collection
