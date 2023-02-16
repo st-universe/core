@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Lock;
 
-use Noodlehaus\ConfigInterface;
+use Stu\Exception\InvalidParamException;
+use Stu\Module\Config\StuConfigInterface;
 
 final class LockManager implements LockManagerInterface
 {
-    private const DEFAULT_GROUP_COUNT = 1;
+    private StuConfigInterface $config;
 
-    private ConfigInterface $config;
-
-    public function __construct(ConfigInterface $config)
+    public function __construct(StuConfigInterface $config)
     {
         $this->config = $config;
     }
@@ -36,7 +35,7 @@ final class LockManager implements LockManagerInterface
     {
         return sprintf(
             '%s/%s_%d.lock',
-            $this->config->get('game.temp_dir'),
+            $this->config->getGameSettings()->getTempDir(),
             LockEnum::getLockPathIdentifier($lockType),
             $batchGroupId
         );
@@ -44,6 +43,11 @@ final class LockManager implements LockManagerInterface
 
     private function getGroupCount(int $lockType): int
     {
-        return (int)$this->config->get(LockEnum::getLockGroupConfigPath($lockType), self::DEFAULT_GROUP_COUNT);
+        switch ($lockType) {
+            case LockEnum::LOCK_TYPE_COLONY_GROUP:
+                return $this->config->getGameSettings()->getColonySettings()->getTickWorker();
+            default:
+                throw new InvalidParamException('lockType does not exist');
+        }
     }
 }

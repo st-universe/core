@@ -19,14 +19,4 @@ final class LockEnum
                 throw new InvalidParamException('lockType does not exist');
         }
     }
-
-    public static function getLockGroupConfigPath(int $lockType): string
-    {
-        switch ($lockType) {
-            case self::LOCK_TYPE_COLONY_GROUP:
-                return 'game.colony.tick_worker';
-            default:
-                throw new InvalidParamException('lockType does not exist');
-        }
-    }
 }

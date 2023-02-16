@@ -6,12 +6,12 @@ namespace Stu\Module\Admin\Action\Ticks\Colony;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
+use Stu\Module\Config\Model\ColonySettings;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
-use Stu\Module\Tick\Lock\LockEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -34,8 +34,8 @@ class ManualColonyTickTest extends StuTestCase
     /** @var MockInterface&CommodityRepositoryInterface */
     private CommodityRepositoryInterface $commodityRepository;
 
-    /** @var MockInterface&ConfigInterface */
-    private ConfigInterface $config;
+    /** @var MockInterface&StuConfigInterface */
+    private StuConfigInterface $config;
 
     /** @var MockInterface&EntityManagerInterface */
     private EntityManagerInterface $entityManager;
@@ -52,7 +52,7 @@ class ManualColonyTickTest extends StuTestCase
         $this->colonyTick = $this->mock(ColonyTickInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
-        $this->config = $this->mock(ConfigInterface::class);
+        $this->config = $this->mock(StuConfigInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->game = $this->mock(GameControllerInterface::class);
@@ -107,7 +107,7 @@ class ManualColonyTickTest extends StuTestCase
             ->andReturn(null);
 
         $this->colonyTickManager->shouldReceive('work')
-            ->with(1, ManualColonyTick::DEFAULT_GROUP_COUNT)
+            ->with(1, ColonySettings::SETTING_TICK_WORKER_DEFAULT)
             ->once();
 
         $this->game->shouldReceive('addInformation')
@@ -141,8 +141,8 @@ class ManualColonyTickTest extends StuTestCase
             ->once()
             ->andReturn($groupId);
 
-        $this->config->shouldReceive('get')
-            ->with(LockEnum::getLockGroupConfigPath(LockEnum::LOCK_TYPE_COLONY_GROUP), ManualColonyTick::DEFAULT_GROUP_COUNT)
+        $this->config->shouldReceive('getGameSettings->getColonySettings->getTickWorker')
+            ->withNoArgs()
             ->once()
             ->andReturn($groupCount);
 

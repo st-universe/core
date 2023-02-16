@@ -5,21 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Noodlehaus\ConfigInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
+use Stu\Module\Config\Model\ColonySettings;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
-use Stu\Module\Tick\Lock\LockEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ManualColonyTick implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_COLONY_TICK';
-
-    public const DEFAULT_GROUP_COUNT = 1;
 
     private ManualColonyTickRequestInterface $request;
 
@@ -31,7 +29,7 @@ final class ManualColonyTick implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private ConfigInterface $config;
+    private StuConfigInterface $config;
 
     private EntityManagerInterface $entityManager;
 
@@ -41,7 +39,7 @@ final class ManualColonyTick implements ActionControllerInterface
         ColonyTickInterface $colonyTick,
         ColonyRepositoryInterface $colonyRepository,
         CommodityRepositoryInterface $commodityRepository,
-        ConfigInterface $config,
+        StuConfigInterface $config,
         EntityManagerInterface $entityManager
     ) {
         $this->request = $request;
@@ -83,17 +81,14 @@ final class ManualColonyTick implements ActionControllerInterface
 
             $game->addInformationf("Der Kolonie-Tick für die Kolonie-Gruppe %d/%d wurde durchgeführt!", $groupId, $groupCount);
         } else {
-            $this->colonyTickManager->work(1, self::DEFAULT_GROUP_COUNT);
+            $this->colonyTickManager->work(1, ColonySettings::SETTING_TICK_WORKER_DEFAULT);
             $game->addInformation("Der Kolonie-Tick für alle Kolonien wurde durchgeführt!");
         }
     }
 
     private function getGroupCount(): int
     {
-        return (int)$this->config->get(
-            LockEnum::getLockGroupConfigPath(LockEnum::LOCK_TYPE_COLONY_GROUP),
-            self::DEFAULT_GROUP_COUNT
-        );
+        return $this->config->getGameSettings()->getColonySettings()->getTickWorker();
     }
 
     private function executeTickForSingleColony(int $colonyId, GameControllerInterface $game): void
