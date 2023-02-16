@@ -68,8 +68,6 @@ interface PlanetFieldInterface
 
     public function getDayNightPrefix(): string;
 
-    public function getTerraformingState(): ?ColonyTerraformingInterface;
-
     public function getBuildProgress(): int;
 
     public function getOverlayWidth(): int;
@@ -79,6 +77,4 @@ interface PlanetFieldInterface
     public function isColonizeAble(): bool;
 
     public function getConstructionStatusBar(): string;
-
-    public function getTerraformingStatusBar(): string;
 }

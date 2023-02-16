@@ -12,10 +12,8 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
-use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldRepository")
@@ -121,9 +119,6 @@ class PlanetField implements PlanetFieldInterface
 
     /** @var bool */
     private $buildmode = false;
-
-    /** @var null|ColonyTerraformingInterface */
-    private $terraformingState;
 
     public function getId(): int
     {
@@ -340,20 +335,6 @@ class PlanetField implements PlanetFieldInterface
         return $this->getFieldId() % $this->getColony()->getSurfaceWidth() < -$twilightZone ? 'n' : 't';
     }
 
-    public function getTerraformingState(): ?ColonyTerraformingInterface
-    {
-        if ($this->terraformingState === null) {
-            // @todo refactor
-            global $container;
-
-            $this->terraformingState = $container->get(ColonyTerraformingRepositoryInterface::class)->getByColonyAndField(
-                (int) $this->getColonyId(),
-                (int) $this->getId()
-            );
-        }
-        return $this->terraformingState;
-    }
-
     public function getBuildProgress(): int
     {
         $start = $this->getBuildtime() - $this->getBuilding()->getBuildTime();
@@ -387,19 +368,6 @@ class PlanetField implements PlanetFieldInterface
             ->setLabel(_('Fortschritt'))
             ->setMaxValue($this->getBuilding()->getBuildtime())
             ->setValue($this->getBuildProgress())
-            ->render();
-    }
-
-    /**
-     * @todo temporary, remove it.
-     */
-    public function getTerraformingStatusBar(): string
-    {
-        return (new TalStatusBar())
-            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
-            ->setLabel(_('Fortschritt'))
-            ->setMaxValue($this->getTerraforming()->getDuration())
-            ->setValue($this->getTerraformingState()->getProgress())
             ->render();
     }
 }

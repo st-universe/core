@@ -10,10 +10,13 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
@@ -39,6 +42,8 @@ final class ShowField implements ViewControllerInterface
 
     private BuildingUpgradeRepositoryInterface $buildingUpgradeRepository;
 
+    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
@@ -48,6 +53,7 @@ final class ShowField implements ViewControllerInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         TerraformingRepositoryInterface $terraformingRepository,
         BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
+        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -59,6 +65,7 @@ final class ShowField implements ViewControllerInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->terraformingRepository = $terraformingRepository;
         $this->buildingUpgradeRepository = $buildingUpgradeRepository;
+        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -103,6 +110,21 @@ final class ShowField implements ViewControllerInterface
             $upgradeOptions = [];
         }
 
+        $terraFormingState = $this->colonyTerraformingRepository->getByColonyAndField(
+            $field->getColonyId(),
+            $field->getId()
+        );
+
+        $terraFormingBar = null;
+        if ($terraFormingState !== null) {
+            $terraFormingBar = (new TalStatusBar())
+                ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+                ->setLabel('Fortschritt')
+                ->setMaxValue($terraFormingState->getTerraforming()->getDuration())
+                ->setValue($terraFormingState->getProgress())
+                ->render();
+        }
+
         $game->setPageTitle(sprintf('Feld %d - Informationen', $field->getFieldId()));
         $game->setMacroInAjaxWindow('html/colonymacros.xhtml/fieldaction');
 
@@ -134,6 +156,14 @@ final class ShowField implements ViewControllerInterface
         $game->setTemplateVar(
             'UPGRADE_OPTIONS',
             $upgradeOptions
+        );
+        $game->setTemplateVar(
+            'TERRAFORMING_BAR',
+            $terraFormingBar
+        );
+        $game->setTemplateVar(
+            'TERRAFORMING_STATE',
+            $terraFormingState
         );
     }
 }

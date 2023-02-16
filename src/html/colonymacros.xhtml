@@ -1685,7 +1685,7 @@
                   <img src="assets/generated/fields/${FIELD/getTerraforming/getFromFieldTypeId}.png" />
                 </td>
                 <td style="vertical-align: middle; width: 50px; text-align: center;">
-                  <div style="padding-top: 5px;" tal:content="structure FIELD/getTerraformingStatusBar">STATUSBAR</div>
+                  <div style="padding-top: 5px;" tal:content="structure TERRAFORMING_BAR">STATUSBAR</div>
                 </td>
                 <td style="width: 45px; text-align: center;">
                   <img src="assets/generated/fields/${FIELD/getTerraforming/getToFieldTypeId}.png" />
@@ -1693,7 +1693,7 @@
               </tr>
               <tr>
                 <td colspan="3" style="text-align: center;">
-                  Fertigstellung: <span tal:replace="datetime:FIELD/getTerraformingState/getFinishDate">FINISH</span>
+                  Fertigstellung: <span tal:replace="datetime:TERRAFORMING_STATE/getFinishDate">FINISH</span>
                 </td>
               </tr>
             </table>

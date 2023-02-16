@@ -9851,18 +9851,8 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Cannot call method getDuration\\(\\) on Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetField.php
-
-		-
 			message: "#^Cannot call method getIntegrity\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 2
-			path: src/Orm/Entity/PlanetField.php
-
-		-
-			message: "#^Cannot call method getProgress\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyTerraformingInterface\\|null\\.$#"
-			count: 1
 			path: src/Orm/Entity/PlanetField.php
 
 		-

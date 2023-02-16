@@ -12,7 +12,7 @@ use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Tal\Exception\DiContainerNotSetException;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
+use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 
 final class TalHelper
 {
@@ -115,7 +115,10 @@ final class TalHelper
         $building = $planetField->getBuilding();
 
         if ($building === null) {
-            $terraFormingState = $planetField->getTerraformingState();
+            $terraFormingState = self::getDic()->get(ColonyTerraformingRepositoryInterface::class)->getByColonyAndField(
+                $planetField->getColonyId(),
+                $planetField->getId()
+            );
             if ($terraFormingState !== null) {
                 return sprintf(
                     '%s läuft bis %s',
