@@ -31,6 +31,6 @@ class TickManagerRunnerTest extends StuTestCase
             ->once();
 
 
-        $this->subject->run();
+        $this->subject->run(1, 1);
     }
 }

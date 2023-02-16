@@ -57,24 +57,22 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         ]);
     }
 
-    public function getByTick(int $tickId): array
+    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(CrewTraining::class, 'ct');
-        $rsm->addFieldResult('ct', 'id', 'id');
-        $rsm->addFieldResult('ct', 'colony_id', 'colony_id');
-        $rsm->addFieldResult('ct', 'user_id', 'user_id');
-
         return $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT ct.id,ct.colony_id,ct.user_id FROM stu_crew_training ct WHERE ct.user_id IN (
-                    SELECT u.id FROM stu_user u WHERE u.id != :idNoOne AND tick = :tickId
-                )',
-                $rsm
+            ->createQuery(
+                sprintf(
+                    'SELECT ct
+                    FROM %s ct
+                    WHERE MOD(ct.colony_id, :groupCount) + 1 = :groupId
+                    AND ct.user_id != :idNoOne',
+                    CrewTraining::class
+                ),
             )
             ->setParameters([
-                'idNoOne' => GameEnum::USER_NOONE,
-                'tickId' => $tickId
+                'groupId' => $batchGroup,
+                'groupCount' => $batchGroupCount,
+                'idNoOne' => GameEnum::USER_NOONE
             ])
             ->getResult();
     }

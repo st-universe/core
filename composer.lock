@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "964e0b436063eb63402608d6ac732169",
+    "content-hash": "332bf74021c58325946d14f10751fa22",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -4019,12 +4019,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/planet-generator.git",
-                "reference": "d053fed88d82e9d0968e39742b06c750df40802e"
+                "reference": "95f400217a3fb2e0c65a6ff3d856a18f2b153049"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/d053fed88d82e9d0968e39742b06c750df40802e",
-                "reference": "d053fed88d82e9d0968e39742b06c750df40802e",
+                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/95f400217a3fb2e0c65a6ff3d856a18f2b153049",
+                "reference": "95f400217a3fb2e0c65a6ff3d856a18f2b153049",
                 "shasum": ""
             },
             "require": {
@@ -4060,7 +4060,7 @@
                 "issues": "https://github.com/st-universe/planet-generator/issues",
                 "source": "https://github.com/st-universe/planet-generator/tree/master"
             },
-            "time": "2023-02-15T19:00:21+00:00"
+            "time": "2023-02-15T19:51:15+00:00"
         },
         {
             "name": "st-universe/starsystem-generator",
@@ -6616,6 +6616,57 @@
             "time": "2020-07-09T08:09:16+00:00"
         },
         {
+            "name": "mikey179/vfsstream",
+            "version": "v1.6.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bovigo/vfsStream.git",
+                "reference": "17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f",
+                "reference": "17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "org\\bovigo\\vfs\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Frank Kleine",
+                    "homepage": "http://frankkleine.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Virtual file system to mock the real file system in unit tests.",
+            "homepage": "http://vfs.bovigo.org/",
+            "support": {
+                "issues": "https://github.com/bovigo/vfsStream/issues",
+                "source": "https://github.com/bovigo/vfsStream/tree/master",
+                "wiki": "https://github.com/bovigo/vfsStream/wiki"
+            },
+            "time": "2022-02-23T02:02:42+00:00"
+        },
+        {
             "name": "mockery/mockery",
             "version": "1.5.1",
             "source": {
@@ -8525,12 +8576,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "22a88128519a0883b6fba00831718b5ee5e2e470"
+                "reference": "3ef3bb167fa9697087def0c456a706e4a6dab208"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/22a88128519a0883b6fba00831718b5ee5e2e470",
-                "reference": "22a88128519a0883b6fba00831718b5ee5e2e470",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/3ef3bb167fa9697087def0c456a706e4a6dab208",
+                "reference": "3ef3bb167fa9697087def0c456a706e4a6dab208",
                 "shasum": ""
             },
             "require": {
@@ -8549,7 +8600,7 @@
                 "issues": "https://github.com/st-universe/assets/issues",
                 "source": "https://github.com/st-universe/assets/tree/master"
             },
-            "time": "2023-02-15T18:20:39+00:00"
+            "time": "2023-02-15T19:32:40+00:00"
         },
         {
             "name": "symfony/finder",

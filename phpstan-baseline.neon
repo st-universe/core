@@ -1286,11 +1286,6 @@ parameters:
 			path: src/Module/Admin/Action/StartMirrorWorld.php
 
 		-
-			message: "#^Parameter \\#1 \\$colony of method Stu\\\\Module\\\\Tick\\\\Colony\\\\ColonyTickInterface\\:\\:work\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface, Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Ticks/DoManualColonyTick.php
-
-		-
 			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Tick\\\\Ship\\\\ShipTickInterface\\:\\:work\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/Ticks/DoManualShipTick.php

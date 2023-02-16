@@ -59,7 +59,7 @@ class ColonyTickRunnerTest extends StuTestCase
             ->once();
 
         $this->colonyTickManager->shouldReceive('work')
-            ->with(1)
+            ->with(1, 1)
             ->once()
             ->andThrow(new Exception($error));
 
@@ -70,7 +70,7 @@ class ColonyTickRunnerTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->run();
+        $this->subject->run(1, 1);
     }
 
     public function testRunExecutesColonyTick(): void
@@ -86,7 +86,7 @@ class ColonyTickRunnerTest extends StuTestCase
             ->once();
 
         $this->colonyTickManager->shouldReceive('work')
-            ->with(1)
+            ->with(2, 5)
             ->once();
 
         $this->benchmark->shouldReceive('end')
@@ -102,6 +102,6 @@ class ColonyTickRunnerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->subject->run();
+        $this->subject->run(2, 5);
     }
 }

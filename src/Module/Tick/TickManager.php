@@ -6,7 +6,6 @@ use Stu\Component\Game\TimeConstants;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
@@ -16,8 +15,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TickManager implements TickManagerInterface
 {
-    public const PROCESS_COUNT = 1;
-
     private GameTurnRepositoryInterface $gameTurnRepository;
 
     private UserLockRepositoryInterface $userLockRepository;
@@ -50,7 +47,6 @@ final class TickManager implements TickManagerInterface
     {
         $turn = $this->gameTurnRepository->getCurrent();
         $this->endTurn($turn);
-        $this->mainLoop();
         $this->reduceUserLocks();
         $newTurn = $this->startTurn($turn);
         $this->createGameTurnStats($newTurn);
@@ -73,16 +69,6 @@ final class TickManager implements TickManagerInterface
         $this->gameTurnRepository->save($obj);
 
         return $obj;
-    }
-
-    private function mainLoop(): void
-    {
-        while (true) {
-            if ($this->hitLockFiles() === false) {
-                break;
-            }
-            sleep(1);
-        }
     }
 
     private function reduceUserLocks(): void
@@ -127,15 +113,5 @@ final class TickManager implements TickManagerInterface
 
         $this->gameTurnStatsRepository->save($stats);
         $this->loggerUtil->log('saved stats');
-    }
-
-    private function hitLockFiles(): bool
-    {
-        for ($i = 1; $i <= self::PROCESS_COUNT; $i++) {
-            if (@file_exists(ColonyTickManager::LOCKFILE_DIR . 'col' . $i . '.lock')) {
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -40,7 +40,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
     /**
      * @return ColonyInterface[]
      */
-    public function getByTick(int $tick): iterable;
+    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): iterable;
 
     /**
      * @return ColonyInterface[]

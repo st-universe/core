@@ -45,7 +45,7 @@ final class ShipTickRunner extends AbstractTickRunner
         $this->shipTickManager = $shipTickManager;
     }
 
-    public function run(): void
+    public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->loggerUtil->init('mail', LoggerEnum::LEVEL_ERROR);
 

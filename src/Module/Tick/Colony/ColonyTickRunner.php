@@ -18,9 +18,6 @@ use Ubench;
  */
 final class ColonyTickRunner extends AbstractTickRunner
 {
-    // currently, there is just a single process - so hardcode it
-    private const COLONY_TICK_ID = 1;
-
     private EntityManagerInterface $entityManager;
     private ColonyTickManagerInterface $colonyTickManager;
     private FailureEmailSenderInterface $failureEmailSender;
@@ -41,17 +38,21 @@ final class ColonyTickRunner extends AbstractTickRunner
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function run(): void
+    public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->entityManager->beginTransaction();
 
         try {
-            $this->colonyTickManager->work(self::COLONY_TICK_ID);
+            $this->colonyTickManager->work($batchGroup, $batchGroupCount);
 
             $this->entityManager->flush();
             $this->entityManager->commit();
 
-            $this->loggerUtil->init('COLOTICK', LoggerEnum::LEVEL_WARNING);
+            $this->loggerUtil->init(sprintf(
+                'COLOTICK_%dof%d',
+                $batchGroup,
+                $batchGroupCount
+            ), LoggerEnum::LEVEL_WARNING);
             $this->logBenchmarkResult();
         } catch (Throwable $e) {
             $this->entityManager->rollback();
@@ -59,8 +60,10 @@ final class ColonyTickRunner extends AbstractTickRunner
             $this->failureEmailSender->sendMail(
                 'stu colonytick failure',
                 sprintf(
-                    "Current system time: %s\nThe colonytick cron caused an error:\n\n%s\n\n%s",
+                    "Current system time: %s\nThe colonytick cron (group %d/%d) caused an error:\n\n%s\n\n%s",
                     date('Y-m-d H:i:s'),
+                    $batchGroup,
+                    $batchGroupCount,
                     $e->getMessage(),
                     $e->getTraceAsString()
                 )

@@ -41,7 +41,7 @@ final class MaintenanceTickRunner implements TickRunnerInterface
         $this->failureEmailSender = $failureEmailSender;
     }
 
-    public function run(): void
+    public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE);
 

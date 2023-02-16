@@ -71,7 +71,7 @@ class ShipTickRunnerTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->run();
+        $this->subject->run(1, 1);
     }
 
     public function testRunRunsShipTick(): void
@@ -103,6 +103,6 @@ class ShipTickRunnerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->subject->run();
+        $this->subject->run(1, 1);
     }
 }

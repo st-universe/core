@@ -20,7 +20,7 @@ final class TickManagerRunner implements TickRunnerInterface
         $this->tickManager = $tickManager;
     }
 
-    public function run(): void
+    public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->tickManager->work();
     }

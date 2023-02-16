@@ -13,5 +13,5 @@ interface TickRunnerInterface
      *
      * @throws Throwable
      */
-    public function run(): void;
+    public function run(int $batchGroup, int $batchGroupCount): void;
 }

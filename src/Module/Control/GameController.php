@@ -10,6 +10,7 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\AccessViolation;
+use Stu\Exception\EntityLockedException;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\SanityCheckException;
@@ -495,6 +496,8 @@ final class GameController implements GameControllerInterface
                 $this->executeCallback($actions, $gameRequest);
             } catch (SanityCheckException $e) {
                 $this->sanityCheckExceptions[] = $e;
+            } catch (EntityLockedException $e) {
+                $this->addInformation($e->getMessage());
             }
             $actionMs = hrtime(true) - $startTime;
 

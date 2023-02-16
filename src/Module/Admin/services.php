@@ -18,6 +18,9 @@ use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequestInterface;
 use Stu\Module\Admin\Action\ResetCaches;
 use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\Action\StartMirrorWorld;
+use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTick;
+use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequest;
+use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequestInterface;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Admin\View\Map\ShowMapEditor;
@@ -31,7 +34,6 @@ use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditFieldRequestInte
 use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Admin\Action\Ticks\DoColonyCorrection;
-use Stu\Module\Admin\Action\Ticks\DoManualColonyTick;
 use Stu\Module\Admin\Action\Ticks\DoManualMaintenance;
 use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
 use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
@@ -53,11 +55,12 @@ return [
     ShowSystemRequestInterface::class => autowire(ShowSystemRequest::class),
     ShowSystemEditFieldRequestInterface::class => autowire(ShowSystemEditFieldRequest::class),
     EditSystemFieldRequestInterface::class => autowire(EditSystemFieldRequest::class),
+    ManualColonyTickRequestInterface::class => autowire(ManualColonyTickRequest::class),
     'ADMIN_ACTIONS' => [
         EditField::ACTION_IDENTIFIER => autowire(EditField::class),
         EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
-        DoManualColonyTick::ACTION_IDENTIFIER => autowire(DoManualColonyTick::class),
+        ManualColonyTick::ACTION_IDENTIFIER => autowire(ManualColonyTick::class),
         DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class)
             ->constructorParameter(
                 'handlerList',
