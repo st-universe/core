@@ -39,8 +39,7 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
                 'SELECT tp.id, tp.name, COUNT(tt.tradepost_id) as transactions
                 FROM stu_trade_transaction tt
                 LEFT JOIN stu_trade_posts tp ON tp.id = tt.tradepost_id
-                WHERE tt.date > :sevendays
-                    AND tt.tradepost_id > 0
+                WHERE tt.date > :sevendays AND tt.tradepost_id > 0 AND tp.id > 0
                 GROUP BY tp.id ORDER BY transactions DESC LIMIT 10',
                 $rsm
             )
