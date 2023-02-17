@@ -91,10 +91,15 @@
     "qa": [
       "@composer tests",
       "@composer stan"
+    ],
+    "gen:assets": [
+      "@php src/Public/assets/generator/building_generator/gen.php",
+      "@php src/Public/assets/generator/field_generator/generator.php"
     ]
   },
   "scripts-descriptions": {
-    "qa": "Executes alle qa related action"
+    "qa": "Executes alle qa related action",
+    "gen:assets": "Generates asset images"
   },
   "extra": {
     "installer-paths": {
