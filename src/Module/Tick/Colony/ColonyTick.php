@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingManagerInterface;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -70,6 +71,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     private array $commodityArray;
 
     private array $msg = [];
@@ -92,6 +95,7 @@ final class ColonyTick implements ColonyTickInterface
         ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         EntityManagerInterface $entityManager,
         ColonyLibFactoryInterface $colonyLibFactory,
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->researchedRepository = $researchedRepository;
@@ -112,6 +116,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function work(ColonyInterface $colony, array $commodityArray): void
@@ -414,7 +419,7 @@ final class ColonyTick implements ColonyTickInterface
                 continue;
             }
 
-            if ($colony->hasActiveBuildingWithFunction($buildingFunction)) {
+            if ($this->colonyFunctionManager->hasActiveFunction($colony, $buildingFunction, false)) {
                 $this->colonyStorageManager->upperStorage(
                     $colony,
                     $queue->getModule()->getCommodity(),

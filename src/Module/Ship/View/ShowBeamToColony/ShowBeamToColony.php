@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowBeamToColony;
 
 use request;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
@@ -19,12 +21,16 @@ final class ShowBeamToColony implements ViewControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        ColonyLibFactoryInterface $colonyLibFactory,
         ColonyRepositoryInterface $colonyRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->colonyRepository = $colonyRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,7 +41,7 @@ final class ShowBeamToColony implements ViewControllerInterface
             request::indInt('id'),
             $user->getId()
         );
-        $game->setPageTitle(_('Zu Kolonie beamen'));
+        $game->setPageTitle('Zu Kolonie beamen');
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
         $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
@@ -48,5 +54,9 @@ final class ShowBeamToColony implements ViewControllerInterface
         $game->setTemplateVar('targetColony', $target);
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('OWNS_TARGET', $target->getUser() === $user);
+        $game->setTemplateVar(
+            'SHOW_SHIELD_FREQUENCY',
+            $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled() && $target->getUser() !== $user
+        );
     }
 }

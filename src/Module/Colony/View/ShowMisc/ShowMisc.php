@@ -49,5 +49,9 @@ final class ShowMisc implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_OPTION));
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar(
+            'SHIELDING_MANAGER',
+            $this->colonyLibFactory->createColonyShieldingManager($colony)
+        );
     }
 }

@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
@@ -17,10 +18,14 @@ final class ApplyDamage implements ApplyDamageInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
+        ColonyLibFactoryInterface $colonyLibFactory,
         ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipSystemManager = $shipSystemManager;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function damage(
@@ -93,7 +98,7 @@ final class ApplyDamage implements ApplyDamageInterface
     ): array {
         $msg = [];
         $colony = $target->getColony();
-        if (!$isOrbitField && $colony->getShieldState() && $colony->getShields() > 0) {
+        if (!$isOrbitField && $this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
             $damage = (int) $damage_wrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_SHIELDS, true);
             if ($damage > $colony->getShields()) {
                 $msg[] = "- Schildschaden: " . $colony->getShields();

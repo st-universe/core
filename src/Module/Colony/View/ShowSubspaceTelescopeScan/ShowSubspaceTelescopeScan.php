@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowSubspaceTelescopeScan;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -31,16 +32,20 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         ColonyRepositoryInterface $colonyRepository,
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->colonyRepository = $colonyRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,7 +57,7 @@ final class ShowSubspaceTelescopeScan implements ViewControllerInterface
             $userId
         );
 
-        if ($colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE, [0, 1]) < 1) {
+        if (!$this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
             return;
         }
 

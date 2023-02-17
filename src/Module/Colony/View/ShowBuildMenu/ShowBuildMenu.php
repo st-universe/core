@@ -82,5 +82,9 @@ final class ShowBuildMenu implements ViewControllerInterface
         $game->setTemplateVar('BUILD_MENUS', $menus);
         $game->setTemplateVar('BUILD_MENU', new BuildMenuWrapper());
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar(
+            'SHIELDING_MANAGER',
+            $this->colonyLibFactory->createColonyShieldingManager($colony)
+        );
     }
 }

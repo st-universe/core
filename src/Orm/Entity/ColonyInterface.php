@@ -75,10 +75,6 @@ interface ColonyInterface
 
     public function getTwilightZone(): int;
 
-    public function hasShields(): bool;
-
-    public function getShieldState(): bool;
-
     public function getShieldFrequency(): ?int;
 
     public function setShieldFrequency(?int $shieldFrequency): ColonyInterface;
@@ -201,13 +197,6 @@ interface ColonyInterface
     public function getFreeAssignmentCount(): int;
 
     public function clearCache(): void;
-
-    public function hasActiveBuildingWithFunction(int $function_id): bool;
-
-    /**
-     * @param array<int> $states
-     */
-    public function getBuildingWithFunctionCount(int $function_id, array $states = [1]): int;
 
     public function lowerEps(int $value): void;
 

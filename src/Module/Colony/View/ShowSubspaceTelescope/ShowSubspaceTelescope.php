@@ -8,6 +8,7 @@ use ColonyMenu;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -28,14 +29,18 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 
     private StarmapUiFactoryInterface $starmapUiFactory;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         StarmapUiFactoryInterface $starmapUiFactory,
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         ColonyGuiHelperInterface $colonyGuiHelper
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->starmapUiFactory = $starmapUiFactory;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -47,7 +52,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
             $userId
         );
 
-        if ($colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE, [0, 1]) < 1) {
+        if (!$this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {
             return;
         }
 

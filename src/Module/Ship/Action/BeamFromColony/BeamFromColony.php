@@ -6,12 +6,13 @@ namespace Stu\Module\Ship\Action\BeamFromColony;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\InteractionChecker;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -35,12 +36,15 @@ final class BeamFromColony implements ActionControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipRepositoryInterface $shipRepository,
+        ColonyLibFactoryInterface $colonyLibFactory,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -49,6 +53,7 @@ final class BeamFromColony implements ActionControllerInterface
         $this->shipStorageManager = $shipStorageManager;
         $this->shipRepository = $shipRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -75,7 +80,7 @@ final class BeamFromColony implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUserId() !== $userId && $target->getShieldState()) {
+        if ($target->getUserId() !== $userId && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled()) {
             if ($target->getShieldFrequency() !== 0) {
 
                 $frequency = (int) request::postInt('frequency');

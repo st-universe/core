@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Colony\Shields\ColonyShieldingManager;
+use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
@@ -61,7 +64,10 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     private TalPageInterface $talPage;
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
+
     private CommodityRepositoryInterface $commodityRepository;
+
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -80,6 +86,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         TalPageInterface $talPage,
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         CommodityRepositoryInterface $commodityRepository,
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
@@ -99,6 +106,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->talPage = $talPage;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
         $this->commodityRepository = $commodityRepository;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function createBuildingFunctionTal(
@@ -218,6 +226,16 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         return new ColonyProduction(
             $this->commodityRepository,
             $production
+        );
+    }
+
+    public function createColonyShieldingManager(
+        ColonyInterface $colony
+    ): ColonyShieldingManagerInterface {
+        return new ColonyShieldingManager(
+            $this->planetFieldRepository,
+            $this->colonyFunctionManager,
+            $colony
         );
     }
 }

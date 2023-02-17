@@ -605,21 +605,21 @@
         </div>
         <br />
       </tal:block>
-      <div class="box" tal:condition="php:COLONY.hasShields() OR BUILDABLE_TORPEDO_TYPES">
+      <div class="box" tal:condition="php:SHIELDING_MANAGER.hasShielding() OR BUILDABLE_TORPEDO_TYPES">
         <div class="box_title">Schilde + Orbitalverteidigung</div>
         <div class="box_body">
           <table class="tcal">
-            <tal:block tal:condition="COLONY/hasShields">
+            <tal:block tal:condition="SHIELDING_MANAGER/hasShielding">
               <tr>
                 <td colspan="2">
-                  <a tal:condition="not:COLONY/getShieldState"
+                  <a tal:condition="not:SHIELDING_MANAGER/isShieldingEnabled"
                     href="?B_ACTIVATE_SHIELDS=1&id=${COLONY/getId}&sstr=${THIS/getSessionString}"
                     onmouseover="cp('shields','buttons/shldac1')" onmouseout="cp('shields','buttons/shldac2')">
                     <img src="/assets/buttons/shldac2.png" name="shields" /> Aktivieren
                   </a>
 
                   <a href="?B_DEACTIVATE_SHIELDS=1&id=${COLONY/getId}&sstr=${THIS/getSessionString}"
-                    tal:condition="COLONY/getShieldState" onmouseover="cp('shields','buttons/shldac2')"
+                    tal:condition="SHIELDING_MANAGER/isShieldingEnabled" onmouseover="cp('shields','buttons/shldac2')"
                     onmouseout="cp('shields','buttons/shldac1')">
                     <img src="/assets/buttons/shldac1.png" name="shields" /> Deaktivieren
                   </a>
@@ -627,7 +627,7 @@
                     onkeydown="event.key == 'Enter' &&  $('loadshield_button').click()" />
                   <input type="submit" class="button" value="laden" name="B_LOAD_SHIELDS" id="loadshield_button" />
                   <input type="button" class="button" value="max"
-                    onclick="$('loadshield_value').value = '${MAX_SHIELDS}'; $('loadshield_button').click()" />
+                    onclick="$('loadshield_value').value = '${SHIELDING_MANAGER/getMaxShielding}'; $('loadshield_button').click()" />
                 </td>
               </tr>
               <tr>
@@ -817,7 +817,7 @@
       <metal:block metal:use-macro="html/colonymacros.xhtml/colonyeps" />
     </div>
     <br />
-    <tal:block tal:condition="COLONY/hasShields">
+    <tal:block tal:condition="SHIELDING_MANAGER/hasShielding">
       <div id="colonyshields">
         <metal:block metal:use-macro="html/colonymacros.xhtml/colonyshields" />
       </div>

@@ -10,14 +10,13 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\Index;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
@@ -26,8 +25,6 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
-use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")
@@ -274,9 +271,6 @@ class Colony implements ColonyInterface
      */
     private $depositMinings;
 
-    /** @var array<int, bool> */
-    private $has_active_building_by_function = [];
-
     /** @var null|int */
     private $positive_effect_secondary;
 
@@ -514,17 +508,6 @@ class Colony implements ColonyInterface
         }
 
         return $twilightZone;
-    }
-
-    public function hasShields(): bool
-    {
-        return $this->hasBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR, [0, 1]);
-    }
-
-    public function getShieldState(): bool
-    {
-        return $this->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)
-            && $this->getShields() > 0;
     }
 
     public function getShieldFrequency(): ?int
@@ -942,33 +925,6 @@ class Colony implements ColonyInterface
     public function clearCache(): void
     {
         $this->production = null;
-    }
-
-    public function hasActiveBuildingWithFunction(int $function_id): bool
-    {
-        if (!isset($this->has_active_building_by_function[$function_id])) {
-            $this->has_active_building_by_function[$function_id] = $this->hasBuildingWithFunction($function_id);
-        }
-        return $this->has_active_building_by_function[$function_id];
-    }
-
-    private function hasBuildingWithFunction(int $function_id, array $states = [1]): bool
-    {
-        return $this->getBuildingWithFunctionCount($function_id, $states) > 0;
-    }
-
-    public function getBuildingWithFunctionCount(int $function_id, array $states = [1]): int
-    {
-        // @todo refactor
-        global $container;
-
-        return $container
-            ->get(PlanetFieldRepositoryInterface::class)
-            ->getCountByColonyAndBuildingFunctionAndState(
-                $this->getId(),
-                [$function_id],
-                $states
-            );
     }
 
     public function lowerEps(int $value): void

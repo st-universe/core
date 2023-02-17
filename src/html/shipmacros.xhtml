@@ -861,7 +861,7 @@
       <tr>
         <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
-      <tr tal:condition="php:targetColony.getShieldState() AND NOT OWNS_TARGET">
+      <tr tal:condition="SHOW_SHIELD_FREQUENCY">
         <td>Schildfrequenz:</td>
         <td><input type="text" size="3" name="frequency" /> MHz</td>
       </tr>
@@ -940,7 +940,7 @@
       <tr>
         <td colspan="3">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
-      <tr tal:condition="php:targetColony.getShieldState() AND NOT OWNS_TARGET">
+      <tr tal:condition="SHOW_SHIELD_FREQUENCY">
         <td>Schildfrequenz:</td>
         <td><input type="text" size="3" name="frequency" /> MHz</td>
       </tr>

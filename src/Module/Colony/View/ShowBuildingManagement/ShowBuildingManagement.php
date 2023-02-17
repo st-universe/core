@@ -74,5 +74,9 @@ final class ShowBuildingManagement implements ViewControllerInterface
         $game->setTemplateVar('BUILDING_LIST', $list);
         $game->setTemplateVar('USEABLE_COMMODITY_LIST', $this->commodityRepository->getByBuildingsOnColony((int) $colony->getId()));
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar(
+            'SHIELDING_MANAGER',
+            $this->colonyLibFactory->createColonyShieldingManager($colony)
+        );
     }
 }

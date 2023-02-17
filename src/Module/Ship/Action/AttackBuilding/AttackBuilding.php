@@ -6,6 +6,8 @@ namespace Stu\Module\Ship\Action\AttackBuilding;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyFunctionManager;
+use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -57,6 +59,8 @@ final class AttackBuilding implements ActionControllerInterface
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -70,6 +74,7 @@ final class AttackBuilding implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         AlertRedHelperInterface $alertRedHelper,
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
+        ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -85,6 +90,7 @@ final class AttackBuilding implements ActionControllerInterface
         $this->alertRedHelper = $alertRedHelper;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
+        $this->colonyFunctionManager = $colonyFunctionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -162,7 +168,11 @@ final class AttackBuilding implements ActionControllerInterface
         $this->addMessageMerge($informations);
 
         // ORBITAL DEFENSE
-        $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX);
+        $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
+            $colony,
+            BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX,
+            [ColonyFunctionManager::STATE_ENABLED]
+        );
         $defendingPhalanx = new EnergyPhalanx($colony, $this->moduleRepository);
 
         for ($i = 0; $i < $count; $i++) {
@@ -174,7 +184,11 @@ final class AttackBuilding implements ActionControllerInterface
             $this->addFightMessageMerge($this->energyWeaponPhase->fire(null, $defendingPhalanx, $attackerPool));
         }
 
-        $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
+            $colony,
+            BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX,
+            [ColonyFunctionManager::STATE_ENABLED]
+        );
         $defendingPhalanx = new ProjectilePhalanx($colony, $this->moduleRepository->find(2), $this->colonyStorageManager);
 
         for ($i = 0; $i < $count; $i++) {
@@ -189,7 +203,11 @@ final class AttackBuilding implements ActionControllerInterface
         // OFFENSE OF ATTACKING SHIPS
         $isOrbitField = $this->planetFieldTypeRetriever->isOrbitField($field);
         $attackerPool = $this->fightLib->filterInactiveShips($attacker);
-        $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE) * 6;
+        $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
+                $colony,
+                BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE,
+                [ColonyFunctionManager::STATE_ENABLED]
+            ) * 6;
 
         foreach ($attackerPool as $attacker) {
             if ($isOrbitField) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
@@ -18,12 +19,16 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyLibFactoryInterface $colonyLibFactory,
         CommodityRepositoryInterface $commodityRepository
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function getColonyMenu(int $menuId): string
@@ -90,7 +95,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
                 '<img src="assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
                 $color,
                 round($width / 100 * (100 / $colony->getMaxEps() * $value)),
-                _('Energieproduktion')
+                'Energieproduktion'
             );
         }
 
@@ -139,25 +144,30 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             'EPS_STATUS_BAR',
             $epsBar
         );
-        if ($colony->hasShields()) {
+
+        $shieldingManager = $this->colonyLibFactory->createColonyShieldingManager($colony);
+
+        if ($shieldingManager->hasShielding()) {
             $game->setTemplateVar(
                 'SHIELD_STATUS_BAR',
-                $this->buildShieldBar($colony)
+                $this->buildShieldBar($shieldingManager, $colony)
             );
         }
         $game->setTemplateVar('STORAGE', $storage);
         $game->setTemplateVar('EFFECTS', $effects);
     }
 
-    private function buildShieldBar(ColonyInterface $colony): array
-    {
+    private function buildShieldBar(
+        ColonyShieldingManagerInterface $colonyShieldingManager,
+        ColonyInterface $colony
+    ): array {
         $shieldBar = [];
         $bars = array();
         $width = 360;
 
-        $maxShields = $this->planetFieldRepository->getMaxShieldsOfColony($colony->getId());
+        $maxShields = $colonyShieldingManager->getMaxShielding();
 
-        if ($colony->getShieldState()) {
+        if ($colonyShieldingManager->isShieldingEnabled()) {
             $bars[StatusBarColorEnum::STATUSBAR_SHIELD_ON] = $colony->getShields();
         } else {
             $bars[StatusBarColorEnum::STATUSBAR_SHIELD_OFF] = $colony->getShields();
@@ -175,7 +185,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
                 '<img src="assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
                 $color,
                 round($width / 100 * (100 / $maxShields * $value)),
-                _('Schildstärke')
+                'Schildstärke'
             );
         }
 

@@ -8936,11 +8936,6 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:hasBuildingWithFunction\\(\\) has parameter \\$states with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$blockers type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Fleet\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php

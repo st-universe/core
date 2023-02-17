@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
@@ -68,4 +69,8 @@ interface ColonyLibFactoryInterface
     public function createColonyProduction(
         array &$production = []
     ): ColonyProduction;
+
+    public function createColonyShieldingManager(
+        ColonyInterface $colony
+    ): ColonyShieldingManagerInterface;
 }

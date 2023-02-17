@@ -73,5 +73,9 @@ final class ShowSocial implements ViewControllerInterface
             'CREW_COUNT_REMAINING',
             $this->crewCountRetriever->getRemainingCount($user)
         );
+        $game->setTemplateVar(
+            'SHIELDING_MANAGER',
+            $this->colonyLibFactory->createColonyShieldingManager($colony)
+        );
     }
 }
