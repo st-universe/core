@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Lock;
 
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
 use org\bovigo\vfs\vfsStream;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\StuTestCase;
 
 class LockManagerTest extends StuTestCase
 {
-    /** @var MockInterface&ConfigInterface */
-    private ConfigInterface $config;
+    /** @var MockInterface&StuConfigInterface */
+    private StuConfigInterface $config;
 
     private LockManagerInterface $lockManager;
 
     protected function setUp(): void
     {
         vfsStream::setup('tmpDir');
-        $this->config = $this->mock(ConfigInterface::class);
+        $this->config = $this->mock(StuConfigInterface::class);
 
         $this->lockManager = new LockManager(
             $this->config
@@ -30,12 +30,12 @@ class LockManagerTest extends StuTestCase
     {
         $lockType = LockEnum::LOCK_TYPE_COLONY_GROUP;
 
-        $this->config->shouldReceive('get')
-            ->with('game.colony.tick_worker', 1)
-            ->andReturn("3");
+        $this->config->shouldReceive('getGameSettings->getColonySettings->getTickWorker')
+            ->with()
+            ->andReturn(3);
 
-        $this->config->shouldReceive('get')
-            ->with('game.temp_dir')
+        $this->config->shouldReceive('getGameSettings->getTempDir')
+            ->with()
             ->andReturn(vfsStream::url('tmpDir'));
 
         $this->assertFalse($this->lockManager->isLocked(42, $lockType));
