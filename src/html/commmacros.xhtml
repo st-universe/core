@@ -255,7 +255,7 @@
     <table class="tcal" id="quickpm_compose">
       <tr>
         <td><span>Empfänger:</span> <span tal:replace="structure bbcode:RECIPIENT/getName"></span> <img
-            src="/assets/buttons/alert${RECIPIENT/getRpgBehavior}.png" title="${RPGTEXT}" /></td>
+            src="/assets/buttons/rpg${RECIPIENT/getRpgBehavior}.png" title="${RPGTEXT}" /></td>
       </tr>
       <tr>
         <th>Text</th>
@@ -317,7 +317,8 @@
     <table class="tcal">
       <tr>
         <td rowspan="2" style="width: 40px">
-          <img tal:condition="data/getUserAvatarPath" src="runtime" tal:attributes="src data/getUserAvatarPath" style="width: 40px" />
+          <img tal:condition="data/getUserAvatarPath" src="runtime" tal:attributes="src data/getUserAvatarPath"
+            style="width: 40px" />
         </td>
         <th style="text-align: center;">
           <span tal:replace="structure bbcode:data/getDisplayUserName">NAME</span>
