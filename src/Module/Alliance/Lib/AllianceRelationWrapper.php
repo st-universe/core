@@ -47,4 +47,25 @@ final class AllianceRelationWrapper
     {
         return $this->relation->getDate();
     }
+
+    /**
+     * Returns the image name for relation type visualization
+     */
+    public function getImage(): string
+    {
+        switch ($this->relation->getType()) {
+            case AllianceEnum::ALLIANCE_RELATION_WAR:
+                return 'war_negative';
+            case AllianceEnum::ALLIANCE_RELATION_PEACE:
+            case AllianceEnum::ALLIANCE_RELATION_FRIENDS:
+                return 'friendship_positive';
+            case AllianceEnum::ALLIANCE_RELATION_ALLIED:
+                return 'alliance_positive';
+            case AllianceEnum::ALLIANCE_RELATION_TRADE:
+                return 'trade_positive';
+            case AllianceEnum::ALLIANCE_RELATION_VASSAL:
+                return 'vassal_positive';
+        }
+        return '';
+    }
 }

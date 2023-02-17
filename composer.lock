@@ -6954,16 +6954,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.9.17",
+            "version": "1.9.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "204e459e7822f2c586463029f5ecec31bb45a1f2"
+                "reference": "f2d5cf71be91172a57c649770b73c20ebcffb0bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/204e459e7822f2c586463029f5ecec31bb45a1f2",
-                "reference": "204e459e7822f2c586463029f5ecec31bb45a1f2",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f2d5cf71be91172a57c649770b73c20ebcffb0bf",
+                "reference": "f2d5cf71be91172a57c649770b73c20ebcffb0bf",
                 "shasum": ""
             },
             "require": {
@@ -6993,7 +6993,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.9.17"
+                "source": "https://github.com/phpstan/phpstan/tree/1.9.18"
             },
             "funding": [
                 {
@@ -7009,7 +7009,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-08T12:25:00+00:00"
+            "time": "2023-02-17T15:01:27+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -8576,12 +8576,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "3ef3bb167fa9697087def0c456a706e4a6dab208"
+                "reference": "7fb86b7e3a6cf90788f0e52bcb88bb21bfcac011"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/3ef3bb167fa9697087def0c456a706e4a6dab208",
-                "reference": "3ef3bb167fa9697087def0c456a706e4a6dab208",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/7fb86b7e3a6cf90788f0e52bcb88bb21bfcac011",
+                "reference": "7fb86b7e3a6cf90788f0e52bcb88bb21bfcac011",
                 "shasum": ""
             },
             "require": {
@@ -8600,7 +8600,7 @@
                 "issues": "https://github.com/st-universe/assets/issues",
                 "source": "https://github.com/st-universe/assets/tree/master"
             },
-            "time": "2023-02-15T19:32:40+00:00"
+            "time": "2023-02-17T18:06:15+00:00"
         },
         {
             "name": "symfony/finder",

@@ -1678,6 +1678,16 @@ div.allianceMinister div.avatar img {
 
 div.allianceRelation {
   margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 65px auto;
+}
+
+div.allianceRelation div.allianceRelationImage {
+  grid-row: span 2;
+}
+
+div.allianceRelation div.allianceRelationImage img {
+  width: 60px;
 }
 
 div.allianceRelation div.allianceRelationOpponentName {
