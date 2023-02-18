@@ -101,7 +101,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
 
         $commodities = $this->commodityRepository->getByType(CommodityTypeEnum::COMMODITY_TYPE_STANDARD);
         $stor = $colony->getStorage();
-        $prod = $colony->getProduction();
+        $prod = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
         $storage = [];
         foreach ($commodities as $value) {
             $commodityId = $value->getId();
@@ -155,6 +155,10 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         }
         $game->setTemplateVar('STORAGE', $storage);
         $game->setTemplateVar('EFFECTS', $effects);
+        $game->setTemplateVar(
+            'PRODUCTION_SUM',
+            $this->colonyLibFactory->createColonyProductionSumReducer()->reduce($prod)
+        );
     }
 
     private function buildShieldBar(

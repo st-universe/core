@@ -283,17 +283,6 @@ final class ColonySurface implements ColonySurfaceInterface
         return $fields;
     }
 
-    public function getProductionSumClass(): string
-    {
-        if ($this->colony->getProductionSum() < 0) {
-            return 'negative';
-        }
-        if ($this->colony->getProductionSum() > 0) {
-            return 'positive';
-        }
-        return '';
-    }
-
     public function getEnergyProduction(): int
     {
         if ($this->energyProduction === null) {

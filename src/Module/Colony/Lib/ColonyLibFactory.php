@@ -6,6 +6,10 @@ namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Colony\Commodity\ColonyCommodityProduction;
+use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
+use Stu\Component\Colony\Commodity\ColonyProductionSumReducer;
+use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
@@ -139,6 +143,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ColonyInterface $colony
     ): ColonyListItemInterface {
         return new ColonyListItem(
+            $this,
             $this->planetFieldRepository,
             $this->commodityConsumption,
             $colony,
@@ -237,5 +242,19 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->colonyFunctionManager,
             $colony
         );
+    }
+
+    public function createColonyCommodityProduction(
+        ColonyInterface $colony
+    ): ColonyCommodityProductionInterface {
+        return new ColonyCommodityProduction(
+            $this->buildingCommodityRepository,
+            $this,
+            $colony
+        );
+    }
+
+    public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface {
+        return new ColonyProductionSumReducer();
     }
 }

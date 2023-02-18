@@ -121,7 +121,9 @@ final class ShowBuilding implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'COMMODITY_PRODUCTION_PREVIEW',
-            $this->colonyLibFactory->createColonyProductionPreviewWrapper($colony->getProduction())
+            $this->colonyLibFactory->createColonyProductionPreviewWrapper(
+                $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+            )
         );
     }
 }

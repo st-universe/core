@@ -170,8 +170,6 @@ interface ColonyInterface
      */
     public function setProduction(array $array): void;
 
-    public function getProductionSum(): int;
-
     public function isFree(): bool;
 
     public function getUser(): UserInterface;

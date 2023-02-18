@@ -6,6 +6,7 @@ declare(strict_types=0);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ColonyInterface;
@@ -15,6 +16,8 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ColonyListItem implements ColonyListItemInterface
 {
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     private ColonyInterface $colony;
 
     private int $signatureCount;
@@ -23,12 +26,17 @@ final class ColonyListItem implements ColonyListItemInterface
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
+    /** @var array<int, ColonyProduction>|null */
+    private ?array $production = null;
+
     public function __construct(
+        ColonyLibFactoryInterface $colonyLibFactory,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         CommodityConsumptionInterface $commodityConsumption,
         ColonyInterface $colony,
         int $signatureCount
     ) {
+        $this->colonyLibFactory = $colonyLibFactory;
         $this->commodityConsumption = $commodityConsumption;
         $this->colony = $colony;
         $this->signatureCount = $signatureCount;
@@ -117,12 +125,17 @@ final class ColonyListItem implements ColonyListItemInterface
 
     public function getProductionSum(): int
     {
-        return $this->colony->getProductionSum();
+        return $this->colonyLibFactory->createColonyProductionSumReducer()->reduce(
+            $this->getProduction()
+        );
     }
 
     public function getCommodityUseView(): array
     {
-        return $this->commodityConsumption->getConsumption($this->colony);
+        return $this->commodityConsumption->getConsumption(
+            $this->getProduction(),
+            $this->colony
+        );
     }
 
     public function isDefended(): bool
@@ -183,5 +196,16 @@ final class ColonyListItem implements ColonyListItemInterface
             ->setMaxValue($this->colony->getMaxEps())
             ->setValue($this->colony->getEps())
             ->render();
+    }
+
+    /**
+     * @return array<int, ColonyProduction>
+     */
+    private function getProduction(): array
+    {
+        if ($this->production === null) {
+            $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction();
+        }
+        return $this->production;
     }
 }

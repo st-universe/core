@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
+use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
@@ -73,4 +75,10 @@ interface ColonyLibFactoryInterface
     public function createColonyShieldingManager(
         ColonyInterface $colony
     ): ColonyShieldingManagerInterface;
+
+    public function createColonyCommodityProduction(
+        ColonyInterface $colony
+    ): ColonyCommodityProductionInterface;
+
+    public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface;
 }

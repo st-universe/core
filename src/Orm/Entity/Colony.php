@@ -280,9 +280,6 @@ class Colony implements ColonyInterface
     /** @var null|array<int, ColonyProduction> */
     private $production;
 
-    /** @var null|int */
-    private $productionsum;
-
     public function __construct()
     {
         $this->planetFields = new ArrayCollection();
@@ -756,21 +753,6 @@ class Colony implements ColonyInterface
     public function setProduction(array $array): void
     {
         $this->production = $array;
-    }
-
-    public function getProductionSum(): int
-    {
-        if ($this->productionsum === null) {
-            $sum = 0;
-            foreach ($this->getProduction() as $value) {
-                if ($value->getCommodity()->getType() == CommodityTypeEnum::COMMODITY_TYPE_EFFECT) {
-                    continue;
-                }
-                $sum += $value->getProduction();
-            }
-            $this->productionsum = $sum;
-        }
-        return $this->productionsum;
     }
 
     public function isFree(): bool
