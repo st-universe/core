@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Orm\Entity\ColonyDepositMiningInterface;
+
 interface ColonySurfaceInterface
 {
     public function getSurface(): array;
@@ -21,6 +23,11 @@ interface ColonySurfaceInterface
     public function getStorageSumPercent(): float;
 
     public function updateSurface(): array;
+
+    /**
+     * @return array<int, array{deposit: ColonyDepositMiningInterface, currentlyMined: int}>
+     */
+    public function getUserDepositMinings(): array;
 
     public function getEnergyProduction(): int;
 

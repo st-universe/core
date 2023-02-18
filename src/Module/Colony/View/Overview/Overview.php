@@ -29,7 +29,7 @@ final class Overview implements ViewControllerInterface
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
     private LoggerUtilInterface $loggerUtil;
-    
+
     private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
 
 

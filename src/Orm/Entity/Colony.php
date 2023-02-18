@@ -264,12 +264,12 @@ class Colony implements ColonyInterface
     private $crewTrainings;
 
     /**
-     * @var ArrayCollection<int, ColonyDepositMiningInterface>
+     * @var Collection<int, ColonyDepositMiningInterface>
      *
      * @OneToMany(targetEntity="ColonyDepositMining", mappedBy="colony")
      * @OrderBy({"commodity_id" = "ASC"})
      */
-    private $depositMinings;
+    private Collection $depositMinings;
 
     /** @var null|int */
     private $positive_effect_secondary;
@@ -922,5 +922,10 @@ class Colony implements ColonyInterface
     public function getSectorString(): string
     {
         return $this->getStarsystemMap()->getSectorString();
+    }
+
+    public function getDepositMinings(): Collection
+    {
+        return $this->depositMinings;
     }
 }

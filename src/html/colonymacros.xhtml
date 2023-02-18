@@ -583,27 +583,29 @@
           </div>
         </div>
       </div>
-      <tal:block tal:condition="COLONY/getUserDepositMinings">
-        <div class="box">
-          <div class="box_title">Geschürfte Ressourcen</div>
-          <div class="box_body">
-            <table class="tcal">
-              <tr>
-                <th colspan="2">Ressource</th>
-                <th>verbleibend</th>
-                <th></th>
-              </tr>
-              <tr tal:repeat="deposit COLONY/getUserDepositMinings">
-                <td><img src="assets/commodities/${deposit/getCommodity/getId}.png"
-                    tal:attributes="title deposit/getCommodity/getName" /></td>
-                <td>${deposit/getCommodity/getName}</td>
-                <td>${deposit/getAmountLeft}</td>
-                <td>${deposit/currentlyMined}</td>
-              </tr>
-            </table>
+      <tal:block tal:define="DEPOSIT_MININGS COLONY_SURFACE/getUserDepositMinings">
+        <tal:block tal:condition="DEPOSIT_MININGS">
+          <div class="box">
+            <div class="box_title">Geschürfte Ressourcen</div>
+            <div class="box_body">
+              <table class="tcal">
+                <tr>
+                  <th colspan="2">Ressource</th>
+                  <th>verbleibend</th>
+                  <th></th>
+                </tr>
+                <tr tal:repeat="deposit_item DEPOSIT_MININGS">
+                  <td><img src="assets/commodities/${deposit_item/deposit/getCommodity/getId}.png"
+                           tal:attributes="title deposit_item/deposit/getCommodity/getName" /></td>
+                  <td>${deposit_item/deposit/getCommodity/getName}</td>
+                  <td>${deposit_item/deposit/getAmountLeft}</td>
+                  <td>${deposit_item/currentlyMined}</td>
+                </tr>
+              </table>
+            </div>
           </div>
-        </div>
-        <br />
+          <br />
+        </tal:block>
       </tal:block>
       <div class="box" tal:condition="php:SHIELDING_MANAGER.hasShielding() OR BUILDABLE_TORPEDO_TYPES">
         <div class="box_title">Schilde + Orbitalverteidigung</div>

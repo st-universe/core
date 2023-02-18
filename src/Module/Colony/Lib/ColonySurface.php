@@ -10,6 +10,7 @@ use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -281,6 +282,26 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->entityManager->flush();
 
         return $fields;
+    }
+
+    public function getUserDepositMinings(): array
+    {
+        $production = $this->colony->getProduction();
+
+        $result = [];
+
+        foreach ($this->colony->getDepositMinings() as $deposit) {
+            if ($deposit->getUser() === $this->colony->getUser()) {
+                $prod = $production[$deposit->getCommodity()->getId()] ?? null;
+
+                $result[$deposit->getCommodity()->getId()] = [
+                    'deposit' => $deposit,
+                    'currentlyMined' => $prod === null ? 0 : $prod->getProduction()
+                ];
+            }
+        }
+
+        return $result;
     }
 
     public function getEnergyProduction(): int

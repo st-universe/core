@@ -8956,7 +8956,7 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$depositMinings type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ColonyDepositMiningInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$depositMinings type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ColonyDepositMiningInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
@@ -9097,11 +9097,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/ColonyDepositMining.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyDepositMining.php
 

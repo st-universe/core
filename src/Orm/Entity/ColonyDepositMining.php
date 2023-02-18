@@ -129,11 +129,4 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     {
         return $this->getAmountLeft() > $neededAmount;
     }
-
-    public function currentlyMined(): int
-    {
-        $production = $this->getColony()->getProduction()[$this->getCommodity()->getId()];
-
-        return $production === null ? 0 : $production->getProduction();
-    }
 }

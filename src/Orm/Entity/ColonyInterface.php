@@ -201,4 +201,9 @@ interface ColonyInterface
     public function upperEps(int $value): void;
 
     public function getSectorString(): string;
+
+    /**
+     * @return Collection<int, ColonyDepositMiningInterface>
+     */
+    public function getDepositMinings(): Collection;
 }
