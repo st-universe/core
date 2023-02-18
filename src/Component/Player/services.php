@@ -11,6 +11,8 @@ use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Player\ColonyLimitCalculator;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
+use Stu\Component\Player\CrewLimitCalculator;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmation;
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmationInterface;
 use Stu\Component\Player\Deletion\Handler;
@@ -21,10 +23,10 @@ use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Component\Player\Register\LocalPlayerCreator;
 use Stu\Component\Player\Register\PlayerCreator;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
-use Stu\Component\Player\Register\RegistrationEmailSender;
-use Stu\Component\Player\Register\RegistrationEmailSenderInterface;
 use Stu\Component\Player\Register\PlayerDefaultsCreator;
 use Stu\Component\Player\Register\PlayerDefaultsCreatorInterface;
+use Stu\Component\Player\Register\RegistrationEmailSender;
+use Stu\Component\Player\Register\RegistrationEmailSenderInterface;
 use Stu\Component\Player\Register\SmsVerificationCodeSender;
 use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -63,4 +65,5 @@ return [
     RegistrationEmailSenderInterface::class => autowire(RegistrationEmailSender::class),
     SmsVerificationCodeSenderInterface::class => autowire(SmsVerificationCodeSender::class),
     PlayerRelationDeterminatorInterface::class => autowire(PlayerRelationDeterminator::class),
+    CrewLimitCalculatorInterface::class => autowire(CrewLimitCalculator::class),
 ];

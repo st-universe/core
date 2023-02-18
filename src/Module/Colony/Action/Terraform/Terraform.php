@@ -136,11 +136,9 @@ final class Terraform implements ActionControllerInterface
             foreach ($terraf->getCosts() as $obj) {
                 $this->colonyStorageManager->lowerStorage($colony, $obj->getCommodity(), $obj->getAmount());
             }
-            $colony->clearCache();
             $colony->lowerEps($terraf->getEnergyCosts());
             $time = time() + $terraf->getDuration();
         } else {
-            $colony->clearCache();
             $time = time() + 1;
         }
 

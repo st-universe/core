@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Exception\SanityCheckException;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -45,6 +46,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
@@ -53,6 +56,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         TroopTransferUtilityInterface  $troopTransferUtility,
         CancelRepairInterface $cancelRepair,
+        ColonyLibFactoryInterface $colonyLibFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -63,6 +67,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $this->troopTransferUtility = $troopTransferUtility;
         $this->cancelRepair = $cancelRepair;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -119,7 +124,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $this->sendPMsToCrewOwners($crewmanPerUser, $ship, $target, $game);
 
         /**
-         * 
+         *
          //remove entity if crew was on escape pods
          if ($target->getRump()->isEscapePods())
          {
@@ -310,7 +315,11 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $result = [424242, null];
         $colonies = $ship->getUser()->getColonies();
         foreach ($colonies as $colony) {
-            $freeQuarters = $colony->getCrewLimit() - $colony->getCrewAssignmentAmount();
+            $crewLimit = $this->colonyLibFactory->createColonyPopulationCalculator(
+                $colony,
+                $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+            )->getCrewLimit();
+            $freeQuarters = $crewLimit - $colony->getCrewAssignmentAmount();
 
             if ($freeQuarters >= $count) {
                 $distance = $this->calculateDistance(

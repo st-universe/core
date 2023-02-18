@@ -6,6 +6,7 @@ declare(strict_types=0);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
@@ -28,6 +29,8 @@ final class ColonyListItem implements ColonyListItemInterface
 
     /** @var array<int, ColonyProduction>|null */
     private ?array $production = null;
+
+    private ?ColonyPopulationCalculatorInterface $colonyPopulationCalculator = null;
 
     public function __construct(
         ColonyLibFactoryInterface $colonyLibFactory,
@@ -85,7 +88,7 @@ final class ColonyListItem implements ColonyListItemInterface
 
     public function getImmigration(): int
     {
-        return $this->colony->getImmigration();
+        return $this->getPopulationCalculator()->getGrowth();
     }
 
     public function getEps(): int
@@ -160,12 +163,13 @@ final class ColonyListItem implements ColonyListItemInterface
 
     public function getCrewLimit(): int
     {
-        return $this->colony->getCrewLimit();
+        return $this->getPopulationCalculator()->getCrewLimit();
     }
 
     public function getCrewLimitStyle(): string
     {
-        $lifeStandardPercentage = $this->colony->getLifeStandardPercentage();
+        $lifeStandardPercentage = $this->getPopulationCalculator()->getLifeStandardPercentage();
+
         if ($lifeStandardPercentage === 100) {
             return "color: green;";
         }
@@ -207,5 +211,17 @@ final class ColonyListItem implements ColonyListItemInterface
             $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction();
         }
         return $this->production;
+    }
+
+    private function getPopulationCalculator(): ColonyPopulationCalculatorInterface
+    {
+        if ($this->colonyPopulationCalculator === null) {
+            $this->colonyPopulationCalculator = $this->colonyLibFactory->createColonyPopulationCalculator(
+                $this->colony,
+                $this->getProduction()
+            );
+        }
+
+        return $this->colonyPopulationCalculator;
     }
 }

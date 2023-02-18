@@ -8,10 +8,12 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Specials\AdventCycleInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -75,6 +77,9 @@ final class ShipTickManager implements ShipTickManagerInterface
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
+    private CrewLimitCalculatorInterface $crewLimitCalculator;
+
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
@@ -97,6 +102,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         EntryCreatorInterface $entryCreator,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyFunctionManagerInterface $colonyFunctionManager,
+        CrewLimitCalculatorInterface $crewLimitCalculator,
+        ColonyLibFactoryInterface $colonyLibFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -120,6 +127,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyFunctionManager = $colonyFunctionManager;
+        $this->crewLimitCalculator = $crewLimitCalculator;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function work(): void
@@ -238,7 +247,12 @@ final class ShipTickManager implements ShipTickManagerInterface
         $count = 0;
 
         foreach ($escapePod->getCrewlist() as $crewAssignment) {
-            if ($colony->getFreeAssignmentCount() === 0) {
+            $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+                $colony,
+                $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+            )->getFreeAssignmentCount();
+
+            if ($freeAssignmentCount === 0) {
                 break;
             }
             if ($crewAssignment->getUser() !== $colony->getUser()) {
@@ -268,7 +282,7 @@ final class ShipTickManager implements ShipTickManagerInterface
 
             $userId = $user->getId();
 
-            $crewLimit = $user->getGlobalCrewLimit();
+            $crewLimit = $this->crewLimitCalculator->getGlobalCrewLimit($user);
             $crewOnColonies = $this->shipCrewRepository->getAmountByUserOnColonies($user->getId());
             $crewOnShips = $this->shipCrewRepository->getAmountByUserOnShips($user);
             $crewAtTradeposts = $this->shipCrewRepository->getAmountByUserAtTradeposts($user);

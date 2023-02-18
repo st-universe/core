@@ -303,9 +303,6 @@ class User implements UserInterface
      */
     private $userLock;
 
-    /** @var null|int */
-    private $global_crew_limit;
-
     /** @var null|array<mixed> */
     private $sessiondataUnserialized;
 
@@ -735,18 +732,6 @@ class User implements UserInterface
     public function isContactable(): bool
     {
         return !in_array($this->getId(), [GameEnum::USER_NOONE]);
-    }
-
-    public function getGlobalCrewLimit(): int
-    {
-        if ($this->global_crew_limit === null) {
-            $this->global_crew_limit = array_reduce(
-                $this->getColonies()->toArray(),
-                fn (int $sum, ColonyInterface $colony): int => $colony->getCrewLimit() + $sum,
-                0
-            );
-        }
-        return $this->global_crew_limit;
     }
 
     public function hasAward(int $awardId): bool

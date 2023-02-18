@@ -87,33 +87,33 @@
         </tr>
         <tr>
           <td style="width: 25%" class="darkbg"><span
-              tal:replace="COLONY_SURFACE/getPositiveEffectPrimaryDescription">PRIMARY</span></td>
+              tal:replace="COLONY_SURFACE/getPopulation/getPositiveEffectPrimaryDescription">PRIMARY</span></td>
           <td style="width: 25%" class="darkbg"><span
-              tal:replace="COLONY_SURFACE/getPositiveEffectSecondaryDescription">PRIMARY</span></td>
+              tal:replace="COLONY_SURFACE/getPopulation/getPositiveEffectSecondaryDescription">PRIMARY</span></td>
         </tr>
         <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="COLONY/getPositiveEffectPrimary">VALUE</span>
+            <span tal:replace="COLONY_SURFACE/getPopulation/getPositiveEffectPrimary">VALUE</span>
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="COLONY/getPositiveEffectSecondary">VALUE</span>
+            <span tal:replace="COLONY_SURFACE/getPopulation/getPositiveEffectSecondary">VALUE</span>
           </td>
         </tr>
         <tr>
           <td style="width: 25%" class="darkbg"><span
-              tal:replace="COLONY_SURFACE/getNegativeEffectDescription">PRIMARY</span></td>
+              tal:replace="COLONY_SURFACE/getPopulation/getNegativeEffectDescription">PRIMARY</span></td>
           <td style="width: 25%" class="darkbg">Lebensstandard</td>
         </tr>
         <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="COLONY/getNegativeEffect">VALUE</span>
+            <span tal:replace="COLONY_SURFACE/getPopulation/getNegativeEffect">VALUE</span>
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Prozent" />
-            <span tal:replace="COLONY/getLifeStandardPercentage">VALUE</span>%
+            <span tal:replace="COLONY_SURFACE/getPopulation/getLifeStandardPercentage">VALUE</span>%
           </td>
         </tr>
         <tr>
@@ -122,7 +122,7 @@
         <tr>
           <td colspan="2">
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="COLONY/getCrewLimit">VALUE</span>
+            <span tal:replace="COLONY_SURFACE/getPopulation/getCrewLimit">VALUE</span>
           </td>
         </tr>
       </table>
@@ -139,7 +139,7 @@
         <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
-            <span tal:replace="USER/getGlobalCrewLimit">LIMIT</span>
+            <span tal:replace="GLOBAL_CREW_LIMIT">LIMIT</span>
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
@@ -688,7 +688,7 @@
           <td class="populationValue">
             <div>Entwicklung</div>
             <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.png" title="Wachstum" />
-            ${IMMIGRATION_SYMBOL}${COLONY/getImmigration}
+            ${IMMIGRATION_SYMBOL}${COLONY_SURFACE/getPopulation/getGrowth}
           </td>
         </tr>
       </table>

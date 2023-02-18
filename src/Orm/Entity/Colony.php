@@ -17,14 +17,9 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Colony\ColonyEnum;
-use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")
@@ -270,15 +265,6 @@ class Colony implements ColonyInterface
      * @OrderBy({"commodity_id" = "ASC"})
      */
     private Collection $depositMinings;
-
-    /** @var null|int */
-    private $positive_effect_secondary;
-
-    /** @var null|int */
-    private $positive_effect_primary;
-
-    /** @var null|array<int, ColonyProduction> */
-    private $production;
 
     public function __construct()
     {
@@ -727,34 +713,6 @@ class Colony implements ColonyInterface
         return $result;
     }
 
-    /**
-     * @return ColonyProduction[]
-     */
-    public function getProduction(): array
-    {
-        if ($this->production === null) {
-            // @todo refactor
-            global $container;
-            $result = $container->get(BuildingCommodityRepositoryInterface::class)->getProductionByColony(
-                $this->getId(),
-                $this->getColonyClass()->getId()
-            );
-
-            $this->production = [];
-            foreach ($result as $data) {
-                if (($data['gc'] + $data['pc']) != 0) {
-                    $this->production[(int) $data['commodity_id']] = $container->get(ColonyLibFactoryInterface::class)->createColonyProduction($data);
-                }
-            }
-        }
-        return $this->production;
-    }
-
-    public function setProduction(array $array): void
-    {
-        $this->production = $array;
-    }
-
     public function isFree(): bool
     {
         return $this->getUserId() === GameEnum::USER_NOONE;
@@ -779,134 +737,6 @@ class Colony implements ColonyInterface
     public function getFreeHousing(): int
     {
         return $this->getMaxBev() - $this->getPopulation();
-    }
-
-    public function getImmigration(): int
-    {
-        if ($this->getImmigrationState() === false) {
-            return 0;
-        }
-        // TBD: depends on social things. return dummy for now
-        $im = ceil(($this->getMaxBev() - $this->getPopulation()) / 4);
-        if ($this->getPopulation() + $im > $this->getMaxBev()) {
-            $im = $this->getMaxBev() - $this->getPopulation();
-        }
-        if ($this->getPopulationLimit() > 0 && $this->getPopulation() + $im > $this->getPopulationLimit()) {
-            $im = $this->getPopulationLimit() - $this->getPopulation();
-        }
-        if ($im < 0) {
-            return 0;
-        }
-        return (int) round($im / 100 * $this->getColonyClass()->getBevGrowthRate() *  $this->getLifeStandardPercentage() / 100);
-    }
-
-    public function getNegativeEffect(): int
-    {
-        return (int) ceil($this->getPopulation() / 70);
-    }
-
-    public function getPositiveEffectPrimary(): int
-    {
-        if ($this->positive_effect_primary === null) {
-            $production = $this->getProduction();
-            // TODO we should use a faction-factory...
-            switch ($this->getUser()->getFactionId()) {
-                case FactionEnum::FACTION_FEDERATION:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_FED_PRIMARY;
-                    break;
-                case FactionEnum::FACTION_ROMULAN:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_ROMULAN_PRIMARY;
-                    break;
-                case FactionEnum::FACTION_KLINGON:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_KLINGON_PRIMARY;
-                    break;
-                case FactionEnum::FACTION_CARDASSIAN:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_CARDASSIAN_PRIMARY;
-                    break;
-                case FactionEnum::FACTION_FERENGI:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_FERENGI_PRIMARY;
-                    break;
-            }
-            $this->positive_effect_primary = 0;
-            if (!isset($production[$key])) {
-                return 0;
-            }
-            $this->positive_effect_primary += $production[$key]->getProduction();
-        }
-        return $this->positive_effect_primary;
-    }
-
-    public function getPositiveEffectSecondary(): int
-    {
-        if ($this->positive_effect_secondary === null) {
-            $production = $this->getProduction();
-            $this->positive_effect_secondary = 0;
-            // XXX we should use a faction-factory...
-            switch ($this->getUser()->getFactionId()) {
-                case FactionEnum::FACTION_FEDERATION:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_FED_SECONDARY;
-                    break;
-                case FactionEnum::FACTION_ROMULAN:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_ROMULAN_SECONDARY;
-                    break;
-                case FactionEnum::FACTION_KLINGON:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_KLINGON_SECONDARY;
-                    break;
-                case FactionEnum::FACTION_CARDASSIAN:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_CARDASSIAN_SECONDARY;
-                    break;
-                case FactionEnum::FACTION_FERENGI:
-                    $key = ColonyEnum::COMMODITY_SATISFACTION_FERENGI_SECONDARY;
-                    break;
-            }
-            if (!isset($production[$key])) {
-                return 0;
-            }
-            $this->positive_effect_secondary += $production[$key]->getProduction();
-        }
-        return $this->positive_effect_secondary;
-    }
-
-    public function getCrewLimit(): int
-    {
-        return (int) floor(
-            min(
-                10 + max(
-                    ($this->getPositiveEffectPrimary() - (4 * max(
-                        0,
-                        $this->getNegativeEffect() - $this->getPositiveEffectSecondary()
-                    ))),
-                    0
-                ),
-                $this->getWorkers()
-            ) / 5 * $this->getLifeStandardPercentage() / 100
-        );
-    }
-
-    public function getLifeStandardPercentage(): int
-    {
-        $colonyProduction = $this->getProduction()[CommodityTypeEnum::COMMODITY_EFFECT_LIFE_STANDARD];
-        $production = $colonyProduction !== null ? $colonyProduction->getProduction() : 0;
-
-        if ($production == 0) {
-            return 0;
-        }
-
-        if ($production > $this->getPopulation()) {
-            return 100;
-        }
-
-        return (int)floor($production * 100 / $this->getPopulation());
-    }
-
-    public function getFreeAssignmentCount(): int
-    {
-        return max(0, $this->getCrewLimit() - $this->getCrewAssignmentAmount());
-    }
-
-    public function clearCache(): void
-    {
-        $this->production = null;
     }
 
     public function lowerEps(int $value): void

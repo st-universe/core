@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Crew;
 
+use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -21,14 +22,18 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
 
     private CrewTrainingRepositoryInterface $crewTrainingRepository;
 
+    private CrewLimitCalculatorInterface $crewLimitCalculator;
+
     public function __construct(
         CrewRepositoryInterface $crewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
+        CrewLimitCalculatorInterface $crewLimitCalculator,
         CrewTrainingRepositoryInterface $crewTrainingRepository
     ) {
         $this->crewRepository = $crewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->crewTrainingRepository = $crewTrainingRepository;
+        $this->crewLimitCalculator = $crewLimitCalculator;
     }
 
     public function getDebrisAndTradePostsCount(UserInterface $user): int
@@ -56,7 +61,7 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
     {
         return max(
             0,
-            $user->getGlobalCrewLimit() - $this->getAssignedCount($user) - $this->getInTrainingCount($user)
+            $this->crewLimitCalculator->getGlobalCrewLimit($user) - $this->getAssignedCount($user) - $this->getInTrainingCount($user)
         );
     }
 
@@ -67,6 +72,6 @@ final class CrewCountRetriever implements CrewCountRetrieverInterface
 
     public function getTrainableCount(UserInterface $user): int
     {
-        return (int) ceil($user->getGlobalCrewLimit() / 10);
+        return (int) ceil($this->crewLimitCalculator->getGlobalCrewLimit($user) / 10);
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\TroopTransfer;
 
 use request;
-
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemNotActivatableException;
@@ -14,9 +13,9 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\UplinkShipSystem;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -61,6 +60,8 @@ final class TroopTransfer implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
@@ -72,6 +73,7 @@ final class TroopTransfer implements ActionControllerInterface
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         PrivateMessageSenderInterface $privateMessageSender,
+        ColonyLibFactoryInterface $colonyLibFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -85,6 +87,7 @@ final class TroopTransfer implements ActionControllerInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->privateMessageSender = $privateMessageSender;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -223,10 +226,15 @@ final class TroopTransfer implements ActionControllerInterface
 
     private function transferToColony(int $requestedTransferCount, ShipInterface $ship, ColonyInterface $colony): int
     {
+        $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+            $colony,
+            $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+        )->getFreeAssignmentCount();
+
         $amount = min(
             $requestedTransferCount,
             $this->transferUtility->getBeamableTroopCount($ship),
-            $colony->getFreeAssignmentCount()
+            $freeAssignmentCount
         );
 
         /** @var ShipCrewInterface[] */

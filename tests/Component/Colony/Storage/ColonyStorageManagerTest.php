@@ -131,9 +131,6 @@ class ColonyStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $this->colony->shouldReceive('clearCache')
-            ->withNoArgs()
-            ->once();
 
         $storageItem->shouldReceive('getAmount')
             ->withNoArgs()
@@ -172,9 +169,6 @@ class ColonyStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $this->colony->shouldReceive('clearCache')
-            ->withNoArgs()
-            ->once();
 
         $storageItem->shouldReceive('getAmount')
             ->withNoArgs()
@@ -218,9 +212,6 @@ class ColonyStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($user);
-        $this->colony->shouldReceive('clearCache')
-            ->withNoArgs()
-            ->once();
 
         $this->commodity->shouldReceive('getId')
             ->withNoArgs()
@@ -282,9 +273,6 @@ class ColonyStorageManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($storage);
-        $this->colony->shouldReceive('clearCache')
-            ->withNoArgs()
-            ->once();
 
         $this->commodity->shouldReceive('getId')
             ->withNoArgs()

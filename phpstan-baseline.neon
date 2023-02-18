@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Variable \\$key might not be defined\\.$#"
+			count: 4
+			path: src/Component/Colony/ColonyPopulationCalculator.php
+
+		-
 			message: "#^Parameter \\#1 \\$password of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:setPassword\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Component/Player/Register/PlayerCreator.php
@@ -7876,11 +7881,6 @@ parameters:
 			path: src/Module/Tick/Colony/ColonyTick.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Tick\\\\Colony\\\\ColonyTick\\:\\:mergeProduction\\(\\) has parameter \\$commodityProduction with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection but does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Module/Tick/Colony/ColonyTick.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Tick\\\\Colony\\\\ColonyTick\\:\\:proceedEmigration\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Tick/Colony/ColonyTick.php
@@ -8911,16 +8911,6 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Comparison operation \"\\!\\=\" between \\(array\\|float\\|int\\) and 0 results in an error\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$blockers type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Fleet\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
@@ -9003,11 +8993,6 @@ parameters:
 		-
 			message: "#^Variable \\$daytimeprefix might not be defined\\.$#"
 			count: 1
-			path: src/Orm/Entity/Colony.php
-
-		-
-			message: "#^Variable \\$key might not be defined\\.$#"
-			count: 4
 			path: src/Orm/Entity/Colony.php
 
 		-

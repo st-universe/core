@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
 use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
@@ -81,4 +82,12 @@ interface ColonyLibFactoryInterface
     ): ColonyCommodityProductionInterface;
 
     public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface;
+
+    /**
+     * @param array<int, ColonyProduction> $production
+     */
+    public function createColonyPopulationCalculator(
+        ColonyInterface $colony,
+        array $production
+    ): ColonyPopulationCalculatorInterface;
 }

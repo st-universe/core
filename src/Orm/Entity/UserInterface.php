@@ -166,8 +166,6 @@ interface UserInterface
 
     public function isContactable(): bool;
 
-    public function getGlobalCrewLimit(): int;
-
     public function hasAward(int $awardId): bool;
 
     public function hasStationsNavigation(): bool;

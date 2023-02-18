@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Orm\Entity\ColonyDepositMiningInterface;
 
 interface ColonySurfaceInterface
@@ -13,12 +14,6 @@ interface ColonySurfaceInterface
     public function getEpsBoxTitleString(): string;
 
     public function getShieldBoxTitleString(): string;
-
-    public function getPositiveEffectPrimaryDescription(): string;
-
-    public function getPositiveEffectSecondaryDescription(): string;
-
-    public function getNegativeEffectDescription(): string;
 
     public function getStorageSumPercent(): float;
 
@@ -36,4 +31,6 @@ interface ColonySurfaceInterface
     public function hasModuleFab(): bool;
 
     public function hasAirfield(): bool;
+
+    public function getPopulation(): ColonyPopulationCalculatorInterface;
 }

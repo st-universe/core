@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -29,11 +30,14 @@ final class TrainCrew implements ActionControllerInterface
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ColonyLoaderInterface $colonyLoader,
         CrewTrainingRepositoryInterface $crewTrainingRepository,
         ColonyRepositoryInterface $colonyRepository,
+        ColonyLibFactoryInterface $colonyLibFactory,
         CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -41,6 +45,7 @@ final class TrainCrew implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->crewCountRetriever = $crewCountRetriever;
         $this->colonyFunctionManager = $colonyFunctionManager;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -87,12 +92,18 @@ final class TrainCrew implements ActionControllerInterface
             $game->addInformation(_('Derzeit kann keine weitere Crew ausgebildet werden'));
             return;
         }
-        if ($colony->getFreeAssignmentCount() === 0) {
+
+        $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+            $colony,
+            $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+        )->getFreeAssignmentCount();
+
+        if ($freeAssignmentCount === 0) {
             $game->addInformation(_('Auf dieser Kolonie kann derzeit keine weitere Crew ausgebildet werden'));
             return;
         }
-        if ($count > $colony->getFreeAssignmentCount()) {
-            $count = $colony->getFreeAssignmentCount();
+        if ($count > $freeAssignmentCount) {
+            $count = $freeAssignmentCount;
         }
 
         for ($i = 0; $i < $count; $i++) {

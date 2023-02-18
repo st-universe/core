@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\View\ShowAcademy;
 use ColonyMenu;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -23,17 +24,20 @@ final class ShowAcademy implements ViewControllerInterface
     private ShowAcademyRequestInterface $showAcademyRequest;
 
     private CrewCountRetrieverInterface $crewCountRetriever;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
         ShowAcademyRequestInterface $showAcademyRequest,
+        ColonyLibFactoryInterface $colonyLibFactory,
         CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showAcademyRequest = $showAcademyRequest;
         $this->crewCountRetriever = $crewCountRetriever;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -62,8 +66,14 @@ final class ShowAcademy implements ViewControllerInterface
         if ($trainableCrew > $colony->getWorkless()) {
             $trainableCrew = $colony->getWorkless();
         }
-        if ($trainableCrew > $colony->getFreeAssignmentCount()) {
-            $trainableCrew = $colony->getFreeAssignmentCount();
+
+        $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+            $colony,
+            $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+        )->getFreeAssignmentCount();
+
+        if ($trainableCrew > $freeAssignmentCount) {
+            $trainableCrew = $freeAssignmentCount;
         }
 
         $game->showMacro('html/colonymacros.xhtml/cm_academy');

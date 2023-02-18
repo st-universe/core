@@ -98,11 +98,14 @@ final class ShowColony implements ViewControllerInterface
             }
         }
 
+        $surface = $this->colonyLibFactory->createColonySurface($colony);
+        $populationGrowth = $surface->getPopulation()->getGrowth();
+
         $immigrationSymbol = '-';
-        if ($colony->getImmigration() > 0) {
+        if ($populationGrowth > 0) {
             $immigrationSymbol = '+';
         }
-        if ($colony->getImmigration() == 0) {
+        if ($populationGrowth == 0) {
             $immigrationSymbol = '';
         }
 
@@ -131,7 +134,7 @@ final class ShowColony implements ViewControllerInterface
             new ColonyMenu($menuId)
         );
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? $this->shipWrapperFactory->wrapShip($firstOrbitShip) : null);
-        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar('COLONY_SURFACE', $surface);
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
 
         $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);

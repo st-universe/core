@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -68,6 +69,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -83,6 +86,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ReactorUtilInterface $reactorUtil,
         ShipTorpedoManagerInterface $shipTorpedoManager,
         ShipWrapperFactoryInterface $shipWrapperFactory,
+        ColonyLibFactoryInterface $colonyLibFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -100,6 +104,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -268,8 +273,13 @@ final class ManageOrbitalShips implements ActionControllerInterface
         if (
             isset($unman[$ship->getId()]) && $ship->getUser() === $user && $ship->getCrewCount() > 0
         ) {
+            $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+                $colony,
+                $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+            )->getFreeAssignmentCount();
+
             //check if there is enough space for crew on colony
-            if ($ship->getCrewCount() > $colony->getFreeAssignmentCount()) {
+            if ($ship->getCrewCount() > $freeAssignmentCount) {
                 $msg[] = sprintf(
                     _('%s: Nicht genügend Platz für die Crew auf der Kolonie'),
                     $ship->getName()

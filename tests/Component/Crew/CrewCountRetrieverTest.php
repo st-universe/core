@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Crew;
 
 use Mockery\MockInterface;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -23,6 +24,9 @@ class CrewCountRetrieverTest extends StuTestCase
     /** @var MockInterface&CrewTrainingRepositoryInterface */
     private MockInterface $crewTrainigRepository;
 
+    /** @var MockInterface&CrewLimitCalculatorInterface */
+    private MockInterface $crewLimitCalculator;
+
     private CrewCountRetriever $subject;
 
     protected function setUp(): void
@@ -30,10 +34,12 @@ class CrewCountRetrieverTest extends StuTestCase
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
         $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
         $this->crewTrainigRepository = $this->mock(CrewTrainingRepositoryInterface::class);
+        $this->crewLimitCalculator = $this->mock(CrewLimitCalculatorInterface::class);
 
         $this->subject = new CrewCountRetriever(
             $this->crewRepository,
             $this->shipCrewRepository,
+            $this->crewLimitCalculator,
             $this->crewTrainigRepository
         );
     }
@@ -99,8 +105,8 @@ class CrewCountRetrieverTest extends StuTestCase
     {
         $user = $this->mock(UserInterface::class);
 
-        $user->shouldReceive('getGlobalCrewLimit')
-            ->withNoArgs()
+        $this->crewLimitCalculator->shouldReceive('getGlobalCrewLimit')
+            ->with($user)
             ->once()
             ->andReturn(3);
 
@@ -124,8 +130,8 @@ class CrewCountRetrieverTest extends StuTestCase
     {
         $user = $this->mock(UserInterface::class);
 
-        $user->shouldReceive('getGlobalCrewLimit')
-            ->withNoArgs()
+        $this->crewLimitCalculator->shouldReceive('getGlobalCrewLimit')
+            ->with($user)
             ->once()
             ->andReturn(3);
 
@@ -166,8 +172,8 @@ class CrewCountRetrieverTest extends StuTestCase
     {
         $user = $this->mock(UserInterface::class);
 
-        $user->shouldReceive('getGlobalCrewLimit')
-            ->withNoArgs()
+        $this->crewLimitCalculator->shouldReceive('getGlobalCrewLimit')
+            ->with($user)
             ->once()
             ->andReturn(130);
 

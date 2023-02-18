@@ -6,11 +6,11 @@ namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Faction\FactionEnum;
+use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -47,9 +47,17 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     private ?int $energyProduction = null;
 
+    private ?ColonyPopulationCalculatorInterface $colonyPopulationCalculator = null;
+
+    /** @var array<ColonyProduction>|null */
+    private ?array $production = null;
+
     public function __construct(
+        ColonyLibFactoryInterface $colonyLibFactory,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         ColonyRepositoryInterface $colonyRepository,
@@ -62,6 +70,7 @@ final class ColonySurface implements ColonySurfaceInterface
         ?int $buildingId = null,
         bool $showUnderground = true
     ) {
+        $this->colonyLibFactory = $colonyLibFactory;
         $this->colony = $colony;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
@@ -183,57 +192,6 @@ final class ColonySurface implements ColonySurfaceInterface
         );
     }
 
-    public function getPositiveEffectPrimaryDescription(): string
-    {
-        switch ($this->colony->getUser()->getFactionId()) {
-            case FactionEnum::FACTION_FEDERATION:
-                return _('Zufriedenheit');
-            case FactionEnum::FACTION_ROMULAN:
-                return _('Loyalität');
-            case FactionEnum::FACTION_KLINGON:
-                return _('Ehre');
-            case FactionEnum::FACTION_CARDASSIAN:
-                return _('Stolz');
-            case FactionEnum::FACTION_FERENGI:
-                return _('Wohlstand');
-        }
-        return '';
-    }
-
-    public function getPositiveEffectSecondaryDescription(): string
-    {
-        switch ($this->colony->getUser()->getFactionId()) {
-            case FactionEnum::FACTION_FEDERATION:
-                return _('Bildung');
-            case FactionEnum::FACTION_ROMULAN:
-                return _('Imperiales Gedankengut');
-            case FactionEnum::FACTION_KLINGON:
-                return _('Kampftraining');
-            case FactionEnum::FACTION_CARDASSIAN:
-                return _('Patriotismus');
-            case FactionEnum::FACTION_FERENGI:
-                return _('Profitgier');
-        }
-        return '';
-    }
-
-    public function getNegativeEffectDescription(): string
-    {
-        switch ($this->colony->getUser()->getFactionId()) {
-            case FactionEnum::FACTION_FEDERATION:
-                return _('Bevölkerungsdichte');
-            case FactionEnum::FACTION_ROMULAN:
-                return _('Bevölkerungsdichte');
-            case FactionEnum::FACTION_KLINGON:
-                return _('Bevölkerungsdichte');
-            case FactionEnum::FACTION_CARDASSIAN:
-                return _('Bevölkerungsdichte');
-            case FactionEnum::FACTION_FERENGI:
-                return _('Bevölkerungsdichte');
-        }
-        return '';
-    }
-
     public function getStorageSumPercent(): float
     {
         $maxStorage = $this->colony->getMaxStorage();
@@ -286,7 +244,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getUserDepositMinings(): array
     {
-        $production = $this->colony->getProduction();
+        $production = $this->getProduction();
 
         $result = [];
 
@@ -339,5 +297,27 @@ final class ColonySurface implements ColonySurfaceInterface
             [BuildingEnum::BUILDING_FUNCTION_AIRFIELD],
             [0, 1]
         ) > 0;
+    }
+
+    public function getPopulation(): ColonyPopulationCalculatorInterface
+    {
+        if ($this->colonyPopulationCalculator === null) {
+            $this->colonyPopulationCalculator = $this->colonyLibFactory->createColonyPopulationCalculator(
+                $this->colony,
+                $this->getProduction()
+            );
+        }
+        return $this->colonyPopulationCalculator;
+    }
+
+    /**
+     * @return array<ColonyProduction>
+     */
+    private function getProduction(): array
+    {
+        if ($this->production === null) {
+            $this->production = $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction();
+        }
+        return $this->production;
     }
 }

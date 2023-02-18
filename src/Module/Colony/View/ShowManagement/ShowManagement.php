@@ -74,6 +74,9 @@ final class ShowManagement implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
+        $surface = $this->colonyLibFactory->createColonySurface($colony);
+        $populationGrowth = $surface->getPopulation()->getGrowth();
+
         $firstOrbitShip = null;
 
         $shipList = $this->orbitShipListRetriever->retrieve($colony);
@@ -96,10 +99,10 @@ final class ShowManagement implements ViewControllerInterface
         }
 
         $immigrationSymbol = '-';
-        if ($colony->getImmigration() > 0) {
+        if ($populationGrowth > 0) {
             $immigrationSymbol = '+';
         }
-        if ($colony->getImmigration() == 0) {
+        if ($populationGrowth == 0) {
             $immigrationSymbol = '';
         }
 
@@ -111,7 +114,7 @@ final class ShowManagement implements ViewControllerInterface
             'FIRST_ORBIT_SHIP',
             $firstOrbitShip === null ? null : $this->shipWrapperFactory->wrapShip($firstOrbitShip)
         );
-        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar('COLONY_SURFACE', $surface);
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
 
         $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $game->getUser());

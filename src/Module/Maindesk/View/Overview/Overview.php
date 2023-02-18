@@ -10,6 +10,7 @@ use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -57,6 +58,8 @@ final class Overview implements ViewControllerInterface
 
     private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
 
+    private CrewLimitCalculatorInterface $crewLimitCalculator;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
@@ -70,6 +73,7 @@ final class Overview implements ViewControllerInterface
         ColonyLimitCalculatorInterface $colonyLimitCalculator,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         PlayerRelationDeterminatorInterface $playerRelationDeterminator,
+        CrewLimitCalculatorInterface $crewLimitCalculator,
         CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->historyRepository = $historyRepository;
@@ -85,6 +89,7 @@ final class Overview implements ViewControllerInterface
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->crewCountRetriever = $crewCountRetriever;
         $this->playerRelationDeterminator = $playerRelationDeterminator;
+        $this->crewLimitCalculator = $crewLimitCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -165,6 +170,11 @@ final class Overview implements ViewControllerInterface
         //asteroid
         $game->setTemplateVar('ASTEROID_LIMIT', $this->colonyLimitCalculator->getColonyLimitWithType($user, ColonyTypeEnum::COLONY_TYPE_ASTEROID));
         $game->setTemplateVar('ASTEROID_COUNT', $this->colonyLimitCalculator->getColonyCountWithType($user, ColonyTypeEnum::COLONY_TYPE_ASTEROID));
+
+        $game->setTemplateVar(
+            'CREW_LIMIT',
+            $this->crewLimitCalculator->getGlobalCrewLimit($user)
+        );
 
         // crew count
         $game->setTemplateVar(

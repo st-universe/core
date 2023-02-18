@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\LandShip;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -37,6 +38,8 @@ final class LandShip implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
@@ -44,6 +47,7 @@ final class LandShip implements ActionControllerInterface
         ShipRemoverInterface $shipRemover,
         ShipLoaderInterface $shipLoader,
         ShipTorpedoManagerInterface $shipTorpedoManager,
+        ColonyLibFactoryInterface $colonyLibFactory,
         ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -53,6 +57,7 @@ final class LandShip implements ActionControllerInterface
         $this->shipLoader = $shipLoader;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -82,7 +87,13 @@ final class LandShip implements ActionControllerInterface
             $game->addInformation(_('Kein Lagerraum verfügbar'));
             return;
         }
-        if ($ship->getCrewCount() > $colony->getFreeAssignmentCount()) {
+
+        $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+            $colony,
+            $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+        )->getFreeAssignmentCount();
+
+        if ($ship->getCrewCount() > $freeAssignmentCount) {
             $game->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
             return;
         }

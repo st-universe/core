@@ -10,6 +10,7 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -130,7 +131,6 @@ final class ColonyTick implements ColonyTickInterface
         $userDepositMinings = $colony->getUserDepositMinings();
 
         $this->mainLoop($colony, $userDepositMinings);
-        $this->proceedStorage($colony, $userDepositMinings);
 
         $this->colonyRepository->save($colony);
 
@@ -157,9 +157,10 @@ final class ColonyTick implements ColonyTickInterface
         $i = 1;
         $storage = $colony->getStorage();
 
+        $production = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
+
         while (true) {
             $rewind = 0;
-            $production = $colony->getProduction();
             foreach ($production as $commodityId => $pro) {
 
                 if ($pro->getProduction() >= 0) {
@@ -169,7 +170,7 @@ final class ColonyTick implements ColonyTickInterface
                 $depositMining = $userDepositMinings[$commodityId] ?? null;
                 if ($depositMining !== null) {
 
-                    if ($depositMining->isEnoughLeft(abs($pro->getProduction()))) {
+                    if ($depositMining->isEnoughLeft((int) abs($pro->getProduction()))) {
                         continue;
                     }
                 }
@@ -181,7 +182,7 @@ final class ColonyTick implements ColonyTickInterface
                 //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
                 $field = $this->getBuildingToDeactivateByCommodity($colony, $commodityId);
                 // echo $i." hit by commodity ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
-                $this->deactivateBuilding($colony, $field, $this->commodityArray[$commodityId]);
+                $this->deactivateBuilding($field, $production, $this->commodityArray[$commodityId]);
                 $rewind = 1;
             }
 
@@ -190,7 +191,7 @@ final class ColonyTick implements ColonyTickInterface
             if ($rewind == 0 && $energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
                 $field = $this->getBuildingToDeactivateByEpsUsage($colony);
                 //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
-                $this->deactivateBuilding($colony, $field);
+                $this->deactivateBuilding($field, $production);
                 $rewind = 1;
             }
             if ($rewind == 1) {
@@ -215,10 +216,18 @@ final class ColonyTick implements ColonyTickInterface
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\tmainLoop, seconds: %F", $endTime - $startTime));
         }
+
+        $this->proceedStorage($colony, $userDepositMinings, $production);
     }
 
-    private function deactivateBuilding(ColonyInterface $colony, PlanetFieldInterface $field, CommodityInterface $commodity = null): void
-    {
+    /**
+     * @param array<ColonyProduction> $production
+     */
+    private function deactivateBuilding(
+        PlanetFieldInterface $field,
+        array &$production,
+        CommodityInterface $commodity = null
+    ): void {
         if ($commodity === null) {
             $ext = "Energie";
         } else {
@@ -229,7 +238,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->buildingManager->deactivate($field);
         $this->entityManager->flush();
 
-        $this->mergeProduction($colony, $building->getCommodities());
+        $this->mergeProduction($building->getCommodities(), $production);
 
         $this->msg[] = $building->getName() . " auf Feld " . $field->getFieldId() . " deaktiviert (Mangel an " . $ext . ")";
     }
@@ -254,15 +263,18 @@ final class ColonyTick implements ColonyTickInterface
 
     /**
      * @param ColonyDepositMiningInterface[] $userDepositMinings
+     * @param array<ColonyProduction> $production
      */
-    private function proceedStorage(ColonyInterface $colony, array $userDepositMinings): void
-    {
+    private function proceedStorage(
+        ColonyInterface $colony,
+        array $userDepositMinings,
+        array $production
+    ): void {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
 
         $emigrated = 0;
-        $production = $colony->getProduction();
         $sum = $colony->getStorageSum();
 
         if ($this->loggerUtil->doLog()) {
@@ -397,7 +409,10 @@ final class ColonyTick implements ColonyTickInterface
             }
         }
         if ($emigrated == 0) {
-            $this->proceedImmigration($colony);
+            $this->proceedImmigration(
+                $colony,
+                $production
+            );
         }
 
         if ($this->loggerUtil->doLog()) {
@@ -436,10 +451,18 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    private function proceedImmigration(ColonyInterface $colony): void
-    {
+    /**
+     * @param array<int, ColonyProduction> $production
+     */
+    private function proceedImmigration(
+        ColonyInterface $colony,
+        array $production
+    ): void {
         // @todo
-        $colony->setWorkless($colony->getWorkless() + $colony->getImmigration());
+        $colony->setWorkless(
+            $colony->getWorkless() +
+            $this->colonyLibFactory->createColonyPopulationCalculator($colony, $production)->getGrowth()
+        );
     }
 
     private function proceedEmigration(ColonyInterface $colony)
@@ -474,24 +497,27 @@ final class ColonyTick implements ColonyTickInterface
         $this->msg = [];
     }
 
-    private function mergeProduction(ColonyInterface $colony, Collection $commodityProduction): void
-    {
-        $prod = $colony->getProduction();
-        /** @var BuildingCommodityInterface $obj */
-        foreach ($commodityProduction as $obj) {
+    /**
+     * @param Collection<int, BuildingCommodityInterface> $buildingProduction
+     * @param array<ColonyProduction> $production
+     */
+    private function mergeProduction(
+        Collection $buildingProduction,
+        array &$production
+    ): void {
+        foreach ($buildingProduction as $obj) {
             $commodityId = $obj->getCommodityId();
-            if (!array_key_exists($commodityId, $prod)) {
+            if (!array_key_exists($commodityId, $production)) {
                 $data = $this->colonyLibFactory->createColonyProduction();
                 $data->setCommodityId($commodityId);
                 $data->setProduction($obj->getAmount() * -1);
 
-                $prod[$commodityId] = $data;
-                $colony->setProduction($prod);
+                $production[$commodityId] = $data;
             } else {
                 if ($obj->getAmount() < 0) {
-                    $prod[$commodityId]->upperProduction(abs($obj->getAmount()));
+                    $production[$commodityId]->upperProduction(abs($obj->getAmount()));
                 } else {
-                    $prod[$commodityId]->lowerProduction($obj->getAmount());
+                    $production[$commodityId]->lowerProduction($obj->getAmount());
                 }
             }
         }

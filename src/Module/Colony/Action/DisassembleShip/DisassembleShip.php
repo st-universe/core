@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\DisassembleShip;
 
 use request;
-
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
@@ -43,6 +43,8 @@ final class DisassembleShip implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShipLoaderInterface $shipLoader,
@@ -51,6 +53,7 @@ final class DisassembleShip implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         CommodityRepositoryInterface $commodityRepository,
         ShipTorpedoManagerInterface $shipTorpedoManager,
+        ColonyLibFactoryInterface $colonyLibFactory,
         ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -61,6 +64,7 @@ final class DisassembleShip implements ActionControllerInterface
         $this->commodityRepository = $commodityRepository;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -79,10 +83,15 @@ final class DisassembleShip implements ActionControllerInterface
             return;
         }
 
+        $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+            $colony,
+            $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+        )->getFreeAssignmentCount();
+
         $ship_id = request::getIntFatal('ship_id');
         $wrapper = $this->shipLoader->getWrapperByIdAndUser((int) $ship_id, $userId);
         $ship = $wrapper->get();
-        if ($ship->getCrewCount() > $colony->getFreeAssignmentCount()) {
+        if ($ship->getCrewCount() > $freeAssignmentCount) {
             $game->addInformation(_('Nicht genügend Platz für die Crew auf der Kolonie'));
             return;
         }

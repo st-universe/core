@@ -160,16 +160,6 @@ interface ColonyInterface
      */
     public function getUserDepositMinings(): array;
 
-    /**
-     * @return ColonyProduction[]
-     */
-    public function getProduction(): array;
-
-    /**
-     * @param array<int, ColonyProduction> $array
-     */
-    public function setProduction(array $array): void;
-
     public function isFree(): bool;
 
     public function getUser(): UserInterface;
@@ -179,22 +169,6 @@ interface ColonyInterface
     public function getPopulation(): int;
 
     public function getFreeHousing(): int;
-
-    public function getImmigration(): int;
-
-    public function getNegativeEffect(): int;
-
-    public function getPositiveEffectPrimary(): int;
-
-    public function getPositiveEffectSecondary(): int;
-
-    public function getCrewLimit(): int;
-
-    public function getLifeStandardPercentage(): int;
-
-    public function getFreeAssignmentCount(): int;
-
-    public function clearCache(): void;
 
     public function lowerEps(int $value): void;
 

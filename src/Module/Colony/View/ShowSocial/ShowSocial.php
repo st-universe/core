@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\View\ShowSocial;
 use ColonyMenu;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -27,11 +28,14 @@ final class ShowSocial implements ViewControllerInterface
 
     private CrewCountRetrieverInterface $crewCountRetriever;
 
+    private CrewLimitCalculatorInterface $crewLimitCalculator;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
         ShowSocialRequestInterface $showSocialRequest,
         ColonyLibFactoryInterface $colonyLibFactory,
+        CrewLimitCalculatorInterface $crewLimitCalculator,
         CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -39,6 +43,7 @@ final class ShowSocial implements ViewControllerInterface
         $this->showSocialRequest = $showSocialRequest;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->crewCountRetriever = $crewCountRetriever;
+        $this->crewLimitCalculator = $crewLimitCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -76,6 +81,10 @@ final class ShowSocial implements ViewControllerInterface
         $game->setTemplateVar(
             'SHIELDING_MANAGER',
             $this->colonyLibFactory->createColonyShieldingManager($colony)
+        );
+        $game->setTemplateVar(
+            'GLOBAL_CREW_LIMIT',
+            $this->crewLimitCalculator->getGlobalCrewLimit($user)
         );
     }
 }

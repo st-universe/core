@@ -53,8 +53,6 @@ final class BuildingAction implements BuildingActionInterface
 
         $this->buildingManager->activate($field);
 
-        $colony->clearCache();
-
         $game->addInformationf(
             _('%s auf Feld %s wurde aktiviert'),
             $field->getBuilding()->getName(),
@@ -75,8 +73,6 @@ final class BuildingAction implements BuildingActionInterface
         }
 
         $this->buildingManager->deactivate($field);
-
-        $colony->clearCache();
 
         $game->addInformationf(
             _('%s auf Feld %s wurde deaktiviert'),

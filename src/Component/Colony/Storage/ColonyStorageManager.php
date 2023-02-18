@@ -50,8 +50,6 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
             );
         }
 
-        $colony->clearCache();
-
         if ($storedAmount === $amount) {
             $storage->removeElement($stor);
 
@@ -107,7 +105,6 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
             $startTime = microtime(true);
         }
 
-        $colony->clearCache();
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\t\t\tclearCache, seconds: %F", $endTime - $startTime));

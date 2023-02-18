@@ -6,6 +6,8 @@ namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Component\Colony\ColonyPopulationCalculator;
+use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Component\Colony\Commodity\ColonyCommodityProduction;
 use Stu\Component\Colony\Commodity\ColonyCommodityProductionInterface;
 use Stu\Component\Colony\Commodity\ColonyProductionSumReducer;
@@ -125,6 +127,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         bool $showUnderground = true
     ): ColonySurfaceInterface {
         return new ColonySurface(
+            $this,
             $this->planetFieldRepository,
             $this->buildingRepository,
             $this->colonyRepository,
@@ -254,7 +257,21 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         );
     }
 
-    public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface {
+    public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface
+    {
         return new ColonyProductionSumReducer();
+    }
+
+    /**
+     * @param array<int, ColonyProduction> $production
+     */
+    public function createColonyPopulationCalculator(
+        ColonyInterface $colony,
+        array $production
+    ): ColonyPopulationCalculatorInterface {
+        return new ColonyPopulationCalculator(
+            $colony,
+            $production
+        );
     }
 }

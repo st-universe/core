@@ -8,6 +8,8 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -37,6 +39,10 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
+    private CrewLimitCalculatorInterface $crewLimitCalculator;
+
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         CrewCreatorInterface $crewCreator,
@@ -46,6 +52,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         CommodityRepositoryInterface $commodityRepository,
         CrewCountRetrieverInterface $crewCountRetriever,
         ColonyFunctionManagerInterface $colonyFunctionManager,
+        CrewLimitCalculatorInterface $crewLimitCalculator,
+        ColonyLibFactoryInterface $colonyLibFactory,
         LockManagerInterface $lockManager
     ) {
         $this->colonyTick = $colonyTick;
@@ -57,6 +65,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->crewCountRetriever = $crewCountRetriever;
         $this->lockManager = $lockManager;
         $this->colonyFunctionManager = $colonyFunctionManager;
+        $this->crewLimitCalculator = $crewLimitCalculator;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function work(int $batchGroup, int $batchGroupCount): void
@@ -98,14 +108,21 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             }
             $colony = $obj->getColony();
 
+            $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
+                $colony,
+                $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+            )->getFreeAssignmentCount();
+
             //colony can't hold more crew
-            if ($colony->getFreeAssignmentCount() === 0) {
+            if ($freeAssignmentCount === 0) {
                 $this->crewTrainingRepository->delete($obj);
                 continue;
             }
 
+            $globalCrewLimit = $this->crewLimitCalculator->getGlobalCrewLimit($obj->getUser());
+
             //user has too much crew
-            if ($obj->getUser()->getGlobalCrewLimit() - $this->crewCountRetriever->getAssignedCount($obj->getUser()) <= 0) {
+            if ($globalCrewLimit - $this->crewCountRetriever->getAssignedCount($obj->getUser()) <= 0) {
                 $this->crewTrainingRepository->delete($obj);
                 continue;
             }

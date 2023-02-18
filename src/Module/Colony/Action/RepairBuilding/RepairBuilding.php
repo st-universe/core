@@ -120,8 +120,6 @@ final class RepairBuilding implements ActionControllerInterface
                 (int) ceil(($cost->getAmount() / 100) * $integrity)
             );
         }
-        $colony->clearCache();
-
         $colony->lowerEps($eps);
 
         $this->colonyRepository->save($colony);
