@@ -7553,16 +7553,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.15.16",
+            "version": "0.15.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "826539a991aa22590e91f8add06ca99f76e21ccd"
+                "reference": "7f6ee7974175138864d3b50c28ea73a7b0fd4e2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/826539a991aa22590e91f8add06ca99f76e21ccd",
-                "reference": "826539a991aa22590e91f8add06ca99f76e21ccd",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/7f6ee7974175138864d3b50c28ea73a7b0fd4e2d",
+                "reference": "7f6ee7974175138864d3b50c28ea73a7b0fd4e2d",
                 "shasum": ""
             },
             "require": {
@@ -7596,7 +7596,7 @@
             "description": "Instant Upgrade and Automated Refactoring of any PHP code",
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.15.16"
+                "source": "https://github.com/rectorphp/rector/tree/0.15.17"
             },
             "funding": [
                 {
@@ -7604,7 +7604,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-14T22:22:09+00:00"
+            "time": "2023-02-17T20:34:07+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -8576,12 +8576,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "7fb86b7e3a6cf90788f0e52bcb88bb21bfcac011"
+                "reference": "85f7135162edcbe352a80de846096fe9d8bd4b36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/7fb86b7e3a6cf90788f0e52bcb88bb21bfcac011",
-                "reference": "7fb86b7e3a6cf90788f0e52bcb88bb21bfcac011",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/85f7135162edcbe352a80de846096fe9d8bd4b36",
+                "reference": "85f7135162edcbe352a80de846096fe9d8bd4b36",
                 "shasum": ""
             },
             "require": {
@@ -8600,7 +8600,7 @@
                 "issues": "https://github.com/st-universe/assets/issues",
                 "source": "https://github.com/st-universe/assets/tree/master"
             },
-            "time": "2023-02-17T18:06:15+00:00"
+            "time": "2023-02-17T19:54:06+00:00"
         },
         {
             "name": "symfony/finder",
