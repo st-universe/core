@@ -2128,7 +2128,7 @@
         (<span tal:replace="COLONY_SURFACE/getStorageSumPercent">PERCENT</span>%)
       </th>
       <td>
-        <span tal:content="addPlusCharacter:PRODUCTION_SUM">SUM</span>
+        <span tal:content="structure formatProductionValue:PRODUCTION_SUM">SUM</span>
       </td>
     </tr>
     <tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor STORAGE">

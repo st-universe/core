@@ -6,6 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Colony\ColonyFunctionManager;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\UserInterface;
 
@@ -43,6 +45,35 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             'colonyId' => $colonyId,
             'colonyClassId' => $colonyClassId
         ])->getResult();
+    }
+
+    public function getProductionSumForAllUserColonies(UserInterface $user): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('amount', 'amount', 'integer');
+        $rsm->addScalarResult('commodity_name', 'commodity_name');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT a.id as commodity_id, a.name as commodity_name, SUM(c.count) + COALESCE(MAX(d.count),0) as amount
+                FROM stu_commodity a
+                    LEFT JOIN stu_colonies col ON col.user_id = :userId
+                    LEFT JOIN stu_colonies_fielddata b ON b.colonies_id = col.id AND b.aktiv = :state
+                    LEFT JOIN stu_buildings_commodity c ON c.commodity_id = a.id AND c.buildings_id = b.buildings_id
+                    LEFT JOIN stu_planets_commodity d ON d.commodity_id = a.id AND d.planet_classes_id = col.colonies_classes_id
+                WHERE a.type = :commodityType
+                GROUP BY a.id
+                HAVING SUM(c.count) + COALESCE(MAX(d.count),0) > 0
+                ORDER BY a.sort ASC',
+                $rsm
+            )
+                ->setParameters([
+                'state' => ColonyFunctionManager::STATE_ENABLED,
+                'commodityType' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD,
+                'userId' => $user->getId(),
+            ])
+            ->toIterable();
     }
 
     public function getProductionByCommodityAndUser(int $commodityId, UserInterface $user): int

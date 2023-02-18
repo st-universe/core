@@ -140,15 +140,13 @@
 						<tr tal:attributes="class string:row${repeat/prod/odd}" tal:repeat="prod PRODUCTION_LIST">
 							<td style="vertical-align: middle;">
 								<div style="display: table-cell; width: 55px;">
-									<img src="assets/commodities/${prod/getCommodityId}.png"
-										tal:attributes="title prod/getCommodity/getName" />
+									<img src="assets/commodities/${prod/commodity_id}.png" tal:attributes="title prod/commodity_name" />
 								</div>
 								<div style="display: table-cell; vertical-align: middle"
-									tal:content="prod/getCommodity/getName">NAME</div>
+									tal:content="prod/commodity_name">NAME</div>
 							</td>
 							<td style="vertical-align: middle; text-align: center;">
-								<span tal:content="prod/getProductionDisplay"
-									tal:attributes="class prod/getCssClass">.</span>
+								<span tal:content="structure formatProductionValue:prod/amount">VALUE</span>
 							</td>
 						</tr>
 					</table>

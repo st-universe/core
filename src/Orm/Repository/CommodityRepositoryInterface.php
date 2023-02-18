@@ -34,7 +34,9 @@ interface CommodityRepositoryInterface extends ObjectRepository
     public function getTradeable(): array;
 
     /**
-     * @return CommodityInterface[]
+     * Returns a dict of all commodities, indexed by it's id
+     *
+     * @return array<int, CommodityInterface>
      */
     public function getAll(): array;
 }

@@ -35,6 +35,16 @@ final class TalHelper
         return self::$dic;
     }
 
+    public static function formatProductionValue(int $value): string
+    {
+        if ($value > 0) {
+            return sprintf('<span class="positive">+%d</span>', $value);
+        } elseif ($value < 0) {
+            return sprintf('<span class="negative">%d</span>', $value);
+        }
+        return (string) $value;
+    }
+
     public static function addPlusCharacter(string $value): string
     {
         if ($value <= 0) {
@@ -221,6 +231,10 @@ final class TalHelper
         TalesRegistry::registerPrefix(
             'planetFieldTitle',
             fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::getPlanetFieldTitle(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
+        );
+        TalesRegistry::registerPrefix(
+            'formatProductionValue',
+            fn ($src, $nothrow): string => '\Stu\Module\Tal\TalHelper::formatProductionValue(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
     }
 }
