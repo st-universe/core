@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Reset;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
@@ -13,6 +14,7 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
+use Throwable;
 
 final class ResetManager implements ResetManagerInterface
 {
@@ -34,7 +36,10 @@ final class ResetManager implements ResetManagerInterface
 
     private EntityManagerInterface $entityManager;
 
+    private ConfigInterface $config;
+
     public function __construct(
+        ConfigInterface $config,
         PlayerDeletionInterface $playerDeletion,
         ColonyRepositoryInterface $colonyRepository,
         KnPostRepositoryInterface $knPostRepository,
@@ -54,25 +59,44 @@ final class ResetManager implements ResetManagerInterface
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->entityManager = $entityManager;
+        $this->config = $config;
     }
 
     public function performReset(): void
     {
-        $this->playerDeletion->handleReset();
+        $this->entityManager->beginTransaction();
 
-        $this->entityManager->flush();
+        try {
+            $this->playerDeletion->handleReset();
 
-        $this->resetColonySurfaceMasks();
-        $this->deleteKnPostings();
-        $this->deleteKnPlotMembers();
-        $this->deleteKnPlots();
-        $this->deleteHistory();
-        $this->resetGameTurns();
+            $this->entityManager->flush();
 
-        // clear game data
-        // flight signatures
-        // user locks
-        // blocked users
+            $this->resetColonySurfaceMasks();
+            $this->deleteKnPostings();
+            $this->deleteKnPlotMembers();
+            $this->deleteKnPlots();
+            $this->deleteHistory();
+            $this->resetGameTurns();
+
+            // clear game data
+            // flight signatures
+            // user locks
+            // blocked users
+        } catch (Throwable $t) {
+            $this->entityManager->rollback();
+
+            throw $t;
+        }
+
+        $this->entityManager->getConnection()->executeQuery(
+            sprintf(
+                'ALTER SEQUENCE stu_user_id_seq RESTART WITH %d',
+                (int) $this->config->get('game.admin.id')
+            )
+        );
+
+        $this->entityManager->commit();
+
     }
 
     /**

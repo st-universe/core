@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Mockery;
 use Mockery\MockInterface;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\GameTurnInterface;
@@ -25,58 +28,41 @@ use Stu\StuTestCase;
 
 class ResetManagerTest extends StuTestCase
 {
-    /**
-     * @var null|MockInterface|PlayerDeletionInterface
-     */
-    private $playerDeletion;
+    /** @var MockInterface&ConfigInterface */
+    private MockInterface $config;
 
-    /**
-     * @var null|MockInterface|ColonyRepositoryInterface
-     */
-    private $colonyRepository;
+    /** @var MockInterface&PlayerDeletionInterface */
+    private MockInterface $playerDeletion;
 
-    /**
-     * @var null|MockInterface|KnPostRepositoryInterface
-     */
-    private $knPostRepository;
+    /** @var MockInterface&ColonyRepositoryInterface */
+    private MockInterface $colonyRepository;
 
-    /**
-     * @var null|MockInterface|HistoryRepositoryInterface
-     */
-    private $historyRepository;
+    /** @var MockInterface&KnPostRepositoryInterface */
+    private MockInterface $knPostRepository;
 
-    /**
-     * @var null|MockInterface|GameTurnRepositoryInterface
-     */
-    private $gameTurnRepository;
+    /** @var MockInterface&HistoryRepositoryInterface */
+    private MockInterface $historyRepository;
 
-    /**
-     * @var null|MockInterface|RpgPlotRepositoryInterface
-     */
-    private $rpgPlotRepository;
+    /** @var MockInterface&GameTurnRepositoryInterface */
+    private MockInterface $gameTurnRepository;
 
-    /**
-     * @var null|MockInterface|RpgPlotMemberRepositoryInterface
-     */
-    private $rpgPlotMemberRepository;
+    /** @var MockInterface&RpgPlotRepositoryInterface */
+    private MockInterface $rpgPlotRepository;
 
-    /**
-     * @var null|MockInterface|PlanetFieldRepositoryInterface
-     */
-    private $planetFieldRepository;
+    /** @var MockInterface&RpgPlotMemberRepositoryInterface */
+    private MockInterface $rpgPlotMemberRepository;
 
-    /**
-     * @var null|MockInterface|EntityManagerInterface
-     */
-    private $entityManager;
+    /** @var MockInterface&PlanetFieldRepositoryInterface */
+    private MockInterface $planetFieldRepository;
 
-    /**
-     * @var null|MockInterface|ResetManagerInterface
-     */
-    private $manager;
+    /** @var MockInterface&EntityManagerInterface */
+    private MockInterface $entityManager;
+
+    private ResetManager $manager;
 
     public function setUp(): void
     {
+        $this->config = $this->mock(ConfigInterface::class);
         $this->playerDeletion = $this->mock(PlayerDeletionInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->knPostRepository = $this->mock(KnPostRepositoryInterface::class);
@@ -88,6 +74,7 @@ class ResetManagerTest extends StuTestCase
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->manager = new ResetManager(
+            $this->config,
             $this->playerDeletion,
             $this->colonyRepository,
             $this->knPostRepository,
@@ -102,14 +89,41 @@ class ResetManagerTest extends StuTestCase
 
     public function testPerformResetResets(): void
     {
+        $database = $this->mock(Connection::class);
+        $colony = $this->mock(ColonyInterface::class);
+
+        $adminId = 666;
+
         $this->playerDeletion->shouldReceive('handleReset')
             ->withNoArgs()
             ->once();
 
-        $colony = $this->mock(ColonyInterface::class);
+        $this->config->shouldReceive('get')
+            ->with('game.admin.id')
+            ->once()
+            ->andReturn((string) $adminId);
 
+        $this->entityManager->shouldReceive('beginTransaction')
+            ->withNoArgs()
+            ->once();
+        $this->entityManager->shouldReceive('commit')
+            ->withNoArgs()
+            ->once();
         $this->entityManager->shouldReceive('flush')
-            ->withNoArgs($colony)
+            ->withNoArgs()
+            ->once();
+        $this->entityManager->shouldReceive('getConnection')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($database);
+
+        $database->shouldReceive('executeQuery')
+            ->with(
+                sprintf(
+                    'ALTER SEQUENCE stu_user_id_seq RESTART WITH %d',
+                    $adminId
+                )
+            )
             ->once();
 
         $this->colonyRepository->shouldReceive('findAll')
@@ -198,6 +212,29 @@ class ResetManagerTest extends StuTestCase
             ->with(0)
             ->once()
             ->andReturnSelf();
+
+        $this->manager->performReset();
+    }
+
+
+    public function testPerformResetRollsBackAndThrowsError(): void
+    {
+        $error = 'some-error';
+
+        static::expectException(Exception::class);
+        static::expectExceptionMessage($error);
+
+        $this->playerDeletion->shouldReceive('handleReset')
+            ->withNoArgs()
+            ->once()
+            ->andThrow(new Exception($error));
+
+        $this->entityManager->shouldReceive('beginTransaction')
+            ->withNoArgs()
+            ->once();
+        $this->entityManager->shouldReceive('rollback')
+            ->withNoArgs()
+            ->once();
 
         $this->manager->performReset();
     }

@@ -14,7 +14,7 @@ composer, git.
 - make init
 - make dev-create-db
 - make migrateDatabase
-- php src/admin/scripts/reset.php
+- ./bin/cli game:reset
 - make dev-serve
 - Use the cli command to create a new user `./bin/cli user:create --help`
 
