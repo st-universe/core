@@ -709,14 +709,14 @@ final class ShipTickManager implements ShipTickManagerInterface
                 $ship->getName(),
                 $ship->getSectorString(),
                 $entity->getName(),
-                $entity->getUser()->getName()
+                $entity->getUser()->getUserName()
             ) : sprintf(
                 "Die Reparatur der %s wurde in Sektor %s von der %s %s des Spielers %s fertiggestellt",
                 $ship->getName(),
                 $ship->getSectorString(),
                 $entity->getRump()->getName(),
                 $entity->getName(),
-                $entity->getUser()->getName()
+                $entity->getUser()->getUserName()
             );
 
             $this->privateMessageSender->send(
@@ -730,13 +730,13 @@ final class ShipTickManager implements ShipTickManagerInterface
                 $entityOwnerMessage = $isColony ? sprintf(
                     "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s fertiggestellt",
                     $ship->getName(),
-                    $ship->getUser()->getName(),
+                    $ship->getUser()->getUserName(),
                     $ship->getSectorString(),
                     $entity->getName()
                 ) : sprintf(
                     "Die Reparatur der %s von Siedler %s wurde in Sektor %s von der %s %s fertiggestellt",
                     $ship->getName(),
-                    $ship->getUser()->getName(),
+                    $ship->getUser()->getUserName(),
                     $ship->getSectorString(),
                     $entity->getRump()->getName(),
                     $entity->getName()

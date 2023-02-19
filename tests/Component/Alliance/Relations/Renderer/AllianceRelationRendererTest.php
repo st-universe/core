@@ -75,10 +75,6 @@ class AllianceRelationRendererTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($opponent);
-        $relation->shouldReceive('getTypeDescription')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($relationtypeDescription);
         $relation->shouldReceive('getType')
             ->withNoArgs()
             ->once()
@@ -111,7 +107,7 @@ class AllianceRelationRendererTest extends StuTestCase
             ->with('graphviz.color', '#005183')
             ->once();
         $edge->shouldReceive('setAttribute')
-            ->with('graphviz.tooltip', $relationtypeDescription)
+            ->with('graphviz.tooltip', AllianceEnum::relationTypeToDescription($relationType))
             ->once();
         $edge->shouldReceive('setAttribute')
             ->with('graphviz.penwidth', 2)

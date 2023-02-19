@@ -61,9 +61,11 @@ final class AllianceRelationRenderer implements AllianceRelationRendererInterfac
             $allianceId = $relation->getAllianceId();
             $opponentId = $relation->getOpponentId();
 
+            $type = $relation->getType();
+
             $edge = $vertexes[$allianceId]->createEdge($vertexes[$opponentId]);
-            $edge->setAttribute('graphviz.color', AllianceEnum::relationTypeToColor($relation->getType()));
-            $edge->setAttribute('graphviz.tooltip', $relation->getTypeDescription());
+            $edge->setAttribute('graphviz.color', AllianceEnum::relationTypeToColor($type));
+            $edge->setAttribute('graphviz.tooltip', AllianceEnum::relationTypeToDescription($type));
             $edge->setAttribute('graphviz.penwidth', $penWidth);
         }
 

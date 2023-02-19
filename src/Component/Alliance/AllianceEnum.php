@@ -79,4 +79,24 @@ final class AllianceEnum
                 return '#ffffff';
         }
     }
+
+    public static function relationTypeToDescription(
+        int $relationType
+    ): string {
+        switch ($relationType) {
+            case AllianceEnum::ALLIANCE_RELATION_WAR:
+                return 'Krieg';
+            case AllianceEnum::ALLIANCE_RELATION_PEACE:
+                return 'Friedensabkommen';
+            case AllianceEnum::ALLIANCE_RELATION_FRIENDS:
+                return 'Freundschaftabkommen';
+            case AllianceEnum::ALLIANCE_RELATION_ALLIED:
+                return 'Bündnis';
+            case AllianceEnum::ALLIANCE_RELATION_TRADE:
+                return 'Handelsabkommen';
+            case AllianceEnum::ALLIANCE_RELATION_VASSAL:
+                return 'Vasall';
+        }
+        return '';
+    }
 }

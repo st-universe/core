@@ -154,10 +154,10 @@ final class AlertRedHelper implements AlertRedHelperInterface
                     $txt = sprintf(
                         _('Die %s von Spieler %s ist in Sektor %s eingeflogen und hat dabei die %s von Spieler %s gezogen'),
                         $tractoringShip->getName(),
-                        $tractoringShip->getUser()->getName(),
+                        $tractoringShip->getUser()->getUserName(),
                         $tractoringShip->getSectorString(),
                         $leadShip->getName(),
-                        $leadShip->getUser()->getName()
+                        $leadShip->getUser()->getUserName()
                     );
                     $usersToInformAboutTrojanHorse[$userId] = $txt;
                 }

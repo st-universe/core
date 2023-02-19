@@ -24,7 +24,7 @@ final class AllianceRelationWrapper
 
     public function getDescription(): string
     {
-        $typeDescription = $this->relation->getTypeDescription();
+        $typeDescription = AllianceEnum::relationTypeToDescription($this->relation->getType());
         $toName = $this->relation->getOpponent()->getName();
         $fromName = $this->relation->getAlliance()->getName();
 

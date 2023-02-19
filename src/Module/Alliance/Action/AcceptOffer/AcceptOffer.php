@@ -70,7 +70,7 @@ final class AcceptOffer implements ActionControllerInterface
 
         $text = sprintf(
             _("%s abgeschlossen!\nDie Allianz %s hat hat das Angebot angenommen"),
-            $relation->getTypeDescription(),
+            AllianceEnum::relationTypeToDescription($relation->getType()),
             $alliance->getName()
         );
 
@@ -80,7 +80,7 @@ final class AcceptOffer implements ActionControllerInterface
                     _('Die Allianzen %s und %s sind ein %s eingegangen'),
                     $relation->getAlliance()->getName(),
                     $relation->getOpponent()->getName(),
-                    $relation->getTypeDescription()
+                    AllianceEnum::relationTypeToDescription($relation->getType())
                 ),
                 $userId
             );
@@ -89,7 +89,7 @@ final class AcceptOffer implements ActionControllerInterface
                 sprintf(
                     _('Die Allianz %s ist nun %s der Allianz %s'),
                     $relation->getOpponent()->getName(),
-                    $relation->getTypeDescription(),
+                    AllianceEnum::relationTypeToDescription($relation->getType()),
                     $relation->getAlliance()->getName()
                 ),
                 $userId

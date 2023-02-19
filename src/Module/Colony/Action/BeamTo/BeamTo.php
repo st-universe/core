@@ -80,7 +80,7 @@ final class BeamTo implements ActionControllerInterface
             return;
         }
 
-        if ($target->getShieldState() && $target->getUserId() != $userId) {
+        if ($target->getShieldState() && $target->getUser()->getId() !== $userId) {
             $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
             return;
         }

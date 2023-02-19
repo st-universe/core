@@ -61,10 +61,10 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
         $game->addInformation("USERS:");
         $allUsers = $this->userRepository->findAll();
         foreach ($allUsers as $user) {
-            if (!CleanTextUtils::checkBBCode($user->getName())) {
-                $game->addInformationf(_("user_id: %d, name: %s"), $user->getId(), $user->getName());
+            if (!CleanTextUtils::checkBBCode($user->getUserName())) {
+                $game->addInformationf(_("user_id: %d, name: %s"), $user->getId(), $user->getUserName());
 
-                $textOnly = $this->bbCodeParser->parse($user->getName())->getAsText();
+                $textOnly = $this->bbCodeParser->parse($user->getUserName())->getAsText();
 
                 $user->setUsername($textOnly);
                 $this->userRepository->save($user);

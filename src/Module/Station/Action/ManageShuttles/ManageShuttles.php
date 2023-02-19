@@ -143,7 +143,7 @@ final class ManageShuttles implements ActionControllerInterface
                 _('Die %s %s des Spielers %s transferiert Shuttles in Sektor %d|%d') . "\n",
                 $station->getRump()->getName(),
                 $station->getName(),
-                $station->getUser()->getName(),
+                $station->getUser()->getUserName(),
                 $ship->getPosX(),
                 $ship->getPosY()
             );

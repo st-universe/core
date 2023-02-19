@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeclineOffer;
 
 use request;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -54,7 +55,7 @@ final class DeclineOffer implements ActionControllerInterface
 
         $text = sprintf(
             _("%s wurde von der Allianz %s abgelehnt"),
-            $relation->getTypeDescription(),
+            AllianceEnum::relationTypeToDescription($relation->getType()),
             $alliance->getName()
         );
 

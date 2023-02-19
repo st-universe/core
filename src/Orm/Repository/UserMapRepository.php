@@ -15,7 +15,7 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
 
     public function insertMapFieldsForUser(int $userId, int $layerId, int $cx, int $cy, int $range): void
     {
-        $this->getEntityManager()->getConnection()->query(
+        $this->getEntityManager()->getConnection()->executeQuery(
             sprintf(
                 'INSERT INTO stu_user_map (user_id,layer_id,cx,cy,map_id)
                 (SELECT %d as user_id,layer_id,cx,cy,id as map_id

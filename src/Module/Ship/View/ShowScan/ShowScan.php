@@ -81,7 +81,7 @@ final class ShowScan implements ViewControllerInterface
             sprintf(
                 _('Die %s von Spieler %s hat %s %s bei %s gescannt.'),
                 $ship->getName(),
-                $game->getUser()->getName(),
+                $game->getUser()->getUserName(),
                 $target->isBase() ? 'deine Station' : 'dein Schiff',
                 $target->getName(),
                 $target->getSectorString()

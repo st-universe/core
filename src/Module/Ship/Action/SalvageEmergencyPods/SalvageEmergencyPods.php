@@ -176,7 +176,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     $ownerId,
                     sprintf(
                         _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an den Handelsposten "%s" (%s) überstellt.'),
-                        $game->getUser()->getName(),
+                        $game->getUser()->getUserName(),
                         $count,
                         $closestTradepost->getName(),
                         $closestTradepost->getShip()->getSectorString()

@@ -140,7 +140,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
                 $loserId,
                 sprintf(
                     "%s hat %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nViel Glück beim nächsten Mal!",
-                    $winner->getName(),
+                    $winner->getUserName(),
                     $jackpot,
                     $ticketCount
                 ),

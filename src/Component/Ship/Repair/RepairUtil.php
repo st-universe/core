@@ -144,14 +144,14 @@ final class RepairUtil implements RepairUtilInterface
             $entityOwnerMessage = $isColony ? sprintf(
                 "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s angehalten.\nEs werden folgende Waren benötigt:\n%s",
                 $ship->getName(),
-                $ship->getUser()->getName(),
+                $ship->getUser()->getUserName(),
                 $ship->getSectorString(),
                 $entity->getName(),
                 $neededPartsString
             ) : sprintf(
                 "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der %s %s angehalten.\nEs werden folgende Waren benötigt:\n%s",
                 $ship->getName(),
-                $ship->getUser()->getName(),
+                $ship->getUser()->getUserName(),
                 $ship->getSectorString(),
                 $entity->getRump()->getName(),
                 $entity->getName(),

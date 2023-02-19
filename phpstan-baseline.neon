@@ -1,22 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: """
-				#^Call to deprecated method getTypeDescription\\(\\) of class Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:
-				Move into AllianceEnum$#
-			"""
-			count: 1
-			path: src/Component/Alliance/Relations/Renderer/AllianceRelationRenderer.php
-
-		-
 			message: "#^Variable \\$key might not be defined\\.$#"
 			count: 4
 			path: src/Component/Colony/ColonyPopulationCalculator.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Component/Player/Deletion/PlayerDeletion.php
 
 		-
 			message: "#^Parameter \\#1 \\$password of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:setPassword\\(\\) expects string, string\\|false given\\.$#"
@@ -52,11 +39,6 @@ parameters:
 			message: "#^Variable \\$sysMapId on left side of \\?\\? is never defined\\.$#"
 			count: 1
 			path: src/Component/Ship/Nbs/NbsUtility.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 2
-			path: src/Component/Ship/Repair/RepairUtil.php
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\Repair\\\\RepairUtil\\:\\:consumeSpareParts\\(\\) has parameter \\$entity with no type specified\\.$#"
@@ -1277,26 +1259,6 @@ parameters:
 			path: src/Lib/request.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/BlockUser.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 3
-			path: src/Module/Admin/Action/ClearFaultyBBCodes.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 2
-			path: src/Module/Admin/Action/LockUser.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/LockUser.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/Map/CreateInfluenceAreas/CreateInfluenceAreas.php
@@ -1742,22 +1704,6 @@ parameters:
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
 
 		-
-			message: """
-				#^Call to deprecated method getTypeDescription\\(\\) of class Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:
-				Move into AllianceEnum$#
-			"""
-			count: 3
-			path: src/Module/Alliance/Action/AcceptOffer/AcceptOffer.php
-
-		-
-			message: """
-				#^Call to deprecated method getTypeDescription\\(\\) of class Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:
-				Move into AllianceEnum$#
-			"""
-			count: 3
-			path: src/Module/Alliance/Action/CancelContract/CancelContract.php
-
-		-
 			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
@@ -1816,14 +1762,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Alliance/Action/CreateTopic/CreateTopic.php
-
-		-
-			message: """
-				#^Call to deprecated method getTypeDescription\\(\\) of class Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:
-				Move into AllianceEnum$#
-			"""
-			count: 1
-			path: src/Module/Alliance/Action/DeclineOffer/DeclineOffer.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
@@ -1961,14 +1899,6 @@ parameters:
 			path: src/Module/Alliance/Lib/AllianceListItem.php
 
 		-
-			message: """
-				#^Call to deprecated method getTypeDescription\\(\\) of class Stu\\\\Orm\\\\Entity\\\\AllianceRelationInterface\\:
-				Move into AllianceEnum$#
-			"""
-			count: 1
-			path: src/Module/Alliance/Lib/AllianceRelationWrapper.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/Board/Board.php
@@ -2057,11 +1987,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Colony\\\\Action\\\\AllowImmigration\\\\AllowImmigration\\:\\:\\$colonyGuiHelper is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/AllowImmigration/AllowImmigration.php
-
-		-
-			message: "#^Call to deprecated method getUserId\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/BeamTo/BeamTo.php
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
@@ -2359,11 +2284,6 @@ parameters:
 			path: src/Module/Colony/Action/ManageOrbitalShips/ManageOrbitalShips.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ManageOrbitalShuttles/ManageOrbitalShuttles.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/ManageOrbitalShuttles/ManageOrbitalShuttles.php
@@ -2422,11 +2342,6 @@ parameters:
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/RepairShip/RepairShip.php
 
 		-
 			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
@@ -2649,11 +2564,6 @@ parameters:
 			path: src/Module/Colony/Lib/ColonyListItemInterface.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ColonyResetter.php
-
-		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonyResetter.php
@@ -2874,11 +2784,6 @@ parameters:
 			path: src/Module/Colony/View/ShowSectorScan/ShowSectorScan.php
 
 		-
-			message: "#^Call to deprecated method getUserId\\(\\) of class Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShipDisassembly/ShowShipDisassembly.php
-
-		-
 			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowShipDisassembly/ShowShipDisassembly.php
@@ -2959,11 +2864,6 @@ parameters:
 			path: src/Module/Communication/Action/AddKnPostToPlot/AddKnPostToPlot.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Communication/Action/ApplyKnPostToPlot/ApplyKnPostToPlot.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnCommentInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/DeleteKnComment/DeleteKnComment.php
@@ -2977,11 +2877,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnPostInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Communication/Action/EditKnPost/EditKnPost.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 2
-			path: src/Module/Communication/Action/PostKnComment/PostKnComment.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\KnPostInterface and null will always evaluate to false\\.$#"
@@ -3576,11 +3471,6 @@ parameters:
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Database/View/UserList/UserList.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\UserList\\\\UserList\\:\\:getUserListNavigation\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Database/View/UserList/UserList.php
@@ -3649,11 +3539,6 @@ parameters:
 			message: "#^Cannot call method read\\(\\) on Directory\\|false\\.$#"
 			count: 1
 			path: src/Module/Maintenance/DatabaseBackup.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Maintenance/EndLotteryPeriod.php
 
 		-
 			message: "#^Parameter \\#1 \\$tradePost of method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactoryInterface\\:\\:createTradePostStorageManager\\(\\) expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface, Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null given\\.$#"
@@ -4591,11 +4476,6 @@ parameters:
 			path: src/Module/Ship/Action/DoTachyonScan/DoTachyonScan.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/DockShip/DockShip.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 4
 			path: src/Module/Ship/Action/DockShip/DockShip.php
@@ -4926,11 +4806,6 @@ parameters:
 			path: src/Module/Ship/Action/SalvageCrew/SalvageCrew.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/SalvageEmergencyPods/SalvageEmergencyPods.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/Action/SalvageEmergencyPods/SalvageEmergencyPods.php
@@ -5199,11 +5074,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ActivatorDeactivatorHelper\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ActivatorDeactivatorHelper.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/AlertRedHelper.php
 
 		-
 			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
@@ -5594,11 +5464,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\TholianWebWeaponPhaseInterface\\:\\:damageCapturedShip\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/TholianWebWeaponPhaseInterface.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
 
 		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
@@ -7291,11 +7156,6 @@ parameters:
 			path: src/Module/Ship/View/ShowColonization/ShowColonization.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowColonyScan/ShowColonyScan.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/View/ShowColonyScan/ShowColonyScan.php
@@ -7314,11 +7174,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowEpsTransfer/ShowEpsTransfer.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowScan/ShowScan.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
@@ -7836,11 +7691,6 @@ parameters:
 			path: src/Module/Station/Action/ManageShips/ManageShips.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
-
-		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
@@ -7859,11 +7709,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Station/Action/RepairShip/RepairShip.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
@@ -8141,11 +7986,6 @@ parameters:
 			path: src/Module/Tick/Process/ShieldRegeneration.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTick.php
-
-		-
 			message: "#^Cannot call method get\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Tick/Ship/ShipTick.php
@@ -8169,11 +8009,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Tick\\\\Ship\\\\ShipTick\\:\\:\\$msg type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Tick/Ship/ShipTick.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 2
-			path: src/Module/Tick/Ship/ShipTickManager.php
 
 		-
 			message: "#^Cannot call method getCloakState\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
@@ -8293,11 +8128,6 @@ parameters:
 		-
 			message: "#^Access to an undefined property Stu\\\\Module\\\\Trade\\\\Action\\\\DealsBidAuction\\\\DealsBidAuction\\:\\:\\$tradeTransactionRepository\\.$#"
 			count: 1
-			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
-
-		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 2
 			path: src/Module/Trade/Action/DealsBidAuction/DealsBidAuction.php
 
 		-
@@ -11399,14 +11229,6 @@ parameters:
 			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: """
-				#^Call to deprecated method query\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
-				This API is deprecated and will be removed after 2022$#
-			"""
-			count: 1
-			path: src/Orm/Repository/UserMapRepository.php
 
 		-
 			message: "#^Cannot call method getBaseCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"

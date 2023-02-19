@@ -151,7 +151,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             $pm = sprintf(
                 _('Die Kolonie %s des Spielers %s transferiert Shuttles in Sektor %d|%d') . "\n",
                 $colony->getName(),
-                $colony->getUser()->getName(),
+                $colony->getUser()->getUserName(),
                 $ship->getPosX(),
                 $ship->getPosY()
             );

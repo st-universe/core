@@ -70,7 +70,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                 sprintf(
                     _('Die Flotte %s hat von Spieler %s hat die Verteidigung der Kolonie %s aufgehoben'),
                     $fleet->getName(),
-                    $fleet->getUser()->getName(),
+                    $fleet->getUser()->getUserName(),
                     $colony->getName()
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
@@ -111,7 +111,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                 sprintf(
                     _('Die Flotte %s hat von Spieler %s hat die Blockade der Kolonie %s aufgehoben'),
                     $fleet->getName(),
-                    $fleet->getUser()->getName(),
+                    $fleet->getUser()->getUserName(),
                     $colony->getName()
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY

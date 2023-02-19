@@ -124,7 +124,7 @@ final class RepairShip implements ActionControllerInterface
                 $ship->getSectorString(),
                 $station->getRump()->getName(),
                 $station->getName(),
-                $station->getUser()->getName(),
+                $station->getUser()->getUserName(),
                 $ticks
             ),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP

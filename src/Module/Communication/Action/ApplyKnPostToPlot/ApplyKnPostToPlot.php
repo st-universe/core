@@ -96,7 +96,7 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
                 $post->getUser()->getId(),
                 sprintf(
                     _('Der Spieler %s hat beantragt deinen Beitrag mit der ID %d und Titel "%s" zu dem RPG-Plot "%s" hinzuzufügen. Zum Annehmen den Link klicken, sonst ignorieren. Erlischt nach 48 Stunden.'),
-                    $game->getUser()->getName(),
+                    $game->getUser()->getUserName(),
                     $post->getId(),
                     $post->getTitle(),
                     $plot->getTitle()

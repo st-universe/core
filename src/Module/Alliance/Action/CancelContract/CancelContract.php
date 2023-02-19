@@ -68,7 +68,7 @@ final class CancelContract implements ActionControllerInterface
         $text = sprintf(
             _('Die Allianz %s hat das %s aufgelöst'),
             $alliance->getName(),
-            $relation->getTypeDescription()
+            AllianceEnum::relationTypeToDescription($relation->getType())
         );
 
         if ($relation->getAllianceId() == $allianceId) {
@@ -81,7 +81,7 @@ final class CancelContract implements ActionControllerInterface
             $this->entryCreator->addAllianceEntry(
                 sprintf(
                     'Das %s zwischen den Allianzen %s und %s wurde aufgelöst',
-                    $relation->getTypeDescription(),
+                    AllianceEnum::relationTypeToDescription($relation->getType()),
                     $relation->getAlliance()->getName(),
                     $relation->getOpponent()->getName()
                 ),
@@ -93,7 +93,7 @@ final class CancelContract implements ActionControllerInterface
                 sprintf(
                     'Die Allianz %s ist nicht mehr %s der Allianz %s',
                     $relation->getOpponent()->getName(),
-                    $relation->getTypeDescription(),
+                    AllianceEnum::relationTypeToDescription($relation->getType()),
                     $relation->getAlliance()->getName()
                 ),
                 $user->getId()
