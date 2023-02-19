@@ -14,7 +14,7 @@ use Stu\Orm\Entity\DatabaseEntryInterface;
 interface DatabaseEntryRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<DatabaseEntryInterface>
+     * @return list<DatabaseEntryInterface>
      */
     public function getByCategoryId(int $categoryId): array;
 

@@ -61,22 +61,27 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('newsort', 'newsort');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT COALESCE(MAX(GREATEST(f.sort, f.id)), 0) + 1 as newsort FROM stu_fleets f
-            WHERE f.user_id = :userId',
-            $rsm
-        )->setParameters([
-            'userId' => $userId
-        ])->getSingleScalarResult();
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT COALESCE(MAX(GREATEST(f.sort, f.id)), 0) + 1 as newsort FROM stu_fleets f WHERE f.user_id = :userId',
+                $rsm
+            )
+            ->setParameters([
+                'userId' => $userId
+            ])
+            ->getSingleScalarResult();
     }
 
     public function getNonNpcFleetList(): iterable
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT f FROM %s f WHERE f.user_id > :firstUserId',
-                Fleet::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT f FROM %s f WHERE f.user_id > :firstUserId',
+                    Fleet::class
+                )
             )
-        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getResult();
+            ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->getResult();
     }
 }

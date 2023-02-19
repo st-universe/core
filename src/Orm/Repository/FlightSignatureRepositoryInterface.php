@@ -19,7 +19,7 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     public function prototype(): FlightSignatureInterface;
 
     /**
-     * @param array<FlightSignatureInterface> $array
+     * @param list<FlightSignatureInterface> $array
      */
     public function saveAll(array $array): void;
 
@@ -40,7 +40,7 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     /**
      * @param MapInterface|StarSystemMapInterface $field
      *
-     * @return FlightSignatureInterface[]
+     * @return list<FlightSignatureInterface>
      */
     public function getVisibleSignatures($field, bool $isSystem, int $ignoreId): array;
 

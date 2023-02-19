@@ -22,7 +22,7 @@ interface DockingPrivilegeRepositoryInterface extends ObjectRepository
     public function existsForTargetAndTypeAndShip(int $targetId, int $privilegeType, int $shipId): bool;
 
     /**
-     * @return DockingPrivilegeInterface[]
+     * @return list<DockingPrivilegeInterface>
      */
     public function getByShip(int $shipId): array;
 

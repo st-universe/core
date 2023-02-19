@@ -22,12 +22,12 @@ interface ContactRepositoryInterface extends ObjectRepository
     public function getByUserAndOpponent(int $userId, int $opponentId): ?ContactInterface;
 
     /**
-     * @return ContactInterface[]
+     * @return list<ContactInterface>
      */
     public function getOrderedByUser(int $userId): array;
 
     /**
-     * @return ContactInterface[]
+     * @return list<ContactInterface>
      */
     public function getRemoteOrderedByUser(int $userId): array;
 

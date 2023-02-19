@@ -98,13 +98,14 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm->addScalarResult('miny', 'miny', 'integer');
         $rsm->addScalarResult('maxy', 'maxy', 'integer');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
-            FROM stu_flight_sig fs
-            JOIN stu_map m ON m.id = fs.map_id
-            WHERE fs.user_id = :userId',
-            $rsm
-        )
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
+                FROM stu_flight_sig fs
+                JOIN stu_map m ON m.id = fs.map_id
+                WHERE fs.user_id = :userId',
+                $rsm
+            )
             ->setParameter('userId', $userId)
             ->getResult();
     }
@@ -117,21 +118,23 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm->addScalarResult('miny', 'miny', 'integer');
         $rsm->addScalarResult('maxy', 'maxy', 'integer');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
-            FROM stu_flight_sig fs
-            JOIN stu_map m ON m.id = fs.map_id
-            JOIN stu_user u	ON fs.user_id = u.id
-            WHERE u.allys_id = :allyId',
-            $rsm
-        )
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT COALESCE(min(m.cx),0) as minx, COALESCE(max(m.cx),0) as maxx, COALESCE(min(m.cy),0) as miny, COALESCE(max(m.cy),0) as maxy
+                FROM stu_flight_sig fs
+                JOIN stu_map m ON m.id = fs.map_id
+                JOIN stu_user u	ON fs.user_id = u.id
+                WHERE u.allys_id = :allyId',
+                $rsm
+            )
             ->setParameter('allyId', $allyId)
             ->getResult();
     }
 
     public function deleteOldSignatures(int $threshold): void
     {
-        $q = $this->getEntityManager()->createQuery(
+        $q = $this->getEntityManager()
+            ->createQuery(
             sprintf(
                 'DELETE FROM %s fs WHERE fs.time < :maxAge',
                 FlightSignature::class
@@ -157,13 +160,13 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 FROM stu_user u
                 WHERE fs.user_id = u.id),
                 count(distinct ship_id) as shipc
-            FROM stu_flight_sig fs
-            WHERE fs.to_direction != 0
-            AND fs.user_id > :firstUserId
-            AND fs.time > :maxAge
-            GROUP BY fs.user_id
-            ORDER BY 2 DESC
-            LIMIT 10',
+                FROM stu_flight_sig fs
+                WHERE fs.to_direction != 0
+                AND fs.user_id > :firstUserId
+                AND fs.time > :maxAge
+                GROUP BY fs.user_id
+                ORDER BY 2 DESC
+                LIMIT 10',
                 $rsm
             )
             ->setParameters([

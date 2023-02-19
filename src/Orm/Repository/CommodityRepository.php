@@ -21,14 +21,15 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         $rsm->addFieldResult('c', 'id', 'id');
         $rsm->addFieldResult('c', 'name', 'name');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT c.id,c.name,c.sort,c.view,c.type, c.npc_commodity FROM stu_commodity c WHERE c.id IN (
-                        SELECT bg.commodity_id FROM stu_buildings_commodity bg WHERE bg.buildings_id IN (
-                            SELECT cfd.buildings_id FROM stu_colonies_fielddata cfd WHERE cfd.colonies_id = :colonyId
-                )
-            ) ORDER BY c.name ASC',
-            $rsm
-        )
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT c.id,c.name,c.sort,c.view,c.type, c.npc_commodity FROM stu_commodity c WHERE c.id IN (
+                            SELECT bg.commodity_id FROM stu_buildings_commodity bg WHERE bg.buildings_id IN (
+                                SELECT cfd.buildings_id FROM stu_colonies_fielddata cfd WHERE cfd.colonies_id = :colonyId
+                    )
+                ) ORDER BY c.name ASC',
+                $rsm
+            )
             ->setParameter('colonyId', $colonyId)
             ->getResult();
     }
@@ -58,12 +59,14 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
 
     public function getAll(): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT c FROM %s c
-                INDEX BY c.id',
-                Commodity::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT c FROM %s c
+                    INDEX BY c.id',
+                    Commodity::class
+                )
             )
-        )->getResult();
+            ->getResult();
     }
 }

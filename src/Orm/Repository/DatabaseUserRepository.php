@@ -62,16 +62,19 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
         $rsm->addScalarResult('points', 'points', 'integer');
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT dbu.user_id, SUM(dbc.points) as points FROM stu_database_user dbu LEFT JOIN
-            stu_database_entrys dbe ON dbe.id = dbu.database_id LEFT JOIN stu_database_categories dbc ON
-            dbc.id = dbe.category_id
-            WHERE dbu.user_id > :firstUserId
-            GROUP BY dbu.user_id
-            ORDER BY points DESC
-            LIMIT 10',
-            $rsm
-        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)->getArrayResult();
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT dbu.user_id, SUM(dbc.points) as points FROM stu_database_user dbu LEFT JOIN
+                stu_database_entrys dbe ON dbe.id = dbu.database_id LEFT JOIN stu_database_categories dbc ON
+                dbc.id = dbe.category_id
+                WHERE dbu.user_id > :firstUserId
+                GROUP BY dbu.user_id
+                ORDER BY points DESC
+                LIMIT 10',
+                $rsm
+            )
+            ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->getArrayResult();
     }
 
     public function getCountForUser(int $userId): int

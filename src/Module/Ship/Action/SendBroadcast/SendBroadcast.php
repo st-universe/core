@@ -77,7 +77,7 @@ final class SendBroadcast implements ActionControllerInterface
             return [];
         }
 
-        $colonies = $this->colonyRepository->getForeignColoniesInBroadcastRange($ship);
+        $colonies = $this->colonyRepository->getForeignColoniesInBroadcastRange($systemMap, $ship->getUser());
 
         if (empty($colonies)) {
             return [];

@@ -15,7 +15,7 @@ use Stu\Orm\Entity\FactionInterface;
 interface FactionRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return FactionInterface[]
+     * @return list<FactionInterface>
      */
     public function getByChooseable(bool $chooseable): array;
 

@@ -26,18 +26,18 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         return new Colony();
     }
 
-    public function save(ColonyInterface $post): void
+    public function save(ColonyInterface $colony): void
     {
         $em = $this->getEntityManager();
 
-        $em->persist($post);
+        $em->persist($colony);
     }
 
-    public function delete(ColonyInterface $post): void
+    public function delete(ColonyInterface $colony): void
     {
         $em = $this->getEntityManager();
 
-        $em->remove($post);
+        $em->remove($colony);
         $em->flush();
     }
 
@@ -97,55 +97,64 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         ]);
     }
 
-    public function getForeignColoniesInBroadcastRange(ShipInterface $ship): array
-    {
-        $systemMap = $ship->getStarsystemMap();
-
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT c FROM %s c
-                 JOIN %s sm
-                 WITH c.starsystem_map_id = sm.id
-                 WHERE c.user_id NOT IN (:ignoreIds)
-                 AND sm.systems_id = :systemId
-                 AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
-                 AND sm.sy BETWEEN (:sy - 1) AND (:sy + 1)',
-                Colony::class,
-                StarSystemMap::class
+    public function getForeignColoniesInBroadcastRange(
+        StarSystemMapInterface $systemMap,
+        UserInterface $user
+    ): array {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT c FROM %s c
+                     JOIN %s sm
+                     WITH c.starsystem_map_id = sm.id
+                     WHERE c.user_id NOT IN (:ignoreIds)
+                     AND sm.systems_id = :systemId
+                     AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
+                     AND sm.sy BETWEEN (:sy - 1) AND (:sy + 1)',
+                    Colony::class,
+                    StarSystemMap::class
+                )
             )
-        )->setParameters([
-            'ignoreIds' => [$ship->getUser()->getId(), GameEnum::USER_NOONE],
-            'systemId' => $systemMap->getSystem()->getId(),
-            'sx' => $systemMap->getSx(),
-            'sy' => $systemMap->getSy()
-        ])->getResult();
+            ->setParameters([
+                'ignoreIds' => [$user->getId(), GameEnum::USER_NOONE],
+                'systemId' => $systemMap->getSystem()->getId(),
+                'sx' => $systemMap->getSx(),
+                'sy' => $systemMap->getSy()
+            ])
+            ->getResult();
     }
 
     public function getByBatchGroup(int $batchGroup, int $batchGroupCount): iterable
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT c FROM %s c
-                WHERE MOD(c.id, :groupCount) + 1 = :groupId
-                AND c.user_id != :userId',
-                Colony::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT c FROM %s c
+                    WHERE MOD(c.id, :groupCount) + 1 = :groupId
+                    AND c.user_id != :userId',
+                    Colony::class
+                )
             )
-        )->setParameters([
-            'groupId' => $batchGroup,
-            'groupCount' => $batchGroupCount,
-            'userId' => GameEnum::USER_NOONE
-        ])->getResult();
+            ->setParameters([
+                'groupId' => $batchGroup,
+                'groupCount' => $batchGroupCount,
+                'userId' => GameEnum::USER_NOONE
+            ])
+            ->getResult();
     }
 
     public function getColonized(): iterable
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT c FROM %s c WHERE c.user_id != :userId',
-                Colony::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT c FROM %s c WHERE c.user_id != :userId',
+                    Colony::class
+                )
             )
-        )->setParameters([
-            'userId' => GameEnum::USER_NOONE,
-        ])->getResult();
+            ->setParameters([
+                'userId' => GameEnum::USER_NOONE,
+            ])
+            ->getResult();
     }
 }

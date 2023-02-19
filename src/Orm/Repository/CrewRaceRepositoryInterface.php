@@ -14,7 +14,7 @@ use Stu\Orm\Entity\CrewRaceInterface;
 interface CrewRaceRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return CrewRaceInterface[]
+     * @return list<CrewRaceInterface>
      */
     public function getByFaction(int $factionId): array;
 }

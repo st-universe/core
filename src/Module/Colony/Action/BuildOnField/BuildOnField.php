@@ -181,6 +181,11 @@ final class BuildOnField implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
         $this->entityManager->flush();
+
+        /**
+         * @todo wtf? why is the colony being loaded again?
+         * @var ColonyInterface $colony
+         */
         $colony = $this->colonyRepository->find(request::indInt('id'));
 
         if ($userId !== GameEnum::USER_NOONE) {

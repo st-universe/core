@@ -24,7 +24,7 @@ interface FleetRepositoryInterface extends ObjectRepository
     public function truncateByUser(UserInterface $user): void;
 
     /**
-     * @return FleetInterface[]
+     * @return list<FleetInterface>
      */
     public function getByUser(int $userId): iterable;
 

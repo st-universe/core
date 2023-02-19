@@ -52,14 +52,17 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
 
     public function truncateByTypeAndTarget(int $typeId, int $targetId): void
     {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s dp WHERE dp.target = :targetId AND dp.privilege_type = :typeId',
-                DockingPrivilege::class
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s dp WHERE dp.target = :targetId AND dp.privilege_type = :typeId',
+                    DockingPrivilege::class
+                )
             )
-        )->setParameters([
-            'typeId' => $typeId,
-            'targetId' => $targetId,
-        ])->execute();
+            ->setParameters([
+                'typeId' => $typeId,
+                'targetId' => $targetId,
+            ])
+            ->execute();
     }
 }

@@ -19,9 +19,9 @@ interface ColonyRepositoryInterface extends ObjectRepository
 {
     public function prototype(): ColonyInterface;
 
-    public function save(ColonyInterface $post): void;
+    public function save(ColonyInterface $colony): void;
 
-    public function delete(ColonyInterface $post): void;
+    public function delete(ColonyInterface $colony): void;
 
     public function getAmountByUser(UserInterface $user, int $colonyType): int;
 
@@ -33,17 +33,20 @@ interface ColonyRepositoryInterface extends ObjectRepository
     public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface;
 
     /**
-     * @return ColonyInterface[]
+     * @return list<ColonyInterface>
      */
-    public function getForeignColoniesInBroadcastRange(ShipInterface $ship): array;
+    public function getForeignColoniesInBroadcastRange(
+        StarSystemMapInterface $systemMap,
+        UserInterface $user
+    ): array;
 
     /**
-     * @return ColonyInterface[]
+     * @return iterable<ColonyInterface>
      */
     public function getByBatchGroup(int $batchGroup, int $batchGroupCount): iterable;
 
     /**
-     * @return ColonyInterface[]
+     * @return iterable<ColonyInterface>
      */
     public function getColonized(): iterable;
 }

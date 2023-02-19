@@ -14,27 +14,27 @@ use Stu\Orm\Entity\CommodityInterface;
 interface CommodityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return CommodityInterface[]
+     * @return list<CommodityInterface>
      */
     public function getByBuildingsOnColony(int $colonyId): array;
 
     /**
-     * @return CommodityInterface[]
+     * @return list<CommodityInterface>
      */
     public function getByType(int $typeId): array;
 
     /**
-     * @return CommodityInterface[]
+     * @return list<CommodityInterface>
      */
     public function getViewable(): array;
 
-	    /**
-     * @return CommodityInterface[]
+    /**
+     * @return list<CommodityInterface>
      */
     public function getTradeable(): array;
 
     /**
-     * Returns a dict of all commodities, indexed by it's id
+     * Returns a dict of all commodities, indexed by its id
      *
      * @return array<int, CommodityInterface>
      */
