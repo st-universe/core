@@ -22,12 +22,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
-    /**
-     * @todo Remove $container after magic dic calls have been purged
-     */
-    global $container;
-    $container = $dic;
-
     $db = $dic->get(EntityManagerInterface::class);
 
     $db->beginTransaction();

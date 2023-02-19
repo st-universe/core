@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Tick\Process\ProcessTickHandlerInterface;
 
 final class DoManualProcessTick implements ActionControllerInterface
 {
@@ -15,10 +16,18 @@ final class DoManualProcessTick implements ActionControllerInterface
 
     private EntityManagerInterface $entityManager;
 
+    /** @var list<ProcessTickHandlerInterface> */
+    private array $tickHandler;
+
+    /**
+     * @param list<ProcessTickHandlerInterface> $tickHandler
+     */
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        array $tickHandler
     ) {
         $this->entityManager = $entityManager;
+        $this->tickHandler = $tickHandler;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,12 +40,7 @@ final class DoManualProcessTick implements ActionControllerInterface
             return;
         }
 
-        // @todo refactor
-        global $container;
-
-        $handlerList = $container->get('process_tick_handler');
-
-        foreach ($handlerList as $process) {
+        foreach ($this->tickHandler as $process) {
             $process->work();
         }
 

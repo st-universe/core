@@ -15,12 +15,6 @@ use Stu\Module\Control\GameControllerInterface;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic) {
-    /**
-     * @deprecated Remove after magic dic-calls have been purged from the source
-     */
-    global $container;
-    $container = $dic;
-
     $em = $dic->get(EntityManagerInterface::class);
 
     $em->beginTransaction();

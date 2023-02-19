@@ -20,10 +20,6 @@ for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
     $schedule
         ->run(function () use ($groupId, $colonyTickGroupCount): void {
             Init::run(function (ContainerInterface $dic) use ($groupId, $colonyTickGroupCount): void {
-                /** @todo remove after magic container-calls have been purged from the game */
-                global $container;
-                $container = $dic;
-
                 $dic->get(ColonyTickRunner::class)->run($groupId, $colonyTickGroupCount);
             });
         })
@@ -35,10 +31,6 @@ for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            /** @todo remove after magic container-calls have been purged from the game */
-            global $container;
-            $container = $dic;
-
             $dic->get(ShipTickRunner::class)->run(1, 1);
         });
     })
@@ -49,10 +41,6 @@ $schedule
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            /** @todo remove after magic container-calls have been purged from the game */
-            global $container;
-            $container = $dic;
-
             $dic->get(TickManagerRunner::class)->run(1, 1);
         });
     })
@@ -63,10 +51,6 @@ $schedule
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            /** @todo remove after magic container-calls have been purged from the game */
-            global $container;
-            $container = $dic;
-
             $dic->get(MaintenanceTickRunner::class)->run(1, 1);
         });
     })
@@ -76,10 +60,6 @@ $schedule
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            /** @todo remove after magic container-calls have been purged from the game */
-            global $container;
-            $container = $dic;
-
             $dic->get(ProcessTickRunner::class)->run(1, 1);
         });
     })

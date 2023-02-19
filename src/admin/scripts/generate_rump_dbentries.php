@@ -12,12 +12,6 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
-    /**
-     * @todo Remove $container after magic dic calls have been purged
-     */
-    global $container;
-    $container = $dic;
-
     $repository = $dic->get(DatabaseEntryRepositoryInterface::class);
     $type = $dic->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP);
     $category = $dic->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_SHIPRUMP);

@@ -8,12 +8,6 @@ use Stu\Config\Init;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
-    /**
-     * @todo Remove $container after magic dic calls have been purged
-     */
-    global $container;
-    $container = $dic;
-
     $entityManager = $dic->get(EntityManagerInterface::class);
     $playerDeletion = $dic->get(PlayerDeletionInterface::class);
 

@@ -14,12 +14,6 @@ use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 Init::run(function (ContainerInterface $dic): void {
-    /**
-     * @todo Remove $container after magic dic calls have been purged
-     */
-    global $container;
-    $container = $dic;
-
     $repository = $dic->get(DatabaseEntryRepositoryInterface::class);
     /** @var DatabaseTypeInterface $type */
     $type = $dic->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_PLANET);

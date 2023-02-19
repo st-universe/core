@@ -67,7 +67,11 @@ return [
                 get('maintenance_handler')
             ),
         DoManualShipTick::ACTION_IDENTIFIER => autowire(DoManualShipTick::class),
-        DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class),
+        DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class)
+            ->constructorParameter(
+                'tickHandler',
+                get('process_tick_handler')
+            ),
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),
         ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
         SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class),
