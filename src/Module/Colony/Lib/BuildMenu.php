@@ -2,23 +2,20 @@
 
 declare(strict_types=1);
 
+namespace Stu\Module\Colony\Lib;
+
 use Stu\Component\Building\BuildingEnum;
 
 class BuildMenu
 {
+    private int $menuId;
 
-    private $menuId = 0;
-
-    /**
-     */
-    function __construct($menuId)
+    public function __construct(int $menuId)
     {
         $this->menuId = $menuId;
     }
 
-    /**
-     */
-    public function getName()
+    public function getName(): string
     {
         switch ($this->menuId) {
             case BuildingEnum::BUILDMENU_SOCIAL:
@@ -27,6 +24,8 @@ class BuildMenu
                 return _('Industrie');
             case BuildingEnum::BUILDMENU_INFRASTRUCTURE:
                 return _('Infrastruktur');
+            default:
+                return '';
         }
     }
 }

@@ -98,11 +98,15 @@
     "gen:assets": [
       "@php src/Public/assets/generator/building_generator/gen.php",
       "@php src/Public/assets/generator/field_generator/generator.php"
+    ],
+    "gen:baseline": [
+      "phpstan --generate-baseline"
     ]
   },
   "scripts-descriptions": {
     "qa": "Executes alle qa related action",
-    "gen:assets": "Generates asset images"
+    "gen:assets": "Generates asset images",
+    "gen:baseline": "Generates the phpstan baseline"
   },
   "extra": {
     "installer-paths": {

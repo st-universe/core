@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipyard;
 
-use ColonyMenu;
+use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\BuildableRumpListItemInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;

@@ -2,35 +2,36 @@
 
 namespace Stu\Lib\ColonyStorageCommodityWrapper;
 
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
+use Doctrine\Common\Collections\Collection;
+use Stu\Orm\Entity\StorageInterface;
+
 class ColonyStorageCommodityWrapper
-{ #{{{
+{
+    /** @var Collection<int, StorageInterface> */
+	private Collection $storage;
 
-	private $storage = null;
-
-	/**
-	 */
-	function __construct(&$storage)
-	{ #{{{
+    /**
+     * @param Collection<int, StorageInterface> $storage
+     */
+	public function __construct(Collection $storage)
+	{
 		$this->storage = $storage;
-	} # }}}
+	}
 
-	/**
-	 */
-	public function __get($commodityId)
-	{ #{{{
-		return new ColonyStorageCommodityCountWrapper($this->storage, $commodityId);
-	} # }}}
+    /**
+     * @param scalar $commodityId
+     */
+	public function __get($commodityId): ColonyStorageCommodityCountWrapper
+	{
+		return new ColonyStorageCommodityCountWrapper($this->storage, (int) $commodityId);
+	}
 
-	/**
-	 */
-	public function __call($name, $arg)
-	{ #{{{
+    /**
+     * @param string $name
+     * @param array<mixed> $arg
+     */
+	public function __call($name, $arg): ColonyStorageCommodityCountWrapper
+	{
 		return $this->__get($name);
-	} # }}}
-
-} #}}}
+	}
+}

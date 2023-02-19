@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuildMenu;
 
-use BuildMenuWrapper;
-use ColonyMenu;
+use Stu\Module\Colony\Lib\BuildMenuWrapper;
+use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;

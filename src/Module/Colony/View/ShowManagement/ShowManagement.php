@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowManagement;
 
-use ColonyMenu;
+use Stu\Module\Colony\Lib\ColonyMenu;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;

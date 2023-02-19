@@ -4,34 +4,33 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ColonyStorageCommodityWrapper;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\StorageInterface;
 
 class ColonyStorageCommodityCountWrapper
 {
-    const CHECK_ONLY = 'x';
+    public const CHECK_ONLY = 'x';
 
-    /** @var array<int, StorageInterface> */
-    private $storage;
-    /** @var int */
-    private $commodityId;
+    /** @var Collection<int, StorageInterface> */
+    private Collection $storage;
+
+    private int $commodityId;
 
     /**
-     * @param array<int, StorageInterface> $storage
-     * @param int $commodityId
+     * @param Collection<int, StorageInterface> $storage
      */
-    function __construct(&$storage, $commodityId)
+    public function __construct(Collection $storage, int $commodityId)
     {
         $this->storage = $storage;
         $this->commodityId = $commodityId;
     }
 
     /**
-     * @param int $count
-     *
-     * @return bool
+     * @param scalar $count
      */
-    public function __get($count)
+    public function __get($count): bool
     {
+        $count = (int) $count;
         if (!isset($this->storage[$this->commodityId])) {
             return false;
         }
@@ -44,10 +43,7 @@ class ColonyStorageCommodityCountWrapper
         return true;
     }
 
-    /**
-     * @return int
-     */
-    public function getAmount()
+    public function getAmount(): int
     {
         if (!isset($this->storage[$this->commodityId])) {
             return 0;
@@ -55,9 +51,12 @@ class ColonyStorageCommodityCountWrapper
         return $this->storage[$this->commodityId]->getAmount();
     }
 
-    public function __call($name, $arg)
+    /**
+     * @param string $name
+     * @param array<mixed> $arg
+     */
+    public function __call($name, $arg): bool
     {
         return $this->__get($name);
     }
-
 }

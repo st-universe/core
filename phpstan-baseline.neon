@@ -404,31 +404,6 @@ parameters:
 			path: src/Exception/SanityCheckException.php
 
 		-
-			message: "#^Method BuildMenu\\:\\:__construct\\(\\) has parameter \\$menuId with no type specified\\.$#"
-			count: 1
-			path: src/Lib/BuildMenu.php
-
-		-
-			message: "#^Method BuildMenu\\:\\:getName\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/BuildMenu.php
-
-		-
-			message: "#^Property BuildMenu\\:\\:\\$menuId has no type specified\\.$#"
-			count: 1
-			path: src/Lib/BuildMenu.php
-
-		-
-			message: "#^Method BuildMenuWrapper\\:\\:__get\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/BuildMenuWrapper.php
-
-		-
-			message: "#^Method BuildMenuWrapper\\:\\:__get\\(\\) has parameter \\$id with no type specified\\.$#"
-			count: 1
-			path: src/Lib/BuildMenuWrapper.php
-
-		-
 			message: "#^Method Stu\\\\Lib\\\\CleanTextUtils\\:\\:clearUnicode\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
 			path: src/Lib/CleanTextUtils.php
@@ -437,31 +412,6 @@ parameters:
 			message: "#^Parameter \\#3 \\$str of function iconv expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Lib/CleanTextUtils.php
-
-		-
-			message: "#^Method ColonyMenu\\:\\:__construct\\(\\) has parameter \\$selectedColonyMenu with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyMenu.php
-
-		-
-			message: "#^Method ColonyMenu\\:\\:__get\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyMenu.php
-
-		-
-			message: "#^Method ColonyMenu\\:\\:__get\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyMenu.php
-
-		-
-			message: "#^Method ColonyMenu\\:\\:getMenuType\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyMenu.php
-
-		-
-			message: "#^Property ColonyMenu\\:\\:\\$selectedColonyMenu has no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyMenu.php
 
 		-
 			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getCommodity\\(\\) should return Stu\\\\Orm\\\\Entity\\\\CommodityInterface but returns Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
@@ -487,56 +437,6 @@ parameters:
 			message: "#^Offset 'pc' might not exist on array\\{gc\\?\\: int, pc\\?\\: int, commodity_id\\?\\: int\\}\\.$#"
 			count: 1
 			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityCountWrapper\\:\\:__call\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityCountWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityCountWrapper\\:\\:__call\\(\\) has parameter \\$arg with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityCountWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityCountWrapper\\:\\:__call\\(\\) has parameter \\$name with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityCountWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper\\:\\:__call\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper\\:\\:__call\\(\\) has parameter \\$arg with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper\\:\\:__call\\(\\) has parameter \\$name with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper\\:\\:__construct\\(\\) has parameter \\$storage with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper\\:\\:__get\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper\\:\\:__get\\(\\) has parameter \\$commodityId with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper\\:\\:\\$storage has no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyStorageCommodityWrapper/ColonyStorageCommodityWrapper.php
 
 		-
 			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:__construct\\(\\) has parameter \\$damage with no type specified\\.$#"
@@ -2637,16 +2537,6 @@ parameters:
 			message: "#^Cannot call method getFunction\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingFunctionInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowModuleFab/ShowModuleFab.php
-
-		-
-			message: "#^Parameter \\#1 \\$storage of class Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper constructor is passed by reference, so it expects variables only$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleScreen/ShowModuleScreen.php
-
-		-
-			message: "#^Parameter \\#1 \\$storage of class Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper constructor is passed by reference, so it expects variables only$#"
-			count: 1
-			path: src/Module/Colony/View/ShowModuleScreenBuildplan/ShowModuleScreenBuildplan.php
 
 		-
 			message: "#^Cannot access an offset on array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
@@ -7177,11 +7067,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapFleet\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowShip/ShowShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$storage of class Stu\\\\Lib\\\\ColonyStorageCommodityWrapper\\\\ColonyStorageCommodityWrapper constructor is passed by reference, so it expects variables only$#"
 			count: 1
 			path: src/Module/Ship/View/ShowShip/ShowShip.php
 

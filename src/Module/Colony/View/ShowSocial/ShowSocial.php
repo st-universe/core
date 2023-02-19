@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSocial;
 
-use ColonyMenu;
+use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
