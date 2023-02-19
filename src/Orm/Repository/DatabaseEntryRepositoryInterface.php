@@ -18,7 +18,7 @@ interface DatabaseEntryRepositoryInterface extends ObjectRepository
      */
     public function getByCategoryId(int $categoryId): array;
 
-    public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): DatabaseEntryInterface;
+    public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): ?DatabaseEntryInterface;
 
     public function prototype(): DatabaseEntryInterface;
 

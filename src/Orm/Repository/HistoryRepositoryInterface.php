@@ -15,14 +15,14 @@ use Stu\Orm\Entity\HistoryInterface;
 interface HistoryRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return HistoryInterface[]
+     * @return list<HistoryInterface>
      */
     public function getRecent(): array;
 
     /**
      * @param false|string $search
      *
-     * @return HistoryInterface[]
+     * @return list<HistoryInterface>
      */
     public function getByTypeAndSearch(int $typeId, int $limit, $search): array;
 

@@ -34,7 +34,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
         //$em->flush();
     }
 
-    public function getByShip(int $shipId): ShipInterface
+    public function getByShip(int $shipId): ?ShipInterface
     {
         return $this->findOneBy([
             'ship_id' => $shipId
@@ -55,14 +55,17 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
 
     public function getFinishedRepairTasks(): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT rt FROM %s rt
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT rt FROM %s rt
                 WHERE rt.finish_time <= :actualTime',
-                RepairTask::class
+                    RepairTask::class
+                )
             )
-        )->setParameters([
-            'actualTime' => time()
-        ])->getResult();
+            ->setParameters([
+                'actualTime' => time()
+            ])
+            ->getResult();
     }
 }

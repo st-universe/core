@@ -12,7 +12,7 @@ use Stu\Orm\Entity\TradeShoutboxInterface;
 interface TradeShoutboxRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return TradeShoutboxInterface[]
+     * @return list<TradeShoutboxInterface>
      */
     public function getByTradeNetwork(int $tradeNetworkId): array;
 

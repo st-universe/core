@@ -18,17 +18,17 @@ interface ShipSystemRepositoryInterface extends ObjectRepository
     public function delete(ShipSystemInterface $post): void;
 
     /**
-     * @return ShipSystemInterface[]
+     * @return list<ShipSystemInterface>
      */
     public function getByShip(int $shipId): array;
 
     /**
-     * @return ShipSystemInterface[]
+     * @return list<ShipSystemInterface>
      */
     public function getTrackingShipSystems(int $targetId): array;
 
     /**
-     * @return ShipSystemInterface[]
+     * @return list<ShipSystemInterface>
      */
     public function getWebConstructingShipSystems(int $webId): array;
 

@@ -22,22 +22,22 @@ interface StorageRepositoryInterface extends ObjectRepository
     public function delete(StorageInterface $storage): void;
 
     /**
-     * @return array<array{commodity_id: int, amount: int}>
+     * @return list<array{commodity_id: int, amount: int}>
      */
     public function getByUserAccumulated(UserInterface $user): array;
 
     /**
-     * @return array<array{commodity_id: int, colonies_id: int, amount: int}>
+     * @return list<array{commodity_id: int, colonies_id: int, amount: int}>
      */
     public function getColonyStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
-     * @return array<array{commodity_id: int, ships_id: int, amount: int}>
+     * @return list<array{commodity_id: int, ships_id: int, amount: int}>
      */
     public function getShipStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 
     /**
-     * @return StorageInterface[]
+     * @return list<StorageInterface>
      */
     public function getTradePostStorageByUserAndCommodity(UserInterface $user, int $commodityId): array;
 

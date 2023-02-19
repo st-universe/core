@@ -23,7 +23,7 @@ interface TholianWebRepositoryInterface extends ObjectRepository
     public function getWebAtLocation(ShipInterface $ship): ?TholianWebInterface;
 
     /**
-     * @return TholianWebInterface[]
+     * @return list<TholianWebInterface>
      */
     public function getFinishedWebs(): array;
 }

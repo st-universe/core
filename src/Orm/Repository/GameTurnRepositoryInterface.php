@@ -13,7 +13,7 @@ use Stu\Orm\Entity\GameTurnInterface;
  */
 interface GameTurnRepositoryInterface extends ObjectRepository
 {
-    public function getCurrent(): GameTurnInterface;
+    public function getCurrent(): ?GameTurnInterface;
 
     public function prototype(): GameTurnInterface;
 

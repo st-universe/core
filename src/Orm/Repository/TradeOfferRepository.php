@@ -93,7 +93,6 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         }
 
         $time = time();
-        /** @noinspection SyntaxError */
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -116,7 +115,6 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
 
     public function getSumByTradePostAndUser(int $tradePostId, int $userId): int
     {
-        /** @noinspection SyntaxError */
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -138,7 +136,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         $rsm->addScalarResult('amount', 'amount');
         $rsm->addScalarResult('commodity_name', 'commodity_name');
 
-        $result = $this->getEntityManager()
+        return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT tro.gg_id as commodity_id, SUM(tro.gg_count * tro.amount) as amount, c.name as commodity_name
                     FROM stu_trade_offers tro LEFT JOIN stu_commodity c ON c.id = tro.gg_id WHERE
@@ -149,8 +147,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
                 'tradePostId' => $tradePostId,
                 'userId' => $userId
             ])
-            ->getArrayResult();
-        return $result;
+            ->getResult();
     }
 
     public function getOldOffers(int $threshold): array

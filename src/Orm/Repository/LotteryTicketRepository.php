@@ -49,17 +49,19 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
     public function getLotteryHistory(): array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('period', 'period', 'string');
+        $rsm->addScalarResult('period', 'period' );
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT lt.period AS period, count(lt.id) AS amount
-            FROM stu_lottery_ticket lt
-            WHERE lt.is_winner IS NOT NULL
-            GROUP BY lt.period
-            ORDER BY lt.period DESC
-            LIMIT 24',
-            $rsm
-        )->getResult();
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT lt.period AS period, count(lt.id) AS amount
+                FROM stu_lottery_ticket lt
+                WHERE lt.is_winner IS NOT NULL
+                GROUP BY lt.period
+                ORDER BY lt.period DESC
+                LIMIT 24',
+                $rsm
+            )
+            ->getResult();
     }
 }

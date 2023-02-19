@@ -14,12 +14,12 @@ use Stu\Orm\Entity\ModuleQueueInterface;
 interface ModuleQueueRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return ModuleQueueInterface[]
+     * @return list<ModuleQueueInterface>
      */
     public function getByUser(int $userId): array;
 
     /**
-     * @return ModuleQueueInterface[]
+     * @return list<ModuleQueueInterface>
      */
     public function getByColony(int $colonyId): array;
 
@@ -30,9 +30,9 @@ interface ModuleQueueRepositoryInterface extends ObjectRepository
     ): ?ModuleQueueInterface;
 
     /**
-     * @param array<int> $buildingFunctions
+     * @param list<int> $buildingFunctions
      *
-     * @return array<ModuleQueueInterface>
+     * @return list<ModuleQueueInterface>
      */
     public function getByColonyAndBuilding(
         int $colonyId,

@@ -12,7 +12,7 @@ use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 interface PlanetFieldTypeBuildingRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return PlanetFieldTypeBuildingInterface[]
+     * @return list<PlanetFieldTypeBuildingInterface>
      */
     public function getByBuilding(int $buildingId): array;
 }

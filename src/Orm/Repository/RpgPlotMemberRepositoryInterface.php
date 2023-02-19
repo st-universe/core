@@ -21,12 +21,12 @@ interface RpgPlotMemberRepositoryInterface extends ObjectRepository
     public function delete(RpgPlotMemberInterface $rpgPlotMember): void;
 
     /**
-     * @return RpgPlotMemberInterface[]
+     * @return list<RpgPlotMemberInterface>
      */
     public function getByUser(UserInterface $user): array;
 
     /**
-     * @return RpgPlotMemberInterface[]
+     * @return list<RpgPlotMemberInterface>
      */
     public function getByPlot(int $plotId): array;
 }

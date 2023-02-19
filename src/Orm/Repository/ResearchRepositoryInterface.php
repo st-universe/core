@@ -3,7 +3,6 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use phpDocumentor\Reflection\Types\Integer;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -16,19 +15,19 @@ use Stu\Orm\Entity\UserInterface;
 interface ResearchRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return ResearchInterface[]
+     * @return list<ResearchInterface>
      */
     public function getAvailableResearch(int $userId): array;
 
     /**
-     * @return ResearchInterface[]
+     * @return list<ResearchInterface>
      */
     public function getForFaction(int $factionId): array;
 
     public function getColonyTypeLimitByUser(UserInterface $user, int $colonyType): int;
 
     /**
-     * @return ResearchInterface[]
+     * @return list<ResearchInterface>
      */
     public function getPossibleResearchByParent(int $researchId): array;
 

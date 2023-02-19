@@ -24,23 +24,26 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
 
     public function getByTypeAndSearch(int $typeId, int $limit, $search): array
     {
-        return $this->getEntityManager()->createQuery(
-            $search ? sprintf(
-                'SELECT h FROM %s h
+        return $this->getEntityManager()
+            ->createQuery(
+                $search ? sprintf(
+                    'SELECT h FROM %s h
                 WHERE h.type = :typeId
                 AND UPPER(h.text) like UPPER(:search)
                 ORDER BY h.id desc',
-                History::class
-            ) : sprintf(
-                'SELECT h FROM %s h
+                    History::class
+                ) : sprintf(
+                    'SELECT h FROM %s h
                 WHERE h.type = :typeId
                 ORDER BY h.id desc',
-                History::class
-            )
-        )->setParameters($search ? [
-            'typeId' => $typeId,
-            'search' => sprintf('%%%s%%', $search)
-        ] : ['typeId' => $typeId])->setMaxResults($limit)
+                    History::class
+                )
+            )->setParameters(
+                $search ? [
+                    'typeId' => $typeId,
+                    'search' => sprintf('%%%s%%', $search)
+                ] : ['typeId' => $typeId])
+            ->setMaxResults($limit)
             ->getResult();
     }
 

@@ -24,17 +24,17 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
     public function truncateByUserAndTradepost(int $userId, int $tradePostId): void;
 
     /**
-     * @return TradeLicenseInterface[]
+     * @return list<TradeLicenseInterface>
      */
     public function getByTradePost(int $tradePostId): array;
 
     /**
-     * @return TradeLicenseInterface[]
+     * @return list<TradeLicenseInterface>
      */
     public function getByUser(int $userId): array;
 
     /**
-     * @return array<TradeLicenseInterface>
+     * @return list<TradeLicenseInterface>
      */
     public function getByTradePostAndNotExpired(int $tradePostId): array;
 
@@ -51,17 +51,17 @@ interface TradeLicenseRepositoryInterface extends ObjectRepository
     public function hasLicenseByUserAndNetwork(int $userId, int $tradeNetworkId): bool;
 
     /**
-     * @return array<TradeLicenseInterface>
+     * @return list<TradeLicenseInterface>
      */
     public function getLicensesCountbyUser(int $userId): array;
 
     /**
-     * @return TradeLicenseInterface[]
+     * @return list<TradeLicenseInterface>
      */
     public function getLicensesExpiredInLessThan(int $days): array;
 
     /**
-     * @return TradeLicenseInterface[]
+     * @return array<int, TradeLicenseInterface>
      */
     public function getExpiredLicenses(): array;
 }

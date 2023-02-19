@@ -14,7 +14,7 @@ use Stu\Orm\Entity\ModuleInterface;
 interface ModuleRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return ModuleInterface[]
+     * @return list<ModuleInterface>
      */
     public function getBySpecialTypeColonyAndRump(
         int $colonyId,
@@ -24,7 +24,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return ModuleInterface[]
+     * @return list<ModuleInterface>
      */
     public function getBySpecialTypeShipAndRump(
         int $shipId,
@@ -36,7 +36,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $moduleLevel
      *
-     * @return ModuleInterface[]
+     * @return list<ModuleInterface>
      */
     public function getByTypeColonyAndLevel(
         int $colonyId,
@@ -48,7 +48,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $moduleLevel
      *
-     * @return ModuleInterface[]
+     * @return list<ModuleInterface>
      */
     public function getByTypeAndLevel(
         int $moduleTypeId,
@@ -57,7 +57,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @param array<int> $specialTypeIds
+     * @param list<int> $specialTypeIds
      *
      * @return iterable<ModuleInterface>
      */

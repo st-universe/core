@@ -19,7 +19,7 @@ interface UserProfileVisitorRepositoryInterface extends ObjectRepository
     public function save(UserProfileVisitorInterface $userProfileVisitor): void;
 
     /**
-     * @return UserProfileVisitorInterface[]
+     * @return list<UserProfileVisitorInterface>
      */
     public function getRecent(int $userId): array;
 

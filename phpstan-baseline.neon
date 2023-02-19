@@ -1744,16 +1744,6 @@ parameters:
 			path: src/Module/Alliance/View/TopicSettings/TopicSettings.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Building\\\\BuildingFunctionTypeEnum\\:\\:getModuleFabOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Building/BuildingFunctionTypeEnum.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Building\\\\BuildingFunctionTypeEnum\\:\\:getShipyardOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Building/BuildingFunctionTypeEnum.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Colony\\\\Action\\\\ActivateBuilding\\\\ActivateBuilding\\:\\:\\$colonyRepository is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/ActivateBuilding/ActivateBuilding.php
@@ -2399,11 +2389,6 @@ parameters:
 			path: src/Module/Colony/Lib/ModuleQueueLib.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLib\\:\\:cancelModuleQueuesForBuildingFunctions\\(\\) has parameter \\$functionIds with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/ModuleQueueLib.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\Lib\\\\ModuleQueueLibInterface\\:\\:cancelModuleQueues\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ModuleQueueLibInterface.php
@@ -2787,6 +2772,11 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getContactlistModes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:getCurrentRound\\(\\) should return Stu\\\\Orm\\\\Entity\\\\GameTurnInterface but returns Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -3206,7 +3196,7 @@ parameters:
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
 
 		-
-			message: "#^Parameter \\#1 \\$stats of method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createImageSrc\\(\\) expects array\\<Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\GameTurnStatsInterface\\>, array\\<Stu\\\\Orm\\\\Entity\\\\GameTurnStatsInterface\\> given\\.$#"
+			message: "#^Parameter \\#1 \\$stats of method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createImageSrc\\(\\) expects array\\<Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\GameTurnStatsInterface\\>, array\\<int, Stu\\\\Orm\\\\Entity\\\\GameTurnStatsInterface\\> given\\.$#"
 			count: 1
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
 
@@ -7811,6 +7801,16 @@ parameters:
 			path: src/Module/Tick/TickManager.php
 
 		-
+			message: "#^Parameter \\#1 \\$turn of method Stu\\\\Module\\\\Tick\\\\TickManager\\:\\:endTurn\\(\\) expects Stu\\\\Orm\\\\Entity\\\\GameTurnInterface, Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Tick/TickManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$turn of method Stu\\\\Module\\\\Tick\\\\TickManager\\:\\:startTurn\\(\\) expects Stu\\\\Orm\\\\Entity\\\\GameTurnInterface, Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Tick/TickManager.php
+
+		-
 			message: "#^Property Stu\\\\Module\\\\Trade\\\\Action\\\\BasicTradeBuy\\\\BasicTradeBuy\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Trade/Action/BasicTradeBuy/BasicTradeBuy.php
@@ -8119,11 +8119,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:\\$storage has no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeAccountTal\\:\\:getOfferStorage\\(\\) should return array\\<Stu\\\\Orm\\\\Entity\\\\StorageInterface\\> but returns array\\<array\\<string, int\\|string\\>\\>\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradeAccountTal.php
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeAccountTal\\:\\:\\$storage has no type specified\\.$#"
@@ -10911,17 +10906,7 @@ parameters:
 			path: src/Orm/Entity/WormholeEntry.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\DatabaseEntryRepository\\:\\:getByCategoryIdAndObjectId\\(\\) should return Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface but returns Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
-			count: 1
-			path: src/Orm/Repository/DatabaseEntryRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\GameTurnRepository\\:\\:getCurrent\\(\\) should return Stu\\\\Orm\\\\Entity\\\\GameTurnInterface but returns Stu\\\\Orm\\\\Entity\\\\GameTurn\\|null\\.$#"
-			count: 1
-			path: src/Orm/Repository/GameTurnRepository.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Repository\\\\RepairTaskRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ShipInterface but returns Stu\\\\Orm\\\\Entity\\\\RepairTask\\|null\\.$#"
+			message: "#^Method Stu\\\\Orm\\\\Repository\\\\RepairTaskRepository\\:\\:getByShip\\(\\) should return Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\RepairTask\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/RepairTaskRepository.php
 

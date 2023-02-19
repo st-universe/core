@@ -14,7 +14,7 @@ use Stu\Orm\Entity\PartnerSiteInterface;
 interface PartnerSiteRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return PartnerSiteInterface[]
+     * @return list<PartnerSiteInterface>
      */
     public function getOrdered(): iterable;
 }

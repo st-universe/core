@@ -18,7 +18,7 @@ interface SpacecraftEmergencyRepositoryInterface extends ObjectRepository
     public function getByShipId(int $shipId): ?SpacecraftEmergencyInterface;
 
     /**
-     * @return SpacecraftEmergencyInterface[]
+     * @return list<SpacecraftEmergencyInterface>
      */
     public function getActive(): array;
 }

@@ -46,6 +46,6 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
             ->setParameters([
                 'sevendays' => time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
             ])
-            ->getArrayResult();
+            ->getResult();
     }
 }

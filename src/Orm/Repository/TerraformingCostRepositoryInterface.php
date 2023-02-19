@@ -12,7 +12,7 @@ use Stu\Orm\Entity\TerraformingCostInterface;
 interface TerraformingCostRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<TerraformingCostInterface>
+     * @return list<TerraformingCostInterface>
      */
     public function getByTerraforming(int $terraformingId): array;
 }

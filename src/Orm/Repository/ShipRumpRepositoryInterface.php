@@ -20,27 +20,27 @@ interface ShipRumpRepositoryInterface extends ObjectRepository
     public function getGroupedInfoByUser(UserInterface $user): array;
 
     /**
-     * @return ShipRumpInterface[]
+     * @return list<ShipRumpInterface>
      */
     public function getBuildableByUserAndBuildingFunction(int $userId, int $buildingFunction): array;
 
     /**
-     * @return ShipRumpInterface[]
+     * @return array<int, ShipRumpInterface>
      */
     public function getBuildableByUser(int $userId): array;
 
     /**
-     * @return ShipRumpInterface[]
+     * @return list<ShipRumpInterface>
      */
     public function getWithoutDatabaseEntry(): array;
 
     /**
-     * @return ShipRumpInterface[]
+     * @return list<ShipRumpInterface>
      */
     public function getStartableByColony(int $colonyId): array;
 
     /**
-     * @return ShipRumpInterface[]
+     * @return iterable<ShipRumpInterface>
      */
     public function getList(): iterable;
 }

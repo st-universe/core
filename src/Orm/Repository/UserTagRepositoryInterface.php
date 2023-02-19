@@ -15,7 +15,7 @@ use Stu\Orm\Entity\UserTagInterface;
 interface UserTagRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return UserTagInterface[]
+     * @return iterable<UserTagInterface>
      */
     public function getByUser(UserInterface $user): iterable;
 

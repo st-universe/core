@@ -24,9 +24,9 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getByResetToken(string $resetToken): ?UserInterface;
 
     /**
-     * @param array<int> $ignoreIds
+     * @param list<int> $ignoreIds
      *
-     * @return UserInterface[]
+     * @return iterable<UserInterface>
      */
     public function getDeleteable(
         int $idleTimeThreshold,
@@ -35,7 +35,7 @@ interface UserRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @return UserInterface[]
+     * @return iterable<UserInterface>
      */
     public function getIdleRegistrations(
         int $idleTimeThreshold
@@ -50,12 +50,12 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * Returns all members of the given alliance
      *
-     * @return array<UserInterface>
+     * @return iterable<UserInterface>
      */
     public function getByAlliance(AllianceInterface $alliance): iterable;
 
     /**
-     * @return UserInterface[]
+     * @return iterable<UserInterface>
      */
     public function getList(
         string $sortField,
@@ -70,7 +70,7 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getFriendsByUserAndAlliance(UserInterface $user, ?AllianceInterface $alliance): iterable;
 
     /**
-     * @return UserInterface[]
+     * @return iterable<UserInterface>
      */
     public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): iterable;
 
@@ -83,12 +83,12 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getActiveAmountRecentlyOnline(int $threshold): int;
 
     /**
-     * @return UserInterface[]
+     * @return iterable<UserInterface>
      */
     public function getNpcList(): iterable;
 
     /**
-     * @return UserInterface[]
+     * @return iterable<UserInterface>
      */
     public function getNonNpcList(): iterable;
 

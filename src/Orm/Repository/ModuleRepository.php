@@ -144,7 +144,6 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         int $shipRumpRoleId,
         array $moduleLevel
     ): array {
-
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT
@@ -165,17 +164,20 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
     // used for admin createBuildplan
     public function getBySpecialTypeIds(array $specialTypeIds): iterable
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT m FROM %s m WHERE m.id IN (
-                    SELECT ms.module_id FROM %s ms WHERE ms.special_id IN (:specialTypeIds)
-                )',
-                Module::class,
-                ModuleSpecial::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT m FROM %s m WHERE m.id IN (
+                        SELECT ms.module_id FROM %s ms WHERE ms.special_id IN (:specialTypeIds)
+                    )',
+                    Module::class,
+                    ModuleSpecial::class
+                )
             )
-        )->setParameters([
-            'specialTypeIds' => $specialTypeIds
-        ])->getResult();
+            ->setParameters([
+                'specialTypeIds' => $specialTypeIds
+            ])
+            ->getResult();
     }
 
     private function getResultSetMapping(): ResultSetMapping

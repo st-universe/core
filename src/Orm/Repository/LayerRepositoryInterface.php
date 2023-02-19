@@ -20,12 +20,12 @@ interface LayerRepositoryInterface extends ObjectRepository
     public function delete(LayerInterface $layer): void;
 
     /**
-     * @return LayerInterface[]
+     * @return array<int, LayerInterface>
      */
     public function findAllIndexed(): array;
 
     /**
-     * @return LayerInterface[]
+     * @return array<int, LayerInterface>
      */
     public function getKnownByUser(int $userId): array;
 }

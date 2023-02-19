@@ -41,24 +41,27 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         array $specialIds,
         int $limit
     ): iterable {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT pm FROM %s pm
-                JOIN %s pmf
-                WITH pm.cat_id = pmf.id
-                WHERE ((pm.send_user = :sendUserId AND pm.recip_user = :recipUserId) OR
-                    (pm.send_user = :recipUserId AND pm.recip_user = :sendUserId))
-                AND pmf.special in (:specialIds)
-                AND pm.deleted IS NULL
-                ORDER BY pm.date DESC',
-                PrivateMessage::class,
-                PrivateMessageFolder::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT pm FROM %s pm
+                    JOIN %s pmf
+                    WITH pm.cat_id = pmf.id
+                    WHERE ((pm.send_user = :sendUserId AND pm.recip_user = :recipUserId) OR
+                        (pm.send_user = :recipUserId AND pm.recip_user = :sendUserId))
+                    AND pmf.special in (:specialIds)
+                    AND pm.deleted IS NULL
+                    ORDER BY pm.date DESC',
+                    PrivateMessage::class,
+                    PrivateMessageFolder::class
+                )
             )
-        )->setParameters([
-            'sendUserId' => $senderUserId,
-            'recipUserId' => $recipientUserId,
-            'specialIds' => $specialIds
-        ])->setMaxResults($limit)
+            ->setParameters([
+                'sendUserId' => $senderUserId,
+                'recipUserId' => $recipientUserId,
+                'specialIds' => $specialIds
+            ])
+            ->setMaxResults($limit)
             ->getResult();
     }
 

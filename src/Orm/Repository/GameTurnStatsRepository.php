@@ -109,14 +109,16 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
 
     public function getLatestStats(int $amount, int $divisor): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT gts FROM %s gts
-                WHERE MOD(gts.turn_id, :divisor) = 0
-                ORDER BY gts.id DESC',
-                GameTurnStats::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT gts FROM %s gts
+                    WHERE MOD(gts.turn_id, :divisor) = 0
+                    ORDER BY gts.id DESC',
+                    GameTurnStats::class
+                )
             )
-        )->setMaxResults($amount)
+            ->setMaxResults($amount)
             ->setParameter(':divisor', $divisor)
             ->getResult();
     }

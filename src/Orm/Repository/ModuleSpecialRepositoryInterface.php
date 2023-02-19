@@ -12,7 +12,7 @@ use Stu\Orm\Entity\ModuleSpecialInterface;
 interface ModuleSpecialRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return ModuleSpecialInterface[]
+     * @return list<ModuleSpecialInterface>
      */
     public function getByModule(int $moduleId): array;
 }

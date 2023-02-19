@@ -70,7 +70,6 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
 
     public function getByUserLicenseOnlyNPC(int $userId): array
     {
-        $time = time();
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -83,7 +82,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             )
             ->setParameters([
                 'userId' => $userId,
-                'actime' => $time,
+                'actime' => time(),
                 'firstUserId' => UserEnum::USER_FIRST_ID
             ])
             ->getResult();
@@ -91,7 +90,6 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
 
     public function getByUserLicenseOnlyFerg(int $userId): array
     {
-        $time = time();
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -104,7 +102,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             )
             ->setParameters([
                 'userId' => $userId,
-                'actime' => $time,
+                'actime' => time(),
                 'tradepostId' => TradeEnum::DEALS_FERG_TRADEPOST_ID
             ])
             ->getResult();

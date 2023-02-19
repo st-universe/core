@@ -23,14 +23,14 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetFieldInterface;
 
     /**
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): iterable;
 
     /**
-     * @param array<int> $state
+     * @param list<int> $state
      *
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getEnergyConsumingByColony(
         int $colonyId,
@@ -39,14 +39,14 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getEnergyProducingByColony(int $colonyId): iterable;
 
     /**
-     * @param array<int> $state
+     * @param list<int> $state
      *
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getCommodityConsumingByColonyAndCommodity(
         int $colonyId,
@@ -56,17 +56,17 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getCommodityProducingByColonyAndCommodity(int $colonyId, int $commodityId): iterable;
 
     /**
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getHousingProvidingByColony(int $colonyId): iterable;
 
     /**
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getWorkerConsumingByColony(int $colonyId): iterable;
 
@@ -75,8 +75,8 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getCountByBuildingAndUser(int $buildingId, int $userId): int;
 
     /**
-     * @param array<int> $buildingFunctionIds
-     * @param array<int> $state
+     * @param list<int> $buildingFunctionIds
+     * @param list<int> $state
      */
     public function getCountByColonyAndBuildingFunctionAndState(
         int $colonyId,
@@ -85,9 +85,9 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     ): int;
 
     /**
-     * @param array<int> $buildingFunctionIds
+     * @param list<int> $buildingFunctionIds
      *
-     * @return array<PlanetFieldInterface>
+     * @return list<PlanetFieldInterface>
      */
     public function getByColonyAndBuildingFunction(
         int $colonyId,
@@ -97,17 +97,17 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getMaxShieldsOfColony(int $colonyId): int;
 
     /**
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getInConstructionByUser(int $userId): iterable;
 
     /**
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getByConstructionFinish(int $finishTime): iterable;
 
     /**
-     * @return PlanetFieldInterface[]
+     * @return iterable<PlanetFieldInterface>
      */
     public function getByColonyWithBuilding(int $colonyId): iterable;
 

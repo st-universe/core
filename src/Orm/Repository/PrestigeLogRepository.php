@@ -49,16 +49,19 @@ final class PrestigeLogRepository extends EntityRepository implements PrestigeLo
 
     public function getPrestigeHistory(UserInterface $user, int $maxResults): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT pl FROM %s pl
-                WHERE pl.user_id = :userId
-                ORDER BY pl.id DESC',
-                PrestigeLog::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT pl FROM %s pl
+                    WHERE pl.user_id = :userId
+                    ORDER BY pl.id DESC',
+                    PrestigeLog::class
+                )
             )
-        )->setParameters([
-            'userId' => $user->getId()
-        ])->setMaxResults($maxResults)
+            ->setParameters([
+                'userId' => $user->getId()
+            ])
+            ->setMaxResults($maxResults)
             ->getResult();
     }
 }

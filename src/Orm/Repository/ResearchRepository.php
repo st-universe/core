@@ -21,15 +21,16 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
 
     public function getAvailableResearch(int $userId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT t FROM %s t WHERE t.id NOT IN (
-                    SELECT r.research_id from %s r WHERE r.user_id = :userId
-                )',
-                Research::class,
-                Researched::class,
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT t FROM %s t WHERE t.id NOT IN (
+                        SELECT r.research_id from %s r WHERE r.user_id = :userId
+                    )',
+                    Research::class,
+                    Researched::class,
+                )
             )
-        )
             ->setParameter('userId', $userId)
             ->getResult();
     }
@@ -44,12 +45,13 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         $rsm->addFieldResult('r', 'id', 'id');
         $rsm->addFieldResult('r', 'name', 'name');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT r.id, r.name FROM stu_research r
-                WHERE CAST(r.id AS TEXT) LIKE :factionId
-                OR CAST(r.id AS TEXT) LIKE \'%%0\'',
-            $rsm
-        )
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT r.id, r.name FROM stu_research r
+                    WHERE CAST(r.id AS TEXT) LIKE :factionId
+                    OR CAST(r.id AS TEXT) LIKE \'%%0\'',
+                $rsm
+            )
             ->setParameter('factionId', sprintf('%%%d', $factionId))
             ->getResult();
     }
@@ -75,19 +77,20 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
 
     public function getPossibleResearchByParent(int $researchId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT r
-                FROM %s r
-                WHERE r.id IN (
-                    SELECT rd.research_id from %s rd
-                    WHERE rd.depends_on = :researchId
-                    AND rd.mode != :modeExclude
-                )',
-                Research::class,
-                ResearchDependency::class,
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT r
+                    FROM %s r
+                    WHERE r.id IN (
+                        SELECT rd.research_id from %s rd
+                        WHERE rd.depends_on = :researchId
+                        AND rd.mode != :modeExclude
+                    )',
+                    Research::class,
+                    ResearchDependency::class,
+                )
             )
-        )
             ->setParameters([
                 'researchId' => $researchId,
                 'modeExclude' => ResearchEnum::RESEARCH_MODE_EXCLUDE

@@ -14,12 +14,12 @@ use Stu\Orm\Entity\StarSystemInterface;
 interface StarSystemRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return StarSystemInterface[]
+     * @return list<StarSystemInterface>
      */
     public function getByLayer(int $layerId): array;
 
     /**
-     * @return StarSystemInterface[]
+     * @return list<StarSystemInterface>
      */
     public function getWithoutDatabaseEntry(): array;
 }

@@ -18,12 +18,12 @@ interface ShipyardShipQueueRepositoryInterface extends ObjectRepository
     public function delete(ShipyardShipQueueInterface $post): void;
 
     /**
-     * @return array<ShipyardShipQueueInterface>
+     * @return list<ShipyardShipQueueInterface>
      */
     public function getByShipyard(int $stationId): array;
 
     /**
-     * @return array<ShipyardShipQueueInterface>
+     * @return list<ShipyardShipQueueInterface>
      */
     public function getByUser(int $userId): array;
 
@@ -34,7 +34,7 @@ interface ShipyardShipQueueRepositoryInterface extends ObjectRepository
     public function restartQueueByShipyard(int $shipId): void;
 
     /**
-     * @return array<ShipyardShipQueueInterface>
+     * @return list<ShipyardShipQueueInterface>
      */
     public function getFinishedJobs(): array;
 }

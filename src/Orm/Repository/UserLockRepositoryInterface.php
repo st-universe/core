@@ -16,7 +16,7 @@ interface UserLockRepositoryInterface extends ObjectRepository
     public function getActiveByUser(int $userId): ?UserLockInterface;
 
     /**
-     * @return UserLockInterface[]
+     * @return list<UserLockInterface>
      */
     public function getActive(): array;
 

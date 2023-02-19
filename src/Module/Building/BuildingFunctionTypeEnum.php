@@ -8,7 +8,9 @@ use Stu\Component\Building\BuildingEnum;
 
 final class BuildingFunctionTypeEnum
 {
-
+    /**
+     * @return list<int>
+     */
     public static function getModuleFabOptions(): array
     {
         return [
@@ -24,6 +26,9 @@ final class BuildingFunctionTypeEnum
         ];
     }
 
+    /**
+     * @return list<int>
+     */
     public static function getShipyardOptions(): array
     {
         return [

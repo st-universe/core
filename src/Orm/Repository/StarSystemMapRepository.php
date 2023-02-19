@@ -147,7 +147,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             $result = array_merge($result, $otherFields);
         }
 
-        return $result;
+        return array_values($result);
     }
 
     public function getRumpCategoryInfo(int $cx, int $cy): array

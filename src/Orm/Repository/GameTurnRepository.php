@@ -13,7 +13,7 @@ use Stu\Orm\Entity\GameTurnInterface;
  */
 final class GameTurnRepository extends EntityRepository implements GameTurnRepositoryInterface
 {
-    public function getCurrent(): GameTurnInterface
+    public function getCurrent(): ?GameTurnInterface
     {
         return $this->findOneBy(
             [],

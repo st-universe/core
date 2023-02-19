@@ -13,7 +13,7 @@ use Stu\Orm\Entity\KnPostInterface;
 interface KnCommentRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return KnCommentInterface[]
+     * @return list<KnCommentInterface>
      */
     public function getByPost(int $postId): array;
 

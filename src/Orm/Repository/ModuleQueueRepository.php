@@ -16,18 +16,21 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
 {
     public function getByUser(int $userId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT mq FROM %s mq
-                JOIN %s c
-                WITH mq.colony_id = c.id
-                WHERE c.user_id = :userId',
-                ModuleQueue::class,
-                Colony::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT mq FROM %s mq
+                    JOIN %s c
+                    WITH mq.colony_id = c.id
+                    WHERE c.user_id = :userId',
+                    ModuleQueue::class,
+                    Colony::class
+                )
             )
-        )->setParameters([
-            'userId' => $userId
-        ])->getResult();
+            ->setParameters([
+                'userId' => $userId
+            ])
+            ->getResult();
     }
 
     public function getByColony(int $colonyId): array

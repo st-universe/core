@@ -22,17 +22,17 @@ interface KnPostRepositoryInterface extends ObjectRepository
     public function delete(KnPostInterface $post): void;
 
     /**
-     * @return KnPostInterface[]
+     * @return list<KnPostInterface>
      */
     public function getBy(int $offset, int $limit): array;
 
     /**
-     * @return KnPostInterface[]
+     * @return list<KnPostInterface>
      */
     public function getByUser(int $userId): array;
 
     /**
-     * @return KnPostInterface[]
+     * @return list<KnPostInterface>
      */
     public function getByPlot(RpgPlotInterface $plot, ?int $offset, ?int $limit): array;
 
@@ -43,12 +43,12 @@ interface KnPostRepositoryInterface extends ObjectRepository
     public function getAmountSince(int $postId): int;
 
     /**
-     * @return array<KnPostInterface>
+     * @return list<KnPostInterface>
      */
     public function getNewerThenMark(int $mark): array;
 
     /**
-     * @return KnPostInterface[]
+     * @return list<KnPostInterface>
      */
     public function searchByContent(string $content): array;
 }

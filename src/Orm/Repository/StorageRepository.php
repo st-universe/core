@@ -45,18 +45,21 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT s.commodity_id AS commodity_id, SUM(s.count) AS amount
-            FROM stu_storage s
-            JOIN stu_commodity g
-            ON s.commodity_id = g.id
-            WHERE s.user_id = :userId
-            GROUP BY s.commodity_id, g.sort
-            ORDER BY g.sort ASC',
-            $rsm
-        )->setParameters([
-            'userId' => $user->getId()
-        ])->getResult();
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT s.commodity_id AS commodity_id, SUM(s.count) AS amount
+                FROM stu_storage s
+                JOIN stu_commodity g
+                ON s.commodity_id = g.id
+                WHERE s.user_id = :userId
+                GROUP BY s.commodity_id, g.sort
+                ORDER BY g.sort ASC',
+                $rsm
+            )
+            ->setParameters([
+                'userId' => $user->getId()
+            ])
+            ->getResult();
     }
 
     public function getColonyStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
@@ -87,37 +90,43 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         $rsm->addScalarResult('ships_id', 'ships_id', 'integer');
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT s.commodity_id AS commodity_id, s.ship_id AS ships_id, s.count AS amount
-            FROM stu_storage s
-            LEFT JOIN stu_commodity g ON g.id = s.commodity_id
-            WHERE s.user_id = :userId
-            AND s.ship_id IS NOT NULL
-            AND s.commodity_id = :commodityId
-            ORDER BY s.count DESC',
-            $rsm
-        )->setParameters([
-            'userId' => $user->getId(),
-            'commodityId' => $commodityId
-        ])->getResult();
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT s.commodity_id AS commodity_id, s.ship_id AS ships_id, s.count AS amount
+                FROM stu_storage s
+                LEFT JOIN stu_commodity g ON g.id = s.commodity_id
+                WHERE s.user_id = :userId
+                AND s.ship_id IS NOT NULL
+                AND s.commodity_id = :commodityId
+                ORDER BY s.count DESC',
+                $rsm
+            )
+            ->setParameters([
+                'userId' => $user->getId(),
+                'commodityId' => $commodityId
+            ])
+            ->getResult();
     }
 
     public function getTradePostStorageByUserAndCommodity(UserInterface $user, int $commodityId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s
-                FROM %s s
-                WHERE s.commodity_id = :commodityId
-                AND s.user = :user
-                AND s.tradepost_id IS NOT NULL
-                ORDER BY s.count DESC',
-                Storage::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s
+                    FROM %s s
+                    WHERE s.commodity_id = :commodityId
+                    AND s.user = :user
+                    AND s.tradepost_id IS NOT NULL
+                    ORDER BY s.count DESC',
+                    Storage::class
+                )
             )
-        )->setParameters([
-            'commodityId' => $commodityId,
-            'user' => $user
-        ])->getResult();
+            ->setParameters([
+                'commodityId' => $commodityId,
+                'user' => $user
+            ])
+            ->getResult();
     }
 
     public function getTradeOfferStorageByUserAndCommodity(UserInterface $user, int $commodityId): array

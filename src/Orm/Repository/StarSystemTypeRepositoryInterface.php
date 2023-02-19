@@ -12,7 +12,7 @@ use Stu\Orm\Entity\StarSystemTypeInterface;
 interface StarSystemTypeRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return StarSystemTypeInterface[]
+     * @return list<StarSystemTypeInterface>
      */
     public function getWithoutDatabaseEntry(): array;
 }

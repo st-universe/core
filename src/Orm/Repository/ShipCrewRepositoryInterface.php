@@ -21,28 +21,28 @@ interface ShipCrewRepositoryInterface extends ObjectRepository
     public function delete(ShipCrewInterface $post): void;
 
     /**
-     * @return ShipCrewInterface[]
+     * @return list<ShipCrewInterface>
      */
     public function getByShip(int $shipId): array;
 
     /**
-     * @return ShipCrewInterface[]
+     * @return list<ShipCrewInterface>
      */
     public function getByShipAndSlot(int $shipId, int $slotId): array;
 
     //VIA LOCATION
     /**
-     * @return ShipCrewInterface[]
+     * @return list<ShipCrewInterface>
      */
     public function getByUserAtColonies(int $userId): array;
 
     /**
-     * @return ShipCrewInterface[]
+     * @return list<ShipCrewInterface>
      */
     public function getByUserOnEscapePods(int $userId): array;
 
     /**
-     * @return ShipCrewInterface[]
+     * @return list<ShipCrewInterface>
      */
     public function getByUserAtTradeposts(int $userId): array;
 

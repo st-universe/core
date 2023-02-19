@@ -55,14 +55,17 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
 
     public function getFinishedWebs(): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT tw FROM %s tw
-                WHERE tw.finished_time < :time',
-                TholianWeb::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT tw FROM %s tw
+                    WHERE tw.finished_time < :time',
+                    TholianWeb::class
+                )
             )
-        )->setParameters([
-            'time' => time()
-        ])->getResult();
+            ->setParameters([
+                'time' => time()
+            ])
+            ->getResult();
     }
 }

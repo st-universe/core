@@ -22,12 +22,12 @@ interface LotteryTicketRepositoryInterface extends ObjectRepository
     public function getAmountByPeriodAndUser(string $period, int $userId): int;
 
     /**
-     * @return LotteryTicketInterface[]
+     * @return list<LotteryTicketInterface>
      */
     public function getByPeriod(string $period): array;
 
     /**
-     * @return array<int, string>
+     * @return list<array{period: string, amount: int}>
      */
     public function getLotteryHistory(): array;
 }

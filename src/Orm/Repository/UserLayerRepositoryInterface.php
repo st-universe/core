@@ -20,7 +20,7 @@ interface UserLayerRepositoryInterface extends ObjectRepository
     public function delete(UserLayerInterface $userLayer): void;
 
     /**
-     * @return UserLayerInterface[]
+     * @return list<UserLayerInterface>
      */
     public function getByMappingType(int $mappingType): array;
 }

@@ -13,17 +13,17 @@ use Stu\Orm\Entity\UserInterface;
 interface ResearchedRepositoryInterface extends ObjectRepository
 {
     /**
-     * @param int[] $researchIds
+     * @param list<int> $researchIds
      */
     public function hasUserFinishedResearch(UserInterface $user, array $researchIds): bool;
 
     /**
-     * @return ResearchedInterface[]
+     * @return list<ResearchedInterface>
      */
     public function getListByUser(int $userId): array;
 
     /**
-     * @return ResearchedInterface[]
+     * @return list<ResearchedInterface>
      */
     public function getFinishedListByUser(int $userId): array;
 

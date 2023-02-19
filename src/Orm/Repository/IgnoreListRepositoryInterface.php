@@ -18,12 +18,12 @@ interface IgnoreListRepositoryInterface extends ObjectRepository
     public function delete(IgnoreListInterface $ignoreList): void;
 
     /**
-     * @return IgnoreListInterface[]
+     * @return list<IgnoreListInterface>
      */
     public function getByRecipient(int $recipientId): array;
 
     /**
-     * @return IgnoreListInterface[]
+     * @return list<IgnoreListInterface>
      */
     public function getByUser(int $userId): array;
 

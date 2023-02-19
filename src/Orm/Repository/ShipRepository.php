@@ -184,33 +184,36 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $systemMap = $ship->getStarsystemMap();
         $map = $ship->getMap();
 
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s
-                 LEFT JOIN %s m
-                 WITH s.map_id = m.id
-                 LEFT JOIN %s sm
-                 WITH s.starsystem_map_id = sm.id
-                 WHERE s.user_id NOT IN (:ignoreIds)
-                 AND s.type = :spacecraftType
-                 AND (:cx = 0 OR (m.cx BETWEEN (:cx - 1) AND (:cx + 1)
-                    AND m.cy BETWEEN (:cy - 1) AND (:cy + 1)))
-                 AND (:systemId = 0 OR (sm.systems_id = :systemId
-                    AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
-                    AND sm.sy BETWEEN (:sy - 1) AND (:sy + 1)))',
-                Ship::class,
-                Map::class,
-                StarSystemMap::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
+                     LEFT JOIN %s m
+                     WITH s.map_id = m.id
+                     LEFT JOIN %s sm
+                     WITH s.starsystem_map_id = sm.id
+                     WHERE s.user_id NOT IN (:ignoreIds)
+                     AND s.type = :spacecraftType
+                     AND (:cx = 0 OR (m.cx BETWEEN (:cx - 1) AND (:cx + 1)
+                        AND m.cy BETWEEN (:cy - 1) AND (:cy + 1)))
+                     AND (:systemId = 0 OR (sm.systems_id = :systemId
+                        AND sm.sx BETWEEN (:sx - 1) AND (:sx + 1)
+                        AND sm.sy BETWEEN (:sy - 1) AND (:sy + 1)))',
+                    Ship::class,
+                    Map::class,
+                    StarSystemMap::class
+                )
             )
-        )->setParameters([
-            'ignoreIds' => [$ship->getUser()->getId(), GameEnum::USER_NOONE],
-            'spacecraftType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION,
-            'systemId' => $systemMap === null ? 0 : $systemMap->getSystem()->getId(),
-            'sx' => $systemMap === null ? 0 : $systemMap->getSx(),
-            'sy' => $systemMap === null ? 0 : $systemMap->getSy(),
-            'cx' => $map === null ? 0 : $map->getCx(),
-            'cy' => $map === null ? 0 : $map->getCy()
-        ])->getResult();
+            ->setParameters([
+                'ignoreIds' => [$ship->getUser()->getId(), GameEnum::USER_NOONE],
+                'spacecraftType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION,
+                'systemId' => $systemMap === null ? 0 : $systemMap->getSystem()->getId(),
+                'sx' => $systemMap === null ? 0 : $systemMap->getSx(),
+                'sy' => $systemMap === null ? 0 : $systemMap->getSy(),
+                'cx' => $map === null ? 0 : $map->getCx(),
+                'cy' => $map === null ? 0 : $map->getCy()
+            ])
+            ->getResult();
     }
 
     public function getShipsForAlertRed(
@@ -1027,20 +1030,23 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function getStationsByUser(int $userId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s
-                FROM %s s
-                JOIN %s r
-                WITH s.rumps_id = r.id
-                WHERE s.user_id = :userId
-                AND r.category_id = :categoryId',
-                Ship::class,
-                ShipRump::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s
+                    FROM %s s
+                    JOIN %s r
+                    WITH s.rumps_id = r.id
+                    WHERE s.user_id = :userId
+                    AND r.category_id = :categoryId',
+                    Ship::class,
+                    ShipRump::class
+                )
             )
-        )->setParameters([
-            'userId' => $userId,
-            'categoryId' => ShipRumpEnum::SHIP_CATEGORY_STATION
-        ])->getResult();
+            ->setParameters([
+                'userId' => $userId,
+                'categoryId' => ShipRumpEnum::SHIP_CATEGORY_STATION
+            ])
+            ->getResult();
     }
 }

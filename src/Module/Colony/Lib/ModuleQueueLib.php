@@ -35,6 +35,9 @@ final class ModuleQueueLib implements ModuleQueueLibInterface
         $this->cancelModuleQueuesForBuildingFunctions($colony, $building->getFunctions()->getKeys());
     }
 
+    /**
+     * @param list<int> $functionIds
+     */
     private function cancelModuleQueuesForBuildingFunctions(ColonyInterface $colony, array $functionIds)
     {
         $queues = $this->moduleQueueRepository->getByColonyAndBuilding($colony->getId(), $functionIds);

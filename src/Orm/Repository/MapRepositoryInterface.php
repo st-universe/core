@@ -16,24 +16,24 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getAmountByLayer(int $layerId): int;
 
     /**
-     * @return MapInterface[]
+     * @return list<MapInterface>
      */
     public function getAllOrdered(int $layerId): array;
 
     /**
-     * @return MapInterface[]
+     * @return array<int, MapInterface>
      */
     public function getAllWithSystem(int $layerId): array;
 
     /**
-     * @return MapInterface[]
+     * @return array<int, MapInterface>
      */
     public function getAllWithoutSystem(int $layerId): array;
 
     public function getByCoordinates(int $layerId, int $cx, int $cy): ?MapInterface;
 
     /**
-     * @return MapInterface[]
+     * @return list<MapInterface>
      */
     public function getByCoordinateRange(
         int $layerId,

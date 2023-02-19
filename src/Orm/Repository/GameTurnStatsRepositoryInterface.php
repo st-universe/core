@@ -30,7 +30,7 @@ interface GameTurnStatsRepositoryInterface extends ObjectRepository
     public function getFlightSigsSystem24h(): int;
 
     /**
-     * @return GameTurnStatsInterface[]
+     * @return list<GameTurnStatsInterface>
      */
     public function getLatestStats(int $amount, int $divisor): array;
 }

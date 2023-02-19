@@ -41,15 +41,16 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         $rsm->addFieldResult('s', 'station_id', 'station_id');
         $rsm->addFieldResult('s', 'ship_id', 'ship_id');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT s.id, s.station_id, s.ship_id
-            FROM    (
-                    SELECT  *, ROW_NUMBER() OVER (PARTITION BY station_id ORDER BY id ASC) rn
-                    FROM stu_station_shiprepair
-                    ) s
-            WHERE   s.rn = 1',
-            $rsm
-        )
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT s.id, s.station_id, s.ship_id
+                FROM    (
+                        SELECT  *, ROW_NUMBER() OVER (PARTITION BY station_id ORDER BY id ASC) rn
+                        FROM stu_station_shiprepair
+                        ) s
+                WHERE   s.rn = 1',
+                $rsm
+            )
             ->getResult();
     }
 

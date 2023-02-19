@@ -61,7 +61,8 @@ final class LayerRepository extends EntityRepository implements LayerRepositoryI
                     Layer::class,
                     UserLayer::class
                 )
-            )->setParameter('userId', $userId)
+            )
+            ->setParameter('userId', $userId)
             ->getResult();
     }
 }

@@ -13,12 +13,12 @@ interface ResearchDependencyRepositoryInterface extends ObjectRepository
 {
     /**
      * @param array<int> $modes
-     * @return ResearchDependencyInterface[]
+     * @return list<ResearchDependencyInterface>
      */
     public function getByMode(array $modes): array;
 
     /**
-     * @return ResearchDependencyInterface[]
+     * @return list<ResearchDependencyInterface>
      */
     public function getExcludesByResearch(int $researchId): array;
 }

@@ -12,7 +12,7 @@ use Stu\Orm\Entity\NewsInterface;
 interface NewsRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return NewsInterface[]
+     * @return list<NewsInterface>
      */
     public function getRecent(int $limit): array;
 }

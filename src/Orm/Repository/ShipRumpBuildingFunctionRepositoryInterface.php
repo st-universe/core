@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ShipRumpInterface;
 interface ShipRumpBuildingFunctionRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return ShipRumpBuildingFunctionInterface[]
+     * @return list<ShipRumpBuildingFunctionInterface>
      */
     public function getByShipRump(ShipRumpInterface $shipRump): array;
 }

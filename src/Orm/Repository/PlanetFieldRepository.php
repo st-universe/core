@@ -210,18 +210,21 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         int $colonyId,
         array $buildingFunctionIds
     ): array {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
-                    SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionId)
-                )',
-                PlanetField::class,
-                BuildingFunction::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
+                        SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionId)
+                    )',
+                    PlanetField::class,
+                    BuildingFunction::class
+                )
             )
-        )->setParameters([
-            'colonyId' => $colonyId,
-            'buildingFunctionId' => $buildingFunctionIds
-        ])->getResult();
+            ->setParameters([
+                'colonyId' => $colonyId,
+                'buildingFunctionId' => $buildingFunctionIds
+            ])
+            ->getResult();
     }
 
     public function getMaxShieldsOfColony(int $colonyId): int

@@ -14,17 +14,17 @@ use Stu\Orm\Entity\TorpedoTypeInterface;
 interface TorpedoTypeRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return TorpedoTypeInterface[]
+     * @return array<int, TorpedoTypeInterface>
      */
     public function getAll(): array;
 
     /**
-     * @return TorpedoTypeInterface[]
+     * @return array<int, TorpedoTypeInterface>
      */
     public function getForUser(int $userId): array;
 
     /**
-     * @return TorpedoTypeInterface[]
+     * @return array<int, TorpedoTypeInterface>
      */
     public function getByLevel(int $level): array;
 }

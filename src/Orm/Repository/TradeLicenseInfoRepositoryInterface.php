@@ -15,7 +15,6 @@ use Stu\Orm\Entity\TradeLicenseInfoInterface;
  */
 interface TradeLicenseInfoRepositoryInterface extends ObjectRepository
 {
-
     public function prototype(): TradeLicenseInfoInterface;
 
     public function save(TradeLicenseInfoInterface $setLicense): void;

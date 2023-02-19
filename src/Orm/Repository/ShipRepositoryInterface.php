@@ -32,29 +32,29 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getAmountByUserAndRump(int $userId, int $shipRumpId): int;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getByUser(UserInterface $user): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getByUserAndRump(int $userId, int $rumpId): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getShipsForAlertRed(
         ShipInterface $ship
     ): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return list<ShipInterface>
      */
     public function getByLocationAndUser(
         ?StarSystemMapInterface $starSystemMap,
@@ -63,7 +63,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getByLocation(
         ?StarSystemMapInterface $starSystemMap,
@@ -71,27 +71,27 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return list<ShipInterface>
      */
     public function getForeignStationsInBroadcastRange(ShipInterface $ship): array;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getTradePostsWithoutDatabaseEntry(): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getByUplink(int $userId): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getWithTradeLicensePayment(
         int $userId,
@@ -101,37 +101,37 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getSuitableForShildRegeneration(int $regenerationThreshold): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getDebrisFields(): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getStationConstructions(): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getEscapePods(): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getEscapePodsByCrewOwner(int $userId): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getPlayerShipsForTick(): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getNpcShipsForTick(): iterable;
 
@@ -240,9 +240,9 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @param array<int> $types
+     * @param list<int> $types
      *
-     * @return ShipInterface[]
+     * @return iterable<ShipInterface>
      */
     public function getSingleShipScannerResults(
         ShipInterface $ship,
@@ -267,7 +267,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function isBaseOnLocation(ShipInterface $ship): bool;
 
     /**
-     * @return ShipInterface[]
+     * @return list<ShipInterface>
      */
     public function getStationsByUser(int $userId): array;
 }

@@ -21,7 +21,7 @@ interface PrivateMessageFolderRepositoryInterface extends ObjectRepository
     public function delete(PrivateMessageFolderInterface $post): void;
 
     /**
-     * @return PrivateMessageFolderInterface[]
+     * @return list<PrivateMessageFolderInterface>
      */
     public function getOrderedByUser(int $userId): array;
 

@@ -12,7 +12,7 @@ use Stu\Orm\Entity\ShipRumpCostInterface;
 interface ShipRumpCostRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return ShipRumpCostInterface[]
+     * @return list<ShipRumpCostInterface>
      */
     public function getByShipRump(int $shipRumpId): array;
 }

@@ -23,7 +23,7 @@ interface PrestigeLogRepositoryInterface extends ObjectRepository
     public function getSumByUser(UserInterface $user): int;
 
     /**
-     * @return array<PrestigeLogInterface>
+     * @return list<PrestigeLogInterface>
      */
     public function getPrestigeHistory(UserInterface $user, int $maxResults): array;
 }
