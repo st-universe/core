@@ -7,7 +7,9 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\AllianceDetails\AllianceDetails;
 use Stu\Module\Alliance\View\Management\Management;
+use Stu\Module\Alliance\View\Overview\Overview;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -82,6 +84,7 @@ final class PromotePlayer implements ActionControllerInterface
         $this->allianceJobRepository->truncateByUser($playerId);
 
         $text = '';
+        $view = Management::VIEW_IDENTIFIER;
 
         switch ($type) {
             case AllianceEnum::ALLIANCE_JOBS_FOUNDER:
@@ -106,6 +109,7 @@ final class PromotePlayer implements ActionControllerInterface
                     _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
                     $alliance->getName()
                 );
+                $view = Overview::class;
                 break;
             case AllianceEnum::ALLIANCE_JOBS_SUCCESSOR:
                 if ($userId === $playerId) {
@@ -141,7 +145,7 @@ final class PromotePlayer implements ActionControllerInterface
 
         $this->privateMessageSender->send($userId, $playerId, $text);
 
-        $game->setView(Management::VIEW_IDENTIFIER);
+        $game->setView($view);
 
         $game->addInformation(_('Das Mitglied wurde befördert'));
     }
