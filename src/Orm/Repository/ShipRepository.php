@@ -781,12 +781,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $mapId = null,
         int $sysMapId = null
     ): iterable {
-
         $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('fleetid', 'fleetid', 'integer');
-        $rsm->addScalarResult('fleetname', 'fleetname', 'string');
+        $rsm->addScalarResult('fleetname', 'fleetname');
         $rsm->addScalarResult('isdefending', 'isdefending', 'boolean');
         $rsm->addScalarResult('isblocking', 'isblocking', 'boolean');
         $rsm->addScalarResult('shipid', 'shipid', 'integer');
@@ -798,16 +797,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('uplinkstate', 'uplinkstate', 'integer');
         $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
         $rsm->addScalarResult('spacecrafttype', 'spacecrafttype', 'integer');
-        $rsm->addScalarResult('shipname', 'shipname', 'string');
+        $rsm->addScalarResult('shipname', 'shipname');
         $rsm->addScalarResult('hull', 'hull', 'integer');
         $rsm->addScalarResult('maxhull', 'maxhull', 'integer');
         $rsm->addScalarResult('shield', 'shield', 'integer');
         $rsm->addScalarResult('webid', 'webid', 'integer');
         $rsm->addScalarResult('webfinishtime', 'webfinishtime', 'integer');
         $rsm->addScalarResult('userid', 'userid', 'integer');
-        $rsm->addScalarResult('username', 'username', 'string');
+        $rsm->addScalarResult('username', 'username');
         $rsm->addScalarResult('rumpcategoryid', 'rumpcategoryid', 'integer');
-        $rsm->addScalarResult('rumpname', 'rumpname', 'string');
+        $rsm->addScalarResult('rumpname', 'rumpname');
         $rsm->addScalarResult('rumproleid', 'rumproleid', 'integer');
         $rsm->addScalarResult('haslogbook', 'haslogbook', 'boolean');
 

@@ -28,11 +28,11 @@ final class PostFlightTractorHandler extends AbstractUpdateLocationHandler imple
     public function handle(ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip): void
     {
         $ship = $wrapper->get();
-        if (!$ship->isTractoring()) {
-            return;
-        }
 
         $tractoredShip = $ship->getTractoredShip();
+        if ($tractoredShip === null) {
+            return;
+        }
 
         //check for tractor system health
         $msg = [];

@@ -45,7 +45,7 @@ final class TractorMassPayloadUtil implements TractorMassPayloadUtilInterface
         return null;
     }
 
-    public function tractorSystemSurvivedTowing(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip, &$informations): bool
+    public function tractorSystemSurvivedTowing(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip, array &$informations): bool
     {
         $ship = $wrapper->get();
         $mass = $tractoredShip->getRump()->getTractorMass();

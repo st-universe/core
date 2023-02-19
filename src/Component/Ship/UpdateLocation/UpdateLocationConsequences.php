@@ -9,21 +9,22 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class UpdateLocationConsequences implements UpdateLocationConsequencesInterface
 {
-    /** @var array<UpdateLocationHandlerInterface>  */
+    /** @var array<string, UpdateLocationHandlerInterface>  */
     private array $preMoveHandler;
 
-    /** @var array<UpdateLocationHandlerInterface> */
+    /** @var array<string, UpdateLocationHandlerInterface> */
     private array $postMoveHandler;
 
     private LoggerUtilInterface $loggerUtil;
 
     /**
-     *  @param UpdateLocationHandlerInterface[] $preMoveHandler
-     *  @param UpdateLocationHandlerInterface[] $postMoveHandler
+     * @param array<string, UpdateLocationHandlerInterface> $preMoveHandler
+     * @param array<string, UpdateLocationHandlerInterface> $postMoveHandler
      */
     public function __construct(
         array $preMoveHandler,
@@ -48,7 +49,7 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
 
         // update location
         $ship = $wrapper->get();
-        if ($ship->getSystem() === null) {
+        if ($nextField instanceof MapInterface) {
             $ship->updateLocation($nextField, null);
         } else {
             $ship->updateLocation(null, $nextField);
@@ -58,6 +59,10 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         $this->walkHandler($this->postMoveHandler, $wrapper, $tractoringShip, $msgToPlayer);
     }
 
+    /**
+     * @param array<string, UpdateLocationHandlerInterface> $handler
+     * @param list<string> $msgToPlayer
+     */
     private function walkHandler(array $handler, ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip, array &$msgToPlayer): void
     {
         array_walk(
@@ -74,6 +79,10 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         );
     }
 
+    /**
+     * @param list<string> $msgToSchedule
+     * @param null|list<string> $msgToPlayer
+     */
     private function scheduleMsgToOwnerOrPlayer(ShipInterface $ship, ?ShipInterface $tractoringShip, array $msgToSchedule, ?array &$msgToPlayer = null): void
     {
         $this->loggerUtil->log(sprintf(' msgToScheduleSize: %d', count($msgToSchedule)));
@@ -92,6 +101,9 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
         }
     }
 
+    /**
+     * @param list<string> $msg
+     */
     private function informOwnerOfTractoredShip(array $msg): void
     {
         //TODO privateMessageSender

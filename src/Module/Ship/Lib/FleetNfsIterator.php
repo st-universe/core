@@ -8,6 +8,35 @@ use Iterator;
 use Stu\Lib\SessionInterface;
 use Stu\Orm\Entity\ShipInterface;
 
+/**
+ * @template TShipItem of array{
+ *  fleetid: int,
+ *  fleetname: string,
+ *  isdefending: bool,
+ *  isblocking: bool,
+ *  shipid: int,
+ *  rumpid: int,
+ *  formerrumpid: int,
+ *  warpstate: int,
+ *  cloakstate: int,
+ *  shieldstate: int,
+ *  uplinkstate: int,
+ *  isdestroyed: bool,
+ *  spacecrafttype: int,
+ *  shipname: string,
+ *  hull: int,
+ *  maxhull: int,
+ *  shield: int,
+ *  webid: int,
+ *  webfinishtime: int,
+ *  userid: int,
+ *  username: string,
+ *  rumpcategoryid: int,
+ *  rumpname: string,
+ *  rumproleid: int,
+ *  haslogbook: bool
+ * }
+ */
 final class FleetNfsIterator implements Iterator
 {
     private ShipInterface $currentShip;
@@ -18,10 +47,13 @@ final class FleetNfsIterator implements Iterator
 
     protected int $position = 0;
 
+    /** @var array<int, TShipItem> */
     private array $fleets = [];
 
-
-    public function __construct(array $ships, $currentShip, ?SessionInterface $session, int $userId)
+    /**
+     * @param iterable<TShipItem> $ships
+     */
+    public function __construct(iterable $ships, ShipInterface $currentShip, ?SessionInterface $session, int $userId)
     {
         $this->currentShip = $currentShip;
         $this->session = $session;

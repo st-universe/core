@@ -204,7 +204,33 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId): iterable;
 
     /**
-     * @return ShipInterface[]
+     * @return iterable<array{
+     *  fleetid: int,
+     *  fleetname: string,
+     *  isdefending: bool,
+     *  isblocking: bool,
+     *  shipid: int,
+     *  rumpid: int,
+     *  formerrumpid: int,
+     *  warpstate: int,
+     *  cloakstate: int,
+     *  shieldstate: int,
+     *  uplinkstate: int,
+     *  isdestroyed: bool,
+     *  spacecrafttype: int,
+     *  shipname: string,
+     *  hull: int,
+     *  maxhull: int,
+     *  shield: int,
+     *  webid: int,
+     *  webfinishtime: int,
+     *  userid: int,
+     *  username: string,
+     *  rumpcategoryid: int,
+     *  rumpname: string,
+     *  rumproleid: int,
+     *  haslogbook: bool
+     * }>
      */
     public function getFleetShipsScannerResults(
         ShipInterface $ship,

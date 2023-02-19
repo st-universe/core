@@ -9,5 +9,8 @@ interface TractorMassPayloadUtilInterface
 {
     public function tryToTow(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip): ?string;
 
-    public function tractorSystemSurvivedTowing(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip, &$informations): bool;
+    /**
+     * @param list<string> $informations
+     */
+    public function tractorSystemSurvivedTowing(ShipWrapperInterface $wrapper, ShipInterface $tractoredShip, array &$informations): bool;
 }

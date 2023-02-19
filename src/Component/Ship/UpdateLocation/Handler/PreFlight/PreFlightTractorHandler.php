@@ -29,23 +29,25 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
     public function handle(ShipWrapperInterface $wrapper, ?ShipInterface $tractoringShip): void
     {
         $ship = $wrapper->get();
-        if (!$ship->isTractoring()) {
+
+        $tractoredShip = $ship->getTractoredShip();
+        if ($tractoredShip === null) {
             return;
         }
 
-        $tractoredShip = $ship->getTractoredShip();
+        $tractoredShipFleet = $tractoredShip->getFleet();
 
         // fleet ships can not be towed
         if (
-            $tractoredShip->getFleetId()
-            && $tractoredShip->getFleet()->getShipCount() > 1
+            $tractoredShipFleet !== null
+            && $tractoredShipFleet->getShipCount() > 1
         ) {
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);  //active deactivation
 
             $this->addMessageInternal(
                 sprintf(
                     _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),
-                    $ship->getTractoredShip()->getName()
+                    $tractoredShip->getName()
                 )
             );
 

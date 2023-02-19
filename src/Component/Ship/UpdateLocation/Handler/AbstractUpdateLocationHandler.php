@@ -6,7 +6,7 @@ namespace Stu\Component\Ship\UpdateLocation\Handler;
 
 abstract class AbstractUpdateLocationHandler implements UpdateLocationHandlerInterface
 {
-    /** @var array<string> */
+    /** @var list<string> */
     private array $msgInternal = [];
 
     public function clearMessages(): void

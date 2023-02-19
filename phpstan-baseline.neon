@@ -21,11 +21,6 @@ parameters:
 			path: src/Component/Player/Register/PlayerDefaultsCreator.php
 
 		-
-			message: "#^Parameter \\#1 \\$ships of class Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator constructor expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
-			count: 1
-			path: src/Component/Ship/Nbs/NbsUtility.php
-
-		-
 			message: "#^Parameter \\#1 \\$ships of class Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator constructor expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
 			count: 2
 			path: src/Component/Ship/Nbs/NbsUtility.php
@@ -331,99 +326,9 @@ parameters:
 			path: src/Component/Ship/System/Type/WebEmitterShipSystem.php
 
 		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtil\\:\\:tractorSystemSurvivedTowing\\(\\) has parameter \\$informations with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Utility/TractorMassPayloadUtil.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tractorSystemSurvivedTowing\\(\\) has parameter \\$informations with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Utility/TractorMassPayloadUtilInterface.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tractorSystemSurvivedTowing\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/PostFlight/PostFlightTractorHandler.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
-
-		-
-			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
-
-		-
-			message: "#^Cannot call method getFleetId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 2
-			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
-
-		-
-			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
-
-		-
-			message: "#^Cannot call method getShipCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tryToTow\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/Handler/PreFlight/PreFlightTractorHandler.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:informOwnerOfTractoredShip\\(\\) has parameter \\$msg with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:scheduleMsgToOwnerOrPlayer\\(\\) has parameter \\$msgToPlayer with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:scheduleMsgToOwnerOrPlayer\\(\\) has parameter \\$msgToSchedule with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:updateLocationWithConsequences\\(\\) has parameter \\$msgToPlayer with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:updateLocationWithConsequences\\(\\) has parameter \\$nextField with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:walkHandler\\(\\) has parameter \\$handler with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequences\\:\\:walkHandler\\(\\) has parameter \\$msgToPlayer with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequences.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequencesInterface\\:\\:updateLocationWithConsequences\\(\\) has parameter \\$messages with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequencesInterface.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\UpdateLocation\\\\UpdateLocationConsequencesInterface\\:\\:updateLocationWithConsequences\\(\\) has parameter \\$nextField with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/UpdateLocation/UpdateLocationConsequencesInterface.php
 
 		-
 			message: "#^Cannot call method getMaxBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
@@ -5536,17 +5441,12 @@ parameters:
 			path: src/Module/Ship/Lib/FleetNfsIterator.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator\\:\\:__construct\\(\\) has parameter \\$currentShip with no type specified\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator\\<TShipItem of array\\<string, bool\\|int\\|string\\>\\>\\:\\:\\$fleets \\(array\\<int, TShipItem of array\\{fleetid\\: int, fleetname\\: string, isdefending\\: bool, isblocking\\: bool, shipid\\: int, rumpid\\: int, formerrumpid\\: int, warpstate\\: int, \\.\\.\\.\\}\\>\\) does not accept non\\-empty\\-array\\<int, non\\-empty\\-array\\<'cloakstate'\\|'fleetid'\\|'fleetname'\\|'formerrumpid'\\|'haslogbook'\\|'hull'\\|'isblocking'\\|'isdefending'\\|'isdestroyed'\\|'maxhull'\\|'rumpcategoryid'\\|'rumpid'\\|'rumpname'\\|'rumproleid'\\|'shield'\\|'shieldstate'\\|'shipid'\\|'shipname'\\|'spacecrafttype'\\|'uplinkstate'\\|'userid'\\|'username'\\|'warpstate'\\|'webfinishtime'\\|'webid'\\|int\\<0, max\\>, array\\{cloakstate\\: int, fleetid\\: int, fleetname\\: string, formerrumpid\\: int, haslogbook\\: bool, hull\\: int, isblocking\\: bool, isdefending\\: bool, \\.\\.\\.\\}\\|bool\\|int\\|string\\>\\>\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/FleetNfsIterator.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator\\:\\:__construct\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/FleetNfsIterator.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator\\:\\:\\$fleets type has no value type specified in iterable type array\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetNfsIterator\\<TShipItem of array\\<string, bool\\|int\\|string\\>\\>\\:\\:\\$fleets \\(array\\<int, TShipItem of array\\{fleetid\\: int, fleetname\\: string, isdefending\\: bool, isblocking\\: bool, shipid\\: int, rumpid\\: int, formerrumpid\\: int, warpstate\\: int, \\.\\.\\.\\}\\>\\) does not accept non\\-empty\\-array\\<int, non\\-empty\\-array\\<'cloakstate'\\|'fleetid'\\|'fleetname'\\|'formerrumpid'\\|'haslogbook'\\|'hull'\\|'isblocking'\\|'isdefending'\\|'isdestroyed'\\|'maxhull'\\|'rumpcategoryid'\\|'rumpid'\\|'rumpname'\\|'rumproleid'\\|'shield'\\|'shieldstate'\\|'shipid'\\|'shipname'\\|'spacecrafttype'\\|'uplinkstate'\\|'userid'\\|'username'\\|'warpstate'\\|'webfinishtime'\\|'webid'\\|int\\<0, max\\>, array\\{fleetid\\: int, fleetname\\: string, isdefending\\: bool, isblocking\\: bool, shipid\\: int, rumpid\\: int, formerrumpid\\: int, warpstate\\: int, \\.\\.\\.\\}\\|bool\\|int\\|string\\>\\>\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/FleetNfsIterator.php
 
