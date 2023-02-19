@@ -24,17 +24,17 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
 
     public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): iterable
     {
-        return $this->getEntityManager()->createQuery(
-
-            sprintf(
-                'SELECT b FROM %s b WHERE b.buildings_id = :buildingId AND (
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT b FROM %s b WHERE b.buildings_id = :buildingId AND (
                     b.research_id is null OR b.research_id IN (
                         SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.finished > 0
                     ))',
-                BuildingFieldAlternative::class,
-                Researched::class
+                    BuildingFieldAlternative::class,
+                    Researched::class
+                )
             )
-        )
             ->setParameters([
                 'userId' => $userId,
                 'buildingId' => $buildingId

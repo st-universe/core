@@ -18,14 +18,14 @@ interface AllianceBoardTopicRepositoryInterface extends ObjectRepository
     public function delete(AllianceBoardTopicInterface $post): void;
 
     /**
-     * @return AllianceBoardTopicInterface[]
+     * @return list<AllianceBoardTopicInterface>
      */
     public function getRecentByAlliance(int $allianceId, int $limit = 3): array;
 
     public function getAmountByBoardId(int $boardId): int;
 
     /**
-     * @return AllianceBoardTopicInterface[]
+     * @return list<AllianceBoardTopicInterface>
      */
     public function getByBoardIdOrdered(int $boardId): array;
 }

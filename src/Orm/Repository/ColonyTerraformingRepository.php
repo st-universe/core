@@ -30,7 +30,6 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
         $em = $this->getEntityManager();
 
         $em->remove($terraforming);
-        //$em->flush();
     }
 
     public function getByColony(array $colonies): array

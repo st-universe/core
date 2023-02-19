@@ -26,9 +26,9 @@ interface ColonyRepositoryInterface extends ObjectRepository
     public function getAmountByUser(UserInterface $user, int $colonyType): int;
 
     /**
-     * @return ColonyInterface[]
+     * @return array<int, ColonyInterface>
      */
-    public function getStartingByFaction(int $factionId): iterable;
+    public function getStartingByFaction(int $factionId): array;
 
     public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface;
 

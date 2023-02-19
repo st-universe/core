@@ -12,7 +12,7 @@ use Stu\Orm\Entity\BuildingUpgradeInterface;
 interface BuildingUpgradeRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return BuildingUpgradeInterface[]
+     * @return list<BuildingUpgradeInterface>
      */
     public function getByBuilding(int $buildingId, int $userId): array;
 }

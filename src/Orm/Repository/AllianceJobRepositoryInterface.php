@@ -24,7 +24,7 @@ interface AllianceJobRepositoryInterface extends ObjectRepository
     public function delete(AllianceJobInterface $post): void;
 
     /**
-     * @return AllianceJobInterface[]
+     * @return array<int, AllianceJobInterface>
      */
     public function getByUser(int $userId): array;
 

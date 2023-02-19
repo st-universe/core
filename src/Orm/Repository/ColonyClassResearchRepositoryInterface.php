@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ColonyClassResearchInterface;
 interface ColonyClassResearchRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return ColonyClassResearchInterface[]
+     * @return list<ColonyClassResearchInterface>
      */
     public function getByColonyClass(ColonyClassInterface $colonyClass): array;
 }

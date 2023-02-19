@@ -43,45 +43,51 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
     public function getAmountByUser(UserInterface $user, int $colonyType): int
     {
-        return (int) $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT count(c.id) from %s c WHERE c.user_id = :userId AND c.colonies_classes_id IN (
-                    SELECT cc.id FROM %s cc WHERE cc.type = :type
-                )',
-                Colony::class,
-                ColonyClass::class
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT count(c.id) from %s c WHERE c.user_id = :userId AND c.colonies_classes_id IN (
+                        SELECT cc.id FROM %s cc WHERE cc.type = :type
+                    )',
+                    Colony::class,
+                    ColonyClass::class
+                )
             )
-        )->setParameters([
-            'userId' => $user,
-            'type' => $colonyType
-        ])->getSingleScalarResult();
+            ->setParameters([
+                'userId' => $user,
+                'type' => $colonyType
+            ])
+            ->getSingleScalarResult();
     }
 
-    public function getStartingByFaction(int $factionId): iterable
+    public function getStartingByFaction(int $factionId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT c FROM %s c INDEX BY c.id
-                 JOIN %s sm
-                 WITH c.starsystem_map_id = sm.id
-                 WHERE c.user_id = :userId AND c.colonies_classes_id IN (
-                    SELECT pt.id FROM %s pt WHERE pt.allow_start = :allowStart
-                ) AND sm.systems_id IN (
-                    SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.admin_region_id IN (
-                        SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
-                    )
-                )',
-                Colony::class,
-                StarSystemMap::class,
-                ColonyClass::class,
-                Map::class,
-                MapRegionSettlement::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT c FROM %s c INDEX BY c.id
+                     JOIN %s sm
+                     WITH c.starsystem_map_id = sm.id
+                     WHERE c.user_id = :userId AND c.colonies_classes_id IN (
+                        SELECT pt.id FROM %s pt WHERE pt.allow_start = :allowStart
+                    ) AND sm.systems_id IN (
+                        SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.admin_region_id IN (
+                            SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
+                        )
+                    )',
+                    Colony::class,
+                    StarSystemMap::class,
+                    ColonyClass::class,
+                    Map::class,
+                    MapRegionSettlement::class
+                )
             )
-        )->setParameters([
-            'allowStart' => 1,
-            'userId' => GameEnum::USER_NOONE,
-            'factionId' => $factionId
-        ])->getResult();
+            ->setParameters([
+                'allowStart' => 1,
+                'userId' => GameEnum::USER_NOONE,
+                'factionId' => $factionId
+            ])
+            ->getResult();
     }
 
     public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface

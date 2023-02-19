@@ -25,19 +25,19 @@ interface ColonyShipQueueRepositoryInterface extends ObjectRepository
     public function getAmountByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): int;
 
     /**
-     * @return ColonyShipQueueInterface[]
+     * @return list<ColonyShipQueueInterface>
      */
     public function getByColony(int $colonyId): array;
 
     /**
-     * @return ColonyShipQueueInterface[]
+     * @return list<ColonyShipQueueInterface>
      */
     public function getByUser(int $userId): array;
 
     public function getCountByBuildplan(int $buildplanId): int;
 
     /**
-     * @return ColonyShipQueueInterface[]
+     * @return list<ColonyShipQueueInterface>
      */
     public function getFinishedJobs(): array;
 

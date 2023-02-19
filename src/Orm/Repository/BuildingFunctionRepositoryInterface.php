@@ -14,7 +14,7 @@ use Stu\Orm\Entity\BuildingFunctionInterface;
 interface BuildingFunctionRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return BuildingFunctionInterface[]
+     * @return list<BuildingFunctionInterface>
      */
     public function getByBuilding(int $buildingId): array;
 }

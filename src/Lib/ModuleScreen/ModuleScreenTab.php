@@ -14,17 +14,13 @@ class ModuleScreenTab
 {
     private ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository;
 
-    /** @var int */
-    private $moduleType;
+    private int $moduleType;
 
-    /** @var ShipBuildplanInterface|null  */
-    private $buildplan;
+    private ?ShipBuildplanInterface $buildplan;
 
-    /** @var ColonyInterface */
-    private $colony;
+    private ColonyInterface $colony;
 
-    /** @var ShipRumpInterface */
-    private $rump;
+    private ShipRumpInterface $rump;
 
     public function __construct(
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
@@ -40,26 +36,17 @@ class ModuleScreenTab
         $this->rump = $rump;
     }
 
-    /**
-     * @return int
-     */
-    public function getModuleType()
+    public function getModuleType(): int
     {
         return $this->moduleType;
     }
 
-    /**
-     * @return ColonyInterface
-     */
-    public function getColony()
+    public function getColony(): ColonyInterface
     {
         return $this->colony;
     }
 
-    /**
-     * @return ShipRumpInterface
-     */
-    public function getRump()
+    public function getRump(): ShipRumpInterface
     {
         return $this->rump;
     }
@@ -84,10 +71,7 @@ class ModuleScreenTab
         return $this->getModuleType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL;
     }
 
-    /**
-     * @return null|ShipBuildplanInterface
-     */
-    public function getBuildplan()
+    public function getBuildplan(): ?ShipBuildplanInterface
     {
         return $this->buildplan;
     }
@@ -103,17 +87,17 @@ class ModuleScreenTab
     }
 
     /**
-     * @return false|array<BuildplanModuleInterface>
+     * @return false|array<int, BuildplanModuleInterface>
      */
     public function getSelectedModule()
     {
-        if (!$this->getBuildplan()) {
+        if ($this->buildplan === null) {
             return false;
         }
-        if (!$this->getBuildplan()->getModulesByType($this->getModuleType())) {
+        if (!$this->buildplan->getModulesByType($this->getModuleType())) {
             return false;
         }
-        return $this->getBuildplan()->getModulesByType($this->getModuleType());
+        return $this->buildplan->getModulesByType($this->getModuleType());
     }
 
     public function getCssClass(): string

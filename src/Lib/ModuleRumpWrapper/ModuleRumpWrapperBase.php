@@ -10,16 +10,15 @@ use Stu\Orm\Entity\ShipRumpInterface;
 
 abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-    protected $wrapper;
+    protected ShipWrapperInterface $wrapper;
 
-    protected $rump;
+    protected ShipRumpInterface $rump;
 
-    protected $modules;
+    /** @var array<int, BuildplanModuleInterface> */
+    protected array $modules;
 
     /**
-     * @param ShipWrapperInterface $wrapper
-     * @param ShipRumpInterface $rump
-     * @param BuildplanModuleInterface[] $modules
+     * @param array<int, BuildplanModuleInterface> $modules
      */
     public function __construct(ShipWrapperInterface $wrapper, ShipRumpInterface $rump, array $modules)
     {

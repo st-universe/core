@@ -12,9 +12,14 @@ final class ModuleRumpWrapperComputer extends ModuleRumpWrapperBase implements M
 
     public function getValue(): int
     {
+        $module = current($this->modules);
+        if ($module === false) {
+            return 0;
+        }
+
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
-            current($this->modules)->getModule(),
+            $module->getModule(),
             'getHitChance',
             $this->rump->getHitChance()
         );

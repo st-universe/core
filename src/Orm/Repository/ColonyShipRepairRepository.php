@@ -44,15 +44,16 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
         $rsm->addFieldResult('c', 'ship_id', 'ship_id');
         $rsm->addFieldResult('c', 'field_id', 'field_id');
 
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT  c.id, c.colony_id, c.ship_id, c.field_id
-            FROM    (
-                    SELECT  *, ROW_NUMBER() OVER (PARTITION BY colony_id, field_id ORDER BY id ASC) rn
-                    FROM    stu_colonies_shiprepair
-                    ) c
-            WHERE   c.rn IN (1,2)',
-            $rsm
-        )
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT  c.id, c.colony_id, c.ship_id, c.field_id
+                FROM    (
+                        SELECT  *, ROW_NUMBER() OVER (PARTITION BY colony_id, field_id ORDER BY id ASC) rn
+                        FROM    stu_colonies_shiprepair
+                        ) c
+                WHERE   c.rn IN (1,2)',
+                $rsm
+            )
             ->setParameter('tickId', $tickId)
             ->getResult();
     }

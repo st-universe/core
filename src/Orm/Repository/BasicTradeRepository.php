@@ -59,6 +59,9 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
 
     public function isNewest(BasicTradeInterface $basicTrade): bool
     {
+        /**
+         * @todo use a more sophisticated approach
+         */
         return empty($this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT bt FROM %s bt
@@ -76,17 +79,21 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
 
     public function getLatestRates(BasicTradeInterface $basicTrade): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT bt FROM %s bt
-                WHERE bt.faction_id = :factionId
-                AND bt.commodity_id = :commodityId
-                ORDER BY bt.date_ms DESC',
-                BasicTrade::class
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT bt FROM %s bt
+                    WHERE bt.faction_id = :factionId
+                    AND bt.commodity_id = :commodityId
+                    ORDER BY bt.date_ms DESC',
+                    BasicTrade::class
+                )
             )
-        )->setParameters([
-            'factionId' => $basicTrade->getFaction()->getId(),
-            'commodityId' => $basicTrade->getCommodity()->getId()
-        ])->setMaxResults(TradeEnum::BASIC_TRADE_LATEST_RATE_AMOUNT)->getResult();
+            ->setParameters([
+                'factionId' => $basicTrade->getFaction()->getId(),
+                'commodityId' => $basicTrade->getCommodity()->getId()
+            ])
+            ->setMaxResults(TradeEnum::BASIC_TRADE_LATEST_RATE_AMOUNT)
+            ->getResult();
     }
 }

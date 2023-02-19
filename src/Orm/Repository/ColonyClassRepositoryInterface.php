@@ -14,7 +14,7 @@ use Stu\Orm\Entity\ColonyClassInterface;
 interface ColonyClassRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return ColonyClassInterface[]
+     * @return list<ColonyClassInterface>
      */
     public function getWithoutDatabaseEntry(): array;
 }

@@ -12,7 +12,6 @@ use Stu\Orm\Entity\AllianceBoardPostInterface;
  * @method null|AllianceBoardPostInterface find(integer $id)
  */
 interface AllianceBoardPostRepositoryInterface extends ObjectRepository
-
 {
     public function getRecentByBoard(int $boardId): ?AllianceBoardPostInterface;
 
@@ -23,7 +22,7 @@ interface AllianceBoardPostRepositoryInterface extends ObjectRepository
     public function getAmountByTopic(int $topicId): int;
 
     /**
-     * @return AllianceBoardPostInterface[]
+     * @return list<AllianceBoardPostInterface>
      */
     public function getByTopic(int $topicId, int $limit, int $offset): array;
 

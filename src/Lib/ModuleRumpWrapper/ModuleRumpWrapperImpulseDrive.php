@@ -9,12 +9,16 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-
     public function getValue(): int
     {
         $moduleValueCalculator = new ModuleValueCalculator();
 
-        return $moduleValueCalculator->calculateEvadeChance($this->rump, current($this->modules)->getModule());
+        $module = current($this->modules);
+        if ($module === false) {
+            return 0;
+        }
+
+        return $moduleValueCalculator->calculateEvadeChance($this->rump, $module->getModule());
     }
 
     public function apply(ShipInterface $ship): void

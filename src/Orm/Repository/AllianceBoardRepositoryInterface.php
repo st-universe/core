@@ -20,7 +20,7 @@ interface AllianceBoardRepositoryInterface extends ObjectRepository
     public function delete(AllianceBoardInterface $post): void;
 
     /**
-     * @return AllianceBoardInterface[]
+     * @return list<AllianceBoardInterface>
      */
     public function getByAlliance(int $allianceId): array;
 }

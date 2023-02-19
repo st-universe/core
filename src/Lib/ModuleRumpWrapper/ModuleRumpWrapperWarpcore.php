@@ -12,9 +12,14 @@ final class ModuleRumpWrapperWarpcore extends ModuleRumpWrapperBase implements M
 
     public function getValue(): int
     {
+        $module = current($this->modules);
+        if ($module === false) {
+            return 0;
+        }
+
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
-            current($this->modules)->getModule(),
+            $module->getModule(),
             null,
             $this->rump->getBaseReactor()
         );

@@ -26,19 +26,19 @@ interface AllianceRelationRepositoryInterface extends ObjectRepository
     public function getByAlliancePair(int $allianceId, int $opponentId): ?AllianceRelationInterface;
 
     /**
-     * @return AllianceRelationInterface[]
+     * @return list<AllianceRelationInterface>
      */
     public function getActiveByAlliance(int $allianceId): array;
 
     /**
-     * @return AllianceRelationInterface[]
+     * @return list<AllianceRelationInterface>
      */
     public function getByAlliance(int $allianceId): array;
 
     public function getActiveByAlliancePair(int $allianceId, int $opponentId): ?AllianceRelationInterface;
 
     /**
-     * @param array<int> $typeIds
+     * @param list<int> $typeIds
      */
     public function getActiveByTypeAndAlliancePair(array $typeIds, int $allianceId, int $opponentId): ?AllianceRelationInterface;
 }

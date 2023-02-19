@@ -13,7 +13,7 @@ use Stu\Orm\Entity\UserInterface;
 interface BuildingCommodityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return BuildingCommodityInterface[]
+     * @return list<BuildingCommodityInterface>
      */
     public function getByBuilding(int $buildingId): array;
 

@@ -12,7 +12,7 @@ use Stu\Orm\Entity\BuildingCostInterface;
 interface BuildingCostRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return array<BuildingCostInterface>
+     * @return list<BuildingCostInterface>
      */
     public function getByBuilding(int $buildingId): array;
 }

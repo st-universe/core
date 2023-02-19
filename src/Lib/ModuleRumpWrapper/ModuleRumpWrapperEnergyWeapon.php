@@ -12,9 +12,14 @@ final class ModuleRumpWrapperEnergyWeapon extends ModuleRumpWrapperBase implemen
 
     public function getValue(): int
     {
+        $module = current($this->modules);
+        if ($module === false) {
+            return 0;
+        }
+
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
-            current($this->modules)->getModule(),
+            $module->getModule(),
             null,
             $this->rump->getBaseDamage()
         );
