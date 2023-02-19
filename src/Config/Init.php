@@ -7,6 +7,7 @@ namespace Stu\Config;
 use DI\ContainerBuilder;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Tal\TalHelper;
 
 /**
@@ -66,9 +67,12 @@ final class Init
         /** @var ContainerInterface $container */
         $container = $builder->build();
 
-        require_once __DIR__ . '/../Config/ErrorHandler.php';
-
         $config = $container->get(ConfigInterface::class);
+
+        ErrorHandler::register(
+            $config,
+            $container->get(SessionInterface::class)
+        );
 
         ini_set('date.timezone', 'Europe/Berlin');
         set_include_path(get_include_path() . PATH_SEPARATOR . $config->get('game.webroot'));

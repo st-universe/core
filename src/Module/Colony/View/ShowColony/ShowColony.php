@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowColony;
 
 use ColonyMenu;
+use Exception;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
