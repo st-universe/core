@@ -11,6 +11,8 @@ use Stu\Orm\Entity\GameRequestInterface;
 
 /**
  * @extends EntityRepository<GameRequest>
+ *
+ * @deprecated Use logfile logging
  */
 final class GameRequestRepository extends EntityRepository implements GameRequestRepositoryInterface
 {
@@ -23,6 +25,7 @@ final class GameRequestRepository extends EntityRepository implements GameReques
     {
         $em = $this->getEntityManager();
         $em->persist($gameRequest);
+        $em->flush();
     }
 
     public function delete(GameRequestInterface $gameRequest): void

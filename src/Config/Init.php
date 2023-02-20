@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use DI\ContainerBuilder;
+use Doctrine\DBAL\Connection;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalHelper;
 
 /**
@@ -63,16 +66,14 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/../Component/Alliance/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Crew/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/GrapViz/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Lib/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Component/Logging/services.php');
 
         /** @var ContainerInterface $container */
         $container = $builder->build();
 
         $config = $container->get(ConfigInterface::class);
-
-        ErrorHandler::register(
-            $config,
-            $container->get(SessionInterface::class)
-        );
+        $container->get(ErrorHandler::class)->register();
 
         ini_set('date.timezone', 'Europe/Berlin');
         set_include_path(get_include_path() . PATH_SEPARATOR . $config->get('game.webroot'));

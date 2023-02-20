@@ -10,6 +10,8 @@ use Stu\Orm\Entity\GameRequestInterface;
  * @extends ObjectRepository<GameRequest>
  *
  * @method GameRequestInterface[] findAll()
+ *
+ * @deprecated Use logfile logging
  */
 interface GameRequestRepositoryInterface extends ObjectRepository
 {

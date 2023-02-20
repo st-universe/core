@@ -7,5 +7,5 @@ namespace Stu\Module\Logging;
 use function DI\autowire;
 
 return [
-    LoggerUtilFactoryInterface::class => autowire(LoggerUtilFactory::class)
+    LoggerUtilFactoryInterface::class => autowire(LoggerUtilFactory::class),
 ];

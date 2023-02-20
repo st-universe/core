@@ -9,6 +9,9 @@ use Monolog\Logger;
 use Noodlehaus\ConfigInterface;
 use Stu\Lib\SessionInterface;
 use Throwable;
+use Doctrine\DBAL\Connection;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -17,20 +20,42 @@ use Whoops\Util\Misc;
 /**
  * Registers the main error handler
  */
-final class ErrorHandler {
-    public static function register(
+final class ErrorHandler
+{
+    private Connection $database;
+
+    private GameRequestSaverInterface $gameRequestSaver;
+
+    private GameControllerInterface $game;
+
+    private ConfigInterface $config;
+
+    private SessionInterface $session;
+
+    public function __construct(
+        Connection $database,
+        GameRequestSaverInterface $gameRequestSaver,
+        GameControllerInterface $game,
         ConfigInterface $config,
         SessionInterface $session
-    ): void {
+    ) {
+        $this->database = $database;
+        $this->gameRequestSaver = $gameRequestSaver;
+        $this->game = $game;
+        $this->config = $config;
+        $this->session = $session;
+    }
+
+    public function register(): void {
         $isAdminUser = false;
         // load the session handler only if a session has been started
         if (session_id() !== '') {
-            $user = $session->getUser();
+            $user = $this->session->getUser();
 
             $isAdminUser = $user !== null
                 && in_array(
                     $user->getId(),
-                    array_map('intval', $config->get('game.admins')),
+                    array_map('intval', $this->config->get('game.admins')),
                     true
                 );
         }
@@ -38,7 +63,7 @@ final class ErrorHandler {
         $whoops = new Run();
 
         if (
-            $config->get('debug.debug_mode') === true ||
+            $this->config->get('debug.debug_mode') === true ||
             $isAdminUser
         ) {
             error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
@@ -56,16 +81,32 @@ final class ErrorHandler {
                 $handler = new PlainTextHandler();
             } else {
                 $handler = function (): void {
-                    require_once __DIR__ . '/../html/error.html';
+                    echo str_replace(
+                        '$REQUESTID',
+                        $this->game->getGameRequestId(),
+                        (string) file_get_contents(__DIR__ . '/../html/error.html')
+                    );
                 };
             }
         }
 
         $whoops->prependHandler($handler);
+        $whoops->prependHandler(function (): void {
+            // end transaction if still active
+            if ($this->database->isTransactionActive()) {
+                $this->database->rollBack();
+            }
+
+            // save the game request
+            $this->gameRequestSaver->save(
+                $this->game->getGameRequest(),
+                true
+            );
+        });
 
         $logger = new Logger('stu');
         $logger->pushHandler(
-            new StreamHandler($config->get('debug.logfile_path'))
+            new StreamHandler($this->config->get('debug.logfile_path'))
         );
 
         $whoops->prependHandler(function (Throwable $e) use ($logger) {

@@ -6,6 +6,7 @@ namespace Stu\Config;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use Cache\Adapter\Redis\RedisCachePool;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,10 +28,6 @@ use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
 use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Lib\StuBbCodeWithImageDefinitionSet;
-use Stu\Module\Control\EntityManagerCreator;
-use Stu\Module\Control\EntityManagerCreatorInterface;
-use Stu\Module\Control\EntityManagerLogging;
-use Stu\Module\Control\EntityManagerLoggingInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPage;
@@ -39,6 +36,7 @@ use Ubench;
 use function DI\autowire;
 
 return [
+    ErrorHandler::class => autowire(),
     ConfigInterface::class => function (): ConfigInterface {
         $path = __DIR__ . '/../../';
         return new Config(
@@ -77,7 +75,6 @@ return [
         }
     },
     SessionInterface::class => autowire(Session::class),
-    EntityManagerCreatorInterface::class => autowire(EntityManagerCreator::class),
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
         $config = $c->get(ConfigInterface::class);
 
@@ -91,26 +88,21 @@ return [
         $emConfig->setProxyNamespace($config->get('db.proxy_namespace'));
 
         $manager = new EntityManager(
-            DriverManager::getConnection([
-                'driver' => 'pdo_pgsql',
-                'user' => $config->get('db.user'),
-                'password' => $config->get('db.pass'),
-                'dbname' => $config->get('db.database'),
-                'host'  => $config->get('db.host'),
-                'charset' => 'utf8',
-            ]),
+            $c->get(Connection::class),
             $emConfig
         );
 
         $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
         return $manager;
     },
-    EntityManagerLoggingInterface::class => function (ContainerInterface $c): EntityManagerLogging {
-        $entityManagerCreator = $c->get(EntityManagerCreatorInterface::class);
-
-        $entityManager = $entityManagerCreator->create();
-        return new EntityManagerLogging($entityManager);
-    },
+    Connection::class => fn (ConfigInterface $config): Connection => DriverManager::getConnection([
+        'driver' => 'pdo_pgsql',
+        'user' => $config->get('db.user'),
+        'password' => $config->get('db.pass'),
+        'dbname' => $config->get('db.database'),
+        'host'  => $config->get('db.host'),
+        'charset' => 'utf8',
+    ]),
     TalPageInterface::class => autowire(TalPage::class),
     GameControllerInterface::class => autowire(GameController::class),
     Parser::class => function (): Parser {

@@ -28,7 +28,11 @@
   "debug": {
     "debug_mode": false,
     "logfile_path": "/path/to/log",
-    "loglevel": 7
+    "loglevel": 7,
+    "logging": {
+      "log_dir": "/path/to/logfiles",
+      "game_request_logging_adapter": "logfile"
+    }
   },
   "security": {
     "cors_sites": "http://change.me"

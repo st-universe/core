@@ -4,8 +4,10 @@ namespace Stu\Module\Control;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
+use Throwable;
 
 interface GameControllerInterface
 {
@@ -96,6 +98,11 @@ interface GameControllerInterface
     public function getSessionString(): string;
 
     public function sessionAndAdminCheck(): void;
+
+
+    public function getGameRequest(): GameRequestInterface;
+
+    public function getGameRequestId(): string;
 
     /**
      * @param array<string, ActionControllerInterface> $actions

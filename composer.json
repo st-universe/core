@@ -50,7 +50,7 @@
     "json-mapper/json-mapper": "^2.14",
     "laminas/laminas-mail": "^2",
     "mnsami/composer-custom-directory-installer": "^2",
-    "monolog/monolog": "^2.0",
+    "monolog/monolog": "^2.8",
     "mpscholten/request-parser": "^1.5",
     "php-di/php-di": "^6",
     "scn/phptal": "^3",

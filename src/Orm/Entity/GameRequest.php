@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
+use Throwable;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\GameRequestRepository")
@@ -19,9 +20,13 @@ use Doctrine\ORM\Mapping\Index;
  *          @Index(name="game_request_idx",columns={"user_id", "action", "view"})
  *     }
  * )
+ *
+ * @todo remove entity and repo
  **/
 class GameRequest implements GameRequestInterface
 {
+    public const TABLE_NAME = 'stu_game_request';
+
     /**
      * @Id
      * @Column(type="integer")
@@ -101,8 +106,13 @@ class GameRequest implements GameRequestInterface
      */
     private $params;
 
-    /** @var null|array<mixed> */
-    private $parameterArray;
+    /** @var array<mixed> */
+    private array $parameterArray = [];
+
+    private string $requestId = '';
+
+    /** @var array<Throwable> */
+    private array $errors = [];
 
     public function getId(): int
     {
@@ -169,28 +179,88 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    public function setParams(): GameRequestInterface
+    public function setParameterArray(array $parameter): GameRequestInterface
     {
-        $this->unsetParameter('_');
-        $this->unsetParameter('sstr');
-        $this->unsetParameter('login');
-        $this->unsetParameter('pass');
-        $this->unsetParameter('pass2');
-        $this->unsetParameter('oldpass');
-        if ($this->parameterArray !== null && !empty($this->parameterArray)) {
-            $string = print_r($this->parameterArray, true);
-            $this->params = substr($string, 8, strlen($string) - 11);
-        }
+        $this->params = (string) json_encode($parameter, JSON_PRETTY_PRINT);
+        $this->parameterArray = $parameter;
         return $this;
     }
 
-    public function setParameterArray(array $array): GameRequestInterface
+    public function getParameterArray(): array
     {
-        $this->parameterArray = $array;
+        return $this->parameterArray;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->user_id;
+    }
+
+    public function getTurnId(): int
+    {
+        return $this->turn_id;
+    }
+
+    public function getTime(): int
+    {
+        return $this->time;
+    }
+
+    public function getModule(): string
+    {
+        return $this->module;
+    }
+
+    public function getAction(): ?string
+    {
+        return $this->action;
+    }
+
+    public function getActionMs(): ?int
+    {
+        return $this->action_ms;
+    }
+
+    public function getView(): ?string
+    {
+        return $this->view;
+    }
+
+    public function getViewMs(): ?int
+    {
+        return $this->view_ms;
+    }
+
+    public function getRenderMs(): ?int
+    {
+        return $this->render_ms;
+    }
+
+    public function getRequestId(): string
+    {
+        return $this->requestId;
+    }
+
+    public function setRequestId(string $requestId): GameRequestInterface
+    {
+        $this->requestId = $requestId;
+
         return $this;
     }
 
-    public function unsetParameter($key): void
+    public function addError(Throwable $error): GameRequestInterface
+    {
+        $this->errors[] = $error;
+
+        return $this;
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    private function unsetParameter($key): void
     {
         unset($this->parameterArray[$key]);
     }

@@ -4,25 +4,24 @@ namespace Stu\Module\Control;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\SemaphoreConstants;
+use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolation;
-use Stu\Exception\EntityLockedException;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\SanityCheckException;
 use Stu\Exception\SessionInvalidException;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
-use Stu\Exception\StuException;
 use Stu\Exception\TickGameStateException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
+use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTalRendererInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
@@ -44,7 +43,6 @@ use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Throwable;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -71,8 +69,6 @@ final class GameController implements GameControllerInterface
 
     private EntityManagerInterface $entityManager;
 
-    private EntityManagerLoggingInterface $entityManagerLogging;
-
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private UserRepositoryInterface $userRepository;
@@ -84,6 +80,12 @@ final class GameController implements GameControllerInterface
     private GameRequestRepositoryInterface $gameRequestRepository;
 
     private LoggerUtilInterface $loggerUtil;
+
+    private GameTalRendererInterface $gameTalRenderer;
+
+    private UuidGeneratorInterface $uuidGenerator;
+
+    private GameRequestSaverInterface $gameRequestSaver;
 
     /** @var array<Notification> */
     private array $gameInformations = [];
@@ -113,12 +115,10 @@ final class GameController implements GameControllerInterface
     /** @var array<int, resource> */
     private array $semaphores = [];
 
-    /** @var array<Throwable> */
-    private array $sanityCheckExceptions = [];
-
     /** @var array<int, GameConfigInterface> */
     private ?array $gameConfig = null;
-    private GameTalRendererInterface $gameTalRenderer;
+
+    private ?GameRequestInterface $gameRequest = null;
 
     public function __construct(
         SessionInterface $session,
@@ -129,14 +129,15 @@ final class GameController implements GameControllerInterface
         GameTurnRepositoryInterface $gameTurnRepository,
         GameConfigRepositoryInterface $gameConfigRepository,
         EntityManagerInterface $entityManager,
-        EntityManagerLoggingInterface $entityManagerLogging,
         PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
         GameRequestRepositoryInterface $gameRequestRepository,
         GameTalRendererInterface $gameTalRenderer,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        UuidGeneratorInterface $uuidGenerator,
+        GameRequestSaverInterface $gameRequestSaver
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -146,7 +147,6 @@ final class GameController implements GameControllerInterface
         $this->gameTurnRepository = $gameTurnRepository;
         $this->gameConfigRepository = $gameConfigRepository;
         $this->entityManager = $entityManager;
-        $this->entityManagerLogging = $entityManagerLogging;
         $this->privateMessageSender = $privateMessageSender;
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
@@ -154,6 +154,8 @@ final class GameController implements GameControllerInterface
         $this->gameRequestRepository = $gameRequestRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->gameTalRenderer = $gameTalRenderer;
+        $this->uuidGenerator = $uuidGenerator;
+        $this->gameRequestSaver = $gameRequestSaver;
     }
 
     /**
@@ -461,6 +463,28 @@ final class GameController implements GameControllerInterface
         }
     }
 
+    public function getGameRequestId(): string {
+        return $this->getGameRequest()->getRequestId();
+    }
+
+    public function getGameRequest(): GameRequestInterface
+    {
+        if ($this->gameRequest === null) {
+            $gameRequest = $this->gameRequestRepository->prototype();
+            $gameRequest->setTime(time());
+            $gameRequest->setTurnId($this->getCurrentRound());
+            $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
+            $gameRequest->setRequestId($this->uuidGenerator->genV4());
+
+            if ($this->hasUser()) {
+                $gameRequest->setUserId($this->getUser());
+            }
+
+            $this->gameRequest = $gameRequest;
+        }
+        return $this->gameRequest;
+    }
+
     public function main(
         string $module,
         array $actions,
@@ -468,11 +492,8 @@ final class GameController implements GameControllerInterface
         bool $session_check = true,
         bool $admin_check = false
     ): void {
-        $gameRequest = $this->gameRequestRepository->prototype();
+        $gameRequest = $this->getGameRequest();
         $gameRequest->setModule($module);
-        $gameRequest->setTime(time());
-        $gameRequest->setTurnId($this->getCurrentRound());
-        $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
 
         try {
             $this->session->createSession($session_check);
@@ -495,9 +516,8 @@ final class GameController implements GameControllerInterface
             try {
                 $this->executeCallback($actions, $gameRequest);
             } catch (SanityCheckException $e) {
-                $this->sanityCheckExceptions[] = $e;
-            } catch (EntityLockedException $e) {
-                $this->addInformation($e->getMessage());
+
+                $gameRequest->addError($e);
             }
             $actionMs = hrtime(true) - $startTime;
 
@@ -505,7 +525,7 @@ final class GameController implements GameControllerInterface
             try {
                 $this->executeView($views, $gameRequest);
             } catch (SanityCheckException $e) {
-                $this->sanityCheckExceptions[] = $e;
+                $gameRequest->addError($e);
             }
             $viewMs = hrtime(true) - $startTime;
 
@@ -564,16 +584,10 @@ final class GameController implements GameControllerInterface
             } else {
                 $this->setTemplateFile('html/ship.xhtml');
             }
-        } catch (StuException $e) {
-            $this->releaseAndRemoveSemaphores();
-            throw $e;
         } catch (\Throwable $e) {
             $this->releaseAndRemoveSemaphores();
-            //if ($this->config->get('debug.debug_mode') === true) {
-            if (true === true) {
-                throw $e;
-            }
-            $this->setTemplateFile('html/error.html');
+
+            throw $e;
         }
 
         $this->releaseAndRemoveSemaphores();
@@ -602,9 +616,8 @@ final class GameController implements GameControllerInterface
 
         // SAVE META DATA
         $gameRequest->setRenderMs((int)$renderMs / 1000000);
-        $gameRequestId = $this->persistGameRequest($gameRequest);
 
-        $this->logSanityChecks($gameRequestId);
+        $this->gameRequestSaver->save($gameRequest);
     }
 
     private function checkUserAndGameState(GameRequestInterface $gameRequest): void
@@ -650,34 +663,6 @@ final class GameController implements GameControllerInterface
             array_map('intval', $this->config->get('game.admins')),
             true
         );
-    }
-
-    private function logSanityChecks(int $gameRequestId): void
-    {
-        $this->loggerUtil->init('sanity', LoggerEnum::LEVEL_WARNING);
-
-        foreach ($this->sanityCheckExceptions as $exception) {
-            $this->loggerUtil->log(sprintf(
-                "SANITY-CHECK-FAILED - GameRequestId: %d, Message: %s, Trace: %s",
-                $gameRequestId,
-                $exception->getMessage(),
-                $exception->getTraceAsString()
-            ));
-        }
-        $this->loggerUtil->init('stu');
-    }
-
-    private function persistGameRequest(GameRequestInterface $request): int
-    {
-        $request->setParams();
-
-        $entityManagerLogging = $this->entityManagerLogging;
-        $entityManagerLogging->beginTransaction();
-        $entityManagerLogging->persist($request);
-        $entityManagerLogging->flush();
-        $entityManagerLogging->commit();
-
-        return $request->getId();
     }
 
     public function isSemaphoreAlreadyAcquired(int $key): bool

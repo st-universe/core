@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Throwable;
+
 interface GameRequestInterface
 {
     public function getId(): int;
@@ -24,12 +26,43 @@ interface GameRequestInterface
 
     public function setRenderMs(int $renderMs): GameRequestInterface;
 
-    public function setParams(): GameRequestInterface;
+    /**
+     * @param array<mixed> $parameter
+     */
+    public function setParameterArray(array $parameter): GameRequestInterface;
 
     /**
-     * @param array<mixed> $array
+     * @return array<mixed>
      */
-    public function setParameterArray(array $array): GameRequestInterface;
+    public function getParameterArray(): array;
 
-    public function unsetParameter($key): void;
+
+    public function getUserId(): ?int;
+
+    public function getTurnId(): int;
+
+    public function getTime(): int;
+
+    public function getModule(): string;
+
+    public function getAction(): ?string;
+
+    public function getActionMs(): ?int;
+
+    public function getView(): ?string;
+
+    public function getViewMs(): ?int;
+
+    public function getRenderMs(): ?int;
+
+    public function getRequestId(): string;
+
+    public function setRequestId(string $requestId): GameRequestInterface;
+
+    public function addError(Throwable $error): GameRequestInterface;
+
+    /**
+     * @return array<Throwable>
+     */
+    public function getErrors(): array;
 }
