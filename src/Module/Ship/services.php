@@ -94,6 +94,8 @@ use Stu\Module\Ship\Action\LoadReactor\LoadReactor;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
 use Stu\Module\Ship\Action\MoveShip\MoveShipDown;
 use Stu\Module\Ship\Action\MoveShip\MoveShipLeft;
+use Stu\Module\Ship\Action\MoveShip\MoveShipRequest;
+use Stu\Module\Ship\Action\MoveShip\MoveShipRequestInterface;
 use Stu\Module\Ship\Action\MoveShip\MoveShipRight;
 use Stu\Module\Ship\Action\MoveShip\MoveShipUp;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleet;
@@ -422,5 +424,6 @@ return [
         ShowWebEmitter::VIEW_IDENTIFIER => autowire(ShowWebEmitter::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
-    ShipUiFactoryInterface::class =>autowire(ShipUiFactory::class),
+    ShipUiFactoryInterface::class => autowire(ShipUiFactory::class),
+    MoveShipRequestInterface::class => autowire(MoveShipRequest::class),
 ];

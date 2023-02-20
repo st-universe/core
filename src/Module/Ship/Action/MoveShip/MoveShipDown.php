@@ -6,17 +6,20 @@ namespace Stu\Module\Ship\Action\MoveShip;
 
 use Stu\Orm\Entity\ShipInterface;
 
+/**
+ * Performs downwards movement
+ */
 final class MoveShipDown extends AbstractDirectedMovement
 {
     public const ACTION_IDENTIFIER = 'B_MOVE_DOWN';
 
-    protected function getPosX(ShipInterface $ship, int $fields): int
+    protected function getPosX(ShipInterface $ship): int
     {
         return $ship->getPosX();
     }
 
-    protected function getPosY(ShipInterface $ship, int $fields): int
+    protected function getPosY(ShipInterface $ship): int
     {
-        return $ship->getPosY() + $fields;
+        return $ship->getPosY() + $this->moveShipRequest->getFieldCount();
     }
 }

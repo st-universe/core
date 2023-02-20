@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\MoveShip;
 
-use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -14,14 +13,18 @@ use Stu\Orm\Entity\ShipInterface;
 
 abstract class AbstractDirectedMovement implements ActionControllerInterface
 {
+    protected MoveShipRequestInterface $moveShipRequest;
+
     private ShipLoaderInterface $shipLoader;
 
     private ShipMoverInterface $shipMover;
 
     public function __construct(
+        MoveShipRequestInterface $moveShipRequest,
         ShipLoaderInterface $shipLoader,
         ShipMoverInterface $shipMover
     ) {
+        $this->moveShipRequest = $moveShipRequest;
         $this->shipLoader = $shipLoader;
         $this->shipMover = $shipMover;
     }
@@ -31,23 +34,15 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
-            request::indInt('id'),
+            $this->moveShipRequest->getShipId(),
             $userId
         );
         $ship = $wrapper->get();
 
-        $fields = request::postInt('navapp');
-        if (
-            $fields <= 0
-            || $fields > 9
-        ) {
-            $fields = 1;
-        }
-
         $this->shipMover->checkAndMove(
             $wrapper,
-            $this->getPosX($ship, $fields),
-            $this->getPosY($ship, $fields)
+            $this->getPosX($ship),
+            $this->getPosY($ship)
         );
         $game->addInformationMerge($this->shipMover->getInformations());
 
@@ -58,15 +53,9 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
-    /**
-     * @param int<1, 9> $fields
-     */
-    abstract protected function getPosX(ShipInterface $ship, int $fields): int;
+    abstract protected function getPosX(ShipInterface $ship): int;
 
-    /**
-     * @param int<1, 9> $fields
-     */
-    abstract protected function getPosY(ShipInterface $ship, int $fields): int;
+    abstract protected function getPosY(ShipInterface $ship): int;
 
     public function performSessionCheck(): bool
     {

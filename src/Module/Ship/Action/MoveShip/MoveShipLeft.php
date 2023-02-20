@@ -6,6 +6,9 @@ namespace Stu\Module\Ship\Action\MoveShip;
 
 use Stu\Orm\Entity\ShipInterface;
 
+/**
+ * Performs movement to the left
+ */
 final class MoveShipLeft extends AbstractDirectedMovement
 {
     public const ACTION_IDENTIFIER = 'B_MOVE_LEFT';
@@ -15,12 +18,12 @@ final class MoveShipLeft extends AbstractDirectedMovement
         return true;
     }
 
-    protected function getPosX(ShipInterface $ship, int $fields): int
+    protected function getPosX(ShipInterface $ship): int
     {
-        return max(1, $ship->getPosX() - $fields);
+        return max(1, $ship->getPosX() - $this->moveShipRequest->getFieldCount());
     }
 
-    protected function getPosY(ShipInterface $ship, int $fields): int
+    protected function getPosY(ShipInterface $ship): int
     {
         return $ship->getPosY();
     }
