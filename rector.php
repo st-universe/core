@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector;
+use Rector\CodingStyle\Rector\FuncCall\ConsistentPregDelimiterRector;
 use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
@@ -29,5 +30,9 @@ return static function (RectorConfig $rectorConfig): void {
         FlipTypeControlToUseExclusiveTypeRector::class,
         PostIncDecToPreIncDecRector::class,
         __DIR__ . '/src/OrmProxy'
+    ]);
+
+    $rectorConfig->ruleWithConfiguration(ConsistentPregDelimiterRector::class, [
+        ConsistentPregDelimiterRector::DELIMITER => '/',
     ]);
 };

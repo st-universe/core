@@ -10,6 +10,9 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class Create implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'CREATE_ALLIANCE';
 
     public function handle(GameControllerInterface $game): void

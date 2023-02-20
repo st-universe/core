@@ -15,6 +15,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class CreateTopic implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_CREATE_TOPIC';
 
     private CreateTopicRequestInterface $createTopicRequest;
@@ -50,6 +53,7 @@ final class CreateTopic implements ActionControllerInterface
             $game->addInformation(_('Es wurde kein Themenname eingegeben'));
             return;
         }
+
         if (mb_strlen($text) < 1) {
             $game->setView("SHOW_NEW_TOPIC");
             $game->addInformation(_('Es wurde kein Text eingegeben'));
@@ -58,7 +62,7 @@ final class CreateTopic implements ActionControllerInterface
 
         /** @var AllianceBoardInterface $board */
         $board = $this->allianceBoardRepository->find($this->createTopicRequest->getBoardId());
-        if ($board === null || $board->getAllianceId() != $alliance->getId()) {
+        if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

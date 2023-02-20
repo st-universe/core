@@ -13,6 +13,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class SetTopicSticky implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_SET_STICKY';
 
     private SetTopicStickyRequestInterface $setTopicStickyRequest;
@@ -33,7 +36,7 @@ final class SetTopicSticky implements ActionControllerInterface
 
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($this->setTopicStickyRequest->getTopicId());
-        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
+        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

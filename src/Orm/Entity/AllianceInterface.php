@@ -31,6 +31,11 @@ interface AllianceInterface
 
     public function getAcceptApplications(): bool;
 
+    /**
+     * Returns `true` if a alliance avatar image has been set
+     */
+    public function hasAvatar(): bool;
+
     public function setAcceptApplications(bool $acceptApplications): AllianceInterface;
 
     public function getAvatar(): string;

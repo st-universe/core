@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
@@ -24,7 +25,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
     private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
 
-    private \Stu\Module\Message\Lib\PrivateMessageSenderInterface $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     private UserRepositoryInterface $userRepository;
 
@@ -34,7 +35,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRepositoryInterface $allianceRepository,
         DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        \Stu\Module\Message\Lib\PrivateMessageSenderInterface $privateMessageSender,
+        PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         ConfigInterface $config
     ) {
@@ -52,7 +53,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
             $allianceId,
             $jobTypeId
         );
-        if (!$obj) {
+        if ($obj === null) {
             $obj = $this->allianceJobRepository->prototype();
             $obj->setType($jobTypeId);
             $obj->setAlliance($this->allianceRepository->find($allianceId));
@@ -77,11 +78,13 @@ final class AllianceActionManager implements AllianceActionManagerInterface
             if ($sendMesage === true) {
                 $this->privateMessageSender->send(GameEnum::USER_NOONE, $user->getId(), $text);
             }
+
             $user->setAlliance(null);
 
             $this->userRepository->save($user);
         }
-        if ($alliance->getAvatar()) {
+
+        if ($alliance->hasAvatar()) {
             @unlink(
                 sprintf(
                     '%s/%s/%s.png',
@@ -120,9 +123,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         /** @var AllianceJobInterface[] $jobList */
         $jobList = array_filter(
             $this->allianceJobRepository->getByAlliance($allianceId),
-            function (AllianceJobInterface $job): bool {
-                return $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING;
-            }
+            static fn(AllianceJobInterface $job): bool => $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING
         );
 
         foreach ($jobList as $job) {
@@ -135,11 +136,13 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         if ($alliance->getFactionId() != 0) {
             return true;
         }
+
         foreach ($alliance->getMembers() as $obj) {
             if ($obj->getFactionId() !== $factionId) {
                 return false;
             }
         }
+
         return true;
     }
 }

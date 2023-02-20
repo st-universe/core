@@ -15,6 +15,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class Relations implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_RELATIONS';
 
     private AllianceRelationRepositoryInterface $allianceRelationRepository;
@@ -42,7 +45,7 @@ final class Relations implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $allianceId = (int) $alliance->getId();
+        $allianceId = $alliance->getId();
 
         if (!$this->allianceActionManager->mayManageForeignRelations($alliance, $user)) {
             throw new AccessViolation();

@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class DeleteAvatar implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_DELETE_AVATAR';
 
     private AllianceActionManagerInterface $allianceActionManager;
@@ -47,7 +50,7 @@ final class DeleteAvatar implements ActionControllerInterface
 
         $game->setView(Edit::VIEW_IDENTIFIER);
 
-        if ($alliance->getAvatar()) {
+        if ($alliance->hasAvatar()) {
             @unlink(
                 sprintf(
                     '%s%s/%s.png',
@@ -60,6 +63,7 @@ final class DeleteAvatar implements ActionControllerInterface
 
             $this->allianceRepository->save($alliance);
         }
+
         $game->addInformation(_('Das Bild wurde gelöscht'));
     }
 

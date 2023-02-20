@@ -18,6 +18,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PromotePlayer implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_PROMOTE_USER';
 
     private PromotePlayerRequestInterface $promotePlayerRequest;
@@ -59,6 +62,7 @@ final class PromotePlayer implements ActionControllerInterface
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
             throw new AccessViolation();
         }
+
         $playerId = $this->promotePlayerRequest->getPlayerId();
 
         $player = $this->userRepository->find($playerId);
@@ -77,7 +81,8 @@ final class PromotePlayer implements ActionControllerInterface
         if (!in_array($type, $availablePromotions)) {
             throw new AccessViolation();
         }
-        if ($alliance->getFounder()->getUserId() == $playerId) {
+
+        if ($alliance->getFounder()->getUserId() === $playerId) {
             throw new AccessViolation();
         }
 
@@ -95,6 +100,7 @@ final class PromotePlayer implements ActionControllerInterface
                 if ($founderJob->getUserId() !== $userId) {
                     throw new AccessViolation();
                 }
+
                 $this->allianceActionManager->setJobForUser(
                     $allianceId,
                     $userId,
@@ -115,6 +121,7 @@ final class PromotePlayer implements ActionControllerInterface
                 if ($userId === $playerId) {
                     throw new AccessViolation();
                 }
+
                 $this->allianceActionManager->setJobForUser(
                     $allianceId,
                     $playerId,
@@ -130,6 +137,7 @@ final class PromotePlayer implements ActionControllerInterface
                 if ($userId === $playerId) {
                     throw new AccessViolation();
                 }
+
                 $this->allianceActionManager->setJobForUser(
                     $allianceId,
                     $playerId,

@@ -12,6 +12,9 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 final class ShowEditPost implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_EDIT_ALLY_POST';
 
     private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
@@ -30,6 +33,7 @@ final class ShowEditPost implements ViewControllerInterface
         if ($post === null) {
             return;
         }
+
         $board = $post->getBoard();
         $topic = $post->getTopic();
         if ($board->getAllianceId() !== $alliance->getId()) {

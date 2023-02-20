@@ -11,6 +11,9 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class BoardSettings implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_BOARD_SETTINGS';
 
     private BoardSettingsRequestInterface $boardSettingsRequest;
@@ -30,7 +33,7 @@ final class BoardSettings implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         $board = $this->allianceBoardRepository->find($this->boardSettingsRequest->getBoardId());
-        if ($board === null || $board->getAllianceId() != $alliance->getId()) {
+        if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

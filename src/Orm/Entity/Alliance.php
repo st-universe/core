@@ -191,6 +191,11 @@ class Alliance implements AllianceInterface
         return $this;
     }
 
+    public function hasAvatar(): bool
+    {
+        return strlen($this->getAvatar()) > 0;
+    }
+
     public function getAvatar(): string
     {
         return $this->avatar;

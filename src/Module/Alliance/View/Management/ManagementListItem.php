@@ -84,7 +84,7 @@ final class ManagementListItem
      */
     public function isFounder(): bool
     {
-        return $this->alliance->getFounder()->getUserId() == $this->user->getId();
+        return $this->alliance->getFounder()->getUserId() === $this->user->getId();
     }
 
     /**

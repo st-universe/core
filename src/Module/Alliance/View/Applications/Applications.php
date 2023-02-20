@@ -13,6 +13,9 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class Applications implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
 
     private AllianceActionManagerInterface $allianceActionManager;
@@ -38,6 +41,7 @@ final class Applications implements ViewControllerInterface
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
+
         $game->setPageTitle(_('Allianz anzeigen'));
         $game->appendNavigationPart(
             'alliance.php',
@@ -51,7 +55,7 @@ final class Applications implements ViewControllerInterface
         $game->setTemplateVar(
             'APPLICATIONS',
             $this->allianceJobRepository->getByAllianceAndType(
-                (int) $alliance->getId(),
+                $alliance->getId(),
                 AllianceEnum::ALLIANCE_JOBS_PENDING
             )
         );

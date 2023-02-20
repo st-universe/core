@@ -32,6 +32,7 @@ final class AllianceRelationItem implements AllianceRelationItemInterface
         if ($this->allianceRelation->getOpponent() === $this->currentUser->getAlliance()) {
             return $this->allianceRelation->getAlliance();
         }
+
         return $this->allianceRelation->getOpponent();
     }
 

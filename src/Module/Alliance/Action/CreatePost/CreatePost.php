@@ -16,6 +16,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 final class CreatePost implements ActionControllerInterface
 {
 
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_CREATE_POSTING';
 
     private CreatePostRequestInterface $createPostRequest;
@@ -49,7 +52,7 @@ final class CreatePost implements ActionControllerInterface
 
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
+        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

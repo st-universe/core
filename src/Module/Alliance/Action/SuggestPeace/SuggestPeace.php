@@ -13,6 +13,9 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class SuggestPeace implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_SUGGEST_PEACE';
 
     private SuggestPeaceRequestInterface $suggestPeaceRequest;
@@ -40,13 +43,13 @@ final class SuggestPeace implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $allianceId = (int) $alliance->getId();
+        $allianceId = $alliance->getId();
 
         if ($relation === null || !$this->allianceActionManager->mayManageForeignRelations($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
 
-        $opponentId = $relation->getOpponent()->getId() == $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId();
+        $opponentId = $relation->getOpponent()->getId() === $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId();
 
         $rel = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
             [AllianceEnum::ALLIANCE_RELATION_PEACE],
@@ -57,9 +60,11 @@ final class SuggestPeace implements ActionControllerInterface
             $game->addInformation(_('Der Allianz wird bereits ein Friedensabkommen angeboten'));
             return;
         }
-        if (!$relation || ($relation->getOpponentId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
+
+        if (!$relation || ($relation->getOpponentId() !== $allianceId && $relation->getAllianceId() !== $allianceId)) {
             return;
         }
+
         if ($relation->getType() != AllianceEnum::ALLIANCE_RELATION_WAR) {
             return;
         }
@@ -76,7 +81,7 @@ final class SuggestPeace implements ActionControllerInterface
             $alliance->getName()
         );
 
-        if ($relation->getAllianceId() == $allianceId) {
+        if ($relation->getAllianceId() === $allianceId) {
             $this->allianceActionManager->sendMessage($relation->getOpponentId(), $text);
         } else {
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);

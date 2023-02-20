@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class DeclineOffer implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_DECLINE_OFFER';
 
     private AllianceRelationRepositoryInterface $allianceRelationRepository;
@@ -45,12 +48,14 @@ final class DeclineOffer implements ActionControllerInterface
 
         $relation = $this->allianceRelationRepository->find(request::getStringFatal('al'));
 
-        if ($relation === null || $relation->getOpponentId() != $allianceId) {
+        if ($relation === null || $relation->getOpponentId() !== $allianceId) {
             return;
         }
+
         if (!$relation->isPending()) {
             return;
         }
+
         $this->allianceRelationRepository->delete($relation);
 
         $text = sprintf(

@@ -11,6 +11,9 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class Edit implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'EDIT_ALLIANCE';
 
     private AllianceActionManagerInterface $allianceActionManager;
@@ -32,6 +35,7 @@ final class Edit implements ViewControllerInterface
         if (!$this->allianceActionManager->mayEdit($alliance, $game->getUser())) {
             throw new AccessViolation();
         }
+
         $game->setPageTitle(_('Allianz editieren'));
 
         $game->appendNavigationPart(

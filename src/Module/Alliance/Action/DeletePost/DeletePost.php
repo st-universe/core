@@ -17,6 +17,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 final class DeletePost implements ActionControllerInterface
 {
 
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_DEL_POSTING';
 
     private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
@@ -40,6 +43,7 @@ final class DeletePost implements ActionControllerInterface
         if ($post === null) {
             return;
         }
+
         if ($post->getBoard()->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
@@ -52,6 +56,7 @@ final class DeletePost implements ActionControllerInterface
             $game->addInformation(_('Das Thema wurde gelöscht'));
             return;
         }
+
         $game->setView(Topic::VIEW_IDENTIFIER);
 
         $this->allianceBoardPostRepository->delete($post);

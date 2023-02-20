@@ -17,6 +17,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class KickPlayer implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_KICK_USER';
 
     private KickPlayerRequestInterface $kickPlayerRequest;
@@ -73,7 +76,7 @@ final class KickPlayer implements ActionControllerInterface
 
         $this->userRepository->save($player);
 
-        if ($alliance->getFounder()->getUserId() == $playerId) {
+        if ($alliance->getFounder()->getUserId() === $playerId) {
             $this->allianceJobRepository->truncateByUser($userId);
 
             $this->allianceActionManager->setJobForUser(

@@ -21,6 +21,9 @@ final class DiplomaticRelations implements ViewControllerInterface
     /** @var int */
     private const GRAPH_HEIGHT = 700;
 
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_DIPLOMATIC_RELATIONS';
 
     private AllianceRelationRepositoryInterface $allianceRelationRepository;

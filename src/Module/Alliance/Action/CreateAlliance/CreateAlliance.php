@@ -14,6 +14,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CreateAlliance implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_CREATE_ALLIANCE';
 
     private CreateAllianceRequestInterface $createAllianceRequest;
@@ -21,6 +24,7 @@ final class CreateAlliance implements ActionControllerInterface
     private AllianceJobRepositoryInterface $allianceJobRepository;
 
     private AllianceRepositoryInterface $allianceRepository;
+
     private UserRepositoryInterface $userRepository;
 
 

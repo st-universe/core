@@ -13,6 +13,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class UnsetTopicSticky implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_UNSET_STICKY';
 
     private UnsetTopicStickyRequestInterface $unsetTopicStickyRequest;
@@ -33,7 +36,7 @@ final class UnsetTopicSticky implements ActionControllerInterface
 
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($this->unsetTopicStickyRequest->getTopicId());
-        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
+        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

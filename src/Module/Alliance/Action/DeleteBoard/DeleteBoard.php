@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 final class DeleteBoard implements ActionControllerInterface
 {
 
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_DELETE_BOARD';
 
     private DeleteBoardRequestInterface $deleteBoardRequest;
@@ -34,7 +37,7 @@ final class DeleteBoard implements ActionControllerInterface
 
         /** @var AllianceBoardInterface $board */
         $board = $this->allianceBoardRepository->find($this->deleteBoardRequest->getBoardId());
-        if ($board === null || $board->getAllianceId() != $alliance->getId()) {
+        if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

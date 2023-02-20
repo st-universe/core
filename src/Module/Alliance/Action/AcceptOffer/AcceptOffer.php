@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class AcceptOffer implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_ACCEPT_OFFER';
 
     private AcceptOfferRequestInterface $acceptOfferRequest;
@@ -54,16 +57,19 @@ final class AcceptOffer implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        if ($relation === null || $relation->getOpponentId() != $allianceId) {
+        if ($relation === null || $relation->getOpponentId() !== $allianceId) {
             return;
         }
+
         if (!$relation->isPending()) {
             return;
         }
+
         $rel = $this->allianceRelationRepository->getActiveByAlliancePair($relation->getAllianceId(), $relation->getOpponentId());
-        if ($rel) {
+        if ($rel !== null) {
             $this->allianceRelationRepository->delete($rel);
         }
+
         $relation->setDate(time());
 
         $this->allianceRelationRepository->save($relation);
@@ -84,6 +90,7 @@ final class AcceptOffer implements ActionControllerInterface
                 ),
                 $userId
             );
+
         if ($relation->getType() == AllianceEnum::ALLIANCE_RELATION_VASSAL)
             $this->entryCreator->addAllianceEntry(
                 sprintf(
@@ -95,7 +102,7 @@ final class AcceptOffer implements ActionControllerInterface
                 $userId
             );
 
-        if ($relation->getAllianceId() == $allianceId) {
+        if ($relation->getAllianceId() === $allianceId) {
             $this->allianceActionManager->sendMessage($relation->getOpponentId(), $text);
         } else {
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);

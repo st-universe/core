@@ -13,6 +13,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class AllianceList implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_LIST';
 
     private AllianceRepositoryInterface $allianceRepository;

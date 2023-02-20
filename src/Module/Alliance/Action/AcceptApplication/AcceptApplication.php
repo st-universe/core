@@ -15,6 +15,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AcceptApplication implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_ACCEPT_APPLICATION';
 
     private AcceptApplicationRequestInterface $acceptApplicationRequest;

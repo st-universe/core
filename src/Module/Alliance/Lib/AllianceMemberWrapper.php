@@ -42,6 +42,7 @@ final class AllianceMemberWrapper
         if ($this->user->isOnline()) {
             return 'online';
         }
+
         return 'offline';
     }
 }

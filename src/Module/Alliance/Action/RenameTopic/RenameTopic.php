@@ -13,6 +13,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 final class RenameTopic implements ActionControllerInterface
 {
 
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_RENAME_TOPIC';
 
     private RenameTopicRequestInterface $renameTopicRequest;
@@ -34,7 +37,7 @@ final class RenameTopic implements ActionControllerInterface
         $name = $this->renameTopicRequest->getTitle();
 
         $topic = $this->allianceBoardTopicRepository->find($this->renameTopicRequest->getTopicId());
-        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
+        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

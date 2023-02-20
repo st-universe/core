@@ -13,6 +13,9 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class RenameBoard implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_RENAME_BOARD';
 
     private RenameBoardRequestInterface $renameBoardRequest;
@@ -35,7 +38,7 @@ final class RenameBoard implements ActionControllerInterface
 
         /** @var AllianceBoardInterface $board */
         $board = $this->allianceBoardRepository->find($this->renameBoardRequest->getBoardId());
-        if ($board === null || $board->getAllianceId() != $alliance->getId()) {
+        if ($board === null || $board->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

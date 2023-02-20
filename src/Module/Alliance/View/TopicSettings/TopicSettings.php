@@ -11,6 +11,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class TopicSettings implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_TOPIC_SETTINGS';
 
     private TopicSettingsRequestInterface $topicSettingsRequest;
@@ -31,7 +34,7 @@ final class TopicSettings implements ViewControllerInterface
         $topicId = $this->topicSettingsRequest->getTopicId();
 
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
+        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

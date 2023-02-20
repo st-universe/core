@@ -14,8 +14,14 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class Topic implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_TOPIC';
 
+    /**
+     * @var int
+     */
     public const ALLIANCEBOARDLIMITER = 20;
 
     private TopicRequestInterface $topicRequest;
@@ -55,7 +61,8 @@ final class Topic implements ViewControllerInterface
         if ($topic === null) {
             throw new AccessViolation(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
         }
-        if ($topic->getAllianceId() != $allianceId) {
+
+        if ($topic->getAllianceId() !== $allianceId) {
             throw new AccessViolation(sprintf(_('userId %d tried to access topic of foreign ally, topicId %d'), $userId, $topicId));
         }
 
@@ -94,7 +101,7 @@ final class Topic implements ViewControllerInterface
         $game->setTemplateVar(
             'POSTINGS',
             $this->allianceBoardPostRepository->getByTopic(
-                (int) $topic->getId(),
+                $topic->getId(),
                 static::ALLIANCEBOARDLIMITER,
                 $this->topicRequest->getPageMark()
             )
@@ -112,32 +119,29 @@ final class Topic implements ViewControllerInterface
         if ($mark % static::ALLIANCEBOARDLIMITER != 0 || $mark < 0) {
             $mark = 0;
         }
+
         $maxcount = $topic->getPostCount();
         $maxpage = ceil($maxcount / static::ALLIANCEBOARDLIMITER);
         $curpage = floor($mark / static::ALLIANCEBOARDLIMITER);
-        $ret = array();
+        $ret = [];
         if ($curpage != 0) {
-            $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-            $ret[] = array("page" => "<", "mark" => ($mark - static::ALLIANCEBOARDLIMITER), "cssclass" => "pages");
+            $ret[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
+            $ret[] = ["page" => "<", "mark" => ($mark - static::ALLIANCEBOARDLIMITER), "cssclass" => "pages"];
         }
+
         for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
             if ($i > $maxpage || $i < 1) {
                 continue;
             }
-            $ret[] = array(
-                "page" => $i,
-                "mark" => ($i * static::ALLIANCEBOARDLIMITER - static::ALLIANCEBOARDLIMITER),
-                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
-            );
+
+            $ret[] = ["page" => $i, "mark" => ($i * static::ALLIANCEBOARDLIMITER - static::ALLIANCEBOARDLIMITER), "cssclass" => ($curpage + 1 === $i ? "pages selected" : "pages")];
         }
-        if ($curpage + 1 != $maxpage) {
-            $ret[] = array("page" => ">", "mark" => ($mark + static::ALLIANCEBOARDLIMITER), "cssclass" => "pages");
-            $ret[] = array(
-                "page" => ">>",
-                "mark" => $maxpage * static::ALLIANCEBOARDLIMITER - static::ALLIANCEBOARDLIMITER,
-                "cssclass" => "pages"
-            );
+
+        if ($curpage + 1 !== $maxpage) {
+            $ret[] = ["page" => ">", "mark" => ($mark + static::ALLIANCEBOARDLIMITER), "cssclass" => "pages"];
+            $ret[] = ["page" => ">>", "mark" => $maxpage * static::ALLIANCEBOARDLIMITER - static::ALLIANCEBOARDLIMITER, "cssclass" => "pages"];
         }
+
         return $ret;
     }
 }

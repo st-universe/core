@@ -15,6 +15,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class ChangeAvatar implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
     private AllianceActionManagerInterface $allianceActionManager;
@@ -43,7 +46,7 @@ final class ChangeAvatar implements ActionControllerInterface
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
-            new AccessViolation;
+            throw new AccessViolation;
         }
 
         $game->setView(Edit::VIEW_IDENTIFIER);
@@ -53,15 +56,18 @@ final class ChangeAvatar implements ActionControllerInterface
             $game->addInformation(_('Es können nur Bilder im PNG-Format hochgeladen werden'));
             return;
         }
+
         if ($file['size'] > 200000) {
             $game->addInformation(_('Die maximale Dateigröße liegt bei 200 Kilobyte'));
             return;
         }
+
         if ($file['size'] == 0) {
             $game->addInformation(_('Die Datei ist leer'));
             return;
         }
-        if ($alliance->getAvatar()) {
+
+        if ($alliance->hasAvatar()) {
             @unlink(
                 sprintf(
                     '%s/%s/%s.png',
@@ -71,11 +77,12 @@ final class ChangeAvatar implements ActionControllerInterface
                 )
             );
         }
+
         $imageName = md5($alliance->getId() . "_" . time());
 
         try {
             $img = imagecreatefrompng($file['tmp_name']);
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
             return;
         }
@@ -89,10 +96,12 @@ final class ChangeAvatar implements ActionControllerInterface
             $game->addInformation(_('Das Bild darf maximal 600 Pixel breit sein'));
             return;
         }
+
         if (imagesy($img) > 150) {
             $game->addInformation(_('Das Bild darf maximal 150 Pixel hoch sein'));
             return;
         }
+
         $newImage = imagecreatetruecolor(imagesx($img), imagesy($img));
         imagecopy($newImage, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
         imagepng(

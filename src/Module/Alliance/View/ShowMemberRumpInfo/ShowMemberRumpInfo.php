@@ -16,6 +16,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowMemberRumpInfo implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_MEMBER_RUMP_INFO';
 
     private AllianceActionManagerInterface $allianceActionManager;

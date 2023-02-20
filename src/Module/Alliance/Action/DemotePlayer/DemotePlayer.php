@@ -18,6 +18,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  */
 final class DemotePlayer implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_DEMOTE_USER';
 
     private DemotePlayerRequestInterface $promotePlayerRequest;

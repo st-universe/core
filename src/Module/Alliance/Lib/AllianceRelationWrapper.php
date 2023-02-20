@@ -66,6 +66,7 @@ final class AllianceRelationWrapper
             case AllianceEnum::ALLIANCE_RELATION_VASSAL:
                 return 'vassal_positive';
         }
+
         return '';
     }
 }

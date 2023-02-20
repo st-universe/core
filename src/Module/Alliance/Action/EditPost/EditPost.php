@@ -13,6 +13,9 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 final class EditPost implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_EDIT_POSTING';
 
     private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
@@ -31,6 +34,7 @@ final class EditPost implements ActionControllerInterface
         if ($post === null) {
             return;
         }
+
         if ($post->getBoard()->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }

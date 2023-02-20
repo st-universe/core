@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class CancelOffer implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
     private CancelOfferRequestInterface $cancelOfferRequest;
@@ -52,9 +55,10 @@ final class CancelOffer implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        if ($relation === null || $relation->getAllianceId() != $allianceId) {
+        if ($relation === null || $relation->getAllianceId() !== $allianceId) {
             return;
         }
+
         if (!$relation->isPending()) {
             return;
         }
@@ -66,9 +70,10 @@ final class CancelOffer implements ActionControllerInterface
         $opponent = $relation->getOpponent();
 
         $this->privateMessageSender->send(GameEnum::USER_NOONE, $opponent->getFounder()->getUserId(), $text);
-        if ($opponent->getDiplomatic()) {
+        if ($opponent->getDiplomatic() !== null) {
             $this->privateMessageSender->send(GameEnum::USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
         }
+
         $game->addInformation(_('Das Angebot wurde zurückgezogen'));
     }
 

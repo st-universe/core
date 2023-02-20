@@ -15,6 +15,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class Signup implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_SIGNUP_ALLIANCE';
 
     private SignupRequestInterface $signupRequest;
@@ -54,6 +57,7 @@ final class Signup implements ActionControllerInterface
         if (!$this->allianceUserApplicationChecker->mayApply($user, $alliance)) {
             throw new AccessViolation();
         }
+
         $obj = $this->allianceJobRepository->prototype();
         $obj->setUser($user);
         $obj->setType(AllianceEnum::ALLIANCE_JOBS_PENDING);
@@ -67,7 +71,7 @@ final class Signup implements ActionControllerInterface
         );
 
         $this->privateMessageSender->send($userId, $alliance->getFounder()->getUserId(), $text);
-        if ($alliance->getSuccessor()) {
+        if ($alliance->getSuccessor() !== null) {
             $this->privateMessageSender->send($userId, $alliance->getSuccessor()->getUserId(), $text);
         }
 

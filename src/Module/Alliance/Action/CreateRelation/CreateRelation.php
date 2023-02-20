@@ -15,6 +15,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class CreateRelation implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_NEW_RELATION';
 
     private CreateRelationRequestInterface $createRelationRequest;
@@ -76,9 +79,11 @@ final class CreateRelation implements ActionControllerInterface
         if (!array_key_exists($typeId, $types)) {
             return;
         }
-        if ($alliance->getId() == $opp->getId()) {
+
+        if ($alliance->getId() === $opp->getId()) {
             return;
         }
+
         $cnt = $this->allianceRelationRepository->getPendingCountByAlliances($allianceId, $opponentId);
         if ($cnt >= 2) {
             $game->addInformation(_('Es gibt bereits ein Angebot für diese Allianz'));
@@ -90,10 +95,12 @@ final class CreateRelation implements ActionControllerInterface
             if ($rel->getType() == $typeId) {
                 return;
             }
+
             if ($rel->getType() == AllianceEnum::ALLIANCE_RELATION_WAR && $typeId != AllianceEnum::ALLIANCE_RELATION_PEACE) {
                 return;
             }
         }
+
         $obj = $this->allianceRelationRepository->prototype();
         $obj->setAlliance($alliance);
         $obj->setOpponent($opp);
@@ -123,6 +130,7 @@ final class CreateRelation implements ActionControllerInterface
             );
             return;
         }
+
         $this->allianceRelationRepository->save($obj);
 
         $text = sprintf(

@@ -13,6 +13,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Management implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_MANAGEMENT';
 
     private UserRepositoryInterface $userRepository;

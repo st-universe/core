@@ -15,6 +15,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeleteAlliance implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_DELETE_ALLIANCE';
 
     private AllianceActionManagerInterface $allianceActionManager;
@@ -37,7 +40,7 @@ final class DeleteAlliance implements ActionControllerInterface
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
-        $allianceId = (int) $alliance->getId();
+        $allianceId = $alliance->getId();
 
         $game->setView(AllianceList::VIEW_IDENTIFIER);
 

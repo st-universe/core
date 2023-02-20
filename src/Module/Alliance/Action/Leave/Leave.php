@@ -14,6 +14,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Leave implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_LEAVE_ALLIANCE';
 
     private AllianceJobRepositoryInterface $allianceJobRepository;
@@ -39,7 +42,7 @@ final class Leave implements ActionControllerInterface
         $userId = $user->getId();
 
         $foundJob = $this->allianceJobRepository->getSingleResultByAllianceAndType(
-            (int) $alliance->getId(),
+            $alliance->getId(),
             AllianceEnum::ALLIANCE_JOBS_FOUNDER
         );
 
@@ -59,7 +62,7 @@ final class Leave implements ActionControllerInterface
         );
 
         $this->privateMessageSender->send($userId, $foundJob->getUserId(), $text);
-        if ($alliance->getSuccessor()) {
+        if ($alliance->getSuccessor() !== null) {
             $this->privateMessageSender->send($userId, $alliance->getSuccessor()->getUserId(), $text);
         }
 

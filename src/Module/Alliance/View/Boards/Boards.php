@@ -12,6 +12,9 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class Boards implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_BOARDS';
 
     private AllianceBoardRepositoryInterface $allianceBoardRepository;
@@ -34,7 +37,7 @@ final class Boards implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $allianceId = (int) $alliance->getId();
+        $allianceId = $alliance->getId();
 
         $game->setPageTitle(_('Allianzforum'));
         $game->appendNavigationPart(

@@ -12,6 +12,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class NewPost implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_NEW_POST';
 
     private NewPostRequestInterface $newPostRequest;
@@ -35,7 +38,7 @@ final class NewPost implements ViewControllerInterface
 
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAllianceId() != $allianceId) {
+        if ($topic === null || $topic->getAllianceId() !== $allianceId) {
             throw new AccessViolation();
         }
 

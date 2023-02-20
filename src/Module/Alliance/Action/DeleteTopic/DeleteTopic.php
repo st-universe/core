@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 final class DeleteTopic implements ActionControllerInterface
 {
 
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_DELETE_TOPIC';
 
     private DeleteTopicRequestInterface $deleteTopicRequest;
@@ -34,7 +37,7 @@ final class DeleteTopic implements ActionControllerInterface
 
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($this->deleteTopicRequest->getTopicId());
-        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
+        if ($topic === null || $topic->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

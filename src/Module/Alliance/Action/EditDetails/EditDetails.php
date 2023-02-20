@@ -19,6 +19,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class EditDetails implements ActionControllerInterface
 {
+    /**
+     * @var string
+     */
     public const ACTION_IDENTIFIER = 'B_UPDATE_ALLIANCE';
 
     private EditDetailsRequestInterface $editDetailsRequest;
@@ -53,7 +56,7 @@ final class EditDetails implements ActionControllerInterface
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
-        $allianceId = (int) $alliance->getId();
+        $allianceId = $alliance->getId();
 
         if ($alliance === null) {
             throw new AccessViolation();
@@ -71,7 +74,7 @@ final class EditDetails implements ActionControllerInterface
 
         $name = CleanTextUtils::clearEmojis($this->editDetailsRequest->getName());
         $nameWithoutUnicode = CleanTextUtils::clearUnicode($name);
-        if ($name != $nameWithoutUnicode) {
+        if ($name !== $nameWithoutUnicode) {
             $game->addInformation(_('Der Name enthält ungültigen Unicode'));
             return;
         }
@@ -91,6 +94,7 @@ final class EditDetails implements ActionControllerInterface
                 $alliance->setFaction(null);
             }
         }
+
         if ($acceptApplications === 1) {
             $alliance->setAcceptApplications(true);
         } else {
@@ -114,11 +118,10 @@ final class EditDetails implements ActionControllerInterface
             $game->addInformation(_('Der Name muss aus mindestens 5 Zeichen bestehen'));
             return;
         }
-        if (mb_strlen($homepage) > 0) {
-            if (strpos($homepage, 'http') !== 0) {
-                $game->addInformation(_('Diese Homepage-Adresse ist nicht gültig'));
-                return;
-            }
+
+        if (mb_strlen($homepage) > 0 && strpos($homepage, 'http') !== 0) {
+            $game->addInformation(_('Diese Homepage-Adresse ist nicht gültig'));
+            return;
         }
 
         if (strlen($rgbCode) > 0) {

@@ -17,6 +17,9 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class AllianceDetails implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_ALLIANCE';
 
     private AllianceDetailsRequestInterface $allianceDetailsRequest;
@@ -114,6 +117,7 @@ final class AllianceDetails implements ViewControllerInterface
                 'Allianz'
             );
         }
+
         $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
         $game->appendNavigationPart(
             sprintf('alliance.php?SHOW_ALLIANCE=1&id=%d', $alliance->getId()),

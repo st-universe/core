@@ -14,6 +14,9 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class Board implements ViewControllerInterface
 {
+    /**
+     * @var string
+     */
     public const VIEW_IDENTIFIER = 'SHOW_BOARD';
 
     private BoardRequestInterface $boardRequest;
@@ -49,7 +52,7 @@ final class Board implements ViewControllerInterface
         /** @var AllianceBoardInterface $board */
         $board = $this->allianceBoardRepository->find($this->boardRequest->getBoardId());
 
-        if ($board === null || $board->getAllianceId() != $allianceId) {
+        if ($board === null || $board->getAllianceId() !== $allianceId) {
             throw new AccessViolation();
         }
 
