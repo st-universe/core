@@ -53,7 +53,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
         $application = $this->knPostToPlotApplicationRepository->getByPostAndPlot($postId, $plotId);
 
         if ($application === null || $application->getTime() < time() - self::MAXIMUM_APPLICATION_TIME) {
-            $game->addInformation(_('Diese Aktion ist nicht mehr möglich'));
+            $game->addInformation('Diese Aktion ist nicht mehr möglich');
             return;
         }
 
@@ -69,7 +69,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
         $post = $this->knPostRepository->find($postId);
         if ($post->getPlotId() !== null) {
             $this->knPostToPlotApplicationRepository->delete($application);
-            $game->addInformation(_('Dieser Beitrag ist bereits einem Plot zugewiesen'));
+            $game->addInformation('Dieser Beitrag ist bereits einem Plot zugewiesen');
             return;
         }
 
@@ -79,7 +79,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
 
         $this->notifyPlotMembers($post, $plot);
 
-        $game->addInformation(_('Der Beitrag wurde hinzugefügt'));
+        $game->addInformation('Der Beitrag wurde hinzugefügt');
     }
 
     private function notifyPlotMembers(KnPostInterface $post, RpgPlotInterface $plot): void
@@ -89,14 +89,14 @@ final class AddKnPostToPlot implements ActionControllerInterface
                 $user = $member->getUser();
 
                 $text = sprintf(
-                    _('Der Beitrag mit ID und Titel "%s" wurde nachträglich zum Plot "%s" hinzugefügt.'),
+                    'Der Beitrag mit ID %d und Titel "%s" wurde nachträglich zum Plot "%s" hinzugefügt.',
                     $post->getId(),
                     $post->getTitle(),
                     $plot->getTitle()
                 );
 
                 $href = sprintf(
-                    _('comm.php?%s=1&id=%d'),
+                    'comm.php?%s=1&id=%d',
                     ShowSingleKn::VIEW_IDENTIFIER,
                     $post->getId()
                 );
