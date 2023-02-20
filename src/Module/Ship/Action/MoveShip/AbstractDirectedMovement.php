@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\MoveShipLeft;
+namespace Stu\Module\Ship\Action\MoveShip;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -10,11 +10,10 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 
-final class MoveShipLeft implements ActionControllerInterface
+abstract class AbstractDirectedMovement implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MOVE_LEFT';
-
     private ShipLoaderInterface $shipLoader;
 
     private ShipMoverInterface $shipMover;
@@ -38,13 +37,17 @@ final class MoveShipLeft implements ActionControllerInterface
         $ship = $wrapper->get();
 
         $fields = request::postInt('navapp');
-        if ($fields <= 0 || $fields > 9) {
+        if (
+            $fields <= 0
+            || $fields > 9
+        ) {
             $fields = 1;
         }
+
         $this->shipMover->checkAndMove(
             $wrapper,
-            $ship->getPosX() - $fields,
-            $ship->getPosY()
+            $this->getPosX($ship, $fields),
+            $this->getPosY($ship, $fields)
         );
         $game->addInformationMerge($this->shipMover->getInformations());
 
@@ -54,6 +57,16 @@ final class MoveShipLeft implements ActionControllerInterface
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
+
+    /**
+     * @param int<1, 9> $fields
+     */
+    abstract protected function getPosX(ShipInterface $ship, int $fields): int;
+
+    /**
+     * @param int<1, 9> $fields
+     */
+    abstract protected function getPosY(ShipInterface $ship, int $fields): int;
 
     public function performSessionCheck(): bool
     {
