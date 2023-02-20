@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "664e0c045e4862218a636337fedd0ba3",
+    "content-hash": "3ac423b454b25ea7f19973955ee76b4b",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -4019,12 +4019,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/planet-generator.git",
-                "reference": "95f400217a3fb2e0c65a6ff3d856a18f2b153049"
+                "reference": "e37b56f64536ccfc423b679743192eac1061571d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/95f400217a3fb2e0c65a6ff3d856a18f2b153049",
-                "reference": "95f400217a3fb2e0c65a6ff3d856a18f2b153049",
+                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/e37b56f64536ccfc423b679743192eac1061571d",
+                "reference": "e37b56f64536ccfc423b679743192eac1061571d",
                 "shasum": ""
             },
             "require": {
@@ -4060,7 +4060,7 @@
                 "issues": "https://github.com/st-universe/planet-generator/issues",
                 "source": "https://github.com/st-universe/planet-generator/tree/master"
             },
-            "time": "2023-02-15T19:51:15+00:00"
+            "time": "2023-02-19T15:51:03+00:00"
         },
         {
             "name": "st-universe/starsystem-generator",
