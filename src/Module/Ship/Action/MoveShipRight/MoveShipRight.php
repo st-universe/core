@@ -2,34 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\MoveShip;
+namespace Stu\Module\Ship\Action\MoveShipRight;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipMover2Interface;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
-final class MoveShip implements ActionControllerInterface
+final class MoveShipRight implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_MOVE';
+    public const ACTION_IDENTIFIER = 'B_MOVE_RIGHT';
 
     private ShipLoaderInterface $shipLoader;
 
     private ShipMoverInterface $shipMover;
 
-    private ShipMover2Interface $shipMover2;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipMoverInterface $shipMover,
-        ShipMover2Interface $shipMover2
+        ShipMoverInterface $shipMover
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipMover = $shipMover;
-        $this->shipMover2 = $shipMover2;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,21 +37,16 @@ final class MoveShip implements ActionControllerInterface
         );
         $ship = $wrapper->get();
 
-        if ($ship->getId() === 7396) {
-            $this->shipMover2->checkAndMove(
-                $ship,
-                request::getIntFatal('posx'),
-                request::getIntFatal('posy')
-            );
-            $game->addInformationMerge($this->shipMover2->getInformations());
-        } else {
-            $this->shipMover->checkAndMove(
-                $wrapper,
-                request::getIntFatal('posx'),
-                request::getIntFatal('posy')
-            );
-            $game->addInformationMerge($this->shipMover->getInformations());
+        $fields = request::postInt('navapp');
+        if ($fields <= 0 || $fields > 9) {
+            $fields = 1;
         }
+        $this->shipMover->checkAndMove(
+            $wrapper,
+            $ship->getPosX() + $fields,
+            $ship->getPosY()
+        );
+        $game->addInformationMerge($this->shipMover->getInformations());
 
         if ($ship->isDestroyed()) {
             return;

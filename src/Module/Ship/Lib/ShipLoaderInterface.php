@@ -8,11 +8,7 @@ interface ShipLoaderInterface
 {
     public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface;
 
-    public function getWrapperByIdAndUser(
-        int $shipId,
-        int $userId,
-        bool $allowUplink = false
-    ): ShipWrapperInterface;
+    public function getWrapperByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipWrapperInterface;
 
     /**
      * @return ShipWrapperInterface[]

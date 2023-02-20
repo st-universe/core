@@ -5575,6 +5575,466 @@ parameters:
 			path: src/Module/Ship/Lib/ShipMover.php
 
 		-
+			message: "#^Call to an undefined method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getId\\(\\)\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getTractoredShip\\(\\)\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:isDestroyed\\(\\)\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:isTractoring\\(\\)\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 5
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getFleetId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getMaxHull\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 4
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getShipCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method isDestroyed\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method isFleetFixed\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 4
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Cannot call method updateLocation\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addFlightSignatures\\(\\) has parameter \\$currentField with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addFlightSignatures\\(\\) has parameter \\$flightMethod with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addFlightSignatures\\(\\) has parameter \\$nextField with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addFlightSignatures\\(\\) has parameter \\$ship with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addInformation\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addInformation\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addInformationMerge\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addInformationMerge\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addLostShip\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:applyFieldDamage\\(\\) has parameter \\$cause with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:applyFieldDamage\\(\\) has parameter \\$damage with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:applyFieldDamage\\(\\) has parameter \\$isAbsolutDmg with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:applyFieldDamage\\(\\) has parameter \\$leadShip with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:areShipsLeft\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:checkAndMove\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:createSignature\\(\\) has parameter \\$field with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:createSignature\\(\\) has parameter \\$ship with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:deactivateTractorBeam\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:determineFlightMethod\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:fly1\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:fly2\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:fly3\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:fly4\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getDestX\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getDestY\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getFieldData\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getFieldData\\(\\) has parameter \\$x with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getFieldData\\(\\) has parameter \\$y with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getInformations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getNextField\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getNextField\\(\\) has parameter \\$flightMethod with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:initTractoredShips\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:isFleetMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:leaveFleet\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:moveOneField\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:moveOneField\\(\\) has parameter \\$currentField with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:moveOneField\\(\\) has parameter \\$flightMethod with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:moveOneField\\(\\) has parameter \\$nextField with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:reasonsNotAllShipsCanFly\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:reasonsNotAllShipsCanFly\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:setDestX\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:setDestX\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:setDestY\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:setDestY\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:setDestination\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:setFleetMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:setFleetMode\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:updateDestination\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:updateDestination\\(\\) has parameter \\$posx with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:updateDestination\\(\\) has parameter \\$posy with no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Parameter \\#1 \\$posx of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:updateDestination\\(\\) is passed by reference, so it expects variables only\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:addLostShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Parameter \\#2 \\$posy of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:updateDestination\\(\\) is passed by reference, so it expects variables only\\.$#"
+			count: 2
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Parameter \\#2 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:moveOneField\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Parameter \\#2 \\$ships of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:getReadyForFlight\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>, array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:\\$fieldData has no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:\\$flightSignatures has no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:\\$hasTravelled has no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:\\$informations type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:\\$leaderMovedToNextField has no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:\\$lostShips has no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:\\$shipRemover is never read, only written\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2\\:\\:\\$tractoredShips has no type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Right side of \\|\\| is always false\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2Interface\\:\\:checkAndMove\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2Interface.php
+
+		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover2Interface\\:\\:getInformations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/ShipMover2Interface.php
+
+		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMoverInterface\\:\\:checkAndMove\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipMoverInterface.php

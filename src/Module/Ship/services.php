@@ -92,10 +92,10 @@ use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
 use Stu\Module\Ship\Action\LeaveWormhole\LeaveWormhole;
 use Stu\Module\Ship\Action\LoadReactor\LoadReactor;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
-use Stu\Module\Ship\Action\MoveShip\MoveShipDown;
-use Stu\Module\Ship\Action\MoveShip\MoveShipLeft;
-use Stu\Module\Ship\Action\MoveShip\MoveShipRight;
-use Stu\Module\Ship\Action\MoveShip\MoveShipUp;
+use Stu\Module\Ship\Action\MoveShipDown\MoveShipDown;
+use Stu\Module\Ship\Action\MoveShipLeft\MoveShipLeft;
+use Stu\Module\Ship\Action\MoveShipRight\MoveShipRight;
+use Stu\Module\Ship\Action\MoveShipUp\MoveShipUp;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleet;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequest;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequestInterface;
@@ -176,6 +176,8 @@ use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipMover;
+use Stu\Module\Ship\Lib\ShipMover2;
+use Stu\Module\Ship\Lib\ShipMover2Interface;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -230,6 +232,7 @@ return [
             'shipMovementComponentsFactory',
             autowire(ShipMovementComponentsFactory::class)
         ),
+    ShipMover2Interface::class => autowire(ShipMover2::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     InteractionCheckerInterface::class => autowire(InteractionChecker::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
