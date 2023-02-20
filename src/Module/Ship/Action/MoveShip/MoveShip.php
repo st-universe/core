@@ -21,7 +21,7 @@ final class MoveShip implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipMoverInterface $shipMover,
+        ShipMoverInterface $shipMover
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipMover = $shipMover;
