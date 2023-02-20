@@ -46,7 +46,7 @@ final class DeclineOffer implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $relation = $this->allianceRelationRepository->find(request::getStringFatal('al'));
+        $relation = $this->allianceRelationRepository->find(request::getIntFatal('al'));
 
         if ($relation === null || $relation->getOpponentId() !== $allianceId) {
             return;

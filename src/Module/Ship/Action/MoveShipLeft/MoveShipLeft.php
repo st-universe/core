@@ -37,8 +37,8 @@ final class MoveShipLeft implements ActionControllerInterface
         );
         $ship = $wrapper->get();
 
-        $fields = request::postString('navapp');
-        if ($fields <= 0 || $fields > 9 || strlen($fields) > 1) {
+        $fields = request::postInt('navapp');
+        if ($fields <= 0 || $fields > 9) {
             $fields = 1;
         }
         $this->shipMover->checkAndMove(

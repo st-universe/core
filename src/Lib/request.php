@@ -4,14 +4,19 @@ use Stu\Exception\InvalidParamException;
 
 class request
 {
-
-    public static function getvars()
+    /**
+     * @return array<int|string, mixed>
+     */
+    public static function getvars(): array
     {
         global $_GET;
         return $_GET;
     }
 
-    public static function postvars()
+    /**
+     * @return array<int|string, mixed>
+     */
+    public static function postvars(): array
     {
         global $_POST;
         return $_POST;
@@ -27,7 +32,12 @@ class request
         return self::getvars()[$key] ?? self::postvars()[$key] ?? false;
     }
 
-    public static function getVarByMethod($method, $var, $fatal = false)
+    /**
+     * @param array<int|string, mixed> $method
+     *
+     * @return mixed
+     */
+    public static function getVarByMethod(array $method, string $var, bool $fatal = false)
     {
         if (!@array_key_exists($var, $method)) {
             if ($fatal === true) {
@@ -38,7 +48,7 @@ class request
         return $method[$var];
     }
 
-    public static function getInt($var, $std = 0): int
+    public static function getInt(string $var, int $std = 0): int
     {
         $int = self::getVarByMethod(self::getvars(), $var);
         if (strlen($int) == 0) {
@@ -47,35 +57,35 @@ class request
         return self::returnInt($int);
     }
 
-    public static function getIntFatal($var): int
+    public static function getIntFatal(string $var): int
     {
         $int = self::getVarByMethod(self::getvars(), $var, true);
         return self::returnInt($int);
     }
 
-    public static function postInt($var): int
+    public static function postInt(string $var): int
     {
         $int = self::getVarByMethod(self::postvars(), $var);
         return self::returnInt($int);
     }
 
-    public static function postIntFatal($var): int
+    public static function postIntFatal(string $var): int
     {
         $int = self::getVarByMethod(self::postvars(), $var, true);
         return self::returnInt($int);
     }
 
-    public static function getString($var)
+    public static function getString(string $var): string
     {
         return self::getVarByMethod(self::getvars(), $var);
     }
 
-    public static function postString($var)
+    public static function postString(string $var): string
     {
         return self::getVarByMethod(self::postvars(), $var);
     }
 
-    public static function indString($var)
+    public static function indString(string $var): string
     {
         $value = self::getVarByMethod(self::postvars(), $var);
         if ($value) {
@@ -84,7 +94,7 @@ class request
         return self::getVarByMethod(self::getvars(), $var);
     }
 
-    public static function indInt($var): int
+    public static function indInt(string $var): int
     {
         $value = self::getVarByMethod(self::postvars(), $var);
         if ($value) {
@@ -93,35 +103,49 @@ class request
         return self::returnInt(self::getVarByMethod(self::getvars(), $var));
     }
 
-    public static function postStringFatal($var)
+    public static function postStringFatal(string $var): string
     {
         return self::getVarByMethod(self::postvars(), $var, true);
     }
 
-    public static function getStringFatal($var)
+    public static function getStringFatal(string $var): string
     {
         return self::getVarByMethod(self::getvars(), $var, true);
     }
 
-    public static function postArrayFatal($var)
+    /**
+     * @return array<int|string, mixed>
+     */
+    public static function postArrayFatal(string $var): array
     {
         return self::returnArray(self::getVarByMethod(self::postvars(), $var, true));
     }
 
-    public static function postArray($var)
+    /**
+     * @return array<int|string, mixed>
+     */
+    public static function postArray(string$var): array
     {
         return self::returnArray(self::getVarByMethod(self::postvars(), $var));
     }
 
     public static function returnInt($result): int
     {
-        if (!$result || $result < 0) {
+        if (
+            !$result
+            || $result < 0
+        ) {
             return 0;
         }
-        return intval($result);
+        return (int) $result;
     }
 
-    public static function returnArray($result)
+    /**
+     * @param mixed $result
+     *
+     * @return array<int|string, mixed>
+     */
+    public static function returnArray($result): array
     {
         if (!is_array($result)) {
             return array();
@@ -129,14 +153,17 @@ class request
         return $result;
     }
 
-    public static function setVar($var, $value)
+    /**
+     * @param mixed $value
+     */
+    public static function setVar(string $var, $value): void
     {
         global $_GET, $_POST;
         $_GET[$var] = $value;
         $_POST[$var] = $value;
     }
 
-    public static function isAjaxRequest()
+    public static function isAjaxRequest(): bool
     {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
             && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';

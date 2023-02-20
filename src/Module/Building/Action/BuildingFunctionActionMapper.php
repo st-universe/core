@@ -49,6 +49,7 @@ final class BuildingFunctionActionMapper implements BuildingFunctionActionMapper
         if ($handler === null) {
             return null;
         }
+
         return $this->container->get($handler);
     }
 }
