@@ -20,6 +20,4 @@ interface GameRequestRepositoryInterface extends ObjectRepository
     public function save(GameRequestInterface $gameRequest): void;
 
     public function delete(GameRequestInterface $gameRequest): void;
-
-    public function getOpenAdventDoorTriesForUser(int $userId): int;
 }

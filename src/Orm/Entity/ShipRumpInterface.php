@@ -175,8 +175,6 @@ interface ShipRumpInterface
 
     public function getFractionId(): int;
 
-    public function isAdventDoor(): ?int;
-
     /**
      * @return Collection<int, ShipRumpSpecialInterface>
      */

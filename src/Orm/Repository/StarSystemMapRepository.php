@@ -189,25 +189,4 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
 
         $em->persist($starSystemMap);
     }
-
-    public function getRandomPassableUnoccupiedWithoutDamage(): int
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id', 'integer');
-
-        return $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT sm.id
-                FROM stu_sys_map sm
-                JOIN stu_map_ftypes mft
-                ON sm.field_id = mft.id
-                WHERE NOT EXISTS (SELECT s.id FROM stu_ships s WHERE s.starsystem_map_id = sm.id)
-                AND mft.x_damage = 0
-                AND mft.passable = true
-                ORDER BY RANDOM()
-                LIMIT 1',
-                $rsm
-            )
-            ->getSingleScalarResult();
-    }
 }

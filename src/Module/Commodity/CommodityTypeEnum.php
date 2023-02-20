@@ -18,7 +18,6 @@ final class CommodityTypeEnum
     public const COMMODITY_DILITHIUM = 8;
     public const COMMODITY_DURANIUM = 21;
     public const COMMODITY_LATINUM = 50;
-    public const COMMODITY_ADVENT_POINT = 60;
     public const COMMODITY_SPARE_PART = 10001;
     public const COMMODITY_SYSTEM_COMPONENT = 10002;
 
@@ -28,6 +27,11 @@ final class CommodityTypeEnum
     //base value for e.g. shuttles
     public const BASE_ID_WORKBEE = 20060;
     public const BASE_IDS_SHUTTLE =  [self::BASE_ID_WORKBEE];
+
+    /**
+     * @deprecated not in use, but kept for documentation reasons
+     */
+    public const COMMODITY_ADVENT_POINT = 60;
 
     public static function getDescription(int $commodityId): string
     {

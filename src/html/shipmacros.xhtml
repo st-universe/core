@@ -400,15 +400,10 @@
     <img src="assets/ships/wrack/${ship/getFormerRumpId}.png" tal:attributes="title ship/getRumpName" />
   </tal:block>
   <tal:block tal:condition="not:ship/isTrumfield">
-    <tal:block tal:condition="not:ship/getRump/isAdventDoor">
-      <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
-        tal:attributes="title ship/getRumpName" />
-      <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-        tal:attributes="title ship/getRumpName" />
-    </tal:block>
-    <tal:block tal:condition="ship/getRump/isAdventDoor">
-      <img src="assets/ships/adv/${ship/getRump/isAdventDoor}.png" tal:attributes="title ship/getRumpName" />
-    </tal:block>
+    <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
+      tal:attributes="title ship/getRumpName" />
+    <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+      tal:attributes="title ship/getRumpName" />
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shipimagenameastitle">
@@ -1315,18 +1310,6 @@
                   Crewman an Bord des Handelsposten</span><br /><br />
                 <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
                 <input type="submit" style="cursor: pointer;" name="B_SALVAGE_CREW" value="Crew bergen" />
-              </td>
-            </tr>
-          </table>
-          <table class="tcal" tal:condition="exists:ADVENT_DAY">
-            <tr>
-              <th>Adventstürchen</th>
-            </tr>
-            <tr>
-              <td style="width: 450px;">
-                <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
-                <input type="hidden" name="advent" tal:attributes="value ADVENT_DAY" />
-                <input type="submit" style="cursor: pointer;" name="B_ADVENT_DOOR" value="Türchen öffnen" />
               </td>
             </tr>
           </table>

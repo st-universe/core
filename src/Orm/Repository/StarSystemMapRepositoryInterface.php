@@ -47,6 +47,4 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     public function getRumpCategoryInfo(int $cx, int $cy): array;
 
     public function save(StarSystemMapInterface $starSystemMap): void;
-
-    public function getRandomPassableUnoccupiedWithoutDamage(): int;
 }

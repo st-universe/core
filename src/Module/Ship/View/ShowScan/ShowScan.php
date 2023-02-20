@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowScan;
 
 use request;
-use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -94,12 +93,6 @@ final class ShowScan implements ViewControllerInterface
         $game->setTemplateVar('SHIELD_PERCENTAGE', $this->calculateShieldPercentage($target));
         $game->setTemplateVar('REACTOR_PERCENTAGE', $this->calculateReactorPercentage($target));
         $game->setTemplateVar('SHIP', $ship);
-        if (
-            $target->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR
-            && $ship->getMaxStorage() > $ship->getStorageSum()
-        ) {
-            $game->setTemplateVar('ADVENT_DAY', date("d.m.y"));
-        }
 
         $tradePostCrewCount = null;
         $targetTradePost = $target->getTradePost();

@@ -795,11 +795,6 @@ class ShipRump implements ShipRumpInterface
         return $this->getId() % 10;
     }
 
-    public function isAdventDoor(): ?int
-    {
-        return $this->getRoleId() === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR ? (int)date("j") : null;
-    }
-
     /**
      * @return Collection<int, ShipRumpSpecialInterface>
      */

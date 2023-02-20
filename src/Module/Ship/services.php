@@ -96,7 +96,6 @@ use Stu\Module\Ship\Action\MoveShipDown\MoveShipDown;
 use Stu\Module\Ship\Action\MoveShipLeft\MoveShipLeft;
 use Stu\Module\Ship\Action\MoveShipRight\MoveShipRight;
 use Stu\Module\Ship\Action\MoveShipUp\MoveShipUp;
-use Stu\Module\Ship\Action\OpenAdventDoor\OpenAdventDoor;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleet;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequest;
 use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequestInterface;
@@ -372,7 +371,6 @@ return [
         Transwarp::ACTION_IDENTIFIER => autowire(Transwarp::class),
         ToggleFleetVisibility::ACTION_IDENTIFIER => autowire(ToggleFleetVisibility::class),
         SalvageCrew::ACTION_IDENTIFIER => autowire(SalvageCrew::class),
-        OpenAdventDoor::ACTION_IDENTIFIER => autowire(OpenAdventDoor::class),
         TrackShip::ACTION_IDENTIFIER => autowire(TrackShip::class),
         CreateTholianWeb::ACTION_IDENTIFIER => autowire(CreateTholianWeb::class),
         CancelTholianWeb::ACTION_IDENTIFIER => autowire(CancelTholianWeb::class),

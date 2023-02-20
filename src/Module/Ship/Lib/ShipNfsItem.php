@@ -139,11 +139,6 @@ final class ShipNfsItem
         return $this;
     }
 
-    public function isAdventDoor(): ?int
-    {
-        return $this->values['rumproleid'] === ShipRumpEnum::SHIP_ROLE_ADVENT_DOOR ? (int)date("j") : null;
-    }
-
     public function hasLogBook(): bool
     {
         return $this->values['haslogbook'];

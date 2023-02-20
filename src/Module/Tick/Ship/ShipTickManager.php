@@ -12,7 +12,6 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Specials\AdventCycleInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -66,8 +65,6 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private RepairUtilInterface $repairUtil;
 
-    private AdventCycleInterface $adventCycle;
-
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     private EntryCreatorInterface $entryCreator;
@@ -97,7 +94,6 @@ final class ShipTickManager implements ShipTickManagerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         RepairUtilInterface $repairUtil,
-        AdventCycleInterface $adventCycle,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         EntryCreatorInterface $entryCreator,
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -121,7 +117,6 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->repairUtil = $repairUtil;
-        $this->adventCycle = $adventCycle;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->entryCreator = $entryCreator;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -198,9 +193,6 @@ final class ShipTickManager implements ShipTickManagerInterface
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\tloweringTrumfieldConstruction, seconds: %F", $endTime - $startTime));
         }
-
-        //do optional advent stuff
-        $this->adventCycle->cycle();
     }
 
     private function handleEscapePods(): void
