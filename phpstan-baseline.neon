@@ -2595,6 +2595,11 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
+			message: "#^Strict comparison using \\=\\=\\= between 1 and 1 will always evaluate to true\\.$#"
+			count: 1
+			path: src/Module/Control/GameController.php
+
+		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -6455,11 +6460,6 @@ parameters:
 			path: src/Module/Starmap/Lib/MapSectionHelper.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 2
-			path: src/Module/Starmap/Lib/MapSectionHelper.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Starmap/View/RefreshSection/RefreshSection.php
@@ -6875,16 +6875,6 @@ parameters:
 			path: src/Module/Station/View/ShowSystemSensorScan/ShowSystemSensorScan.php
 
 		-
-			message: "#^Binary operation \"\\-\\=\" between string and \\(0\\|float\\) results in an error\\.$#"
-			count: 1
-			path: src/Module/Tal/TalHelper.php
-
-		-
-			message: "#^Binary operation \"/\" between string and 3600 results in an error\\.$#"
-			count: 1
-			path: src/Module/Tal/TalHelper.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Tal\\\\TalPage\\:\\:setVar\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Module/Tal/TalPage.php
@@ -6901,11 +6891,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Tick/Colony/ColonyTick.php
-
-		-
-			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: src/Module/Tick/Colony/ColonyTick.php
 

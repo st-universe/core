@@ -130,7 +130,7 @@ final class ShipLoader implements ShipLoaderInterface
         $shipId = $ship->getId();
         $result = [];
 
-        if ($targetId === null && $ship !== null) {
+        if ($targetId === null) {
             if ($this->game->isSemaphoreAlreadyAcquired($ship->getUser()->getId())) {
                 $result[$shipId] = $this->shipWrapperFactory->wrapShip($ship);
 

@@ -65,7 +65,6 @@ final class AddKnPost implements ActionControllerInterface
         $post = $this->knPostRepository->prototype();
 
         if ($plotId > 0) {
-            /** @var RpgPlotInterface $plot */
             $plot = $this->rpgPlotRepository->find($plotId);
             if ($plot !== null && $this->rpgPlotMemberRepository->getByPlotAndUser($plotId, $userId) !== null) {
                 $post->setRpgPlot($plot);

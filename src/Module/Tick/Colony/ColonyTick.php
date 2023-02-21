@@ -274,7 +274,6 @@ final class ColonyTick implements ColonyTickInterface
             $startTime = microtime(true);
         }
 
-        $emigrated = 0;
         $sum = $colony->getStorageSum();
 
         if ($this->loggerUtil->doLog()) {
@@ -408,12 +407,10 @@ final class ColonyTick implements ColonyTickInterface
                 $colony->setWorkless(0);
             }
         }
-        if ($emigrated == 0) {
-            $this->proceedImmigration(
-                $colony,
-                $production
-            );
-        }
+        $this->proceedImmigration(
+            $colony,
+            $production
+        );
 
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);

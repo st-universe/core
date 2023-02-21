@@ -67,16 +67,7 @@ final class CreateRelation implements ActionControllerInterface
             return;
         }
 
-        $types = [
-            AllianceEnum::ALLIANCE_RELATION_WAR => 1,
-            AllianceEnum::ALLIANCE_RELATION_PEACE => 1,
-            AllianceEnum::ALLIANCE_RELATION_FRIENDS => 1,
-            AllianceEnum::ALLIANCE_RELATION_ALLIED => 1,
-            AllianceEnum::ALLIANCE_RELATION_TRADE => 1,
-            AllianceEnum::ALLIANCE_RELATION_VASSAL => 1
-        ];
-
-        if (!array_key_exists($typeId, $types)) {
+        if (!in_array($typeId, AllianceEnum::ALLOWED_RELATION_TYPES)) {
             return;
         }
 
@@ -92,11 +83,14 @@ final class CreateRelation implements ActionControllerInterface
 
         $rel = $this->allianceRelationRepository->getByAlliancePair($allianceId, $opponentId);
         if ($rel !== null) {
-            if ($rel->getType() == $typeId) {
+            if ($rel->getType() === $typeId) {
                 return;
             }
 
-            if ($rel->getType() == AllianceEnum::ALLIANCE_RELATION_WAR && $typeId != AllianceEnum::ALLIANCE_RELATION_PEACE) {
+            if (
+                $rel->getType() === AllianceEnum::ALLIANCE_RELATION_WAR
+                && $typeId !== AllianceEnum::ALLIANCE_RELATION_PEACE
+            ) {
                 return;
             }
         }

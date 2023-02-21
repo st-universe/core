@@ -88,6 +88,7 @@ final class TalHelper
 
     public static function formatSeconds(string $time): string
     {
+        $time = (int) $time;
         $h = floor($time / 3600);
         $time -= $h * 3600;
         $m = floor($time / 60);

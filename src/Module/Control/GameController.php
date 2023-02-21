@@ -677,6 +677,9 @@ final class GameController implements GameControllerInterface
 
     private function releaseAndRemoveSemaphores(): void
     {
+        /**
+         * @todo make semaphore auto-release configurable by config or remove the method, as the current mode will always terminate here
+         */
         if (SemaphoreConstants::AUTO_RELEASE_SEMAPHORES === 1) {
             return; //nothing to do
         }

@@ -59,6 +59,16 @@ final class AllianceEnum
      */
     public const ALLIANCE_RELATION_VASSAL = 6;
 
+    /** @var list<int> */
+    public const ALLOWED_RELATION_TYPES = [
+        AllianceEnum::ALLIANCE_RELATION_WAR,
+        AllianceEnum::ALLIANCE_RELATION_PEACE,
+        AllianceEnum::ALLIANCE_RELATION_FRIENDS,
+        AllianceEnum::ALLIANCE_RELATION_ALLIED,
+        AllianceEnum::ALLIANCE_RELATION_TRADE,
+        AllianceEnum::ALLIANCE_RELATION_VASSAL
+    ];
+
     public static function relationTypeToColor(
         int $relationType
     ): string {

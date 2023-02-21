@@ -35,7 +35,7 @@ final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
             }
         }
         $request = request::postArray('mod_' . $this->module->getType());
-        return is_array($request) && array_key_exists($this->module->getId(), $request);
+        return array_key_exists($this->module->getId(), $request);
     }
 
     public function getBuildplan(): ?ShipBuildplanInterface

@@ -149,7 +149,7 @@ final class CrewCreator implements CrewCreatorInterface
             }
 
             return null;
-        } else if ($station !== null) {
+        } else {
             foreach ($station->getCrewlist() as $crewAssignment) {
                 $crew = $crewAssignment->getCrew();
                 if ($crew->getType() === $crewType) {
