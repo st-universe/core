@@ -59,12 +59,9 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
 
     public function isNewest(BasicTradeInterface $basicTrade): bool
     {
-        /**
-         * @todo use a more sophisticated approach
-         */
-        return empty($this->getEntityManager()->createQuery(
+        return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT bt FROM %s bt
+                'SELECT count(bt.id) FROM %s bt
                 WHERE bt.faction_id = :factionId
                 AND bt.commodity_id = :commodityId
                 AND bt.date_ms > :myDate',
@@ -74,7 +71,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
             'factionId' => $basicTrade->getFaction()->getId(),
             'commodityId' => $basicTrade->getCommodity()->getId(),
             'myDate' => $basicTrade->getDate()
-        ])->getResult());
+        ])->getSingleScalarResult() === 0;
     }
 
     public function getLatestRates(BasicTradeInterface $basicTrade): array
