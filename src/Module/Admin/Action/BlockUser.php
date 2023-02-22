@@ -87,7 +87,7 @@ final class BlockUser implements ActionControllerInterface
 
         $this->loggerUtil->log('E');
 
-        $game->addInformationf(_('Der Spieler %s (%d) ist nun blockiert und zur Löschung freigegeben!'), $userToBlock->getUserName(), $userIdToBlock);
+        $game->addInformationf(_('Der Spieler %s (%d) ist nun blockiert und zur Löschung freigegeben!'), $userToBlock->getName(), $userIdToBlock);
     }
 
     public function performSessionCheck(): bool

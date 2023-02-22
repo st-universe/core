@@ -60,7 +60,7 @@ final class ManagementListItem
      */
     public function getName(): string
     {
-        return $this->user->getUserName();
+        return $this->user->getName();
     }
 
     /**

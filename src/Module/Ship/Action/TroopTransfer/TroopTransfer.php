@@ -427,7 +427,7 @@ final class TroopTransfer implements ActionControllerInterface
         $msg = sprintf(
             _('Die %s von Spieler %s hat 1 Crewman %s deiner Station %s gebeamt. Der Uplink ist %s'),
             $ship->getName(),
-            $ship->getUser()->getUserName(),
+            $ship->getUser()->getName(),
             $isUnload ? 'zu' : 'von',
             $target->getName(),
             $isOn ? 'aktiviert' : 'deaktiviert'

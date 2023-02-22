@@ -58,7 +58,7 @@ class NewKnPostNotificatorTest extends StuTestCase
             ->once()
             ->andReturn($postUrl);
 
-        $postUser->shouldReceive('getUserName')
+        $postUser->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn($userName);

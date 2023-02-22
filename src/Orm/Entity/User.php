@@ -318,7 +318,7 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getUserName(): string
+    public function getName(): string
     {
         //if UMODE active, add info to user name
         if ($this->isVacationRequestOldEnough()) {
@@ -708,14 +708,6 @@ class User implements UserInterface
         return '';
     }
 
-    /**
-     * @deprecated
-     */
-    public function getName(): string
-    {
-        return $this->getUserName();
-    }
-
     public function isOnline(): bool
     {
         if ($this->getLastAction() < time() - GameEnum::USER_ONLINE_PERIOD) {
@@ -777,6 +769,6 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return sprintf('userName: %s', $this->getUserName());
+        return sprintf('userName: %s', $this->getName());
     }
 }

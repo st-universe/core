@@ -130,7 +130,7 @@ class KnCommentTalTest extends StuTestCase
     {
         $userName = 'some-user-name';
 
-        $this->comment->shouldReceive('getUser->getUserName')
+        $this->comment->shouldReceive('getUser->getName')
             ->withNoArgs()
             ->once()
             ->andReturn($userName);

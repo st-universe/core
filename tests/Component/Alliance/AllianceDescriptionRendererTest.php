@@ -90,7 +90,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
     {
         $name = 'name';
 
-        $this->alliance->shouldReceive('getFounder->getUser->getUserName')
+        $this->alliance->shouldReceive('getFounder->getUser->getName')
             ->withNoArgs()
             ->once()
             ->andReturn($name);
@@ -105,7 +105,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
     {
         $name = 'name';
 
-        $this->alliance->shouldReceive('getSuccessor->getUser->getUserName')
+        $this->alliance->shouldReceive('getSuccessor->getUser->getName')
             ->withNoArgs()
             ->once()
             ->andReturn($name);
@@ -133,7 +133,7 @@ class AllianceDescriptionRendererTest extends StuTestCase
     {
         $name = 'name';
 
-        $this->alliance->shouldReceive('getDiplomatic->getUser->getUserName')
+        $this->alliance->shouldReceive('getDiplomatic->getUser->getName')
             ->withNoArgs()
             ->once()
             ->andReturn($name);

@@ -132,7 +132,7 @@ final class ColonyResetter implements ColonyResetterInterface
     {
         $txt = sprintf(
             'Der Spieler %s hat die Kolonie %s in Sektor %d|%d (%s System) verlassen. Deine Flotte %s hat die %s beendet.',
-            $colony->getUser()->getUserName(),
+            $colony->getUser()->getName(),
             $colony->getName(),
             $colony->getSx(),
             $colony->getSy(),

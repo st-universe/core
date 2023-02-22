@@ -66,7 +66,7 @@ class KnPostDeletionHandlerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $user->shouldReceive('getUserName')
+        $user->shouldReceive('getName')
             ->withNoArgs()
             ->once()
             ->andReturn($userName);

@@ -41,12 +41,16 @@ final class UnlockUser implements ActionControllerInterface
 
         $user = $lock->getUser();
 
+        if ($user === null) {
+            return;
+        }
+
         $lock->setUser(null);
         $lock->setUserId(null);
         $lock->setFormerUserId($user->getId());
         $this->userLockRepository->save($lock);
 
-        $game->addInformationf(_('Der Spieler %s (%d) ist nun nicht mehr gesperrt'), $user->getUserName(), $userIdToUnlock);
+        $game->addInformationf(_('Der Spieler %s (%d) ist nun nicht mehr gesperrt'), $user->getName(), $userIdToUnlock);
     }
 
     public function performSessionCheck(): bool

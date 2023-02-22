@@ -75,7 +75,7 @@ final class PostKnComment implements ActionControllerInterface
 
             $text = sprintf(
                 _('Der Spieler %s hat deinen KN-Beitrag (%d) kommentiert.'),
-                $game->getUser()->getUserName(),
+                $game->getUser()->getName(),
                 $post->getId()
             );
 
@@ -108,7 +108,7 @@ final class PostKnComment implements ActionControllerInterface
 
                 $text = sprintf(
                     _('Der Spieler %s hat einen KN-Beitrag (%d) kommentiert, den du ebenfalls kommentiert hast.'),
-                    $game->getUser()->getUserName(),
+                    $game->getUser()->getName(),
                     $post->getId()
                 );
 

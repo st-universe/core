@@ -76,7 +76,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $pm = $this->createPrivateMessage($sender, $recipient, $time, $category, $text, $href, true, null);
 
         if ($category === PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN && $recipient->isEmailNotification()) {
-            $this->sendEmailNotification($sender->getUserName(), $text, $recipient);
+            $this->sendEmailNotification($sender->getName(), $text, $recipient);
         }
 
         if ($senderId != GameEnum::USER_NOONE) {

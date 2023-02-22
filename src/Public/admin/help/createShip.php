@@ -163,14 +163,14 @@ Init::run(function (ContainerInterface $dic): void {
                     printf(
                         '<a href="?userId=%d">%s</a><br />',
                         $user->getId(),
-                        $user->getUserName()
+                        $user->getName()
                     );
                 }
                 foreach ($userRepo->getNonNpcList() as $user) {
                     printf(
                         '<a href="?userId=%d">%s</a><br />',
                         $user->getId(),
-                        $user->getUserName()
+                        $user->getName()
                     );
                 }
             }

@@ -68,7 +68,7 @@ final class LockUser implements ActionControllerInterface
             return;
         }
 
-        $this->loggerUtil->log($userToLock->getUserName());
+        $this->loggerUtil->log($userToLock->getName());
 
         //setup lock
         $this->setUserLock($userToLock, $remainingTicks);
@@ -81,7 +81,7 @@ final class LockUser implements ActionControllerInterface
         //create user lock
 
 
-        $game->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getUserName(), $userIdToLock);
+        $game->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getName(), $userIdToLock);
     }
 
     private function setUserLock(UserInterface $user, int $remainingTicks): void

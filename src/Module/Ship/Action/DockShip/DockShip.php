@@ -110,7 +110,7 @@ final class DockShip implements ActionControllerInterface
                 sprintf(
                     'Der Andockversuch der %s von Spieler %s bei %s wurde verweigert',
                     $ship->getName(),
-                    $ship->getUser()->getUserName(),
+                    $ship->getUser()->getName(),
                     $target->getName()
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,

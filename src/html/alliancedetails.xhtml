@@ -37,21 +37,21 @@
           <tal:block tal:define="data ALLIANCE/getFounder/getUser">
             <div class="allianceMinister alliancePresident">
               <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data" />
-              <div class="namePresident" tal:content="structure bbcode:data/getUserName">NAME</div>
+              <div class="namePresident" tal:content="structure bbcode:data/getName">NAME</div>
               <div class="jobDescription">Präsident</div>
             </div>
           </tal:block>
           <tal:block tal:condition="ALLIANCE/getSuccessor">
             <div class="allianceMinister" tal:define="data ALLIANCE/getSuccessor/getUser">
               <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data" />
-              <div class="name" tal:content="structure bbcode:data/getUserName">NAME</div>
+              <div class="name" tal:content="structure bbcode:data/getName">NAME</div>
               <div class="jobDescription">Vize-Präsident</div>
             </div>
           </tal:block>
           <tal:block tal:condition="ALLIANCE/getDiplomatic">
             <div class="allianceMinister" tal:define="data ALLIANCE/getDiplomatic/getUser">
               <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data" />
-              <div class="name" tal:content="structure bbcode:data/getUserName">NAME</div>
+              <div class="name" tal:content="structure bbcode:data/getName">NAME</div>
               <div class="jobDescription">Außenminister</div>
             </div>
           </tal:block>
@@ -60,7 +60,7 @@
         <div class="allianceMemberList">
           <div class="allianceMember" tal:repeat="data MEMBERS">
             <metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data/getUser" />
-            <div class="allianceMemberName" tal:content="structure bbcode:data/getUser/getUserName">NAME</div>
+            <div class="allianceMemberName" tal:content="structure bbcode:data/getUser/getName">NAME</div>
             <div class="allianceMemberButtons" tal:define="id data/getUserId">
               <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
               <img src="assets/rassen/${data/getUser/getFactionId}s.png" />
@@ -72,7 +72,8 @@
         <div class="allianceRelationList" tal:condition="ALLIANCE_RELATIONS">
           <div class="allianceHeader">Diplomatische Beziehungen</div>
           <div tal:repeat="wrapper ALLIANCE_RELATIONS" class="allianceRelation">
-            <div class="allianceRelationImage"><img tal:attributes="src string:assets/alliance/relation_types/${wrapper/getImage}.png"/></div>
+            <div class="allianceRelationImage"><img
+                tal:attributes="src string:assets/alliance/relation_types/${wrapper/getImage}.png" /></div>
             <div class="allianceRelationOpponentName" tal:content="structure bbcode:wrapper/getDescription">NAME</div>
             <div class="allianceRelationDate">
               seit <span tal:content="date: wrapper/getDate">DATE</span>

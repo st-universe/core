@@ -288,7 +288,7 @@ final class DealsBidAuction implements ActionControllerInterface
                     $currentHighestBid->getUser()->getId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d Prestige zurück bekommen. Das aktuelle Gebot liegt bei: %d Prestige',
-                        $user->getUserName(),
+                        $user->getName(),
                         $currentHighestBid->getMaxAmount(),
                         $currentHighestBid->getMaxAmount() + 1
                     ),
@@ -307,7 +307,7 @@ final class DealsBidAuction implements ActionControllerInterface
                     $currentHighestBid->getUser()->getId(),
                     sprintf(
                         'Du wurdest bei einer Auktion des großen Nagus von %s überboten und hast %d %s zurück bekommen. Das aktuelle Gebot liegt bei: %d %s',
-                        $user->getUserName(),
+                        $user->getName(),
                         $currentHighestBid->getMaxAmount(),
                         $auction->getWantedCommodity()->getName(),
                         $currentHighestBid->getMaxAmount() + 1,

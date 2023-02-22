@@ -487,7 +487,7 @@ class Ship implements ShipInterface
 
     public function getUserName(): string
     {
-        return $this->getUser()->getUserName();
+        return $this->getUser()->getName();
     }
 
     public function getFleetId(): ?int

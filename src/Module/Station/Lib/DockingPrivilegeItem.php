@@ -49,7 +49,7 @@ final class DockingPrivilegeItem
                 $user = $this->userRepository->find($this->dockingPrivilege->getTargetId());
                 return $user === null
                     ? 'nicht mehr vorhanden'
-                    : $user->getUserName();
+                    : $user->getName();
             case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
                 $ally = $this->allianceRepository->find($this->dockingPrivilege->getTargetId());
                 return $ally === null

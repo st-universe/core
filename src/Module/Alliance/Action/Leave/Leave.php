@@ -58,7 +58,7 @@ final class Leave implements ActionControllerInterface
 
         $text = sprintf(
             'Der Siedler %s hat die Allianz verlassen',
-            $user->getUserName()
+            $user->getName()
         );
 
         $this->privateMessageSender->send($userId, $foundJob->getUserId(), $text);

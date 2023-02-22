@@ -89,7 +89,7 @@ final class DumpForeignCrewman implements ActionControllerInterface
                 'Die Dienste von Crewman %s werden nicht mehr auf der Station %s von Spieler %s benötigt. %s',
                 $name,
                 $ship->getName(),
-                $game->getUser()->getUserName(),
+                $game->getUser()->getName(),
                 $msg
             ),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM

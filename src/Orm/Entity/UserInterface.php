@@ -8,7 +8,7 @@ interface UserInterface
 {
     public function getId(): int;
 
-    public function getUserName(): string;
+    public function getName(): string;
 
     public function setUsername(string $user): UserInterface;
 
@@ -152,11 +152,6 @@ interface UserInterface
     public function setRpgBehavior(int $RPGbehavior): UserInterface;
 
     public function getRpgBehaviorText(): string;
-
-    /**
-     * @deprecated
-     */
-    public function getName(): string;
 
     public function isOnline(): bool;
 

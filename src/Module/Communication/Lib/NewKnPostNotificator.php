@@ -20,7 +20,7 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender
-    ){
+    ) {
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -32,7 +32,7 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
 
         $text = sprintf(
             'Der Spieler %s hat einen neuen Beitrag zum Plot "%s" hinzugefügt.',
-            $postUser->getUserName(),
+            $postUser->getName(),
             $plot->getTitle()
         );
 
