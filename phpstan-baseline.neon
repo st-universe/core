@@ -3235,11 +3235,6 @@ parameters:
 			path: src/Module/Message/View/Overview/Overview.php
 
 		-
-			message: "#^Call to deprecated method getName\\(\\) of class Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 2
-			path: src/Module/Message/View/ShowWriteQuickPm/ShowWriteQuickPm.php
-
-		-
 			message: "#^Cannot call method getLeadShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Message/View/ShowWriteQuickPm/ShowWriteQuickPm.php
