@@ -11,6 +11,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
