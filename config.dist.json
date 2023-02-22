@@ -9,17 +9,6 @@
     "backup_cycle_time": 2592000,
     "proxy_namespace": "Stu\\Orm\\Proxy"
   },
-  "mq": {
-    "host": "stu-mq",
-    "port": 5672,
-    "user": "mq",
-    "pass": "mq",
-    "vhost": "/",
-    "debug": {
-      "log_path": "/path/to/log",
-      "log_level": 500
-    }
-  },
   "cache": {
     "redis_socket": "/path/to/redis.sock",
     "redis_host": "localhost",
