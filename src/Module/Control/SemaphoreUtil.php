@@ -7,6 +7,7 @@ use Stu\Exception\SemaphoreException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use SysvSemaphore;
 
 final class SemaphoreUtil implements SemaphoreUtilInterface
 {
@@ -24,7 +25,12 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
     public function getSemaphore(int $key)
     {
-        return sem_get($key, 1, 0666, SemaphoreConstants::AUTO_RELEASE_SEMAPHORES);
+        return sem_get(
+            $key,
+            1,
+            0666,
+            SemaphoreConstants::AUTO_RELEASE_SEMAPHORES
+        );
     }
 
     public function acquireMainSemaphore($semaphore): void
@@ -49,15 +55,12 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         }
     }
 
-    public function releaseSemaphore($semaphore, bool $doRemove = false): void
+    public function releaseSemaphore(SysvSemaphore $semaphore, bool $doRemove = false): void
     {
         $this->release($semaphore, $doRemove);
     }
 
-    /**
-     * @param resource $semaphore
-     */
-    private function release($semaphore, bool $doRemove): void
+    private function release(SysvSemaphore $semaphore, bool $doRemove): void
     {
         if (!sem_release($semaphore)) {
             $this->loggerUtil->init('semaphores', LoggerEnum::LEVEL_ERROR);

@@ -23,9 +23,9 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetFieldInterface;
 
     /**
-     * @return iterable<PlanetFieldInterface>
+     * @return list<PlanetFieldInterface>
      */
-    public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): iterable;
+    public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): array;
 
     /**
      * @param list<int> $state
@@ -107,9 +107,9 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getByConstructionFinish(int $finishTime): iterable;
 
     /**
-     * @return iterable<PlanetFieldInterface>
+     * @return list<PlanetFieldInterface>
      */
-    public function getByColonyWithBuilding(int $colonyId): iterable;
+    public function getByColonyWithBuilding(int $colonyId): array;
 
     public function getEnergyProductionByColony(int $colonyId): int;
 

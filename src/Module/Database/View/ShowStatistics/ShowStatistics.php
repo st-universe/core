@@ -157,7 +157,7 @@ final class ShowStatistics implements ViewControllerInterface
             $graph->Add($plot);
         }
 
-        // Adjust the legend 
+        // Adjust the legend
         $graph->legend->SetPos(0.05, 0.01, "top", "right");
         $graph->legend->SetColor('white', 'white');
         $graph->legend->SetFillColor('black');
@@ -267,7 +267,7 @@ final class ShowStatistics implements ViewControllerInterface
         $img = $graph->Stroke(_IMG_HANDLER);
         ob_start();
         imagepng($img);
-        $img_data = ob_get_contents();
+        $img_data = (string) ob_get_contents();
         ob_end_clean();
 
         return '<img src="data:image/png;base64,' . base64_encode($img_data) . '"/>';

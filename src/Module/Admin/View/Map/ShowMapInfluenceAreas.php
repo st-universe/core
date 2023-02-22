@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
+use GdImage;
 use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;

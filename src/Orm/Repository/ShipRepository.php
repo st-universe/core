@@ -151,32 +151,35 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getByLocation(
         ?StarSystemMapInterface $starSystemMap,
         ?MapInterface $map
-    ): iterable {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s
-                LEFT JOIN %s f
-                WITH s.fleets_id = f.id
-                JOIN %s r
-                WITH s.rumps_id = r.id
-                WHERE s.%s = :mapId
-                AND NOT EXISTS (SELECT ss.id
-                                    FROM %s ss
-                                    WHERE s.id = ss.ship_id
-                                    AND ss.system_type = :systemId
-                                    AND ss.mode > 1)
-                ORDER BY s.is_destroyed ASC, f.sort DESC, f.id DESC, s.is_fleet_leader DESC,
+    ): array {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
+                    LEFT JOIN %s f
+                    WITH s.fleets_id = f.id
+                    JOIN %s r
+                    WITH s.rumps_id = r.id
+                    WHERE s.%s = :mapId
+                    AND NOT EXISTS (SELECT ss.id
+                                        FROM %s ss
+                                        WHERE s.id = ss.ship_id
+                                        AND ss.system_type = :systemId
+                                        AND ss.mode > 1)
+                    ORDER BY s.is_destroyed ASC, f.sort DESC, f.id DESC, s.is_fleet_leader DESC,
                     r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
-                Ship::class,
-                Fleet::class,
-                ShipRump::class,
-                $starSystemMap === null ? 'map_id' : 'starsystem_map_id',
-                ShipSystem::class
+                    Ship::class,
+                    Fleet::class,
+                    ShipRump::class,
+                    $starSystemMap === null ? 'map_id' : 'starsystem_map_id',
+                    ShipSystem::class
+                )
             )
-        )->setParameters([
-            'mapId' => $starSystemMap === null ? $map->getId() : $starSystemMap->getId(),
-            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
-        ])->getResult();
+            ->setParameters([
+                'mapId' => $starSystemMap === null ? $map->getId() : $starSystemMap->getId(),
+                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+            ])
+            ->getResult();
     }
 
     public function getForeignStationsInBroadcastRange(ShipInterface $ship): array
@@ -267,7 +270,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->getResult();
     }
 
-    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): iterable
+    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): array
     {
         return $this->findBy(
             [
@@ -279,7 +282,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         );
     }
 
-    public function getByUplink(int $userId): iterable
+    public function getByUplink(int $userId): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(

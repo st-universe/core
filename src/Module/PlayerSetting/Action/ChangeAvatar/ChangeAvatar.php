@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 
 use Exception;
+use GdImage;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -69,6 +70,7 @@ final class ChangeAvatar implements ActionControllerInterface
             return;
         }
 
+        /** @var GdImage $newImage */
         $newImage = imagecreatetruecolor(150, 150);
         imagecopy($newImage, $img, 0, 0, 0, 0, 150, 150);
         imagepng(

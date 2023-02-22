@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Control;
 
+use SysvSemaphore;
+
 interface SemaphoreUtilInterface
 {
     public function getSemaphore(int $key);
@@ -16,8 +18,5 @@ interface SemaphoreUtilInterface
      */
     public function acquireSemaphore(int $key, $semaphore): void;
 
-    /**
-     * @param resource $semaphore
-     */
-    public function releaseSemaphore($semaphore, bool $doRemove = false): void;
+    public function releaseSemaphore(SysvSemaphore $semaphore, bool $doRemove = false): void;
 }

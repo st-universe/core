@@ -22,10 +22,12 @@
     }
   },
   "require": {
-    "php": "^7.4 || 8.0",
+    "php": "^8.1",
     "ext-dom": "*",
     "ext-gd": "*",
     "ext-gettext": "*",
+    "ext-iconv": "*",
+    "ext-intl": "*",
     "ext-json": "*",
     "ext-mysqli": "*",
     "ext-pcntl": "*",
@@ -40,7 +42,6 @@
     "crell/tukio": "^1.4",
     "crunzphp/crunz": "^3.4",
     "devster/ubench": "^2",
-    "doctrine/annotations": "^1",
     "doctrine/orm": "^2.6",
     "filp/whoops": "^2.5",
     "graphp/graphviz": "^0.2.1",
@@ -73,9 +74,6 @@
     "st-universe/assets": "dev-master"
   },
   "config": {
-    "platform": {
-      "php": "7.4"
-    },
     "sort-packages": true,
     "allow-plugins": {
       "mnsami/composer-custom-directory-installer": true,

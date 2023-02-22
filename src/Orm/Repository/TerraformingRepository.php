@@ -14,7 +14,7 @@ use Stu\Orm\Entity\Terraforming;
  */
 final class TerraformingRepository extends EntityRepository implements TerraformingRepositoryInterface
 {
-    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId): iterable
+    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId): array
     {
         if ($userId == GameEnum::USER_NOONE) {
             return $this->getEntityManager()->createQuery(

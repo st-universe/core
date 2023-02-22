@@ -120,8 +120,10 @@ final class TalSelectedTech implements TalSelectedTechInterface
         if ($this->excludes === null) {
             $result = [];
 
+            $techList = $this->researchDependencyRepository->getExcludesByResearch($this->research->getId());
+
             array_walk(
-                $this->researchDependencyRepository->getExcludesByResearch($this->research->getId()),
+                $techList,
                 function (ResearchDependencyInterface $dependecy) use (&$result): void {
                     $name = $dependecy->getResearchDependOn()->getName();
 
@@ -146,10 +148,12 @@ final class TalSelectedTech implements TalSelectedTechInterface
         if ($this->dependencies === null) {
             $result = [];
 
+            $techList = $this->researchRepository->getPossibleResearchByParent(
+                $this->research->getId()
+            );
+
             array_walk(
-                $this->researchRepository->getPossibleResearchByParent(
-                    $this->research->getId()
-                ),
+                $techList,
                 function (ResearchInterface $research) use (&$result): void {
                     $name = $research->getName();
 

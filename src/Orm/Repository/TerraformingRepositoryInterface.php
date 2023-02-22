@@ -14,7 +14,7 @@ use Stu\Orm\Entity\TerraformingInterface;
 interface TerraformingRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return iterable<TerraformingInterface>
+     * @return list<TerraformingInterface>
      */
-    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId): iterable;
+    public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId): array;
 }

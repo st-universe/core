@@ -8,7 +8,7 @@ class CleanTextUtils
     public static function clearEmojis(string $text): string
     {
         $text = (string) iconv('UTF-8', 'ISO-8859-15//IGNORE', $text);
-        $text = preg_replace('/\s+/', ' ', $text);
+        $text = (string) preg_replace('/\s+/', ' ', $text);
 
         return (string) iconv('ISO-8859-15', 'UTF-8', $text);
     }
