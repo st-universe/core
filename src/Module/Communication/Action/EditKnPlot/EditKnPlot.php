@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EditKnPlot;
 
+use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EditKnPlot implements ActionControllerInterface

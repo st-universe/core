@@ -15,7 +15,6 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 
 final class ApplyDamage implements ApplyDamageInterface
 {
-
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ColonyLibFactoryInterface $colonyLibFactory;

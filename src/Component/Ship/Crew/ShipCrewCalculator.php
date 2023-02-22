@@ -40,7 +40,7 @@ final class ShipCrewCalculator implements ShipCrewCalculatorInterface
     ): ?ShipRumpCategoryRoleCrewInterface {
         return $this->shipRumpCategoryRoleCrewRepository
             ->getByShipRumpCategoryAndRole(
-                 $shipRump->getCategoryId(),
+                $shipRump->getCategoryId(),
                 (int) $shipRump->getRoleId()
             );
     }

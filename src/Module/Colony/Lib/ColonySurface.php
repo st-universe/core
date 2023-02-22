@@ -87,7 +87,6 @@ final class ColonySurface implements ColonySurfaceInterface
     public function getSurface(): array
     {
         if ($this->colony->isFree()) {
-
             try {
                 $this->updateSurface();
             } catch (PlanetGeneratorException $e) {
@@ -100,7 +99,7 @@ final class ColonySurface implements ColonySurfaceInterface
         if (!$this->showUnderground) {
             $fields = array_filter(
                 $fields,
-                fn(PlanetFieldInterface $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
+                fn (PlanetFieldInterface $field): bool => !$this->planetFieldTypeRetriever->isUndergroundField($field)
             );
         }
 
@@ -121,7 +120,6 @@ final class ColonySurface implements ColonySurfaceInterface
                         $field->getTerraformingId() === null &&
                         $building->getBuildableFields()->containsKey((int) $field->getFieldType())
                     ) {
-
                         //PlanetFieldTypeBuildingInterface
                         $fieldBuilding = $building->getBuildableFields()->get((int) $field->getFieldType());
 
@@ -206,7 +204,6 @@ final class ColonySurface implements ColonySurfaceInterface
     public function updateSurface(): array
     {
         if ($this->colony->getMask() === null) {
-
             $planetConfig = $this->planetGenerator->generateColony(
                 $this->colony->getColonyClassId(),
                 $this->colony->getSystem()->getBonusFieldAmount()
@@ -227,7 +224,7 @@ final class ColonySurface implements ColonySurfaceInterface
                 $fields[$fieldId] = $newField;
                 $fields[$fieldId]->setColony($this->colony);
                 $fields[$fieldId]->setFieldId($fieldId);
-                $this->colony->getPlanetFields()->set($fieldId,  $newField);
+                $this->colony->getPlanetFields()->set($fieldId, $newField);
             }
             $fields[$fieldId]->setBuilding(null);
             $fields[$fieldId]->setIntegrity(0);
@@ -254,7 +251,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
                 $result[$deposit->getCommodity()->getId()] = [
                     'deposit' => $deposit,
-                    'currentlyMined' => $prod === null ? 0 : $prod->getProduction()
+                    'currentlyMined' => $prod === null ? 0 : $prod->getProduction(),
                 ];
             }
         }

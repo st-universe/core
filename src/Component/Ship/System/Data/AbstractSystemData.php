@@ -18,7 +18,7 @@ abstract class AbstractSystemData
         $this->ship = $ship;
     }
 
-    public abstract function update(): void;
+    abstract public function update(): void;
 
     /**
      * updates the system metadata for this specific ship system

@@ -46,12 +46,12 @@ class CommoditiesOverviewTest extends StuTestCase
             ->with([
                 [
                     'url' => 'database.php',
-                    'title' => 'Datenbank'
+                    'title' => 'Datenbank',
                 ],
                 [
                     'url' => sprintf('database.php?%s=1', CommoditiesOverview::VIEW_IDENTIFIER),
-                    'title' => 'Warenübersicht'
-                ]
+                    'title' => 'Warenübersicht',
+                ],
             ])
             ->once();
         $game->shouldReceive('setPageTitle')

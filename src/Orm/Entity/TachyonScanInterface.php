@@ -2,10 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Entity\UserInterface;
-
 interface TachyonScanInterface
 {
     public function getId(): int;
@@ -17,7 +13,7 @@ interface TachyonScanInterface
     public function setUser(UserInterface $user): TachyonScanInterface;
 
     public function getScanTime(): int;
-    
+
     public function setScanTime(int $scanTime): TachyonScanInterface;
 
     public function getMap(): ?MapInterface;

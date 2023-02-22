@@ -36,21 +36,21 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
     public function getByUser(int $userId): array
     {
         return $this->findBy([
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
     public function getByShipyard(int $stationId): array
     {
         return $this->findBy([
-            'ship_id' => $stationId
+            'ship_id' => $stationId,
         ]);
     }
 
     public function getAmountByShipyard(int $shipId): int
     {
         return $this->count([
-            'ship_id' => $shipId
+            'ship_id' => $shipId,
         ]);
     }
 
@@ -65,7 +65,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
             )
             ->setParameters([
                 'time' => time(),
-                'shipId' => $shipId
+                'shipId' => $shipId,
             ])
             ->execute();
     }
@@ -82,7 +82,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
             ->setParameters([
                 'stopDate' => 0,
                 'time' => time(),
-                'shipId' => $shipId
+                'shipId' => $shipId,
             ])
             ->execute();
     }
@@ -98,7 +98,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
             )
             ->setParameters([
                 'stopDate' => 0,
-                'time' => time()
+                'time' => time(),
             ])
             ->getResult();
     }

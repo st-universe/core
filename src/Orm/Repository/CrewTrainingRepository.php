@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\CrewTrainingInterface;
@@ -16,7 +15,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class CrewTrainingRepository extends EntityRepository implements CrewTrainingRepositoryInterface
 {
-
     public function save(CrewTrainingInterface $researched): void
     {
         $em = $this->getEntityManager();
@@ -53,7 +51,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
     public function getCountByUser(UserInterface $user): int
     {
         return $this->count([
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -72,7 +70,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
             ->setParameters([
                 'groupId' => $batchGroup,
                 'groupCount' => $batchGroupCount,
-                'idNoOne' => GameEnum::USER_NOONE
+                'idNoOne' => GameEnum::USER_NOONE,
             ])
             ->getResult();
     }

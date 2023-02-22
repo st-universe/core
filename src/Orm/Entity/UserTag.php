@@ -62,7 +62,8 @@ class UserTag implements UserTagInterface
         return $this->id;
     }
 
-    public function setTagTypeId(int $tagTypeId): UserTagInterface {
+    public function setTagTypeId(int $tagTypeId): UserTagInterface
+    {
         $this->tag_type_id = $tagTypeId;
         return $this;
     }
@@ -99,5 +100,4 @@ class UserTag implements UserTagInterface
 
         return $this;
     }
-
 }

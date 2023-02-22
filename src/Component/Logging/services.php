@@ -14,6 +14,7 @@ use Stu\Component\Logging\GameRequest\Adapter\LogfileAdapter;
 use Stu\Component\Logging\GameRequest\GameRequestSaver;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Component\Logging\GameRequest\ParameterSanitizer;
+
 use function DI\autowire;
 
 return [
@@ -61,5 +62,5 @@ return [
         return new LogfileAdapter(
             $logger
         );
-    }
+    },
 ];

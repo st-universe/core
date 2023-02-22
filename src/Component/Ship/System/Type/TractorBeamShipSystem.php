@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -96,7 +95,6 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
 
         if ($ship->isTractoring()) {
-
             $traktor = $ship->getTractoredShip();
 
             $ship->setTractoredShip(null);

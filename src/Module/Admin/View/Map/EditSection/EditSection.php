@@ -7,12 +7,10 @@ namespace Stu\Module\Admin\View\Map\EditSection;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Starmap\Lib\StarmapUiFactory;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
-use Stu\Module\Starmap\Lib\YRow;
 
 final class EditSection implements ViewControllerInterface
 {

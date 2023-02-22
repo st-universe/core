@@ -14,5 +14,4 @@ final class CancelOfferRequest implements CancelOfferRequestInterface
     {
         return $this->queryParameter('offerid')->int()->required();
     }
-
 }

@@ -194,7 +194,6 @@ final class Session implements SessionInterface
 
     private function performCookieLogin(int $uid, string $sstr): void
     {
-
         if (strlen($sstr) != 40) {
             $this->destroySession();
             return;
@@ -285,7 +284,7 @@ final class Session implements SessionInterface
                 $data[$key] = $value;
                 $stored = true;
             } else {
-                $data[$key] = array();
+                $data[$key] = [];
             }
         }
         if (!$isSingleValue && !array_key_exists($value, $data[$key])) {

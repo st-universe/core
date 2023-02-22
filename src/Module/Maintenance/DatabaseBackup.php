@@ -33,7 +33,6 @@ final class DatabaseBackup implements MaintenanceHandlerInterface
             }
         }
         $dir->close();
-
     }
 
     private function backup(): void

@@ -7,11 +7,10 @@ use Stu\Orm\Entity\StorageInterface;
 
 class StationCostWrapper
 {
-
     private $buildplanModule;
     private $shipStorage;
 
-    function __construct(BuildplanModuleInterface $buildplanModule, ?StorageInterface $shipStorage)
+    public function __construct(BuildplanModuleInterface $buildplanModule, ?StorageInterface $shipStorage)
     {
         $this->buildplanModule = $buildplanModule;
         $this->shipStorage = $shipStorage;

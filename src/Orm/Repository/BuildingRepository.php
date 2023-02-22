@@ -50,7 +50,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 ->setParameters([
                     'viewState' => 1,
                     'buildMenu' => $buildMenu,
-                    'colonyId' => $colonyId
+                    'colonyId' => $colonyId,
                 ])
                 ->getResult();
         }
@@ -84,7 +84,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 'viewState' => 1,
                 'buildMenu' => $buildMenu,
                 'userId' => $userId,
-                'colonyId' => $colonyId
+                'colonyId' => $colonyId,
             ])
             ->getResult();
     }

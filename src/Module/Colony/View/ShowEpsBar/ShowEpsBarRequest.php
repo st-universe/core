@@ -14,5 +14,4 @@ final class ShowEpsBarRequest implements ShowEpsBarRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

@@ -23,7 +23,7 @@ final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
 
     public function isChosen(): bool
     {
-        if ($this->buildplan !== null)  {
+        if ($this->buildplan !== null) {
             $module_id_list = array_map(
                 function (BuildplanModuleInterface $buildplanModule): int {
                     return $buildplanModule->getModuleId();
@@ -47,5 +47,4 @@ final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
     {
         return $this->module;
     }
-
 }

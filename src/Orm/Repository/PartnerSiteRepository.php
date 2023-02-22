@@ -12,7 +12,6 @@ use Stu\Orm\Entity\PartnerSite;
  */
 final class PartnerSiteRepository extends EntityRepository implements PartnerSiteRepositoryInterface
 {
-
     public function getOrdered(): iterable
     {
         return $this->findBy(

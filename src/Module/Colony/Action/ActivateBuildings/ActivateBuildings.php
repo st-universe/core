@@ -6,19 +6,18 @@ namespace Stu\Module\Colony\Action\ActivateBuildings;
 
 use request;
 use Stu\Component\Colony\ColonyEnum;
-use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
+use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ActivateBuildings implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_MULTIPLE_ACTIVATION';
 
     private ColonyLoaderInterface $colonyLoader;

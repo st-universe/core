@@ -28,7 +28,7 @@ class YRow
 
     private StarSystemMapRepositoryInterface $systemMapRepository;
 
-    function __construct(
+    public function __construct(
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $systemMapRepository,
         int $layerId,
@@ -67,7 +67,7 @@ class YRow
     /**
      * @return array<MapInterface|null>|array<StarSystemMapInterface|null>|array<ExplorableStarMapItemInterface|null>
      */
-    function getSystemFields()
+    public function getSystemFields()
     {
         if ($this->fields === null) {
             $this->fields = [];
@@ -85,7 +85,7 @@ class YRow
     /**
      * @return int
      */
-    function getRow()
+    public function getRow()
     {
         return $this->row;
     }

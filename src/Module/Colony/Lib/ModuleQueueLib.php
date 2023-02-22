@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleQueueLib implements ModuleQueueLibInterface

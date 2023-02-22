@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsTakeOffer;
 
-use Stu\Exception\AccessViolation;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
-use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use Stu\Orm\Repository\DealsRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
@@ -107,7 +107,6 @@ final class DealsTakeOffer implements ActionControllerInterface
         }
 
         if ($selectedDeal->getwantCommodityId() !== null || $selectedDeal->getWantPrestige() !== null) {
-
             if ($selectedDeal->getwantCommodityId() !== null) {
                 $storage = $this->storageRepository->getByTradepostAndUserAndCommodity(
                     TradeEnum::DEALS_FERG_TRADEPOST_ID,
@@ -133,7 +132,6 @@ final class DealsTakeOffer implements ActionControllerInterface
 
             if ($selectedDeal->getgiveCommodityId() !== null) {
                 if ($selectedDeal->getwantCommodityId() !== null) {
-
                     if (
                         $freeStorage <= 0 &&
                         $selectedDeal->getgiveCommodityAmount() > $selectedDeal->getwantCommodityAmount()
@@ -185,7 +183,6 @@ final class DealsTakeOffer implements ActionControllerInterface
 
                     $this->dealsRepository->delete($selectedDeal);
                 } else {
-
                     //modify deal
                     $selectedDeal->setAmount($selectedDeal->getAmount() - (int) $amount);
                     $this->dealsRepository->save($selectedDeal);
@@ -200,7 +197,6 @@ final class DealsTakeOffer implements ActionControllerInterface
             }
 
             if ($selectedDeal->getShip() == true) {
-
                 $this->createShip($selectedDeal->getBuildplan(), $tradePost, $userId);
             }
 

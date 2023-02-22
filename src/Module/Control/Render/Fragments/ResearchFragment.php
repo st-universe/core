@@ -34,7 +34,7 @@ final class ResearchFragment implements RenderFragmentInterface
     public function render(
         UserInterface $user,
         TalPageInterface $talPage
-    ): void{
+    ): void {
         $researchStatusBar = '';
         $currentResearchReference = $this->researchedRepository->getCurrentResearch($user);
 

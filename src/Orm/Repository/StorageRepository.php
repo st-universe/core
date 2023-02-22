@@ -57,7 +57,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
                 $rsm
             )
             ->setParameters([
-                'userId' => $user->getId()
+                'userId' => $user->getId(),
             ])
             ->getResult();
     }
@@ -79,7 +79,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             $rsm
         )->setParameters([
             'userId' => $user->getId(),
-            'commodityId' => $commodityId
+            'commodityId' => $commodityId,
         ])->getResult();
     }
 
@@ -103,7 +103,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             )
             ->setParameters([
                 'userId' => $user->getId(),
-                'commodityId' => $commodityId
+                'commodityId' => $commodityId,
             ])
             ->getResult();
     }
@@ -124,7 +124,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             )
             ->setParameters([
                 'commodityId' => $commodityId,
-                'user' => $user
+                'user' => $user,
             ])
             ->getResult();
     }
@@ -150,7 +150,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             $rsm
         )->setParameters([
             'userId' => $user->getId(),
-            'commodityId' => $commodityId
+            'commodityId' => $commodityId,
         ])->getResult();
     }
 
@@ -175,7 +175,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             $rsm
         )->setParameters([
             'userId' => $user->getId(),
-            'commodityId' => $commodityId
+            'commodityId' => $commodityId,
         ])->getResult();
     }
 
@@ -191,7 +191,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             )
         )->setParameters([
             'tradePostId' => $tradePostId,
-            'userId' => $userId
+            'userId' => $userId,
         ])->getResult();
     }
 
@@ -206,7 +206,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             )
             ->setParameters([
                 'tradePostId' => $tradePostId,
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getSingleScalarResult();
     }
@@ -219,7 +219,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
         return $this->findOneBy([
             'tradepost_id' => $tradePostId,
             'user_id' => $userId,
-            'commodity_id' => $commodityId
+            'commodity_id' => $commodityId,
         ]);
     }
 
@@ -244,7 +244,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
                 'tradeNetwork' => $tradeNetwork,
                 'userId' => $userId,
                 'commodityId' => $commodityId,
-                'amount' => $amount
+                'amount' => $amount,
             ])
             ->getResult();
     }
@@ -262,7 +262,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
                 )
             )
             ->setParameters([
-                'tradePostId' => $tradePostId
+                'tradePostId' => $tradePostId,
             ])
             ->getResult();
     }
@@ -283,7 +283,7 @@ final class StorageRepository extends EntityRepository implements StorageReposit
             $rsm
         )->setParameters([
             'latId' => CommodityTypeEnum::COMMODITY_LATINUM,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])->getResult();
     }
 

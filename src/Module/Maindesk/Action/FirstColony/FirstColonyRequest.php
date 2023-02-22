@@ -10,8 +10,8 @@ final class FirstColonyRequest implements FirstColonyRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getPlanetId(): int {
+    public function getPlanetId(): int
+    {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

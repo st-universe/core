@@ -87,7 +87,7 @@ final class RepairUtil implements RepairUtilInterface
 
         return [
             CommodityTypeEnum::COMMODITY_SPARE_PART => $neededSpareParts,
-            CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT => $neededSystemComponents
+            CommodityTypeEnum::COMMODITY_SYSTEM_COMPONENT => $neededSystemComponents,
         ];
     }
 
@@ -140,7 +140,6 @@ final class RepairUtil implements RepairUtilInterface
                 $neededPartsString
             );
         } else {
-
             $entityOwnerMessage = $isColony ? sprintf(
                 "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s angehalten.\nEs werden folgende Waren benötigt:\n%s",
                 $ship->getName(),
@@ -262,9 +261,9 @@ final class RepairUtil implements RepairUtilInterface
 
         if ($repairType === RepairTaskEnum::SPARE_PARTS_ONLY) {
             $percentage += rand(RepairTaskEnum::SPARE_PARTS_ONLY_MIN, RepairTaskEnum::SPARE_PARTS_ONLY_MAX);
-        } else if ($repairType === RepairTaskEnum::SYSTEM_COMPONENTS_ONLY) {
+        } elseif ($repairType === RepairTaskEnum::SYSTEM_COMPONENTS_ONLY) {
             $percentage += rand(RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MIN, RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MAX);
-        } else if ($repairType === RepairTaskEnum::BOTH) {
+        } elseif ($repairType === RepairTaskEnum::BOTH) {
             $percentage += rand(RepairTaskEnum::BOTH_MIN, RepairTaskEnum::BOTH_MAX);
         }
 

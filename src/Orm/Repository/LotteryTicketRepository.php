@@ -29,7 +29,7 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
     public function getAmountByPeriod(string $period): int
     {
         return $this->count([
-            'period' => $period
+            'period' => $period,
         ]);
     }
 
@@ -37,19 +37,19 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
     {
         return $this->count([
             'period' => $period,
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
     public function getByPeriod(string $period): array
     {
-        return $this->findBy(['period' => $period, 'is_winner' => NULL]);
+        return $this->findBy(['period' => $period, 'is_winner' => null]);
     }
 
     public function getLotteryHistory(): array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('period', 'period' );
+        $rsm->addScalarResult('period', 'period');
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
         return $this->getEntityManager()

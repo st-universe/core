@@ -38,7 +38,7 @@ final class KnPostToPlotApplicationRepository extends EntityRepository implement
         return $this->findOneBy(
             [
                 'post_id' => $postId,
-                'plot_id' => $plotId
+                'plot_id' => $plotId,
             ]
         );
     }

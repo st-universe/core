@@ -31,12 +31,12 @@ final class CrewRanking implements ViewControllerInterface
         $game->setNavigation([
             [
                 'url' => 'database.php',
-                'title' => 'Datenbank'
+                'title' => 'Datenbank',
             ],
             [
                 'url' => sprintf('database.php?%s=1', static::VIEW_IDENTIFIER),
-                'title' => 'Die Top 10 der Ausbilder'
-            ]
+                'title' => 'Die Top 10 der Ausbilder',
+            ],
         ]);
         $game->setPageTitle('/ Datenbank / Die Top 10 der Ausbilder');
         $game->showMacro('html/database.xhtml/top_crew_user');

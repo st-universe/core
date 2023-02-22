@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Orm\Entity\TradeLicenseInfoInterface;
 use Stu\Orm\Entity\TradeLicenseInfo;
+use Stu\Orm\Entity\TradeLicenseInfoInterface;
 
 /**
  * @extends EntityRepository<TradeLicenseInfo>
  */
 final class TradeLicenseInfoRepository extends EntityRepository implements TradeLicenseInfoRepositoryInterface
 {
-
     public function prototype(): TradeLicenseInfoInterface
     {
         return new TradeLicenseInfo();
@@ -45,7 +44,7 @@ final class TradeLicenseInfoRepository extends EntityRepository implements Trade
             )
             ->setMaxResults(1)
             ->setParameters([
-                'trade_post' => $tradepostId
+                'trade_post' => $tradepostId,
             ])
             ->getOneOrNullResult();
     }

@@ -7,9 +7,9 @@ namespace Stu\Module\Ship\Action\EnterStarSystem;
 use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -134,7 +134,6 @@ final class EnterStarSystem implements ActionControllerInterface
                 }
             );
             foreach ($result as $fleetShip) {
-
                 $wrapper = $this->shipWrapperFactory->wrapShip($fleetShip);
 
                 if (!$fleetShip->hasEnoughCrew()) {

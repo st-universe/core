@@ -8,5 +8,4 @@ use Exception;
 
 abstract class RegistrationException extends Exception
 {
-
 }

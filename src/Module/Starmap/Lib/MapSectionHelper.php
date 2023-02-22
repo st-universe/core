@@ -87,7 +87,6 @@ final class MapSectionHelper
         if ($xCoordinate * MapEnum::FIELDS_PER_SECTION < $layerWidth) {
             $game->setTemplateVar(
                 'NAV_RIGHT',
-
                 $this->constructPath(
                     $module,
                     $viewIdentifier,

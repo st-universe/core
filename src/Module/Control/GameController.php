@@ -232,7 +232,7 @@ final class GameController implements GameControllerInterface
     public function addInformationWithLink(string $msg, string $link, bool $override = false): void
     {
         if ($override) {
-            $this->gameInformations = array();
+            $this->gameInformations = [];
         }
         $notification = new Notification();
         $notification->setText($msg);
@@ -244,7 +244,7 @@ final class GameController implements GameControllerInterface
     public function addInformation(string $msg, bool $override = false): void
     {
         if ($override) {
-            $this->gameInformations = array();
+            $this->gameInformations = [];
         }
         $notification = new Notification();
         $notification->setText($msg);
@@ -266,7 +266,7 @@ final class GameController implements GameControllerInterface
 
     public function addInformationMergeDown(array $info): void
     {
-        $notificationArray = array();
+        $notificationArray = [];
         foreach ($info as $value) {
             $notification = new Notification();
             $notification->setText($value);
@@ -287,12 +287,11 @@ final class GameController implements GameControllerInterface
         $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
         ?string $href = null
     ): void {
-
         if ($sender_id === $recipient_id) {
             return;
         }
 
-        $textOnlyArray = array();
+        $textOnlyArray = [];
         foreach ($this->getInformation() as $value) {
             $textOnlyArray[] = $value->getText();
         }
@@ -467,7 +466,8 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    public function getGameRequestId(): string {
+    public function getGameRequestId(): string
+    {
         return $this->getGameRequest()->getRequestId();
     }
 
@@ -520,7 +520,6 @@ final class GameController implements GameControllerInterface
             try {
                 $this->executeCallback($actions, $gameRequest);
             } catch (SanityCheckException $e) {
-
                 $gameRequest->addError($e);
             }
             $actionMs = hrtime(true) - $startTime;
@@ -690,7 +689,6 @@ final class GameController implements GameControllerInterface
     {
         foreach ($actions as $actionIdentifier => $actionController) {
             if (request::indString($actionIdentifier)) {
-
                 $gameRequest->setAction($actionIdentifier);
 
                 if ($actionController->performSessionCheck() === true && !request::isPost()) {
@@ -714,7 +712,6 @@ final class GameController implements GameControllerInterface
     private function executeView(array $views, GameRequestInterface $gameRequest): void
     {
         foreach ($views as $viewIdentifier => $config) {
-
             if (request::indString($viewIdentifier)) {
                 $gameRequest->setView($viewIdentifier);
 
@@ -763,7 +760,7 @@ final class GameController implements GameControllerInterface
         return [
             'executionTime' => $this->benchmark->getTime(),
             'memoryUsage' => $this->benchmark->getMemoryUsage(),
-            'memoryPeakUsage' => $this->benchmark->getMemoryPeak()
+            'memoryPeakUsage' => $this->benchmark->getMemoryPeak(),
         ];
     }
 
@@ -771,13 +768,13 @@ final class GameController implements GameControllerInterface
     {
         return [
             ContactListModeEnum::CONTACT_FRIEND => [
-                'mode' => ContactListModeEnum::CONTACT_FRIEND, 'name' => _('Freund')
+                'mode' => ContactListModeEnum::CONTACT_FRIEND, 'name' => _('Freund'),
             ],
             ContactListModeEnum::CONTACT_ENEMY => [
-                'mode' => ContactListModeEnum::CONTACT_ENEMY, 'name' => _('Feind')
+                'mode' => ContactListModeEnum::CONTACT_ENEMY, 'name' => _('Feind'),
             ],
             ContactListModeEnum::CONTACT_NEUTRAL => [
-                'mode' => ContactListModeEnum::CONTACT_NEUTRAL, 'name' => _('Neutral')
+                'mode' => ContactListModeEnum::CONTACT_NEUTRAL, 'name' => _('Neutral'),
             ],
         ];
     }

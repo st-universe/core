@@ -12,12 +12,12 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenuPayment implements ViewControllerInterface
 {
@@ -99,7 +99,6 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         if (
             !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
         ) {
-
             $game->setTemplateVar(
                 'DOCKED_SHIPS_FOR_LICENSE',
                 $this->shipRepository->getWithTradeLicensePayment(

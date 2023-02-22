@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\Index;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\SessionStringRepository")
@@ -80,21 +80,25 @@ class SessionString implements SessionStringInterface
         return $this;
     }
 
-    public function getSessionString(): string {
+    public function getSessionString(): string
+    {
         return $this->sess_string;
     }
 
-    public function setSessionString(string $sessionString): SessionStringInterface {
+    public function setSessionString(string $sessionString): SessionStringInterface
+    {
         $this->sess_string = $sessionString;
 
         return $this;
     }
 
-    public function getDate(): DateTimeInterface {
+    public function getDate(): DateTimeInterface
+    {
         return $this->date;
     }
 
-    public function setDate(DateTimeInterface $date): SessionStringInterface {
+    public function setDate(DateTimeInterface $date): SessionStringInterface
+    {
         $this->date = $date;
 
         return $this;

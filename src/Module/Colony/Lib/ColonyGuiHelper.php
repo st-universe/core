@@ -55,7 +55,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
     {
         $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
         $width = 360;
-        $bars = array();
+        $bars = [];
         $epsBar = [];
         if ($energyProduction < 0) {
             $prod = abs($energyProduction);
@@ -166,7 +166,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         ColonyInterface $colony
     ): array {
         $shieldBar = [];
-        $bars = array();
+        $bars = [];
         $width = 360;
 
         $maxShields = $colonyShieldingManager->getMaxShielding();

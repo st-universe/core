@@ -18,7 +18,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ResearchRepository extends EntityRepository implements ResearchRepositoryInterface
 {
-
     public function getAvailableResearch(int $userId): array
     {
         return $this->getEntityManager()
@@ -71,7 +70,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         )->setParameters([
             'userId' => $user,
             'activeState' => 0,
-            'colonyType' => $colonyType
+            'colonyType' => $colonyType,
         ])->getSingleScalarResult();
     }
 
@@ -93,7 +92,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
             )
             ->setParameters([
                 'researchId' => $researchId,
-                'modeExclude' => ResearchEnum::RESEARCH_MODE_EXCLUDE
+                'modeExclude' => ResearchEnum::RESEARCH_MODE_EXCLUDE,
             ])
             ->getResult();
     }

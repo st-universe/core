@@ -7,5 +7,5 @@ namespace Stu\Component\Station;
 use function DI\autowire;
 
 return [
-    StationUtilityInterface::class => autowire(StationUtility::class)
+    StationUtilityInterface::class => autowire(StationUtility::class),
 ];

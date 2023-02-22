@@ -10,11 +10,13 @@ final class DatabaseEntryRequest implements DatabaseEntryRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getCategoryId(): int {
+    public function getCategoryId(): int
+    {
         return $this->queryParameter('cat')->int()->required();
     }
 
-    public function getEntryId(): int {
+    public function getEntryId(): int
+    {
         return $this->queryParameter('ent')->int()->required();
     }
 }

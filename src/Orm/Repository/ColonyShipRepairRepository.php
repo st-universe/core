@@ -14,7 +14,6 @@ use Stu\Orm\Entity\ColonyShipRepairInterface;
  */
 final class ColonyShipRepairRepository extends EntityRepository implements ColonyShipRepairRepositoryInterface
 {
-
     public function prototype(): ColonyShipRepairInterface
     {
         return new ColonyShipRepair();
@@ -24,14 +23,14 @@ final class ColonyShipRepairRepository extends EntityRepository implements Colon
     {
         return $this->findBy([
             'colony_id' => $colonyId,
-            'field_id' => $fieldId
+            'field_id' => $fieldId,
         ], ['id' => 'asc']);
     }
 
     public function getByShip(int $shipId): ?ColonyShipRepairInterface
     {
         return $this->findOneBy([
-            'ship_id' => $shipId
+            'ship_id' => $shipId,
         ]);
     }
 

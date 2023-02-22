@@ -8,26 +8,26 @@ use Exception;
 use request;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
-use Stu\Component\Station\StationUtilityInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManageShips implements ActionControllerInterface
 {
@@ -118,7 +118,7 @@ final class ManageShips implements ActionControllerInterface
             $game->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
         }
-        $msg = array();
+        $msg = [];
         $batt = request::postArrayFatal('batt');
         $man = request::postArray('man');
         $unman = request::postArray('unman');
@@ -174,7 +174,6 @@ final class ManageShips implements ActionControllerInterface
                         $load
                     );
                     if ($shipobj->getUser() !== $user) {
-
                         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $shipobj->getId());
 
                         $this->privateMessageSender->send(
@@ -284,13 +283,13 @@ final class ManageShips implements ActionControllerInterface
                 }
                 try {
                     if ($count < 0) {
-                        throw new Exception;
+                        throw new Exception();
                     }
                     if ($count == $shipobj->getTorpedoCount()) {
-                        throw new Exception;
+                        throw new Exception();
                     }
                     if ($shipobj->getUser() !== $user && $count <= $shipobj->getTorpedoCount()) {
-                        throw new Exception;
+                        throw new Exception();
                     }
 
                     if ($shipobj->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
@@ -303,7 +302,7 @@ final class ManageShips implements ActionControllerInterface
                         $shipobj->getTorpedoCount() == 0 && (!isset($torp_type[$shipobj->getId()]) ||
                             !array_key_exists($torp_type[$shipobj->getId()], $possibleTorpedoTypes))
                     ) {
-                        throw new Exception;
+                        throw new Exception();
                     }
                     if ($count > $shipobj->getMaxTorpedos()) {
                         $count = $shipobj->getMaxTorpedos();
@@ -353,7 +352,7 @@ final class ManageShips implements ActionControllerInterface
                         $type = (int) $torp_type[$shipobj->getId()];
                         $torp_obj = $this->torpedoTypeRepository->find($type);
                         if (!$storage->containsKey($torp_obj->getCommodityId())) {
-                            throw new Exception;
+                            throw new Exception();
                         }
                         if ($count > $storage[$torp_obj->getCommodityId()]->getAmount()) {
                             $count = $storage[$torp_obj->getCommodityId()]->getAmount();

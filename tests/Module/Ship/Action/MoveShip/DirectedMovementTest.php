@@ -133,7 +133,8 @@ class DirectedMovementTest extends StuTestCase
         );
     }
 
-    public function testHandleEndsIfDestroyed(): void {
+    public function testHandleEndsIfDestroyed(): void
+    {
         $userId = 666;
         $shipId = 42;
         $message = 'some-message';
@@ -212,7 +213,8 @@ class DirectedMovementTest extends StuTestCase
         );
     }
 
-    public function testHandleMovesWithCoordinatesFromRequest(): void {
+    public function testHandleMovesWithCoordinatesFromRequest(): void
+    {
         $userId = 666;
         $shipId = 42;
         $message = 'some-message';

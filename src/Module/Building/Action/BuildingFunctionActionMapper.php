@@ -41,7 +41,7 @@ final class BuildingFunctionActionMapper implements BuildingFunctionActionMapper
             BuildingEnum::BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL3 => ModuleFab::class,
             BuildingEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL1 => ModuleFab::class,
             BuildingEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL2 => ModuleFab::class,
-            BuildingEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL3  => ModuleFab::class
+            BuildingEnum::BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL3  => ModuleFab::class,
         ];
 
         $handler = $map[$buildingFunctionId] ?? null;

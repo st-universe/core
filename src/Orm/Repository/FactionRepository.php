@@ -17,7 +17,7 @@ final class FactionRepository extends EntityRepository implements FactionReposit
     public function getByChooseable(bool $chooseable): array
     {
         return $this->findBy([
-            'chooseable' => $chooseable
+            'chooseable' => $chooseable,
         ]);
     }
 
@@ -39,7 +39,7 @@ final class FactionRepository extends EntityRepository implements FactionReposit
             )
             ->setParameters([
                 'chooseable' => true,
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'firstUserId' => UserEnum::USER_FIRST_ID,
             ])
             ->getResult();
     }

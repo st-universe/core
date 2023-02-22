@@ -6,7 +6,6 @@ namespace Stu\Component\Database;
 
 final class DatabaseEntryTypeEnum
 {
-
     /**
      * @var int
      */

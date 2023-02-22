@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
-use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -23,7 +23,7 @@ final class MessageFolderFragment implements RenderFragmentInterface
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageUiFactoryInterface $privateMessageUiFactory
-    ){
+    ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->commUiFactory = $privateMessageUiFactory;
     }
@@ -40,7 +40,7 @@ final class MessageFolderFragment implements RenderFragmentInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
         ];
         $folder = [];
 

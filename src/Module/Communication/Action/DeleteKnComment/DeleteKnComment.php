@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeleteKnComment;
 
+use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 

@@ -34,7 +34,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         return $this->findOneBy([
             'systems_id' => $starSystemId,
             'sx' => $sx,
-            'sy' => $sy
+            'sy' => $sy,
         ]);
     }
 
@@ -61,7 +61,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 'startSx' => $startSx,
                 'endSx' => $endSx,
                 'startSy' => $startSy,
-                'endSy' => $endSy
+                'endSy' => $endSy,
             ])
             ->getResult();
     }
@@ -93,7 +93,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             )
             ->setParameters([
                 'systemId' => $starSystemId,
-                'noOne' => GameEnum::USER_NOONE
+                'noOne' => GameEnum::USER_NOONE,
             ])
             ->getResult();
 
@@ -118,7 +118,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->setParameters([
                 'systemId' => $starSystemId,
                 'ids' => count($result) > 0 ? $result : [0],
-                'theLimit' => AstronomicalMappingEnum::MEASUREMENT_COUNT - count($result)
+                'theLimit' => AstronomicalMappingEnum::MEASUREMENT_COUNT - count($result),
             ])
             ->getResult();
 
@@ -140,7 +140,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 )
                 ->setParameters([
                     'systemId' => $starSystemId,
-                    'theLimit' => AstronomicalMappingEnum::MEASUREMENT_COUNT - count($result)
+                    'theLimit' => AstronomicalMappingEnum::MEASUREMENT_COUNT - count($result),
                 ])
                 ->getResult();
 
@@ -178,7 +178,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ->setParameters([
                 'cx' => $cx,
                 'cy' => $cy,
-                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             ])
             ->getResult();
     }

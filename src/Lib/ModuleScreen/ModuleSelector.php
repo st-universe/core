@@ -19,7 +19,6 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 class ModuleSelector implements ModuleSelectorInterface
 {
-
     private $moduleType;
     private $rump;
     private $userId;

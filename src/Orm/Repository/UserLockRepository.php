@@ -22,7 +22,7 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
                 UserLock::class
             )
         )->setParameters([
-            'userId' => $userId
+            'userId' => $userId,
         ])
             ->setMaxResults(1)
             ->getOneOrNullResult();

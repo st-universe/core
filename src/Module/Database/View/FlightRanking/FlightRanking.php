@@ -31,12 +31,12 @@ final class FlightRanking implements ViewControllerInterface
         $game->setNavigation([
             [
                 'url' => 'database.php',
-                'title' => 'Datenbank'
+                'title' => 'Datenbank',
             ],
             [
                 'url' => sprintf('database.php?%s=1', static::VIEW_IDENTIFIER),
-                'title' => 'Die Top 10 der Vielflieger'
-            ]
+                'title' => 'Die Top 10 der Vielflieger',
+            ],
         ]);
         $game->setPageTitle('/ Datenbank / Die Top 10 der Vielflieger');
         $game->showMacro('html/database.xhtml/top_flights_user');

@@ -41,7 +41,7 @@ final class PlayerRelationDeterminator implements PlayerRelationDeterminatorInte
                 [
                     AllianceEnum::ALLIANCE_RELATION_FRIENDS,
                     AllianceEnum::ALLIANCE_RELATION_ALLIED,
-                    AllianceEnum::ALLIANCE_RELATION_VASSAL
+                    AllianceEnum::ALLIANCE_RELATION_VASSAL,
                 ],
                 $otherUserAlliance->getId(),
                 $alliance->getId()

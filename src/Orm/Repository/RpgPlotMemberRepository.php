@@ -18,7 +18,7 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
     {
         return $this->findOneBy([
             'plot_id' => $plotId,
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
@@ -45,14 +45,14 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
     public function getByUser(UserInterface $user): array
     {
         return $this->findBy([
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
     public function getByPlot(int $plotId): array
     {
         return $this->findBy([
-            'plot_id' => $plotId
+            'plot_id' => $plotId,
         ]);
     }
 }

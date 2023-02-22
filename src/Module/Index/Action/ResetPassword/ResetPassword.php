@@ -8,13 +8,12 @@ use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
-use Stu\Exception\InvalidParamException;
 use Noodlehaus\ConfigInterface;
+use Stu\Exception\InvalidParamException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use Stu\Orm\Repository\UserRepositoryInterface;
-
 
 final class ResetPassword implements ActionControllerInterface
 {
@@ -47,7 +46,7 @@ final class ResetPassword implements ActionControllerInterface
         $user = $this->userRepository->getByResetToken($token);
 
         if ($user === null) {
-            throw new InvalidParamException;
+            throw new InvalidParamException();
         }
         $password = $this->passwordGenerator->generatePassword();
 
@@ -60,11 +59,11 @@ final class ResetPassword implements ActionControllerInterface
         $game->addInformation(_('Es wurde ein neues Passwort generiert und an die eMail-Adresse geschickt'));
 
         $body = <<<EOT
-        Hallo.\n\n
-        Du kannst Dich ab sofort mit folgendem Passwort in Star Trek Universe einloggen: %s\n\n
-        Das Star Trek Universe Team\n
-        %s,
-        EOT;
+            Hallo.\n\n
+            Du kannst Dich ab sofort mit folgendem Passwort in Star Trek Universe einloggen: %s\n\n
+            Das Star Trek Universe Team\n
+            %s,
+            EOT;
 
         $mail = new Message();
         $mail->addTo($user->getEmail());

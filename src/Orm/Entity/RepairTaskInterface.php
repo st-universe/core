@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Entity\UserInterface;
-
 interface RepairTaskInterface
 {
     public function getId(): int;

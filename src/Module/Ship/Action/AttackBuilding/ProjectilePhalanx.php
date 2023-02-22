@@ -10,7 +10,6 @@ use Stu\Orm\Entity\ModuleInterface;
 
 final class ProjectilePhalanx
 {
-
     private ColonyInterface $colony;
 
     private ModuleInterface $module;

@@ -28,5 +28,4 @@ final class SaveNoteRequest implements SaveNoteRequestInterface
             $this->queryParameter('text')->string()->trim()->defaultsToIfEmpty('')
         );
     }
-
 }

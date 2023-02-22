@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\SwitchContactMode;
 
-use Stu\Module\Message\Lib\ContactListModeEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\ContactListModeEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\View\ShowContactMode\ShowContactMode;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 

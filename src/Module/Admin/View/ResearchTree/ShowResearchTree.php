@@ -43,7 +43,7 @@ final class ShowResearchTree implements ViewControllerInterface
 
         $dependencies = $this->researchDependencyRepository->getByMode([
             ResearchEnum::RESEARCH_MODE_REQUIRE,
-            ResearchEnum::RESEARCH_MODE_REQUIRE_SOME
+            ResearchEnum::RESEARCH_MODE_REQUIRE_SOME,
         ]);
         $excludes = $this->researchDependencyRepository->getByMode([ResearchEnum::RESEARCH_MODE_EXCLUDE]);
 
@@ -80,6 +80,6 @@ final class ShowResearchTree implements ViewControllerInterface
         );
         $game->setTemplateFile('html/admin/tree.xhtml');
         $game->setPageTitle(_('Forschungsbaum'));
-        $game->setTemplateVar('TREE',   $graphviz->createImageHtml($graph));
+        $game->setTemplateVar('TREE', $graphviz->createImageHtml($graph));
     }
 }

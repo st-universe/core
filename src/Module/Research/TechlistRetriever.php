@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Research\ResearchEnum;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -60,7 +59,6 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
         // calculate possible research items
         foreach ($result as $obj) {
-
             // check for existent user award
             if ($obj->getNeededAwardId() !== null) {
                 if (!$user->hasAward($obj->getNeededAwardId())) {
@@ -82,10 +80,10 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                 $list_result[$key] = $obj;
                 continue;
             }
-            $grouped_list = array();
+            $grouped_list = [];
             foreach ($dependencies[$key] as $dependency) {
                 if (!isset($grouped_list[$dependency->getMode()])) {
-                    $grouped_list[$dependency->getMode()] = array();
+                    $grouped_list[$dependency->getMode()] = [];
                 }
                 if ($dependency->getMode() != ResearchEnum::RESEARCH_MODE_EXCLUDE) {
                     $grouped_list[$dependency->getMode()][] = $dependency;

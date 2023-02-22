@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -42,12 +41,12 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
 
         if ($ship->getTorpedoStorage() === null && $type !== null) {
             $this->createTorpedoStorage($ship, $changeAmount, $type);
-        } else if ($ship->getTorpedoStorage()->getStorage()->getAmount() + $changeAmount === 0) {
+        } elseif ($ship->getTorpedoStorage()->getStorage()->getAmount() + $changeAmount === 0) {
             $this->loggerUtil->log('clear');
             $this->clearTorpedoStorage($wrapper);
         } else {
             $storage = $ship->getTorpedoStorage()->getStorage();
-            $this->loggerUtil->log(sprintf('change, current: %d, change: %d',  $storage->getAmount(), $changeAmount));
+            $this->loggerUtil->log(sprintf('change, current: %d, change: %d', $storage->getAmount(), $changeAmount));
             $storage->setAmount($storage->getAmount() + $changeAmount);
             $this->storageRepository->save($storage);
         }

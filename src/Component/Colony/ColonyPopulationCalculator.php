@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Colony;
 
 use Stu\Component\Faction\FactionEnum;
-use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
@@ -43,9 +42,9 @@ final class ColonyPopulationCalculator implements ColonyPopulationCalculatorInte
             min(
                 10 + max(
                     ($this->getPositiveEffectPrimary() - (4 * max(
-                                0,
-                                $this->getNegativeEffect() - $this->getPositiveEffectSecondary()
-                            ))),
+                        0,
+                        $this->getNegativeEffect() - $this->getPositiveEffectSecondary()
+                    ))),
                     0
                 ),
                 $this->colony->getWorkers()

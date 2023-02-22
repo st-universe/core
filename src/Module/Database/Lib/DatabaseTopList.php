@@ -13,7 +13,7 @@ abstract class DatabaseTopList
 
     private UserRepositoryInterface $userRepository;
 
-    function __construct(
+    public function __construct(
         UserRepositoryInterface $userRepository,
         int $user_id
     ) {

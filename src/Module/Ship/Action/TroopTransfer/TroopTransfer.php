@@ -163,7 +163,6 @@ final class TroopTransfer implements ActionControllerInterface
                     $amount = $this->transferFromColony($requestedTransferCount, $ship, $target, $game);
                 }
             } else {
-
                 $this->loggerUtil->log('A');
                 $isUplinkSituation = false;
                 $ownCrewOnTarget = $this->transferUtility->ownCrewOnTarget($user, $target);
@@ -384,7 +383,6 @@ final class TroopTransfer implements ActionControllerInterface
         }
 
         if ($amount > 0 && $isUplinkSituation) {
-
             //no foreigners left, shut down uplink
             if ($this->transferUtility->foreignerCount($target) === 0) {
                 $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_OFF);

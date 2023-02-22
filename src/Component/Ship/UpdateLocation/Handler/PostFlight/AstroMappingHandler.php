@@ -58,16 +58,16 @@ final class AstroMappingHandler extends AbstractUpdateLocationHandler implements
             if ($astroEntry->getStarsystemMap1() === $currentField) {
                 $astroEntry->setStarsystemMap1(null);
                 $this->addMessageInternal(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap2() === $currentField) {
+            } elseif ($astroEntry->getStarsystemMap2() === $currentField) {
                 $astroEntry->setStarsystemMap2(null);
                 $this->addMessageInternal(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap3() === $currentField) {
+            } elseif ($astroEntry->getStarsystemMap3() === $currentField) {
                 $astroEntry->setStarsystemMap3(null);
                 $this->addMessageInternal(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap4() === $currentField) {
+            } elseif ($astroEntry->getStarsystemMap4() === $currentField) {
                 $astroEntry->setStarsystemMap4(null);
                 $this->addMessageInternal(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap5() === $currentField) {
+            } elseif ($astroEntry->getStarsystemMap5() === $currentField) {
                 $astroEntry->setStarsystemMap5(null);
                 $this->addMessageInternal(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
             }

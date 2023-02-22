@@ -14,6 +14,6 @@ final class LoggerEnum
     public const LEVEL_METHODS = [
         self::LEVEL_INFO => 'info',
         self::LEVEL_WARNING => 'warning',
-        self::LEVEL_ERROR => 'error'
+        self::LEVEL_ERROR => 'error',
     ];
 }

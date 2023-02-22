@@ -7,7 +7,6 @@ namespace Stu\Module\Config\Model;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use PHPUnit\Framework\MockObject\MockObject;
-use Stu\Module\Config\Model\AbstractSettings;
 use Stu\Module\Config\StuConfigException;
 use Stu\StuTestCase;
 

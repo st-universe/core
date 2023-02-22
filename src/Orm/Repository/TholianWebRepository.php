@@ -49,7 +49,7 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
                 $starSystemMap === null ? 'map_id' : 'starsystem_map_id',
             )
         )->setParameters([
-            'mapId' => $ship->getCurrentMapField()->getId()
+            'mapId' => $ship->getCurrentMapField()->getId(),
         ])->getOneOrNullResult();
     }
 
@@ -64,7 +64,7 @@ final class TholianWebRepository extends EntityRepository implements TholianWebR
                 )
             )
             ->setParameters([
-                'time' => time()
+                'time' => time(),
             ])
             ->getResult();
     }

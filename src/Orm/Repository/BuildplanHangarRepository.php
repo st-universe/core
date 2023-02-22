@@ -13,9 +13,10 @@ use Stu\Orm\Entity\BuildplanHangarInterface;
  */
 final class BuildplanHangarRepository extends EntityRepository implements BuildplanHangarRepositoryInterface
 {
-    public function getByRump(int $rumpId): ?BuildplanHangarInterface {
+    public function getByRump(int $rumpId): ?BuildplanHangarInterface
+    {
         return $this->findOneBy([
-            'rump_id' => $rumpId
+            'rump_id' => $rumpId,
         ]);
     }
 }

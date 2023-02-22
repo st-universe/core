@@ -6,5 +6,4 @@ namespace Stu\Orm\Entity;
 
 interface PlanetCommodityInterface
 {
-
 }

@@ -32,14 +32,14 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
     public function getAmountByBoard(int $boardId): int
     {
         return $this->count([
-            'board_id' => $boardId
+            'board_id' => $boardId,
         ]);
     }
 
     public function getAmountByTopic(int $topicId): int
     {
         return $this->count([
-            'topic_id' => $topicId
+            'topic_id' => $topicId,
         ]);
     }
 

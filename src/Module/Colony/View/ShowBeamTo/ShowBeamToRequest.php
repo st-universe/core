@@ -19,5 +19,4 @@ final class ShowBeamToRequest implements ShowBeamToRequestInterface
     {
         return $this->queryParameter('target')->int()->required();
     }
-
 }

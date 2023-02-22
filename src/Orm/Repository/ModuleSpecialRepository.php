@@ -15,7 +15,7 @@ final class ModuleSpecialRepository extends EntityRepository implements ModuleSp
     public function getByModule(int $moduleId): array
     {
         return $this->findBy([
-            'module_id' => $moduleId
+            'module_id' => $moduleId,
         ]);
     }
 }

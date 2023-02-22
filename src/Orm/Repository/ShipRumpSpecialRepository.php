@@ -15,7 +15,7 @@ final class ShipRumpSpecialRepository extends EntityRepository implements ShipRu
     public function getByShipRump(int $shipRumpId): array
     {
         return $this->findBy([
-            'rumps_id' => $shipRumpId
+            'rumps_id' => $shipRumpId,
         ]);
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\DatabaseEntry;
 
+use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Exception\AccessViolation;
-use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
@@ -23,7 +23,6 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_ENTRY';
 
     private DatabaseEntryRequestInterface $databaseEntryRequest;
@@ -145,7 +144,7 @@ final class DatabaseEntry implements ViewControllerInterface
                 foreach ($starSystem->getFields() as $obj) {
                     $fields['fields'][$obj->getSY()][] = [
                         'map' => $obj,
-                        'showPm' => $userHasColonyInSystem && $this->showPmHref($obj, $game->getUser())
+                        'showPm' => $userHasColonyInSystem && $this->showPmHref($obj, $game->getUser()),
                     ];
                 }
                 $fields['xaxis'] = range(1, $starSystem->getMaxX());

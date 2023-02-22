@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony;
 
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManager;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+
 use function DI\autowire;
 
 return [

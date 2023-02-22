@@ -12,5 +12,5 @@ use function DI\autowire;
 return [
     CreateUserAwardInterface::class => autowire(CreateUserAward::class),
     'DATABASE_ACTIONS' => [],
-    'DATABASE_VIEWS' => []
+    'DATABASE_VIEWS' => [],
 ];

@@ -69,7 +69,6 @@ final class CreateMissingUserWards implements ActionControllerInterface
         $award = $category->getAward();
 
         if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId())) {
-
             $this->createUserAward->createAwardForUser($user, $award);
         }
     }

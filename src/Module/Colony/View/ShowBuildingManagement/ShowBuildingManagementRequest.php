@@ -14,5 +14,4 @@ final class ShowBuildingManagementRequest implements ShowBuildingManagementReque
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

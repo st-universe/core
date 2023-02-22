@@ -31,7 +31,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             )
             ->setParameters([
                 'userId' => $userId,
-                'buildingFunction' => $buildingFunction
+                'buildingFunction' => $buildingFunction,
             ])
             ->getResult();
     }
@@ -52,7 +52,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         return $this->findOneBy([
             'user_id' => $userId,
             'rump_id' => $shipRumpId,
-            'signature' => $signature
+            'signature' => $signature,
         ]);
     }
 
@@ -70,7 +70,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
                 )
             )
             ->setParameters([
-                'commodityId' => $commodityId
+                'commodityId' => $commodityId,
             ])
             ->getOneOrNullResult();
     }
@@ -95,7 +95,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             )
             ->setParameters([
                 'category' => ShipRumpEnum::SHIP_CATEGORY_STATION,
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getResult();
     }
@@ -117,7 +117,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             )
             ->setParameters([
                 'category' => ShipRumpEnum::SHIP_CATEGORY_STATION,
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getResult();
     }
@@ -146,7 +146,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
     public function getByUser(int $userId): array
     {
         return $this->findBy([
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
@@ -154,7 +154,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
     {
         return $this->findOneBy([
             'user_id' => $userId,
-            'name' => $name
+            'name' => $name,
         ]);
     }
 }

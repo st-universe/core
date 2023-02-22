@@ -12,7 +12,8 @@ final class ShipLSSModeEnum
 
 
 
-    public static function getDescription(int $lssMode): string {
+    public static function getDescription(int $lssMode): string
+    {
         switch ($lssMode) {
             case ShipLSSModeEnum::LSS_NORMAL:
                 return _("Territorialansicht deaktivieren");

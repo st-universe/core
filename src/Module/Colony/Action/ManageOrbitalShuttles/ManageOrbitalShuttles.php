@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ManageOrbitalShuttles;
 
 use request;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\Lib\ShuttleManagementItem;
+use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ManageOrbitalShuttles implements ActionControllerInterface
 {

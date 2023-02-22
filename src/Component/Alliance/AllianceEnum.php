@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
-use Stu\Orm\Entity\AllianceRelationInterface;
-
 final class AllianceEnum
 {
-
     /**
      * @var int
      */
@@ -66,7 +63,7 @@ final class AllianceEnum
         AllianceEnum::ALLIANCE_RELATION_FRIENDS,
         AllianceEnum::ALLIANCE_RELATION_ALLIED,
         AllianceEnum::ALLIANCE_RELATION_TRADE,
-        AllianceEnum::ALLIANCE_RELATION_VASSAL
+        AllianceEnum::ALLIANCE_RELATION_VASSAL,
     ];
 
     public static function relationTypeToColor(

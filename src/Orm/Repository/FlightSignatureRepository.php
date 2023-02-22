@@ -63,7 +63,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 'sx' => $colony->getSx(),
                 'sy' => $colony->getSy(),
                 'systemsId' => $colony->getSystem()->getId(),
-                'ignoreId' => $colony->getUserId()
+                'ignoreId' => $colony->getUserId(),
             ])
             ->getSingleScalarResult();
     }
@@ -85,7 +85,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->setParameters([
                 'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
                 'fieldId' => $field->getId(),
-                'ignoreId' => $ignoreId
+                'ignoreId' => $ignoreId,
             ])
             ->getResult();
     }
@@ -135,11 +135,11 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     {
         $q = $this->getEntityManager()
             ->createQuery(
-            sprintf(
-                'DELETE FROM %s fs WHERE fs.time < :maxAge',
-                FlightSignature::class
-            )
-        );
+                sprintf(
+                    'DELETE FROM %s fs WHERE fs.time < :maxAge',
+                    FlightSignature::class
+                )
+            );
         $q->setParameter('maxAge', time() - $threshold);
         $q->execute();
     }
@@ -171,7 +171,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             )
             ->setParameters([
                 'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'firstUserId' => UserEnum::USER_FIRST_ID,
             ])
             ->getResult();
     }

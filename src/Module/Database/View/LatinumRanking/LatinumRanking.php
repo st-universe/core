@@ -35,12 +35,12 @@ final class LatinumRanking implements ViewControllerInterface
         $game->setNavigation([
             [
                 'url' => 'database.php',
-                'title' => 'Datenbank'
+                'title' => 'Datenbank',
             ],
             [
                 'url' => sprintf('database.php?%s=1', static::VIEW_IDENTIFIER),
-                'title' => 'Die 10 Söhne des Nagus'
-            ]
+                'title' => 'Die 10 Söhne des Nagus',
+            ],
         ]);
         $game->setPageTitle('/ Datenbank / Die 10 Söhne des Nagus');
         $game->showMacro('html/database.xhtml/top_lat_user');

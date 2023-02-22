@@ -39,12 +39,12 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
         $user->setPasswordToken($token);
 
         $body = <<<EOT
-        Hallo\n\n
-        Du hast eine Accountlöschung in Star Trek Universe angefordert.\n\n
-        Bitte bestätige die Löschung mittels Klick auf folgenden Link:\n
-        %s/?CONFIRM_ACCOUNT_DELETION=1&token=%s\n
-        Das STU-Team\n\n,
-        EOT;
+            Hallo\n\n
+            Du hast eine Accountlöschung in Star Trek Universe angefordert.\n\n
+            Bitte bestätige die Löschung mittels Klick auf folgenden Link:\n
+            %s/?CONFIRM_ACCOUNT_DELETION=1&token=%s\n
+            Das STU-Team\n\n,
+            EOT;
 
         $mail = new Message();
         $mail->addTo($user->getEmail());

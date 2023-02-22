@@ -15,7 +15,7 @@ final class ModuleCostRepository extends EntityRepository implements ModuleCostR
     public function getByModule(int $moduleId): array
     {
         return $this->findBy([
-            'module_id' => $moduleId
+            'module_id' => $moduleId,
         ]);
     }
 }

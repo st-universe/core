@@ -72,7 +72,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
                 Contact::class
             ),
         )->setParameters([
-            'userId' => $userId
+            'userId' => $userId,
         ])->execute();
     }
 
@@ -85,7 +85,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
             ),
         )->setParameters([
             'userId' => $userId,
-            'opponentId' => $opponentId
+            'opponentId' => $opponentId,
         ])->execute();
     }
 }

@@ -14,7 +14,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class PrivateMessageFolderRepository extends EntityRepository implements PrivateMessageFolderRepositoryInterface
 {
-
     public function prototype(): PrivateMessageFolderInterface
     {
         return new PrivateMessageFolder();
@@ -39,7 +38,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
     public function getOrderedByUser(int $userId): array
     {
         return $this->findBy(
-            ['user_id' => $userId, 'deleted' => NULL],
+            ['user_id' => $userId, 'deleted' => null],
             ['sort' => 'asc'],
         );
     }
@@ -48,7 +47,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
     {
         return $this->findOneBy([
             'user_id' => $userId,
-            'special' => $specialId
+            'special' => $specialId,
         ]);
     }
 
@@ -60,7 +59,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
                 PrivateMessageFolder::class
             )
         )->setParameters([
-            'user' => $user
+            'user' => $user,
         ])->getSingleScalarResult();
     }
 }

@@ -15,7 +15,7 @@ final class BuildingFunctionRepository extends EntityRepository implements Build
     public function getByBuilding(int $buildingId): array
     {
         return $this->findBy([
-            'buildings_id' => $buildingId
+            'buildings_id' => $buildingId,
         ]);
     }
 }

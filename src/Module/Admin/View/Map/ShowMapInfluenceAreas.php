@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\Map;
 
-use GdImage;
 use request;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -33,7 +32,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
     {
         $showAllyAreas = request::getInt('showAlly');
         $layer = $this->layerRepository->find(MapEnum::LAYER_ID_CRAGGANMORE);
-        $img = imagecreatetruecolor($layer->getWidth() * 15,  $layer->getHeight() * 15);
+        $img = imagecreatetruecolor($layer->getWidth() * 15, $layer->getHeight() * 15);
 
         // mapfields
         $startY = 1;
@@ -54,7 +53,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
             $border = imagecreatetruecolor(15, 15);
             if ($data->getSystem()) {
                 $col = imagecolorallocate($border, 255, 0, 0);
-            } else if ($showAllyAreas) {
+            } elseif ($showAllyAreas) {
                 $influenceArea = $data->getInfluenceArea();
                 if ($influenceArea !== null) {
                     $base = $influenceArea->getBase();
@@ -75,7 +74,6 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
                             $ret = [];
                             if (mb_eregi("[#]?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", $rgbCode, $ret)) {
-
                                 $red = hexdec($ret[1]);
 
                                 $green = hexdec($ret[2]);

@@ -11,12 +11,10 @@ use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -127,7 +125,7 @@ final class ShipRemover implements ShipRemoverInterface
         /**
          * this is buggy :(
          * throws ORMInvalidArgumentException
-         * 
+         *
          if ($ship->getRump()->isEscapePods())
          {
              $this->remove($ship);
@@ -256,7 +254,6 @@ final class ShipRemover implements ShipRemoverInterface
         //salvage offers and storage
         $storages = $this->storageRepository->getByTradePost($tradePost->getId());
         foreach ($storages as $storage) {
-
             //only 50% off all storages
             if (rand(0, 1) === 0) {
                 $this->storageRepository->delete($storage);
@@ -298,7 +295,7 @@ final class ShipRemover implements ShipRemoverInterface
         //both sides have to be cleared, foreign key violation
         if ($ship->isTractoring()) {
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
-        } else if ($ship->isTractored()) {
+        } elseif ($ship->isTractored()) {
             $this->shipSystemManager->deactivate($wrapper->getTractoringShipWrapper(), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
         }
 

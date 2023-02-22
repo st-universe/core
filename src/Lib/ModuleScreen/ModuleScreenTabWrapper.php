@@ -11,7 +11,6 @@ namespace Stu\Lib\ModuleScreen;
  */
 class ModuleScreenTabWrapper
 { #{{{
-
     private $tabs = null;
 
     /**
@@ -27,5 +26,4 @@ class ModuleScreenTabWrapper
     { #{{{
         return $this->tabs[$moduleType];
     } # }}}
-
 }

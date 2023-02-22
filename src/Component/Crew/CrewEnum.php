@@ -6,7 +6,6 @@ namespace Stu\Component\Crew;
 
 final class CrewEnum
 {
-
     /**
      * @var int
      */
@@ -62,7 +61,7 @@ final class CrewEnum
         CrewEnum::CREW_TYPE_SCIENCE,
         CrewEnum::CREW_TYPE_TECHNICAL,
         CrewEnum::CREW_TYPE_NAVIGATION,
-        CrewEnum::CREW_TYPE_CREWMAN
+        CrewEnum::CREW_TYPE_CREWMAN,
     ];
 
     public static function getDescription(?int $crewType): string

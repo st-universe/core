@@ -16,7 +16,7 @@ final class ShipRumpBuildingFunctionRepository extends EntityRepository implemen
     public function getByShipRump(ShipRumpInterface $shipRump): array
     {
         return $this->findBy([
-            'rump_id' => $shipRump
+            'rump_id' => $shipRump,
         ]);
     }
 }

@@ -28,7 +28,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
                 )
             )
             ->setParameters([
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getResult();
     }
@@ -36,7 +36,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
     public function getByColony(int $colonyId): array
     {
         return $this->findBy([
-            'colony_id' => $colonyId
+            'colony_id' => $colonyId,
         ]);
     }
 
@@ -58,7 +58,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
     ): array {
         return $this->findBy([
             'colony_id' => $colonyId,
-            'buildingfunction' => $buildingFunctions
+            'buildingfunction' => $buildingFunctions,
         ]);
     }
 

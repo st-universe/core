@@ -10,8 +10,8 @@ final class ShowNoteRequest implements ShowNoteRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getNoteId(): int {
+    public function getNoteId(): int
+    {
         return $this->queryParameter('note')->int()->required();
     }
-
 }

@@ -14,7 +14,6 @@ use Stu\Orm\Entity\UserIpTableInterface;
  */
 final class UserIpTableRepository extends EntityRepository implements UserIpTableRepositoryInterface
 {
-
     public function prototype(): UserIpTableInterface
     {
         return new UserIpTable();
@@ -32,10 +31,10 @@ final class UserIpTableRepository extends EntityRepository implements UserIpTabl
     {
         return $this->findOneBy(
             [
-                'user' => $user
+                'user' => $user,
             ],
             [
-                'id' => 'desc'
+                'id' => 'desc',
             ]
         );
     }
@@ -43,7 +42,7 @@ final class UserIpTableRepository extends EntityRepository implements UserIpTabl
     public function findBySessionId(string $sessionId): ?UserIpTableInterface
     {
         return $this->findOneBy([
-            'session' => $sessionId
+            'session' => $sessionId,
         ]);
     }
 }

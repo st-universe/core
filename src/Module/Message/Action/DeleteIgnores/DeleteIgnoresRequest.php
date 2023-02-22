@@ -10,7 +10,8 @@ final class DeleteIgnoresRequest implements DeleteIgnoresRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getIgnoreIds(): array {
+    public function getIgnoreIds(): array
+    {
         return $this->queryParameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]);
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Relations;
 
-use Stu\Exception\AccessViolation;
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\Lib\AllianceRelationItem;
 use Stu\Module\Control\GameControllerInterface;
@@ -63,7 +63,7 @@ final class Relations implements ViewControllerInterface
             AllianceEnum::ALLIANCE_RELATION_FRIENDS => _('Freundschaft'),
             AllianceEnum::ALLIANCE_RELATION_ALLIED => _('Bündnis'),
             AllianceEnum::ALLIANCE_RELATION_TRADE => _('Handelsabkommen'),
-            AllianceEnum::ALLIANCE_RELATION_VASSAL => _('Vasall')
+            AllianceEnum::ALLIANCE_RELATION_VASSAL => _('Vasall'),
         ];
 
         $game->setPageTitle(_('Diplomatie'));

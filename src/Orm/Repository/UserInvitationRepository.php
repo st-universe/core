@@ -31,14 +31,14 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
     public function getInvitationsByUser(UserInterface $user): array
     {
         return $this->findBy([
-            'user_id' => $user
+            'user_id' => $user,
         ]);
     }
 
     public function getByToken(string $token): ?UserInvitationInterface
     {
         return $this->findOneBy([
-            'token' => $token
+            'token' => $token,
         ]);
     }
 
@@ -51,7 +51,7 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
             )
         )
         ->setParameters([
-            'ttl' => $ttl
+            'ttl' => $ttl,
         ])
         ->execute();
     }

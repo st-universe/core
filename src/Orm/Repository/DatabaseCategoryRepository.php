@@ -15,7 +15,7 @@ final class DatabaseCategoryRepository extends EntityRepository implements Datab
     public function getByTypeId(int $type_id): array
     {
         return $this->findBy([
-            'type' => $type_id
+            'type' => $type_id,
         ]);
     }
 }

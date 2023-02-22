@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CreateModules;
 
-use Exception;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ModuleBuildingFunctionInterface;
-use Stu\Orm\Entity\ModuleCostInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
@@ -73,7 +71,7 @@ final class CreateModules implements ActionControllerInterface
         ) === 0) {
             return;
         }
-        $prod = array();
+        $prod = [];
 
         /** @var ModuleBuildingFunctionInterface[] $modules_av */
         $modules_av = [];

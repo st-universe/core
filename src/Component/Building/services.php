@@ -7,6 +7,7 @@ namespace Stu\Module\Building;
 use Stu\Component\Building\BuildingManager;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Building\BuildingPostAction;
+
 use function DI\autowire;
 
 return [

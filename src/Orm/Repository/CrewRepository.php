@@ -58,7 +58,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             )
             ->setParameters([
                 'user' => $user,
-                'categoryId' => $shipRumpCategoryId
+                'categoryId' => $shipRumpCategoryId,
             ])
             ->getSingleScalarResult();
     }

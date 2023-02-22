@@ -41,8 +41,9 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
             )->setParameters(
                 $search ? [
                     'typeId' => $typeId,
-                    'search' => sprintf('%%%s%%', $search)
-                ] : ['typeId' => $typeId])
+                    'search' => sprintf('%%%s%%', $search),
+                ] : ['typeId' => $typeId]
+            )
             ->setMaxResults($limit)
             ->getResult();
     }
@@ -50,7 +51,7 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
     public function getAmountByType(int $typeId): int
     {
         return $this->count([
-            'type' => $typeId
+            'type' => $typeId,
         ]);
     }
 

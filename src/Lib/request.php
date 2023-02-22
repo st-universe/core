@@ -148,7 +148,7 @@ class request
     public static function returnArray($result): array
     {
         if (!is_array($result)) {
-            return array();
+            return [];
         }
         return $result;
     }

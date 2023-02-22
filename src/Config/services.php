@@ -33,6 +33,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use Ubench;
+
 use function DI\autowire;
 
 return [

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowContactModeSwitch5;
 
-use Stu\Module\Message\View\ShowContactModeSwitch\ShowContactModeSwitchRequestInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Message\View\ShowContactModeSwitch\ShowContactModeSwitchRequestInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class ShowContactModeSwitch implements ViewControllerInterface

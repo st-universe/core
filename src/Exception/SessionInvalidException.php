@@ -6,5 +6,4 @@ namespace Stu\Exception;
 
 final class SessionInvalidException extends StuException
 {
-
 }

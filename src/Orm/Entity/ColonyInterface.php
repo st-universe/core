@@ -3,7 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Lib\ColonyProduction\ColonyProduction;
 
 interface ColonyInterface
 {

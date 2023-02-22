@@ -132,7 +132,7 @@ class LogfileAdapterTest extends StuTestCase
                             'message' => $errorMessage,
                             'file' => $error->getFile(),
                             'line' => $error->getLine(),
-                        ]
+                        ],
                     ],
                 ]
             )

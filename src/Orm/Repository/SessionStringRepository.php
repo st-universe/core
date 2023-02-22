@@ -16,7 +16,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class SessionStringRepository extends EntityRepository implements SessionStringRepositoryInterface
 {
-
     public function isValid(string $sessionString, int $userId): bool
     {
         $q = $this->getEntityManager()->createQuery(

@@ -14,7 +14,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class PrestigeLogRepository extends EntityRepository implements PrestigeLogRepositoryInterface
 {
-
     public function save(PrestigeLogInterface $log): void
     {
         $em = $this->getEntityManager();
@@ -43,7 +42,7 @@ final class PrestigeLogRepository extends EntityRepository implements PrestigeLo
                 PrestigeLog::class
             )
         )->setParameters([
-            'userId' => $user->getId()
+            'userId' => $user->getId(),
         ])->getSingleScalarResult();
     }
 
@@ -59,7 +58,7 @@ final class PrestigeLogRepository extends EntityRepository implements PrestigeLo
                 )
             )
             ->setParameters([
-                'userId' => $user->getId()
+                'userId' => $user->getId(),
             ])
             ->setMaxResults($maxResults)
             ->getResult();

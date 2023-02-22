@@ -11,12 +11,12 @@ use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -136,8 +136,8 @@ final class BuildShip implements ActionControllerInterface
 
         $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
 
-        $modules = array();
-        $sigmod = array();
+        $modules = [];
+        $sigmod = [];
         $crew_usage = $rump->getBaseCrew();
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             $module = request::postArray('mod_' . $i);

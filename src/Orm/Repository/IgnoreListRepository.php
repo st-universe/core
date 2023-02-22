@@ -53,7 +53,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
     {
         return $this->count([
             'user_id' => $userId,
-            'recipient' => $recipientId
+            'recipient' => $recipientId,
         ]) > 0;
     }
 

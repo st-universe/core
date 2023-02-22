@@ -9,29 +9,29 @@ use Stu\Module\Database\Lib\CreateDatabaseEntry;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Database\Lib\DatabaseUiFactory;
 use Stu\Module\Database\Lib\DatabaseUiFactoryInterface;
+use Stu\Module\Database\View\Category\Category;
 use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactory;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
-use Stu\Module\Database\View\UserList\UserListRequest;
-use Stu\Module\Database\View\UserList\UserListRequestInterface;
+use Stu\Module\Database\View\CommoditiesOverview\CommoditiesOverview;
+use Stu\Module\Database\View\CrewRanking\CrewRanking;
+use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequest;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequestInterface;
-use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
-use Stu\Module\Database\View\Category\Category;
-use Stu\Module\Database\View\CrewRanking\CrewRanking;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\FlightRanking\FlightRanking;
 use Stu\Module\Database\View\LatinumRanking\LatinumRanking;
-use Stu\Module\Database\View\TradePostActivity\TradePostActivity;
+use Stu\Module\Database\View\Overview\Overview;
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocations;
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRequest;
 use Stu\Module\Database\View\ShowCommoditiesLocations\ShowCommoditiesLocationsRequestInterface;
-use Stu\Module\Database\View\CommoditiesOverview\CommoditiesOverview;
-use Stu\Module\Database\View\UserList\UserList;
-use Stu\Module\Database\View\Overview\Overview;
 use Stu\Module\Database\View\ShowPrestigeLog\ShowPrestigeLog;
 use Stu\Module\Database\View\ShowStatistics\ShowStatistics;
+use Stu\Module\Database\View\TradePostActivity\TradePostActivity;
+use Stu\Module\Database\View\UserList\UserList;
+use Stu\Module\Database\View\UserList\UserListRequest;
+use Stu\Module\Database\View\UserList\UserListRequestInterface;
 
 use function DI\autowire;
 
@@ -56,7 +56,7 @@ return [
         ShowPrestigeLog::VIEW_IDENTIFIER => autowire(ShowPrestigeLog::class),
         ShowStatistics::VIEW_IDENTIFIER => autowire(ShowStatistics::class),
         TradePostActivity::VIEW_IDENTIFIER => autowire(TradePostActivity::class),
-        UserList::VIEW_IDENTIFIER => autowire(UserList::class)
+        UserList::VIEW_IDENTIFIER => autowire(UserList::class),
     ],
     DatabaseUiFactoryInterface::class => autowire(DatabaseUiFactory::class),
 ];

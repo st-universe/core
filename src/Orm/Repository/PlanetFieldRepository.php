@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Orm\Entity\Building;
-use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\BuildingCommodity;
+use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetField;
@@ -20,7 +20,6 @@ use Stu\Orm\Entity\PlanetFieldInterface;
  */
 final class PlanetFieldRepository extends EntityRepository implements PlanetFieldRepositoryInterface
 {
-
     public function prototype(): PlanetFieldInterface
     {
         return new PlanetField();
@@ -72,7 +71,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             )
         )->setParameters([
             'colonyId' => $colonyId,
-            'state' => $state
+            'state' => $state,
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -140,7 +139,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         )->setParameters([
             'colonyId' => $colonyId,
             'commodityId' => $commodityId,
-            'state' => $state
+            'state' => $state,
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -222,7 +221,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             )
             ->setParameters([
                 'colonyId' => $colonyId,
-                'buildingFunctionId' => $buildingFunctionIds
+                'buildingFunctionId' => $buildingFunctionIds,
             ])
             ->getResult();
     }
@@ -249,7 +248,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             'shieldGenerator' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR,
             'shieldBattery' => BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY,
             'generatorCapacity' => BuildingEnum::SHIELD_GENERATOR_CAPACITY,
-            'batteryCapacity' => BuildingEnum::SHIELD_BATTERY_CAPACITY
+            'batteryCapacity' => BuildingEnum::SHIELD_BATTERY_CAPACITY,
         ])->getSingleScalarResult();
     }
 

@@ -37,7 +37,7 @@ final class LogfileAdapter extends AbstractAdapter
                 'timing' => [
                     'action' => $gameRequest->getActionMs(),
                     'view' => $gameRequest->getViewMs(),
-                    'render' => $gameRequest->getRenderMs()
+                    'render' => $gameRequest->getRenderMs(),
                 ],
                 'params' => $gameRequest->getParameterArray(),
                 'sanity_errors' => array_map(

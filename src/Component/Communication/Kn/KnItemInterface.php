@@ -7,7 +7,6 @@ use Stu\Orm\Entity\UserInterface;
 
 interface KnItemInterface
 {
-
     public function getId(): int;
 
     public function getUser(): ?UserInterface;

@@ -83,7 +83,6 @@ final class ShowSensorScan implements ViewControllerInterface
         $game->setTemplateVar('ERROR', true);
 
         if ($sysid === 0) {
-
             if (
                 $cx < $station->getCx() - $station->getSensorRange()
                 || $cx > $station->getCx() + $station->getSensorRange()

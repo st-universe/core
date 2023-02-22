@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\RenameBoard;
 
 use Stu\Exception\AccessViolation;
+use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Orm\Entity\AllianceBoardInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 

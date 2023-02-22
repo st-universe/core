@@ -38,6 +38,7 @@ use Stu\Module\Index\View\ShowRegistration\ShowRegistrationRequestInterface;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPassword;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPasswordRequest;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPasswordRequestInterface;
+
 use function DI\autowire;
 
 return [
@@ -56,7 +57,7 @@ return [
         SendPassword::ACTION_IDENTIFIER => autowire(SendPassword::class),
         ResetPassword::ACTION_IDENTIFIER => autowire(ResetPassword::class),
         Logout::ACTION_IDENTIFIER => autowire(Logout::class),
-        DeletionConfirmation::ACTION_IDENTIFIER => autowire(DeletionConfirmation::class)
+        DeletionConfirmation::ACTION_IDENTIFIER => autowire(DeletionConfirmation::class),
     ],
     'INDEX_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -66,7 +67,7 @@ return [
         ShowFinishRegistration::VIEW_IDENTIFIER => autowire(ShowFinishRegistration::class),
         ShowLostPassword::VIEW_IDENTIFIER => autowire(ShowLostPassword::class),
         ShowResetPassword::VIEW_IDENTIFIER => autowire(ShowResetPassword::class),
-        ShowPartnerSites::VIEW_IDENTIFIER => autowire(ShowPartnerSites::class)
+        ShowPartnerSites::VIEW_IDENTIFIER => autowire(ShowPartnerSites::class),
     ],
     UiItemFactoryInterface::class => autowire(UiItemFactory::class),
 ];

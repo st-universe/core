@@ -12,11 +12,10 @@ use Stu\Orm\Entity\BuildingUpgradeCost;
  */
 final class BuildingUpgradeCostRepository extends EntityRepository implements BuildingUpgradeCostRepositoryInterface
 {
-
     public function getByBuildingUpgradeId(int $buildingUpgradeId): array
     {
         return $this->findBy([
-            'buildings_upgrades_id' => $buildingUpgradeId
+            'buildings_upgrades_id' => $buildingUpgradeId,
         ]);
     }
 }

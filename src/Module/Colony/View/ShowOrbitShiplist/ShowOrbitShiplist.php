@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowOrbitShiplist;
 
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
+use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ShowOrbitShiplist implements ViewControllerInterface

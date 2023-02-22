@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Station\View\ShowShipRepair;
 
 use request;
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;

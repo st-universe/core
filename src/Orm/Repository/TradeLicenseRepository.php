@@ -16,7 +16,6 @@ use Stu\Orm\Entity\TradePost;
  */
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
-
     public function prototype(): TradeLicenseInterface
     {
         return new TradeLicense();
@@ -66,7 +65,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
     public function getByTradePost(int $tradePostId): array
     {
         return $this->findBy([
-            'posts_id' => $tradePostId
+            'posts_id' => $tradePostId,
         ]);
     }
 
@@ -81,7 +80,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             )
             ->setParameters([
                 'tradePostId' => $tradePostId,
-                'actualTime' => time()
+                'actualTime' => time(),
             ])
             ->getResult();
     }
@@ -90,7 +89,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
     {
         return $this->findBy(
             [
-                'user_id' => $userId
+                'user_id' => $userId,
             ],
             ['posts_id' => 'asc']
         );
@@ -108,7 +107,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             )
             ->setParameters([
                 'userId' => $userId,
-                'actime' => $time
+                'actime' => $time,
             ])
             ->getResult();
     }
@@ -116,7 +115,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
     public function getAmountByUser(int $userId): int
     {
         return $this->count([
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
@@ -151,7 +150,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             ->setParameters([
                 'userId' => $userId,
                 'tradePostId' => $tradePostId,
-                'actualTime' => time()
+                'actualTime' => time(),
             ])
             ->getOneOrNullResult();
     }
@@ -159,7 +158,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
     public function getAmountByTradePost(int $tradePostId): int
     {
         return $this->count([
-            'posts_id' => $tradePostId
+            'posts_id' => $tradePostId,
         ]);
     }
 
@@ -180,7 +179,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
             )
             ->setParameters([
                 'userId' => $userId,
-                'tradeNetworkId' => $tradeNetworkId
+                'tradeNetworkId' => $tradeNetworkId,
             ])
             ->getSingleScalarResult() > 0;
     }
@@ -195,7 +194,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                 )
             )
             ->setParameters([
-                'threshold' => time() + TimeConstants::ONE_DAY_IN_SECONDS * $days
+                'threshold' => time() + TimeConstants::ONE_DAY_IN_SECONDS * $days,
             ])
             ->getResult();
     }
@@ -211,7 +210,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
                 )
             )
             ->setParameters([
-                'actualTime' => time()
+                'actualTime' => time(),
             ])
             ->getResult();
     }

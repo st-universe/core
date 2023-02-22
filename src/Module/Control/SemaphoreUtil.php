@@ -28,7 +28,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         return sem_get(
             $key,
             1,
-            0666,
+            0o666,
             SemaphoreConstants::AUTO_RELEASE_SEMAPHORES
         );
     }

@@ -8,10 +8,10 @@ use request;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
+use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
@@ -93,7 +93,7 @@ final class Overview implements ViewControllerInterface
             $pmNavigation[] = [
                 "page" => $i,
                 "mark" => ($i * static::PMLIMITER - static::PMLIMITER),
-                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
+                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages"),
             ];
         }
         if ($curpage + 1 != $maxpage) {

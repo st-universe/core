@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
-use request;
 use JBBCode\Parser;
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;

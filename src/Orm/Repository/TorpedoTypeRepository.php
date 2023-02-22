@@ -41,7 +41,7 @@ final class TorpedoTypeRepository extends EntityRepository implements TorpedoTyp
             )
             ->setParameters([
                 'userId' => $userId,
-                'activeState' => 0
+                'activeState' => 0,
             ])
             ->getResult();
     }

@@ -11,7 +11,7 @@ final class PlotInfo
     public $fillColor;
     public $legend;
 
-    function __construct(
+    public function __construct(
         string $method,
         string $lineColor = 'purple',
         string $fillColor = '#aa4dec@0.5',

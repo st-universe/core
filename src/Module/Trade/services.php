@@ -23,15 +23,15 @@ use Stu\Module\Trade\Action\CreateLicense\CreateLicenseRequestInterface;
 use Stu\Module\Trade\Action\CreateOffer\CreateOffer;
 use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequest;
 use Stu\Module\Trade\Action\CreateOffer\CreateOfferRequestInterface;
-use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOffer;
-use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequest;
-use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequestInterface;
 use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuction;
 use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuctionRequest;
 use Stu\Module\Trade\Action\DealsBidAuction\DealsBidAuctionRequestInterface;
 use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuction;
 use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuctionRequest;
 use Stu\Module\Trade\Action\DealsTakeAuction\DealsTakeAuctionRequestInterface;
+use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOffer;
+use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequest;
+use Stu\Module\Trade\Action\DealsTakeOffer\DealsTakeOfferRequestInterface;
 use Stu\Module\Trade\Action\TakeOffer\TakeOffer;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequest;
 use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequestInterface;
@@ -46,15 +46,15 @@ use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Module\Trade\View\ShowBasicTrade\ShowBasicTrade;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
+use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfo;
+use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequest;
+use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequestInterface;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseList;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequest;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseListRequestInterface;
 use Stu\Module\Trade\View\ShowLicenseMenu\ShowLicenseMenu;
 use Stu\Module\Trade\View\ShowLicenseMenu\ShowLicenseMenuRequest;
 use Stu\Module\Trade\View\ShowLicenseMenu\ShowLicenseMenuRequestInterface;
-use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfo;
-use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequest;
-use Stu\Module\Trade\View\ShowLicenseInfo\ShowLicenseInfoRequestInterface;
 use Stu\Module\Trade\View\ShowLottery\ShowLottery;
 use Stu\Module\Trade\View\ShowOfferCommodity\ShowOfferCommodity;
 use Stu\Module\Trade\View\ShowOfferCommodity\ShowOfferCommodityRequest;
@@ -84,6 +84,7 @@ use Stu\Module\Trade\View\ShowTradePostInfo\ShowTradePostInfoRequestInterface;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenu;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenueRequest;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenueRequestInterface;
+
 use function DI\autowire;
 
 return [
@@ -123,7 +124,7 @@ return [
         DealsTakeAuction::ACTION_IDENTIFIER => autowire(DealsTakeAuction::class),
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
         TransferCommodities::ACTION_IDENTIFIER => autowire(TransferCommodities::class),
-        BuyLotteryTickets::ACTION_IDENTIFIER => autowire(BuyLotteryTickets::class)
+        BuyLotteryTickets::ACTION_IDENTIFIER => autowire(BuyLotteryTickets::class),
     ],
     'TRADE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -146,6 +147,6 @@ return [
         ShowBasicTrade::VIEW_IDENTIFIER => autowire(ShowBasicTrade::class),
         ShowDeals::VIEW_IDENTIFIER => autowire(ShowDeals::class),
         ShowShiplist::VIEW_IDENTIFIER => autowire(ShowShiplist::class),
-        ShowLottery::VIEW_IDENTIFIER => autowire(ShowLottery::class)
+        ShowLottery::VIEW_IDENTIFIER => autowire(ShowLottery::class),
     ],
 ];

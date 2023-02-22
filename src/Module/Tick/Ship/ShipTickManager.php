@@ -395,7 +395,6 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         $wipedShipIds = [];
 
         while ($amount < $crewToQuit) {
-
             $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($userId);
 
             //if no more ships available
@@ -443,7 +442,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             GameEnum::USER_NOONE,
             $userId,
             $msg,
-            $randomShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            $randomShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
 
         //do alert red stuff
@@ -495,7 +494,6 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         foreach ($this->shipRepository->getStationConstructions() as $ship) {
             $lower = rand(5, 15);
             if ($ship->getHull() <= $lower) {
-
                 $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $ship->getSectorString());
                 $this->privateMessageSender->send(
                     GameEnum::USER_NOONE,
@@ -570,7 +568,6 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         $usedShipyards = [];
 
         foreach ($this->colonyShipRepairRepository->getMostRecentJobs($tickId) as $obj) {
-
             $ship = $obj->getShip();
             $colony = $obj->getColony();
 
@@ -617,7 +614,6 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
     private function repairShipsOnStations(): void
     {
         foreach ($this->stationShipRepairRepository->getMostRecentJobs() as $obj) {
-
             $this->loggerUtil->log('stationRepairJobId: ' . $obj->getId());
 
             $ship = $obj->getShip();
@@ -636,7 +632,6 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
 
     private function repairShipOnEntity(ShipInterface $ship, $entity, bool $isColony, bool $isRepairStationBonus): bool
     {
-
         // check for U-Mode
         if ($entity->getUser()->isVacationRequestOldEnough()) {
             return false;

@@ -37,7 +37,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
     public function getByShip(int $shipId): ?ShipInterface
     {
         return $this->findOneBy([
-            'ship_id' => $shipId
+            'ship_id' => $shipId,
         ]);
     }
 
@@ -64,7 +64,7 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
                 )
             )
             ->setParameters([
-                'actualTime' => time()
+                'actualTime' => time(),
             ])
             ->getResult();
     }

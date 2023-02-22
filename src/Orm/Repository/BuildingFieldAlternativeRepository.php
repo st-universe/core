@@ -18,7 +18,7 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
     {
         return $this->findOneBy([
             'buildings_id' => $buildingId,
-            'fieldtype' => $fieldType
+            'fieldtype' => $fieldType,
         ]);
     }
 
@@ -37,7 +37,7 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
             )
             ->setParameters([
                 'userId' => $userId,
-                'buildingId' => $buildingId
+                'buildingId' => $buildingId,
             ])
             ->getResult();
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Component\Trade\TradeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Storage;
@@ -63,7 +63,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             )
             ->setParameters([
                 'userId' => $userId,
-                'actime' => $time
+                'actime' => $time,
             ])
             ->getResult();
     }
@@ -83,7 +83,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->setParameters([
                 'userId' => $userId,
                 'actime' => time(),
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'firstUserId' => UserEnum::USER_FIRST_ID,
             ])
             ->getResult();
     }
@@ -103,7 +103,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->setParameters([
                 'userId' => $userId,
                 'actime' => time(),
-                'tradepostId' => TradeEnum::DEALS_FERG_TRADEPOST_ID
+                'tradepostId' => TradeEnum::DEALS_FERG_TRADEPOST_ID,
             ])
             ->getResult();
     }
@@ -130,7 +130,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ->setParameters([
                 'cx' => $cx,
                 'cy' => $cy,
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'firstUserId' => UserEnum::USER_FIRST_ID,
             ])
             ->getSingleResult();
     }
@@ -139,7 +139,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         int $tradePostId
     ): ?TradePostInterface {
         return $this->findOneBy([
-            'id' => $tradePostId
+            'id' => $tradePostId,
         ]);
     }
 
@@ -161,7 +161,7 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
                 )
             )
             ->setParameters([
-                'tradePostId' => $tradePostId
+                'tradePostId' => $tradePostId,
             ])
             ->getResult();
     }

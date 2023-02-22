@@ -59,12 +59,12 @@ class LatinumRankingTest extends StuTestCase
             ->with([
                 [
                     'url' => 'database.php',
-                    'title' => 'Datenbank'
+                    'title' => 'Datenbank',
                 ],
                 [
                     'url' => sprintf('database.php?%s=1', LatinumRanking::VIEW_IDENTIFIER),
-                    'title' => 'Die 10 Söhne des Nagus'
-                ]
+                    'title' => 'Die 10 Söhne des Nagus',
+                ],
             ])
             ->once();
         $game->shouldReceive('setPageTitle')
@@ -77,7 +77,7 @@ class LatinumRankingTest extends StuTestCase
             ->with('NAGUS_LIST', Mockery::on(function (Traversable $list) use ($user, $amount): bool {
                 return iterator_to_array($list) === [[
                     'user' => $user,
-                    'amount' => $amount
+                    'amount' => $amount,
                 ]];
             }))
             ->once();

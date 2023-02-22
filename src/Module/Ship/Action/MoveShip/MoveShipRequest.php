@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\MoveShip;
 
-use Exception;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class MoveShipRequest implements MoveShipRequestInterface

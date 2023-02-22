@@ -4,7 +4,6 @@ namespace Stu\Orm\Entity;
 
 interface ColonyClassResearchInterface
 {
-
     public function getId(): int;
 
     public function getResearch(): ResearchInterface;

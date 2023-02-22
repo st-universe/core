@@ -56,7 +56,6 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
     public function work(): void
     {
         foreach ($this->tholianWebRepository->getFinishedWebs() as $web) {
-
             //remove captured ships from fleet
             $this->handleFleetConstellations($web);
 
@@ -115,7 +114,8 @@ final class FinishTholianWebs implements ProcessTickHandlerInterface
                 $this->leaveFleet->leaveFleet($ship);
 
                 if (!array_key_exists($userId, $pms)) {
-                    $pms[$userId] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());;
+                    $pms[$userId] = sprintf(_('Das Energienetz in Sektor %s wurde fertiggestellt') . "\n", $ship->getSectorString());
+                    ;
                 }
 
                 $pms[$userId] .= sprintf('Die %s hat die Flotte %s verlassen' . "\n", $ship->getName(), $fleetName);

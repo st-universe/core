@@ -8,7 +8,6 @@ use Stu\Module\Communication\Lib\NewKnPostNotificatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -70,7 +69,6 @@ final class AddKnPost implements ActionControllerInterface
                 $post->setRpgPlot($plot);
             }
         } else {
-
             if (mb_strlen($title) < 6) {
                 $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
                 return;

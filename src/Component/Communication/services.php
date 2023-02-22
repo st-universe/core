@@ -10,11 +10,12 @@ use Stu\Component\Communication\Kn\KnBbCodeDefinitionSet;
 use Stu\Component\Communication\Kn\KnFactory;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
+
 use function DI\create;
 use function DI\get;
 
 return [
-    'kn_bbcode_parser' => static function (ContainerInterface $c) : Parser {
+    'kn_bbcode_parser' => static function (ContainerInterface $c): Parser {
         $parser = new Parser();
         $parser->addCodeDefinitionSet(new KnBbCodeDefinitionSet());
         return $parser;

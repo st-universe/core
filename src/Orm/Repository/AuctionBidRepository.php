@@ -13,7 +13,6 @@ use Stu\Orm\Entity\AuctionBidInterface;
  */
 final class AuctionBidRepository extends EntityRepository implements AuctionBidRepositoryInterface
 {
-
     public function prototype(): AuctionBidInterface
     {
         return new AuctionBid();

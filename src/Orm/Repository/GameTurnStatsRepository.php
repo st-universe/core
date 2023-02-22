@@ -79,7 +79,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
             )
         )->setParameters([
             'noOne' => GameEnum::USER_NOONE,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])
             ->getSingleScalarResult();
     }

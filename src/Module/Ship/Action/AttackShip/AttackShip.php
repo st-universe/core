@@ -7,13 +7,13 @@ namespace Stu\Module\Ship\Action\AttackShip;
 use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -187,7 +187,7 @@ final class AttackShip implements ActionControllerInterface
                 $ship->getUser()->getId(),
                 $recipientId,
                 $pm,
-                $isTargetBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
     }
@@ -257,7 +257,7 @@ final class AttackShip implements ActionControllerInterface
             $attacker,
             $defender,
             $fleet,
-            $isWebSituation
+            $isWebSituation,
         ];
     }
 

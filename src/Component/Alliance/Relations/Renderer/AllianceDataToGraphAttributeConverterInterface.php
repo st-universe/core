@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance\Relations\Renderer;
 
-
 use Stu\Orm\Entity\AllianceInterface;
 
 interface AllianceDataToGraphAttributeConverterInterface
 {
-
     /**
      * Renders bbcode and strip unwanted characters
      */

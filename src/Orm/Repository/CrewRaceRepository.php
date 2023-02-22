@@ -15,7 +15,7 @@ final class CrewRaceRepository extends EntityRepository implements CrewRaceRepos
     public function getByFaction(int $factionId): array
     {
         return $this->findBy([
-            'faction_id' => $factionId
+            'faction_id' => $factionId,
         ]);
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\Lib;
 
-
 use Stu\Orm\Entity\UserInterface;
 
 interface ProfileVisitorRegistrationInterface

@@ -21,9 +21,15 @@ use Stu\Module\Admin\Action\StartMirrorWorld;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTick;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequest;
 use Stu\Module\Admin\Action\Ticks\Colony\ManualColonyTickRequestInterface;
+use Stu\Module\Admin\Action\Ticks\DoColonyCorrection;
+use Stu\Module\Admin\Action\Ticks\DoManualMaintenance;
+use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
+use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
+use Stu\Module\Admin\Action\UnlockUser;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
 use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Module\Admin\View\Map\ShowMapEditor;
+use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
 use Stu\Module\Admin\View\Map\ShowMapOverall;
 use Stu\Module\Admin\View\Map\ShowSystem\ShowSystem;
 use Stu\Module\Admin\View\Map\ShowSystem\ShowSystemRequest;
@@ -31,15 +37,9 @@ use Stu\Module\Admin\View\Map\ShowSystem\ShowSystemRequestInterface;
 use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditField;
 use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditFieldRequest;
 use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditFieldRequestInterface;
+use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
-use Stu\Module\Admin\Action\Ticks\DoColonyCorrection;
-use Stu\Module\Admin\Action\Ticks\DoManualMaintenance;
-use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
-use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
-use Stu\Module\Admin\Action\UnlockUser;
-use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
-use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\ResearchTree\ShowResearchTree;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
@@ -80,7 +80,7 @@ return [
         BlockUser::ACTION_IDENTIFIER => autowire(BlockUser::class),
         StartMirrorWorld::ACTION_IDENTIFIER => autowire(StartMirrorWorld::class),
         ResetCaches::ACTION_IDENTIFIER => autowire(ResetCaches::class),
-        CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class)
+        CreateMissingUserWards::ACTION_IDENTIFIER => autowire(CreateMissingUserWards::class),
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -97,6 +97,6 @@ return [
         ShowSignatures::VIEW_IDENTIFIER => autowire(ShowSignatures::class),
         ShowResearchTree::VIEW_IDENTIFIER => autowire(ShowResearchTree::class),
         MassMail::VIEW_IDENTIFIER => autowire(MassMail::class),
-        ShowUserLock::VIEW_IDENTIFIER => autowire(ShowUserLock::class)
-    ]
+        ShowUserLock::VIEW_IDENTIFIER => autowire(ShowUserLock::class),
+    ],
 ];

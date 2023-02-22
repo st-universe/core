@@ -70,7 +70,7 @@ abstract class AbstractSettings implements SettingsInterface
 
     /**
      * @param int|string|bool $default
-     * 
+     *
      * @return int|string|bool
      */
     private function getConfigValue(string $path, $default = null)

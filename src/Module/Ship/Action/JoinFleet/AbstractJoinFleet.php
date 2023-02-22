@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\JoinFleet;
 
 use request;
-use Stu\Exception\AccessViolation;
 use Stu\Component\Game\GameEnum;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;

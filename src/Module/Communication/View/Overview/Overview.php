@@ -70,7 +70,7 @@ final class Overview implements ViewControllerInterface
             $knNavigation[] = [
                 "page" => $i,
                 "mark" => ($i * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE),
-                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
+                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages"),
             ];
         }
         if ($curpage + 1 != $maxpage) {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -123,7 +123,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         /** @var AllianceJobInterface[] $jobList */
         $jobList = array_filter(
             $this->allianceJobRepository->getByAlliance($allianceId),
-            static fn(AllianceJobInterface $job): bool => $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING
+            static fn (AllianceJobInterface $job): bool => $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING
         );
 
         foreach ($jobList as $job) {

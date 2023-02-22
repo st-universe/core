@@ -10,7 +10,6 @@ use Stu\Module\Research\TechlistRetrieverInterface;
 
 final class Overview implements ViewControllerInterface
 {
-
     private TechlistRetrieverInterface $techlistRetriever;
 
     public function __construct(

@@ -15,7 +15,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class AllianceJobRepository extends EntityRepository implements AllianceJobRepositoryInterface
 {
-
     public function prototype(): AllianceJobInterface
     {
         return new AllianceJob();

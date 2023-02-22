@@ -11,13 +11,14 @@ use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequestInterface;
 use Stu\Module\Maindesk\Action\SmsVerification\SmsVerification;
 use Stu\Module\Maindesk\View\Overview\Overview;
 use Stu\Module\Maindesk\View\ShowColonyList\ShowColonyList;
+
 use function DI\autowire;
 
 return [
     FirstColonyRequestInterface::class => autowire(FirstColonyRequest::class),
     'MAINDESK_ACTIONS' => [
         FirstColony::ACTION_IDENTIFIER => autowire(FirstColony::class),
-        SmsVerification::ACTION_IDENTIFIER => autowire(SmsVerification::class)
+        SmsVerification::ACTION_IDENTIFIER => autowire(SmsVerification::class),
     ],
     'MAINDESK_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

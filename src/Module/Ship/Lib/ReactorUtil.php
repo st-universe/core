@@ -78,7 +78,7 @@ final class ReactorUtil implements ReactorUtilInterface
 
         if ($colony !== null) {
             $storage = $colony->getStorage();
-        } else if ($station !== null) {
+        } elseif ($station !== null) {
             $storage = $station->getStorage();
         } else {
             $storage = $ship->getStorage();
@@ -100,7 +100,7 @@ final class ReactorUtil implements ReactorUtilInterface
                     $storage[$commodityId]->getCommodity(),
                     $loadCost * $loadUnits
                 );
-            } else if ($station !== null) {
+            } elseif ($station !== null) {
                 $this->shipStorageManager->lowerStorage(
                     $station,
                     $storage[$commodityId]->getCommodity(),
@@ -125,7 +125,6 @@ final class ReactorUtil implements ReactorUtilInterface
         $this->shipRepository->save($ship);
 
         if ($colony !== null) {
-
             $this->privateMessageSender->send(
                 $colony->getUser()->getId(),
                 $ship->getUser()->getId(),
@@ -140,8 +139,7 @@ final class ReactorUtil implements ReactorUtilInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
                 sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId())
             );
-        } else if ($station !== null) {
-
+        } elseif ($station !== null) {
             $this->privateMessageSender->send(
                 $station->getUser()->getId(),
                 $ship->getUser()->getId(),

@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class GameSettings extends AbstractSettings implements GameSettingsInterface
 {
     private const CONFIG_PATH = 'game';
@@ -19,7 +18,7 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
         return $this->getStringConfigValue(self::SETTING_TEMP_DIR);
     }
 
-    function getConfigPath(): string
+    public function getConfigPath(): string
     {
         return self::CONFIG_PATH;
     }

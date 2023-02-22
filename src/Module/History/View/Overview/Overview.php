@@ -21,7 +21,7 @@ final class Overview implements ViewControllerInterface
         EntryCreator::HISTORY_STATION => "Station",
         EntryCreator::HISTORY_COLONY => "Kolonie",
         EntryCreator::HISTORY_ALLIANCE => "Diplomatie",
-        EntryCreator::HISTORY_OTHER => "Sonstiges"
+        EntryCreator::HISTORY_OTHER => "Sonstiges",
     ];
 
     private OverviewRequestInterface $overviewRequest;

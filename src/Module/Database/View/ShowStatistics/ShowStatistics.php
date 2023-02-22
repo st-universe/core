@@ -23,20 +23,20 @@ final class ShowStatistics implements ViewControllerInterface
     private const PERIODS = [
         [
             'divisor' => 1,
-            'text' => 'Tick'
+            'text' => 'Tick',
         ],
         [
             'divisor' => 5,
-            'text' => 'Täglich'
+            'text' => 'Täglich',
         ],
         [
             'divisor' => 35,
-            'text' => 'Wöchentlich'
+            'text' => 'Wöchentlich',
         ],
         [
             'divisor' => 150,
-            'text' => 'Monatlich'
-        ]
+            'text' => 'Monatlich',
+        ],
     ];
 
     private int $minY;
@@ -62,22 +62,22 @@ final class ShowStatistics implements ViewControllerInterface
         $graphInfos = [
             new GraphInfo('Spieleranzahl', [
                 new PlotInfo('getUserCount'),
-                new PlotInfo('getLogins24h', 'yellow', 'yellow@0.5', 'aktiv letzte 24h')
+                new PlotInfo('getLogins24h', 'yellow', 'yellow@0.5', 'aktiv letzte 24h'),
             ], true),
             new GraphInfo('Inaktive Spieler', [
                 new PlotInfo('getInactiveCount'),
-                new PlotInfo('getVacationCount', 'yellow', 'yellow@0.5', 'im Urlaub')
+                new PlotInfo('getVacationCount', 'yellow', 'yellow@0.5', 'im Urlaub'),
             ]),
             new GraphInfo('Schiffanzahl', [
                 new PlotInfo('getShipCount'),
                 new PlotInfo('getShipCountManned', 'yellow', 'yellow@0.5', 'bemannt'),
-                new PlotInfo('getShipCountNpc', 'green', 'green@0.5', 'NPC')
+                new PlotInfo('getShipCountNpc', 'green', 'green@0.5', 'NPC'),
             ], true),
             new GraphInfo('KN-Beiträge', [new PlotInfo('getKnCount')]),
             new GraphInfo('Geflogene Felder letzte 24h', [
                 new PlotInfo('getFlightSig24h'),
-                new PlotInfo('getFlightSigSystem24h', 'yellow', 'yellow@0.5', 'System')
-            ], true)
+                new PlotInfo('getFlightSigSystem24h', 'yellow', 'yellow@0.5', 'System'),
+            ], true),
         ];
 
         $imageSources = $this->createImagesSources($graphInfos, $period);

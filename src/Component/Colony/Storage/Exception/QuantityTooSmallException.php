@@ -6,5 +6,4 @@ namespace Stu\Component\Colony\Storage\Exception;
 
 final class QuantityTooSmallException extends ColonyStorageException
 {
-
 }

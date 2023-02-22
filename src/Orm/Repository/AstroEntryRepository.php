@@ -23,7 +23,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         return $this->findOneBy(
             [
                 'user_id' => $userId,
-                'systems_id' => $starSystemId
+                'systems_id' => $starSystemId,
             ]
         );
     }

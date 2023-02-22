@@ -224,6 +224,7 @@ use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use Stu\Module\Ship\View\ShowTroopTransfer\ShowTroopTransfer;
 use Stu\Module\Ship\View\ShowWebEmitter\ShowWebEmitter;
+
 use function DI\autowire;
 
 return [
@@ -388,7 +389,7 @@ return [
             ->constructorParameter(
                 'stopEmergencyRequest',
                 autowire(StopEmergencyRequest::class)
-            )
+            ),
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -422,7 +423,7 @@ return [
         ShowShiplistSingles::VIEW_IDENTIFIER => autowire(ShowShiplistSingles::class),
         ShowAvailableShips::VIEW_IDENTIFIER => autowire(ShowAvailableShips::class),
         ShowWebEmitter::VIEW_IDENTIFIER => autowire(ShowWebEmitter::class),
-        Noop::VIEW_IDENTIFIER => autowire(Noop::class)
+        Noop::VIEW_IDENTIFIER => autowire(Noop::class),
     ],
     ShipUiFactoryInterface::class => autowire(ShipUiFactory::class),
     MoveShipRequestInterface::class => autowire(MoveShipRequest::class),

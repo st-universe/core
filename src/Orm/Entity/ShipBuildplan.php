@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
-use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipBuildplanRepository")

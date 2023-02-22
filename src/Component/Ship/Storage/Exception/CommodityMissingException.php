@@ -6,5 +6,4 @@ namespace Stu\Component\Ship\Storage\Exception;
 
 final class CommodityMissingException extends ShipStorageException
 {
-
 }

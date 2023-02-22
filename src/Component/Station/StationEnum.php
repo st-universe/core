@@ -21,7 +21,7 @@ final class StationEnum
         ShipRumpEnum::SHIP_ROLE_DEPOT_LARGE => self::BUILDABLE_INSIDE_SYSTEM,
         ShipRumpEnum::SHIP_ROLE_BASE => self::BUILDABLE_OVER_SYSTEM,
         ShipRumpEnum::SHIP_ROLE_OUTPOST => self::BUILDABLE_OUTSIDE_SYSTEM,
-        ShipRumpEnum::SHIP_ROLE_DEPOT_SMALL => self::BUILDABLE_INSIDE_SYSTEM
+        ShipRumpEnum::SHIP_ROLE_DEPOT_SMALL => self::BUILDABLE_INSIDE_SYSTEM,
     ];
 
     // buildable limits
@@ -32,6 +32,6 @@ final class StationEnum
         ShipRumpEnum::SHIP_ROLE_DEPOT_LARGE => 1,
         ShipRumpEnum::SHIP_ROLE_BASE => PHP_INT_MAX,
         ShipRumpEnum::SHIP_ROLE_OUTPOST => PHP_INT_MAX,
-        ShipRumpEnum::SHIP_ROLE_DEPOT_SMALL => PHP_INT_MAX
+        ShipRumpEnum::SHIP_ROLE_DEPOT_SMALL => PHP_INT_MAX,
     ];
 }

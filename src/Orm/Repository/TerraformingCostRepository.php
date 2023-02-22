@@ -19,7 +19,7 @@ final class TerraformingCostRepository extends EntityRepository implements Terra
     public function getByTerraforming(int $terraformingId): array
     {
         return $this->findBy([
-            'terraforming_id' => $terraformingId
+            'terraforming_id' => $terraformingId,
         ]);
     }
 }

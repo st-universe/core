@@ -13,6 +13,7 @@ use Stu\Module\Starmap\View\ShowByPosition\ShowByPosition;
 use Stu\Module\Starmap\View\ShowSection\ShowSection;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequest;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
+
 use function DI\autowire;
 
 return [
@@ -22,7 +23,7 @@ return [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowSection::VIEW_IDENTIFIER => autowire(ShowSection::class),
         ShowByPosition::VIEW_IDENTIFIER => autowire(ShowByPosition::class),
-        RefreshSection::VIEW_IDENTIFIER => autowire(RefreshSection::class)
+        RefreshSection::VIEW_IDENTIFIER => autowire(RefreshSection::class),
     ],
     StarmapUiFactoryInterface::class => autowire(StarmapUiFactory::class),
 ];

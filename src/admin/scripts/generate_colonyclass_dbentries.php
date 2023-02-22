@@ -6,10 +6,10 @@ use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Config\Init;
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseTypeInterface;
+use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseTypeRepositoryInterface;
-use Stu\Orm\Repository\ColonyClassRepositoryInterface;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -35,4 +35,3 @@ Init::run(function (ContainerInterface $dic): void {
         $obj->save();
     }
 });
-

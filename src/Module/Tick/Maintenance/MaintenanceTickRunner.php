@@ -2,9 +2,7 @@
 
 namespace Stu\Module\Tick\Maintenance;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
@@ -48,7 +46,6 @@ final class MaintenanceTickRunner implements TickRunnerInterface
         $this->entityManager->beginTransaction();
 
         try {
-
             foreach ($this->handlerList as $handler) {
                 $handler->handle();
             }

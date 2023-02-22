@@ -15,7 +15,7 @@ final class BuildingCostRepository extends EntityRepository implements BuildingC
     public function getByBuilding(int $buildingId): array
     {
         return $this->findBy([
-            'buildings_id' => $buildingId
+            'buildings_id' => $buildingId,
         ]);
     }
 }

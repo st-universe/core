@@ -6,7 +6,6 @@ namespace Stu\Module\Tal;
 
 final class StatusBarColorEnum
 {
-
     public const STATUSBAR_YELLOW = 'aaaa00';
     public const STATUSBAR_GREEN = '00aa00';
     public const STATUSBAR_GREY = '777777';

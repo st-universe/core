@@ -14,5 +14,4 @@ final class ShowTorpedoFabRequest implements ShowTorpedoFabRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

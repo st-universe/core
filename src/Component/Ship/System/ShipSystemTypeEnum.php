@@ -48,7 +48,7 @@ final class ShipSystemTypeEnum
         ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS => 3,
         ShipSystemTypeEnum::SYSTEM_COMPUTER => 2,
         ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => 0,
-        ShipSystemTypeEnum::SYSTEM_CLOAK => 0
+        ShipSystemTypeEnum::SYSTEM_CLOAK => 0,
     ];
 
     // other

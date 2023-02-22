@@ -14,5 +14,4 @@ final class ShowSocialRequest implements ShowSocialRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Ui;
+
 class VisualNavPanelRow
 {
     /** @var array<VisualNavPanelEntry>  */
@@ -20,5 +21,4 @@ class VisualNavPanelRow
     {
         return $this->entries;
     }
-
 }

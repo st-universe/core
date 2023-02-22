@@ -7,21 +7,21 @@ namespace Stu\Module\Ship\Action\BuyTradeLicense;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 
 final class BuyTradeLicense implements ActionControllerInterface
 {

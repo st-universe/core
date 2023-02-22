@@ -48,7 +48,6 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
         $postId = 0;
 
         foreach ($offersToDelete as $offer) {
-
             // send message to user
             if (!empty($pm) && $userId != $offer->getUserId()) {
                 $this->sendMessage($userId, $pm);

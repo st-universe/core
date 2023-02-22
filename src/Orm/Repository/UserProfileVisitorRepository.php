@@ -47,7 +47,7 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
             )
             ->setParameters([
                 'userId' => $userId,
-                'date' => time() - TimeConstants::ONE_DAY_IN_SECONDS
+                'date' => time() - TimeConstants::ONE_DAY_IN_SECONDS,
             ])
             ->getResult();
     }

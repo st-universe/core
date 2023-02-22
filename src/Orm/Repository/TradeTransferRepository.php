@@ -38,7 +38,7 @@ final class TradeTransferRepository extends EntityRepository implements TradeTra
             ->setParameters([
                 'tradePostId' => $tradePostId,
                 'userId' => $userId,
-                'date' => time() - TimeConstants::ONE_DAY_IN_SECONDS
+                'date' => time() - TimeConstants::ONE_DAY_IN_SECONDS,
             ])
             ->getSingleScalarResult();
     }

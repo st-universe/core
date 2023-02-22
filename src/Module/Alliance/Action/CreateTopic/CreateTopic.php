@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateTopic;
 
 use Stu\Exception\AccessViolation;
+use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Board\Board;
 use Stu\Orm\Entity\AllianceBoardInterface;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;

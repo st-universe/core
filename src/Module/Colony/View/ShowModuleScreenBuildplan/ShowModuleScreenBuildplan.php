@@ -57,13 +57,13 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
             $userId
         );
 
-        $plan = $this->shipBuildplanRepository->find(request::indInt('planid'),);
+        $plan = $this->shipBuildplanRepository->find(request::indInt('planid'), );
         if ($plan === null || $plan->getUserId() !== $userId) {
             throw new SanityCheckException(sprintf('This buildplan belongs to someone else'), null, self::VIEW_IDENTIFIER);
         }
         $rump = $plan->getRump();
 
-        $moduleScreenTabs = new ModuleScreenTabWrapper;
+        $moduleScreenTabs = new ModuleScreenTabWrapper();
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             $moduleScreenTabs->register(new ModuleScreenTab($this->shipRumpModuleLevelRepository, $i, $colony, $rump, $plan));
         }

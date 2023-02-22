@@ -6,7 +6,6 @@ namespace Stu\Lib\ModuleScreen;
 
 final class MyWrapper
 {
-
     private $modSels = null;
 
     public function register($modSel)

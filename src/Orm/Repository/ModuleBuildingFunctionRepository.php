@@ -33,7 +33,7 @@ final class ModuleBuildingFunctionRepository extends EntityRepository implements
             ->setParameters([
                 'buildingFunction' => $buildingFunction,
                 'userId' => $userId,
-                'activeState' => 0
+                'activeState' => 0,
             ])
             ->getResult();
     }

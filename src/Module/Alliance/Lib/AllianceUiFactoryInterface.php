@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-
 use Stu\Module\Alliance\View\Management\ManagementListItem;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceRelationInterface;

@@ -7,11 +7,10 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
-use Stu\Orm\Entity\ColonyClass;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -55,7 +54,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             )
             ->setParameters([
                 'userId' => $user,
-                'type' => $colonyType
+                'type' => $colonyType,
             ])
             ->getSingleScalarResult();
     }
@@ -85,7 +84,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->setParameters([
                 'allowStart' => 1,
                 'userId' => GameEnum::USER_NOONE,
-                'factionId' => $factionId
+                'factionId' => $factionId,
             ])
             ->getResult();
     }
@@ -93,7 +92,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface
     {
         return $this->findOneBy([
-            'starsystem_map_id' => $sysmap->getId()
+            'starsystem_map_id' => $sysmap->getId(),
         ]);
     }
 
@@ -119,7 +118,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 'ignoreIds' => [$user->getId(), GameEnum::USER_NOONE],
                 'systemId' => $systemMap->getSystem()->getId(),
                 'sx' => $systemMap->getSx(),
-                'sy' => $systemMap->getSy()
+                'sy' => $systemMap->getSy(),
             ])
             ->getResult();
     }
@@ -138,7 +137,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->setParameters([
                 'groupId' => $batchGroup,
                 'groupCount' => $batchGroupCount,
-                'userId' => GameEnum::USER_NOONE
+                'userId' => GameEnum::USER_NOONE,
             ])
             ->getResult();
     }

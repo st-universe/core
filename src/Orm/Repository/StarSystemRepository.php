@@ -30,7 +30,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 )
             )
             ->setParameters([
-                'layerId' => $layerId
+                'layerId' => $layerId,
             ])
             ->getResult();
     }

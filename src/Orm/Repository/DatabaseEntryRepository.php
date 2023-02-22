@@ -16,7 +16,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
     public function getByCategoryId(int $categoryId): array
     {
         return $this->findBy([
-            'category_id' => $categoryId
+            'category_id' => $categoryId,
         ]);
     }
 
@@ -24,7 +24,7 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
     {
         return $this->findOneBy([
             'category_id' => $categoryId,
-            'object_id' => $objectId
+            'object_id' => $objectId,
         ]);
     }
 

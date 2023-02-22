@@ -9,8 +9,8 @@ use Ubench;
 
 abstract class AbstractTickManager
 {
-    protected abstract function getBenchmark(): Ubench;
-    protected abstract function getLoggerUtil(): LoggerUtilInterface;
+    abstract protected function getBenchmark(): Ubench;
+    abstract protected function getLoggerUtil(): LoggerUtilInterface;
 
     protected function logBenchmarkResult(int $entityCount): void
     {

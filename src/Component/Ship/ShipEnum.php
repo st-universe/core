@@ -26,14 +26,14 @@ final class ShipEnum
     public const WARPCORE_LOAD_COST = [
         CommodityTypeEnum::COMMODITY_DILITHIUM => 1,
         CommodityTypeEnum::COMMODITY_ANTIMATTER => 2,
-        CommodityTypeEnum::COMMODITY_DEUTERIUM => 2
+        CommodityTypeEnum::COMMODITY_DEUTERIUM => 2,
     ];
     public const WARPCORE_CAPACITY_MULTIPLIER = 15;
 
     //reactor stuff
     public const REACTOR_LOAD = 2;
     public const REACTOR_LOAD_COST = [
-        CommodityTypeEnum::COMMODITY_DEUTERIUM => 1
+        CommodityTypeEnum::COMMODITY_DEUTERIUM => 1,
     ];
     public const REACTOR_CAPACITY_MULTIPLIER = 10;
 

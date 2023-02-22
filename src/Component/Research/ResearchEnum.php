@@ -6,7 +6,6 @@ namespace Stu\Component\Research;
 
 final class ResearchEnum
 {
-
     // faction start points
     public const RESEARCH_START_FEDERATION = 1001;
     public const RESEARCH_START_ROMULAN = 1002;

@@ -14,7 +14,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ResearchedRepository extends EntityRepository implements ResearchedRepositoryInterface
 {
-
     public function hasUserFinishedResearch(UserInterface $user, array $researchIds): bool
     {
         return $this->getEntityManager()

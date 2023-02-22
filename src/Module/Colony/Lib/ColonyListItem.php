@@ -10,8 +10,8 @@ use Stu\Component\Colony\ColonyPopulationCalculatorInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyClassInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 

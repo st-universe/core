@@ -44,7 +44,7 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
                 $rsm
             )
             ->setParameters([
-                'sevendays' => time() - TimeConstants::SEVEN_DAYS_IN_SECONDS
+                'sevendays' => time() - TimeConstants::SEVEN_DAYS_IN_SECONDS,
             ])
             ->getResult();
     }

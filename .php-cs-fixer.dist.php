@@ -1,13 +1,13 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(['tests'])
+    ->in(['src', 'tests'])
 ;
 $config = new PhpCsFixer\Config();
 $config->setRules(
     [
         '@PSR12' => true,
-        '@PHP74Migration' => true,
+        '@PHP81Migration' => true,
         'array_syntax' => ['syntax' => 'short'],
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline',

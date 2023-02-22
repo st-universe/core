@@ -6,15 +6,14 @@ namespace Stu\Module\Admin\View\ShowSignatures;
 
 class SignaturePanelRow
 {
+    private $entries = [];
 
-    private $entries = array();
-
-    function addEntry(&$data)
+    public function addEntry(&$data)
     {
         $this->entries[] = $data;
     }
 
-    function getEntries()
+    public function getEntries()
     {
         return $this->entries;
     }

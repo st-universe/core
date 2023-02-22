@@ -24,7 +24,7 @@ final class TerraformingRepository extends EntityRepository implements Terraform
                     Terraforming::class
                 )
             )->setParameters([
-                'sourceFieldTypeId' => $sourceFieldTypeId
+                'sourceFieldTypeId' => $sourceFieldTypeId,
             ])->getResult();
         }
 
@@ -43,7 +43,7 @@ final class TerraformingRepository extends EntityRepository implements Terraform
             )
         )->setParameters([
             'userId' => $userId,
-            'sourceFieldTypeId' => $sourceFieldTypeId
+            'sourceFieldTypeId' => $sourceFieldTypeId,
         ])->getResult();
     }
 }

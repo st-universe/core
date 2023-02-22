@@ -42,7 +42,7 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
         )->setParameters([
             'mapId' => $ship->getCurrentMapField()->getId(),
             'theTime' => time() - TachyonScannerShipSystem::DECLOAK_INTERVAL,
-            'userId' => $ship->getUser()->getId()
+            'userId' => $ship->getUser()->getId(),
         ])->getSingleScalarResult() > 0;
     }
 

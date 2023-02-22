@@ -34,12 +34,12 @@ final class CommoditiesOverview implements ViewControllerInterface
         $game->setNavigation([
             [
                 'url' => 'database.php',
-                'title' => 'Datenbank'
+                'title' => 'Datenbank',
             ],
             [
                 'url' => sprintf('database.php?%s=1', self::VIEW_IDENTIFIER),
-                'title' => 'Warenübersicht'
-            ]
+                'title' => 'Warenübersicht',
+            ],
         ]);
 
         $game->setPageTitle('/ Datenbank / Warenübersicht');

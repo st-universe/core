@@ -6,5 +6,4 @@ namespace Stu\Component\Ship\System\Exception;
 
 final class InsufficientCrewException extends ShipSystemException
 {
-
 }

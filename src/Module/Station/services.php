@@ -65,7 +65,7 @@ return [
         DockTractoredShip::ACTION_IDENTIFIER => autowire(DockTractoredShip::class),
         Scrapping::ACTION_IDENTIFIER => autowire(Scrapping::class),
         StationRepair::ACTION_IDENTIFIER => autowire(StationRepair::class),
-        ToggleBatteryReload::ACTION_IDENTIFIER => autowire(ToggleBatteryReload::class)
+        ToggleBatteryReload::ACTION_IDENTIFIER => autowire(ToggleBatteryReload::class),
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -81,7 +81,7 @@ return [
         ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class),
         ShowSystemSensorScan::VIEW_IDENTIFIER => autowire(ShowSystemSensorScan::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
-        ShowScrapping::VIEW_IDENTIFIER => autowire(ShowScrapping::class)
+        ShowScrapping::VIEW_IDENTIFIER => autowire(ShowScrapping::class),
     ],
     StationUiFactoryInterface::class => autowire(StationUiFactory::class),
 ];

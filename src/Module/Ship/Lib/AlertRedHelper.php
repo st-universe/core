@@ -12,7 +12,6 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -140,7 +139,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $usersToInformAboutTrojanHorse = [];
 
         foreach ($shipsOnLocation as $shipOnLocation) {
-
             //ships of friends from tractoring ship dont attack
             if ($tractoringShip !== null && $this->playerRelationDeterminator->isFriend($shipOnLocation->getUser(), $tractoringShip->getUser())) {
                 $user = $shipOnLocation->getUser();
@@ -316,7 +314,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             (int) $lead_user_id,
             (int) $alert_user_id,
             $pm,
-            $isAlertShipBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $isAlertShipBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $alertShip->isDestroyed() ? null : $href
         );
         $pm = sprintf(_('Fremde Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %s') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getSectorString());
@@ -331,7 +329,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
         );
 
         if ($leadShip->isDestroyed()) {
-
             $informations = array_merge($informations, $messages);
             return;
         }

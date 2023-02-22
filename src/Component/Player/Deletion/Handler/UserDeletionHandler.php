@@ -13,7 +13,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserDeletionHandler implements PlayerDeletionHandlerInterface
 {
-
     private SessionStringRepositoryInterface $sessionStringRepository;
 
     private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;

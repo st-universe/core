@@ -48,7 +48,7 @@ final class CancelOffer implements ActionControllerInterface
         $offer = $this->tradeOfferRepository->find($offerId);
 
         if ((int) $offer->getUserId() !== $userId) {
-            new AccessViolation;
+            new AccessViolation();
         }
 
         $this->tradeLibFactory->createTradePostStorageManager(

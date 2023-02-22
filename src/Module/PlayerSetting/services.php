@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\PlayerSetting\Action\ActivateVacation\ActivateVacation;
 use Stu\Module\PlayerSetting\Action\ChangeAvatar\ChangeAvatar;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescription;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescriptionRequest;
@@ -15,16 +16,16 @@ use Stu\Module\PlayerSetting\Action\ChangeEmail\ChangeEmailRequestInterface;
 use Stu\Module\PlayerSetting\Action\ChangePassword\ChangePassword;
 use Stu\Module\PlayerSetting\Action\ChangePassword\ChangePasswordRequest;
 use Stu\Module\PlayerSetting\Action\ChangePassword\ChangePasswordRequestInterface;
+use Stu\Module\PlayerSetting\Action\ChangeRgbCode\ChangeRgbCode;
 use Stu\Module\PlayerSetting\Action\ChangeSettings\ChangeSettings;
 use Stu\Module\PlayerSetting\Action\ChangeSettings\ChangeSettingsRequest;
 use Stu\Module\PlayerSetting\Action\ChangeSettings\ChangeSettingsRequestInterface;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserName;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequest;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterface;
-use Stu\Module\PlayerSetting\Action\ActivateVacation\ActivateVacation;
-use Stu\Module\PlayerSetting\Action\ChangeRgbCode\ChangeRgbCode;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
 use Stu\Module\PlayerSetting\View\Overview\Overview;
+
 use function DI\autowire;
 
 return [
@@ -46,5 +47,5 @@ return [
     ],
     'PLAYER_SETTING_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
-    ]
+    ],
 ];

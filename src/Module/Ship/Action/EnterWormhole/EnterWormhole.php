@@ -6,9 +6,9 @@ namespace Stu\Module\Ship\Action\EnterWormhole;
 
 use request;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

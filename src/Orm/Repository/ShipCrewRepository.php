@@ -50,7 +50,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
     {
         return $this->findBy([
             'ship_id' => $shipId,
-            'slot' => $slotId
+            'slot' => $slotId,
         ]);
     }
 
@@ -84,7 +84,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
     public function getAmountByUser(UserInterface $user): int
     {
         return $this->count([
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -124,7 +124,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
             )
             ->setParameters([
                 'userId' => $userId,
-                'categoryId' => ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
+                'categoryId' => ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS,
             ])
             ->getResult();
     }

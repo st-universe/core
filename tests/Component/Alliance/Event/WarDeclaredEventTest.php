@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Alliance\Event;
 
 use Mockery\MockInterface;
-use PHPUnit\Framework\TestCase;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;

@@ -14,7 +14,6 @@ use Stu\Orm\Entity\ShipSystemInterface;
  */
 final class ShipSystemRepository extends EntityRepository implements ShipSystemRepositoryInterface
 {
-
     public function prototype(): ShipSystemInterface
     {
         return new ShipSystem();
@@ -56,7 +55,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
             )
             ->setParameters([
                 'systemType' => ShipSystemTypeEnum::SYSTEM_TRACKER,
-                'target' => sprintf('%%"targetId":%d%%', $targetId)
+                'target' => sprintf('%%"targetId":%d%%', $targetId),
             ])
             ->getResult();
     }
@@ -74,7 +73,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
             )
             ->setParameters([
                 'systemType' => ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB,
-                'target' => sprintf('%%"webUnderConstructionId":%d%%', $webId)
+                'target' => sprintf('%%"webUnderConstructionId":%d%%', $webId),
             ])
             ->getResult();
     }

@@ -35,7 +35,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
     public function getByColony(array $colonies): array
     {
         return $this->findBy([
-            'colonies_id' => $colonies
+            'colonies_id' => $colonies,
         ]);
     }
 
@@ -43,7 +43,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
     {
         return $this->findOneBy([
             'colonies_id' => $colonyId,
-            'field_id' => $fieldId
+            'field_id' => $fieldId,
         ]);
     }
 

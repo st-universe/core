@@ -16,7 +16,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SendPassword implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_SEND_PASSWORD';
 
     private SendPasswordRequestInterface $sendPasswordRequest;

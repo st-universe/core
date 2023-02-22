@@ -15,7 +15,6 @@ use Stu\Orm\Entity\User;
  */
 final class DealsRepository extends EntityRepository implements DealsRepositoryInterface
 {
-
     public function prototype(): DealsInterface
     {
         return new Deals();
@@ -52,7 +51,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             )
             ->setParameters([
                 'actime' => time(),
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getSingleScalarResult() > 0;
     }
@@ -74,7 +73,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             )
             ->setParameters([
                 'actime' => time(),
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getResult();
     }
@@ -182,7 +181,7 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             )
             ->setParameters([
                 'actime' => time(),
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getResult();
     }
@@ -202,14 +201,13 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             )
             ->setParameters([
                 'actime' => time(),
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getSingleScalarResult() > 0;
     }
 
     public function getActiveAuctionsGoods(int $userId): ?array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -231,7 +229,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getActiveAuctionsShips(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -253,7 +250,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getActiveAuctionsBuildplans(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -275,7 +271,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getActiveAuctionsGoodsPrestige(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -297,7 +292,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getActiveAuctionsShipsPrestige(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -319,7 +313,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getActiveAuctionsBuildplansPrestige(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -341,7 +334,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function hasEndedAuctions(int $userId): bool
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -411,7 +403,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getEndedAuctionsShips(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -436,7 +427,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getEndedAuctionsBuildplans(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -460,7 +450,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getEndedAuctionsGoodsPrestige(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -484,7 +473,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getEndedAuctionsShipsPrestige(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -508,7 +496,6 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
 
     public function getEndedAuctionsBuildplansPrestige(int $userId): array
     {
-
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(

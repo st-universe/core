@@ -20,6 +20,7 @@ use Stu\Module\Tick\Ship\ShipTickInterface;
 use Stu\Module\Tick\Ship\ShipTickManager;
 use Stu\Module\Tick\Ship\ShipTickManagerInterface;
 use Stu\Module\Tick\Ship\ShipTickRunner;
+
 use function DI\autowire;
 use function DI\get;
 
@@ -36,7 +37,7 @@ return [
         autowire(Process\FinishTerraformingJobs::class),
         autowire(Process\ShieldRegeneration::class),
         autowire(Process\RepairTaskJobs::class),
-        autowire(Process\FinishTholianWebs::class)
+        autowire(Process\FinishTholianWebs::class),
     ],
     MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class),
     MaintenanceTickRunner::class => fn (ContainerInterface $dic): TickRunnerInterface => $dic

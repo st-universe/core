@@ -25,7 +25,7 @@ final class StuBbCodeDefinitionSet implements CodeDefinitionSet
                 ))
                     ->setUseOption(true)
                     ->setOptionValidator(new CssColorValidator())
-                    ->build()
+                    ->build(),
             ];
         }
         return $this->definitions;

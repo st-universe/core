@@ -8,15 +8,15 @@ use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class DeactivateTorpedo implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE_TORPEDO';
 
     private ActivatorDeactivatorHelperInterface $helper;
-    
+
     public function __construct(
         ActivatorDeactivatorHelperInterface $helper
     ) {

@@ -5,28 +5,23 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
 use request;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -34,6 +29,11 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -140,7 +140,6 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ColonyInterface $colony,
         &$msg
     ): void {
-
         $user = $game->getUser();
 
         $ship = $this->shipRepository->find($shipId);
@@ -213,7 +212,6 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     $load
                 );
                 if ($ship->getUser() !== $user) {
-
                     $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
 
                     $this->privateMessageSender->send(

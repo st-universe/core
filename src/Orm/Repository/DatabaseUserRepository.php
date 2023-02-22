@@ -16,7 +16,6 @@ use Stu\Orm\Entity\DatabaseUserInterface;
  */
 final class DatabaseUserRepository extends EntityRepository implements DatabaseUserRepositoryInterface
 {
-
     public function truncateByUserId(int $userId): void
     {
         $this->getEntityManager()->createQuery(
@@ -41,7 +40,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     {
         return $this->count([
             'user_id' => $userId,
-            'database_id' => $databaseEntryId
+            'database_id' => $databaseEntryId,
         ]) > 0;
     }
 
@@ -87,7 +86,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
                 )
             )
             ->setParameters([
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getSingleScalarResult();
     }
@@ -111,7 +110,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             )
             ->setParameters([
                 'userId' => $userId,
-                'categoryId' => $categoryId
+                'categoryId' => $categoryId,
             ])
             ->getSingleScalarResult() == 0;
     }

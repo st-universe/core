@@ -20,7 +20,7 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender
-    ){
+    ) {
         $this->privateMessageSender = $privateMessageSender;
     }
 

@@ -100,13 +100,13 @@ class GameConfigRepositoryTest extends StuTestCase
             ->with(
                 GameConfig::TABLE_NAME,
                 [
-                    'value' => $state
+                    'value' => $state,
                 ],
                 [
-                    'option' => GameEnum::CONFIG_GAMESTATE
+                    'option' => GameEnum::CONFIG_GAMESTATE,
                 ],
                 [
-                    'value' => ParameterType::INTEGER
+                    'value' => ParameterType::INTEGER,
                 ]
             )
             ->once();

@@ -22,31 +22,31 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
 use Stu\Component\Ship\System\Type\BeamBlockerShipSystem;
 use Stu\Component\Ship\System\Type\CloakShipSystem;
+use Stu\Component\Ship\System\Type\ComputerShipSystem;
+use Stu\Component\Ship\System\Type\ConstructionHubShipSystem;
+use Stu\Component\Ship\System\Type\DeflectorShipSystem;
 use Stu\Component\Ship\System\Type\EnergyWeaponShipSystem;
 use Stu\Component\Ship\System\Type\EpsShipSystem;
+use Stu\Component\Ship\System\Type\FusionReactorShipSystem;
+use Stu\Component\Ship\System\Type\HullShipSystem;
 use Stu\Component\Ship\System\Type\ImpulseDriveShipSystem;
 use Stu\Component\Ship\System\Type\LifeSupportShipSystem;
 use Stu\Component\Ship\System\Type\LongRangeScannerShipSystem;
+use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Component\Ship\System\Type\NearFieldScannerShipSystem;
 use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
 use Stu\Component\Ship\System\Type\ShieldShipSystem;
-use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
-use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
-use Stu\Component\Ship\System\Type\WarpcoreShipSystem;
-use Stu\Component\Ship\System\Type\WarpdriveShipSystem;
-use Stu\Component\Ship\System\Type\ComputerShipSystem;
-use Stu\Component\Ship\System\Type\ConstructionHubShipSystem;
-use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
-use Stu\Component\Ship\System\Type\DeflectorShipSystem;
-use Stu\Component\Ship\System\Type\FusionReactorShipSystem;
-use Stu\Component\Ship\System\Type\HullShipSystem;
-use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Component\Ship\System\Type\ShuttleRampShipSystem;
 use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
+use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Ship\System\Type\TrackerShipSystem;
+use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Component\Ship\System\Type\TranswarpCoilShipSystem;
+use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Ship\System\Type\UplinkShipSystem;
+use Stu\Component\Ship\System\Type\WarpcoreShipSystem;
+use Stu\Component\Ship\System\Type\WarpdriveShipSystem;
 use Stu\Component\Ship\System\Type\WebEmitterShipSystem;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
 use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
@@ -100,7 +100,7 @@ return [
             ShipSystemTypeEnum::SYSTEM_FUSION_REACTOR => autowire(FusionReactorShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL => autowire(TranswarpCoilShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TRACKER => autowire(TrackerShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB => autowire(WebEmitterShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB => autowire(WebEmitterShipSystem::class),
         ],
         autowire(StuTime::class)
     ),
@@ -111,13 +111,13 @@ return [
         //.. TODO
         [
             'ShipRepairHandler' => autowire(ShipRepairHandler::class),
-            'PreFlightTractorHandler' => autowire(PreFlightTractorHandler::class)
+            'PreFlightTractorHandler' => autowire(PreFlightTractorHandler::class),
         ],
 
         // postMove Handler
         [
             'AstroMappingHandler' => autowire(AstroMappingHandler::class),
-            'ShipPostFlightTractorHandlerRepairHandler' => autowire(PostFlightTractorHandler::class)
+            'ShipPostFlightTractorHandlerRepairHandler' => autowire(PostFlightTractorHandler::class),
         ],
         get(LoggerUtilFactoryInterface::class),
     ),

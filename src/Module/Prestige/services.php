@@ -12,5 +12,5 @@ use function DI\autowire;
 return [
     CreatePrestigeLogInterface::class => autowire(CreatePrestigeLog::class),
     'PRESTIGE_ACTIONS' => [],
-    'PRESTIGE_VIEWS' => []
+    'PRESTIGE_VIEWS' => [],
 ];

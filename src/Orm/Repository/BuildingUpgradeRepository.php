@@ -13,7 +13,8 @@ use Stu\Orm\Entity\Researched;
  */
 final class BuildingUpgradeRepository extends EntityRepository implements BuildingUpgradeRepositoryInterface
 {
-    public function getByBuilding(int $buildingId, int $userId): array {
+    public function getByBuilding(int $buildingId, int $userId): array
+    {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(

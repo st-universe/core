@@ -15,7 +15,6 @@ use Stu\Orm\Entity\GameConfigInterface;
  */
 final class GameConfigRepository extends EntityRepository implements GameConfigRepositoryInterface
 {
-
     public function save(GameConfigInterface $item): void
     {
         $em = $this->getEntityManager();
@@ -27,7 +26,7 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
     public function getByOption(int $optionId): ?GameConfigInterface
     {
         return $this->findOneBy([
-            'option' => $optionId
+            'option' => $optionId,
         ]);
     }
 
@@ -36,13 +35,13 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
         $this->getEntityManager()->getConnection()->update(
             GameConfig::TABLE_NAME,
             [
-                'value' => $state
+                'value' => $state,
             ],
             [
-                'option' => GameEnum::CONFIG_GAMESTATE
+                'option' => GameEnum::CONFIG_GAMESTATE,
             ],
             [
-                'value' => ParameterType::INTEGER
+                'value' => ParameterType::INTEGER,
             ]
         );
     }

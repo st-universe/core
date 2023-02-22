@@ -52,8 +52,8 @@ final class DiplomaticRelations implements ViewControllerInterface
             ],
             [
                 'url' => sprintf('alliance.php?%s=1', static::VIEW_IDENTIFIER),
-                'title' => 'Diplomatische Beziehungen'
-            ]
+                'title' => 'Diplomatische Beziehungen',
+            ],
         ]);
         $game->setTemplateFile('html/alliance_diplomatic_relations.xhtml');
         $game->setTemplateVar(

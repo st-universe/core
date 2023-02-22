@@ -65,7 +65,7 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/../Module/Tal/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Tick/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Trade/services.php');
-        $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php',);
+        $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php', );
 
         /** @var ContainerInterface $container */
         $container = $builder->build();

@@ -74,7 +74,7 @@ class VisualNavPanelEntry
      * } $entry
      */
     public function __construct(
-        array &$entry = array(),
+        array &$entry = [],
         bool $isTachyonSystemActive = false,
         bool $tachyonFresh = false,
         ShipInterface $ship = null,
@@ -88,47 +88,47 @@ class VisualNavPanelEntry
         $this->tachyonRange = $ship !== null ? ($ship->isBase() ? 7 : 3) : 0;
     }
 
-    function getPosX()
+    public function getPosX()
     {
         return $this->data['posx'];
     }
 
-    function getPosY()
+    public function getPosY()
     {
         return $this->data['posy'];
     }
 
-    function getSystemId()
+    public function getSystemId()
     {
         return $this->data['sysid'] ?? 0;
     }
 
-    function getMapfieldType()
+    public function getMapfieldType()
     {
         return $this->data['type'];
     }
 
-    function getShipCount()
+    public function getShipCount()
     {
         return $this->data['shipcount'];
     }
 
-    function hasCloakedShips()
+    public function hasCloakedShips()
     {
         return $this->data['cloakcount'] > 0;
     }
 
-    function getShieldState()
+    public function getShieldState()
     {
         return $this->data['shieldstate'] ?? false;
     }
 
-    function hasShips()
+    public function hasShips()
     {
         return $this->data['shipcount'] > 0;
     }
 
-    function getSubspaceCode()
+    public function getSubspaceCode()
     {
         $code = sprintf('%d%d%d%d', $this->getCode('d1c'), $this->getCode('d2c'), $this->getCode('d3c'), $this->getCode('d4c'));
         return $code == '0000' ? null : $code;
@@ -157,7 +157,7 @@ class VisualNavPanelEntry
         return 5;
     }
 
-    function getDisplayCount()
+    public function getDisplayCount()
     {
         if ($this->hasShips()) {
             return $this->getShipCount();
@@ -178,12 +178,12 @@ class VisualNavPanelEntry
         return "";
     }
 
-    function getCacheValue()
+    public function getCacheValue()
     {
         return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount() . "_" . $this->isClickAble() . "_" . $this->getBorder();
     }
 
-    function isCurrentShipPosition()
+    public function isCurrentShipPosition()
     {
         if (
             $this->getSystemId() == $this->currentShipSysId
@@ -195,7 +195,7 @@ class VisualNavPanelEntry
         return false;
     }
 
-    function getBorder()
+    public function getBorder()
     {
         // current position gets grey border
         if (!$this->getRow() && $this->isCurrentShipPosition()) {
@@ -207,7 +207,6 @@ class VisualNavPanelEntry
             $this->ship !== null &&
             $this->ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER
         ) {
-
             $factionColor = $this->data['factioncolor'];
             if (!empty($factionColor)) {
                 return $factionColor;
@@ -228,12 +227,12 @@ class VisualNavPanelEntry
         return '#2d2d2d';
     }
 
-    function setCSSClass($class)
+    public function setCSSClass($class)
     {
         $this->cssClass = $class;
     }
 
-    function getCSSClass()
+    public function getCSSClass()
     {
         if (!$this->getRow() && $this->isCurrentShipPosition()) {
             return 'lss_current';
@@ -241,7 +240,7 @@ class VisualNavPanelEntry
         return $this->cssClass;
     }
 
-    function isClickAble()
+    public function isClickAble()
     {
         if ($this->ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
             return true;

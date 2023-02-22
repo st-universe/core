@@ -60,7 +60,7 @@ Init::run(function (ContainerInterface $dic): void {
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP,
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_TRANSWARP_COIL,
             ModuleSpecialAbilityEnum::MODULE_SPECIAL_HIROGEN_TRACKER,
-            ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB
+            ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB,
         ];
 
         $moduleTypes = [
@@ -139,7 +139,6 @@ Init::run(function (ContainerInterface $dic): void {
 
             echo 'Bauplan angelegt';
         } else {
-
             printf(
                 '<form action="" method="post">
             <input type="hidden" name="userId" value="%d">',
@@ -147,7 +146,6 @@ Init::run(function (ContainerInterface $dic): void {
             );
 
             foreach ($moduleTypes as $moduleTypeId) {
-
                 $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
                     $rump->getId()
                 );

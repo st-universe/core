@@ -79,7 +79,7 @@ class VisualNavPanel
         $this->shipUiFactory = $shipUiFactory;
     }
 
-    function getShip(): ShipInterface
+    public function getShip(): ShipInterface
     {
         return $this->ship;
     }
@@ -87,7 +87,7 @@ class VisualNavPanel
     /**
      * @return array<int, VisualNavPanelRow>
      */
-    function getRows()
+    public function getRows()
     {
         if ($this->rows === null) {
             $this->loadLSS();
@@ -112,7 +112,7 @@ class VisualNavPanel
      *     d4c?: int
      * }>
      */
-    function getOuterSystemResult()
+    public function getOuterSystemResult()
     {
         $cx = $this->getShip()->getCX();
         $cy = $this->getShip()->getCY();
@@ -174,7 +174,7 @@ class VisualNavPanel
      *     d4c?: int
      * }>
      */
-    function getInnerSystemResult()
+    public function getInnerSystemResult()
     {
         return $this->shipRepository->getSensorResultInnerSystem(
             $this->getShip(),
@@ -183,7 +183,7 @@ class VisualNavPanel
         );
     }
 
-    function loadLSS(): void
+    public function loadLSS(): void
     {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -244,7 +244,7 @@ class VisualNavPanel
     /**
      * @return array<array{value: int}>
      */
-    function getHeadRow()
+    public function getHeadRow()
     {
         if ($this->headRow === null) {
             $cx = $this->showOuterMap() ? $this->getShip()->getCx() : $this->getShip()->getPosX();
@@ -286,7 +286,7 @@ class VisualNavPanel
         return $this->viewport;
     }
 
-    function getViewportPerColumn(): string
+    public function getViewportPerColumn(): string
     {
         if (!$this->viewportPerColumn) {
             $this->viewportPerColumn = number_format($this->getViewport(), 1);
@@ -294,7 +294,7 @@ class VisualNavPanel
         return $this->viewportPerColumn;
     }
 
-    function getViewportForFont(): string
+    public function getViewportForFont(): string
     {
         if (!$this->viewportForFont) {
             $this->viewportForFont = number_format($this->getViewport() / 2, 1);

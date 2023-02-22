@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -33,7 +32,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                 )
             )
             ->setParameters([
-                'user' => $user
+                'user' => $user,
             ])
             ->getResult();
     }
@@ -56,7 +55,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->setParameters([
                 'state' => 1,
                 'userId' => $userId,
-                'buildingFunction' => $buildingFunction
+                'buildingFunction' => $buildingFunction,
             ])
             ->getResult();
     }
@@ -91,7 +90,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                 )
             )
             ->setParameters([
-                'categoryId' => DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP
+                'categoryId' => DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP,
             ])
             ->getResult();
     }
@@ -113,7 +112,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ->setParameters([
                 'state' => 1,
                 'ignoreCategory' => ShipRumpEnum::SHIP_CATEGORY_SHUTTLE,
-                'colonyId' => $colonyId
+                'colonyId' => $colonyId,
             ])
             ->getResult();
     }

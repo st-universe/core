@@ -16,7 +16,7 @@ final class WeaponRepository extends EntityRepository implements WeaponRepositor
     public function findByModule(int $moduleId): ?WeaponInterface
     {
         return $this->findOneBy([
-            'module_id' => $moduleId
+            'module_id' => $moduleId,
         ]);
     }
 }

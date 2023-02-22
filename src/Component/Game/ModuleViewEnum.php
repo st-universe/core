@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Game;
 
-
 final class ModuleViewEnum
 {
     public const MODULE_VIEW_INDEX = 'index';

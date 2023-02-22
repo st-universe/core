@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance;
 
-use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayer;
-use Stu\Module\Alliance\Lib\AllianceActionManager;
-use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Alliance\Lib\AllianceUiFactory;
-use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
-use Stu\Module\Alliance\View\Diplomatic\DiplomaticRelations;
-use Stu\Module\Control\GameController;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequest;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequestInterface;
@@ -52,6 +45,7 @@ use Stu\Module\Alliance\Action\DeletePost\DeletePost;
 use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopic;
 use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopicRequest;
 use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopicRequestInterface;
+use Stu\Module\Alliance\Action\DemotePlayer\DemotePlayer;
 use Stu\Module\Alliance\Action\EditDetails\EditDetails;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequest;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequestInterface;
@@ -69,8 +63,8 @@ use Stu\Module\Alliance\Action\RenameBoard\RenameBoardRequestInterface;
 use Stu\Module\Alliance\Action\RenameTopic\RenameTopic;
 use Stu\Module\Alliance\Action\RenameTopic\RenameTopicRequest;
 use Stu\Module\Alliance\Action\RenameTopic\RenameTopicRequestInterface;
-use Stu\Module\Alliance\Action\SetTopicSticky\SetTopicStickyRequest;
 use Stu\Module\Alliance\Action\SetTopicSticky\SetTopicSticky;
+use Stu\Module\Alliance\Action\SetTopicSticky\SetTopicStickyRequest;
 use Stu\Module\Alliance\Action\SetTopicSticky\SetTopicStickyRequestInterface;
 use Stu\Module\Alliance\Action\Signup\Signup;
 use Stu\Module\Alliance\Action\Signup\SignupRequest;
@@ -81,6 +75,10 @@ use Stu\Module\Alliance\Action\SuggestPeace\SuggestPeaceRequestInterface;
 use Stu\Module\Alliance\Action\UnsetTopicSticky\UnsetTopicSticky;
 use Stu\Module\Alliance\Action\UnsetTopicSticky\UnsetTopicStickyRequest;
 use Stu\Module\Alliance\Action\UnsetTopicSticky\UnsetTopicStickyRequestInterface;
+use Stu\Module\Alliance\Lib\AllianceActionManager;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceUiFactory;
+use Stu\Module\Alliance\Lib\AllianceUiFactoryInterface;
 use Stu\Module\Alliance\View\AllianceDetails\AllianceDetails;
 use Stu\Module\Alliance\View\AllianceDetails\AllianceDetailsRequest;
 use Stu\Module\Alliance\View\AllianceDetails\AllianceDetailsRequestInterface;
@@ -94,6 +92,7 @@ use Stu\Module\Alliance\View\BoardSettings\BoardSettings;
 use Stu\Module\Alliance\View\BoardSettings\BoardSettingsRequest;
 use Stu\Module\Alliance\View\BoardSettings\BoardSettingsRequestInterface;
 use Stu\Module\Alliance\View\Create\Create;
+use Stu\Module\Alliance\View\Diplomatic\DiplomaticRelations;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Alliance\View\NewPost\NewPost;
@@ -112,6 +111,8 @@ use Stu\Module\Alliance\View\Topic\TopicRequestInterface;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettings;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequest;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequestInterface;
+use Stu\Module\Control\GameController;
+
 use function DI\autowire;
 
 return [
@@ -199,5 +200,5 @@ return [
         Relations::VIEW_IDENTIFIER => autowire(Relations::class),
         ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class),
         DiplomaticRelations::VIEW_IDENTIFIER => autowire(DiplomaticRelations::class),
-    ]
+    ],
 ];

@@ -46,7 +46,6 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-
         $userId = $game->getUser()->getId();
 
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);

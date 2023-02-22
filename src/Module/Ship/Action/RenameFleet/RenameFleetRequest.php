@@ -15,7 +15,8 @@ final class RenameFleetRequest implements RenameFleetRequestInterface
         return $this->queryParameter('fleetid')->int()->required();
     }
 
-    public function getNewName(): string {
+    public function getNewName(): string
+    {
         return trim(strip_tags($this->queryParameter('fleetname')->string()->defaultsToIfEmpty('')));
     }
 }

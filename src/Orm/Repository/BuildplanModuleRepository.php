@@ -25,7 +25,7 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
     {
         return $this->findBy([
             'buildplan_id' => $buildplanId,
-            'module_type' => $moduleType
+            'module_type' => $moduleType,
         ]);
     }
 
@@ -59,7 +59,7 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
                 )
             )
             ->setParameters([
-                'buildplanId' => $buildplanId
+                'buildplanId' => $buildplanId,
             ])
             ->execute();
     }

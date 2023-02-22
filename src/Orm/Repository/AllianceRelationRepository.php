@@ -14,7 +14,6 @@ use Stu\Orm\Entity\AllianceRelationInterface;
  */
 final class AllianceRelationRepository extends EntityRepository implements AllianceRelationRepositoryInterface
 {
-
     public function prototype(): AllianceRelationInterface
     {
         return new AllianceRelation();
@@ -46,7 +45,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             )
             ->setParameters([
                 'alliance' => $alliance,
-                'opponent' => $opponent
+                'opponent' => $opponent,
             ])
             ->execute();
     }
@@ -65,7 +64,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->setParameters([
                 'date' => 0,
                 'allianceId' => $allianceId,
-                'opponentId' => $opponentId
+                'opponentId' => $opponentId,
             ])
             ->getSingleScalarResult();
     }
@@ -81,7 +80,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             )
             ->setParameters([
                 'allianceId' => $allianceId,
-                'opponentId' => $opponentId
+                'opponentId' => $opponentId,
             ])
             ->getOneOrNullResult();
     }
@@ -98,7 +97,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
                 )
             )
             ->setParameters([
-                'allianceId' => $allianceId
+                'allianceId' => $allianceId,
             ])
             ->getResult();
     }
@@ -113,7 +112,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
                 )
             )
             ->setParameters([
-                'allianceId' => $allianceId
+                'allianceId' => $allianceId,
             ])
             ->getResult();
     }
@@ -129,7 +128,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             )
             ->setParameters([
                 'allianceId' => $allianceId,
-                'opponentId' => $opponentId
+                'opponentId' => $opponentId,
             ])
             ->getOneOrNullResult();
     }
@@ -147,7 +146,7 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
             ->setParameters([
                 'allianceId' => $allianceId,
                 'opponentId' => $opponentId,
-                'typeIds' => $typeIds
+                'typeIds' => $typeIds,
             ])
             ->getOneOrNullResult();
     }

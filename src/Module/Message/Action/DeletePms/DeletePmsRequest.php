@@ -10,7 +10,8 @@ final class DeletePmsRequest implements DeletePmsRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getDeletionIds(): array {
+    public function getDeletionIds(): array
+    {
         return array_merge(
             $this->queryParameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]),
             [$this->queryParameter('delete_single')->int()->defaultsTo(0)]

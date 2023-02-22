@@ -51,7 +51,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 'colonyId' => $colonyId,
                 'shipRumpRoleId' => $shipRumpRoleId,
                 'shipRumpId' => $shipRumpId,
-                'state' => 1
+                'state' => 1,
             ])
             ->getResult();
     }
@@ -93,7 +93,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 'shipId' => $shipId,
                 'shipRumpRoleId' => $shipRumpRoleId,
                 'shipRumpId' => $shipRumpId,
-                'state' => 1
+                'state' => 1,
             ])
             ->getResult();
     }
@@ -105,7 +105,6 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         int $shipRumpRoleId,
         array $moduleLevel
     ): array {
-
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT
@@ -133,7 +132,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 'colonyId' => $colonyId,
                 'shipRumpRoleId' => $shipRumpRoleId,
                 'levelList' => $moduleLevel,
-                'state' => 1
+                'state' => 1,
             ])
             ->getResult();
     }
@@ -156,7 +155,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->setParameters([
                 'typeId' => $moduleTypeId,
                 'shipRumpRoleId' => $shipRumpRoleId,
-                'levelList' => $moduleLevel
+                'levelList' => $moduleLevel,
             ])
             ->getResult();
     }
@@ -175,7 +174,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 )
             )
             ->setParameters([
-                'specialTypeIds' => $specialTypeIds
+                'specialTypeIds' => $specialTypeIds,
             ])
             ->getResult();
     }

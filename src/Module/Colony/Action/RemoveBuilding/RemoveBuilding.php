@@ -6,10 +6,10 @@ namespace Stu\Module\Colony\Action\RemoveBuilding;
 
 use request;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class RemoveBuilding implements ActionControllerInterface

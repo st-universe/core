@@ -6,19 +6,19 @@ namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
-use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -101,7 +101,6 @@ final class DockShip implements ActionControllerInterface
         }
 
         if (!$this->dockPrivilegeUtility->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
-
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
 
             $this->privateMessageSender->send(
@@ -169,10 +168,10 @@ final class DockShip implements ActionControllerInterface
         $ship = $wrapper->get();
 
         $msg = [];
-        $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();;
+        $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();
+        ;
         $freeSlots = $target->getFreeDockingSlotCount();
         foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $fleetShipWrapper) {
-
             if ($freeSlots <= 0) {
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;

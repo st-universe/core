@@ -31,6 +31,7 @@ use Stu\Component\Player\Register\SmsVerificationCodeSender;
 use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -56,7 +57,7 @@ return [
             autowire(Handler\ShipDeletionHandler::class),
             autowire(Handler\FleetDeletionHandler::class),
             autowire(Handler\ShipBuildplanDeletionHandler::class),
-            autowire(Handler\UserDeletionHandler::class)
+            autowire(Handler\UserDeletionHandler::class),
         ]
     ),
     LocalPlayerCreator::class => autowire(),

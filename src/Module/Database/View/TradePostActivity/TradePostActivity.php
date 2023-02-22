@@ -31,12 +31,12 @@ final class TradePostActivity implements ViewControllerInterface
         $game->setNavigation([
             [
                 'url' => 'database.php',
-                'title' =>'Datenbank'
+                'title' =>'Datenbank',
             ],
             [
                 'url' => sprintf('database.php?%s=1', static::VIEW_IDENTIFIER),
-                'title' => 'Die Top 10 der Handelsposten'
-            ]
+                'title' => 'Die Top 10 der Handelsposten',
+            ],
         ]);
         $game->setPageTitle(_('/ Datenbank / Die Top 10 der Handelsposten'));
         $game->showMacro('html/database.xhtml/top_activ_tradeposts');

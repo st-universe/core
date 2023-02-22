@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuildPlans;
 
-use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\BuildPlanDeleterInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\Lib\ColonyMenu;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
@@ -73,7 +73,7 @@ final class ShowBuildPlans implements ViewControllerInterface
             array_map(
                 fn (ShipBuildplanInterface $plan): array => [
                     'plan' => $plan,
-                    'deletable' => $this->buildPlanDeleter->isDeletable($plan)
+                    'deletable' => $this->buildPlanDeleter->isDeletable($plan),
                 ],
                 $this->shipBuildplanRepository->getByUserAndBuildingFunction(
                     $userId,

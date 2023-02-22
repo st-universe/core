@@ -19,7 +19,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
-
     public function prototype(): UserInterface
     {
         return new User();
@@ -72,7 +71,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'ignoreIds' => $ignoreIds,
             'deletionMark' => UserEnum::DELETION_CONFIRMED,
             'deletionForbidden' => UserEnum::DELETION_FORBIDDEN,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])->getResult();
     }
 
@@ -89,14 +88,14 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
             'newUser' => UserEnum::USER_STATE_NEW,
-            'smsVerification' => UserEnum::USER_STATE_SMS_VERIFICATION
+            'smsVerification' => UserEnum::USER_STATE_SMS_VERIFICATION,
         ])->getResult();
     }
 
     public function getByEmail(string $email): ?UserInterface
     {
         return $this->findOneBy([
-            'email' => $email
+            'email' => $email,
         ]);
     }
 
@@ -111,14 +110,14 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'mobile' => $mobile,
-            'mobileHash' => $mobileHash
+            'mobileHash' => $mobileHash,
         ])->getOneOrNullResult();
     }
 
     public function getByLogin(string $loginName): ?UserInterface
     {
         return $this->findOneBy([
-            'login' => $loginName
+            'login' => $loginName,
         ]);
     }
 
@@ -126,10 +125,10 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return $this->findBy(
             [
-                'alliance' => $alliance
+                'alliance' => $alliance,
             ],
             [
-                'id' => 'ASC'
+                'id' => 'ASC',
             ]
         );
     }
@@ -176,7 +175,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->setParameters([
             'mode' => ContactListModeEnum::CONTACT_FRIEND,
             'userId' => $user->getId(),
-            'allianceId' => $allianceId
+            'allianceId' => $allianceId,
         ])->getResult();
     }
 
@@ -199,7 +198,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'contactListModeFriend' => (string) ContactListModeEnum::CONTACT_FRIEND,
             'lastActionThreshold' => $lastActionThreshold,
             'allowStart' => 1,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -226,7 +225,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'threshold' => time() - $days * TimeConstants::ONE_DAY_IN_SECONDS,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])
             ->getSingleScalarResult();
     }
@@ -243,7 +242,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'vacThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])
             ->getSingleScalarResult();
     }
@@ -257,7 +256,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'threshold' => $threshold,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])->getSingleScalarResult();
     }
 

@@ -15,7 +15,8 @@ final class AddShoutBoxEntryRequest implements AddShoutBoxEntryRequestInterface
         return $this->queryParameter('network')->int()->required();
     }
 
-    public function getMessage(): string {
+    public function getMessage(): string
+    {
         return $this->queryParameter('shoutboxentry')->string()->defaultsToIfEmpty('');
     }
 }

@@ -144,7 +144,6 @@ final class ShipTick implements ShipTickInterface
             $activeSystems = $this->shipSystemManager->getActiveSystems($ship, true);
 
             foreach ($activeSystems as $system) {
-
                 $energyConsumption = $this->shipSystemManager->getEnergyConsumption($system->getSystemType());
                 if ($energyConsumption < 1) {
                     continue;
@@ -260,7 +259,6 @@ final class ShipTick implements ShipTickInterface
 
     private function doRepairStation(ShipInterface $station): void
     {
-
         if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $station->getRump())) {
             $neededWorkbees = (int)ceil($station->getRump()->getNeededWorkbees() / 5);
 
@@ -384,7 +382,6 @@ final class ShipTick implements ShipTickInterface
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACKER, true);
 
             if ($target->getUser() !== $ship->getUser()) {
-
                 //send pm to target owner
                 $this->privateMessageSender->send(
                     GameEnum::USER_NOONE,
@@ -445,7 +442,7 @@ final class ShipTick implements ShipTickInterface
             GameEnum::USER_NOONE,
             (int) $ship->getUser()->getId(),
             $text,
-            $ship->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $ship->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
 

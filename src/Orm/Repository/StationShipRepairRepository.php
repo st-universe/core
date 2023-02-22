@@ -22,14 +22,14 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
     public function getByStation(int $stationId): array
     {
         return $this->findBy([
-            'station_id' => $stationId
+            'station_id' => $stationId,
         ], ['id' => 'asc']);
     }
 
     public function getByShip(int $shipId): ?StationShipRepairInterface
     {
         return $this->findOneBy([
-            'ship_id' => $shipId
+            'ship_id' => $shipId,
         ]);
     }
 

@@ -45,7 +45,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->setParameters([
                 'time' => time(),
                 'colonyId' => $colonyId,
-                'buildingFunctionId' => $buildingFunctionId
+                'buildingFunctionId' => $buildingFunctionId,
             ])
             ->execute();
     }
@@ -63,7 +63,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
                 'stopDate' => 0,
                 'time' => time(),
                 'colonyId' => $colonyId,
-                'buildingFunctionId' => $buildingFunctionId
+                'buildingFunctionId' => $buildingFunctionId,
             ])
             ->execute();
     }
@@ -72,28 +72,28 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
     {
         return $this->count([
             'colony_id' => $colonyId,
-            'building_function_id' => $buildingFunctionId
+            'building_function_id' => $buildingFunctionId,
         ]);
     }
 
     public function getByColony(int $colonyId): array
     {
         return $this->findBy([
-            'colony_id' => $colonyId
+            'colony_id' => $colonyId,
         ]);
     }
 
     public function getByUser(int $userId): array
     {
         return $this->findBy([
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
     public function getCountByBuildplan(int $buildplanId): int
     {
         return $this->count([
-            'buildplan_id' => $buildplanId
+            'buildplan_id' => $buildplanId,
         ]);
     }
 
@@ -108,7 +108,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             )
             ->setParameters([
                 'stopDate' => 0,
-                'time' => time()
+                'time' => time(),
             ])
             ->getResult();
     }
@@ -123,7 +123,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
                 )
             )
             ->setParameters([
-                'colony' => $colony
+                'colony' => $colony,
             ])
             ->execute();
     }
@@ -139,7 +139,7 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             )
             ->setParameters([
                 'colonyId' => $colonyId,
-                'buildingFunctionId' => $buildingFunctionId
+                'buildingFunctionId' => $buildingFunctionId,
             ])
             ->execute();
     }

@@ -14,7 +14,7 @@ final class AllianceRelationWrapper
 
     private AllianceRelationInterface $relation;
 
-    function __construct(
+    public function __construct(
         AllianceInterface $alliance,
         AllianceRelationInterface $relation
     ) {

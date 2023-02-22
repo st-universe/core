@@ -7,11 +7,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
-use Throwable;
 
 interface GameControllerInterface
 {
-
     public function setView(string $view, array $viewContext = []): void;
 
     public function getViewContext(): array;

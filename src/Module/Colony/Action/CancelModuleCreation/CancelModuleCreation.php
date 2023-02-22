@@ -6,9 +6,9 @@ namespace Stu\Module\Colony\Action\CancelModuleCreation;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;

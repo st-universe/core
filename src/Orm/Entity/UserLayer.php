@@ -61,7 +61,6 @@ class UserLayer implements UserLayerInterface
 
     public function getUser(): UserInterface
     {
-
         return $this->user;
     }
 
@@ -75,7 +74,6 @@ class UserLayer implements UserLayerInterface
 
     public function getLayer(): LayerInterface
     {
-
         return $this->layer;
     }
 

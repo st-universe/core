@@ -74,6 +74,7 @@ use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequestInterface;
 use Stu\Module\Communication\View\ShowUserPlotList\ShowUserPlotList;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
 use Stu\Module\Control\GameController;
+
 use function DI\autowire;
 use function DI\get;
 
@@ -120,7 +121,7 @@ return [
             ->constructorParameter(
                 'bbcodeParser',
                 get('kn_bbcode_parser')
-            )
+            ),
     ],
     'COMMUNICATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -140,6 +141,6 @@ return [
         ShowSingleKn::VIEW_IDENTIFIER => autowire(ShowSingleKn::class),
         ShowPostSearchResult::VIEW_IDENTIFIER => autowire(ShowPostSearchResult::class),
         ShowUserSearchResult::VIEW_IDENTIFIER => autowire(ShowUserSearchResult::class),
-        ShowPostIdSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdSearchResult::class)
+        ShowPostIdSearchResult::VIEW_IDENTIFIER => autowire(ShowPostIdSearchResult::class),
     ],
 ];

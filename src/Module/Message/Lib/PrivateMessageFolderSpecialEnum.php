@@ -25,6 +25,6 @@ final class PrivateMessageFolderSpecialEnum
         self::PM_SPECIAL_COLONY => 'Kolonien',
         self::PM_SPECIAL_TRADE => 'Handel',
         self::PM_SPECIAL_SYSTEM => 'Systemmeldungen',
-        self::PM_SPECIAL_PMOUT => 'Postausgang'
+        self::PM_SPECIAL_PMOUT => 'Postausgang',
     ];
 }

@@ -37,14 +37,14 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
     public function getByType(int $typeId): array
     {
         return $this->findBy([
-            'type' => $typeId
+            'type' => $typeId,
         ], ['sort' => 'asc']);
     }
 
     public function getViewable(): array
     {
         return $this->findBy([
-            'view' => true
+            'view' => true,
         ], ['sort' => 'asc']);
     }
 
@@ -53,7 +53,7 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
         return $this->findBy([
             'view' => true,
             'npc_commodity' => false,
-            'type' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD
+            'type' => CommodityTypeEnum::COMMODITY_TYPE_STANDARD,
         ], ['sort' => 'asc']);
     }
 

@@ -8,12 +8,11 @@ use request;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class RemoveTholianWeb implements ActionControllerInterface
 {

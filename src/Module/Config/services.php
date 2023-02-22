@@ -7,5 +7,5 @@ namespace Stu\Module\Config;
 use function DI\autowire;
 
 return [
-    StuConfigInterface::class => autowire(StuConfig::class)
+    StuConfigInterface::class => autowire(StuConfig::class),
 ];

@@ -16,14 +16,14 @@ final class BlockedUserRepository extends EntityRepository implements BlockedUse
     public function getByEmailHash(string $emailHash): ?BlockedUserInterface
     {
         return $this->findOneBy([
-            'email_hash' => $emailHash
+            'email_hash' => $emailHash,
         ]);
     }
 
     public function getByMobileHash(string $mobileHash): ?BlockedUserInterface
     {
         return $this->findOneBy([
-            'mobile_hash' => $mobileHash
+            'mobile_hash' => $mobileHash,
         ]);
     }
 

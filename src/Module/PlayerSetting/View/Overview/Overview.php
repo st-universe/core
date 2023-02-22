@@ -6,9 +6,9 @@ namespace Stu\Module\PlayerSetting\View\Overview;
 
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Player\UserRpgEnum;
 use Stu\Component\Index\News\NewsFactoryInterface;
 use Stu\Component\Index\News\NewsItemInterface;
+use Stu\Component\Player\UserRpgEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\NewsInterface;

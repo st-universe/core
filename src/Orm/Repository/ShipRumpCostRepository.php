@@ -15,7 +15,7 @@ final class ShipRumpCostRepository extends EntityRepository implements ShipRumpC
     public function getByShipRump(int $shipRumpId): array
     {
         return $this->findBy([
-            'rump_id' => $shipRumpId
+            'rump_id' => $shipRumpId,
         ]);
     }
 }

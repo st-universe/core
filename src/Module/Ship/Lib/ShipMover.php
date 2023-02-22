@@ -238,7 +238,6 @@ final class ShipMover implements ShipMoverInterface
 
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
-
             $this->leaderMovedToNextField = false;
 
             $currentField = $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY());
@@ -726,7 +725,7 @@ final class ShipMover implements ShipMoverInterface
 
         if ($ship === $leadShip) {
             $this->updateDestination($ship->getPosX(), $ship->getPosY());
-        } else if (!$isFixedFleetMode) {
+        } elseif (!$isFixedFleetMode) {
             $this->leaveFleet($wrapper, $msg !== null);
         }
     }
@@ -849,16 +848,16 @@ final class ShipMover implements ShipMoverInterface
             if ($astroEntry->getStarsystemMap1() === $nextField) {
                 $astroEntry->setStarsystemMap1(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap2() === $nextField) {
+            } elseif ($astroEntry->getStarsystemMap2() === $nextField) {
                 $astroEntry->setStarsystemMap2(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap3() === $nextField) {
+            } elseif ($astroEntry->getStarsystemMap3() === $nextField) {
                 $astroEntry->setStarsystemMap3(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap4() === $nextField) {
+            } elseif ($astroEntry->getStarsystemMap4() === $nextField) {
                 $astroEntry->setStarsystemMap4(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap5() === $nextField) {
+            } elseif ($astroEntry->getStarsystemMap5() === $nextField) {
                 $astroEntry->setStarsystemMap5(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
             }

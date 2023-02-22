@@ -17,9 +17,9 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -38,7 +38,7 @@ final class BuildConstruction implements ActionControllerInterface
 
     public const NEEDED_RESOURCES = [
         CommodityTypeEnum::COMMODITY_BUILDING_MATERIALS => 100,
-        CommodityTypeEnum::COMMODITY_DURANIUM => 50
+        CommodityTypeEnum::COMMODITY_DURANIUM => 50,
     ];
 
     private ShipRepositoryInterface $shipRepository;
@@ -157,7 +157,6 @@ final class BuildConstruction implements ActionControllerInterface
         $neededCrew = 0;
         $neededEps = 0;
         foreach ($ship->getStorage() as $stor) {
-
             if (count($workbeePlans) === self::NEEDED_WORKBEES) {
                 break;
             }

@@ -35,7 +35,7 @@ class ProcessTickRunnerTest extends StuTestCase
             $this->entityManager,
             $this->failureEmailSender,
             [
-                $this->handler
+                $this->handler,
             ]
         );
     }

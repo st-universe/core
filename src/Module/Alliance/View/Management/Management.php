@@ -65,7 +65,7 @@ final class Management implements ViewControllerInterface
             ],
             [
                 'url' => sprintf('alliance.php?%s=1', Management::VIEW_IDENTIFIER),
-                'title' => 'Verwaltung'
+                'title' => 'Verwaltung',
             ],
         ]);
         $game->setTemplateFile('html/alliancemanagement.xhtml');

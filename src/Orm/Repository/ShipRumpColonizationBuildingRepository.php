@@ -17,7 +17,7 @@ final class ShipRumpColonizationBuildingRepository extends EntityRepository impl
     public function findByShipRump(ShipRumpInterface $shipRump): ?ShipRumpColonizationBuildingInterface
     {
         return $this->findOneBy([
-            'rump_id' => $shipRump
+            'rump_id' => $shipRump,
         ]);
     }
 }

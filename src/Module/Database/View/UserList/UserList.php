@@ -13,7 +13,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserList implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_SETTLERLIST';
 
     private const SORT_FIELD_MAP = [

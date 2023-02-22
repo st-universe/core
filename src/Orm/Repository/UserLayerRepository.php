@@ -35,7 +35,7 @@ final class UserLayerRepository extends EntityRepository implements UserLayerRep
     public function getByMappingType(int $mappingType): array
     {
         return $this->findBy([
-            'map_type' => $mappingType
+            'map_type' => $mappingType,
         ]);
     }
 }

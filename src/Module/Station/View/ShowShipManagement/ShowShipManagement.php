@@ -88,7 +88,6 @@ final class ShowShipManagement implements ViewControllerInterface
                             $roleB = $b->getRump()->getRoleId();
                             if ($roleB == $roleA) {
                                 if ($b->getRumpId() == $a->getRumpId()) {
-
                                     return $a->getName() <=> $b->getName();
                                 }
 

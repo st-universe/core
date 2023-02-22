@@ -52,7 +52,7 @@ final class UserCreateCommand extends Command
     {
         $io = $this->io();
 
-        $passValidator = static function (string $password) : string {
+        $passValidator = static function (string $password): string {
             if (!preg_match(ChangePassword::PASSWORD_REGEX, $password)) {
                 throw new InvalidArgumentException('Password does not meet requirements (6-20 alphanumerical characters)');
             }

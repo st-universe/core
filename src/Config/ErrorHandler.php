@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
+use Doctrine\DBAL\Connection;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Noodlehaus\ConfigInterface;
-use Stu\Lib\SessionInterface;
-use Throwable;
-use Doctrine\DBAL\Connection;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
+use Stu\Lib\SessionInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Throwable;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -46,7 +46,8 @@ final class ErrorHandler
         $this->session = $session;
     }
 
-    public function register(): void {
+    public function register(): void
+    {
         $isAdminUser = false;
         // load the session handler only if a session has been started
         if (session_id() !== '') {
@@ -115,7 +116,7 @@ final class ErrorHandler
                 [
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
-                    'trace' => $e->getTrace()
+                    'trace' => $e->getTrace(),
                 ]
             );
         });

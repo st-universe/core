@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-
 final class FightMessage implements FightMessageInterface
 {
     private $msg = [];

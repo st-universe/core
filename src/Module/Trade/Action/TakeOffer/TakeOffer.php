@@ -6,10 +6,10 @@ namespace Stu\Module\Trade\Action\TakeOffer;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -132,7 +132,6 @@ final class TakeOffer implements ActionControllerInterface
             $this->storageRepository->delete($selectedOffer->getStorage());
             $this->tradeOfferRepository->delete($selectedOffer);
         } else {
-
             //modify offer
             $selectedOffer->setOfferCount($selectedOffer->getOfferCount() - (int) $amount);
             $this->tradeOfferRepository->save($selectedOffer);

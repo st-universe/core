@@ -17,7 +17,6 @@ use Stu\Orm\Entity\UserInterface;
 
 interface ColonyLibFactoryInterface
 {
-
     public function createBuildingFunctionTal(
         array $buildingFunctionIds
     ): BuildingFunctionTalInterface;

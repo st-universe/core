@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\Signup;
 
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Alliance\AllianceUserApplicationCheckerInterface;
 use Stu\Exception\AccessViolation;
-use Stu\Component\Alliance\AllianceEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 

@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowShipRepair;
 
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -75,7 +74,6 @@ final class ShowShipRepair implements ViewControllerInterface
         $colonySurface = $this->colonyLibFactory->createColonySurface($colony);
 
         if ($colonySurface->hasShipyard()) {
-
             $repairableShips = [];
             foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
                 /** @var ShipInterface $ship */

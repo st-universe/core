@@ -56,7 +56,6 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 
 
         if (!$user->isNpc()) {
-
             //create prestige log
             $this->createPrestigeLog->createLogForDatabaseEntry($databaseEntry, $user, $userEntry->getDate());
 
@@ -76,7 +75,6 @@ final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
         $award = $category->getAward();
 
         if ($this->databaseUserRepository->hasUserCompletedCategory($user->getId(), $category->getId())) {
-
             $this->createUserAward->createAwardForUser($user, $award);
         }
     }

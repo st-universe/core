@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
 use Exception;
-use Stu\Exception\AccessViolation;
 use Noodlehaus\ConfigInterface;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class ChangeAvatar implements ActionControllerInterface
@@ -46,7 +46,7 @@ final class ChangeAvatar implements ActionControllerInterface
         }
 
         if (!$this->allianceActionManager->mayEdit($alliance, $user)) {
-            throw new AccessViolation;
+            throw new AccessViolation();
         }
 
         $game->setView(Edit::VIEW_IDENTIFIER);

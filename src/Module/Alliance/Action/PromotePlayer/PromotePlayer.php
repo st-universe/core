@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\PromotePlayer;
 
-use Stu\Exception\AccessViolation;
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Alliance\View\AllianceDetails\AllianceDetails;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Alliance\View\Overview\Overview;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 

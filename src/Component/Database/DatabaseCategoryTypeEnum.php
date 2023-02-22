@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Database;
 
-use Stu\Component\Player\UserAwardEnum;
-
 final class DatabaseCategoryTypeEnum
 {
-
     /**
      * @var int
      */

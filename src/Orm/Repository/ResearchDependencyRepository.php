@@ -16,7 +16,7 @@ final class ResearchDependencyRepository extends EntityRepository implements Res
     public function getByMode(array $modes): array
     {
         return $this->findBy([
-            'mode' => $modes
+            'mode' => $modes,
         ]);
     }
 
@@ -24,7 +24,7 @@ final class ResearchDependencyRepository extends EntityRepository implements Res
     {
         return $this->findBy([
             'research_id' => $researchId,
-            'mode' => ResearchEnum::RESEARCH_MODE_EXCLUDE
+            'mode' => ResearchEnum::RESEARCH_MODE_EXCLUDE,
         ]);
     }
 }

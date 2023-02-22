@@ -96,7 +96,7 @@ class PlayerRelationDeterminatorTest extends StuTestCase
                 [
                     AllianceEnum::ALLIANCE_RELATION_FRIENDS,
                     AllianceEnum::ALLIANCE_RELATION_ALLIED,
-                    AllianceEnum::ALLIANCE_RELATION_VASSAL
+                    AllianceEnum::ALLIANCE_RELATION_VASSAL,
                 ],
                 $allianceOpponentId,
                 $allianceUserId
@@ -144,7 +144,7 @@ class PlayerRelationDeterminatorTest extends StuTestCase
                 [
                     AllianceEnum::ALLIANCE_RELATION_FRIENDS,
                     AllianceEnum::ALLIANCE_RELATION_ALLIED,
-                    AllianceEnum::ALLIANCE_RELATION_VASSAL
+                    AllianceEnum::ALLIANCE_RELATION_VASSAL,
                 ],
                 $allianceOpponentId,
                 $allianceUserId

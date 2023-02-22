@@ -8,10 +8,10 @@ use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\SanityCheckException;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\TerraformingInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
@@ -20,7 +20,6 @@ use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 final class Terraform implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_TERRAFORM';
 
     private ColonyLoaderInterface $colonyLoader;

@@ -36,7 +36,7 @@ final class AllianceBoardRepository extends EntityRepository implements Alliance
     public function getByAlliance(int $allianceId): array
     {
         return $this->findBy([
-            'alliance_id' => $allianceId
+            'alliance_id' => $allianceId,
         ]);
     }
 }

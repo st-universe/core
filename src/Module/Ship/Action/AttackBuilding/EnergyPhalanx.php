@@ -9,7 +9,6 @@ use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class EnergyPhalanx
 {
-
     private ColonyInterface $colony;
 
     private ModuleRepositoryInterface $moduleRepository;

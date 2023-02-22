@@ -46,14 +46,14 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
                 TradePost::class
             )
         )->setParameters([
-            'userId' => $userId
+            'userId' => $userId,
         ])->getResult();
     }
 
     public function getByUniqId(string $uniqId): ?BasicTradeInterface
     {
         return $this->findOneBy([
-            'uniqid' => $uniqId
+            'uniqid' => $uniqId,
         ]);
     }
 
@@ -70,7 +70,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
         )->setParameters([
             'factionId' => $basicTrade->getFaction()->getId(),
             'commodityId' => $basicTrade->getCommodity()->getId(),
-            'myDate' => $basicTrade->getDate()
+            'myDate' => $basicTrade->getDate(),
         ])->getSingleScalarResult() === 0;
     }
 
@@ -88,7 +88,7 @@ final class BasicTradeRepository extends EntityRepository implements BasicTradeR
             )
             ->setParameters([
                 'factionId' => $basicTrade->getFaction()->getId(),
-                'commodityId' => $basicTrade->getCommodity()->getId()
+                'commodityId' => $basicTrade->getCommodity()->getId(),
             ])
             ->setMaxResults(TradeEnum::BASIC_TRADE_LATEST_RATE_AMOUNT)
             ->getResult();

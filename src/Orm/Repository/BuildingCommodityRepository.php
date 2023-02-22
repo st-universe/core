@@ -19,7 +19,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
     public function getByBuilding(int $buildingId): array
     {
         return $this->findBy([
-            'buildings_id' => $buildingId
+            'buildings_id' => $buildingId,
         ]);
     }
 
@@ -45,7 +45,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
             ->setParameters([
                 'state' => 1,
                 'colonyId' => $colonyId,
-                'colonyClassId' => $colonyClassId
+                'colonyClassId' => $colonyClassId,
             ])
             ->getResult();
     }
@@ -101,7 +101,7 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
         )->setParameters([
             'state' => 1,
             'userId' => $user->getId(),
-            'commodityId' => $commodityId
+            'commodityId' => $commodityId,
         ])->getSingleScalarResult();
     }
 }

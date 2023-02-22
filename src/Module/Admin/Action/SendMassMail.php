@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action;
 
-use request;
-use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
+use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
+use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Admin\View\MassMail\MassMail;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SendMassMail implements ActionControllerInterface
@@ -63,7 +63,7 @@ final class SendMassMail implements ActionControllerInterface
         $count = 0;
         if ($medium === static::MEDIUM_EMAIL) {
             $count = $this->sendMassEmails($text, $subject);
-        } else if ($medium === static::MEDIUM_PM) {
+        } elseif ($medium === static::MEDIUM_PM) {
             $count = $this->sendMassPm($text, $subject);
         }
 

@@ -4,52 +4,49 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
-use Stu\Component\Ship\ShipRumpEnum;
-
 class SignaturePanelEntry
 {
-
-    private $data = array();
+    private $data = [];
 
     private ?int $row = null;
 
-    function __construct(
-        &$entry = array()
+    public function __construct(
+        &$entry = []
     ) {
         $this->data = $entry;
     }
 
-    function getPosX()
+    public function getPosX()
     {
         return $this->data['posx'];
     }
 
-    function getPosY()
+    public function getPosY()
     {
         return $this->data['posy'];
     }
 
-    function getMapfieldType()
+    public function getMapfieldType()
     {
         return $this->data['type'];
     }
 
-    function getShipCount()
+    public function getShipCount()
     {
         return $this->data['shipcount'];
     }
 
-    function getShieldState()
+    public function getShieldState()
     {
         return $this->data['shieldstate'];
     }
 
-    function hasShips()
+    public function hasShips()
     {
         return $this->data['shipcount'] > 0;
     }
 
-    function getSubspaceCode()
+    public function getSubspaceCode()
     {
         $code = sprintf('%d%d%d%d', $this->getCode('d1c'), $this->getCode('d2c'), $this->getCode('d3c'), $this->getCode('d4c'));
         return $code == '0000' ? null : $code;
@@ -78,7 +75,7 @@ class SignaturePanelEntry
         return 5;
     }
 
-    function getDisplayCount()
+    public function getDisplayCount()
     {
         if ($this->hasShips()) {
             return $this->getShipCount();
@@ -86,7 +83,7 @@ class SignaturePanelEntry
         return "";
     }
 
-    function getCacheValue()
+    public function getCacheValue()
     {
         return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount();
     }
@@ -95,29 +92,29 @@ class SignaturePanelEntry
     public $currentShipPosY = null;
 
     //obsolete?
-    function getBorder()
+    public function getBorder()
     {
         return $this->data['color'];
     }
 
     private $cssClass = 'lss';
 
-    function setCSSClass($class)
+    public function setCSSClass($class)
     {
         $this->cssClass = $class;
     }
 
-    function getCSSClass()
+    public function getCSSClass()
     {
         return $this->cssClass;
     }
 
-    function getRow(): ?int
+    public function getRow(): ?int
     {
         return $this->row;
     }
 
-    function setRow(int $row): void
+    public function setRow(int $row): void
     {
         $this->row = $row;
     }

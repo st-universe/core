@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TholianWebInterface;
 
 interface TholianWebUtilInterface

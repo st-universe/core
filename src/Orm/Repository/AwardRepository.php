@@ -13,7 +13,6 @@ use Stu\Orm\Entity\AwardInterface;
  */
 final class AwardRepository extends EntityRepository implements AwardRepositoryInterface
 {
-
     public function save(AwardInterface $award): void
     {
         $em = $this->getEntityManager();

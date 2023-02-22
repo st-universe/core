@@ -10,7 +10,6 @@ use Noodlehaus\ConfigInterface;
 
 final class LoggerUtil implements LoggerUtilInterface
 {
-
     private ConfigInterface $config;
 
     private $logger;
@@ -35,7 +34,6 @@ final class LoggerUtil implements LoggerUtilInterface
                 new StreamHandler(
                     $this->config->get('debug.logfile_path')
                 ),
-
             );
         }
     }

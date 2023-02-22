@@ -19,7 +19,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
     public function getAmountByLayer(int $layerId): int
     {
         return $this->count([
-            'layer_id' => $layerId
+            'layer_id' => $layerId,
         ]);
     }
 
@@ -40,7 +40,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 )
             )
             ->setParameters([
-                'layerId' => $layerId
+                'layerId' => $layerId,
             ])
             ->getResult();
     }
@@ -62,7 +62,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 )
             )
             ->setParameters([
-                'layerId' => $layerId
+                'layerId' => $layerId,
             ])
             ->getResult();
     }
@@ -84,7 +84,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 )
             )
             ->setParameters([
-                'layerId' => $layerId
+                'layerId' => $layerId,
             ])
             ->getResult();
     }
@@ -94,7 +94,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         return $this->findOneBy([
             'layer_id' => $layerId,
             'cx' => $cx,
-            'cy' => $cy
+            'cy' => $cy,
         ]);
     }
 
@@ -121,7 +121,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'startCx' => $startCx,
                 'endCx' => $endCx,
                 'startCy' => $startCy,
-                'endCy' => $endCy
+                'endCy' => $endCy,
             ])
             ->getResult();
     }
@@ -174,7 +174,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'userId' => $userId,
                 'startX' => $startX,
                 'endX' => $endX,
-                'cy' => $cy
+                'cy' => $cy,
             ])
             ->getResult();
     }

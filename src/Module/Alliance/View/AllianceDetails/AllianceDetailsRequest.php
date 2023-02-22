@@ -14,5 +14,4 @@ final class AllianceDetailsRequest implements AllianceDetailsRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-
 interface LayerInterface
 {
     public function getId(): int;

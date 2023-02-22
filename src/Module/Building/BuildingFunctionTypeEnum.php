@@ -36,7 +36,7 @@ final class BuildingFunctionTypeEnum
             BuildingEnum::BUILDING_FUNCTION_ESCORT_SHIPYARD,
             BuildingEnum::BUILDING_FUNCTION_FRIGATE_SHIPYARD,
             BuildingEnum::BUILDING_FUNCTION_CRUISER_SHIPYARD,
-            BuildingEnum::BUILDING_FUNCTION_DESTROYER_SHIPYARD
+            BuildingEnum::BUILDING_FUNCTION_DESTROYER_SHIPYARD,
         ];
     }
 }

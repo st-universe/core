@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Colony;
 
 use Mockery\MockInterface;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\StuTestCase;

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\SetTopicSticky;
 
 use Stu\Exception\AccessViolation;
+use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Orm\Entity\AllianceBoardTopicInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 

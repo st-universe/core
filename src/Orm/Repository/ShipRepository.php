@@ -24,10 +24,10 @@ use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipCrew;
-use Stu\Orm\Entity\ShipRump;
-use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpSpecial;
+use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -40,7 +40,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
 {
-
     public function prototype(): ShipInterface
     {
         return new Ship();
@@ -104,12 +103,12 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     {
         return $this->findBy([
             'user_id' => $userId,
-            'rumps_id' => $rumpId
+            'rumps_id' => $rumpId,
         ], [
             'map_id' => 'asc',
             'starsystem_map_id' => 'asc',
             'fleets_id' => 'asc',
-            'is_fleet_leader' => 'desc'
+            'is_fleet_leader' => 'desc',
         ]);
     }
 
@@ -131,7 +130,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameters([
             'userId' => $fleetLeader->getUser()->getId(),
             'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP,
-            'mapId' => $isSystem ? $fleetLeader->getStarsystemMap()->getId() : $fleetLeader->getMap()->getId()
+            'mapId' => $isSystem ? $fleetLeader->getStarsystemMap()->getId() : $fleetLeader->getMap()->getId(),
         ])->getResult();
     }
 
@@ -140,11 +139,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->findBy([
             'user_id' => $user->getId(),
             'starsystem_map_id' => $starSystemMap !== null ? $starSystemMap->getId() : null,
-            'map_id' => $map !== null ? $map->getId() : null
+            'map_id' => $map !== null ? $map->getId() : null,
         ], [
             'fleets_id' => 'desc',
             'is_fleet_leader' => 'desc',
-            'id' => 'desc'
+            'id' => 'desc',
         ]);
     }
 
@@ -177,7 +176,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
             ->setParameters([
                 'mapId' => $starSystemMap === null ? $map->getId() : $starSystemMap->getId(),
-                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             ])
             ->getResult();
     }
@@ -214,7 +213,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'sx' => $systemMap === null ? 0 : $systemMap->getSx(),
                 'sy' => $systemMap === null ? 0 : $systemMap->getSy(),
                 'cx' => $map === null ? 0 : $map->getCx(),
-                'cy' => $map === null ? 0 : $map->getCy()
+                'cy' => $map === null ? 0 : $map->getCy(),
             ])
             ->getResult();
     }
@@ -222,7 +221,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getShipsForAlertRed(
         ShipInterface $ship
     ): iterable {
-
         $isSystem = $ship->getSystem() !== null;
 
         return $this->getEntityManager()->createQuery(
@@ -256,7 +254,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'ignoreId' => $ship->getUser()->getId(),
             'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
-            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
+            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
         ])->getResult();
     }
 
@@ -310,7 +308,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'userId' => $userId,
             'systemType' => ShipSystemTypeEnum::SYSTEM_UPLINK,
             'mode' => ShipSystemModeEnum::MODE_ON,
-            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS
+            'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
         ])
             ->getResult();
     }
@@ -377,7 +375,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ShipRump::class
             )
         )->setParameters([
-            'categoryId' => ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
+            'categoryId' => ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS,
         ])->getResult();
     }
 
@@ -398,7 +396,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'categoryId' => ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS,
-            'userId' => $userId
+            'userId' => $userId,
         ])->getResult();
     }
 
@@ -423,7 +421,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'catId' => ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])
             ->getResult();
     }
@@ -456,7 +454,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'underConstruction' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
             'scrapping' => ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING,
             'vacationThreshold' => time() - UserEnum::VACATION_DELAY_IN_SECONDS,
-            'firstUserId' => UserEnum::USER_FIRST_ID
+            'firstUserId' => UserEnum::USER_FIRST_ID,
         ])->toIterable();
     }
 
@@ -562,7 +560,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'syEnd' => $system ? $system->getMaxY() : $map->getSy() + $sensorRange,
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'active' => 1,
-            'shieldBuilding' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
+            'shieldBuilding' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR,
         ])->getResult();
     }
 
@@ -654,7 +652,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $cx + $sensorRange,
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
-            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
         ])->getResult();
     }
 
@@ -713,7 +711,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $maxx,
             'syStart' => $miny,
             'syEnd' => $maxy,
-            'userId' => $userId
+            'userId' => $userId,
         ])->getResult();
     }
 
@@ -777,7 +775,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $maxx,
             'syStart' => $miny,
             'syEnd' => $maxy,
-            'allyId' => $allyId
+            'allyId' => $allyId,
         ])->getResult();
     }
 
@@ -859,7 +857,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
-            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK
+            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK,
         ])->getResult();
     }
 
@@ -870,7 +868,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $mapId = null,
         int $sysMapId = null
     ): iterable {
-
         $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
@@ -939,7 +936,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
-            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK
+            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK,
         ])->getResult();
     }
 
@@ -958,7 +955,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ?int $mapId,
         int $ignoreId
     ): bool {
-
         $cloakSql = sprintf(
             ' AND EXISTS (SELECT ss.id
                             FROM %s ss
@@ -981,7 +977,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'fieldId' => $mapId ?? $sysMapId,
-            'ignoreId' => $ignoreId
+            'ignoreId' => $ignoreId,
         ])->getSingleScalarResult();
 
         return $result > 0;
@@ -1004,7 +1000,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 $rsm
             )
             ->setParameters([
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getOneOrNullResult();
 
@@ -1024,8 +1020,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 $isSystem ? 'starsystem_map_id' : 'map_id',
             )
         )->setParameters([
-            'mapId' => $isSystem  ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
-            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION
+            'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION,
         ]);
 
         return $query->getSingleScalarResult() > 0;
@@ -1048,7 +1044,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
             ->setParameters([
                 'userId' => $userId,
-                'categoryId' => ShipRumpEnum::SHIP_CATEGORY_STATION
+                'categoryId' => ShipRumpEnum::SHIP_CATEGORY_STATION,
             ])
             ->getResult();
     }

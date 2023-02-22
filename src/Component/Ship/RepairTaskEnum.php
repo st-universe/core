@@ -34,6 +34,6 @@ final class RepairTaskEnum
         3 => [self::SPARE_PARTS_ONLY => 6, self::SYSTEM_COMPONENTS_ONLY => 1],
         4 => [self::SPARE_PARTS_ONLY => 8, self::SYSTEM_COMPONENTS_ONLY => 3],
         5 => [self::SPARE_PARTS_ONLY => 9, self::SYSTEM_COMPONENTS_ONLY => 10],
-        6 => [self::SPARE_PARTS_ONLY => 10, self::SYSTEM_COMPONENTS_ONLY => 20]
+        6 => [self::SPARE_PARTS_ONLY => 10, self::SYSTEM_COMPONENTS_ONLY => 20],
     ];
 }

@@ -35,17 +35,17 @@ class ColonyProduction
         return $this->data['commodity_id'];
     }
 
-    function setCommodityId($value): void
+    public function setCommodityId($value): void
     {
         $this->data['commodity_id'] = $value;
     }
 
-    function getProduction(): int
+    public function getProduction(): int
     {
         return $this->data['gc'];
     }
 
-    function getProductionDisplay(): string
+    public function getProductionDisplay(): string
     {
         if ($this->getProduction() <= 0) {
             return (string) $this->getProduction();
@@ -53,7 +53,7 @@ class ColonyProduction
         return '+' . $this->getProduction();
     }
 
-    function getCssClass(): string
+    public function getCssClass(): string
     {
         if ($this->getProduction() < 0) {
             return 'negative';
@@ -67,7 +67,7 @@ class ColonyProduction
     /**
      * @param int $value
      */
-    function lowerProduction($value): void
+    public function lowerProduction($value): void
     {
         $this->setProduction($this->getProduction() - $value);
     }
@@ -75,7 +75,7 @@ class ColonyProduction
     /**
      * @param int $value
      */
-    function upperProduction($value): void
+    public function upperProduction($value): void
     {
         $this->setProduction($this->getProduction() + $value);
     }
@@ -83,7 +83,7 @@ class ColonyProduction
     /**
      * @param int $value
      */
-    function setProduction($value): void
+    public function setProduction($value): void
     {
         $this->data['gc'] = $value;
     }

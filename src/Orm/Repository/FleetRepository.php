@@ -67,7 +67,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
                 $rsm
             )
             ->setParameters([
-                'userId' => $userId
+                'userId' => $userId,
             ])
             ->getSingleScalarResult();
     }
