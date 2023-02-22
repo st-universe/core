@@ -4,6 +4,13 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/st-universe/core/badges/quality-score.png?b=maseter)](https://scrutinizer-ci.com/g/st-universe/core)
 [![Code Coverage](https://scrutinizer-ci.com/g/st-universe/core/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/st-universe/core/?branch=master)
 
+## Code-Stände 
+
+| Branch | Version                  | PHP-Version |
+|--------|--------------------------|-------------|
+| main   | Testversion              | ^8.1        |
+ | master | Aktuell laufende Version | 7.4         |
+
 ## Lokales Setup
 
 Benötigte Software: Linux (geht u.U. auch unter macOS) docker, php 7.4,
