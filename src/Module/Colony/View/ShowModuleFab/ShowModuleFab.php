@@ -48,8 +48,7 @@ final class ShowModuleFab implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showModuleFabRequest->getColonyId(),
-            $userId,
-            false
+            $userId
         );
 
         $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));

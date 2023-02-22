@@ -49,8 +49,7 @@ final class ShowSubspaceTelescope implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $userId,
-            false
+            $userId
         );
 
         if (!$this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_SUBSPACE_TELESCOPE)) {

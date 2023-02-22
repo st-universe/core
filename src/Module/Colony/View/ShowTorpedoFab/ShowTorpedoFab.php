@@ -37,8 +37,7 @@ final class ShowTorpedoFab implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showTorpedoFabRequest->getColonyId(),
-            $userId,
-            false
+            $userId
         );
 
         $game->showMacro('html/colonymacros.xhtml/cm_torpedo_fab');

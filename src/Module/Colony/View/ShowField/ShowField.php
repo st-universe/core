@@ -74,8 +74,7 @@ final class ShowField implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showFieldRequest->getColonyId(),
-            $userId,
-            false
+            $userId
         );
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
@@ -142,9 +141,11 @@ final class ShowField implements ViewControllerInterface
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar(
             'HAS_UPGRADE_OR_TERRAFORMING_OPTION',
-            (!$field->isUnderConstruction()
+            (
+                !$field->isUnderConstruction()
                 && $upgradeOptions !== []
-            ) || ($terraformingOptions !== []
+            ) || (
+                $terraformingOptions !== []
                 && !$field->hasBuilding()
             )
         );

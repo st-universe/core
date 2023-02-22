@@ -52,8 +52,7 @@ final class ShowSocial implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showSocialRequest->getColonyId(),
-            $user->getId(),
-            false
+            $user->getId()
         );
 
         $this->colonyGuiHelper->register($colony, $game);

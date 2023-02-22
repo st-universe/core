@@ -56,8 +56,7 @@ final class ShowModuleScreen implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showModuleScreenRequest->getColonyId(),
-            $userId,
-            false
+            $userId
         );
 
         $rump = $this->shipRumpRepository->find($this->showModuleScreenRequest->getRumpId());

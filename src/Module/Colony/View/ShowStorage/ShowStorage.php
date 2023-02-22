@@ -40,8 +40,7 @@ final class ShowStorage implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showStorageRequest->getColonyId(),
-            $userId,
-            false
+            $userId
         );
 
         $this->colonyGuiHelper->register($colony, $game);

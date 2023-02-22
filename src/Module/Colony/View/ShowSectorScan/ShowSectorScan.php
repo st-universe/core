@@ -42,8 +42,7 @@ final class ShowSectorScan implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $userId,
-            false
+            $userId
         );
 
         $game->setPageTitle("Sektor Scan");

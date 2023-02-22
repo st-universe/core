@@ -47,8 +47,7 @@ final class ShowAcademy implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showAcademyRequest->getColonyId(),
-            $userId,
-            false
+            $userId
         );
 
         $crewInTrainingCount = $this->crewCountRetriever->getInTrainingCount($user);

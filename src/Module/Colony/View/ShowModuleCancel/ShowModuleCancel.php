@@ -36,8 +36,7 @@ final class ShowModuleCancel implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showModuleCancelRequest->getColonyId(),
-            $userId,
-            false
+            $userId
         );
 
         /** @var ModuleInterface $module */

@@ -11,7 +11,6 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolation;
-use Stu\Exception\EntityLockedException;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\SanityCheckException;
@@ -469,8 +468,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    public function getGameRequestId(): string
-    {
+    public function getGameRequestId(): string {
         return $this->getGameRequest()->getRequestId();
     }
 
@@ -523,9 +521,8 @@ final class GameController implements GameControllerInterface
             try {
                 $this->executeCallback($actions, $gameRequest);
             } catch (SanityCheckException $e) {
+
                 $gameRequest->addError($e);
-            } catch (EntityLockedException $e) {
-                $this->addInformation($e->getMessage());
             }
             $actionMs = hrtime(true) - $startTime;
 
@@ -534,8 +531,6 @@ final class GameController implements GameControllerInterface
                 $this->executeView($views, $gameRequest);
             } catch (SanityCheckException $e) {
                 $gameRequest->addError($e);
-            } catch (EntityLockedException $e) {
-                $this->addInformation($e->getMessage());
             }
             $viewMs = hrtime(true) - $startTime;
 

@@ -52,8 +52,7 @@ final class ShowBuilding implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showBuildingRequest->getColonyId(),
-            $userId,
-            false
+            $userId
         );
 
         $building = $this->buildingRepository->find($this->showBuildingRequest->getBuildingId());
