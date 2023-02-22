@@ -100,8 +100,8 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $moduleLevels = $this->shipRumpModuleLevelRepository->getByShipRump($rump->getId());
 
-        $modules = array();
-        $sigmod = array();
+        $modules = [];
+        $sigmod = [];
         $crew_usage = $rump->getBaseCrew();
         $error = false;
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
@@ -123,8 +123,12 @@ final class CreateBuildplan implements ActionControllerInterface
             if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 $specialCount = 0;
                 foreach ($module as $id) {
-                    /** @var ModuleInterface[] $modules */
                     $specialMod = $this->moduleRepository->find((int) $id);
+
+                    if ($specialMod === null) {
+                        continue;
+                    }
+
                     $crew_usage += $specialMod->getCrew();
                     $modules[$id] = $specialMod;
                     $sigmod[$id] = $id;
@@ -143,6 +147,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 $sigmod[$i] = 0;
                 continue;
             }
+            $mod = null;
             if (current($module) > 0) {
                 /** @var ModuleInterface $mod */
                 $mod = $this->moduleRepository->find((int) current($module));
@@ -157,8 +162,10 @@ final class CreateBuildplan implements ActionControllerInterface
                     return;
                 }
             }
-            $modules[current($module)] = $mod;
-            $sigmod[$i] = $mod->getId();
+            if ($mod !== null) {
+                $modules[current($module)] = $mod;
+                $sigmod[$i] = $mod->getId();
+            }
         }
 
         if ($error) {
@@ -224,6 +231,9 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $this->loggerUtil->log('I');
 
+        /**
+         * @var ModuleInterface[] $modules
+         */
         foreach ($modules as $obj) {
             $mod = $this->buildplanModuleRepository->prototype();
             $mod->setModuleType((int) $obj->getType());

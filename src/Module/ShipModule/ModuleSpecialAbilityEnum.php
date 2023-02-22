@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\ShipModule;
 
+use Doctrine\Common\Collections\Collection;
+use Stu\Orm\Entity\ModuleSpecialInterface;
+
 final class ModuleSpecialAbilityEnum
 {
     public const MODULE_SPECIAL_CLOAK = 1;
@@ -50,6 +53,9 @@ final class ModuleSpecialAbilityEnum
         return '';
     }
 
+    /**
+     * @param Collection<int, ModuleSpecialInterface> $specials
+     */
     public static function getHash($specials): ?int
     {
         $result = 0;
