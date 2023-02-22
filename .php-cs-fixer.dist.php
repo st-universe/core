@@ -2,7 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in(['src', 'tests'])
-    ->exclude(['src/Public/assets'])
+    ->exclude(['Public/assets'])
 ;
 $config = new PhpCsFixer\Config();
 $config->setRules(
