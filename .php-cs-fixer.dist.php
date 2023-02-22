@@ -1,8 +1,8 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(['tests'])
-;
+    ->in(['src', 'tests'])
+    ->exclude(['src/Public/assets']);
 $config = new PhpCsFixer\Config();
 $config->setRules(
     [
@@ -16,7 +16,7 @@ $config->setRules(
         'no_unused_imports' => true,
         'ordered_imports' => [
             'sort_algorithm' => 'alpha',
-	        'imports_order' => ['const', 'class', 'function'],
+            'imports_order' => ['const', 'class', 'function'],
         ],
     ]
 )->setFinder($finder);

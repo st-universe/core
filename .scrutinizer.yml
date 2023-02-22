@@ -2,7 +2,7 @@ build:
   image: default-bionic
   environment:
     php:
-      version: "7.4"
+      version: "8.1"
       pecl_extensions:
         - redis
     redis: true
