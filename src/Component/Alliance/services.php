@@ -22,4 +22,5 @@ return [
                 )
         ),
     AllianceDescriptionRendererInterface::class => autowire(AllianceDescriptionRenderer::class),
+    Event\Listener\DiplomaticRelationProposalCreationSubscriber::class => autowire(),
 ];

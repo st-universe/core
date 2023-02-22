@@ -4,7 +4,7 @@ namespace Stu\Module\Alliance\Action\CreateRelation;
 
 interface CreateRelationRequestInterface
 {
-    public function getOpponentId(): int;
+    public function getCounterpartId(): int;
 
     public function getRelationType(): int;
 }

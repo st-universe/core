@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Stu\Component\Crew;
+namespace Stu\Component\GrapViz;
 
-use Stu\Component\GrapViz\GraphVizFactory;
-use Stu\Component\GrapViz\GraphVizFactoryInterface;
 use function DI\autowire;
 
 return [

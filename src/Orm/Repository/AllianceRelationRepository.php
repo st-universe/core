@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AllianceRelationInterface;
 
@@ -34,18 +35,18 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
         $em->flush();
     }
 
-    public function truncateByAlliances(int $allianceId, int $opponentId): void
+    public function truncateByAlliances(AllianceInterface $alliance, AllianceInterface $opponent): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s ar WHERE ar.alliance_id IN (:allianceId,:opponentId) AND ar.recipient IN (:allianceId,:opponentId)',
+                    'DELETE FROM %s ar WHERE ar.alliance IN (:alliance,:opponent) AND ar.opponent IN (:alliance,:opponent)',
                     AllianceRelation::class
                 )
             )
             ->setParameters([
-                'allianceId' => $allianceId,
-                'opponentId' => $opponentId
+                'alliance' => $alliance,
+                'opponent' => $opponent
             ])
             ->execute();
     }

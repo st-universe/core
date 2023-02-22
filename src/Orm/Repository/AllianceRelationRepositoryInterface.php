@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AllianceRelationInterface;
 
@@ -19,7 +20,7 @@ interface AllianceRelationRepositoryInterface extends ObjectRepository
 
     public function delete(AllianceRelationInterface $post): void;
 
-    public function truncateByAlliances(int $allianceId, int $opponentId): void;
+    public function truncateByAlliances(AllianceInterface $alliance, AllianceInterface $opponent): void;
 
     public function getPendingCountByAlliances(int $allianceId, int $opponentId): int;
 

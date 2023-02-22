@@ -5,6 +5,7 @@ namespace Stu\Module\Control;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\SemaphoreConstants;
@@ -87,6 +88,8 @@ final class GameController implements GameControllerInterface
 
     private GameRequestSaverInterface $gameRequestSaver;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     /** @var array<Notification> */
     private array $gameInformations = [];
 
@@ -137,6 +140,7 @@ final class GameController implements GameControllerInterface
         GameTalRendererInterface $gameTalRenderer,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         UuidGeneratorInterface $uuidGenerator,
+        EventDispatcherInterface $eventDispatcher,
         GameRequestSaverInterface $gameRequestSaver
     ) {
         $this->session = $session;
@@ -156,6 +160,7 @@ final class GameController implements GameControllerInterface
         $this->gameTalRenderer = $gameTalRenderer;
         $this->uuidGenerator = $uuidGenerator;
         $this->gameRequestSaver = $gameRequestSaver;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -675,6 +680,14 @@ final class GameController implements GameControllerInterface
         $this->semaphores[$key] = $semaphore;
     }
 
+    /**
+     * Triggers a certain event
+     */
+    public function triggerEvent(object $event): void
+    {
+        $this->eventDispatcher->dispatch($event);
+    }
+
     private function releaseAndRemoveSemaphores(): void
     {
         /**
@@ -718,6 +731,7 @@ final class GameController implements GameControllerInterface
                     }
                 }
                 $actionController->handle($this);
+
                 $this->entityManager->flush();
             }
         }

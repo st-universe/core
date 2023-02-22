@@ -10,7 +10,7 @@ final class CreateRelationRequest implements CreateRelationRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getOpponentId(): int
+    public function getCounterpartId(): int
     {
         return $this->queryParameter('oid')->int()->required();
     }

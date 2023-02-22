@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bf69e02ed2eb0268daeceb4151cfe11",
+    "content-hash": "ce2bb0dccf435d7f10d2b6dfcdac1a5a",
     "packages": [
         {
             "name": "adhocore/cli",
@@ -544,6 +544,77 @@
                 }
             ],
             "time": "2021-12-30T09:22:01+00:00"
+        },
+        {
+            "name": "crell/tukio",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Crell/Tukio.git",
+                "reference": "bae551e1f1653a2036bb85f73932964623074e7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Crell/Tukio/zipball/bae551e1f1653a2036bb85f73932964623074e7a",
+                "reference": "bae551e1f1653a2036bb85f73932964623074e7a",
+                "shasum": ""
+            },
+            "require": {
+                "fig/event-dispatcher-util": "^1.3",
+                "php": "~7.4 || ~8.0",
+                "psr/container": "^1.0 || ^2.0",
+                "psr/event-dispatcher": "^1.0",
+                "psr/log": "^1.0 || ^2.0 || ^3.0"
+            },
+            "provide": {
+                "psr/event-dispatcher-implementation": "1.0"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "^1.2",
+                "phpstan/phpstan": "^1.5",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Crell\\Tukio\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "http://www.garfieldtech.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A robust, stand-alone PSR-14 event dispatcher implementation.",
+            "homepage": "https://github.com/Crell/Tukio",
+            "keywords": [
+                "Tukio",
+                "events",
+                "psr-14"
+            ],
+            "support": {
+                "issues": "https://github.com/Crell/Tukio/issues",
+                "source": "https://github.com/Crell/Tukio/tree/1.4.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Crell",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-06-02T15:05:49+00:00"
         },
         {
             "name": "crunzphp/crunz",
@@ -1827,6 +1898,61 @@
                 }
             ],
             "time": "2023-01-02T17:26:14+00:00"
+        },
+        {
+            "name": "fig/event-dispatcher-util",
+            "version": "1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/event-dispatcher-util.git",
+                "reference": "0ec802e305872e7e27fd7864bdc75bb1ed4f2f23"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/event-dispatcher-util/zipball/0ec802e305872e7e27fd7864bdc75bb1ed4f2f23",
+                "reference": "0ec802e305872e7e27fd7864bdc75bb1ed4f2f23",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "psr/event-dispatcher": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fig\\EventDispatcher\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                },
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "https://www.garfieldtech.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Useful utility classes and traits for implementing the PSR events standard",
+            "homepage": "https://github.com/php-fig/event-dispatcher-util",
+            "keywords": [
+                "events",
+                "psr-14"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/event-dispatcher-util/issues",
+                "source": "https://github.com/php-fig/event-dispatcher-util/tree/1.3.1"
+            },
+            "time": "2022-03-30T18:25:35+00:00"
         },
         {
             "name": "filp/whoops",

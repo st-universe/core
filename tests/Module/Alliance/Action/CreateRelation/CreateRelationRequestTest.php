@@ -23,7 +23,7 @@ class CreateRelationRequestTest extends RequestTestCase
     {
         return [
             ['getRelationType', 'type', '666', 666],
-            ['getOpponentId', 'oid', '666', 666],
+            ['getCounterpartId', 'oid', '666', 666],
         ];
     }
 
@@ -31,7 +31,7 @@ class CreateRelationRequestTest extends RequestTestCase
     {
         return [
             ['getRelationType'],
-            ['getOpponentId'],
+            ['getCounterpartId'],
         ];
     }
 }

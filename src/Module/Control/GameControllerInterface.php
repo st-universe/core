@@ -122,6 +122,8 @@ interface GameControllerInterface
 
     public function addSemaphore(int $key, $semaphore): void;
 
+    public function triggerEvent(object $event): void;
+
     public function getGameStats(): array;
 
     public function getGameStateTextual(): string;
