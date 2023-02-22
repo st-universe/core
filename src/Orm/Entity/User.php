@@ -691,6 +691,23 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getRpgBehaviorText(): string
+    {
+        if ($this->getRpgBehavior() == 0) {
+            return 'Der Spieler hat seine Rollenspieleinstellung nicht gesetzt';
+        }
+        if ($this->getRpgBehavior() == 1) {
+            return 'Der Spieler betreibt gerne Rollenspiel';
+        }
+        if ($this->getRpgBehavior() == 2) {
+            return 'Der Spieler betreibt gelegentlich Rollenspiel';
+        }
+        if ($this->getRpgBehavior() == 3) {
+            return 'Der Spieler betreibt ungern Rollenspiel';
+        }
+        return '';
+    }
+
     /**
      * @deprecated
      */

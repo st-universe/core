@@ -151,6 +151,8 @@ interface UserInterface
 
     public function setRpgBehavior(int $RPGbehavior): UserInterface;
 
+    public function getRpgBehaviorText(): string;
+
     /**
      * @deprecated
      */
