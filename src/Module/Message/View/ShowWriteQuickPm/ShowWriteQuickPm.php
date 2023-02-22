@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
+use InvalidArgumentException;
 use request;
 use JBBCode\Parser;
 use Stu\Module\Control\GameControllerInterface;
@@ -64,14 +65,14 @@ final class ShowWriteQuickPm implements ViewControllerInterface
         switch ($fromType) {
             case self::TYPE_USER:
                 $from = $this->userRepository->find($fromId);
-                if ($from != $game->getUser()) {
+                if ($from === null || $from !== $game->getUser()) {
                     return;
                 }
                 $setTemplateText = false;
                 break;
             case self::TYPE_SHIP:
                 $from = $this->shipRepository->find($fromId);
-                if ($from->getUser() != $game->getUser()) {
+                if ($from === null || $from->getUser() !== $game->getUser()) {
                     return;
                 }
                 $whoText = _('Die');
@@ -79,7 +80,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
                 break;
             case self::TYPE_FLEET:
                 $from = $this->fleetRepository->find($fromId);
-                if ($from->getUser() != $game->getUser()) {
+                if ($from === null || $from->getUser() !== $game->getUser()) {
                     return;
                 }
                 $whoText = _('Die Flotte');
@@ -87,7 +88,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
                 break;
             case self::TYPE_STATION:
                 $from = $this->shipRepository->find($fromId);
-                if ($from->getUser() != $game->getUser()) {
+                if ($from === null || $from->getUser() !== $game->getUser()) {
                     return;
                 }
                 $whoText = _('Die Station');
@@ -95,62 +96,79 @@ final class ShowWriteQuickPm implements ViewControllerInterface
                 break;
             case self::TYPE_COLONY:
                 $from = $this->colonyRepository->find($fromId);
-                if ($from->getUser() != $game->getUser()) {
+                if ($from === null || $from->getUser() !== $game->getUser()) {
                     return;
                 }
                 $whoText = _('Die Kolonie');
                 $sectorString = $from->getSectorString();
                 break;
+
+            default:
+                throw new InvalidArgumentException('fromtype has invalid value');
         }
 
         switch ($toType) {
             case self::TYPE_USER:
                 $to = $this->userRepository->find($toId);
+                if ($to === null) {
+                    return;
+                }
                 $recipient = $to;
                 $setTemplateText = false;
                 break;
             case self::TYPE_SHIP:
                 $to = $this->shipRepository->find($toId);
+                if ($to === null) {
+                    return;
+                }
                 $toText = _('der');
                 $recipient = $to->getUser();
                 break;
             case self::TYPE_FLEET:
                 $to = $this->fleetRepository->find($toId);
+                if ($to === null) {
+                    return;
+                }
                 $toText = _('der Flotte');
                 $recipient = $to->getUser();
                 break;
             case self::TYPE_STATION:
                 $to = $this->shipRepository->find($toId);
+                if ($to === null) {
+                    return;
+                }
                 $toText = _('der Station');
                 $recipient = $to->getUser();
                 break;
             case self::TYPE_COLONY:
                 $to = $this->colonyRepository->find($toId);
+                if ($to === null) {
+                    return;
+                }
                 $toText = _('der Kolonie');
                 $recipient = $to->getUser();
                 break;
+
+            default:
+                throw new InvalidArgumentException('fromtype has invalid value');
         }
 
-        if ($recipient !== null) {
-            switch ($recipient->getRpgBehavior()) {
-                case 0:
-                    $rpgtext = 'Der Spieler hat seine Rollenspieleinstellung nicht gesetzt';
-                    break;
-                case 1:
-                    $rpgtext = 'Der Spieler betreibt gerne Rollenspiel';
-                    break;
-                case 2:
-                    $rpgtext = 'Der Spieler betreibt gelegentlich Rollenspiel';
-                    break;
-                case 3:
-                    $rpgtext = 'Der Spieler betreibt ungern Rollenspiel';
-                    break;
-            }
+        switch ($recipient->getRpgBehavior()) {
+            case 0:
+                $rpgtext = 'Der Spieler hat seine Rollenspieleinstellung nicht gesetzt';
+                break;
+            case 1:
+                $rpgtext = 'Der Spieler betreibt gerne Rollenspiel';
+                break;
+            case 2:
+                $rpgtext = 'Der Spieler betreibt gelegentlich Rollenspiel';
+                break;
+            case 3:
+                $rpgtext = 'Der Spieler betreibt ungern Rollenspiel';
+                break;
         }
 
         $game->setTemplateVar('RPGTEXT', $rpgtext);
-
-
         $game->setTemplateVar('RECIPIENT', $recipient);
         $game->setTemplateVar(
             'TEMPLATETEXT',
