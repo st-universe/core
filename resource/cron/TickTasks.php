@@ -14,8 +14,7 @@ use Stu\Module\Tick\Ship\ShipTickRunner;
 $schedule = new Schedule();
 
 //split colony tick into groups
-//TODO replace with StuConfig getter
-$colonyTickGroupCount = 1;
+$colonyTickGroupCount = 3;
 for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
     $schedule
         ->run(function () use ($groupId, $colonyTickGroupCount): void {
