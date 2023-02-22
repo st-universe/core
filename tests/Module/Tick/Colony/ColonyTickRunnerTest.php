@@ -10,7 +10,6 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\StuTestCase;
-use Ubench;
 
 class ColonyTickRunnerTest extends StuTestCase
 {
@@ -23,9 +22,6 @@ class ColonyTickRunnerTest extends StuTestCase
     /** @var MockInterface&FailureEmailSenderInterface */
     private MockInterface $failureEmailSender;
 
-    /** @var MockInterface&Ubench */
-    private MockInterface $benchmark;
-
     private ColonyTickRunner $subject;
 
     protected function setUp(): void
@@ -33,14 +29,11 @@ class ColonyTickRunnerTest extends StuTestCase
         $this->entityManager = $this->mock(EntityManagerInterface::class);
         $this->colonyTickManager = $this->mock(ColonyTickManagerInterface::class);
         $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
-        $this->benchmark = $this->mock(Ubench::class);
 
         $this->subject = new ColonyTickRunner(
             $this->entityManager,
             $this->colonyTickManager,
-            $this->failureEmailSender,
-            $this->benchmark,
-            $this->initLoggerUtil()
+            $this->failureEmailSender
         );
     }
 
@@ -87,19 +80,6 @@ class ColonyTickRunnerTest extends StuTestCase
 
         $this->colonyTickManager->shouldReceive('work')
             ->with(2, 5)
-            ->once();
-
-        $this->benchmark->shouldReceive('end')
-            ->withNoArgs()
-            ->once();
-        $this->benchmark->shouldReceive('getTime')
-            ->withNoArgs()
-            ->once();
-        $this->benchmark->shouldReceive('getMemoryUsage')
-            ->withNoArgs()
-            ->once();
-        $this->benchmark->shouldReceive('getMemoryPeak')
-            ->withNoArgs()
             ->once();
 
         $this->subject->run(2, 5);

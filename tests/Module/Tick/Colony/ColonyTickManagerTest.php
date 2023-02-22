@@ -18,6 +18,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\StuTestCase;
+use Ubench;
 
 class ColonyTickManagerTest extends StuTestCase
 {
@@ -54,6 +55,9 @@ class ColonyTickManagerTest extends StuTestCase
     /** @var MockInterface&ColonyLibFactoryInterface */
     private MockInterface $colonyLibFactory;
 
+    /** @var MockInterface&Ubench */
+    private MockInterface $benchmark;
+
     private ColonyTickManagerInterface $subject;
 
     protected function setUp(): void
@@ -69,6 +73,7 @@ class ColonyTickManagerTest extends StuTestCase
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
         $this->crewLimitCalculator = $this->mock(CrewLimitCalculatorInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
+        $this->benchmark = $this->mock(Ubench::class);
 
         $this->subject = new ColonyTickManager(
             $this->colonyTick,
@@ -81,7 +86,9 @@ class ColonyTickManagerTest extends StuTestCase
             $this->colonyFunctionManager,
             $this->crewLimitCalculator,
             $this->colonyLibFactory,
-            $this->lockManager
+            $this->lockManager,
+            $this->initLoggerUtil(),
+            $this->benchmark
         );
     }
 

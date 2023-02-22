@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Config\Model\ColonySettings;
@@ -37,9 +36,6 @@ class ManualColonyTickTest extends StuTestCase
     /** @var MockInterface&StuConfigInterface */
     private StuConfigInterface $config;
 
-    /** @var MockInterface&EntityManagerInterface */
-    private EntityManagerInterface $entityManager;
-
     /** @var MockInterface&GameControllerInterface */
     private GameControllerInterface $game;
 
@@ -53,7 +49,6 @@ class ManualColonyTickTest extends StuTestCase
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
         $this->config = $this->mock(StuConfigInterface::class);
-        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->game = $this->mock(GameControllerInterface::class);
 
@@ -63,8 +58,7 @@ class ManualColonyTickTest extends StuTestCase
             $this->colonyTick,
             $this->colonyRepository,
             $this->commodityRepository,
-            $this->config,
-            $this->entityManager
+            $this->config
         );
     }
 
@@ -223,10 +217,6 @@ class ManualColonyTickTest extends StuTestCase
 
         $this->colonyTick->shouldReceive('work')
             ->with($colony, [42])
-            ->once();
-
-        $this->entityManager->shouldReceive('flush')
-            ->withNoArgs()
             ->once();
 
         $this->game->shouldReceive('addInformationf')

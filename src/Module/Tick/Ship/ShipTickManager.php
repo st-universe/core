@@ -14,6 +14,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -21,6 +22,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Tick\AbstractTickManager;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -32,8 +34,9 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Ubench;
 
-final class ShipTickManager implements ShipTickManagerInterface
+final class ShipTickManager extends AbstractTickManager implements ShipTickManagerInterface
 {
     private PrivateMessageSenderInterface $privateMessageSender;
 
@@ -74,9 +77,12 @@ final class ShipTickManager implements ShipTickManagerInterface
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
+
     private CrewLimitCalculatorInterface $crewLimitCalculator;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
+
+    private Ubench $benchmark;
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
@@ -100,7 +106,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         ColonyFunctionManagerInterface $colonyFunctionManager,
         CrewLimitCalculatorInterface $crewLimitCalculator,
         ColonyLibFactoryInterface $colonyLibFactory,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        Ubench $benchmark
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
@@ -124,6 +131,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->crewLimitCalculator = $crewLimitCalculator;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->benchmark = $benchmark;
     }
 
     public function work(): void
@@ -164,10 +172,12 @@ final class ShipTickManager implements ShipTickManagerInterface
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
+        $entityCount = 0;
         foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
             //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
 
             $this->shipTick->work($this->shipWrapperFactory->wrapShip($ship));
+            $entityCount++;
         }
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
@@ -193,6 +203,9 @@ final class ShipTickManager implements ShipTickManagerInterface
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\tloweringTrumfieldConstruction, seconds: %F", $endTime - $startTime));
         }
+
+        $this->loggerUtil->init('SHIPTICK', LoggerEnum::LEVEL_WARNING);
+        $this->logBenchmarkResult($entityCount);
     }
 
     private function handleEscapePods(): void
@@ -746,5 +759,15 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->shipRepository->save($ship);
 
         return $repairFinished;
+    }
+
+    protected function getBenchmark(): Ubench
+    {
+        return $this->benchmark;
+    }
+
+    protected function getLoggerUtil(): LoggerUtilInterface
+    {
+        return $this->loggerUtil;
     }
 }

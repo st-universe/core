@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Config\Model\ColonySettings;
 use Stu\Module\Config\StuConfigInterface;
@@ -31,16 +30,13 @@ final class ManualColonyTick implements ActionControllerInterface
 
     private StuConfigInterface $config;
 
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
         ManualColonyTickRequestInterface $request,
         ColonyTickManagerInterface $colonyTickManager,
         ColonyTickInterface $colonyTick,
         ColonyRepositoryInterface $colonyRepository,
         CommodityRepositoryInterface $commodityRepository,
-        StuConfigInterface $config,
-        EntityManagerInterface $entityManager
+        StuConfigInterface $config
     ) {
         $this->request = $request;
         $this->colonyTickManager = $colonyTickManager;
@@ -48,7 +44,6 @@ final class ManualColonyTick implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->commodityRepository = $commodityRepository;
         $this->config = $config;
-        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -63,7 +58,7 @@ final class ManualColonyTick implements ActionControllerInterface
 
         $colonyId = $this->request->getColonyId();
 
-        //check if single or all colonies
+        //check if single or multiple colonies
         if ($colonyId === null) {
             $this->executeTickForMultipleColonies($game);
         } else {
@@ -103,7 +98,6 @@ final class ManualColonyTick implements ActionControllerInterface
         }
 
         $this->colonyTick->work($colony, $commodityArray);
-        $this->entityManager->flush();
 
         $game->addInformationf("Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!", $colonyId);
     }

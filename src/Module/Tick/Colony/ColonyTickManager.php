@@ -11,15 +11,20 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Tick\AbstractTickManager;
 use Stu\Module\Tick\Lock\LockEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
+use Ubench;
 
-final class ColonyTickManager implements ColonyTickManagerInterface
+final class ColonyTickManager extends AbstractTickManager implements ColonyTickManagerInterface
 {
     private ColonyTickInterface $colonyTick;
 
@@ -43,6 +48,10 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private LoggerUtilInterface $loggerUtil;
+
+    private Ubench $benchmark;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         CrewCreatorInterface $crewCreator,
@@ -54,7 +63,9 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         ColonyFunctionManagerInterface $colonyFunctionManager,
         CrewLimitCalculatorInterface $crewLimitCalculator,
         ColonyLibFactoryInterface $colonyLibFactory,
-        LockManagerInterface $lockManager
+        LockManagerInterface $lockManager,
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        Ubench $benchmark
     ) {
         $this->colonyTick = $colonyTick;
         $this->crewCreator = $crewCreator;
@@ -67,24 +78,34 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->crewLimitCalculator = $crewLimitCalculator;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->benchmark = $benchmark;
     }
 
     public function work(int $batchGroup, int $batchGroupCount): void
     {
         $this->setLock($batchGroup);
         try {
-            $this->colonyLoop($batchGroup, $batchGroupCount);
+            $entityCount = $this->colonyLoop($batchGroup, $batchGroupCount);
             $this->proceedCrewTraining($batchGroup, $batchGroupCount);
+
+            $this->loggerUtil->init(sprintf(
+                'COLOTICK_%dof%d',
+                $batchGroup,
+                $batchGroupCount
+            ), LoggerEnum::LEVEL_WARNING);
+            $this->logBenchmarkResult($entityCount);
         } finally {
             $this->clearLock($batchGroup);
         }
     }
 
-    private function colonyLoop(int $batchGroup, int $batchGroupCount): void
+    private function colonyLoop(int $batchGroup, int $batchGroupCount): int
     {
         $commodityArray = $this->commodityRepository->getAll();
         $colonyList = $this->colonyRepository->getByBatchGroup($batchGroup, $batchGroupCount);
 
+        $entityCount = 0;
         foreach ($colonyList as $colony) {
             //echo "Processing Colony ".$colony->getId()." at ".microtime()."\n";
 
@@ -92,7 +113,11 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             if (!$colony->getUser()->isVacationRequestOldEnough()) {
                 $this->colonyTick->work($colony, $commodityArray);
             }
+
+            $entityCount++;
         }
+
+        return $entityCount;
     }
 
     private function proceedCrewTraining(int $batchGroup, int $batchGroupCount): void
@@ -163,5 +188,15 @@ final class ColonyTickManager implements ColonyTickManagerInterface
     private function clearLock(int $batchGroupId): void
     {
         $this->lockManager->clearLock($batchGroupId, LockEnum::LOCK_TYPE_COLONY_GROUP);
+    }
+
+    protected function getBenchmark(): Ubench
+    {
+        return $this->benchmark;
+    }
+
+    protected function getLoggerUtil(): LoggerUtilInterface
+    {
+        return $this->loggerUtil;
     }
 }
