@@ -3,6 +3,8 @@ build:
   environment:
     php:
       version: "8.1"
+      ini:
+        memory_limit: "-1"
       pecl_extensions:
         - redis
     redis: true
