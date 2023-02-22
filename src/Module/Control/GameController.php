@@ -8,7 +8,6 @@ use Noodlehaus\ConfigInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\MaintenanceGameStateException;
@@ -590,12 +589,8 @@ final class GameController implements GameControllerInterface
                 $this->setTemplateFile('html/ship.xhtml');
             }
         } catch (\Throwable $e) {
-            $this->releaseAndRemoveSemaphores();
-
             throw $e;
         }
-
-        $this->releaseAndRemoveSemaphores();
 
         if (!$this->talPage->isTemplateSet()) {
             $this->loggerUtil->init('tal', LoggerEnum::LEVEL_ERROR);
@@ -686,30 +681,6 @@ final class GameController implements GameControllerInterface
     public function triggerEvent(object $event): void
     {
         $this->eventDispatcher->dispatch($event);
-    }
-
-    private function releaseAndRemoveSemaphores(): void
-    {
-        /**
-         * @todo make semaphore auto-release configurable by config or remove the method, as the current mode will always terminate here
-         */
-        if (SemaphoreConstants::AUTO_RELEASE_SEMAPHORES === 1) {
-            return; //nothing to do
-        }
-
-        if (!empty($this->semaphores)) {
-            $userId = $this->getUser()->getId();
-            $this->loggerUtil->init('semaphore', LoggerEnum::LEVEL_ERROR);
-
-            foreach ($this->semaphores as $key => $sema) {
-                $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
-                if (!sem_release($sema)) {
-                    $this->loggerUtil->log("Error releasing Semaphore!");
-                }
-            }
-
-            $this->loggerUtil->init('stu');
-        }
     }
 
     /**

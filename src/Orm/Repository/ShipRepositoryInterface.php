@@ -63,12 +63,12 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return iterable<ShipInterface>
+     * @return list<ShipInterface>
      */
     public function getByLocation(
         ?StarSystemMapInterface $starSystemMap,
         ?MapInterface $map
-    ): iterable;
+    ): array;
 
     /**
      * @return list<ShipInterface>
@@ -81,14 +81,14 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getTradePostsWithoutDatabaseEntry(): iterable;
 
     /**
-     * @return iterable<ShipInterface>
+     * @return list<ShipInterface>
      */
-    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): iterable;
+    public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): array;
 
     /**
-     * @return iterable<ShipInterface>
+     * @return list<ShipInterface>
      */
-    public function getByUplink(int $userId): iterable;
+    public function getByUplink(int $userId): array;
 
     /**
      * @return iterable<ShipInterface>

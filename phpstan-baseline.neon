@@ -14,11 +14,6 @@ parameters:
 			path: src/Component/Logging/services.php
 
 		-
-			message: "#^Parameter \\#1 \\$password of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:setPassword\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/Component/Player/Register/PlayerCreator.php
-
-		-
 			message: "#^Cannot call method getStartResearch\\(\\) on Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null\\.$#"
 			count: 1
 			path: src/Component/Player/Register/PlayerDefaultsCreator.php
@@ -398,11 +393,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Lib\\\\CleanTextUtils\\:\\:clearUnicode\\(\\) should return string but returns string\\|null\\.$#"
-			count: 1
-			path: src/Lib/CleanTextUtils.php
-
-		-
-			message: "#^Parameter \\#3 \\$str of function iconv expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Lib/CleanTextUtils.php
 
@@ -982,27 +972,27 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
-			message: "#^Parameter \\#1 \\$dst_im of function imagecopy expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$dst_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagecolorallocate expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagecolorallocate expects GdImage, GdImage\\|false given\\.$#"
 			count: 3
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagedestroy expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagedestroy expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagefill expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagefill expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagepng expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagepng expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
@@ -1012,7 +1002,7 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
-			message: "#^Parameter \\#2 \\$src_im of function imagecopy expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#2 \\$src_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
@@ -1027,7 +1017,7 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
-			message: "#^Parameter \\#4 \\$col of function imagefill expects int, int\\|false given\\.$#"
+			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
@@ -1057,32 +1047,32 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#1 \\$dst_im of function imagecopy expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$dst_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#1 \\$dst_im of function imagecopyresized expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$dst_image of function imagecopyresized expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagecolorallocate expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagecolorallocate expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagedestroy expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagedestroy expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagefill expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagefill expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagepng expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagepng expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
@@ -1092,12 +1082,12 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#2 \\$src_im of function imagecopy expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#2 \\$src_image of function imagecopy expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#2 \\$src_im of function imagecopyresized expects resource, resource\\|false given\\.$#"
+			message: "#^Parameter \\#2 \\$src_image of function imagecopyresized expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
@@ -1112,7 +1102,7 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
 		-
-			message: "#^Parameter \\#4 \\$col of function imagefill expects int, int\\|false given\\.$#"
+			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapOverall.php
 
@@ -1320,36 +1310,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Admin\\\\View\\\\ShowSignatures\\\\SignaturePanelRow\\:\\:\\$entries has no type specified\\.$#"
 			count: 1
 			path: src/Module/Admin/View/ShowSignatures/SignaturePanelRow.php
-
-		-
-			message: "#^Parameter \\#1 \\$dst_im of function imagecopy expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Parameter \\#1 \\$im of function imagepng expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Parameter \\#1 \\$x_size of function imagecreatetruecolor expects int, int\\<min, 600\\>\\|false given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Parameter \\#2 \\$y_size of function imagecreatetruecolor expects int, int\\<min, 150\\>\\|false given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Parameter \\#7 \\$src_w of function imagecopy expects int, int\\<min, 600\\>\\|false given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Parameter \\#8 \\$src_h of function imagecopy expects int, int\\<min, 150\\>\\|false given\\.$#"
-			count: 1
-			path: src/Module/Alliance/Action/ChangeAvatar/ChangeAvatar.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null\\.$#"
@@ -1592,11 +1552,6 @@ parameters:
 			path: src/Module/Colony/Action/ActivateBuildings/ActivateBuildings.php
 
 		-
-			message: "#^Parameter \\#1 \\$array_arg of function usort expects TArray of array\\<Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\>, iterable\\<Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/ActivateBuildings/ActivateBuildings.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Colony\\\\Action\\\\AllowImmigration\\\\AllowImmigration\\:\\:\\$colonyGuiHelper is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/AllowImmigration/AllowImmigration.php
@@ -1734,11 +1689,6 @@ parameters:
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 2
-			path: src/Module/Colony/Action/DeactivateBuildings/DeactivateBuildings.php
-
-		-
-			message: "#^Parameter \\#1 \\$array_arg of function usort expects TArray of array\\<Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\>, iterable\\<Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\> given\\.$#"
-			count: 1
 			path: src/Module/Colony/Action/DeactivateBuildings/DeactivateBuildings.php
 
 		-
@@ -2037,11 +1987,6 @@ parameters:
 			path: src/Module/Colony/Action/Terraform/Terraform.php
 
 		-
-			message: "#^Parameter \\#2 \\$search of function array_key_exists expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/Terraform/Terraform.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\TerraformingInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/Terraform/Terraform.php
@@ -2187,7 +2132,7 @@ parameters:
 			path: src/Module/Colony/Lib/ColonySurface.php
 
 		-
-			message: "#^Parameter \\#1 \\$str of function base64_decode expects string, string\\|null given\\.$#"
+			message: "#^Parameter \\#1 \\$string of function base64_decode expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/ColonySurface.php
 
@@ -2232,11 +2177,6 @@ parameters:
 			path: src/Module/Colony/Lib/ModuleQueueLibInterface.php
 
 		-
-			message: "#^Parameter \\#1 \\$array_arg of function shuffle expects TArray of array\\<T\\>, iterable\\<Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Colony/Lib/PlanetColonization.php
-
-		-
 			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Lib/PlanetColonization.php
@@ -2274,11 +2214,6 @@ parameters:
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 2
-			path: src/Module/Colony/View/ShowBuildingManagement/ShowBuildingManagement.php
-
-		-
-			message: "#^Parameter \\#1 \\$array_arg of function usort expects TArray of array\\<Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\>, iterable\\<Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\> given\\.$#"
-			count: 1
 			path: src/Module/Colony/View/ShowBuildingManagement/ShowBuildingManagement.php
 
 		-
@@ -2601,16 +2536,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$gameStats type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 1 and 1 will always evaluate to true\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -2975,11 +2900,6 @@ parameters:
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
 
 		-
-			message: "#^Parameter \\#1 \\$str of function base64_encode expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
 			message: "#^Parameter \\$stats of method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createImageSrc\\(\\) has invalid type Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\GameTurnStatsInterface\\.$#"
 			count: 1
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
@@ -2991,11 +2911,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\UserList\\\\UserList\\:\\:getUserListNavigation\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Database/View/UserList/UserList.php
-
-		-
-			message: "#^Parameter \\#1 \\$input of function array_filter expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\UserInterface\\> given\\.$#"
 			count: 1
 			path: src/Module/Database/View/UserList/UserList.php
 
@@ -3013,11 +2928,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\History\\\\View\\\\Overview\\\\OverviewRequestInterface\\:\\:getTypeId\\(\\) has parameter \\$possibleTypeIds with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/History/View/Overview/OverviewRequestInterface.php
-
-		-
-			message: "#^Parameter \\#1 \\$password of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:setPassword\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/Module/Index/Action/ResetPassword/ResetPassword.php
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Logging\\\\LoggerUtil\\:\\:\\$logger has no type specified\\.$#"
@@ -3350,21 +3260,6 @@ parameters:
 			path: src/Module/Notes/View/ShowNote/ShowNote.php
 
 		-
-			message: "#^Parameter \\#1 \\$dst_im of function imagecopy expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Parameter \\#1 \\$im of function imagepng expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangeAvatar/ChangeAvatar.php
-
-		-
-			message: "#^Parameter \\#1 \\$password of method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:setPassword\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/Module/PlayerSetting/Action/ChangePassword/ChangePassword.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\PlayerSetting\\\\Action\\\\ChangeRgbCode\\\\ChangeRgbCode\\:\\:validHex\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/PlayerSetting/Action/ChangeRgbCode/ChangeRgbCode.php
@@ -3407,11 +3302,6 @@ parameters:
 		-
 			message: "#^Method Stu\\\\Module\\\\Research\\\\TalSelectedTech\\:\\:getResearchState\\(\\) has no return type specified\\.$#"
 			count: 1
-			path: src/Module/Research/TalSelectedTech.php
-
-		-
-			message: "#^Parameter \\#1 \\$input of function array_walk is passed by reference, so it expects variables only\\.$#"
-			count: 2
 			path: src/Module/Research/TalSelectedTech.php
 
 		-
@@ -6145,11 +6035,6 @@ parameters:
 			path: src/Module/Ship/Lib/Ui/VisualNavPanelEntry.php
 
 		-
-			message: "#^Parameter \\#1 \\$ships of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShips\\(\\) expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/Overview/Overview.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowAstroEntry/ShowAstroEntry.php
@@ -6310,11 +6195,6 @@ parameters:
 			path: src/Module/Ship/View/ShowShip/ShowShip.php
 
 		-
-			message: "#^Parameter \\#1 \\$ships of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShips\\(\\) expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowShiplistSingles/ShowShiplistSingles.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\View\\\\ShowTorpedoTransfer\\\\ShowTorpedoTransfer\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowTorpedoTransfer/ShowTorpedoTransfer.php
@@ -6391,11 +6271,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method isUseable\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowWebEmitter/ShowWebEmitter.php
-
-		-
-			message: "#^Parameter \\#1 \\$input of function array_filter expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowWebEmitter/ShowWebEmitter.php
 
@@ -6783,16 +6658,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Station/Action/UndockStationShip/UndockStationShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$arr1 of function array_merge expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Station/View/Overview/Overview.php
-
-		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$args of function array_merge expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Station/View/Overview/Overview.php
 
 		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"

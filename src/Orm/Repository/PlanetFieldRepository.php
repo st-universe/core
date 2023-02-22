@@ -49,7 +49,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ]);
     }
 
-    public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): iterable
+    public function getByColonyAndType(int $colonyId, int $planetFieldTypeId): array
     {
         return $this->findBy([
             'colonies_id' => $colonyId,
@@ -280,7 +280,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    public function getByColonyWithBuilding(int $colonyId): iterable
+    public function getByColonyWithBuilding(int $colonyId): array
     {
         return $this->getEntityManager()->createQuery(
             sprintf(

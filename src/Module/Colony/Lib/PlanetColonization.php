@@ -71,6 +71,7 @@ final class PlanetColonization implements PlanetColonizationInterface
 
             shuffle($list);
 
+            /** @var PlanetFieldInterface $field */
             $field = current($list);
         }
         $field->setBuilding($building);

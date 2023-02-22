@@ -103,6 +103,9 @@ final class ChangeAvatar implements ActionControllerInterface
         }
 
         $newImage = imagecreatetruecolor(imagesx($img), imagesy($img));
+        if ($newImage === false) {
+            return;
+        }
         imagecopy($newImage, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
         imagepng(
             $newImage,

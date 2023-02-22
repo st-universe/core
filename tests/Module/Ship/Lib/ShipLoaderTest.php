@@ -214,7 +214,7 @@ class ShipLoaderTest extends StuTestCase
 
     public function testGetByIdAndUserSuccessful(): void
     {
-        $userSema = 123456;
+        $userSema = sem_get(123456);
 
         $this->shipRepository->shouldReceive('find')
             ->with(5)
@@ -384,7 +384,7 @@ class ShipLoaderTest extends StuTestCase
 
     private function verifyMainSemaphore(): void
     {
-        $mainSema = 666;
+        $mainSema = sem_get(666);
 
         $this->semaphoreUtil->shouldReceive('getSemaphore')
             ->with(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY)

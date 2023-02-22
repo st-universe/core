@@ -40,6 +40,9 @@ final class Overview implements ViewControllerInterface
         $game->setPageTitle(_('/ Stationen'));
         $game->setTemplateFile('html/stationlist.xhtml');
 
-        $game->setTemplateVar('BASES', $this->shipWrapperFactory->wrapShips(array_merge($bases, $uplinkBases)));
+        $game->setTemplateVar(
+            'BASES',
+            $this->shipWrapperFactory->wrapShips(array_merge($bases, $uplinkBases))
+        );
     }
 }

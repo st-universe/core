@@ -139,15 +139,16 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         string $sortOrder,
         ?int $limit,
         int $offset
-    ): iterable {
-        $query = $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT u FROM %s u WHERE u.id >= :firstUserId ORDER BY u.%s %s',
-                User::class,
-                $sortField,
-                $sortOrder
+    ): array {
+        $query = $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT u FROM %s u WHERE u.id >= :firstUserId ORDER BY u.%s %s',
+                    User::class,
+                    $sortField,
+                    $sortOrder
+                )
             )
-        )
             ->setFirstResult($offset);
 
         if ($limit !== null) {

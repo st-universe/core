@@ -55,14 +55,14 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getByAlliance(AllianceInterface $alliance): iterable;
 
     /**
-     * @return iterable<UserInterface>
+     * @return list<UserInterface>
      */
     public function getList(
         string $sortField,
         string $sortOrder,
         ?int $limit,
         int $offset
-    ): iterable;
+    ): array;
 
     /**
      * @return iterable<UserInterface>
