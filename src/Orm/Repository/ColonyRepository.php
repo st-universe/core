@@ -130,7 +130,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->createQuery(
                 sprintf(
                     'SELECT c FROM %s c
-                    WHERE MOD(c.id, :groupCount) + 1 = :groupId
+                    WHERE MOD(c.user_id, :groupCount) + 1 = :groupId
                     AND c.user_id != :userId',
                     Colony::class
                 )
