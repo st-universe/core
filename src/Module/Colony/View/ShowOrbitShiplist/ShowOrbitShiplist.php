@@ -40,7 +40,8 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showOrbitShiplistRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $orbitShipList = [];

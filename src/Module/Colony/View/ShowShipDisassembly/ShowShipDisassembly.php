@@ -52,7 +52,8 @@ final class ShowShipDisassembly implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showShipDisassemblyRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
@@ -91,7 +92,8 @@ final class ShowShipDisassembly implements ViewControllerInterface
                 _('Kolonien')
             );
             $game->appendNavigationPart(
-                sprintf('?%s=1&id=%d',
+                sprintf(
+                    '?%s=1&id=%d',
                     ShowColony::VIEW_IDENTIFIER,
                     $colony->getId()
                 ),

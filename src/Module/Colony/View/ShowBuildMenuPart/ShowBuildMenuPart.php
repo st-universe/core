@@ -43,7 +43,8 @@ final class ShowBuildMenuPart implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showBuildMenuPartRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $colonyId = (int) $colony->getId();

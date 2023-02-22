@@ -54,7 +54,8 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false
         );
 
         $plan = $this->shipBuildplanRepository->find(request::indInt('planid'),);

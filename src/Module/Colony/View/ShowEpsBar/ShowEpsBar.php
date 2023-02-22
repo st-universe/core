@@ -40,7 +40,8 @@ final class ShowEpsBar implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showEpsBarRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);

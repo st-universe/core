@@ -34,7 +34,8 @@ final class ShowWaste implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);

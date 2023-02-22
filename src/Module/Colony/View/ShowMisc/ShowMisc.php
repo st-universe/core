@@ -39,7 +39,8 @@ final class ShowMisc implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);

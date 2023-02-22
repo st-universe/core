@@ -50,7 +50,8 @@ final class ShowShipyard implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showShipyardRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $function = $this->buildingFunctionRepository->find(

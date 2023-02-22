@@ -69,7 +69,8 @@ final class ShowManagement implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showManagementRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);

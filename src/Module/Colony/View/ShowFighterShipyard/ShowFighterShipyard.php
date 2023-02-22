@@ -43,7 +43,8 @@ final class ShowFighterShipyard implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showFighterShipyardRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);
@@ -55,8 +56,10 @@ final class ShowFighterShipyard implements ViewControllerInterface
 
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',
-            $this->shipRumpRepository->getBuildableByUserAndBuildingFunction($userId,
-                BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD)
+            $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
+                $userId,
+                BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD
+            )
         );
     }
 }

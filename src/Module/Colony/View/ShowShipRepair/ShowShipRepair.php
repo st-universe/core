@@ -58,7 +58,8 @@ final class ShowShipRepair implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showShipRepairRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(

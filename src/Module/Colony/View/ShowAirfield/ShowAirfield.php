@@ -43,7 +43,8 @@ final class ShowAirfield implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showAirfieldRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);

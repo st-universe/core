@@ -6,5 +6,9 @@ use Stu\Orm\Entity\ColonyInterface;
 
 interface ColonyLoaderInterface
 {
-    public function byIdAndUser(int $colonyId, int $userId): ColonyInterface;
+    public function byIdAndUser(
+        int $colonyId,
+        int $userId,
+        bool $checkForEntityLock = true
+    ): ColonyInterface;
 }

@@ -53,7 +53,8 @@ final class ShowBuildingManagement implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showBuildingManagementRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);

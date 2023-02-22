@@ -36,7 +36,8 @@ final class ShowSurface implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showSurfaceRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $game->setTemplateVar('COLONY', $colony);

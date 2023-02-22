@@ -41,7 +41,8 @@ final class ShowBeamTo implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showBeamToRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $game->setPageTitle(_('Zu Schiff beamen'));

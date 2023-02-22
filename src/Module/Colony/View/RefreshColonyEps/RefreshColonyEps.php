@@ -23,7 +23,11 @@ final class RefreshColonyEps implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $colony = $this->colonyLoader->byIdAndUser(request::getIntFatal('id'), $game->getUser()->getId());
+        $colony = $this->colonyLoader->byIdAndUser(
+            request::getIntFatal('id'),
+            $game->getUser()->getId(),
+            false
+        );
 
         $game->showMacro('html/macros.xhtml/table_cell');
 

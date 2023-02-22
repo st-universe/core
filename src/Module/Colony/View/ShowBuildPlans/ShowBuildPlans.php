@@ -54,7 +54,8 @@ final class ShowBuildPlans implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showBuildPlansRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);

@@ -25,9 +25,9 @@ final class ColonyLoader implements ColonyLoaderInterface
         $this->lockManager = $lockManager;
     }
 
-    public function byIdAndUser(int $colonyId, int $userId): ColonyInterface
+    public function byIdAndUser(int $colonyId, int $userId, bool $checkForEntityLock = true): ColonyInterface
     {
-        if ($this->lockManager->isLocked($colonyId, LockEnum::LOCK_TYPE_COLONY_GROUP)) {
+        if ($checkForEntityLock && $this->lockManager->isLocked($colonyId, LockEnum::LOCK_TYPE_COLONY_GROUP)) {
             throw new EntityLockedException('Tick läuft gerade, Zugriff auf Kolonie ist daher blockiert');
         }
         $colony = $this->colonyRepository->find($colonyId);

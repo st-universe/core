@@ -42,7 +42,8 @@ final class ShowOrbitManagement implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showOrbitManagementRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $shipList = $this->shipRepository->getByLocation(

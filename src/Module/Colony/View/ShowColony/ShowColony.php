@@ -70,7 +70,8 @@ final class ShowColony implements ViewControllerInterface
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showColonyRequest->getColonyId(),
-            $userId
+            $userId,
+            false
         );
 
         $this->colonyGuiHelper->register($colony, $game);
