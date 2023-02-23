@@ -51,10 +51,8 @@ class Layer implements LayerInterface
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_hidden;
+    private bool $is_hidden = false;
 
     public function getId(): int
     {

@@ -49,20 +49,18 @@ class ColonyClassResearch implements ColonyClassResearchInterface
     private $planet_type_id;
 
     /**
-     * @var ResearchInterface
      *
      * @ManyToOne(targetEntity="Research")
      * @JoinColumn(name="research_id", referencedColumnName="id")
      */
-    private $research;
+    private ?ResearchInterface $research = null;
 
     /**
-     * @var ColonyClassInterface
      *
      * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="planet_type_id", referencedColumnName="id")
      */
-    private $colonyClass;
+    private ?ColonyClassInterface $colonyClass = null;
 
     public function getId(): int
     {

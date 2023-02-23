@@ -37,17 +37,13 @@ class ColonyClassDeposit implements ColonyClassDepositInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $min_amount = 0;
+    private int $min_amount = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $max_amount = 0;
+    private int $max_amount = 0;
 
     /**
      * @var ColonyClassInterface

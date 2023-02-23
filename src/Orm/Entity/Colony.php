@@ -36,226 +36,176 @@ class Colony implements ColonyInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $colonies_classes_id = 0;
+    private int $colonies_classes_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
-
-    /**
-     * @Column(type="integer", nullable=true) *
-     *
-     * @var null|int
-     */
-    private $starsystem_map_id;
-
-    /**
-     * @Column(type="string")
-     *
-     * @var string
-     */
-    private $name = '';
-
-    /**
-     * @Column(type="string", length=100)
-     *
-     * @var string
-     */
-    private $planet_name = '';
-
-    /**
-     * @Column(type="integer", length=5)
-     *
-     * @var int
-     */
-    private $bev_work = 0;
-
-    /**
-     * @Column(type="integer", length=5)
-     *
-     * @var int
-     */
-    private $bev_free = 0;
-
-    /**
-     * @Column(type="integer", length=5)
-     *
-     * @var int
-     */
-    private $bev_max = 0;
-
-    /**
-     * @Column(type="integer", length=5)
-     *
-     * @var int
-     */
-    private $eps = 0;
-
-    /**
-     * @Column(type="integer", length=5)
-     *
-     * @var int
-     */
-    private $max_eps = 0;
-
-    /**
-     * @Column(type="integer", length=5)
-     *
-     * @var int
-     */
-    private $max_storage = 0;
-
-    /**
-     * @Column(type="text", nullable=true)
-     *
-     * @var null|string
-     */
-    private $mask;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $database_id;
+    private ?int $starsystem_map_id = null;
+
+    /**
+     * @Column(type="string")
+     */
+    private string $name = '';
+
+    /**
+     * @Column(type="string", length=100)
+     */
+    private string $planet_name = '';
 
     /**
      * @Column(type="integer", length=5)
-     *
-     * @var int
      */
-    private $populationlimit = 0;
+    private int $bev_work = 0;
+
+    /**
+     * @Column(type="integer", length=5)
+     */
+    private int $bev_free = 0;
+
+    /**
+     * @Column(type="integer", length=5)
+     */
+    private int $bev_max = 0;
+
+    /**
+     * @Column(type="integer", length=5)
+     */
+    private int $eps = 0;
+
+    /**
+     * @Column(type="integer", length=5)
+     */
+    private int $max_eps = 0;
+
+    /**
+     * @Column(type="integer", length=5)
+     */
+    private int $max_storage = 0;
+
+    /**
+     * @Column(type="text", nullable=true)
+     */
+    private ?string $mask = null;
+
+    /**
+     * @Column(type="integer", nullable=true)
+     */
+    private ?int $database_id = null;
+
+    /**
+     * @Column(type="integer", length=5)
+     */
+    private int $populationlimit = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $immigrationstate = true;
+    private bool $immigrationstate = true;
 
     /**
      * @Column(type="integer", length=6, nullable=true)
-     *
-     * @var null|int
      */
-    private $shields = 0;
+    private ?int $shields = 0;
 
     /**
      * @Column(type="integer", length=6, nullable=true)
-     *
-     * @var int|null
      */
-    private $shield_frequency = 0;
+    private ?int $shield_frequency = 0;
 
     /**
      * @Column(type="integer", length=3, nullable=true)
-     *
-     * @var null|int
      */
-    private $torpedo_type;
+    private ?int $torpedo_type = null;
 
     /**
      * @Column(type="integer", length=3)
-     *
-     * @var int
      */
-    private $rotation_factor = 1;
+    private int $rotation_factor = 1;
 
     /**
      * @Column(type="integer", length=2)
-     *
-     * @var int
      */
-    private $surface_width = 0;
+    private int $surface_width = 0;
 
     /**
-     * @var ColonyClassInterface
-     *
      * @ManyToOne(targetEntity="ColonyClass")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
      */
-    private $colonyClass;
+    private ColonyClassInterface $colonyClass;
 
     /**
-     * @var StarSystemMapInterface
-     *
      * @OneToOne(targetEntity="StarSystemMap", inversedBy="colony")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private $starsystem_map;
+    private StarSystemMapInterface $starsystem_map;
 
     /**
-     * @var UserInterface
-     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
-     * @var ArrayCollection<int, PlanetFieldInterface>
+     * @var Collection<int, PlanetFieldInterface>
      *
      * @OneToMany(targetEntity="PlanetField", mappedBy="colony", indexBy="field_id", fetch="EXTRA_LAZY")
      * @OrderBy({"field_id" = "ASC"})
      */
-    private $planetFields;
+    private Collection $planetFields;
 
     /**
-     * @var ArrayCollection<int, StorageInterface>
+     * @var Collection<int, StorageInterface>
      *
      * @OneToMany(targetEntity="Storage", mappedBy="colony", indexBy="commodity_id")
      * @OrderBy({"commodity_id" = "ASC"})
      */
-    private $storage;
+    private Collection $storage;
 
     /**
-     * @var null|TorpedoTypeInterface
-     *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
      */
-    private $torpedo;
+    private ?TorpedoTypeInterface $torpedo = null;
 
     /**
-     * @var ArrayCollection<int, FleetInterface>
+     * @var Collection<int, FleetInterface>
      *
      * @OneToMany(targetEntity="Fleet", mappedBy="defendedColony")
      */
-    private $defenders;
+    private Collection $defenders;
 
     /**
-     * @var ArrayCollection<int, FleetInterface>
+     * @var Collection<int, FleetInterface>
      *
      * @OneToMany(targetEntity="Fleet", mappedBy="blockedColony")
      */
-    private $blockers;
+    private Collection $blockers;
 
     /**
-     * @var ArrayCollection<int, ShipCrewInterface>
+     * @var Collection<int, ShipCrewInterface>
      *
      * @OneToMany(targetEntity="ShipCrew", mappedBy="colony")
      */
-    private $crewAssignments;
+    private Collection $crewAssignments;
 
     /**
-     * @var ArrayCollection<int, ShipCrewInterface>
+     * @var Collection<int, ShipCrewInterface>
      *
      * @OneToMany(targetEntity="CrewTraining", mappedBy="colony")
      */
-    private $crewTrainings;
+    private Collection $crewTrainings;
 
     /**
      * @var Collection<int, ColonyDepositMiningInterface>
@@ -469,22 +419,23 @@ class Colony implements ColonyInterface
         if ($this->getDayTimePrefix() == 1) {
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.25)) / 100) * $width);
             if ($scaled == 0) {
-                $twilightZone = (int) - (($width) - 1);
+                $twilightZone = - (($width) - 1);
+            } elseif ((int) - (($width) - ceil($scaled)) == 0) {
+                $twilightZone = -1;
             } else {
-                if ((int) - (($width) - ceil($scaled)) == 0) {
-                    $twilightZone = -1;
-                } else {
-                    $twilightZone = (int) - (($width) - $scaled);
-                }
+                $twilightZone = (int) - (($width) - $scaled);
             }
         }
+
         if ($this->getDayTimePrefix() == 2) {
             $twilightZone = $width;
         }
+
         if ($this->getDayTimePrefix() == 3) {
             $scaled = floor((((100 / ($rotationTime * 0.125)) * ($colonyTimeSeconds - $rotationTime * 0.75)) / 100) * $width);
             $twilightZone = (int) ($width - $scaled);
         }
+
         if ($this->getDayTimePrefix() == 4) {
             $twilightZone = 0;
         }
@@ -545,24 +496,30 @@ class Colony implements ColonyInterface
 
     public function getDayTimePrefix(): ?int
     {
+        $daytimeprefix = null;
         $daypercent = (int) (($this->getColonyTimeSeconds() / $this->getRotationTime()) * 100);
         if ($daypercent > 25 && $daypercent <= 37.5) {
             $daytimeprefix = 1; //Sonnenaufgang
         }
+
         if ($daypercent > 37.5 && $daypercent <= 75) {
             $daytimeprefix = 2; //Tag
         }
+
         if ($daypercent > 75 && $daypercent <= 87.5) {
             $daytimeprefix = 3; //Sonnenuntergang
         }
+
         if ($daypercent > 87.5 || $daypercent <= 25) {
             $daytimeprefix = 4; //Nacht
         }
+
         return $daytimeprefix;
     }
 
     public function getDayTimeName(): ?string
     {
+        $daytimename = null;
         if ($this->getDayTimePrefix() == 1) {
             $daytimename = 'Morgen';
         }
@@ -578,6 +535,7 @@ class Colony implements ColonyInterface
         if ($this->getDayTimePrefix() == 4) {
             $daytimename = 'Nacht';
         }
+
         return $daytimename;
     }
 
@@ -607,9 +565,7 @@ class Colony implements ColonyInterface
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            function (int $sum, StorageInterface $storage): int {
-                return $sum + $storage->getAmount();
-            },
+            static fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
@@ -649,14 +605,10 @@ class Colony implements ColonyInterface
      */
     public function getBeamableStorage(): array
     {
-        $filteredArray = array_filter(
+        return array_filter(
             $this->getStorage()->getValues(),
-            function (StorageInterface $storage): bool {
-                return $storage->getCommodity()->isBeamable() === true;
-            }
+            static fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
-
-        return $filteredArray;
     }
 
     public function getStorage(): Collection

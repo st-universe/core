@@ -34,17 +34,13 @@ class DatabaseEntry implements DatabaseEntryInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $data;
+    private ?string $data = null;
 
     /**
      * @Column(type="integer")
@@ -62,33 +58,27 @@ class DatabaseEntry implements DatabaseEntryInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $sort;
+    private ?int $sort = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $object_id;
+    private ?int $object_id = null;
 
     /**
-     * @var DatabaseTypeInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseType")
      * @JoinColumn(name="type", referencedColumnName="id")
      */
-    private $type_object;
+    private ?DatabaseTypeInterface $type_object = null;
 
     /**
-     * @var DatabaseCategoryInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseCategory", inversedBy="entries")
      * @JoinColumn(name="category_id", referencedColumnName="id")
      */
-    private $category;
+    private ?DatabaseCategoryInterface $category = null;
 
     public function getId(): int
     {

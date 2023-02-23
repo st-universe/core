@@ -45,42 +45,34 @@ class KnPost implements KnPostInterface
      *
      * @var string|null
      */
-    private $titel = '';
+    private string $titel = '';
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $text = '';
+    private string $text = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $username = '';
+    private string $username = '';
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $lastedit = 0;
+    private int $lastedit = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -94,31 +86,29 @@ class KnPost implements KnPostInterface
      *
      * @var array<mixed>
      */
-    private $ratings = [];
+    private array $ratings = [];
 
     /**
-     * @var ArrayCollection<int, KnCommentInterface>
+     * @var Collection<int, KnCommentInterface>
      *
      * @OneToMany(targetEntity="KnComment", mappedBy="post")
      * @OrderBy({"id" = "ASC"})
      */
-    private $comments;
+    private Collection $comments;
 
     /**
-     * @var null|RpgPlotInterface
      *
      * @ManyToOne(targetEntity="RpgPlot", inversedBy="posts")
      * @JoinColumn(name="plot_id", referencedColumnName="id")
      */
-    private $rpgPlot;
+    private ?RpgPlotInterface $rpgPlot = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function __construct()
     {

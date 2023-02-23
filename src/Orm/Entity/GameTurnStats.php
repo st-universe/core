@@ -38,81 +38,60 @@ class GameTurnStats implements GameTurnStatsInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_count;
+    private ?int $user_count = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $logins_24h;
+    private ?int $logins_24h = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $inactive_count;
+    private ?int $inactive_count = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $vacation_count;
+    private ?int $vacation_count = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_count;
+    private ?int $ship_count = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_count_manned;
+    private ?int $ship_count_manned = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_count_npc;
+    private ?int $ship_count_npc = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $kn_count;
+    private ?int $kn_count = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $flight_sig_24h;
+    private ?int $flight_sig_24h = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $flight_sig_system_24h;
+    private ?int $flight_sig_system_24h = null;
 
     /**
-     * @var GameTurnInterface
      *
      * @OneToOne(targetEntity="GameTurn")
      * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $turn;
+    private ?GameTurnInterface $turn = null;
 
     public function getId(): int
     {

@@ -37,45 +37,33 @@ class ShipBuildplan implements ShipBuildplanInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildtime = 0;
+    private int $buildtime = 0;
 
     /**
      * @Column(type="string", length=32, nullable=true)
-     *
-     * @var string|null
      */
-    private $signature = '';
+    private ?string $signature = '';
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $crew = 0;
+    private int $crew = 0;
 
     /**
      * @var Collection<int, ShipInterface>
@@ -85,20 +73,18 @@ class ShipBuildplan implements ShipBuildplanInterface
     private Collection $ships;
 
     /**
-     * @var ShipRumpInterface
      *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shipRump;
+    private ?ShipRumpInterface $shipRump = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     /**
      * @var Collection<int, BuildplanModuleInterface>
@@ -228,7 +214,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     {
         return $this->getModules()
             ->filter(
-                fn (BuildplanModuleInterface $buildplanModule): bool => $buildplanModule->getModuleType() === $type
+                static fn(BuildplanModuleInterface $buildplanModule): bool => $buildplanModule->getModuleType() === $type
             )
             ->toArray();
     }

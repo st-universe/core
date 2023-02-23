@@ -33,40 +33,32 @@ class AllianceJob implements AllianceJobInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $alliance_id = 0;
+    private int $alliance_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $type = 0;
+    private int $type = 0;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alliance;
+    private ?AllianceInterface $alliance = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

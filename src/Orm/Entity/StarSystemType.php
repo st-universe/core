@@ -33,25 +33,20 @@ class StarSystemType implements StarSystemTypeInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $database_id = null;
+    private ?int $database_id = null;
 
     /**
-     * @var null|DatabaseEntryInterface
      *
      * @OneToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     public function getId(): int
     {

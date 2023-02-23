@@ -33,103 +33,75 @@ class StarSystem implements StarSystemInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $cx = 0;
+    private int $cx = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $cy = 0;
+    private int $cy = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $type = 0;
+    private int $type = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $max_x = 0;
+    private int $max_x = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $max_y = 0;
+    private int $max_y = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $bonus_fields = 0;
+    private int $bonus_fields = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $database_id = 0;
+    private ?int $database_id = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_wormhole;
+    private bool $is_wormhole = false;
 
     /**
-     * @var StarSystemTypeInterface
-     *
      * @ManyToOne(targetEntity="StarSystemType")
      * @JoinColumn(name="type", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $systemType;
+    private StarSystemTypeInterface $systemType;
 
     /**
-     * @var MapInterface
-     *
      * @OneToOne(targetEntity="Map", mappedBy="starSystem")
      */
-    private $map;
+    private MapInterface $map;
 
     /**
-     * @var null|DatabaseEntryInterface
-     *
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     /**
-     * @var null|ShipInterface
-     *
      * @OneToOne(targetEntity="Ship", mappedBy="influenceArea")
      */
-    private $base;
+    private ?ShipInterface $base = null;
 
     /**
      * @var Collection<int, StarSystemMapInterface>

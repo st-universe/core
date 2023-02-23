@@ -35,23 +35,19 @@ class ShipRumpUser implements ShipRumpUserInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

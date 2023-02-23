@@ -36,97 +36,74 @@ class PrivateMessage implements PrivateMessageInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $send_user = 0;
+    private int $send_user = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $recip_user = 0;
+    private int $recip_user = 0;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $text = '';
+    private string $text = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $new = false;
+    private bool $new = false;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $replied = false;
+    private bool $replied = false;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $cat_id = 0;
+    private int $cat_id = 0;
 
     /**
      * @Column(type="integer", nullable = true)
-     *
-     * @var int|null
      */
-    private $inbox_pm_id;
+    private ?int $inbox_pm_id = null;
 
     /**
      * @Column(type="string", nullable=true)
-     *
-     * @var string|null
      */
-    private $href;
+    private ?string $href = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $deleted;
+    private ?int $deleted = null;
 
     /**
-     * @var PrivateMessageFolderInterface
      *
      * @ManyToOne(targetEntity="PrivateMessageFolder")
      * @JoinColumn(name="cat_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $category;
+    private ?PrivateMessageFolderInterface $category = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="send_user", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $sendingUser;
+    private ?UserInterface $sendingUser = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="recip_user", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $receivingUser;
+    private ?UserInterface $receivingUser = null;
 
     public function getId(): int
     {

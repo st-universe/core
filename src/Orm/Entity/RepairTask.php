@@ -31,54 +31,42 @@ class RepairTask implements RepairTaskInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_id = 0;
+    private int $ship_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $finish_time = 0;
+    private int $finish_time = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $system_type = 0;
+    private int $system_type = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $healing_percentage = 0;
+    private int $healing_percentage = 0;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     public function getId(): int
     {

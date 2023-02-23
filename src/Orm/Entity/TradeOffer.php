@@ -29,105 +29,79 @@ class TradeOffer implements TradeOfferInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $posts_id = 0;
+    private int $posts_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $amount = 0;
+    private int $amount = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $wg_id = 0;
+    private int $wg_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $wg_count = 0;
+    private int $wg_count = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $gg_id = 0;
+    private int $gg_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $gg_count = 0;
+    private int $gg_count = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
-     * @var TradePostInterface
-     *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradePost;
+    private TradePostInterface $tradePost;
 
     /**
-     * @var CommodityInterface
-     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="wg_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $wantedCommodity;
+    private CommodityInterface $wantedCommodity;
 
     /**
-     * @var CommodityInterface
-     *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="gg_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $offeredCommodity;
+    private CommodityInterface $offeredCommodity;
 
     /**
-     * @var UserInterface
-     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
      * @var StorageInterface
      *
      * @OneToOne(targetEntity="Storage", mappedBy="tradeOffer")
      */
-    private $storage;
+    private StorageInterface $storage;
 
     public function getId(): int
     {

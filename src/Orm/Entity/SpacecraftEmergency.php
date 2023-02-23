@@ -28,46 +28,34 @@ class SpacecraftEmergency implements SpacecraftEmergencyInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
-
-    /**
-     * @Column(type="integer") *
-     *
-     * @var int
-     */
-    private $ship_id = 0;
-
-    /**
-     * @Column(type="text")
-     *
-     * @var string
-     */
-    private $text = '';
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $ship_id = 0;
+
+    /**
+     * @Column(type="text")
+     */
+    private string $text = '';
+
+    /**
+     * @Column(type="integer")
+     */
+    private int $date = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $deleted = null;
+    private ?int $deleted = null;
 
     /**
-     * @var ShipInterface
-     *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     public function getId(): int
     {

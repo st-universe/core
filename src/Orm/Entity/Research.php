@@ -30,52 +30,40 @@ class Research implements ResearchInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $sort;
+    private ?int $sort = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rumps_id;
+    private ?int $rumps_id = null;
 
     /**
      * @Column(type="json")
      *
      * @var array<int>
      */
-    private $database_entries;
+    private array $database_entries = [];
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $points;
+    private ?int $points = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id;
+    private ?int $commodity_id = null;
 
     /**
      * @Column(type="integer", nullable=true)

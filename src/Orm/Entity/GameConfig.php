@@ -22,6 +22,9 @@ use Doctrine\ORM\Mapping\Table;
  **/
 class GameConfig implements GameConfigInterface
 {
+    /**
+     * @var string
+     */
     public const TABLE_NAME = 'stu_game_config';
 
     /**
@@ -35,17 +38,13 @@ class GameConfig implements GameConfigInterface
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $option = 0;
+    private int $option = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $value = 0;
+    private int $value = 0;
 
     public function getId(): int
     {

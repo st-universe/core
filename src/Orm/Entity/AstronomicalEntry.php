@@ -36,24 +36,18 @@ class AstronomicalEntry implements AstronomicalEntryInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="smallint", length=1)
-     *
-     * @var int
      */
-    private $state = 0;
+    private int $state = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $astro_start_turn;
+    private ?int $astro_start_turn = null;
 
     /**
      * @Column(type="integer") *
@@ -98,60 +92,53 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     private $starsystem_map_id_5;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     /**
-     * @var StarSystemInterface
      *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
-    private $starSystem;
+    private ?StarSystemInterface $starSystem = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_1", referencedColumnName="id")
      */
-    private $starsystem_map_1;
+    private ?StarSystemMapInterface $starsystem_map_1 = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_2", referencedColumnName="id")
      */
-    private $starsystem_map_2;
+    private ?StarSystemMapInterface $starsystem_map_2 = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_3", referencedColumnName="id")
      */
-    private $starsystem_map_3;
+    private ?StarSystemMapInterface $starsystem_map_3 = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_4", referencedColumnName="id")
      */
-    private $starsystem_map_4;
+    private ?StarSystemMapInterface $starsystem_map_4 = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id_5", referencedColumnName="id")
      */
-    private $starsystem_map_5;
+    private ?StarSystemMapInterface $starsystem_map_5 = null;
 
     public function getId(): int
     {

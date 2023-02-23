@@ -45,7 +45,7 @@ class ShipCrew implements ShipCrewInterface
      *
      * @var int|null
      */
-    private $ship_id = 0;
+    private int $ship_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -63,24 +63,18 @@ class ShipCrew implements ShipCrewInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $crew_id = 0;
+    private int $crew_id = 0;
 
     /**
      * @Column(type="smallint", nullable=true)
-     *
-     * @var int|null
      */
-    private $slot;
+    private ?int $slot = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -90,52 +84,46 @@ class ShipCrew implements ShipCrewInterface
     private $repair_task_id;
 
     /**
-     * @var CrewInterface
      *
      * @ManyToOne(targetEntity="Crew")
      * @JoinColumn(name="crew_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $crew;
+    private ?CrewInterface $crew = null;
 
     /**
-     * @var null|ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     /**
-     * @var null|ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ?ColonyInterface $colony = null;
 
     /**
-     * @var null|TradePostInterface
      *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="tradepost_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradepost;
+    private ?TradePostInterface $tradepost = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     /**
-     * @var null|RepairTaskInterface
      *
      * @ManyToOne(targetEntity="RepairTask")
      * @JoinColumn(name="repair_task_id", referencedColumnName="id")
      */
-    private $repairTask;
+    private ?RepairTaskInterface $repairTask = null;
 
     public function getId(): int
     {

@@ -28,68 +28,52 @@ class TradeTransaction implements TradeTransactionInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $wg_id = 0;
+    private int $wg_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $wg_count = 0;
+    private int $wg_count = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $gg_id = 0;
+    private int $gg_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $gg_count = 0;
+    private int $gg_count = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $tradepost_id = 0;
+    private ?int $tradepost_id = null;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="wg_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $wantedCommodity;
+    private CommodityInterface $wantedCommodity;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="gg_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $offeredCommodity;
+    private CommodityInterface $offeredCommodity;
 
     public function getId(): int
     {

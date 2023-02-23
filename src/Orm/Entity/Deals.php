@@ -43,66 +43,58 @@ class Deals implements DealsInterface
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $auction = false;
+    private bool $auction = false;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $amount = 0;
+    private int $amount = 0;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var null|int
      */
-    private $give_commodity = null;
+    private $give_commodity;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $want_commodity = null;
+    private $want_commodity;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $give_commodity_amonut = null;
+    private $give_commodity_amonut;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $want_commodity_amount = null;
+    private $want_commodity_amount;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $want_prestige = null;
+    private ?int $want_prestige = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $buildplan_id = null;
+    private ?int $buildplan_id = null;
 
     /**
      * @Column(type="boolean", nullable=true)
-     *
-     * @var bool|null
      */
-    private $ship = null;
+    private ?bool $ship = null;
 
     /**
      * @Column(type="integer")
@@ -113,47 +105,37 @@ class Deals implements DealsInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $end;
+    private ?int $end = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $taken_time;
+    private ?int $taken_time = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $auction_user;
+    private ?int $auction_user = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $auction_amount;
+    private ?int $auction_amount = null;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="want_commodity", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $wantedCommodity;
+    private ?CommodityInterface $wantedCommodity = null;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="give_commodity", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $giveCommodity;
+    private ?CommodityInterface $giveCommodity = null;
 
     /**
      * @var null|ShipBuildplanInterface
@@ -164,12 +146,12 @@ class Deals implements DealsInterface
     private $buildplan;
 
     /**
-     * @var ArrayCollection<int, AuctionBidInterface>
+     * @var Collection<int, AuctionBidInterface>
      *
      * @OneToMany(targetEntity="AuctionBid", mappedBy="auction", cascade={"remove"})
      * @OrderBy({"max_amount" = "ASC"})
      */
-    private $auctionBids;
+    private Collection $auctionBids;
 
     public function __construct()
     {
@@ -351,6 +333,7 @@ class Deals implements DealsInterface
             $index = $module->getType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL ? $module->getId() : $module->getType();
             $modules[$index] = $module;
         }
+
         return $modules;
     }
 
@@ -361,24 +344,17 @@ class Deals implements DealsInterface
 
     public function getRumpId(): int
     {
-        $rumpid = $this->getBuildplan()->getRumpId();
-        return $rumpid;
+        return $this->getBuildplan()->getRumpId();
     }
 
     public function getCrew(): int
     {
-        if ($this->getBuildplan() == null) {
-            $crew = 0;
-        } else {
-            $crew = $this->getBuildplan()->getCrew();
-        }
-        return $crew;
+        return $this->getBuildplan() == null ? 0 : $this->getBuildplan()->getCrew();
     }
 
     public function getBuildplanName(): string
     {
-        $bpname = $this->getBuildplan()->getName();
-        return $bpname;
+        return $this->getBuildplan()->getName();
     }
 
     public function getAuctionBids(): Collection

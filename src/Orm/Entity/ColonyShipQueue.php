@@ -37,83 +37,64 @@ class ColonyShipQueue implements ColonyShipQueueInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $colony_id = 0;
+    private int $colony_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildplan_id = 0;
+    private int $buildplan_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildtime = 0;
+    private int $buildtime = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $finish_date = 0;
+    private int $finish_date = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $stop_date = 0;
+    private int $stop_date = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $building_function_id = 0;
+    private int $building_function_id = 0;
 
     /**
-     * @var ShipBuildplanInterface
      *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shipBuildplan;
+    private ?ShipBuildplanInterface $shipBuildplan = null;
 
     /**
-     * @var ShipRumpInterface
      *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shipRump;
+    private ?ShipRumpInterface $shipRump = null;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ?ColonyInterface $colony = null;
 
     public function getId(): int
     {

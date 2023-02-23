@@ -31,74 +31,58 @@ class ColonyClass implements ColonyClassInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $type;
+    private int $type;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $database_id;
+    private ?int $database_id = null;
 
     /**
      * @Column(type="json")
      *
      * @var array<int>
      */
-    private $colonizeable_fields = [];
+    private array $colonizeable_fields = [];
 
     /**
      * @Column(type="smallint") *
-     *
-     * @var int
      */
-    private $bev_growth_rate = 0;
+    private int $bev_growth_rate = 0;
 
     /**
      * @Column(type="smallint") *
-     *
-     * @var int
      */
-    private $special = 0;
+    private int $special = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $allow_start = false;
+    private bool $allow_start = false;
 
     /**
-     * @var DatabaseEntryInterface|null
-     *
      * @OneToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     /**
-     * @var ArrayCollection<int, ColonyClassDepositInterface>
+     * @var Collection<int, ColonyClassDepositInterface>
      *
      * @OneToMany(targetEntity="ColonyClassDeposit", mappedBy="colonyClass", indexBy="commodity_id")
      */
-    private $colonyClassDeposits;
+    private Collection $colonyClassDeposits;
 
     public function __construct()
     {

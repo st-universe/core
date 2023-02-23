@@ -34,24 +34,18 @@ class TerraformingCost implements TerraformingCostInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $terraforming_id = 0;
+    private int $terraforming_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $count = 0;
+    private int $count = 0;
 
     /**
      * @var CommodityInterface

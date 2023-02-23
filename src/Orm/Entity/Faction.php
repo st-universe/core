@@ -31,45 +31,33 @@ class Faction implements FactionInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $darker_color = '';
+    private string $darker_color = '';
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $chooseable = false;
+    private bool $chooseable = false;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $player_limit = 0;
+    private int $player_limit = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $start_building_id = 0;
+    private int $start_building_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -79,14 +67,12 @@ class Faction implements FactionInterface
     private $start_research_id;
 
     //TODO survivor_rate to escape pods
-
     /**
-     * @var null|ResearchInterface
      *
      * @ManyToOne(targetEntity="Research")
      * @JoinColumn(name="start_research_id", referencedColumnName="id")
      */
-    private $start_research;
+    private ?ResearchInterface $start_research = null;
 
     public function getId(): int
     {

@@ -34,24 +34,18 @@ class GameTurn implements GameTurnInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $turn = 0;
+    private int $turn = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $startdate = 0;
+    private int $startdate = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $enddate;
+    private ?int $enddate = null;
 
     /**
      * @var null|GameTurnStatsInterface

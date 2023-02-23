@@ -39,178 +39,128 @@ class ShipRump implements ShipRumpInterface
 
     /**
      * @column(type="integer")
-     *
-     * @var int
      */
-    private $category_id;
+    private ?int $category_id = null;
 
     /**
      * @column(type="integer", nullable=true)
-     *
-     * @var int
      */
-    private $role_id = 0;
+    private ?int $role_id = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $evade_chance = 0;
+    private int $evade_chance = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $hit_chance = 0;
+    private int $hit_chance = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level = 0;
+    private int $module_level = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $base_crew = 0;
+    private int $base_crew = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $base_eps = 0;
+    private int $base_eps = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $base_reactor = 0;
+    private int $base_reactor = 0;
 
     /**
      * @column(type="integer")
-     *
-     * @var int
      */
-    private $base_hull = 0;
+    private int $base_hull = 0;
 
     /**
      * @column(type="integer")
-     *
-     * @var int
      */
-    private $base_shield = 0;
+    private int $base_shield = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $base_damage = 0;
+    private int $base_damage = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $base_sensor_range = 0;
+    private int $base_sensor_range = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $base_torpedo_storage = 0;
+    private int $base_torpedo_storage = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $phaser_volleys = 0;
+    private int $phaser_volleys = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $phaser_hull_damage_factor = 0;
+    private int $phaser_hull_damage_factor = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $phaser_shield_damage_factor = 0;
+    private int $phaser_shield_damage_factor = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $torpedo_level = 0;
+    private int $torpedo_level = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $torpedo_volleys = 0;
+    private int $torpedo_volleys = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_buildable;
+    private bool $is_buildable = false;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_npc;
+    private bool $is_npc = false;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $eps_cost = 0;
+    private int $eps_cost = 0;
 
     /**
      * @column(type="integer")
-     *
-     * @var int
      */
-    private $storage = 0;
+    private int $storage = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $slots = 0;
+    private int $slots = 0;
 
     /**
      * @column(type="integer")
-     *
-     * @var int
      */
-    private $buildtime = 0;
+    private int $buildtime = 0;
 
     /**
      * @column(type="smallint", nullable=true)
@@ -221,66 +171,48 @@ class ShipRump implements ShipRumpInterface
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $sort = 0;
+    private int $sort = 0;
 
     /**
      * @column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $database_id = 0;
+    private ?int $database_id = 0;
 
     /**
      * @column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $commodity_id = 0;
+    private ?int $commodity_id = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $flight_ecost = 0;
+    private int $flight_ecost = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $beam_factor = 0;
+    private int $beam_factor = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $special_slots = 0;
+    private int $special_slots = 0;
 
     /**
      * @column(type="smallint")
-     *
-     * @var int
      */
-    private $shuttle_slots = 0;
+    private int $shuttle_slots = 0;
 
     /**
      * @column(type="integer")
-     *
-     * @var int
      */
-    private $tractor_mass = 1;
+    private int $tractor_mass = 1;
 
     /**
      * @column(type="integer")
-     *
-     * @var int
      */
-    private $tractor_payload = 100;
+    private int $tractor_payload = 100;
 
     /**
      * @Column(type="integer")
@@ -290,12 +222,11 @@ class ShipRump implements ShipRumpInterface
     private $prestige;
 
     /**
-     * @var null|ShipRumpRoleInterface
      *
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="role_id", referencedColumnName="id")
      */
-    private $shipRumpRole;
+    private ?ShipRumpRoleInterface $shipRumpRole = null;
 
     /**
      * @var Collection<int, ShipRumpSpecialInterface>
@@ -305,35 +236,32 @@ class ShipRump implements ShipRumpInterface
     private Collection $specialAbilities;
 
     /**
-     * @var ShipRumpCategoryInterface
      *
      * @ManyToOne(targetEntity="ShipRumpCategory")
      * @JoinColumn(name="category_id", referencedColumnName="id")
      */
-    private $shipRumpCategory;
+    private ?ShipRumpCategoryInterface $shipRumpCategory = null;
 
     /**
-     * @var null|CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id")
      */
-    private $commodity;
+    private ?CommodityInterface $commodity = null;
 
     /**
-     * @var null|DatabaseEntryInterface
      *
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     /**
-     * @var ArrayCollection<int, ShipRumpCostInterface>
+     * @var Collection<int, ShipRumpCostInterface>
      *
      * @OneToMany(targetEntity="ShipRumpCost", mappedBy="shipRump")
      */
-    private $buildingCosts;
+    private Collection $buildingCosts;
 
     public function __construct()
     {

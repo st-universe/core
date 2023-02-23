@@ -22,57 +22,46 @@ class ColonyDepositMining implements ColonyDepositMiningInterface
     /**
      * @Id
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id;
+    private ?int $user_id = null;
 
     /**
      * @Id
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $colony_id;
+    private ?int $colony_id = null;
 
     /**
      * @Id
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id;
+    private ?int $commodity_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $amount_left;
+    private ?int $amount_left = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ?ColonyInterface $colony = null;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private ?CommodityInterface $commodity = null;
 
     public function getUser(): UserInterface
     {

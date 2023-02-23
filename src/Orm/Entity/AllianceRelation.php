@@ -36,47 +36,37 @@ class AllianceRelation implements AllianceRelationInterface
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $type = 0;
+    private int $type = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $alliance_id = 0;
+    private int $alliance_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $recipient = 0;
+    private int $recipient = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alliance;
+    private ?AllianceInterface $alliance = null;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $opponent;
+    private ?AllianceInterface $opponent = null;
 
     public function getId(): int
     {
@@ -131,15 +121,19 @@ class AllianceRelation implements AllianceRelationInterface
         if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_FRIENDS) {
             $ret[] = ["name" => "Freundschaft", "value" => AllianceEnum::ALLIANCE_RELATION_FRIENDS];
         }
+
         if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_ALLIED) {
             $ret[] = ["name" => "Bündnis", "value" => AllianceEnum::ALLIANCE_RELATION_ALLIED];
         }
+
         if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_TRADE) {
             $ret[] = ["name" => "Handelsabkommen", "value" => AllianceEnum::ALLIANCE_RELATION_TRADE];
         }
+
         if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_TRADE) {
             $ret[] = ["name" => "Vasall", "value" => AllianceEnum::ALLIANCE_RELATION_VASSAL];
         }
+
         return $ret;
     }
 
@@ -183,6 +177,7 @@ class AllianceRelation implements AllianceRelationInterface
             case AllianceEnum::ALLIANCE_RELATION_VASSAL:
                 return 'Vasall';
         }
+
         return '';
     }
 }

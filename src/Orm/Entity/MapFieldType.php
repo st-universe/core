@@ -35,73 +35,55 @@ class MapFieldType implements MapFieldTypeInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $type = 0;
+    private int $type = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_system = false;
+    private bool $is_system = false;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $ecost = 0;
+    private int $ecost = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $colonies_classes_id = 0;
+    private int $colonies_classes_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $damage = 0;
+    private int $damage = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $x_damage = 0;
+    private int $x_damage = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $x_damage_system = 0;
+    private int $x_damage_system = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $view = false;
+    private bool $view = false;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $passable = false;
+    private bool $passable = false;
 
     /**
      * @var null|ColonyClassInterface

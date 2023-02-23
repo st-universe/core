@@ -40,80 +40,62 @@ class Module implements ModuleInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $level = 0;
+    private int $level = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $upgrade_factor = 0;
+    private int $upgrade_factor = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $downgrade_factor = 0;
+    private int $downgrade_factor = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $crew = 0;
+    private int $crew = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $type = 0;
+    private int $type = 0;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $research_id = 0;
+    private int $research_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $viewable = false;
+    private bool $viewable = false;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $rumps_role_id = 0;
+    private int $rumps_role_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $ecost = 0;
+    private int $ecost = 0;
 
     /**
      * @var ResearchInterface
@@ -140,22 +122,22 @@ class Module implements ModuleInterface
     private $shipRumpRole;
 
     /**
-     * @var ArrayCollection<int, ModuleSpecialInterface>
+     * @var Collection<int, ModuleSpecialInterface>
      *
      * @OneToMany(targetEntity="ModuleSpecial", mappedBy="module")
      * @OrderBy({"special_id" = "ASC"})
      */
-    private $moduleSpecials;
+    private Collection $moduleSpecials;
 
     /**
-     * @var ArrayCollection<int, ModuleCostInterface>
+     * @var Collection<int, ModuleCostInterface>
      *
      * @OneToMany(targetEntity="ModuleCost", mappedBy="module")
      */
-    private $buildingCosts;
+    private Collection $buildingCosts;
 
     /** @var null|array<int> */
-    private $specialAbilities;
+    private ?array $specialAbilities = null;
 
     public function __construct()
     {
@@ -304,12 +286,11 @@ class Module implements ModuleInterface
     {
         if ($this->specialAbilities === null) {
             $this->specialAbilities = array_map(
-                function (ModuleSpecialInterface $moduleSpecial): int {
-                    return (int)$moduleSpecial->getSpecialId();
-                },
+                static fn(ModuleSpecialInterface $moduleSpecial): int => $moduleSpecial->getSpecialId(),
                 $this->getSpecials()->toArray()
             );
         }
+
         return in_array((int)$special_id, $this->specialAbilities);
     }
 
@@ -329,10 +310,11 @@ class Module implements ModuleInterface
 
         usort(
             $array,
-            function (ModuleCostInterface $a, ModuleCostInterface $b): int {
-                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
+            static function (ModuleCostInterface $a, ModuleCostInterface $b) : int {
+                if ($a->getCommodity()->getSort() === $b->getCommodity()->getSort()) {
                     return 0;
                 }
+                
                 return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
             }
         );

@@ -27,6 +27,7 @@ use Doctrine\ORM\Mapping\Table;
  **/
 class ConstructionProgress implements ConstructionProgressInterface
 {
+    public $getId;
     /**
      * @Id
      * @Column(type="integer")
@@ -38,32 +39,27 @@ class ConstructionProgress implements ConstructionProgressInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_id = 0;
+    private int $ship_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $remaining_ticks = 0;
+    private int $remaining_ticks = 0;
 
     /**
-     * @var ArrayCollection<int, ConstructionProgressModuleInterface>
+     * @var Collection<int, ConstructionProgressModuleInterface>
      *
      * @OneToMany(targetEntity="ConstructionProgressModule", mappedBy="progress")
      */
-    private $specialModules;
+    private Collection $specialModules;
 
     /**
-     * @var ShipInterface
      *
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     public function __construct()
     {

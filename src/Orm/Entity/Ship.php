@@ -60,17 +60,13 @@ class Ship implements ShipInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rumps_id = 0;
+    private int $rumps_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -81,101 +77,75 @@ class Ship implements ShipInterface
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $fleets_id;
+    private ?int $fleets_id = null;
 
     /**
      * @Column(type="integer", length=5, nullable=true)
      *
      * @var int|null
      */
-    private $layer_id = MapEnum::LAYER_ID_CRAGGANMORE;
+    private int $layer_id = MapEnum::LAYER_ID_CRAGGANMORE;
 
     /**
      * @Column(type="integer", length=5)
-     *
-     * @var int
      */
-    private $cx = 0;
+    private int $cx = 0;
 
     /**
      * @Column(type="integer", length=5)
-     *
-     * @var int
      */
-    private $cy = 0;
+    private int $cy = 0;
 
     /**
      * @Column(type="smallint", length=1)
-     *
-     * @var int
      */
-    private $direction = 0;
+    private int $direction = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="smallint", length=1)
-     *
-     * @var int
      */
-    private $alvl = 0;
+    private int $alvl = 0;
 
     /**
      * @Column(type="smallint", length=1)
-     *
-     * @var int
      */
-    private $lss_mode = ShipLSSModeEnum::LSS_NORMAL;
+    private int $lss_mode = ShipLSSModeEnum::LSS_NORMAL;
 
     /**
      * @Column(type="integer", length=5)
-     *
-     * @var int
      */
-    private $warpcore = 0;
+    private int $warpcore = 0;
 
     /**
      * @Column(type="integer", length=6)
-     *
-     * @var int
      */
-    private $huelle = 0;
+    private int $huelle = 0;
 
     /**
      * @Column(type="integer", length=6)
-     *
-     * @var int
      */
-    private $max_huelle = 0;
+    private int $max_huelle = 0;
 
     /**
      * @Column(type="integer", length=6)
-     *
-     * @var int
      */
-    private $schilde = 0;
+    private int $schilde = 0;
 
     /**
      * @Column(type="integer", length=6)
-     *
-     * @var int
      */
-    private $max_schilde = 0;
+    private int $max_schilde = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $tractored_ship_id;
+    private ?int $tractored_ship_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -186,115 +156,85 @@ class Ship implements ShipInterface
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $dock;
+    private ?int $dock = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $former_rumps_id = 0;
+    private int $former_rumps_id = 0;
 
     /**
      * @Column(type="smallint", length=1, nullable=true)
      *
      * @var int|null
      */
-    private $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
+    private int $type = SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $database_id = 0;
+    private int $database_id = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_destroyed = false;
+    private bool $is_destroyed = false;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $disabled = false;
+    private bool $disabled = false;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $can_be_disabled = false;
+    private bool $can_be_disabled = false;
 
     /**
      * @Column(type="smallint", length=3)
-     *
-     * @var int
      */
-    private $hit_chance = 0;
+    private int $hit_chance = 0;
 
     /**
      * @Column(type="smallint", length=3)
-     *
-     * @var int
      */
-    private $evade_chance = 0;
+    private int $evade_chance = 0;
 
     /**
      * @Column(type="smallint", length=4)
-     *
-     * @var int
      */
-    private $reactor_output = 0;
+    private int $reactor_output = 0;
 
     /**
      * @Column(type="smallint", length=4)
-     *
-     * @var int
      */
-    private $base_damage = 0;
+    private int $base_damage = 0;
 
     /**
      * @Column(type="smallint", length=3)
-     *
-     * @var int
      */
-    private $sensor_range = 0;
+    private int $sensor_range = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $shield_regeneration_timer = 0;
+    private int $shield_regeneration_timer = 0;
 
     /**
      * @Column(type="smallint", length=3)
-     *
-     * @var int
      */
-    private $state = ShipStateEnum::SHIP_STATE_NONE;
+    private int $state = ShipStateEnum::SHIP_STATE_NONE;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $astro_start_turn;
+    private ?int $astro_start_turn = null;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_fleet_leader = false;
+    private bool $is_fleet_leader = false;
 
     /**
      * @Column(type="integer", nullable=true) *
@@ -318,152 +258,136 @@ class Ship implements ShipInterface
     private $influence_area_id;
 
     /**
-     * @var null|FleetInterface
      *
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id")
      */
-    private $fleet;
+    private ?FleetInterface $fleet = null;
 
     /**
-     * @var null|TradePostInterface
-     *
      * @OneToOne(targetEntity="TradePost", mappedBy="ship")
      */
-    private $tradePost;
+    private ?TradePostInterface $tradePost = null;
 
     /**
-     * @var null|ShipInterface
      *
      * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
      * @JoinColumn(name="dock", referencedColumnName="id")
      */
-    private $dockedTo;
+    private ?ShipInterface $dockedTo = null;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var Collection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="dockedTo", indexBy="id")
      * @OrderBy({"fleets_id" = "DESC", "is_fleet_leader" = "DESC"})
      */
-    private $dockedShips;
+    private Collection $dockedShips;
 
     /**
-     * @var ArrayCollection<int, DockingPrivilegeInterface>
+     * @var Collection<int, DockingPrivilegeInterface>
      *
      * @OneToMany(targetEntity="DockingPrivilege", mappedBy="ship")
      */
-    private $dockingPrivileges;
+    private Collection $dockingPrivileges;
 
     /**
-     * @var null|ShipInterface
      *
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="tractored_ship_id", referencedColumnName="id")
      */
-    private $tractoredShip;
+    private ?ShipInterface $tractoredShip = null;
 
     /**
-     * @var null|ShipInterface
-     *
      * @OneToOne(targetEntity="Ship", mappedBy="tractoredShip")
      */
-    private $tractoringShip;
+    private ?ShipInterface $tractoringShip = null;
 
     /**
-     * @var null|TholianWebInterface
      *
      * @ManyToOne(targetEntity="TholianWeb")
      * @JoinColumn(name="holding_web_id", referencedColumnName="id")
      */
-    private $holdingWeb;
+    private ?TholianWebInterface $holdingWeb = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     /**
-     * @var ArrayCollection<int, ShipCrewInterface>
+     * @var Collection<int, ShipCrewInterface>
      *
      * @OneToMany(targetEntity="ShipCrew", mappedBy="ship", indexBy="id")
      * @OrderBy({"id" = "ASC"})
      */
-    private $crew;
+    private Collection $crew;
 
     /**
-     * @var null|TorpedoStorageInterface
-     *
      * @OneToOne(targetEntity="TorpedoStorage", mappedBy="ship")
      */
-    private $torpedoStorage;
+    private ?TorpedoStorageInterface $torpedoStorage = null;
 
     /**
-     * @var ArrayCollection<int, ShipSystemInterface>
+     * @var Collection<int, ShipSystemInterface>
      *
      * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"remove"})
      * @OrderBy({"system_type" = "ASC"})
      */
-    private $systems;
+    private Collection $systems;
 
     /**
-     * @var ShipRumpInterface
      *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rumps_id", referencedColumnName="id")
      */
-    private $rump;
+    private ?ShipRumpInterface $rump = null;
 
     /**
-     * @var null|ShipBuildplanInterface
      *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="plans_id", referencedColumnName="id")
      */
-    private $buildplan;
+    private ?ShipBuildplanInterface $buildplan = null;
 
     /**
-     * @var ArrayCollection<int, StorageInterface>
+     * @var Collection<int, StorageInterface>
      *
      * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
      * @OrderBy({"commodity_id" = "ASC"})
      */
-    private $storage;
+    private Collection $storage;
 
     /**
-     * @var null|MapInterface
      *
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
-    private $map;
+    private ?MapInterface $map = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private $starsystem_map;
+    private ?StarSystemMapInterface $starsystem_map = null;
 
     /**
-     * @var null|StarSystemInterface
      *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="influence_area_id", referencedColumnName="id")
      */
-    private $influenceArea;
+    private ?StarSystemInterface $influenceArea = null;
 
     /**
-     * @var ArrayCollection<int, ShipLogInterface>
+     * @var Collection<int, ShipLogInterface>
      *
      * @OneToMany(targetEntity="ShipLog", mappedBy="ship", fetch="EXTRA_LAZY")
      * @OrderBy({"id" = "DESC"})
      */
-    private $logbook;
+    private Collection $logbook;
 
     public function __construct()
     {
@@ -1039,6 +963,7 @@ class Ship implements ShipInterface
         if ($this->getSystem() !== null) {
             return $this->getSX();
         }
+
         return $this->getCX();
     }
 
@@ -1047,6 +972,7 @@ class Ship implements ShipInterface
         if ($this->getSystem() !== null) {
             return $this->getSY();
         }
+
         return $this->getCY();
     }
 
@@ -1066,19 +992,18 @@ class Ship implements ShipInterface
             if ($game !== null) {
                 $game->addInformation(_("Keine Crew vorhanden"));
             }
+
             return false;
         }
 
         $result = $this->getBuildplan()->getCrew() <= 0
             || $this->getCrewCount() >= $this->getBuildplan()->getCrew();
 
-        if (!$result) {
-            if ($game !== null) {
-                $game->addInformationf(
-                    _("Es werden %d Crewmitglieder benötigt"),
-                    $this->getBuildplan()->getCrew()
-                );
-            }
+        if (!$result && $game !== null) {
+            $game->addInformationf(
+                _("Es werden %d Crewmitglieder benötigt"),
+                $this->getBuildplan()->getCrew()
+            );
         }
 
         return $result;
@@ -1145,6 +1070,7 @@ class Ship implements ShipInterface
         if ($this->hasWarpcore()) {
             return $this->getTheoreticalReactorOutput() * ShipEnum::WARPCORE_CAPACITY_MULTIPLIER;
         }
+
         if ($this->hasFusionReactor()) {
             return $this->getTheoreticalReactorOutput() * ShipEnum::REACTOR_CAPACITY_MULTIPLIER;
         }
@@ -1157,6 +1083,7 @@ class Ship implements ShipInterface
         if ($this->getReactorOutput() > $this->getReactorLoad()) {
             return $this->getReactorLoad();
         }
+
         return $this->getReactorOutput();
     }
 
@@ -1268,9 +1195,7 @@ class Ship implements ShipInterface
     {
         return array_reduce(
             $this->getStorage()->getValues(),
-            function (int $sum, StorageInterface $storage): int {
-                return $sum + $storage->getAmount();
-            },
+            static fn(int $sum, StorageInterface $storage): int => $sum + $storage->getAmount(),
             0
         );
     }
@@ -1284,9 +1209,7 @@ class Ship implements ShipInterface
     {
         return array_filter(
             $this->getStorage()->getValues(),
-            function (StorageInterface $storage): bool {
-                return $storage->getCommodity()->isBeamable() === true;
-            }
+            static fn(StorageInterface $storage): bool => $storage->getCommodity()->isBeamable() === true
         );
     }
 
@@ -1344,6 +1267,7 @@ class Ship implements ShipInterface
             } else {
                 $this->setLayerId($system->getMapField()->getLayer()->getId());
             }
+
             $this->setCx($starsystem_map->getSystem()->getCx());
             $this->setCy($starsystem_map->getSystem()->getCy());
         }
@@ -1423,6 +1347,7 @@ class Ship implements ShipInterface
                 $healthySystems[] = $system;
             }
         }
+
         return $healthySystems;
     }
 
@@ -1538,11 +1463,7 @@ class Ship implements ShipInterface
         } else {
             $closeTofinish = $this->getHoldingWeb()->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
 
-            if ($closeTofinish) {
-                $icon = 'web_u.png';
-            } else {
-                $icon = 'web_u2.png';
-            }
+            $icon = $closeTofinish ? 'web_u.png' : 'web_u2.png';
         }
 
         return sprintf('background-image: url(assets/buttons/%s); vertical-align: middle; text-align: center;', $icon);
@@ -1550,7 +1471,7 @@ class Ship implements ShipInterface
 
     public function getCurrentMapField()
     {
-        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap() : $this->getMap();
+        return $this->getStarsystemMap() ?? $this->getMap();
     }
 
     private function getShieldRegenerationPercentage(): int
@@ -1723,6 +1644,7 @@ class Ship implements ShipInterface
             $loggerUtil->log(sprintf('rumpShuttleSlots: %d', $this->getRump()->getShuttleSlots()));
             $loggerUtil->log(sprintf('storedShuttleCount: %d', $this->getStoredShuttleCount()));
         }
+
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)
             && $this->getRump()->getShuttleSlots() - $this->getStoredShuttleCount() > 0;
     }
@@ -1790,7 +1712,7 @@ class Ship implements ShipInterface
     private function getColorStyle(int $actual, int $max): string
     {
         // full
-        if ($actual == $max) {
+        if ($actual === $max) {
             return 'color: #dddddd;';
         }
 

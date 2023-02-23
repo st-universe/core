@@ -33,45 +33,33 @@ class Weapon implements WeaponInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $variance = 0;
+    private int $variance = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $critical_chance = 0;
+    private int $critical_chance = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $type = 0;
+    private int $type = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $firing_mode = 0;
+    private int $firing_mode = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $module_id = 0;
+    private int $module_id = 0;
 
     public function getId(): int
     {

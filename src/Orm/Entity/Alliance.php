@@ -38,31 +38,23 @@ class Alliance implements AllianceInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $homepage = '';
+    private string $homepage = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -73,42 +65,35 @@ class Alliance implements AllianceInterface
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $accept_applications = false;
+    private bool $accept_applications = false;
 
     /**
      * @Column(type="string", length=32)
-     *
-     * @var string
      */
-    private $avatar = '';
+    private string $avatar = '';
 
     /**
      * @Column(type="string", length=7)
-     *
-     * @var string
      */
-    private $rgb_code = '';
+    private string $rgb_code = '';
 
     /**
-     * @var FactionInterface
      *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id")
      */
-    private $faction;
+    private ?FactionInterface $faction = null;
 
     /**
-     * @var ArrayCollection<int, UserInterface>
+     * @var Collection<int, UserInterface>
      *
      * @OneToMany(targetEntity="User", mappedBy="alliance")
      */
     private Collection $members;
 
     /**
-     * @var ArrayCollection<int, AllianceJobInterface>
+     * @var Collection<int, AllianceJobInterface>
      *
      * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance", indexBy="type")
      */
@@ -228,6 +213,7 @@ class Alliance implements AllianceInterface
             // alliance without founder? this should not happen
             throw new AllianceFounderNotSetException();
         }
+
         return $job;
     }
 

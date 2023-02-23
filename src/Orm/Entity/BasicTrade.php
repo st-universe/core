@@ -42,61 +42,47 @@ class BasicTrade implements BasicTradeInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $buy_sell = 0;
+    private int $buy_sell = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $value = 0;
+    private int $value = 0;
 
     /**
      * @Column(type="bigint", nullable=true)
-     *
-     * @var null|int
      */
-    private $date_ms;
+    private ?int $date_ms = null;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $uniqid;
+    private ?string $uniqid = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $user_id;
+    private ?int $user_id = null;
 
     /**
-     * @var FactionInterface
      *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id")
      */
-    private $faction;
+    private ?FactionInterface $faction = null;
 
     /**
-     * @var CommodityInterface
      *
      * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private ?CommodityInterface $commodity = null;
 
     public function getId(): int
     {

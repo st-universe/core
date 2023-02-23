@@ -36,31 +36,23 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $type = 0;
+    private int $type = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildings_id = 0;
+    private int $buildings_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $research_id;
+    private ?int $research_id = null;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $view = true;
+    private bool $view = true;
 
     /**
      * @var BuildingInterface

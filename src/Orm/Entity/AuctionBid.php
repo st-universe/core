@@ -35,40 +35,32 @@ class AuctionBid implements AuctionBidInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $auction_id;
+    private ?int $auction_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id;
+    private ?int $user_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $max_amount;
+    private ?int $max_amount = null;
 
     /**
-     * @var DealsInterface
      *
      * @ManyToOne(targetEntity="Deals")
      * @JoinColumn(name="auction_id", referencedColumnName="id")
      */
-    private $auction;
+    private ?DealsInterface $auction = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

@@ -48,26 +48,22 @@ class DatabaseUser implements DatabaseUserInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date;
+    private ?int $date = null;
 
     /**
-     * @var DatabaseEntryInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

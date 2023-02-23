@@ -39,24 +39,18 @@ class PlanetField implements PlanetFieldInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $colonies_id = 0;
+    private int $colonies_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $field_id = 0;
+    private int $field_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $type_id = 0;
+    private int $type_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -74,51 +68,41 @@ class PlanetField implements PlanetFieldInterface
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $integrity = 0;
+    private int $integrity = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $aktiv = 0;
+    private int $aktiv = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $activate_after_build = true;
+    private bool $activate_after_build = true;
 
     /**
-     * @var null|BuildingInterface
      *
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="buildings_id", referencedColumnName="id")
      */
-    private $building;
+    private ?BuildingInterface $building = null;
 
     /**
-     * @var null|TerraformingInterface
      *
      * @ManyToOne(targetEntity="Terraforming")
      * @JoinColumn(name="terraforming_id", referencedColumnName="id")
      */
-    private $terraforming;
+    private ?TerraformingInterface $terraforming = null;
 
     /**
-     * @var ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ?ColonyInterface $colony = null;
 
-    /** @var bool */
-    private $buildmode = false;
+    private bool $buildmode = false;
 
     public function getId(): int
     {
@@ -215,9 +199,11 @@ class PlanetField implements PlanetFieldInterface
         if ($this->hasBuilding() === false) {
             return false;
         }
+
         if ($this->isUnderConstruction()) {
             return false;
         }
+
         return $this->getBuilding()->isActivateable();
     }
 
@@ -226,10 +212,8 @@ class PlanetField implements PlanetFieldInterface
         if (!$this->isDamaged()) {
             return false;
         }
-        if (round((100 / $this->getBuilding()->getIntegrity()) * $this->getIntegrity()) < 50) {
-            return true;
-        }
-        return false;
+
+        return round((100 / $this->getBuilding()->getIntegrity()) * $this->getIntegrity()) < 50;
     }
 
     public function isUnderConstruction(): bool
@@ -247,15 +231,19 @@ class PlanetField implements PlanetFieldInterface
         if ($this->buildmode === true) {
             return 'cfb';
         }
+
         if ($this->isActive()) {
             if ($this->isDamaged()) {
                 return 'cfld';
             }
+
             return 'cfa';
         }
+
         if ($this->hasHighDamage()) {
             return 'cfhd';
         }
+
         if ($this->hasBuilding() && $this->isActivateable()) {
             return 'cfd';
         }
@@ -268,6 +256,7 @@ class PlanetField implements PlanetFieldInterface
         if ($this->isUnderConstruction()) {
             return 'b';
         }
+
         return 'a';
     }
 
@@ -288,10 +277,12 @@ class PlanetField implements PlanetFieldInterface
         if (!$this->hasBuilding()) {
             return false;
         }
+
         if ($this->isUnderConstruction()) {
             return false;
         }
-        return $this->getIntegrity() != $this->getBuilding()->getIntegrity();
+
+        return $this->getIntegrity() !== $this->getBuilding()->getIntegrity();
     }
 
     public function clearBuilding(): void

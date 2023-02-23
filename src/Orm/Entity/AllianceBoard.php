@@ -39,17 +39,13 @@ class AllianceBoard implements AllianceBoardInterface
 
     /**
      * @Column(type="integer") *
-     *
-     * @var int
      */
-    private $alliance_id = 0;
+    private int $alliance_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @var Collection<int, AllianceBoardTopicInterface>
@@ -59,7 +55,7 @@ class AllianceBoard implements AllianceBoardInterface
     private Collection $topics;
 
     /**
-     * @var ArrayCollection<int, AllianceBoardPostInterface>
+     * @var Collection<int, AllianceBoardPostInterface>
      *
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="board")
      * @OrderBy({"date" = "DESC"})
@@ -67,12 +63,11 @@ class AllianceBoard implements AllianceBoardInterface
     private Collection $posts;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alliance;
+    private ?AllianceInterface $alliance = null;
 
     public function __construct()
     {
@@ -111,7 +106,7 @@ class AllianceBoard implements AllianceBoardInterface
     {
         return array_reduce(
             $this->getTopics()->toArray(),
-            fn (int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
+            static fn(int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int => $sum + $allianceBoardTopic->getPostCount(),
             0
         );
     }

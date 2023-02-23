@@ -35,39 +35,29 @@ class DockingPrivilege implements DockingPrivilegeInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ships_id = 0;
+    private int $ships_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $target = 0; //TODO create refs to user, ally, ship and faction entities and make cascade delete
+    private int $target = 0; //TODO create refs to user, ally, ship and faction entities and make cascade delete
+    /**
+     * @Column(type="smallint")
+     */
+    private int $privilege_type = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $privilege_type = 0;
+    private int $privilege_mode = 0;
 
     /**
-     * @Column(type="smallint")
-     *
-     * @var int
-     */
-    private $privilege_mode = 0;
-
-    /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship", inversedBy="dockingPrivileges")
      * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     public function getId(): int
     {

@@ -38,31 +38,23 @@ class FlightSignature implements FlightSignatureInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_id = 0;
+    private int $ship_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $time = 0;
+    private int $time = 0;
 
     /**
      * @Column(type="integer", nullable=true) *
@@ -80,55 +72,44 @@ class FlightSignature implements FlightSignatureInterface
 
     /**
      * @Column(type="smallint", length=1)
-     *
-     * @var int
      */
-    private $from_direction = 0;
+    private int $from_direction = 0;
 
     /**
      * @Column(type="smallint", length=1)
-     *
-     * @var int
      */
-    private $to_direction = 0;
+    private int $to_direction = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $ship_name;
+    private ?string $ship_name = null;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_cloaked = false;
+    private bool $is_cloaked = false;
 
     /**
-     * @var ShipRumpInterface
      *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id")
      */
-    private $rump;
+    private ?ShipRumpInterface $rump = null;
 
     /**
-     * @var null|MapInterface
      *
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
-    private $map;
+    private ?MapInterface $map = null;
 
     /**
-     * @var null|StarSystemMapInterface
      *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private $starsystem_map;
+    private ?StarSystemMapInterface $starsystem_map = null;
 
     public function getId(): int
     {
@@ -189,6 +170,7 @@ class FlightSignature implements FlightSignatureInterface
     {
         return $this->time;
     }
+
     public function setTime(int $time): FlightSignatureInterface
     {
         $this->time = $time;

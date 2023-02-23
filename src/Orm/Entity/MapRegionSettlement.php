@@ -27,17 +27,13 @@ class MapRegionSettlement implements MapRegionSettlementInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $region_id;
+    private ?int $region_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $faction_id;
+    private ?int $faction_id = null;
 
     public function getId(): int
     {

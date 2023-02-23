@@ -19,43 +19,36 @@ use Doctrine\ORM\Mapping\Table;
  **/
 class UserMap implements UserMapInterface
 {
+    public string $id;
     /**
      * @Id
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
+
+    /**
+     * @Id
+     * @Column(type="integer")
+     */
+    private int $layer_id = 0;
+
+    /**
+     * @Id
+     * @Column(type="integer")
+     */
+    private int $cx = 0;
 
     /**
      * @Id
      * @Column(type="integer")
      *
-     * @var int
      */
-    private $layer_id = 0;
-
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     * @var int
-     */
-    private $cx = 0;
-
-    /**
-     * @Id
-     * @Column(type="integer")
-     *
-     */
-    private $cy = 0;
+    private int $cy = 0;
 
     /**
      * @Column(type="integer") *
-     *
-     * @var int
      */
-    private $map_id = 0;
+    private int $map_id = 0;
 
     public function getId(): string
     {

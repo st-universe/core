@@ -29,24 +29,18 @@ class MapBorderType implements MapBorderTypeInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $faction_id = 0;
+    private int $faction_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $color = '';
+    private string $color = '';
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description = null;
 
     public function getId(): int
     {

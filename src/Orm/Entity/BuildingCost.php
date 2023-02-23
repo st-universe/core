@@ -34,24 +34,18 @@ class BuildingCost implements BuildingCostInterface
 
     /**
      * @Column(type="integer") *
-     *
-     * @var int
      */
-    private $buildings_id = 0;
+    private int $buildings_id = 0;
 
     /**
      * @Column(type="integer") *
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     /**
      * @Column(type="integer") *
-     *
-     * @var int
      */
-    private $count = 0;
+    private int $count = 0;
 
     /**
      * @var CommodityInterface

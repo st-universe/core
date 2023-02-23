@@ -32,46 +32,35 @@ class CrewRace implements CrewRaceInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $faction_id = 0;
+    private int $faction_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $chance = 0;
+    private int $chance = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $maleratio = 0;
+    private int $maleratio = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $define = '';
+    private string $define = '';
 
     /**
-     * @var FactionInterface
      *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Faction")
      * @JoinColumn(name="faction_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $faction;
+    private ?FactionInterface $faction = null;
 
     public function getId(): int
     {

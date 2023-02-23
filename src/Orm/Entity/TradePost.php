@@ -34,90 +34,68 @@ class TradePost implements TradePostInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_id = 0;
+    private int $ship_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $trade_network = 0;
+    private int $trade_network = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $level = 0;
+    private int $level = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $transfer_capacity = 0;
+    private int $transfer_capacity = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $storage = 0;
+    private int $storage = 0;
 
     /**
-     * @var UserInterface
-     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
-     * @var ArrayCollection<int, TradeLicenseInfoInterface>
+     * @var Collection<int, TradeLicenseInfoInterface>
      *
      * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost", cascade={"remove"})
      * @OrderBy({"id" = "DESC"})
      */
-    private $licenseInfos;
+    private Collection $licenseInfos;
 
     /**
-     * @var ShipInterface
-     *
      * @OneToOne(targetEntity="Ship", inversedBy="tradePost")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     /**
      * @var Collection<int, ShipCrewInterface>
@@ -243,6 +221,7 @@ class TradePost implements TradePostInterface
         if (empty($this->licenseInfos)) {
             return null;
         }
+
         if (current($this->licenseInfos->getValues()) === false) {
             return null;
         } else {

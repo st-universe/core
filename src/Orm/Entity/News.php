@@ -33,31 +33,23 @@ class News implements NewsInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $subject = '';
+    private string $subject = '';
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $text = '';
+    private string $text = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $refs = '';
+    private string $refs = '';
 
     public function getId(): int
     {
@@ -117,6 +109,7 @@ class News implements NewsInterface
         if ($this->getRefs() === '') {
             return [];
         }
+
         return explode("\n", $this->getRefs());
     }
 }

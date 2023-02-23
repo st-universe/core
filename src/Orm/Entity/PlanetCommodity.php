@@ -33,22 +33,16 @@ class PlanetCommodity implements PlanetCommodityInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $planet_classes_id = 0;
+    private int $planet_classes_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $count = 0;
+    private int $count = 0;
 }

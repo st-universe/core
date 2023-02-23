@@ -42,39 +42,30 @@ class ShipLog implements ShipLogInterface
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $text = '';
+    private string $text = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date;
+    private ?int $date = null;
 
     /**
      * @Column(type="boolean", options={"default" : false})
-     *
-     * @var bool
      */
-    private $is_private = false;
+    private bool $is_private = false;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $deleted;
+    private ?int $deleted = null;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     public function getId(): int
     {

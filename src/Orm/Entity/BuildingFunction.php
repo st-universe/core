@@ -36,17 +36,13 @@ class BuildingFunction implements BuildingFunctionInterface
 
     /**
      * @Column(type="integer") *
-     *
-     * @var int
      */
-    private $buildings_id = 0;
+    private int $buildings_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $function = 0;
+    private int $function = 0;
 
     /**
      * @var BuildingInterface

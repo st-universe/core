@@ -31,39 +31,31 @@ class TholianWeb implements TholianWebInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $finished_time = 0;
+    private ?int $finished_time = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_id = 0;
+    private int $ship_id = 0;
 
     /**
-     * @var ShipInterface
-     *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $webShip;
+    private ShipInterface $webShip;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var Collection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="holdingWeb", cascade={"remove"})
      */
-    private $capturedShips;
+    private Collection $capturedShips;
 
     public function __construct()
     {

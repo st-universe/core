@@ -35,24 +35,18 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
 
     /**
      * @Column(type="bigint")
-     *
-     * @var int
      */
-    private $buildings_upgrades_id;
+    private ?int $buildings_upgrades_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id;
+    private ?int $commodity_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $amount;
+    private ?int $amount = null;
 
     /**
      * @var CommodityInterface

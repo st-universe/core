@@ -30,17 +30,13 @@ class DatabaseType implements DatabaseTypeInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $macro;
+    private ?string $macro = null;
 
     public function getId(): int
     {

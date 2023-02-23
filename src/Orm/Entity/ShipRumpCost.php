@@ -35,24 +35,18 @@ class ShipRumpCost implements ShipRumpCostInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $count = 0;
+    private int $count = 0;
 
     /**
      * @var CommodityInterface

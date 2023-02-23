@@ -31,10 +31,8 @@ class ShipRumpRole implements ShipRumpRoleInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     public function getId(): int
     {

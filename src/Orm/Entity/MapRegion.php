@@ -33,25 +33,22 @@ class MapRegion implements MapRegionInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $database_id = 0;
+    private int $database_id = 0;
 
     /**
-     * @var null|DatabaseEntryInterface
      *
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     public function getId(): int
     {

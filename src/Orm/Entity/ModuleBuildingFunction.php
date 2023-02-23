@@ -35,17 +35,13 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $module_id = 0;
+    private int $module_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildingfunction = 0;
+    private int $buildingfunction = 0;
 
     /**
      * @var ModuleInterface

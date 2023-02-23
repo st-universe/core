@@ -33,17 +33,13 @@ class ShipRumpModuleSpecial implements ShipRumpModuleSpecialInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $module_special_id = 0;
+    private int $module_special_id = 0;
 
     public function getId(): int
     {

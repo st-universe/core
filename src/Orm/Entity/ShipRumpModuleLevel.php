@@ -33,234 +33,168 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_1 = 0;
+    private int $module_level_1 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_mandatory_1 = 0;
+    private int $module_mandatory_1 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_1_min = 0;
+    private int $module_level_1_min = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_1_max = 0;
+    private int $module_level_1_max = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_2 = 0;
+    private int $module_level_2 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_mandatory_2 = 0;
+    private int $module_mandatory_2 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_2_min = 0;
+    private int $module_level_2_min = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_2_max = 0;
+    private int $module_level_2_max = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_3 = 0;
+    private int $module_level_3 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_mandatory_3 = 0;
+    private int $module_mandatory_3 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_3_min = 0;
+    private int $module_level_3_min = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_3_max = 0;
+    private int $module_level_3_max = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_4 = 0;
+    private int $module_level_4 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_mandatory_4 = 0;
+    private int $module_mandatory_4 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_4_min = 0;
+    private int $module_level_4_min = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_4_max = 0;
+    private int $module_level_4_max = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_5 = 0;
+    private int $module_level_5 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_mandatory_5 = 0;
+    private int $module_mandatory_5 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_5_min = 0;
+    private int $module_level_5_min = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_5_max = 0;
+    private int $module_level_5_max = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_6 = 0;
+    private int $module_level_6 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_mandatory_6 = 0;
+    private int $module_mandatory_6 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_6_min = 0;
+    private int $module_level_6_min = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_6_max = 0;
+    private int $module_level_6_max = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_7 = 0;
+    private int $module_level_7 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_mandatory_7 = 0;
+    private int $module_mandatory_7 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_7_min = 0;
+    private int $module_level_7_min = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_7_max = 0;
+    private int $module_level_7_max = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_8 = 0;
+    private int $module_level_8 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_mandatory_8 = 0;
+    private int $module_mandatory_8 = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_8_min = 0;
+    private int $module_level_8_min = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_level_8_max = 0;
+    private int $module_level_8_max = 0;
 
     public function getId(): int
     {

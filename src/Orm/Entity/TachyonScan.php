@@ -30,62 +30,46 @@ class TachyonScan implements TachyonScanInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $scan_time = 0;
+    private int $scan_time = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $map_id;
+    private ?int $map_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $starsystem_map_id;
+    private ?int $starsystem_map_id = null;
 
     /**
-     * @var UserInterface
-     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
-     * @var null|MapInterface
-     *
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
-    private $map;
+    private ?MapInterface $map = null;
 
     /**
-     * @var null|StarSystemMapInterface
-     *
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private $starsystem_map;
+    private ?StarSystemMapInterface $starsystem_map = null;
 
     public function getId(): int
     {
@@ -112,6 +96,7 @@ class TachyonScan implements TachyonScanInterface
     {
         return $this->scan_time;
     }
+
     public function setScanTime(int $scanTime): TachyonScanInterface
     {
         $this->scan_time = $scanTime;

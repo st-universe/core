@@ -31,40 +31,32 @@ class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $post_id = 0;
+    private int $post_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $plot_id = 0;
+    private int $plot_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $time = 0;
+    private int $time = 0;
 
     /**
-     * @var KnPostInterface
      *
      * @ManyToOne(targetEntity="KnPost")
      * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $knPost;
+    private ?KnPostInterface $knPost = null;
 
     /**
-     * @var RpgPlotInterface
      *
      * @ManyToOne(targetEntity="RpgPlot")
      * @JoinColumn(name="plot_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $rpgPlot;
+    private ?RpgPlotInterface $rpgPlot = null;
 
     public function getId(): int
     {
@@ -99,6 +91,7 @@ class KnPostToPlotApplication implements KnPostToPlotApplicationInterface
     {
         return $this->time;
     }
+
     public function setTime(int $time): KnPostToPlotApplicationInterface
     {
         $this->time = $time;

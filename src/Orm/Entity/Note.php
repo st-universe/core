@@ -30,39 +30,30 @@ class Note implements NoteInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $title = '';
+    private string $title = '';
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $text = '';
+    private string $text = '';
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

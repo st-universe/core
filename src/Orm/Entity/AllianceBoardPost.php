@@ -36,76 +36,59 @@ class AllianceBoardPost implements AllianceBoardPostInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $topic_id = 0;
+    private int $topic_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $board_id = 0;
+    private int $board_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $text = '';
+    private string $text = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $lastedit;
+    private ?int $lastedit = null;
 
     /**
-     * @var AllianceBoardTopicInterface
      *
      * @ManyToOne(targetEntity="AllianceBoardTopic", inversedBy="posts")
      * @JoinColumn(name="topic_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $topic;
+    private ?AllianceBoardTopicInterface $topic = null;
 
     /**
-     * @var AllianceBoardInterface
      *
      * @ManyToOne(targetEntity="AllianceBoard", inversedBy="posts")
      * @JoinColumn(name="board_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $board;
+    private ?AllianceBoardInterface $board = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

@@ -33,32 +33,27 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer", nullable=true)
      *
      * @var int|null
      */
-    private $database_id = 0;
+    private int $database_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $points = 0;
+    private int $points = 0;
 
     /**
-     * @var null|DatabaseEntryInterface
      *
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
-    private $databaseEntry;
+    private ?DatabaseEntryInterface $databaseEntry = null;
 
     public function getId(): int
     {

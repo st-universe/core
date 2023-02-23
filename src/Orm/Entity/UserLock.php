@@ -31,39 +31,30 @@ class UserLock implements UserLockInterface
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $user_id;
+    private ?int $user_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $former_user_id;
+    private ?int $former_user_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $remaining_ticks = 0;
+    private int $remaining_ticks = 0;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $reason = '';
+    private string $reason = '';
 
     /**
-     * @var null|UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

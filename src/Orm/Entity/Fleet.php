@@ -40,24 +40,18 @@ class Fleet implements FleetInterface
 
     /**
      * @Column(type="string", length=200)
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ships_id = 0;
+    private int $ships_id = 0;
 
     /**
      * @Column(type="integer", nullable=true) *
@@ -75,50 +69,45 @@ class Fleet implements FleetInterface
 
     /**
      * @Column(type="integer", nullable=true) *
-     *
-     * @var int|null
      */
-    private $sort;
+    private ?int $sort = null;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $is_fixed = false;
+    private bool $is_fixed = false;
 
-    /** @var string */
-    private $hiddenStyle;
+    private ?string $hiddenStyle = null;
 
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     /**
      * @OneToMany(targetEntity="Ship", mappedBy="fleet", indexBy="id")
      * @OrderBy({"is_fleet_leader" = "DESC", "name" = "ASC"})
      */
-    private $shiplist;
+    private Collection $shiplist;
 
     /**
      * @OneToOne(targetEntity="Ship")
      * @JoinColumn(name="ships_id", referencedColumnName="id")
      */
-    private $fleetLeader;
+    private ?ShipInterface $fleetLeader = null;
 
     /**
      * @ManyToOne(targetEntity="Colony", inversedBy="defenders")
      * @JoinColumn(name="defended_colony_id", referencedColumnName="id")
      */
-    private $defendedColony;
+    private ?ColonyInterface $defendedColony = null;
 
     /**
      * @ManyToOne(targetEntity="Colony", inversedBy="blockers")
      * @JoinColumn(name="blocked_colony_id", referencedColumnName="id")
      */
-    private $blockedColony;
+    private ?ColonyInterface $blockedColony = null;
 
     public function __construct()
     {
@@ -227,9 +216,7 @@ class Fleet implements FleetInterface
     {
         return array_reduce(
             $this->shiplist->toArray(),
-            function (int $sum, ShipInterface $ship): int {
-                return $sum + ($ship->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew());
-            },
+            static fn(int $sum, ShipInterface $ship): int => $sum + ($ship->isDestroyed() ? 0 : $ship->getBuildplan()->getCrew()),
             0
         );
     }

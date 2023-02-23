@@ -33,75 +33,57 @@ class ShipSystem implements ShipSystemInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_id = 0;
+    private int $ship_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $system_type = 0;
+    private int $system_type = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $module_id = 0;
+    private ?int $module_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $status = 0;
+    private int $status = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $mode = 1;
+    private int $mode = 1;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $cooldown;
+    private ?int $cooldown = null;
 
     /**
      * @Column(type="text", nullable=true)
-     *
-     * @var string|null
      */
-    private $data;
+    private ?string $data = null;
 
     /**
-     * @var ModuleInterface
      *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $module;
+    private ?ModuleInterface $module = null;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     public function getId(): int
     {

@@ -36,76 +36,59 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_id = 0;
+    private int $ship_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildplan_id = 0;
+    private int $buildplan_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildtime = 0;
+    private int $buildtime = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $finish_date = 0;
+    private int $finish_date = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $stop_date = 0;
+    private int $stop_date = 0;
 
     /**
-     * @var ShipBuildplanInterface
      *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shipBuildplan;
+    private ?ShipBuildplanInterface $shipBuildplan = null;
 
     /**
-     * @var ShipRumpInterface
      *
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $shipRump;
+    private ?ShipRumpInterface $shipRump = null;
 
     /**
-     * @var ShipInterface
      *
      * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     public function getId(): int
     {

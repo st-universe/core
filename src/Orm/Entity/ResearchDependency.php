@@ -29,24 +29,18 @@ class ResearchDependency implements ResearchDependencyInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $research_id;
+    private ?int $research_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $depends_on;
+    private ?int $depends_on = null;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $mode;
+    private ?int $mode = null;
 
     /**
      * @var ResearchInterface

@@ -41,72 +41,57 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $board_id = 0;
+    private int $board_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $alliance_id = 0;
+    private int $alliance_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $last_post_date = 0;
+    private int $last_post_date = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $sticky = false;
+    private bool $sticky = false;
 
     /**
-     * @var AllianceBoardInterface
      *
      * @ManyToOne(targetEntity="AllianceBoard", inversedBy="topics")
      * @JoinColumn(name="board_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $board;
+    private ?AllianceBoardInterface $board = null;
 
     /**
-     * @var AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $alliance;
+    private ?AllianceInterface $alliance = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     /**
-     * @var ArrayCollection<int, AllianceBoardPostInterface>
+     * @var Collection<int, AllianceBoardPostInterface>
      *
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="topic")
      * @OrderBy({"date" = "DESC"})
@@ -204,6 +189,7 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         for ($i = 1; $i <= ceil($postCount / Topic::ALLIANCEBOARDLIMITER); $i++) {
             $pages[$i] = ($i - 1) * Topic::ALLIANCEBOARDLIMITER;
         }
+
         return $pages;
     }
 

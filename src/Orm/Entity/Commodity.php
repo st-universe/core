@@ -29,45 +29,33 @@ class Commodity implements CommodityInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $sort = 0;
+    private int $sort = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $view = true;
+    private bool $view = true;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $type = CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
+    private int $type = CommodityTypeEnum::COMMODITY_TYPE_STANDARD;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $npc_commodity = false;
+    private bool $npc_commodity = false;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $bound = false;
+    private bool $bound = false;
 
     public function getId(): int
     {

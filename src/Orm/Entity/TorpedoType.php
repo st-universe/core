@@ -38,94 +38,70 @@ class TorpedoType implements TorpedoTypeInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $base_damage = 0;
+    private int $base_damage = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $critical_chance = 0;
+    private int $critical_chance = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $hit_factor = 0;
+    private int $hit_factor = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $hull_damage_factor = 0;
+    private int $hull_damage_factor = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $shield_damage_factor = 0;
+    private int $shield_damage_factor = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $variance = 0;
+    private int $variance = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $level = 0;
+    private int $level = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $research_id = 0;
+    private int $research_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ecost = 0;
+    private int $ecost = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $amount = 0;
+    private int $amount = 0;
 
     /**
-     * @var ArrayCollection<int, TorpedoTypeCostInterface>
+     * @var Collection<int, TorpedoTypeCostInterface>
      *
      * @OneToMany(targetEntity="TorpedoTypeCost", mappedBy="torpedoType")
      */
-    private $productionCosts;
+    private Collection $productionCosts;
 
     /**
      * @var CommodityInterface

@@ -34,17 +34,13 @@ class ShipRumpBuildingFunction implements ShipRumpBuildingFunctionInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $building_function = 0;
+    private int $building_function = 0;
 
     public function getId(): int
     {

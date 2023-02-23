@@ -33,31 +33,23 @@ class BuildplanHangar implements BuildplanHangarInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_id = 0;
+    private int $rump_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildplan_id = 0;
+    private int $buildplan_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $default_torpedo_type_id;
+    private ?int $default_torpedo_type_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $start_energy_costs;
+    private ?int $start_energy_costs = null;
 
     /**
      * @var null|TorpedoTypeInterface

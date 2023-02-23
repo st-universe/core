@@ -32,31 +32,23 @@ class DatabaseCategory implements DatabaseCategoryInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $points;
+    private ?int $points = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $type;
+    private ?int $type = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $sort;
+    private ?int $sort = null;
 
     /**
      * @Column(type="integer")
@@ -73,12 +65,12 @@ class DatabaseCategory implements DatabaseCategoryInterface
     private $award_id;
 
     /**
-     * @var ArrayCollection<int, DatabaseEntryInterface>
+     * @var Collection<int, DatabaseEntryInterface>
      *
      * @OneToMany(targetEntity="Stu\Orm\Entity\DatabaseEntry", mappedBy="category")
      * @OrderBy({"sort" = "ASC"})
      */
-    private $entries;
+    private Collection $entries;
 
     /**
      * @var AwardInterface

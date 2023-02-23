@@ -35,66 +35,48 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_category_id = 0;
+    private int $rump_category_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $rump_role_id = 0;
+    private int $rump_role_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $job_1_crew = 0;
+    private int $job_1_crew = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $job_2_crew = 0;
+    private int $job_2_crew = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $job_3_crew = 0;
+    private int $job_3_crew = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $job_4_crew = 0;
+    private int $job_4_crew = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $job_5_crew = 0;
+    private int $job_5_crew = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $job_6_crew = 0;
+    private int $job_6_crew = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $job_7_crew = 0;
+    private int $job_7_crew = 0;
 
     /**
      * @var ShipRumpRoleInterface

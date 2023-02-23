@@ -20,31 +20,23 @@ class BlockedUser implements BlockedUserInterface
     /**
      * @Id
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id;
+    private ?int $user_id = null;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $time = 0;
+    private int $time = 0;
 
     /**
      * @Column(type="string", length=255)
-     *
-     * @var string
      */
-    private $email_hash = '';
+    private string $email_hash = '';
 
     /**
      * @Column(type="string", length=255, nullable=true)
-     *
-     * @var null|string
      */
-    private $mobile_hash;
+    private ?string $mobile_hash = null;
 
     public function getId(): int
     {

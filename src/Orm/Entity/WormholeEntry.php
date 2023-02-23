@@ -53,17 +53,13 @@ class WormholeEntry implements WormholeEntryInterface
 
     /**
      * @Column(type="smallint", length=1)
-     *
-     * @var int
      */
-    private $type = MapEnum::WORMHOLE_ENTRY_TYPE_BOTH;
+    private int $type = MapEnum::WORMHOLE_ENTRY_TYPE_BOTH;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int
      */
-    private $last_used;
+    private ?int $last_used = null;
 
     /**
      * @Column(type="integer", nullable=true)

@@ -38,52 +38,40 @@ class Terraforming implements TerraformingInterface
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ecost = 0;
+    private int $ecost = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $v_feld = 0;
+    private int $v_feld = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $z_feld = 0;
+    private int $z_feld = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $duration = 0;
+    private int $duration = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $research_id;
+    private ?int $research_id = null;
 
     /**
-     * @var ArrayCollection<int, TerraformingCostInterface>
+     * @var Collection<int, TerraformingCostInterface>
      *
      * @OneToMany(targetEntity="TerraformingCost", mappedBy="terraforming")
      */
-    private $costs;
+    private Collection $costs;
 
     public function __construct()
     {

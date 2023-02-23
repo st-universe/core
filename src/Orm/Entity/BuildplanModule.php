@@ -33,54 +33,42 @@ class BuildplanModule implements BuildplanModuleInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildplan_id = 0;
+    private int $buildplan_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_type = 0;
+    private int $module_type = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $module_id = 0;
+    private int $module_id = 0;
 
     /**
      * @Column(type="smallint", nullable=true)
-     *
-     * @var null|int
      */
-    private $module_special;
+    private ?int $module_special = null;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $module_count = 1;
+    private int $module_count = 1;
 
     /**
-     * @var ShipBuildplanInterface
      *
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $buildplan;
+    private ?ShipBuildplanInterface $buildplan = null;
 
     /**
-     * @var ModuleInterface
      *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $module;
+    private ?ModuleInterface $module = null;
 
     public function getId(): int
     {

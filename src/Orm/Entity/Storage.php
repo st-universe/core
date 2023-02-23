@@ -26,120 +26,95 @@ class Storage implements StorageInterface
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id;
+    private int $user_id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     //TODO rename to amount
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $count = 0;
+    private int $count = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $colony_id;
+    private ?int $colony_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $ship_id;
+    private ?int $ship_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $torpedo_storage_id;
+    private ?int $torpedo_storage_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $tradepost_id;
+    private ?int $tradepost_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $tradeoffer_id;
+    private ?int $tradeoffer_id = null;
 
     /**
-     * @var UserInterface
-     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     /**
-     * @var CommodityInterface
-     *
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="commodity_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $commodity;
+    private CommodityInterface $commodity;
 
     /**
-     * @var null|ColonyInterface
      *
      * @ManyToOne(targetEntity="Colony", inversedBy="storage")
      * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $colony;
+    private ?ColonyInterface $colony = null;
 
     /**
-     * @var null|ShipInterface
      *
      * @ManyToOne(targetEntity="Ship", inversedBy="storage")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ?ShipInterface $ship = null;
 
     /**
-     * @var null|TorpedoStorageInterface
      *
      * @OneToOne(targetEntity="TorpedoStorage", inversedBy="storage")
      * @JoinColumn(name="torpedo_storage_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $torpedoStorage;
+    private ?TorpedoStorageInterface $torpedoStorage = null;
 
     /**
-     * @var null|TradePostInterface
      *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="tradepost_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradePost;
+    private ?TradePostInterface $tradePost = null;
 
     /**
-     * @var null|TradeOfferInterface
      *
      * @OneToOne(targetEntity="TradeOffer", inversedBy="storage")
      * @JoinColumn(name="tradeoffer_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradeOffer;
+    private ?TradeOfferInterface $tradeOffer = null;
 
     public function getId(): int
     {

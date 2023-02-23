@@ -33,80 +33,66 @@ class StarSystemMap implements StarSystemMapInterface
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $sx = 0;
+    private int $sx = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $sy = 0;
+    private int $sy = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $systems_id = 0;
+    private int $systems_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $field_id = 0;
+    private int $field_id = 0;
 
     /**
-     * @var StarSystemInterface
-     *
      * @ManyToOne(targetEntity="StarSystem", inversedBy="fields")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
-    private $starSystem;
+    private StarSystemInterface $starSystem;
 
     /**
-     * @var null|ColonyInterface
-     *
      * @OneToOne(targetEntity="Colony", mappedBy="starsystem_map")
      */
-    private $colony;
+    private ?ColonyInterface $colony = null;
 
     /**
-     * @var MapFieldTypeInterface
-     *
      * @ManyToOne(targetEntity="MapFieldType")
      * @JoinColumn(name="field_id", referencedColumnName="id")
      */
-    private $mapFieldType;
+    private MapFieldTypeInterface $mapFieldType;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var Collection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="starsystem_map", fetch="EXTRA_LAZY")
      */
-    private $ships;
+    private Collection $ships;
 
     /**
-     * @var ArrayCollection<int, FlightSignatureInterface>
+     * @var Collection<int, FlightSignatureInterface>
      *
      * @OneToMany(targetEntity="FlightSignature", mappedBy="starsystem_map")
      * @OrderBy({"time" = "DESC"})
      */
-    private $signatures;
+    private Collection $signatures;
 
     /**
-     * @var ArrayCollection<int, WormholeEntryInterface>
+     * @var Collection<int, WormholeEntryInterface>
      *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="systemMap")
      */
-    private $wormholeEntries;
+    private Collection $wormholeEntries;
 
     public function __construct()
     {
@@ -221,15 +207,14 @@ class StarSystemMap implements StarSystemMapInterface
 
         $usableEntries =  array_filter(
             $this->wormholeEntries->toArray(),
-            function (WormholeEntryInterface $entry): bool {
+            static function (WormholeEntryInterface $entry) : bool {
                 $type = $entry->getType();
-
                 return $entry->isUsable() && ($type === MapEnum::WORMHOLE_ENTRY_TYPE_BOTH ||
                     $type === MapEnum::WORMHOLE_ENTRY_TYPE_OUT);
             }
         );
 
-        return empty($usableEntries) ? null : $usableEntries[array_rand($usableEntries)];
+        return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];
     }
 
     public function getSectorString(): string

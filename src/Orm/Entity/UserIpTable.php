@@ -32,60 +32,45 @@ class UserIpTable implements UserIpTableInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id;
+    private int $user_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $ip;
+    private string $ip = '';
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $session;
+    private string $session = '';
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $agent;
+    private string $agent = '';
 
     /**
      * @Column(type="datetime", nullable=true)
-     *
-     * @var DateTimeInterface|null
      */
-    private $startDate;
+    private ?DateTimeInterface $startDate = null;
 
     /**
      * @Column(type="datetime", nullable=true)
-     *
-     * @var DateTimeInterface|null
      */
-    private $endDate;
+    private ?DateTimeInterface $endDate = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {

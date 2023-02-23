@@ -25,47 +25,35 @@ class TorpedoStorage implements TorpedoStorageInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $ship_id;
+    private int $ship_id;
 
     /**
      * @Column(type="integer", length=3)
-     *
-     * @var int
      */
-    private $torpedo_type;
+    private int $torpedo_type;
 
     /**
-     * @var ShipInterface
-     *
      * @OneToOne(targetEntity="Ship", inversedBy="torpedoStorage")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     /**
-     * @var TorpedoTypeInterface
-     *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
      */
-    private $torpedo;
+    private TorpedoTypeInterface $torpedo;
 
     /**
-     * @var StorageInterface
-     *
      * @OneToOne(targetEntity="Storage", mappedBy="torpedoStorage")
      */
-    private $storage;
+    private StorageInterface $storage;
 
     public function getId(): int
     {

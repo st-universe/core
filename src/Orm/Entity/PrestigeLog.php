@@ -33,31 +33,23 @@ class PrestigeLog implements PrestigeLogInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $amount = 0;
+    private int $amount = 0;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date;
+    private ?int $date = null;
 
     public function getId(): int
     {

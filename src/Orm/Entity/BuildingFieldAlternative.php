@@ -34,31 +34,23 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $fieldtype = 0;
+    private int $fieldtype = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $buildings_id = 0;
+    private int $buildings_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $alternate_buildings_id = 0;
+    private int $alternate_buildings_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var null|int
      */
-    private $research_id;
+    private ?int $research_id = null;
 
     /**
      * @var BuildingInterface

@@ -48,17 +48,13 @@ class Map implements MapInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $cx = 0;
+    private int $cx = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $cy = 0;
+    private int $cy = 0;
 
     /**
      * @Column(type="integer")
@@ -69,38 +65,28 @@ class Map implements MapInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $field_id = 0;
+    private int $field_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $systems_id = 0;
+    private ?int $systems_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $influence_area_id = 0;
+    private ?int $influence_area_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $bordertype_id = 0;
+    private ?int $bordertype_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $region_id = 0;
+    private ?int $region_id = 0;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -126,12 +112,11 @@ class Map implements MapInterface
     private $starSystem;
 
     /**
-     * @var null|StarSystemInterface
      *
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="influence_area_id", referencedColumnName="id")
      */
-    private $influenceArea;
+    private ?StarSystemInterface $influenceArea = null;
 
     /**
      * @var MapFieldTypeInterface
@@ -166,26 +151,26 @@ class Map implements MapInterface
     private $administratedRegion;
 
     /**
-     * @var ArrayCollection<int, ShipInterface>
+     * @var Collection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="map", fetch="EXTRA_LAZY")
      */
-    private $ships;
+    private Collection $ships;
 
     /**
-     * @var ArrayCollection<int, FlightSignatureInterface>
+     * @var Collection<int, FlightSignatureInterface>
      *
      * @OneToMany(targetEntity="FlightSignature", mappedBy="map")
      * @OrderBy({"time" = "DESC"})
      */
-    private $signatures;
+    private Collection $signatures;
 
     /**
-     * @var ArrayCollection<int, WormholeEntryInterface>
+     * @var Collection<int, WormholeEntryInterface>
      *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="map")
      */
-    private $wormholeEntries;
+    private Collection $wormholeEntries;
 
     public function __construct()
     {
@@ -323,6 +308,7 @@ class Map implements MapInterface
         if ($borderType === null) {
             return '';
         }
+
         return 'border: 1px solid ' . $borderType->getColor();
     }
 
@@ -330,8 +316,7 @@ class Map implements MapInterface
     {
         // @todo hide unexplored fields
         $style = "background-image: url('/assets/map/" . $this->getFieldId() . ".png');";
-        $style .= $this->getBorder();
-        return $style;
+        return $style . $this->getBorder();
     }
 
     public function getShips(): Collection
@@ -352,15 +337,14 @@ class Map implements MapInterface
 
         $usableEntries =  array_filter(
             $this->wormholeEntries->toArray(),
-            function (WormholeEntryInterface $entry): bool {
+            static function (WormholeEntryInterface $entry) : bool {
                 $type = $entry->getType();
-
                 return $entry->isUsable() && ($type === MapEnum::WORMHOLE_ENTRY_TYPE_BOTH ||
                     $type === MapEnum::WORMHOLE_ENTRY_TYPE_IN);
             }
         );
 
-        return empty($usableEntries) ? null : $usableEntries[array_rand($usableEntries)];
+        return $usableEntries === [] ? null : $usableEntries[array_rand($usableEntries)];
     }
 
     public function getSectorString(): string

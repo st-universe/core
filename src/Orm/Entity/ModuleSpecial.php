@@ -36,17 +36,13 @@ class ModuleSpecial implements ModuleSpecialInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $module_id = 0;
+    private int $module_id = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $special_id = 0;
+    private int $special_id = 0;
 
     /**
      * @var ModuleInterface

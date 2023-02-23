@@ -27,17 +27,13 @@ class Award implements AwardInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $prestige = 0;
+    private int $prestige = 0;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     public function getId(): int
     {

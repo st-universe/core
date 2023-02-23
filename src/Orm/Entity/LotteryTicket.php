@@ -35,32 +35,25 @@ class LotteryTicket implements LotteryTicketInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id;
+    private ?int $user_id = null;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $period;
+    private ?string $period = null;
 
     /**
      * @Column(type="boolean", nullable=true)
-     *
-     * @var bool|null
      */
-    private $is_winner;
+    private ?bool $is_winner = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

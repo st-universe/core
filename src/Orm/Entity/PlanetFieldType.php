@@ -31,24 +31,18 @@ class PlanetFieldType implements PlanetFieldTypeInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $field_id = 0;
+    private int $field_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $normal_id = 0;
+    private int $normal_id = 0;
 
     /**
      * @Column(type="integer")

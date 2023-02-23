@@ -34,54 +34,42 @@ class Crew implements CrewInterface
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $type = 0;
+    private int $type = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $gender = 0;
+    private int $gender = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $race_id = 0;
+    private int $race_id = 0;
 
     /**
-     * @var CrewRaceInterface
      *
      * @ManyToOne(targetEntity="CrewRace")
      * @JoinColumn(name="race_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $race;
+    private ?CrewRaceInterface $race = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {
@@ -158,6 +146,7 @@ class Crew implements CrewInterface
         if ($this->getGender() == CrewEnum::CREW_GENDER_MALE) {
             return 'm';
         }
+
         return 'w';
     }
 
@@ -177,6 +166,7 @@ class Crew implements CrewInterface
             case CrewEnum::CREW_TYPE_COMMAND:
                 return "Kommando";
         }
+
         return '';
     }
 

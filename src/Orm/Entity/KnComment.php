@@ -36,61 +36,47 @@ class KnComment implements KnCommentInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $post_id = 0;
+    private int $post_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $username = '';
+    private string $username = '';
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $text = '';
+    private string $text = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $deleted;
+    private ?int $deleted = null;
 
     /**
-     * @var KnPostInterface
      *
      * @ManyToOne(targetEntity="KnPost")
      * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $post;
+    private ?KnPostInterface $post = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {

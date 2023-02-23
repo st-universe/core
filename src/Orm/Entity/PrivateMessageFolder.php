@@ -36,46 +36,35 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $sort = 0;
+    private int $sort = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $special = PrivateMessageFolderSpecialEnum::PM_DEFAULT_OWN;
+    private int $special = PrivateMessageFolderSpecialEnum::PM_DEFAULT_OWN;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $deleted;
+    private ?int $deleted = null;
 
     /**
-     * @var UserInterface
      *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function getId(): int
     {
@@ -150,6 +139,7 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT:
                 return false;
         }
+
         return true;
     }
 

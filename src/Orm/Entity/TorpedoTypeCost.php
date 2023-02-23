@@ -31,24 +31,18 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $torpedo_type_id = 0;
+    private int $torpedo_type_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $commodity_id = 0;
+    private int $commodity_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $count = 0;
+    private int $count = 0;
 
     /**
      * @var TorpedoTypeInterface

@@ -35,276 +35,206 @@ class User implements UserInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $username = '';
+    private string $username = '';
 
     /**
      * @Column(type="string", length=20)
-     *
-     * @var string
      */
-    private $login = '';
+    private string $login = '';
 
     /**
      * @Column(type="string", length=255)
-     *
-     * @var string
      */
-    private $pass = '';
+    private string $pass = '';
 
     /**
      * @Column(type="string", length=6, nullable=true)
-     *
-     * @var string|null
      */
-    private $sms_code;
+    private ?string $sms_code = null;
 
     /**
      * @Column(type="string", length=200)
-     *
-     * @var string
      */
-    private $email = '';
+    private string $email = '';
 
     /**
      * @Column(type="string", length=255, nullable=true)
-     *
-     * @var string|null
      */
-    private $mobile;
+    private ?string $mobile = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $allys_id;
+    private ?int $allys_id = null;
 
     /**
      * @Column(type="integer", nullable=true)
-     *
-     * @var int|null
      */
-    private $race;
+    private ?int $race = null;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $state = UserEnum::USER_STATE_NEW;
+    private int $state = UserEnum::USER_STATE_NEW;
 
     /**
      * @Column(type="string", length=200)
-     *
-     * @var string
      */
-    private $propic = '';
+    private string $propic = '';
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $email_notification = true;
+    private bool $email_notification = true;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $lastaction = 0;
+    private int $lastaction = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $creation = 0;
+    private int $creation = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $kn_lez = 0;
+    private int $kn_lez = 0;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $delmark = 0;
+    private int $delmark = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $vac_active = false;
+    private bool $vac_active = false;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $vac_request_date = 0;
+    private int $vac_request_date = 0;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $storage_notification = true;
+    private bool $storage_notification = true;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $show_online_status = true;
+    private bool $show_online_status = true;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $show_pm_read_receipt = true;
+    private bool $show_pm_read_receipt = true;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $save_login = true;
+    private bool $save_login = true;
 
     /**
      * @Column(type="boolean")
-     *
-     * @var bool
      */
-    private $fleet_fixed_default = false;
+    private bool $fleet_fixed_default = false;
 
     /**
      * @Column(type="smallint")
-     *
-     * @var int
      */
-    private $tick = 1;
+    private int $tick = 1;
 
     /**
      * @Column(type="smallint", nullable=true)
-     *
-     * @var int|null
      */
-    private $maptype = MapEnum::MAPTYPE_INSERT;
+    private ?int $maptype = MapEnum::MAPTYPE_INSERT;
 
     /**
      * @Column(type="text")
-     *
-     * @var string
      */
-    private $sessiondata = '';
+    private string $sessiondata = '';
 
     /**
      * @Column(type="string", length=255)
-     *
-     * @var string
      */
-    private $password_token = '';
+    private string $password_token = '';
 
     /**
      * @Column(type="string", length=7)
-     *
-     * @var string
      */
-    private $rgb_code = '';
+    private string $rgb_code = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $prestige = 0;
+    private int $prestige = 0;
 
     /**
      * @Column(type="string", length=100, nullable=true)
-     *
-     * @var string|null
      */
-    private $start_page;
+    private ?string $start_page = null;
 
     /**
      * @Column(type="integer", options={"default" : 0})
-     *
-     * @var int
      */
-    private $rpg_behavior = 0;
+    private int $rpg_behavior = 0;
 
     /**
-     * @var null|AllianceInterface
-     *
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
      */
-    private $alliance;
+    private ?AllianceInterface $alliance = null;
 
     /**
-     * @var FactionInterface
-     *
      * @ManyToOne(targetEntity="Faction")
      * @JoinColumn(name="race", referencedColumnName="id")
      */
-    private $faction;
+    private FactionInterface $faction;
 
     /**
-     * @var ArrayCollection<int, UserAwardInterface>
+     * @var Collection<int, UserAwardInterface>
      *
      * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id", cascade={"remove"})
      * @OrderBy({"award_id" = "ASC"})
      */
-    private $awards;
+    private Collection $awards;
 
     /**
-     * @var ArrayCollection<int, ColonyInterface>
+     * @var Collection<int, ColonyInterface>
      *
      * @OneToMany(targetEntity="Colony", mappedBy="user")
      * @OrderBy({"colonies_classes_id" = "ASC", "id" = "ASC"})
      */
-    private $colonies;
+    private Collection $colonies;
 
     /**
-     * @var ArrayCollection<int, UserLayerInterface>
+     * @var Collection<int, UserLayerInterface>
      *
      * @OneToMany(targetEntity="UserLayer", mappedBy="user", indexBy="layer_id", cascade={"remove"})
      */
-    private $userLayers;
+    private Collection $userLayers;
 
     /**
-     * @var null|UserLockInterface
-     *
      * @OneToOne(targetEntity="UserLock", mappedBy="user")
      */
-    private $userLock;
+    private ?UserLockInterface $userLock = null;
 
     /** @var null|array<mixed> */
-    private $sessiondataUnserialized;
+    private ?array $sessiondataUnserialized = null;
 
     public function __construct()
     {
@@ -324,6 +254,7 @@ class User implements UserInterface
         if ($this->isVacationRequestOldEnough()) {
             return $this->username . '[b][color=red] (UMODE)[/color][/b]';
         }
+
         return $this->username;
     }
 
@@ -440,6 +371,7 @@ class User implements UserInterface
         if ($this->isLocked()) {
             return _('GESPERRT');
         }
+
         return UserEnum::getUserStateDescription($this->getState());
     }
 
@@ -696,15 +628,19 @@ class User implements UserInterface
         if ($this->getRpgBehavior() == 0) {
             return 'Der Spieler hat seine Rollenspieleinstellung nicht gesetzt';
         }
+
         if ($this->getRpgBehavior() == 1) {
             return 'Der Spieler betreibt gerne Rollenspiel';
         }
+
         if ($this->getRpgBehavior() == 2) {
             return 'Der Spieler betreibt gelegentlich Rollenspiel';
         }
+
         if ($this->getRpgBehavior() == 3) {
             return 'Der Spieler betreibt ungern Rollenspiel';
         }
+
         return '';
     }
 
@@ -718,10 +654,7 @@ class User implements UserInterface
 
     public function isOnline(): bool
     {
-        if ($this->getLastAction() < time() - GameEnum::USER_ONLINE_PERIOD) {
-            return false;
-        }
-        return true;
+        return !($this->getLastAction() < time() - GameEnum::USER_ONLINE_PERIOD);
     }
 
     public function getAlliance(): ?AllianceInterface
@@ -738,17 +671,20 @@ class User implements UserInterface
     public function getSessionDataUnserialized(): array
     {
         if ($this->sessiondataUnserialized === null) {
-            $this->sessiondataUnserialized = unserialize($this->getSessionData());
-            if (!is_array($this->sessiondataUnserialized)) {
+            $data = unserialize($this->getSessionData());
+            if (!is_array($data)) {
                 $this->sessiondataUnserialized = [];
+            } else {
+                $this->sessiondataUnserialized = $data;
             }
         }
+
         return $this->sessiondataUnserialized;
     }
 
     public function isContactable(): bool
     {
-        return !in_array($this->getId(), [GameEnum::USER_NOONE]);
+        return $this->getId() != GameEnum::USER_NOONE;
     }
 
     public function hasAward(int $awardId): bool

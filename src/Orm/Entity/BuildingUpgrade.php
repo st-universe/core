@@ -38,45 +38,35 @@ class BuildingUpgrade implements BuildingUpgradeInterface
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $upgrade_from = 0;
+    private int $upgrade_from = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $upgrade_to = 0;
+    private int $upgrade_to = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $research_id = 0;
+    private int $research_id = 0;
 
     /**
      * @Column(type="string")
-     *
-     * @var string
      */
-    private $description = '';
+    private string $description = '';
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $energy_cost = 0;
+    private int $energy_cost = 0;
 
     /**
-     * @var ArrayCollection<int, BuildingUpgradeCostInterface>
+     * @var Collection<int, BuildingUpgradeCostInterface>
      *
      * @OneToMany(targetEntity="BuildingUpgradeCost", mappedBy="upgrade")
      */
-    private $upgradeCosts;
+    private Collection $upgradeCosts;
 
     /**
      * @var BuildingInterface

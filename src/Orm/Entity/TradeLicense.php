@@ -30,54 +30,40 @@ class TradeLicense implements TradeLicenseInterface
      * @Id
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $posts_id = 0;
+    private int $posts_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $date = 0;
+    private int $date = 0;
 
     /**
      * @Column(type="integer")
-     *
-     * @var int
      */
-    private $expired = 0;
+    private int $expired = 0;
 
     /**
-     * @var TradePostInterface
-     *
      * @ManyToOne(targetEntity="TradePost")
      * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $tradePost;
+    private TradePostInterface $tradePost;
 
     /**
-     * @var UserInterface
-     *
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user;
+    private UserInterface $user;
 
     public function getId(): int
     {
