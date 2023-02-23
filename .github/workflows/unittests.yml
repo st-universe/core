@@ -13,14 +13,14 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu-latest']
-        php-versions: [8.1, 8.2]
+        php: [8.1, 8.2]
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php }}
           extensions: redis
 
       - name: Validate composer.json and composer.lock
@@ -37,9 +37,22 @@ jobs:
 
       - name: Set env
         run: echo "PHP_CS_FIXER_IGNORE_ENV=1" >> $GITHUB_ENV
-
+        
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        if: ${{ matrix.php != '8.2' }}
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: composer update --no-interaction --no-progress
+
+      - name: Install Dependencies (ignore platform)
+        if: ${{ matrix.php == '8.2' }}
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: composer update --no-interaction --no-progress --ignore-platform-req=php
 
       - name: Run test suite
         run: composer run-script qa
