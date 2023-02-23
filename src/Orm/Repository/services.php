@@ -72,7 +72,6 @@ use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\News;
 use Stu\Orm\Entity\Note;
-use Stu\Orm\Entity\PartnerSite;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
@@ -123,13 +122,11 @@ use Stu\Orm\Entity\TradeTransaction;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserAward;
-use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserLayer;
 use Stu\Orm\Entity\UserLock;
 use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
-use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\Weapon;
 use Stu\Orm\Entity\WormholeEntry;
 
@@ -454,11 +451,6 @@ return [
     ): NoteRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Note::class);
     },
-    PartnerSiteRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): PartnerSiteRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PartnerSite::class);
-    },
     PlanetFieldRepositoryInterface::class => function (
         ContainerInterface $c
     ): PlanetFieldRepositoryInterface {
@@ -734,11 +726,6 @@ return [
     ): UserIpTableRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class);
     },
-    UserInvitationRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserInvitationRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(UserInvitation::class);
-    },
     UserMapRepositoryInterface::class => function (
         ContainerInterface $c
     ): UserMapRepositoryInterface {
@@ -748,11 +735,6 @@ return [
         ContainerInterface $c
     ): UserProfileVisitorRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class);
-    },
-    UserTagRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserTagRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(UserTag::class);
     },
     WeaponRepositoryInterface::class => function (
         ContainerInterface $c

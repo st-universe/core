@@ -9910,16 +9910,6 @@ parameters:
 			path: src/Orm/Entity/UserProfileVisitor.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserTag.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserTag.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$cooldown type mapping mismatch\\: database can contain int\\|null but property expects int\\.$#"
 			count: 1
 			path: src/Orm/Entity/WormholeEntry.php
