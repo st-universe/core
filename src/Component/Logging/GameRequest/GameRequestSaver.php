@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Logging\GameRequest;
 
 use Stu\Component\Logging\GameRequest\Adapter\GameRequstLoggerInterface;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Game\GameRequestInterface;
 
 /**
  * Handles saving of the game's request

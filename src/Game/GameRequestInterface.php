@@ -1,13 +1,13 @@
 <?php
 
-namespace Stu\Orm\Entity;
+namespace Stu\Game;
 
+use Stu\Orm\Entity\GameTurnInterface;
+use Stu\Orm\Entity\UserInterface;
 use Throwable;
 
 interface GameRequestInterface
 {
-    public function getId(): int;
-
     public function setUserId(?UserInterface $user): GameRequestInterface;
 
     public function setTurnId(GameTurnInterface $turn): GameRequestInterface;
@@ -29,12 +29,12 @@ interface GameRequestInterface
     /**
      * @param array<mixed> $parameter
      */
-    public function setParameterArray(array $parameter): GameRequestInterface;
+    public function setParameter(array $parameter): GameRequestInterface;
 
     /**
      * @return array<mixed>
      */
-    public function getParameterArray(): array;
+    public function getParameter(): array;
 
 
     public function getUserId(): ?int;

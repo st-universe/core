@@ -8,7 +8,7 @@ use Exception;
 use Mockery\MockInterface;
 use Monolog\Level;
 use Psr\Log\LoggerInterface;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Game\GameRequestInterface;
 use Stu\StuTestCase;
 
 class LogfileAdapterTest extends StuTestCase
@@ -46,7 +46,7 @@ class LogfileAdapterTest extends StuTestCase
     }
 
     /**
-     * @param MockInterface&GameRequestInterface $gameRequest
+     * @param MockInterface&\Stu\Game\GameRequestInterface $gameRequest
      */
     protected function createLoggingExpectations(
         MockInterface $gameRequest,
@@ -102,7 +102,7 @@ class LogfileAdapterTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($renderMs);
-        $gameRequest->shouldReceive('getParameterArray')
+        $gameRequest->shouldReceive('getParameter')
             ->withNoArgs()
             ->once()
             ->andReturn($params);

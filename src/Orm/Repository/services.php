@@ -51,7 +51,6 @@ use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameConfig;
-use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\GameTurnStats;
 use Stu\Orm\Entity\History;
@@ -350,11 +349,6 @@ return [
         ContainerInterface $c
     ): GameTurnRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(GameTurn::class);
-    },
-    GameRequestRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): GameRequestRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(GameRequest::class);
     },
     GameTurnStatsRepositoryInterface::class => function (
         ContainerInterface $c

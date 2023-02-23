@@ -6,7 +6,7 @@ namespace Stu\Component\Logging\GameRequest\Adapter;
 
 use Monolog\Level;
 use Psr\Log\LoggerInterface;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Game\GameRequestInterface;
 use Throwable;
 
 /**
@@ -40,7 +40,7 @@ final class LogfileAdapter extends AbstractAdapter
                     'view' => $gameRequest->getViewMs(),
                     'render' => $gameRequest->getRenderMs(),
                 ],
-                'params' => $gameRequest->getParameterArray(),
+                'params' => $gameRequest->getParameter(),
                 'sanity_errors' => array_map(
                     fn (Throwable $e): array => [
                         'message' => $e->getMessage(),

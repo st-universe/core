@@ -6,14 +6,6 @@ parameters:
 			path: src/Component/Colony/ColonyPopulationCalculator.php
 
 		-
-			message: """
-				#^Fetching class constant class of deprecated class Stu\\\\Component\\\\Logging\\\\GameRequest\\\\Adapter\\\\DatabaseAdapter\\:
-				Use LogfileAdapter$#
-			"""
-			count: 2
-			path: src/Component/Logging/services.php
-
-		-
 			message: "#^Cannot call method getStartResearch\\(\\) on Stu\\\\Orm\\\\Entity\\\\FactionInterface\\|null\\.$#"
 			count: 1
 			path: src/Component/Player/Register/PlayerDefaultsCreator.php
@@ -2448,14 +2440,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Control\\\\GameController\\:\\:showMacro\\(\\) has parameter \\$macro with no type specified\\.$#"
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
-			message: """
-				#^Parameter \\$gameRequestRepository of method Stu\\\\Module\\\\Control\\\\GameController\\:\\:__construct\\(\\) has typehint with deprecated interface Stu\\\\Orm\\\\Repository\\\\GameRequestRepositoryInterface\\:
-				Use logfile logging$#
-			"""
 			count: 1
 			path: src/Module/Control/GameController.php
 
@@ -8285,11 +8269,6 @@ parameters:
 			path: src/Orm/Entity/FlightSignature.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:unsetParameter\\(\\) has parameter \\$key with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/GameRequest.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurn\\:\\:\\$stats type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\GameTurnStatsInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameTurn.php
@@ -9978,22 +9957,6 @@ parameters:
 			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: """
-				#^Fetching class constant class of deprecated class Stu\\\\Orm\\\\Repository\\\\GameRequestRepositoryInterface\\:
-				Use logfile logging$#
-			"""
-			count: 1
-			path: src/Orm/Repository/services.php
-
-		-
-			message: """
-				#^Return type of anonymous function has typehint with deprecated class Stu\\\\Orm\\\\Repository\\\\GameRequestRepository\\:
-				Use logfile logging$#
-			"""
-			count: 1
-			path: src/Orm/Repository/services.php
 
 		-
 			message: "#^Cannot call method getBaseCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"

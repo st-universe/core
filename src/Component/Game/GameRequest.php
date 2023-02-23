@@ -2,122 +2,67 @@
 
 declare(strict_types=1);
 
-namespace Stu\Orm\Entity;
+namespace Stu\Component\Game;
 
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Index;
-use Doctrine\ORM\Mapping\Table;
+use Stu\Game\GameRequestInterface;
+use Stu\Orm\Entity\GameTurnInterface;
+use Stu\Orm\Entity\UserInterface;
 use Throwable;
 
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\GameRequestRepository")
- * @Table(
- *     name="stu_game_request",
- *     indexes={
- *          @Index(name="game_request_idx",columns={"user_id", "action", "view"})
- *     }
- * )
- *
- * @todo remove entity and repo
- **/
 class GameRequest implements GameRequestInterface
 {
-    public const TABLE_NAME = 'stu_game_request';
-
     /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @Column(type="integer", nullable=true)
-     *
      * @var int|null
      */
     private $user_id;
 
     /**
-     * @Column(type="integer")
-     *
      * @var int
      */
     private $turn_id;
 
     /**
-     * @Column(type="integer")
-     *
      * @var int
      */
     private $time;
 
     /**
-     * @Column(type="string")
-     *
      * @var string
      */
     private $module;
 
     /**
-     * @Column(type="string", nullable=true)
-     *
      * @var null|string
      */
     private $action;
 
     /**
-     * @Column(type="integer", nullable=true)
-     *
      * @var int|null
      */
     private $action_ms;
 
     /**
-     * @Column(type="string", nullable=true)
-     *
      * @var string|null
      */
     private $view;
 
     /**
-     * @Column(type="integer", nullable=true)
-     *
      * @var int|null
      */
     private $view_ms;
 
     /**
-     * @Column(type="integer", nullable=true)
-     *
      * @var int|null
      */
     private $render_ms;
 
-    /**
-     * @Column(type="text", nullable=true)
-     *
-     * @var string|null
-     */
-    private $params;
-
     /** @var array<mixed> */
-    private array $parameterArray = [];
+    private array $parameter = [];
 
     private string $requestId = '';
 
     /** @var array<Throwable> */
     private array $errors = [];
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     public function setUserId(?UserInterface $user): GameRequestInterface
     {
@@ -179,16 +124,15 @@ class GameRequest implements GameRequestInterface
         return $this;
     }
 
-    public function setParameterArray(array $parameter): GameRequestInterface
+    public function setParameter(array $parameter): GameRequestInterface
     {
-        $this->params = (string) json_encode($parameter, JSON_PRETTY_PRINT);
-        $this->parameterArray = $parameter;
+        $this->parameter = $parameter;
         return $this;
     }
 
-    public function getParameterArray(): array
+    public function getParameter(): array
     {
-        return $this->parameterArray;
+        return $this->parameter;
     }
 
     public function getUserId(): ?int
@@ -260,8 +204,8 @@ class GameRequest implements GameRequestInterface
         return $this->errors;
     }
 
-    private function unsetParameter($key): void
+    private function unsetParameter(string $key): void
     {
-        unset($this->parameterArray[$key]);
+        unset($this->parameter[$key]);
     }
 }

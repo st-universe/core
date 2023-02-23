@@ -8,6 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Game\GameRequest;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\MaintenanceGameStateException;
@@ -18,6 +19,7 @@ use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\TickGameStateException;
 use Stu\Exception\UnallowedUplinkOperation;
+use Stu\Game\GameRequestInterface;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
@@ -34,12 +36,10 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
-use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
-use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -76,8 +76,6 @@ final class GameController implements GameControllerInterface
     private Ubench $benchmark;
 
     private CreateDatabaseEntryInterface $createDatabaseEntry;
-
-    private GameRequestRepositoryInterface $gameRequestRepository;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -135,7 +133,6 @@ final class GameController implements GameControllerInterface
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
-        GameRequestRepositoryInterface $gameRequestRepository,
         GameTalRendererInterface $gameTalRenderer,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         UuidGeneratorInterface $uuidGenerator,
@@ -154,7 +151,6 @@ final class GameController implements GameControllerInterface
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
-        $this->gameRequestRepository = $gameRequestRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->gameTalRenderer = $gameTalRenderer;
         $this->uuidGenerator = $uuidGenerator;
@@ -474,10 +470,10 @@ final class GameController implements GameControllerInterface
     public function getGameRequest(): GameRequestInterface
     {
         if ($this->gameRequest === null) {
-            $gameRequest = $this->gameRequestRepository->prototype();
+            $gameRequest = new GameRequest();
             $gameRequest->setTime(time());
             $gameRequest->setTurnId($this->getCurrentRound());
-            $gameRequest->setParameterArray(request::isPost() ? request::postvars() : request::getvars());
+            $gameRequest->setParameter(request::isPost() ? request::postvars() : request::getvars());
             $gameRequest->setRequestId($this->uuidGenerator->genV4());
 
             if ($this->hasUser()) {

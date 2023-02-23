@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest;
 
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Game\GameRequestInterface;
 use Stu\StuTestCase;
 
 class ParameterSanitizerTest extends StuTestCase
@@ -24,11 +24,11 @@ class ParameterSanitizerTest extends StuTestCase
         array $expected
     ): void {
         $gameRequest = $this->mock(GameRequestInterface::class);
-        $gameRequest->shouldReceive('getParameterArray')
+        $gameRequest->shouldReceive('getParameter')
             ->withNoArgs()
             ->once()
             ->andReturn($parameter);
-        $gameRequest->shouldReceive('setParameterArray')
+        $gameRequest->shouldReceive('setParameter')
             ->with($expected)
             ->once();
 

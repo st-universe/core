@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest;
 
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Game\GameRequestInterface;
 
 /**
  * Cleans the parameter list from privacy/security related ones
@@ -25,11 +25,11 @@ final class ParameterSanitizer implements ParameterSanitizerInterface
         GameRequestInterface $gameRequest
     ): GameRequestInterface {
         $params = array_diff_key(
-            $gameRequest->getParameterArray(),
+            $gameRequest->getParameter(),
             array_flip(self::PARAMETER_BLACKLIST)
         );
 
-        $gameRequest->setParameterArray($params);
+        $gameRequest->setParameter($params);
 
         return $gameRequest;
     }

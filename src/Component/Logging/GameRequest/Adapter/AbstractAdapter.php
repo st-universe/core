@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Logging\GameRequest\Adapter;
 
 use Monolog\Level;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Game\GameRequestInterface;
 
 abstract class AbstractAdapter implements GameRequstLoggerInterface
 {

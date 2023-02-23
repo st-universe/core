@@ -3,8 +3,8 @@
 namespace Stu\Module\Control;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Game\GameRequestInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
 

@@ -6,7 +6,7 @@ namespace Stu\Component\Logging\GameRequest;
 
 use Mockery\MockInterface;
 use Stu\Component\Logging\GameRequest\Adapter\GameRequstLoggerInterface;
-use Stu\Orm\Entity\GameRequestInterface;
+use Stu\Game\GameRequestInterface;
 use Stu\StuTestCase;
 
 class GameRequestSaverTest extends StuTestCase
