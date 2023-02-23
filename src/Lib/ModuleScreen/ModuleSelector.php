@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
+use InvalidArgumentException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
@@ -19,14 +20,23 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 class ModuleSelector implements ModuleSelectorInterface
 {
-    private $moduleType;
-    private $rump;
-    private $userId;
-    private $macro = 'html/modulescreen.xhtml/moduleselector';
-    private $templateFile = 'html/ajaxempty.xhtml';
-    private $colony;
-    private $ship;
-    private $buildplan;
+    private const MACRO = 'html/modulescreen.xhtml/moduleselector';
+    private const TEMPLATE = 'html/ajaxempty.xhtml';
+
+    /** @var ModuleSelectorWrapperInterface[] */
+    private ?array $moduleSelectorWrappers = null;
+
+    private int $moduleType;
+
+    private ShipRumpInterface $rump;
+
+    private int $userId;
+
+    private ?ColonyInterface $colony;
+
+    private ?ShipInterface $station;
+
+    private ?ShipBuildplanInterface $buildplan;
 
     private ModuleRepositoryInterface $moduleRepository;
 
@@ -38,9 +48,9 @@ class ModuleSelector implements ModuleSelectorInterface
         ModuleRepositoryInterface $moduleRepository,
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         TalPageInterface $talPage,
-        $moduleType,
+        int $moduleType,
         ?ColonyInterface $colony,
-        ?ShipInterface $ship,
+        ?ShipInterface $station,
         ShipRumpInterface $rump,
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
@@ -49,7 +59,7 @@ class ModuleSelector implements ModuleSelectorInterface
         $this->rump = $rump;
         $this->userId = $userId;
         $this->colony = $colony;
-        $this->ship = $ship;
+        $this->station = $station;
         $this->buildplan = $buildplan;
         $this->moduleRepository = $moduleRepository;
         $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
@@ -63,12 +73,12 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function getMacro(): string
     {
-        return $this->macro;
+        return self::MACRO;
     }
 
     public function render(): string
     {
-        $this->talPage->setTemplate($this->templateFile);
+        $this->talPage->setTemplate(self::TEMPLATE);
         $this->talPage->setVar('THIS', $this);
         return $this->talPage->parse();
     }
@@ -98,51 +108,60 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->rump;
     }
 
-    private $modules;
+    private function getShipRumpRoleId(): int
+    {
+        $shipRumpRole = $this->getRump()->getShipRumpRole();
 
-    /**
-     * @return ModuleSelectorWrapper[]
-     */
+        if ($shipRumpRole === null) {
+            throw new InvalidArgumentException('invalid rump without rump role');
+        }
+
+        return $shipRumpRole->getId();
+    }
+
     public function getAvailableModules(): array
     {
-        if ($this->modules === null) {
-            $this->modules = [];
+        if ($this->moduleSelectorWrappers === null) {
+            $this->moduleSelectorWrappers = [];
+            $modules = [];
             if ($this->getModuleType() == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 if ($this->getColony() !== null) {
                     $modules = $this->moduleRepository->getBySpecialTypeColonyAndRump(
-                        (int)$this->getColony()->getId(),
-                        (int)$this->getModuleType(),
+                        $this->getColony()->getId(),
+                        $this->getModuleType(),
                         $this->getRump()->getId(),
-                        $this->getRump()->getShipRumpRole()->getId()
+                        $this->getShipRumpRoleId()
                     );
-                } else {
+                } elseif ($this->station !== null) {
                     $modules = $this->moduleRepository->getBySpecialTypeShipAndRump(
-                        (int)$this->ship->getId(),
-                        (int)$this->getModuleType(),
+                        $this->station->getId(),
+                        $this->getModuleType(),
                         $this->getRump()->getId(),
-                        $this->getRump()->getShipRumpRole()->getId()
+                        $this->getShipRumpRoleId()
                     );
                 }
             } else {
-                $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
-                    $this->getRump()->getId()
-                );
+                if ($this->getColony() !== null) {
+                    $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
+                        $this->getRump()->getId()
+                    );
 
-                $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
-                $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
+                    $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
+                    $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
 
-                $modules = $this->moduleRepository->getByTypeColonyAndLevel(
-                    (int)$this->getColony()->getId(),
-                    (int)$this->getModuleType(),
-                    $this->getRump()->getShipRumpRole()->getId(),
-                    range($min_level, $max_level)
-                );
+                    $modules = $this->moduleRepository->getByTypeColonyAndLevel(
+                        $this->getColony()->getId(),
+                        $this->getModuleType(),
+                        $this->getShipRumpRoleId(),
+                        range($min_level, $max_level)
+                    );
+                }
             }
             foreach ($modules as $obj) {
-                $this->modules[$obj->getId()] = new ModuleSelectorWrapper($obj, $this->getBuildplan());
+                $this->moduleSelectorWrappers[$obj->getId()] = new ModuleSelectorWrapper($obj, $this->getBuildplan());
             }
         }
-        return $this->modules;
+        return $this->moduleSelectorWrappers;
     }
 
     public function hasModuleSelected(): ModuleSelectWrapper

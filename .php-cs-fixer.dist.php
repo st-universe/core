@@ -1,8 +1,14 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(['src', 'tests'])
-    ->exclude(['Public/assets'])
+    ->in([
+        'src',
+        'tests'
+    ])
+    ->exclude([
+        'Public/assets',
+        'OrmProxy',
+    ])
 ;
 $config = new PhpCsFixer\Config();
 $config->setRules(

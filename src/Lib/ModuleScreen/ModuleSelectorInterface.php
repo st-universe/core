@@ -27,7 +27,7 @@ interface ModuleSelectorInterface
     public function getRump(): ShipRumpInterface;
 
     /**
-     * @return ModuleSelectorWrapper[]
+     * @return ModuleSelectorWrapperInterface[]
      */
     public function getAvailableModules(): array;
 

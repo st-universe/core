@@ -189,7 +189,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     public function createModuleSelector(
         int $moduleType,
         ?ColonyInterface $colony,
-        ?ShipInterface $ship,
+        ?ShipInterface $station,
         ShipRumpInterface $rump,
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
@@ -200,7 +200,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->talPage,
             $moduleType,
             $colony,
-            $ship,
+            $station,
             $rump,
             $userId,
             $buildplan
@@ -210,7 +210,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     public function createModuleSelectorSpecial(
         int $moduleType,
         ?ColonyInterface $colony,
-        ?ShipInterface $ship,
+        ?ShipInterface $station,
         ShipRumpInterface $rump,
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
@@ -221,7 +221,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->talPage,
             $moduleType,
             $colony,
-            $ship,
+            $station,
             $rump,
             $userId,
             $buildplan

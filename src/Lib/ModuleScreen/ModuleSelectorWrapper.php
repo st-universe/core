@@ -11,9 +11,9 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 
 final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
 {
-    private $module;
+    private ModuleInterface $module;
 
-    private $buildplan;
+    private ?ShipBuildplanInterface $buildplan;
 
     public function __construct(ModuleInterface $module, ?ShipBuildplanInterface $buildplan = null)
     {
