@@ -19,7 +19,7 @@ class CreateTopicRequestTest extends RequestTestCase
         return CreateTopicRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getBoardId', 'bid', (string) 666, 666],
@@ -28,7 +28,7 @@ class CreateTopicRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getBoardId'],

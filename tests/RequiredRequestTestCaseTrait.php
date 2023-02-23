@@ -8,7 +8,7 @@ use MPScholten\RequestParser\NotFoundException;
 
 trait RequiredRequestTestCaseTrait
 {
-    abstract public function requiredRequestVarsDataProvider(): array;
+    abstract public static function requiredRequestVarsDataProvider(): array;
 
     /**
      * @dataProvider requiredRequestVarsDataProvider

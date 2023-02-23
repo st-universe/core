@@ -35,7 +35,7 @@ abstract class RequestTestCase extends StuTestCase
         $_POST = [];
     }
 
-    abstract public function requestVarsDataProvider(): array;
+    abstract public static function requestVarsDataProvider(): array;
 
     /**
      * @dataProvider requestVarsDataProvider

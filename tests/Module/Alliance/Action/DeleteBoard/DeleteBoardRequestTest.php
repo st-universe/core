@@ -16,14 +16,14 @@ class DeleteBoardRequestTest extends RequestTestCase
         return DeleteBoardRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getBoardId', 'bid', '666', 666],
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getBoardId'],

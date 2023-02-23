@@ -16,14 +16,14 @@ class SignupRequestTest extends RequestTestCase
         return SignupRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getAllianceId', 'id', '666', 666],
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getAllianceId'],

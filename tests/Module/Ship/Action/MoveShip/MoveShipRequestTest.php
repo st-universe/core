@@ -16,7 +16,7 @@ class MoveShipRequestTest extends RequestTestCase
         return MoveShipRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getShipId', 'id', '666', 666],
@@ -29,7 +29,7 @@ class MoveShipRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getShipId'],

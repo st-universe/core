@@ -19,7 +19,7 @@ class StartEmergencyRequestTest extends RequestTestCase
         return StartEmergencyRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getShipId', 'id', '666', 666],
@@ -28,7 +28,7 @@ class StartEmergencyRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getShipId'],

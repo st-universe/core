@@ -19,7 +19,7 @@ class CreatePostRequestTest extends RequestTestCase
         return CreatePostRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getText', 'ttext', '<foo>bar</foo>', 'bar'],
@@ -29,7 +29,7 @@ class CreatePostRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getBoardId'],

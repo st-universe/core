@@ -17,8 +17,7 @@ use Stu\StuTestCase;
 
 class FlightSignatureCreatorTest extends StuTestCase
 {
-    /** @var MockInterface&FlightSignatureRepositoryInterface */
-    private MockInterface $flightSignatureRepository;
+    private MockInterface&FlightSignatureRepositoryInterface $flightSignatureRepository;
 
     private FlightSignatureCreator $subject;
 
@@ -31,7 +30,7 @@ class FlightSignatureCreatorTest extends StuTestCase
         );
     }
 
-    public function directionDataProvider(): array
+    public static function directionDataProvider(): array
     {
         return [
             [ShipEnum::DIRECTION_RIGHT, ShipEnum::DIRECTION_LEFT],

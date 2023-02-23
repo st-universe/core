@@ -19,7 +19,7 @@ class CreateAllianceRequestTest extends RequestTestCase
         return CreateAllianceRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getDescription', 'description', '<foo>bar</foo>', 'bar'],
@@ -29,7 +29,7 @@ class CreateAllianceRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getDescription'],

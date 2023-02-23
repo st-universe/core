@@ -19,14 +19,14 @@ class AcceptOfferRequestTest extends RequestTestCase
         return AcceptOfferRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getRelationId', 'al', '666', 666],
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getRelationId'],

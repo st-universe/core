@@ -16,7 +16,7 @@ class PromotePlayerRequestTest extends RequestTestCase
         return PromotePlayerRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getPlayerId', 'uid', '666', 666],
@@ -24,7 +24,7 @@ class PromotePlayerRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getPlayerId'],

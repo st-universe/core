@@ -16,14 +16,14 @@ class OverviewRequestTest extends RequestTestCase
         return OverviewRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getPlayerId', 'uid', '666', 666],
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getPlayerId'],

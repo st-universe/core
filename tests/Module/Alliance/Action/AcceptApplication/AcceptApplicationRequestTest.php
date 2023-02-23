@@ -19,14 +19,14 @@ class AcceptApplicationRequestTest extends RequestTestCase
         return AcceptApplicationRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getApplicationId', 'aid', '666', 666],
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getApplicationId'],

@@ -16,7 +16,7 @@ class EditDetailsRequestTest extends RequestTestCase
         return EditDetailsRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getName', 'name', '<foo>bar</foo>', 'bar'],
@@ -32,7 +32,7 @@ class EditDetailsRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getName'],
