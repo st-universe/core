@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Logging;
 
 use Monolog\Handler\RotatingFileHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
@@ -45,7 +46,7 @@ return [
                         $config->get('debug.logging.log_dir'),
                     ),
                     10,
-                    Logger::ERROR,
+                    Level::Error,
                     false
                 ),
                 new RotatingFileHandler(
@@ -54,7 +55,7 @@ return [
                         $config->get('debug.logging.log_dir'),
                     ),
                     10,
-                    Logger::INFO,
+                    Level::Info,
                 ),
             ]
         );

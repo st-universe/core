@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest\Adapter;
 
+use Monolog\Level;
 use Psr\Log\LoggerInterface;
 use Stu\Orm\Entity\GameRequestInterface;
 use Throwable;
@@ -23,7 +24,7 @@ final class LogfileAdapter extends AbstractAdapter
 
     protected function log(
         GameRequestInterface $gameRequest,
-        int $logLevel
+        Level $logLevel
     ): void {
         $this->logger->log(
             $logLevel,

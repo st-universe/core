@@ -6,7 +6,7 @@ namespace Stu\Component\Logging\GameRequest\Adapter;
 
 use Exception;
 use Mockery\MockInterface;
-use Monolog\Logger;
+use Monolog\Level;
 use Psr\Log\LoggerInterface;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\StuTestCase;
@@ -31,7 +31,7 @@ class LogfileAdapterTest extends StuTestCase
     {
         $gameRequest = $this->mock(GameRequestInterface::class);
 
-        $this->createLoggingExpectations($gameRequest, Logger::INFO);
+        $this->createLoggingExpectations($gameRequest, Level::Info);
 
         $this->subject->info($gameRequest);
     }
@@ -40,7 +40,7 @@ class LogfileAdapterTest extends StuTestCase
     {
         $gameRequest = $this->mock(GameRequestInterface::class);
 
-        $this->createLoggingExpectations($gameRequest, Logger::ERROR);
+        $this->createLoggingExpectations($gameRequest, Level::Error);
 
         $this->subject->error($gameRequest);
     }
@@ -50,7 +50,7 @@ class LogfileAdapterTest extends StuTestCase
      */
     protected function createLoggingExpectations(
         MockInterface $gameRequest,
-        int $logLevel
+        Level $logLevel
     ): void {
         $requestId = 'some-request-id';
         $turnId = 666;
