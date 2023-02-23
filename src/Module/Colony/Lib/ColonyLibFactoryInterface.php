@@ -51,7 +51,7 @@ interface ColonyLibFactoryInterface
     public function createModuleSelector(
         int $moduleType,
         ?ColonyInterface $colony,
-        ?ShipInterface $ship,
+        ?ShipInterface $station,
         ShipRumpInterface $rump,
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
@@ -60,7 +60,7 @@ interface ColonyLibFactoryInterface
     public function createModuleSelectorSpecial(
         int $moduleType,
         ?ColonyInterface $colony,
-        ?ShipInterface $ship,
+        ?ShipInterface $station,
         ShipRumpInterface $rump,
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
