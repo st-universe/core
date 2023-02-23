@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
+use InvalidArgumentException;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
@@ -101,41 +102,55 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->rump;
     }
 
+    private function getShipRumpRoleId(): int
+    {
+        $shipRumpRole = $this->getRump()->getShipRumpRole();
+
+        if ($shipRumpRole === null) {
+            throw new InvalidArgumentException('invalid rump without rump role');
+        }
+
+        return $shipRumpRole->getId();
+    }
+
     public function getAvailableModules(): array
     {
         if ($this->moduleSelectorWrappers === null) {
             $this->moduleSelectorWrappers = [];
+            $modules = [];
             if ($this->getModuleType() == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                $modules = [];
                 if ($this->getColony() !== null) {
                     $modules = $this->moduleRepository->getBySpecialTypeColonyAndRump(
                         $this->getColony()->getId(),
                         $this->getModuleType(),
                         $this->getRump()->getId(),
-                        $this->getRump()->getShipRumpRole()->getId()
+                        $this->getShipRumpRoleId()
                     );
                 } else if ($this->station !== null) {
                     $modules = $this->moduleRepository->getBySpecialTypeShipAndRump(
                         $this->station->getId(),
                         $this->getModuleType(),
                         $this->getRump()->getId(),
-                        $this->getRump()->getShipRumpRole()->getId()
+                        $this->getShipRumpRoleId()
                     );
                 }
             } else {
-                $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
-                    $this->getRump()->getId()
-                );
 
-                $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
-                $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
+                if ($this->getColony() !== null) {
+                    $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
+                        $this->getRump()->getId()
+                    );
 
-                $modules = $this->moduleRepository->getByTypeColonyAndLevel(
-                    (int)$this->getColony()->getId(),
-                    (int)$this->getModuleType(),
-                    $this->getRump()->getShipRumpRole()->getId(),
-                    range($min_level, $max_level)
-                );
+                    $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
+                    $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
+
+                    $modules = $this->moduleRepository->getByTypeColonyAndLevel(
+                        $this->getColony()->getId(),
+                        $this->getModuleType(),
+                        $this->getShipRumpRoleId(),
+                        range($min_level, $max_level)
+                    );
+                }
             }
             foreach ($modules as $obj) {
                 $this->moduleSelectorWrappers[$obj->getId()] = new ModuleSelectorWrapper($obj, $this->getBuildplan());
