@@ -92,6 +92,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         if ($entry !== null) {
             return $entry->getAmount();
         }
+
         return 0;
     }
 }

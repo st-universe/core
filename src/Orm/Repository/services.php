@@ -130,614 +130,126 @@ use Stu\Orm\Entity\Weapon;
 use Stu\Orm\Entity\WormholeEntry;
 
 return [
-    AllianceRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AllianceRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Alliance::class);
-    },
-    AllianceBoardRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AllianceBoardRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(AllianceBoard::class);
-    },
-    AllianceBoardPostRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AllianceBoardPostRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardPost::class);
-    },
-    AllianceBoardTopicRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AllianceBoardTopicRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class);
-    },
-    AllianceJobRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AllianceJobRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(AllianceJob::class);
-    },
-    AllianceRelationRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AllianceRelationRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class);
-    },
-    AwardRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AwardRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Award::class);
-    },
-    BasicTradeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BasicTradeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BasicTrade::class);
-    },
-    BlockedUserRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BlockedUserRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BlockedUser::class);
-    },
-    BuildingRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildingRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Building::class);
-    },
-    BuildingCostRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildingCostRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildingCost::class);
-    },
-    BuildingFieldAlternativeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildingFieldAlternativeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildingFieldAlternative::class);
-    },
-    BuildingFunctionRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildingFunctionRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildingFunction::class);
-    },
-    BuildingCommodityRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildingCommodityRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildingCommodity::class);
-    },
-    BuildingUpgradeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildingUpgradeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildingUpgrade::class);
-    },
-    BuildingUpgradeCostRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildingUpgradeCostRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildingUpgradeCost::class);
-    },
-    BuildplanHangarRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildplanHangarRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildplanHangar::class);
-    },
-    BuildplanModuleRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): BuildplanModuleRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(BuildplanModule::class);
-    },
-    ColonyRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Colony::class);
-    },
-    ColonyTerraformingRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyTerraformingRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyTerraforming::class);
-    },
-    CommodityRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): CommodityRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Commodity::class);
-    },
-    ConstructionProgressRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ConstructionProgressRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ConstructionProgress::class);
-    },
-    ConstructionProgressModuleRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ConstructionProgressModuleRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ConstructionProgressModule::class);
-    },
-    ContactRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ContactRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Contact::class);
-    },
-    ColonyClassDepositRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyClassDepositRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyClassDeposit::class);
-    },
-    ColonyDepositMiningRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyDepositMiningRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyDepositMining::class);
-    },
-    ColonyShipRepairRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyShipRepairRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class);
-    },
-    ColonyShipQueueRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyShipQueueRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipQueue::class);
-    },
-    CrewRaceRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): CrewRaceRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(CrewRace::class);
-    },
-    CrewRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): CrewRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Crew::class);
-    },
-    CrewTrainingRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): CrewTrainingRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(CrewTraining::class);
-    },
-    DatabaseCategoryRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): DatabaseCategoryRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategory::class);
-    },
-    DatabaseEntryRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): DatabaseEntryRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(DatabaseEntry::class);
-    },
-    DatabaseTypeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): DatabaseTypeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(DatabaseType::class);
-    },
-    DatabaseUserRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): DatabaseUserRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class);
-    },
-    DealsRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): DealsRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Deals::class);
-    },
-    AuctionBidRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AuctionBidRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(AuctionBid::class);
-    },
-    DockingPrivilegeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): DockingPrivilegeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(DockingPrivilege::class);
-    },
-    FactionRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): FactionRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Faction::class);
-    },
-    FleetRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): FleetRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Fleet::class);
-    },
-    FlightSignatureRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): FlightSignatureRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(FlightSignature::class);
-    },
-    AstroEntryRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): AstroEntryRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(AstronomicalEntry::class);
-    },
-    GameConfigRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): GameConfigRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(GameConfig::class);
-    },
-    GameTurnRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): GameTurnRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(GameTurn::class);
-    },
-    GameTurnStatsRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): GameTurnStatsRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(GameTurnStats::class);
-    },
-    HistoryRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): HistoryRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(History::class);
-    },
-    IgnoreListRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): IgnoreListRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(IgnoreList::class);
-    },
-    KnCommentRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): KnCommentRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(KnComment::class);
-    },
-    KnPostRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): KnPostRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(KnPost::class);
-    },
-    KnPostToPlotApplicationRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): KnPostToPlotApplicationRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(KnPostToPlotApplication::class);
-    },
-    LayerRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): LayerRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Layer::class);
-    },
-    LotteryTicketRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): LotteryTicketRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(LotteryTicket::class);
-    },
-    MapBorderTypeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): MapBorderTypeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(MapBorderType::class);
-    },
-    MapFieldTypeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): MapFieldTypeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(MapFieldType::class);
-    },
-    MapRegionRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): MapRegionRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(MapRegion::class);
-    },
-    MapRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): MapRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Map::class);
-    },
-    ModuleBuildingFunctionRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ModuleBuildingFunctionRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ModuleBuildingFunction::class);
-    },
-    ModuleCostRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ModuleCostRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ModuleCost::class);
-    },
-    ModuleRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ModuleRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Module::class);
-    },
-    ModuleQueueRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ModuleQueueRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ModuleQueue::class);
-    },
-    ModuleSpecialRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ModuleSpecialRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ModuleSpecial::class);
-    },
-    NewsRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): NewsRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(News::class);
-    },
-    NoteRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): NoteRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Note::class);
-    },
-    PlanetFieldRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): PlanetFieldRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PlanetField::class);
-    },
-    PlanetFieldTypeBuildingRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): PlanetFieldTypeBuildingRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PlanetFieldTypeBuilding::class);
-    },
-    PlanetFieldTypeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): PlanetFieldTypeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PlanetFieldType::class);
-    },
-    ColonyClassRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyClassRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyClass::class);
-    },
-    ColonyClassResearchRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ColonyClassResearchRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyClassResearch::class);
-    },
-    PrestigeLogRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): PrestigeLogRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PrestigeLog::class);
-    },
-    PrivateMessageRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): PrivateMessageRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PrivateMessage::class);
-    },
-    PrivateMessageFolderRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): PrivateMessageFolderRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(PrivateMessageFolder::class);
-    },
-    RepairTaskRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): RepairTaskRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(RepairTask::class);
-    },
-    ResearchRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ResearchRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Research::class);
-    },
-    ResearchedRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ResearchedRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Researched::class);
-    },
-    ResearchDependencyRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ResearchDependencyRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ResearchDependency::class);
-    },
-    RpgPlotRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): RpgPlotRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(RpgPlot::class);
-    },
-    RpgPlotMemberRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): RpgPlotMemberRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(RpgPlotMember::class);
-    },
-    SessionStringRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): SessionStringRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(SessionString::class);
-    },
-    ShipBuildplanRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipBuildplanRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipBuildplan::class);
-    },
-    ShipCrewRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipCrewRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipCrew::class);
-    },
-    ShipLogRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipLogRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipLog::class);
-    },
-    ShipRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Ship::class);
-    },
-    ShipRumpBuildingFunctionRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpBuildingFunctionRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpBuildingFunction::class);
-    },
-    ShipRumpCategoryRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpCategoryRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCategory::class);
-    },
-    ShipRumpCategoryRoleCrewRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpCategoryRoleCrewRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCategoryRoleCrew::class);
-    },
-    ShipRumpColonizationBuildingRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpColonizationBuildingRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpColonizationBuilding::class);
-    },
-    ShipRumpCostRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpCostRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCost::class);
-    },
-    ShipRumpModuleLevelRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpModuleLevelRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpModuleLevel::class);
-    },
-    ShipRumpRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRump::class);
-    },
-    ShipRumpRoleRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpRoleRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpRole::class);
-    },
-    ShipRumpSpecialRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpSpecialRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpSpecial::class);
-    },
-    ShipRumpUserRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipRumpUserRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpUser::class);
-    },
-    ShipSystemRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipSystemRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipSystem::class);
-    },
-    ShipyardShipQueueRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): ShipyardShipQueueRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipyardShipQueue::class);
-    },
-    SpacecraftEmergencyRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): SpacecraftEmergencyRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(SpacecraftEmergency::class);
-    },
-    StarSystemMapRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): StarSystemMapRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(StarSystemMap::class);
-    },
-    StarSystemRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): StarSystemRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(StarSystem::class);
-    },
-    StarSystemTypeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): StarSystemTypeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(StarSystemType::class);
-    },
-    StationShipRepairRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): StationShipRepairRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(StationShipRepair::class);
-    },
-    StorageRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): StorageRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Storage::class);
-    },
-    TerraformingRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TerraformingRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Terraforming::class);
-    },
-    TachyonScanRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TachyonScanRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TachyonScan::class);
-    },
-    TerraformingCostRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TerraformingCostRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TerraformingCost::class);
-    },
-    TholianWebRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TholianWebRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TholianWeb::class);
-    },
-    TorpedoTypeRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TorpedoTypeRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TorpedoType::class);
-    },
-    TorpedoStorageRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TorpedoStorageRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TorpedoStorage::class);
-    },
-    TradeLicenseInfoRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradeLicenseInfoRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeLicenseInfo::class);
-    },
-    TradeLicenseRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradeLicenseRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeLicense::class);
-    },
-    TradeOfferRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradeOfferRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeOffer::class);
-    },
-    TradePostRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradePostRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradePost::class);
-    },
-    TradeShoutboxRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradeShoutboxRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeShoutbox::class);
-    },
-    TradeTransactionRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradeTransactionRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeTransaction::class);
-    },
-    TradeTransferRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TradeTransferRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TradeTransfer::class);
-    },
-    UserAwardRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserAwardRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(UserAward::class);
-    },
-    UserLayerRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserLayerRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(UserLayer::class);
-    },
-    UserLockRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserLockRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(UserLock::class);
-    },
-    UserRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(User::class);
-    },
-    UserIpTableRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserIpTableRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class);
-    },
-    UserMapRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserMapRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(UserMap::class);
-    },
-    UserProfileVisitorRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): UserProfileVisitorRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class);
-    },
-    WeaponRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): WeaponRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(Weapon::class);
-    },
-    WormholeEntryRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): WormholeEntryRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(WormholeEntry::class);
-    },
+    AllianceRepositoryInterface::class => static fn (ContainerInterface $c): AllianceRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Alliance::class),
+    AllianceBoardRepositoryInterface::class => static fn (ContainerInterface $c): AllianceBoardRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoard::class),
+    AllianceBoardPostRepositoryInterface::class => static fn (ContainerInterface $c): AllianceBoardPostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardPost::class),
+    AllianceBoardTopicRepositoryInterface::class => static fn (ContainerInterface $c): AllianceBoardTopicRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class),
+    AllianceJobRepositoryInterface::class => static fn (ContainerInterface $c): AllianceJobRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(AllianceJob::class),
+    AllianceRelationRepositoryInterface::class => static fn (ContainerInterface $c): AllianceRelationRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class),
+    AwardRepositoryInterface::class => static fn (ContainerInterface $c): AwardRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Award::class),
+    BasicTradeRepositoryInterface::class => static fn (ContainerInterface $c): BasicTradeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BasicTrade::class),
+    BlockedUserRepositoryInterface::class => static fn (ContainerInterface $c): BlockedUserRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BlockedUser::class),
+    BuildingRepositoryInterface::class => static fn (ContainerInterface $c): BuildingRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Building::class),
+    BuildingCostRepositoryInterface::class => static fn (ContainerInterface $c): BuildingCostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BuildingCost::class),
+    BuildingFieldAlternativeRepositoryInterface::class => static fn (ContainerInterface $c): BuildingFieldAlternativeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BuildingFieldAlternative::class),
+    BuildingFunctionRepositoryInterface::class => static fn (ContainerInterface $c): BuildingFunctionRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BuildingFunction::class),
+    BuildingCommodityRepositoryInterface::class => static fn (ContainerInterface $c): BuildingCommodityRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BuildingCommodity::class),
+    BuildingUpgradeRepositoryInterface::class => static fn (ContainerInterface $c): BuildingUpgradeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BuildingUpgrade::class),
+    BuildingUpgradeCostRepositoryInterface::class => static fn (ContainerInterface $c): BuildingUpgradeCostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BuildingUpgradeCost::class),
+    BuildplanHangarRepositoryInterface::class => static fn (ContainerInterface $c): BuildplanHangarRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BuildplanHangar::class),
+    BuildplanModuleRepositoryInterface::class => static fn (ContainerInterface $c): BuildplanModuleRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(BuildplanModule::class),
+    ColonyRepositoryInterface::class => static fn (ContainerInterface $c): ColonyRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Colony::class),
+    ColonyTerraformingRepositoryInterface::class => static fn (ContainerInterface $c): ColonyTerraformingRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ColonyTerraforming::class),
+    CommodityRepositoryInterface::class => static fn (ContainerInterface $c): CommodityRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Commodity::class),
+    ConstructionProgressRepositoryInterface::class => static fn (ContainerInterface $c): ConstructionProgressRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ConstructionProgress::class),
+    ConstructionProgressModuleRepositoryInterface::class => static fn (ContainerInterface $c): ConstructionProgressModuleRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ConstructionProgressModule::class),
+    ContactRepositoryInterface::class => static fn (ContainerInterface $c): ContactRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Contact::class),
+    ColonyClassDepositRepositoryInterface::class => static fn (ContainerInterface $c): ColonyClassDepositRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ColonyClassDeposit::class),
+    ColonyDepositMiningRepositoryInterface::class => static fn (ContainerInterface $c): ColonyDepositMiningRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ColonyDepositMining::class),
+    ColonyShipRepairRepositoryInterface::class => static fn (ContainerInterface $c): ColonyShipRepairRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class),
+    ColonyShipQueueRepositoryInterface::class => static fn (ContainerInterface $c): ColonyShipQueueRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ColonyShipQueue::class),
+    CrewRaceRepositoryInterface::class => static fn (ContainerInterface $c): CrewRaceRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(CrewRace::class),
+    CrewRepositoryInterface::class => static fn (ContainerInterface $c): CrewRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Crew::class),
+    CrewTrainingRepositoryInterface::class => static fn (ContainerInterface $c): CrewTrainingRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(CrewTraining::class),
+    DatabaseCategoryRepositoryInterface::class => static fn (ContainerInterface $c): DatabaseCategoryRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(DatabaseCategory::class),
+    DatabaseEntryRepositoryInterface::class => static fn (ContainerInterface $c): DatabaseEntryRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(DatabaseEntry::class),
+    DatabaseTypeRepositoryInterface::class => static fn (ContainerInterface $c): DatabaseTypeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(DatabaseType::class),
+    DatabaseUserRepositoryInterface::class => static fn (ContainerInterface $c): DatabaseUserRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class),
+    DealsRepositoryInterface::class => static fn (ContainerInterface $c): DealsRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Deals::class),
+    AuctionBidRepositoryInterface::class => static fn (ContainerInterface $c): AuctionBidRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(AuctionBid::class),
+    DockingPrivilegeRepositoryInterface::class => static fn (ContainerInterface $c): DockingPrivilegeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(DockingPrivilege::class),
+    FactionRepositoryInterface::class => static fn (ContainerInterface $c): FactionRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Faction::class),
+    FleetRepositoryInterface::class => static fn (ContainerInterface $c): FleetRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Fleet::class),
+    FlightSignatureRepositoryInterface::class => static fn (ContainerInterface $c): FlightSignatureRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(FlightSignature::class),
+    AstroEntryRepositoryInterface::class => static fn (ContainerInterface $c): AstroEntryRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(AstronomicalEntry::class),
+    GameConfigRepositoryInterface::class => static fn (ContainerInterface $c): GameConfigRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(GameConfig::class),
+    GameTurnRepositoryInterface::class => static fn (ContainerInterface $c): GameTurnRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(GameTurn::class),
+    GameTurnStatsRepositoryInterface::class => static fn (ContainerInterface $c): GameTurnStatsRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(GameTurnStats::class),
+    HistoryRepositoryInterface::class => static fn (ContainerInterface $c): HistoryRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(History::class),
+    IgnoreListRepositoryInterface::class => static fn (ContainerInterface $c): IgnoreListRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(IgnoreList::class),
+    KnCommentRepositoryInterface::class => static fn (ContainerInterface $c): KnCommentRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(KnComment::class),
+    KnPostRepositoryInterface::class => static fn (ContainerInterface $c): KnPostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(KnPost::class),
+    KnPostToPlotApplicationRepositoryInterface::class => static fn (ContainerInterface $c): KnPostToPlotApplicationRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(KnPostToPlotApplication::class),
+    LayerRepositoryInterface::class => static fn (ContainerInterface $c): LayerRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Layer::class),
+    LotteryTicketRepositoryInterface::class => static fn (ContainerInterface $c): LotteryTicketRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(LotteryTicket::class),
+    MapBorderTypeRepositoryInterface::class => static fn (ContainerInterface $c): MapBorderTypeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(MapBorderType::class),
+    MapFieldTypeRepositoryInterface::class => static fn (ContainerInterface $c): MapFieldTypeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(MapFieldType::class),
+    MapRegionRepositoryInterface::class => static fn (ContainerInterface $c): MapRegionRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(MapRegion::class),
+    MapRepositoryInterface::class => static fn (ContainerInterface $c): MapRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Map::class),
+    ModuleBuildingFunctionRepositoryInterface::class => static fn (ContainerInterface $c): ModuleBuildingFunctionRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ModuleBuildingFunction::class),
+    ModuleCostRepositoryInterface::class => static fn (ContainerInterface $c): ModuleCostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ModuleCost::class),
+    ModuleRepositoryInterface::class => static fn (ContainerInterface $c): ModuleRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Module::class),
+    ModuleQueueRepositoryInterface::class => static fn (ContainerInterface $c): ModuleQueueRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ModuleQueue::class),
+    ModuleSpecialRepositoryInterface::class => static fn (ContainerInterface $c): ModuleSpecialRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ModuleSpecial::class),
+    NewsRepositoryInterface::class => static fn (ContainerInterface $c): NewsRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(News::class),
+    NoteRepositoryInterface::class => static fn (ContainerInterface $c): NoteRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Note::class),
+    PlanetFieldRepositoryInterface::class => static fn (ContainerInterface $c): PlanetFieldRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(PlanetField::class),
+    PlanetFieldTypeBuildingRepositoryInterface::class => static fn (ContainerInterface $c): PlanetFieldTypeBuildingRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(PlanetFieldTypeBuilding::class),
+    PlanetFieldTypeRepositoryInterface::class => static fn (ContainerInterface $c): PlanetFieldTypeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(PlanetFieldType::class),
+    ColonyClassRepositoryInterface::class => static fn (ContainerInterface $c): ColonyClassRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ColonyClass::class),
+    ColonyClassResearchRepositoryInterface::class => static fn (ContainerInterface $c): ColonyClassResearchRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ColonyClassResearch::class),
+    PrestigeLogRepositoryInterface::class => static fn (ContainerInterface $c): PrestigeLogRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(PrestigeLog::class),
+    PrivateMessageRepositoryInterface::class => static fn (ContainerInterface $c): PrivateMessageRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(PrivateMessage::class),
+    PrivateMessageFolderRepositoryInterface::class => static fn (ContainerInterface $c): PrivateMessageFolderRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(PrivateMessageFolder::class),
+    RepairTaskRepositoryInterface::class => static fn (ContainerInterface $c): RepairTaskRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(RepairTask::class),
+    ResearchRepositoryInterface::class => static fn (ContainerInterface $c): ResearchRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Research::class),
+    ResearchedRepositoryInterface::class => static fn (ContainerInterface $c): ResearchedRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Researched::class),
+    ResearchDependencyRepositoryInterface::class => static fn (ContainerInterface $c): ResearchDependencyRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ResearchDependency::class),
+    RpgPlotRepositoryInterface::class => static fn (ContainerInterface $c): RpgPlotRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(RpgPlot::class),
+    RpgPlotMemberRepositoryInterface::class => static fn (ContainerInterface $c): RpgPlotMemberRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(RpgPlotMember::class),
+    SessionStringRepositoryInterface::class => static fn (ContainerInterface $c): SessionStringRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(SessionString::class),
+    ShipBuildplanRepositoryInterface::class => static fn (ContainerInterface $c): ShipBuildplanRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipBuildplan::class),
+    ShipCrewRepositoryInterface::class => static fn (ContainerInterface $c): ShipCrewRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipCrew::class),
+    ShipLogRepositoryInterface::class => static fn (ContainerInterface $c): ShipLogRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipLog::class),
+    ShipRepositoryInterface::class => static fn (ContainerInterface $c): ShipRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Ship::class),
+    ShipRumpBuildingFunctionRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpBuildingFunctionRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpBuildingFunction::class),
+    ShipRumpCategoryRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpCategoryRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCategory::class),
+    ShipRumpCategoryRoleCrewRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpCategoryRoleCrewRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCategoryRoleCrew::class),
+    ShipRumpColonizationBuildingRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpColonizationBuildingRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpColonizationBuilding::class),
+    ShipRumpCostRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpCostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCost::class),
+    ShipRumpModuleLevelRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpModuleLevelRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpModuleLevel::class),
+    ShipRumpRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRump::class),
+    ShipRumpRoleRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpRoleRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpRole::class),
+    ShipRumpSpecialRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpSpecialRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpSpecial::class),
+    ShipRumpUserRepositoryInterface::class => static fn (ContainerInterface $c): ShipRumpUserRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipRumpUser::class),
+    ShipSystemRepositoryInterface::class => static fn (ContainerInterface $c): ShipSystemRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipSystem::class),
+    ShipyardShipQueueRepositoryInterface::class => static fn (ContainerInterface $c): ShipyardShipQueueRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(ShipyardShipQueue::class),
+    SpacecraftEmergencyRepositoryInterface::class => static fn (ContainerInterface $c): SpacecraftEmergencyRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(SpacecraftEmergency::class),
+    StarSystemMapRepositoryInterface::class => static fn (ContainerInterface $c): StarSystemMapRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(StarSystemMap::class),
+    StarSystemRepositoryInterface::class => static fn (ContainerInterface $c): StarSystemRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(StarSystem::class),
+    StarSystemTypeRepositoryInterface::class => static fn (ContainerInterface $c): StarSystemTypeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(StarSystemType::class),
+    StationShipRepairRepositoryInterface::class => static fn (ContainerInterface $c): StationShipRepairRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(StationShipRepair::class),
+    StorageRepositoryInterface::class => static fn (ContainerInterface $c): StorageRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Storage::class),
+    TerraformingRepositoryInterface::class => static fn (ContainerInterface $c): TerraformingRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Terraforming::class),
+    TachyonScanRepositoryInterface::class => static fn (ContainerInterface $c): TachyonScanRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TachyonScan::class),
+    TerraformingCostRepositoryInterface::class => static fn (ContainerInterface $c): TerraformingCostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TerraformingCost::class),
+    TholianWebRepositoryInterface::class => static fn (ContainerInterface $c): TholianWebRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TholianWeb::class),
+    TorpedoTypeRepositoryInterface::class => static fn (ContainerInterface $c): TorpedoTypeRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TorpedoType::class),
+    TorpedoStorageRepositoryInterface::class => static fn (ContainerInterface $c): TorpedoStorageRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TorpedoStorage::class),
+    TradeLicenseInfoRepositoryInterface::class => static fn (ContainerInterface $c): TradeLicenseInfoRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TradeLicenseInfo::class),
+    TradeLicenseRepositoryInterface::class => static fn (ContainerInterface $c): TradeLicenseRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TradeLicense::class),
+    TradeOfferRepositoryInterface::class => static fn (ContainerInterface $c): TradeOfferRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TradeOffer::class),
+    TradePostRepositoryInterface::class => static fn (ContainerInterface $c): TradePostRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TradePost::class),
+    TradeShoutboxRepositoryInterface::class => static fn (ContainerInterface $c): TradeShoutboxRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TradeShoutbox::class),
+    TradeTransactionRepositoryInterface::class => static fn (ContainerInterface $c): TradeTransactionRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TradeTransaction::class),
+    TradeTransferRepositoryInterface::class => static fn (ContainerInterface $c): TradeTransferRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(TradeTransfer::class),
+    UserAwardRepositoryInterface::class => static fn (ContainerInterface $c): UserAwardRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(UserAward::class),
+    UserLayerRepositoryInterface::class => static fn (ContainerInterface $c): UserLayerRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(UserLayer::class),
+    UserLockRepositoryInterface::class => static fn (ContainerInterface $c): UserLockRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(UserLock::class),
+    UserRepositoryInterface::class => static fn (ContainerInterface $c): UserRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(User::class),
+    UserIpTableRepositoryInterface::class => static fn (ContainerInterface $c): UserIpTableRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class),
+    UserMapRepositoryInterface::class => static fn (ContainerInterface $c): UserMapRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(UserMap::class),
+    UserProfileVisitorRepositoryInterface::class => static fn (ContainerInterface $c): UserProfileVisitorRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class),
+    WeaponRepositoryInterface::class => static fn (ContainerInterface $c): WeaponRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(Weapon::class),
+    WormholeEntryRepositoryInterface::class => static fn (ContainerInterface $c): WormholeEntryRepositoryInterface => $c->get(EntityManagerInterface::class)->getRepository(WormholeEntry::class),
 ];

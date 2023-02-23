@@ -32,6 +32,7 @@ final class TradeShoutboxRepository extends EntityRepository implements TradeSho
         if ($entry === []) {
             return;
         }
+
         $entry = current($entry);
 
         $this->getEntityManager()
