@@ -123,20 +123,16 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->getResult();
     }
 
-    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): iterable
+    public function getForTick(): iterable
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT c FROM %s c
-                    WHERE MOD(c.user_id, :groupCount) + 1 = :groupId
-                    AND c.user_id != :userId',
+                    'SELECT c FROM %s c WHERE c.user_id != :userId',
                     Colony::class
                 )
             )
             ->setParameters([
-                'groupId' => $batchGroup,
-                'groupCount' => $batchGroupCount,
                 'userId' => GameEnum::USER_NOONE,
             ])
             ->getResult();

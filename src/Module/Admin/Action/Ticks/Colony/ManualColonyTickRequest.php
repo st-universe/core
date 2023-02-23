@@ -14,9 +14,4 @@ final class ManualColonyTickRequest implements ManualColonyTickRequestInterface
     {
         return $this->queryParameter('colonyid')->int()->defaultsTo(null);
     }
-
-    public function getGroupId(): ?int
-    {
-        return $this->queryParameter('groupid')->int()->defaultsTo(null);
-    }
 }

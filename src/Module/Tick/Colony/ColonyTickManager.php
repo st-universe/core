@@ -11,14 +11,11 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Tick\AbstractTickManager;
-use Stu\Module\Tick\Lock\LockEnum;
-use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -39,8 +36,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
     private CommodityRepositoryInterface $commodityRepository;
 
     private CrewCountRetrieverInterface $crewCountRetriever;
-
-    private LockManagerInterface $lockManager;
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
@@ -63,7 +58,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
         ColonyFunctionManagerInterface $colonyFunctionManager,
         CrewLimitCalculatorInterface $crewLimitCalculator,
         ColonyLibFactoryInterface $colonyLibFactory,
-        LockManagerInterface $lockManager,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         Ubench $benchmark
     ) {
@@ -74,7 +68,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
         $this->privateMessageSender = $privateMessageSender;
         $this->commodityRepository = $commodityRepository;
         $this->crewCountRetriever = $crewCountRetriever;
-        $this->lockManager = $lockManager;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->crewLimitCalculator = $crewLimitCalculator;
         $this->colonyLibFactory = $colonyLibFactory;
@@ -82,28 +75,18 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
         $this->benchmark = $benchmark;
     }
 
-    public function work(int $batchGroup, int $batchGroupCount): void
+    public function work(): void
     {
-        $this->setLock($batchGroup);
-        try {
-            $entityCount = $this->colonyLoop($batchGroup, $batchGroupCount);
-            $this->proceedCrewTraining($batchGroup, $batchGroupCount);
+        $entityCount = $this->colonyLoop();
+        $this->proceedCrewTraining();
 
-            $this->loggerUtil->init(sprintf(
-                'COLOTICK_%dof%d',
-                $batchGroup,
-                $batchGroupCount
-            ), LoggerEnum::LEVEL_WARNING);
-            $this->logBenchmarkResult($entityCount);
-        } finally {
-            $this->clearLock($batchGroup);
-        }
+        $this->logBenchmarkResult($entityCount);
     }
 
-    private function colonyLoop(int $batchGroup, int $batchGroupCount): int
+    private function colonyLoop(): int
     {
         $commodityArray = $this->commodityRepository->getAll();
-        $colonyList = $this->colonyRepository->getByBatchGroup($batchGroup, $batchGroupCount);
+        $colonyList = $this->colonyRepository->getForTick();
 
         $entityCount = 0;
         foreach ($colonyList as $colony) {
@@ -120,11 +103,11 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
         return $entityCount;
     }
 
-    private function proceedCrewTraining(int $batchGroup, int $batchGroupCount): void
+    private function proceedCrewTraining(): void
     {
         $user = [];
 
-        foreach ($this->crewTrainingRepository->getByBatchGroup($batchGroup, $batchGroupCount) as $obj) {
+        foreach ($this->crewTrainingRepository->getForTick() as $obj) {
             if (!isset($user[$obj->getUserId()])) {
                 $user[$obj->getUserId()] = 0;
             }
@@ -178,16 +161,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
             );
         }
-    }
-
-    private function setLock(int $batchGroupId): void
-    {
-        $this->lockManager->setLock($batchGroupId, LockEnum::LOCK_TYPE_COLONY_GROUP);
-    }
-
-    private function clearLock(int $batchGroupId): void
-    {
-        $this->lockManager->clearLock($batchGroupId, LockEnum::LOCK_TYPE_COLONY_GROUP);
     }
 
     protected function getBenchmark(): Ubench

@@ -12,8 +12,6 @@ use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Tick\Lock\LockEnum;
-use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -43,9 +41,6 @@ class ColonyTickManagerTest extends StuTestCase
     /** @var MockInterface&CrewCountRetrieverInterface */
     private CrewCountRetrieverInterface $crewCountRetriever;
 
-    /** @var MockInterface&LockManagerInterface */
-    private LockManagerInterface $lockManager;
-
     /** @var ColonyFunctionManagerInterface&MockInterface */
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
@@ -69,7 +64,6 @@ class ColonyTickManagerTest extends StuTestCase
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
         $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
         $this->crewCountRetriever = $this->mock(CrewCountRetrieverInterface::class);
-        $this->lockManager = $this->mock(LockManagerInterface::class);
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
         $this->crewLimitCalculator = $this->mock(CrewLimitCalculatorInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
@@ -86,7 +80,6 @@ class ColonyTickManagerTest extends StuTestCase
             $this->colonyFunctionManager,
             $this->crewLimitCalculator,
             $this->colonyLibFactory,
-            $this->lockManager,
             $this->initLoggerUtil(),
             $this->benchmark
         );
@@ -94,8 +87,6 @@ class ColonyTickManagerTest extends StuTestCase
 
     public function testWorkExpectLockReleaseWhenError(): void
     {
-        $groupId = 1;
-
         static::expectException(Exception::class);
 
         $this->commodityRepository->shouldReceive('getAll')
@@ -103,13 +94,6 @@ class ColonyTickManagerTest extends StuTestCase
             ->once()
             ->andThrow(new Exception(''));
 
-        $this->lockManager->shouldReceive('setLock')
-            ->with($groupId, LockEnum::LOCK_TYPE_COLONY_GROUP)
-            ->once();
-        $this->lockManager->shouldReceive('clearLock')
-            ->with($groupId, LockEnum::LOCK_TYPE_COLONY_GROUP)
-            ->once();
-
-        $this->subject->work($groupId, 1);
+        $this->subject->work();
     }
 }

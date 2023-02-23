@@ -28,12 +28,12 @@ final class ColonyTickRunner implements TickRunnerInterface
         $this->failureEmailSender = $failureEmailSender;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function run(): void
     {
         $this->entityManager->beginTransaction();
 
         try {
-            $this->colonyTickManager->work($batchGroup, $batchGroupCount);
+            $this->colonyTickManager->work();
 
             $this->entityManager->flush();
             $this->entityManager->commit();
@@ -43,10 +43,8 @@ final class ColonyTickRunner implements TickRunnerInterface
             $this->failureEmailSender->sendMail(
                 'stu colonytick failure',
                 sprintf(
-                    "Current system time: %s\nThe colonytick cron (group %d/%d) caused an error:\n\n%s\n\n%s",
+                    "Current system time: %s\nThe colonytick cron caused an error:\n\n%s\n\n%s",
                     date('Y-m-d H:i:s'),
-                    $batchGroup,
-                    $batchGroupCount,
                     $e->getMessage(),
                     $e->getTraceAsString()
                 )

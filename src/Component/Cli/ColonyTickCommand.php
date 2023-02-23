@@ -34,7 +34,7 @@ final class ColonyTickCommand extends Command
     public function execute(): void
     {
         $tickRunner = $this->dic->get(ColonyTickRunner::class);
-        $tickRunner->run(1, 1);
+        $tickRunner->run();
 
         $this->io()->ok(
             'Colony tick has been executed',

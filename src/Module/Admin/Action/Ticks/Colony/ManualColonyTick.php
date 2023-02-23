@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action\Ticks\Colony;
 
 use Stu\Module\Admin\View\Ticks\ShowTicks;
-use Stu\Module\Config\Model\ColonySettings;
-use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
@@ -28,22 +26,18 @@ final class ManualColonyTick implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private StuConfigInterface $config;
-
     public function __construct(
         ManualColonyTickRequestInterface $request,
         ColonyTickManagerInterface $colonyTickManager,
         ColonyTickInterface $colonyTick,
         ColonyRepositoryInterface $colonyRepository,
         CommodityRepositoryInterface $commodityRepository,
-        StuConfigInterface $config
     ) {
         $this->request = $request;
         $this->colonyTickManager = $colonyTickManager;
         $this->colonyTick = $colonyTick;
         $this->colonyRepository = $colonyRepository;
         $this->commodityRepository = $commodityRepository;
-        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -68,22 +62,8 @@ final class ManualColonyTick implements ActionControllerInterface
 
     private function executeTickForMultipleColonies(GameControllerInterface $game): void
     {
-        $groupId = $this->request->getGroupId();
-
-        if ($groupId !== null) {
-            $groupCount = $this->getGroupCount();
-            $this->colonyTickManager->work($groupId, $groupCount);
-
-            $game->addInformationf("Der Kolonie-Tick für die Kolonie-Gruppe %d/%d wurde durchgeführt!", $groupId, $groupCount);
-        } else {
-            $this->colonyTickManager->work(1, ColonySettings::SETTING_TICK_WORKER_DEFAULT);
-            $game->addInformation("Der Kolonie-Tick für alle Kolonien wurde durchgeführt!");
-        }
-    }
-
-    private function getGroupCount(): int
-    {
-        return $this->config->getGameSettings()->getColonySettings()->getTickWorker();
+        $this->colonyTickManager->work();
+        $game->addInformation('Der Kolonie-Tick für alle Kolonien wurde durchgeführt!');
     }
 
     private function executeTickForSingleColony(int $colonyId, GameControllerInterface $game): void
@@ -93,13 +73,13 @@ final class ManualColonyTick implements ActionControllerInterface
         $colony = $this->colonyRepository->find($colonyId);
 
         if ($colony === null) {
-            $game->addInformationf("Keine Kolonie mit der ID %d vorhanden!", $colonyId);
+            $game->addInformationf('Keine Kolonie mit der ID %d vorhanden!', $colonyId);
             return;
         }
 
         $this->colonyTick->work($colony, $commodityArray);
 
-        $game->addInformationf("Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!", $colonyId);
+        $game->addInformationf('Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!', $colonyId);
     }
 
     public function performSessionCheck(): bool

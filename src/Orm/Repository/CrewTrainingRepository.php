@@ -55,23 +55,20 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         ]);
     }
 
-    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array
+    public function getForTick(): iterable
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT ct
                     FROM %s ct
-                    WHERE MOD(ct.colony_id, :groupCount) + 1 = :groupId
-                    AND ct.user_id != :idNoOne',
+                    WHERE ct.user_id != :idNoOne',
                     CrewTraining::class
                 ),
             )
             ->setParameters([
-                'groupId' => $batchGroup,
-                'groupCount' => $batchGroupCount,
                 'idNoOne' => GameEnum::USER_NOONE,
             ])
-            ->getResult();
+            ->toIterable();
     }
 }

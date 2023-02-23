@@ -34,7 +34,7 @@ final class ShipTickCommand extends Command
     public function execute(): void
     {
         $tickRunner = $this->dic->get(ShipTickRunner::class);
-        $tickRunner->run(1, 1);
+        $tickRunner->run();
 
         $this->io()->ok(
             'Ship tick has been executed',

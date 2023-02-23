@@ -13,24 +13,20 @@ use Stu\Module\Tick\Ship\ShipTickRunner;
 
 $schedule = new Schedule();
 
-//split colony tick into groups
-$colonyTickGroupCount = 3;
-for ($groupId = 1; $groupId <= $colonyTickGroupCount; $groupId++) {
-    $schedule
-        ->run(function () use ($groupId, $colonyTickGroupCount): void {
-            Init::run(function (ContainerInterface $dic) use ($groupId, $colonyTickGroupCount): void {
-                $dic->get(ColonyTickRunner::class)->run($groupId, $colonyTickGroupCount);
-            });
-        })
-        ->hour(12, 15, 18, 21, 00)
-        ->minute(00)
-        ->description(sprintf('ColonyTick (group %d/%d)', $groupId, $colonyTickGroupCount));
-}
+$schedule
+    ->run(function (): void {
+        Init::run(function (ContainerInterface $dic): void {
+            $dic->get(ColonyTickRunner::class)->run();
+        });
+    })
+    ->hour(12, 15, 18, 21, 00)
+    ->minute(00)
+    ->description('ColonyTick');
 
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            $dic->get(ShipTickRunner::class)->run(1, 1);
+            $dic->get(ShipTickRunner::class)->run();
         });
     })
     ->hour(12, 15, 18, 21, 00)
@@ -40,7 +36,7 @@ $schedule
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            $dic->get(TickManagerRunner::class)->run(1, 1);
+            $dic->get(TickManagerRunner::class)->run();
         });
     })
     ->hour(12, 15, 18, 21, 00)
@@ -50,7 +46,7 @@ $schedule
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            $dic->get(MaintenanceTickRunner::class)->run(1, 1);
+            $dic->get(MaintenanceTickRunner::class)->run();
         });
     })
     ->dailyAt('03:00')
@@ -59,7 +55,7 @@ $schedule
 $schedule
     ->run(function (): void {
         Init::run(function (ContainerInterface $dic): void {
-            $dic->get(ProcessTickRunner::class)->run(1, 1);
+            $dic->get(ProcessTickRunner::class)->run();
         });
     })
     ->everyMinute()

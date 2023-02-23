@@ -9,8 +9,6 @@ use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
-use Stu\Module\Tick\Lock\LockManager;
-use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactory;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
@@ -30,7 +28,6 @@ return [
     ShipTickInterface::class => autowire(ShipTick::class),
     ShipTickManagerInterface::class => autowire(ShipTickManager::class),
     TickManagerInterface::class => autowire(TickManager::class),
-    LockManagerInterface::class => autowire(LockManager::class),
     'process_tick_handler' => [
         autowire(Process\FinishBuildJobs::class),
         autowire(Process\FinishShipBuildJobs::class),

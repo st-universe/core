@@ -33,7 +33,7 @@ final class ProcessTickRunner implements TickRunnerInterface
         $this->failureEmailSender = $failureEmailSender;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function run(): void
     {
         $this->entityManager->beginTransaction();
 

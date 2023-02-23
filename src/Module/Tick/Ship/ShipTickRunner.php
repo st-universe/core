@@ -40,7 +40,7 @@ final class ShipTickRunner implements TickRunnerInterface
         $this->shipTickManager = $shipTickManager;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function run(): void
     {
         $this->loggerUtil->init('mail', LoggerEnum::LEVEL_ERROR);
 

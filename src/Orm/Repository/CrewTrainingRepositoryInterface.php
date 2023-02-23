@@ -23,7 +23,7 @@ interface CrewTrainingRepositoryInterface extends ObjectRepository
     public function getCountByUser(UserInterface $user): int;
 
     /**
-     * @return list<CrewTrainingInterface>
+     * @return iterable<CrewTrainingInterface>
      */
-    public function getByBatchGroup(int $batchGroup, int $batchGroupCount): array;
+    public function getForTick(): iterable;
 }

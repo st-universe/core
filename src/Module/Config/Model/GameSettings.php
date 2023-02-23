@@ -8,11 +8,6 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
 
     private const SETTING_TEMP_DIR = 'temp_dir';
 
-    public function getColonySettings(): ColonySettingsInterface
-    {
-        return new ColonySettings($this->getPath(), $this->getConfig());
-    }
-
     public function getTempDir(): string
     {
         return $this->getStringConfigValue(self::SETTING_TEMP_DIR);

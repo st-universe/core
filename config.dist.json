@@ -59,9 +59,6 @@
       "email": "admin@example.com",
       "faction": 1
     },
-    "colony": {
-      "tick_worker": 1
-    },
     "imprint": {
       "name": "Max Mustermann",
       "address": "123 Fake street",
