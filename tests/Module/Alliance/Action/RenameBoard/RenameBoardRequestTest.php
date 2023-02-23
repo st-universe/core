@@ -16,7 +16,7 @@ class RenameBoardRequestTest extends RequestTestCase
         return RenameBoardRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getBoardId', 'bid', '666', 666],
@@ -25,7 +25,7 @@ class RenameBoardRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getBoardId'],

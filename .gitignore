@@ -9,7 +9,6 @@ config.json.backup
 src/Public/assets
 src/Public/version_*
 backup
-.phpunit.result.cache
 build
 OrmProxy
 src/lang/*/*/*.mo

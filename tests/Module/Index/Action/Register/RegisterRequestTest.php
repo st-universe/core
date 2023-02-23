@@ -16,7 +16,7 @@ class RegisterRequestTest extends RequestTestCase
         return RegisterRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getLoginName', 'loginname', 666, '666'],
@@ -31,7 +31,7 @@ class RegisterRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getFactionId'],

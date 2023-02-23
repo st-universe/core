@@ -16,14 +16,14 @@ class UnsetTopicStickyRequestTest extends RequestTestCase
         return UnsetTopicStickyRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getTopicId', 'tid', '666', 666],
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getTopIcId'],

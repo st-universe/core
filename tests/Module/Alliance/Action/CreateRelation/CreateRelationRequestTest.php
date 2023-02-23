@@ -19,7 +19,7 @@ class CreateRelationRequestTest extends RequestTestCase
         return CreateRelationRequest::class;
     }
 
-    public function requestVarsDataProvider(): array
+    public static function requestVarsDataProvider(): array
     {
         return [
             ['getRelationType', 'type', '666', 666],
@@ -27,7 +27,7 @@ class CreateRelationRequestTest extends RequestTestCase
         ];
     }
 
-    public function requiredRequestVarsDataProvider(): array
+    public static function requiredRequestVarsDataProvider(): array
     {
         return [
             ['getRelationType'],
