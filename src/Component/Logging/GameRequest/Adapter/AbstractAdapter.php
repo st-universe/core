@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest\Adapter;
 
-use Monolog\Logger;
+use Monolog\Level;
 use Stu\Orm\Entity\GameRequestInterface;
 
 abstract class AbstractAdapter implements GameRequstLoggerInterface
@@ -14,7 +14,7 @@ abstract class AbstractAdapter implements GameRequstLoggerInterface
     ): void {
         $this->log(
             $gameRequest,
-            Logger::INFO
+            Level::Info
         );
     }
 
@@ -23,12 +23,12 @@ abstract class AbstractAdapter implements GameRequstLoggerInterface
     ): void {
         $this->log(
             $gameRequest,
-            Logger::ERROR
+            Level::Error
         );
     }
 
     /**
      * Does the actual logging, depending on the provided logging adapter
      */
-    abstract protected function log(GameRequestInterface $gameRequest, int $logLevel): void;
+    abstract protected function log(GameRequestInterface $gameRequest, Level $logLevel): void;
 }
