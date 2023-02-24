@@ -6,6 +6,21 @@ parameters:
 			path: src/Component/Colony/ColonyPopulationCalculator.php
 
 		-
+			message: "#^Constant _IMG_HANDLER not found\\.$#"
+			count: 1
+			path: src/Component/Image/ImageCreation.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Image\\\\ImageCreation\\:\\:gdImageInSrc\\(\\) has parameter \\$gdImage with no type specified\\.$#"
+			count: 1
+			path: src/Component/Image/ImageCreation.php
+
+		-
+			message: "#^Method Stu\\\\Component\\\\Image\\\\ImageCreationInterface\\:\\:gdImageInSrc\\(\\) has parameter \\$gdImage with no type specified\\.$#"
+			count: 1
+			path: src/Component/Image/ImageCreationInterface.php
+
+		-
 			message: """
 				#^Fetching class constant class of deprecated class Stu\\\\Component\\\\Logging\\\\GameRequest\\\\Adapter\\\\DatabaseAdapter\\:
 				Use LogfileAdapter$#
@@ -897,6 +912,11 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
+			message: "#^Method Stu\\\\Module\\\\Admin\\\\View\\\\Map\\\\ShowMapInfluenceAreas\\:\\:buildImage\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
+
+		-
 			message: "#^Parameter \\#1 \\$dst_im of function imagecopy expects resource, resource\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
@@ -907,17 +927,7 @@ parameters:
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
 		-
-			message: "#^Parameter \\#1 \\$im of function imagedestroy expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
 			message: "#^Parameter \\#1 \\$im of function imagefill expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
-
-		-
-			message: "#^Parameter \\#1 \\$im of function imagepng expects resource, resource\\|false given\\.$#"
 			count: 1
 			path: src/Module/Admin/View/Map/ShowMapInfluenceAreas.php
 
@@ -2685,21 +2695,6 @@ parameters:
 			path: src/Module/Database/Lib/GraphInfo.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\GraphInfo\\:\\:\\$plotInfos has no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/GraphInfo.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\GraphInfo\\:\\:\\$title has no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/GraphInfo.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\GraphInfo\\:\\:\\$yAxisStartAtZero has no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/Lib/GraphInfo.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Database\\\\Lib\\\\PlotInfo\\:\\:\\$fillColor has no type specified\\.$#"
 			count: 1
 			path: src/Module/Database/Lib/PlotInfo.php
@@ -2800,11 +2795,6 @@ parameters:
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
 
 		-
-			message: "#^Constant _IMG_HANDLER not found\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:configureXAxis\\(\\) has parameter \\$graph with no type specified\\.$#"
 			count: 1
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
@@ -2851,31 +2841,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createPlots\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:graphInSrc\\(\\) has parameter \\$graph with no type specified\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
-			message: "#^Parameter \\#1 \\$stats of method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createImageSrc\\(\\) expects array\\<Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\GameTurnStatsInterface\\>, array\\<int, Stu\\\\Orm\\\\Entity\\\\GameTurnStatsInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
-			message: "#^Parameter \\#1 \\$str of function base64_encode expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
-			message: "#^Parameter \\$stats of method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createImageSrc\\(\\) has invalid type Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\GameTurnStatsInterface\\.$#"
-			count: 1
-			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
-
-		-
-			message: "#^Parameter \\$stats of method Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\ShowStatistics\\:\\:createPlots\\(\\) has invalid type Stu\\\\Module\\\\Database\\\\View\\\\ShowStatistics\\\\GameTurnStatsInterface\\.$#"
 			count: 1
 			path: src/Module/Database/View/ShowStatistics/ShowStatistics.php
 

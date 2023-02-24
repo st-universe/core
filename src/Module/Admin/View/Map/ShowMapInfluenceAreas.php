@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\View\Map;
 
 use request;
+use Stu\Component\Image\ImageCreationInterface;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -19,16 +20,34 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
     private LayerRepositoryInterface $layerRepository;
 
+    private ImageCreationInterface $imageCreation;
+
     public function __construct(
         MapRepositoryInterface $mapRepository,
-        LayerRepositoryInterface $layerRepository
+        LayerRepositoryInterface $layerRepository,
+        ImageCreationInterface $imageCreation
     ) {
         $this->mapRepository = $mapRepository;
         $this->layerRepository = $layerRepository;
+        $this->imageCreation = $imageCreation;
     }
 
     //TODO handle layer input
     public function handle(GameControllerInterface $game): void
+    {
+        $game->appendNavigationPart(
+            sprintf(
+                '/admin/?%s=1',
+                static::VIEW_IDENTIFIER
+            ),
+            _('Einflussgebiete')
+        );
+        $game->setTemplateFile('html/admin/influenceareas.xhtml');
+
+        $game->setTemplateVar('GRAPH', $this->imageCreation->gdImageInSrc($this->buildImage()));
+    }
+
+    private function buildImage()
     {
         $showAllyAreas = request::getInt('showAlly');
         $layer = $this->layerRepository->find(MapEnum::LAYER_ID_CRAGGANMORE);
@@ -96,9 +115,7 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
             imagecopy($img, $border, $curx, $cury, 0, 0, 15, 15);
             $curx += 15;
         }
-        header("Content-type: image/png");
-        imagepng($img);
-        imagedestroy($img);
-        exit;
+
+        return $img;
     }
 }
