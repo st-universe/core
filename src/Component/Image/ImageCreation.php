@@ -7,7 +7,7 @@ namespace Stu\Component\Image;
 use Amenadiel\JpGraph\Graph\Graph;
 use RuntimeException;
 
-final class ImageCreation
+final class ImageCreation implements ImageCreationInterface
 {
 
     public function graphInSrc(Graph $graph): string
