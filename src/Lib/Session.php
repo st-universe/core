@@ -3,6 +3,7 @@
 namespace Stu\Lib;
 
 use DateTimeImmutable;
+use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Exception\SessionInvalidException;
 use Stu\Module\Control\StuHashInterface;
@@ -176,7 +177,9 @@ final class Session implements SessionInterface
         if ($user === null) {
             $this->destroyLoginCookies();
             setcookie(session_name(), '', time() - 42000);
-            @session_destroy();
+            if (@session_destroy() === false) {
+                throw new RuntimeException('The session could not be destroyed');
+            }
 
             $this->user = null;
         }
