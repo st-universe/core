@@ -84,7 +84,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             ->createQuery(
                 sprintf(
                     'SELECT SUM(dbc.points) FROM %s dbc JOIN
-                    %s dbe ON dbe.category_id = dbc.id JOIN %s dbu ON
+                    %s dbe WITH dbe.category_id = dbc.id JOIN %s dbu WITH
                     dbu.database_id = dbe.id
                     WHERE dbu.user_id = :userId',
                     DatabaseCategory::class,
