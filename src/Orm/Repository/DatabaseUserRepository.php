@@ -83,13 +83,13 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT SUM(dbc.points) as points FROM %s dbu JOIN
-                    %s dbe ON dbe.id = dbu.database_id JOIN %s dbc ON
-                    dbc.id = dbe.category_id
-                    WHERE dbu.user_id  = :userId',
-                    DatabaseUser::class,
+                    'SELECT SUM(dbc.points) as points FROM %s dbc JOIN
+                    %s dbe ON dbe.category_id = dbc.id JOIN %s dbu ON
+                    dbu.database_id = dbe.id
+                    WHERE dbu.user_id = :userId',
                     DatabaseEntry::class,
-                    DatabaseCategory::class
+                    DatabaseCategory::class,
+                    DatabaseUser::class
                 )
             )
             ->setParameters([
