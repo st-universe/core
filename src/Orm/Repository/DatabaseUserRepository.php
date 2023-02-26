@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseUser;
+use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseUserInterface;
 
 /**
@@ -82,7 +83,12 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT COUNT(dbu.id) FROM %s dbu WHERE dbu.user_id = :userId',
+                    'SELECT SUM(dbc.points) FROM %s dbc JOIN
+                    %s dbe WITH dbe.category_id = dbc.id JOIN %s dbu WITH
+                    dbu.database_id = dbe.id
+                    WHERE dbu.user_id = :userId',
+                    DatabaseCategory::class,
+                    DatabaseEntry::class,
                     DatabaseUser::class
                 )
             )

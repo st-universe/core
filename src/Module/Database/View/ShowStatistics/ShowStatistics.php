@@ -8,10 +8,12 @@ use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use IntlDateFormatter;
 use request;
+use Stu\Component\Image\ImageCreationInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\Lib\GraphInfo;
 use Stu\Module\Database\Lib\PlotInfo;
+use Stu\Orm\Entity\GameTurnStatsInterface;
 use Stu\Orm\Repository\GameTurnStatsRepositoryInterface;
 
 final class ShowStatistics implements ViewControllerInterface
@@ -44,10 +46,14 @@ final class ShowStatistics implements ViewControllerInterface
 
     private GameTurnStatsRepositoryInterface $gameTurnStatsRepository;
 
+    private ImageCreationInterface $imageCreation;
+
     public function __construct(
-        GameTurnStatsRepositoryInterface $gameTurnStatsRepository
+        GameTurnStatsRepositoryInterface $gameTurnStatsRepository,
+        ImageCreationInterface $imageCreation
     ) {
         $this->gameTurnStatsRepository = $gameTurnStatsRepository;
+        $this->imageCreation = $imageCreation;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -163,7 +169,7 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->legend->SetFillColor('black');
         $graph->legend->SetFont(FF_ARIAL, FS_BOLD, 8);
 
-        return $this->graphInSrc($graph);
+        return $this->imageCreation->graphInSrc($graph);
     }
 
     private function createDataX(array $stats): array
@@ -260,16 +266,5 @@ final class ShowStatistics implements ViewControllerInterface
         $graph->yaxis->scale->SetGrace($yGrace, $yAxisStartAtZero ? 0 : $yGrace);
         $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 8);
         $graph->yaxis->SetColor('white', 'white');
-    }
-
-    private function graphInSrc($graph): string
-    {
-        $img = $graph->Stroke(_IMG_HANDLER);
-        ob_start();
-        imagepng($img);
-        $img_data = (string) ob_get_contents();
-        ob_end_clean();
-
-        return '<img src="data:image/png;base64,' . base64_encode($img_data) . '"/>';
     }
 }

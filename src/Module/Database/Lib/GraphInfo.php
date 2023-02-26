@@ -6,9 +6,12 @@ namespace Stu\Module\Database\Lib;
 
 final class GraphInfo
 {
-    public $title;
-    public $yAxisStartAtZero;
+    public string $title;
+
+    /** @var PlotInfo[] */
     private $plotInfos;
+
+    public bool $yAxisStartAtZero;
 
     function __construct(
         string $title,

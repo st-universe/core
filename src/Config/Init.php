@@ -32,6 +32,7 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/../Component/Game/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/GrapViz/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/History/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Component/Image/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Index/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Logging/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Player/services.php');
