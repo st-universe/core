@@ -42,6 +42,7 @@
     "crell/tukio": "^1.4",
     "crunzphp/crunz": "^3.4",
     "devster/ubench": "^2",
+    "doctrine/annotations": "^2.0",
     "doctrine/orm": "^2.6",
     "filp/whoops": "^2.5",
     "graphp/graphviz": "^0.2.1",
