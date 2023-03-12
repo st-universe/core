@@ -61,7 +61,7 @@ class ManageTorpedo implements ManagerInterface
 
         if ($isUnload) {
 
-            return $this->unloadTorpedo(abs($load), $wrapper, $managerProvider);
+            return $this->unloadTorpedo((int)abs($load), $wrapper, $managerProvider);
         } else {
             $selectedTorpedoTypeArray = $values['torp_type'] ?? null;
             $torpedoType = $this->determineTorpedoType($ship, $selectedTorpedoTypeArray);
