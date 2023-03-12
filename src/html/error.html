@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Error - Star Trek Universe</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      line-height: 1.3em;
+      font-family: Arial, Helvetica, Verdana, sans-serif;
+      font-size: 0.99em;
+    }
+
+    div.phaser {
+      animation-iteration-count: infinite;
+      padding-top: 8px;
+      height: 0px;
+      width: 1px;
+      border-bottom: 1px solid #ffa600;
+      -webkit-animation: increase 3s;
+      -moz-animation: increase 3s;
+      -o-animation: increase 3s;
+      animation: increase 3s;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes increase {
+      100% {
+        width: 200px;
+      }
+    }
+
+    div.header {
+      margin: auto;
+      width: 800px;
+      padding: 10px;
+    }
+
+    div.content {
+      padding-top: 100px;
+      margin: auto;
+      width: 418px;
+    }
+
+    div.message {
+      margin-top: 50px;
+      margin-right: auto;
+      margin-left: auto;
+      width: 600px;
+      color: #dddddd;
+    }
+
+    div.box div.box_title {
+      background-color: #121220;
+      color: #dddddd;
+      padding: 1px;
+      text-align: center;
+      font-weight: bold;
+      display: block;
+      width: 100%
+    }
+
+    div.box div.box_body {
+      margin-top: 3px;
+      padding: 3px;
+    }
+
+    div.box {
+      border: 1px solid #262323;
+      border-radius: 3px 3px 3px 3px;
+    }
+
+    a:link {
+      color: #a2a2a2;
+      text-decoration: none;
+    }
+
+    a:visited {
+      color: #dddddd;
+      text-decoration: none
+    }
+
+    a:hover {
+      color: #dddddd;
+    }
+
+    a:active {
+      color: #dddddd;
+      text-decoration: none
+    }
+  </style>
+  <script type="text/javascript">
+    function restart() {
+      document.getElementById('foe').src = '/assets/ships/8102.png';
+
+      let elm = document.getElementById('phaser');
+      let newone = elm.cloneNode(true);
+      elm.parentNode.replaceChild(newone, elm);
+
+      startAnimation(newone);
+    }
+
+    function destroy() {
+      document.getElementById('foe').src = '/assets/ships/wrack/8102.png';
+    }
+
+    function startAnimation(element) {
+      element.addEventListener('webkitAnimationEnd', () => destroy(), false);
+      element.addEventListener('animationend', () => destroy(), false);
+      element.addEventListener('oanimationend', () => destroy(), false);
+
+      setTimeout('restart()', 4000);
+    }
+  </script>
+</head>
+
+<body style="background: #000000" onload="startAnimation(document.getElementById('phaser'));">
+  <div class="header">
+    <a href="/">
+      <img src="/assets/main/banner.png" />
+    </a>
+  </div>
+  <div class="box message">
+    <div class="box_title">Ein Fehler ist aufgetreten</div>
+    <div class="box_body">
+      Keine Panik - Fehler passieren.<br />
+      Versuche es in einigen Minuten noch einmal.<br /><br />
+      Sollte der Fehler bestehen bleiben, dann hast Du vielleicht einen Bug gefunden - Glückwunsch!<br >
+      Wende dich in diesem Fall an das STU-Team und gib uns bitte folgende Informationen:<br />
+      - Request-Id: $REQUESTID<br />
+      - Eine Beschreibung, wie es zu dem Fehler kam (Wo hast du geklickt, etc.)<br />
+      <br />
+      Du erreichst uns hier: <a href="https://forum.stuniverse.de" target="_blank">Forum</a> | <a href="https://discord.gg/NK3fCdx" target="_blank">Chat</a>
+    </div>
+  </div>
+  <div class="content">
+    <div style="display: grid; grid-template-columns: 160px 200px 158px;">
+      <div><img src="/assets/ships/8101.png" /></div>
+      <div class="phaser" id="phaser"></div>
+      <div><img src="/assets/ships/8102.png" id="foe" /></div>
+    </div>
+  </div>
+</body>
+
+</html>

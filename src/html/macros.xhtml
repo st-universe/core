@@ -1,0 +1,161 @@
+<html xmlns:stu="stu">
+<tal:block metal:define-macro="pmwindow" tal:define="handle THIS/getUniqId">
+  <a tal:condition="php: USER.getId() != id" href="javascript:void(0);"
+    onmouseover="cp('${handle}','buttons/msg2', 'png');" onmouseout="cp('${handle}','buttons/msg1', 'png');"
+    onclick="closePopup();openPmWindow(${USER/getId}, ${id}, 1,1);"><img src="/assets/buttons/msg1.png"
+      tal:attributes="name handle" title="Nachricht senden" /></a>
+</tal:block>
+<tal:block metal:define-macro="userprofile" tal:define="handle THIS/getUniqId">
+  <a href="/userprofile.php?uid=${id}" onmouseover="cp('${handle}','buttons/info2', 'png');"
+    onmouseout="cp('${handle}','buttons/info1', 'png');"><img src="/assets/buttons/info1.png"
+      tal:attributes="name handle" title="Siedlerprofil ansehen" /></a>
+</tal:block>
+<tal:block metal:define-macro="ignoretext">
+  <span style="color: #c37700;">Sieder wird ignoriert</span>
+</tal:block>
+<tal:block metal:define-macro="ignorebutton">
+  <span id="runtime" tal:attributes="id div">
+    <input type="button" class="button" value="Siedler ignorieren" onclick="ignoreUser('${div}',${userid})" />
+  </span>
+</tal:block>
+<tal:block metal:define-macro="contactbutton">
+  <span id="runtime" tal:attributes="id div">
+    <tal:block metal:use-macro="html/commmacros.xhtml/clmodeselector" />
+    <input type="button" class="button" value="+ Kontakt" onclick="addUserContact('${div}',${userid})" />
+  </span>
+</tal:block>
+<metal:block metal:define-macro="userbox">
+  <div class="divbody userbox">
+    <div style="float: left; width: 50px;">
+      <metal:macro metal:use-macro="useravatar" tal:define="USER data" />
+    </div>
+    <div style="float: left; width: 250px; margin-left: 5px;">
+      <div class="darkbg">
+        <span tal:replace="structure bbcode:data/getName">NAME</span>
+      </div>
+      <a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getAlliance/getId}" tal:condition="data/getAlliance"
+        tal:content="structure bbcode:data/getAlliance/getName">NAME</a>
+      <br />
+      Spielt seit: ${datetime:data/getCreationDate}
+    </div>
+    <div style="float: left; width: 15px; text-align: right;">
+      <metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getId" />
+      <metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id data/getId" />
+      <img src="assets/rassen/${data/getFactionId}s.png" />
+    </div>
+  </div>
+</metal:block>
+<metal:macro metal:define-macro="commoditySelection">
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 20px;">
+        <img src="/assets/commodities/${commodityId}.png"
+          onclick="this.up('tr').down('.commodityAmount').value=${amount}" style="cursor: pointer;" title="${name}" />
+      </td>
+      <td style="width: 60px; vertical-align: middle;">
+        ${amount}
+      </td>
+      <td>
+        <input type="text" size="3" name="count[]" class="commodityAmount" />
+      </td>
+    </tr>
+  </table>
+</metal:macro>
+<metal:block metal:define-macro="starmap">
+  <div>
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>
+          <div onmouseover="cp('aup','buttons/b_up2')" onmouseout="cp('aup','buttons/b_up1')"
+            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="exists:NAV_UP"
+            onclick="showMapBy('${NAV_UP}');">
+            <img src="assets/buttons/b_up1.png" name="aup" />
+          </div>
+        </td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+          <div onmouseover="cp('aleft','buttons/b_from2')" onmouseout="cp('aleft','buttons/b_from1')"
+            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="exists:NAV_LEFT"
+            onclick="showMapBy('${NAV_LEFT}');">
+            <img src="assets/buttons/b_from1.png" name="aleft" />
+          </div>
+        </td>
+        <td style="width: 30px;">&nbsp;</td>
+        <td>
+          <table class="use">
+            <tr>
+              <th>x|y</th>
+              <th tal:repeat="head HEAD_ROW" tal:content="head">..</th>
+            </tr>
+            <tr tal:repeat="yrow MAP_FIELDS">
+              <th tal:content="yrow/getRow">y</th>
+              <td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
+                tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+                <div tal:condition="data/getIcon" title="${data/getTitle}" class="starmapInner"
+                  style="cursor: auto ! important;">
+                  <a tal:condition="data/getHref" href="${data/getHref}">
+                    <img src="/assets/map/${data/getIcon}.png" style=" height: 28px; width: 28px;" />
+                  </a>
+                  <img tal:condition="not:data/getHref" src="/assets/map/${data/getIcon}.png"
+                    style="height: 28px; width: 28px;" />
+                </div>
+                <tal:block tal:condition="not:data/getIcon">
+                  <div tal:condition="data/getTitle" title="${data/getTitle}" class="starmapInner"
+                    style="cursor: auto ! important;">&nbsp;
+                  </div>
+                  <div tal:condition="not:data/getTitle" class="starmapInner" style="cursor: auto ! important;">&nbsp;
+                  </div>
+                </tal:block>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td style="width: 30px;">&nbsp;</td>
+        <td>
+          <div onmouseover="cp('aright','buttons/b_to2')" onmouseout="cp('aright','buttons/b_to1')"
+            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="exists:NAV_RIGHT"
+            onclick="showMapBy('${NAV_RIGHT}');">
+            <img src="assets/buttons/b_to1.png" name="aright" />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>
+          <div onmouseover="cp('adown','buttons/b_down2')" onmouseout="cp('adown','buttons/b_down1')"
+            style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="exists:NAV_DOWN"
+            onclick="showMapBy('${NAV_DOWN}');">
+            <img src="assets/buttons/b_down1.png" name="adown" />
+          </div>
+        </td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+</metal:block>
+<metal:block metal:define-macro="crewimage">
+  <img phptal:cache="1d per crew/getId"
+    src="assets/crew/${crew/getRace/getGfxPath}/${crew/getGenderShort}/1_${crew/getType}.png" />
+</metal:block>
+<metal:macro metal:define-macro="useravatar">
+  <div class="userAvatar">
+    <a href="/userprofile.php?uid=${USER/getId}">
+      <img tal:condition="USER/getAvatar"
+        tal:attributes="src string:/${ASSET_PATHS/user}/${USER/getAvatar}.png; title bbcode2txt:USER/getName" />
+      <img tal:condition="not:USER/getAvatar"
+        tal:attributes="src string:/${ASSET_PATHS/faction}/${USER/getFactionId}kn.png; title bbcode2txt:USER/getName" />
+    </a>
+  </div>
+</metal:macro>
+<metal:macro metal:define-macro="table_cell">
+  <td id="${ID}">${INNERHTML}</td>
+</metal:macro>
+
+</html>

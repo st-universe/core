@@ -1,0 +1,16 @@
+data/Makefile
+src/Public/avatare
+src/Public/sites
+*.po~
+docu/de/_build/*
+vendor
+config.json
+config.json.backup
+src/Public/assets
+src/Public/version_*
+backup
+build
+OrmProxy
+src/lang/*/*/*.mo
+.php-cs-fixer.cache
+.githooks

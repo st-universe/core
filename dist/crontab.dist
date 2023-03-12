@@ -1,0 +1,6 @@
+#stu tick crons
+* * * * *             root cd /path/to/stu/core && vendor/bin/crunz schedule:run
+
+#stu sync cron
+* * * * *             root cd /path/to/stuniverse-source && git fetch && ./sync.sh
+* * * * *             root cd /path/to/stuniverse-assets && git fetch && ./sync.sh

@@ -1,0 +1,14 @@
+parameters:
+  level: 8
+  paths:
+    - src
+  excludePaths:
+    - src/OrmProxy
+    - src/html
+    - src/Public/assets
+  ignoreErrors:
+    - '#Property Stu\\Orm\\Entity\\(\w+)::\$(\w+) is never written, only read#'
+
+includes:
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+  - phpstan-baseline.neon

@@ -1,0 +1,20 @@
+version: '3'
+services:
+  stu-db:
+    image: postgres:12-alpine
+    hostname: stu_db
+    restart: always
+    environment:
+      POSTGRES_USER: stu
+      POSTGRES_PASSWORD: stu
+      POSTGRES_DB: stu_db
+    networks:
+      static-network:
+        ipv4_address: 172.40.128.2
+    volumes:
+      - ./dist/db:/dump
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.40.0.0/16

@@ -1,0 +1,249 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Trade\Action\DealsTakeAuction;
+
+use Stu\Exception\AccessViolation;
+use Stu\Component\Trade\TradeEnum;
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
+use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Module\Trade\View\ShowDeals\ShowDeals;
+use Stu\Orm\Entity\DealsInterface;
+use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+use Stu\Orm\Repository\DealsRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
+use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
+
+final class DealsTakeAuction implements ActionControllerInterface
+{
+    public const ACTION_IDENTIFIER = 'B_DEALS_TAKE_AUCTION';
+
+    private DealsTakeAuctionRequestInterface $dealstakeAuctionRequest;
+
+    private TradeLibFactoryInterface $tradeLibFactory;
+
+    private DealsRepositoryInterface $dealsRepository;
+
+    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
+
+    private TradePostRepositoryInterface $tradepostRepository;
+
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
+
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
+
+    private ShipCreatorInterface $shipCreator;
+
+    private ShipRepositoryInterface $shipRepository;
+
+    private CreatePrestigeLogInterface $createPrestigeLog;
+
+    private StuTime $stuTime;
+
+    public function __construct(
+        DealsTakeAuctionRequestInterface $dealstakeAuctionRequest,
+        TradeLibFactoryInterface $tradeLibFactory,
+        DealsRepositoryInterface $dealsRepository,
+        TradePostRepositoryInterface $tradepostRepository,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeTransactionRepositoryInterface $tradeTransactionRepository,
+        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        ShipCreatorInterface $shipCreator,
+        ShipRepositoryInterface $shipRepository,
+        CreatePrestigeLogInterface $createPrestigeLog,
+        StuTime $stuTime
+    ) {
+        $this->dealstakeAuctionRequest = $dealstakeAuctionRequest;
+        $this->tradeLibFactory = $tradeLibFactory;
+        $this->buildplanModuleRepository = $buildplanModuleRepository;
+        $this->tradepostRepository = $tradepostRepository;
+        $this->dealsRepository = $dealsRepository;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeTransactionRepository = $tradeTransactionRepository;
+        $this->createPrestigeLog = $createPrestigeLog;
+        $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->shipRepository = $shipRepository;
+        $this->shipCreator = $shipCreator;
+        $this->stuTime = $stuTime;
+    }
+
+    public function handle(GameControllerInterface $game): void
+    {
+        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $dealId = $this->dealstakeAuctionRequest->getDealId();
+        $game->setView(ShowDeals::VIEW_IDENTIFIER);
+
+        $auction = $this->dealsRepository->find($dealId);
+
+        if ($auction === null) {
+            $game->addInformation(_('Das Angebot ist nicht mehr verfügbar'));
+            return;
+        }
+
+        // sanity checks
+        if ($auction->getTakenTime() !== null) {
+            return;
+        }
+        if ($auction->getAuctionUser()->getId() !== $userId) {
+            return;
+        }
+
+
+        if (!$this->tradeLicenseRepository->hasFergLicense($userId)) {
+            throw new AccessViolation(sprintf(
+                _('UserId %d does not have license for Deals'),
+                $userId
+            ));
+        }
+
+        $neededStorageSpace = $this->determineNeededStorageSpace($auction);
+        $tradePost = $this->tradepostRepository->getFergTradePost(TradeEnum::DEALS_FERG_TRADEPOST_ID);
+        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $user);
+        $freeStorage = $storageManagerUser->getFreeStorage();
+
+        //check if enough space in storage
+        if ($neededStorageSpace > $freeStorage) {
+            $game->addInformationf(_('Dein Warenkonto auf diesem Handelsposten ist zu voll, es wird %d freier Lagerraum benötigt'), $neededStorageSpace);
+            return;
+        }
+
+        $currentBidAmount = $auction->getAuctionAmount();
+        $currentMaxAmount = $auction->getHighestBid()->getMaxAmount();
+
+        //give overpay back
+        if ($auction->getAuctionAmount() < $currentMaxAmount) {
+
+            //give prestige back
+            if ($auction->isPrestigeCost()) {
+
+                $description = sprintf(
+                    '%d Prestige: Du hast Prestige bei einer Auktion zurückerhalten, weil dein Maximalgebot über dem Höchstgebot lag',
+                    $currentMaxAmount - $currentBidAmount
+                );
+                $this->createPrestigeLog->createLog($currentMaxAmount - $currentBidAmount, $description, $user, time());
+
+                $game->addInformation(sprintf(
+                    _('Dir wurden %d Prestige gutgeschrieben'),
+                    $currentMaxAmount - $currentBidAmount,
+                ));
+            } else {
+
+                if ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
+                    $game->addInformation(sprintf(
+                        _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
+                        $currentMaxAmount - $currentBidAmount,
+                        $auction->getWantedCommodity()->getName()
+                    ));
+                    return;
+                } else {
+                    $storageManagerUser->upperStorage(
+                        $auction->getwantCommodityId(),
+                        $currentMaxAmount - $currentBidAmount
+                    );
+                    $game->addInformation(sprintf(
+                        _('Dir wurden %d %s auf diesem Handelsposten gutgeschrieben'),
+                        $currentMaxAmount - $currentBidAmount,
+                        $auction->getWantedCommodity()->getName()
+                    ));
+                }
+            }
+        }
+
+        if ($auction->getgiveCommodityId() !== null) {
+            $storageManagerUser->upperStorage(
+                (int) $auction->getgiveCommodityId(),
+                (int) $auction->getgiveCommodityAmount()
+            );
+
+            $game->addInformation(sprintf(_('Du hast %d %s erhalten'), (int) $auction->getgiveCommodityAmount(), $auction->getgiveCommodity()->getName()));
+        }
+
+        if ($auction->getShip() == true) {
+
+            $this->createShip($auction->getBuildplan(), $tradePost, $userId);
+            $game->addInformation(sprintf(_('Du hast dein Schiff erhalten')));
+        }
+
+        if ($auction->getShip() == false && $auction->getBuildplanId() !== null) {
+            $this->copyBuildplan($auction->getBuildplan(), $user);
+
+            $game->addInformation(sprintf(_('Du hast deinen Bauplan erhalten')));
+        }
+
+        $auction->setTakenTime($this->stuTime->time());
+        $this->dealsRepository->save($auction);
+    }
+
+    private function determineNeededStorageSpace(DealsInterface $auction): int
+    {
+        $result = 0;
+
+        if ($auction->getgiveCommodityId() !== null) {
+            $result += $auction->getgiveCommodityAmount();
+        }
+
+        if ($auction->getAuctionAmount() < $auction->getHighestBid()->getMaxAmount()) {
+            $result += $auction->getHighestBid()->getMaxAmount() - $auction->getAuctionAmount();
+        }
+
+        return $result;
+    }
+
+
+    private function createShip(ShipBuildplanInterface $buildplan, TradePostInterface $tradePost, int $userId): void
+    {
+        $wrapper = $this->shipCreator->createBy($userId, $buildplan->getRump()->getId(), $buildplan->getId());
+        $ship = $wrapper->get();
+
+        $ship->setReactorLoad((int)floor($ship->getReactorCapacity() / 4));
+        $ship->updateLocation($tradePost->getShip()->getMap(), $tradePost->getShip()->getStarsystemMap());
+
+        $eps = $wrapper->getEpsSystemData();
+        $eps->setEps((int)floor($eps->getTheoreticalMaxEps() / 4))->update();
+
+        $this->shipRepository->save($ship);
+    }
+
+    public function performSessionCheck(): bool
+    {
+        return true;
+    }
+
+    private function copyBuildplan(ShipBuildplanInterface $buildplan, UserInterface $user): void
+    {
+        //copying buildplan
+        $newPlan = $this->shipBuildplanRepository->prototype();
+        $newPlan->setUser($user);
+        $newPlan->setRump($buildplan->getRump());
+        $newPlan->setName($buildplan->getName());
+        $newPlan->setSignature($buildplan->getSignature());
+        $newPlan->setBuildtime($buildplan->getBuildtime());
+        $newPlan->setCrew($buildplan->getCrew());
+
+        $this->shipBuildplanRepository->save($newPlan);
+
+        //copying buildplan modules
+        foreach ($buildplan->getModules() as $buildplanModule) {
+            $mod = $this->buildplanModuleRepository->prototype();
+            $mod->setModuleType((int) $buildplanModule->getModule()->getType());
+            $mod->setBuildplan($newPlan);
+            $mod->setModule($buildplanModule->getModule());
+            $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($buildplanModule->getModule()->getSpecials()));
+            $this->buildplanModuleRepository->save($mod);
+        }
+    }
+}
