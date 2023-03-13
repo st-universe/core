@@ -10,6 +10,8 @@ use Stu\Orm\Entity\AllianceRelationInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
+use Stu\Component\Crew\CrewCountRetrieverInterface;
 
 
 /**
@@ -21,26 +23,40 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
 
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
+    private CrewCountRetrieverInterface $crewCountRetriever;
+
+    private CrewLimitCalculatorInterface $crewLimitCalculator;
+
 
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        CrewCountRetrieverInterface $crewCountRetriever,
+        CrewLimitCalculatorInterface $crewLimitCalculator
+
     ) {
         $this->allianceJobRepository = $allianceJobRepository;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->crewCountRetriever = $crewCountRetriever;
+        $this->crewLimitCalculator = $crewLimitCalculator;
     }
 
     public function createManagementListItem(
         AllianceInterface $alliance,
         UserInterface $user,
-        int $currentUserId
+        int $currentUserId,
+        $crewCountRetriever,
+        $crewLimitCalculator
     ): ManagementListItem {
         return new ManagementListItem(
             $this->allianceJobRepository,
             $this->shipRumpRepository,
             $alliance,
             $user,
-            $currentUserId
+            $currentUserId,
+            $crewCountRetriever,
+            $crewLimitCalculator
+
         );
     }
 

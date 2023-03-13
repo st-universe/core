@@ -9,6 +9,8 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
+use Stu\Component\Crew\CrewCountRetrieverInterface;
 
 /**
  * Service class for wrapping alliance members for UI purposes
@@ -25,18 +27,26 @@ final class ManagementListItem
 
     private int $currentUserId;
 
+    private CrewCountRetrieverInterface $crewCountRetriever;
+
+    private CrewLimitCalculatorInterface $crewLimitCalculator;
+
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         AllianceInterface $alliance,
         UserInterface $user,
-        int $currentUserId
+        int $currentUserId,
+        CrewLimitCalculatorInterface $crewLimitCalculator,
+        CrewCountRetrieverInterface $crewCountRetriever
     ) {
         $this->user = $user;
         $this->currentUserId = $currentUserId;
         $this->alliance = $alliance;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->crewCountRetriever = $crewCountRetriever;
+        $this->crewLimitCalculator = $crewLimitCalculator;
     }
 
     /**
@@ -69,6 +79,16 @@ final class ManagementListItem
     public function getLastActionDate(): int
     {
         return $this->user->getLastAction();
+    }
+
+    public function getCrewOnShips(): int
+    {
+        return $this->crewCountRetriever->getAssignedToShipsCount($this->user);
+    }
+
+    public function getCrewLimit(): int
+    {
+        return $this->crewLimitCalculator->getGlobalCrewLimit($this->user);
     }
 
     /**

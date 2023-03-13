@@ -15,7 +15,9 @@ interface AllianceUiFactoryInterface
     public function createManagementListItem(
         AllianceInterface $alliance,
         UserInterface $user,
-        int $currentUserId
+        int $currentUserId,
+        $crewCountRetriever,
+        $crewLimitCalculator
     ): ManagementListItem;
 
     public function createAllianceListItem(
