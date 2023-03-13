@@ -44,9 +44,7 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
     public function createManagementListItem(
         AllianceInterface $alliance,
         UserInterface $user,
-        int $currentUserId,
-        $crewCountRetriever,
-        $crewLimitCalculator
+        int $currentUserId
     ): ManagementListItem {
         return new ManagementListItem(
             $this->allianceJobRepository,
@@ -54,9 +52,8 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
             $alliance,
             $user,
             $currentUserId,
-            $crewCountRetriever,
-            $crewLimitCalculator
-
+            $this->crewLimitCalculator,
+            $this->crewCountRetriever
         );
     }
 

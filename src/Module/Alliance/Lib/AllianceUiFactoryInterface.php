@@ -16,8 +16,6 @@ interface AllianceUiFactoryInterface
         AllianceInterface $alliance,
         UserInterface $user,
         int $currentUserId,
-        $crewCountRetriever,
-        $crewLimitCalculator
     ): ManagementListItem;
 
     public function createAllianceListItem(
