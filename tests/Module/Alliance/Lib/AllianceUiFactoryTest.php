@@ -12,6 +12,8 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\StuTestCase;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
+use Stu\Component\Crew\CrewCountRetrieverInterface;
 
 class AllianceUiFactoryTest extends StuTestCase
 {
@@ -21,16 +23,27 @@ class AllianceUiFactoryTest extends StuTestCase
     /** @var MockInterface&ShipRumpRepositoryInterface */
     private MockInterface $shipRumpRepository;
 
+    /** @var MockInterface&CrewCountRetrieverInterface */
+    private MockInterface $crewCountRetriever;
+
+    /** @var MockInterface&CrewLimitCalculatorInterface */
+    private MockInterface $crewLimitCalculator;
+
     private AllianceUiFactory $subject;
 
     protected function setUp(): void
     {
         $this->allianceJobRepository = $this->mock(AllianceJobRepositoryInterface::class);
         $this->shipRumpRepository = $this->mock(ShipRumpRepositoryInterface::class);
+        $this->crewLimitCalculator = $this->mock(CrewLimitCalculatorInterface::class);
+        $this->crewCountRetriever = $this->mock(CrewCountRetrieverInterface::class);
+
 
         $this->subject = new AllianceUiFactory(
             $this->allianceJobRepository,
-            $this->shipRumpRepository
+            $this->shipRumpRepository,
+            $this->crewCountRetriever,
+            $this->crewLimitCalculator
         );
     }
 
