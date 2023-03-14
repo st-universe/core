@@ -1639,6 +1639,10 @@
           <img src="assets/buttons/eps.png" title="Energiespeicher" /> +<span
             tal:replace="FIELD/getBuilding/getEpsStorage">EPSSTORAGE</span>
         </div>
+        <div tal:condition="FIELD/getBuilding/getShieldCapacity">
+          <img src="assets/buttons/shldp2.png" title="Schilde" /> +<span
+            tal:replace="FIELD/getBuilding/getShieldCapacity">SHIELDS</span>
+        </div>
         <div tal:condition="FIELD/getBuilding/isActivateable">
           <br />
           <strong>Produktion</strong>
