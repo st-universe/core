@@ -1418,6 +1418,10 @@
             <img src="assets/buttons/eps.png" title="Energiespeicher" /> +<span
               tal:replace="building/getEpsStorage">EPSSTORAGE</span>
           </div>
+          <div tal:condition="building/getShieldCapacity">
+            <img src="assets/buttons/shldp2.png" title="Schilde" /> +<span
+              tal:replace="building/getShieldCapacity">SHIELDS</span>
+          </div>
         </td>
       </tr>
     </table>

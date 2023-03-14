@@ -101,4 +101,6 @@ interface BuildingInterface
     public function getFunctions(): Collection;
 
     public function isRemovable(): bool;
+
+    public function getShieldCapacity(): int;
 }
