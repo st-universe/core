@@ -397,7 +397,7 @@ class Building implements BuildingInterface
         return $this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_CENTRAL) === false;
     }
 
-    public function getShieldCapacity(): int
+    public function getShieldCapacity(): ?int
     {
         if ($this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR) === true) {
             return BuildingEnum::SHIELD_GENERATOR_CAPACITY;
