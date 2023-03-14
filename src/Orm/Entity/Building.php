@@ -406,5 +406,6 @@ class Building implements BuildingInterface
         if ($this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY) === true) {
             return BuildingEnum::SHIELD_BATTERY_CAPACITY;
         }
+        return null;
     }
 }
