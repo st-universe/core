@@ -7,6 +7,9 @@ namespace Stu\Lib\ShipManagement\Manager;
 use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
@@ -24,35 +27,45 @@ class ManageTorpedo implements ManagerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         ShipTorpedoManagerInterface $shipTorpedoManager,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->shipTorpedoManager = $shipTorpedoManager;
         $this->privateMessageSender = $privateMessageSender;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function manage(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array
     {
+        $this->loggerUtil->init('torp', LoggerEnum::LEVEL_WARNING);
+
         $torp = $values['torp'] ?? null;
         if ($torp === null) {
             throw new RuntimeException('value array not existent');
         }
 
+        $this->loggerUtil->log('A');
         $ship = $wrapper->get();
 
         if (!array_key_exists($ship->getId(), $torp)) {
+            $this->loggerUtil->log('B');
             return [];
         }
 
         $count = $this->determineCount($torp[$ship->getId()], $ship);
 
         if ($count < 0) {
+            $this->loggerUtil->log('C');
             return [];
         }
         if ($count === $ship->getTorpedoCount()) {
+            $this->loggerUtil->log('D');
             return [];
         }
 
@@ -60,9 +73,11 @@ class ManageTorpedo implements ManagerInterface
         $isUnload = $load < 0;
 
         if ($isUnload) {
+            $this->loggerUtil->log('E');
 
             return $this->unloadTorpedo((int)abs($load), $wrapper, $managerProvider);
         } else {
+            $this->loggerUtil->log('F');
             $selectedTorpedoTypeArray = $values['torp_type'] ?? null;
             $torpedoType = $this->determineTorpedoType($ship, $selectedTorpedoTypeArray);
 
@@ -106,12 +121,14 @@ class ManageTorpedo implements ManagerInterface
         $ship = $wrapper->get();
 
         if ($ship->getUser() !== $user) {
+            $this->loggerUtil->log('G');
             return [];
         }
 
         $torpedoType = $ship->getTorpedo();
 
         if ($torpedoType === null) {
+            $this->loggerUtil->log('H');
             return [];
         }
 
@@ -165,6 +182,7 @@ class ManageTorpedo implements ManagerInterface
         $ship = $wrapper->get();
 
         if ($torpedoType === null) {
+            $this->loggerUtil->log('I');
             return [];
         }
 

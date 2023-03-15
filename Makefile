@@ -47,7 +47,7 @@ clearCache:force
 	bin/doctrine orm:clear-cache:query
 
 migrateDatabase:force
-	bin/doctrine orm:schema-tool:update --force
+	bin/doctrine orm:schema-tool:update --force --complete
 	bin/doctrine orm:generate-proxies
 
 showDatabaseChanges:force

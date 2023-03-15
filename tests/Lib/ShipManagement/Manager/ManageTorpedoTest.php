@@ -13,7 +13,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -35,9 +34,6 @@ class ManageTorpedoTest extends StuTestCase
     /** @var MockInterface&ShipWrapperInterface */
     private MockInterface $wrapper;
 
-    /** @var MockInterface&ShipBuildplanInterface */
-    private MockInterface $buildplan;
-
     /** @var MockInterface&ShipInterface */
     private MockInterface $ship;
 
@@ -58,7 +54,6 @@ class ManageTorpedoTest extends StuTestCase
 
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->ship = $this->mock(ShipInterface::class);
-        $this->buildplan = $this->mock(ShipBuildplanInterface::class);
         $this->user = $this->mock(UserInterface::class);
         $this->torpedoType = $this->mock(TorpedoTypeInterface::class);
         $this->managerProvider = $this->mock(ManagerProviderInterface::class);
@@ -66,7 +61,8 @@ class ManageTorpedoTest extends StuTestCase
         $this->subject = new ManageTorpedo(
             $this->torpedoTypeRepository,
             $this->shipTorpedoManager,
-            $this->privateMessageSender
+            $this->privateMessageSender,
+            $this->initLoggerUtil()
         );
     }
 
