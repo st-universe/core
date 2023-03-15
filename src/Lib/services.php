@@ -9,6 +9,7 @@ use Stu\Lib\ShipManagement\HandleManagersInterface;
 use Stu\Lib\ShipManagement\Manager\ManageBattery;
 use Stu\Lib\ShipManagement\Manager\ManageMan;
 use Stu\Lib\ShipManagement\Manager\ManageReactor;
+use Stu\Lib\ShipManagement\Manager\ManageTorpedo;
 use Stu\Lib\ShipManagement\Manager\ManageUnman;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactory;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
@@ -25,6 +26,7 @@ return [
             autowire(ManageMan::class),
             autowire(ManageUnman::class),
             autowire(ManageReactor::class),
+            autowire(ManageTorpedo::class),
         ]
     )
 ];
