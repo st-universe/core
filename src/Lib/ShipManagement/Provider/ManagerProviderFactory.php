@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Lib\ShipManagement\Provider;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
@@ -21,7 +21,7 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
+    private TroopTransferUtilityInterface $troopTransferUtility;
 
     private ColonyStorageManagerInterface $colonyStorageManager;
 
@@ -31,14 +31,14 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
         CrewCreatorInterface $crewCreator,
         ColonyLibFactoryInterface $colonyLibFactory,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
+        TroopTransferUtilityInterface $troopTransferUtility,
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->crewCreator = $crewCreator;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->shipCrewRepository = $shipCrewRepository;
-        $this->shipCrewCalculator = $shipCrewCalculator;
+        $this->troopTransferUtility = $troopTransferUtility;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
     }
@@ -59,7 +59,7 @@ class ManagerProviderFactory implements ManagerProviderFactoryInterface
         return new ManagerProviderStation(
             $wrapper,
             $this->crewCreator,
-            $this->shipCrewCalculator,
+            $this->troopTransferUtility,
             $this->shipCrewRepository,
             $this->shipStorageManager
         );

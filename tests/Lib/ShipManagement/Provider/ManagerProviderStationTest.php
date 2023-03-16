@@ -8,11 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Mockery\MockInterface;
 use RuntimeException;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -28,8 +28,8 @@ class ManagerProviderStationTest extends StuTestCase
     /** @var MockInterface&CrewCreatorInterface */
     private MockInterface $crewCreator;
 
-    /** @var MockInterface&ShipCrewCalculatorInterface */
-    private MockInterface $shipCrewCalculator;
+    /** @var MockInterface&TroopTransferUtilityInterface */
+    private MockInterface $troopTransferUtility;
 
     /** @var MockInterface&ShipCrewRepositoryInterface */
     private MockInterface $shipCrewRepository;
@@ -45,7 +45,7 @@ class ManagerProviderStationTest extends StuTestCase
     {
         $this->wrapper = $this->mock(ShipWrapperInterface::class);
         $this->crewCreator = $this->mock(CrewCreatorInterface::class);
-        $this->shipCrewCalculator = $this->mock(ShipCrewCalculatorInterface::class);
+        $this->troopTransferUtility = $this->mock(TroopTransferUtilityInterface::class);
         $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
         $this->shipStorageManager = $this->mock(ShipStorageManagerInterface::class);
 
@@ -54,7 +54,7 @@ class ManagerProviderStationTest extends StuTestCase
         $this->subject = new ManagerProviderStation(
             $this->wrapper,
             $this->crewCreator,
-            $this->shipCrewCalculator,
+            $this->troopTransferUtility,
             $this->shipCrewRepository,
             $this->shipStorageManager
         );
@@ -198,15 +198,10 @@ class ManagerProviderStationTest extends StuTestCase
             ->once()
             ->andReturn($this->station);
 
-        $this->station->shouldReceive('getCrewCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(16);
-
-        $this->shipCrewCalculator->shouldReceive('getMaxCrewCountByShip')
+        $this->troopTransferUtility->shouldReceive('getFreeQuarters')
             ->with($this->station)
             ->once()
-            ->andReturn(20);
+            ->andReturn(4);
 
         $this->assertFalse($this->subject->isAbleToStoreCrew(5));
     }
@@ -218,15 +213,10 @@ class ManagerProviderStationTest extends StuTestCase
             ->once()
             ->andReturn($this->station);
 
-        $this->station->shouldReceive('getCrewCount')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(15);
-
-        $this->shipCrewCalculator->shouldReceive('getMaxCrewCountByShip')
+        $this->troopTransferUtility->shouldReceive('getFreeQuarters')
             ->with($this->station)
             ->once()
-            ->andReturn(20);
+            ->andReturn(5);
 
         $this->assertTrue($this->subject->isAbleToStoreCrew(5));
     }

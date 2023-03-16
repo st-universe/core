@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\Crew;
 
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrewInterface;
@@ -40,7 +39,7 @@ final class ShipCrewCalculator implements ShipCrewCalculatorInterface
     ): ?ShipRumpCategoryRoleCrewInterface {
         return $this->shipRumpCategoryRoleCrewRepository
             ->getByShipRumpCategoryAndRole(
-                 $shipRump->getCategoryId(),
+                $shipRump->getCategoryId(),
                 (int) $shipRump->getRoleId()
             );
     }
@@ -52,7 +51,7 @@ final class ShipCrewCalculator implements ShipCrewCalculatorInterface
 
         $crewCount = $this->getMaxCrewCountByRump($rump);
 
-        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
+        if ($ship->isTroopQuartersHealthy()) {
             if ($rump->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE) {
                 $crewCount += TroopQuartersShipSystem::QUARTER_COUNT_BASE;
             } else {

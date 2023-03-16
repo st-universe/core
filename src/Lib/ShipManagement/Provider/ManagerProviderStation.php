@@ -6,10 +6,10 @@ namespace Stu\Lib\ShipManagement\Provider;
 
 use Doctrine\Common\Collections\Collection;
 use RuntimeException;
-use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -21,7 +21,7 @@ class ManagerProviderStation implements ManagerProviderInterface
 
     private CrewCreatorInterface $crewCreator;
 
-    private ShipCrewCalculatorInterface $shipCrewCalculator;
+    private TroopTransferUtilityInterface $troopTransferUtility;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
@@ -30,13 +30,13 @@ class ManagerProviderStation implements ManagerProviderInterface
     public function __construct(
         ShipWrapperInterface $wrapper,
         CrewCreatorInterface $crewCreator,
-        ShipCrewCalculatorInterface $shipCrewCalculator,
+        TroopTransferUtilityInterface $troopTransferUtility,
         ShipCrewRepositoryInterface $shipCrewRepository,
         ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->wrapper = $wrapper;
         $this->crewCreator = $crewCreator;
-        $this->shipCrewCalculator = $shipCrewCalculator;
+        $this->troopTransferUtility = $troopTransferUtility;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->shipStorageManager = $shipStorageManager;
     }
@@ -100,7 +100,7 @@ class ManagerProviderStation implements ManagerProviderInterface
     {
         $station = $this->wrapper->get();
 
-        $freeAssignmentCount = $this->shipCrewCalculator->getMaxCrewCountByShip($station) - $station->getCrewCount();
+        $freeAssignmentCount = $this->troopTransferUtility->getFreeQuarters($station);
 
         return $freeAssignmentCount >= $amount;
     }
