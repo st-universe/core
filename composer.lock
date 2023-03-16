@@ -8805,7 +8805,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "dae542145125d7dcd9b2434627073980bd2fa97f"
+                "reference": "c68770a3c7f8616ae7881a244f6579e3980879fc"
             },
             "require": {
                 "ext-gd": "*",
