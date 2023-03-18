@@ -36,24 +36,30 @@ final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInterface
         $gameFallbackUser = $this->userRepository->getFallbackUser();
         $userId = $user->getId();
 
-        foreach ($this->rpgPlotRepository->getByFoundingUser($userId) as $obj) {
+        foreach ($this->rpgPlotRepository->getByFoundingUser($userId) as $plot) {
 
-            $item = $this->rpgPlotMemberRepository->getByPlotAndUser($obj->getId(), $userId);
+            $members = $plot->getMembers();
+
+            /**
+             * @var RpgPlotMemberInterface|null
+             */
+            $item = $members->get($userId);
             if ($item !== null) {
                 $this->rpgPlotMemberRepository->delete($item);
+                $members->remove($userId);
             }
 
-            $members = $obj->getMembers();
-
-            if ($members->count() > 0) {
-                /** @var RpgPlotMemberInterface $member */
-                $member = $members->current();
-                $obj->setUser($member->getUser());
+            /**
+             * @var RpgPlotMemberInterface|false
+             */
+            $firstMember = $members->first();
+            if ($firstMember) {
+                $plot->setUser($firstMember->getUser());
             } else {
-                $obj->setUser($gameFallbackUser);
+                $plot->setUser($gameFallbackUser);
             }
 
-            $this->rpgPlotRepository->save($obj);
+            $this->rpgPlotRepository->save($plot);
         }
     }
 }

@@ -18,7 +18,7 @@ use Stu\Orm\Entity\UserInterface;
 interface RpgPlotRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<RpgPlotInterface>
+     * @return array<RpgPlotInterface>
      */
     public function getByFoundingUser(int $userId): array;
 
@@ -29,22 +29,22 @@ interface RpgPlotRepositoryInterface extends ObjectRepository
     public function delete(RpgPlotInterface $rpgPlot): void;
 
     /**
-     * @return list<RpgPlotInterface>
+     * @return array<RpgPlotInterface>
      */
     public function getActiveByUser(int $userId): array;
 
     /**
-     * @return list<RpgPlotInterface>
+     * @return array<RpgPlotInterface>
      */
     public function getByUser(UserInterface $user): array;
 
     /**
-     * @return list<RpgPlotInterface>
+     * @return array<RpgPlotInterface>
      */
     public function getEmptyOldPlots(int $maxAge): array;
 
     /**
-     * @return list<RpgPlotInterface>
+     * @return array<RpgPlotInterface>
      */
     public function getOrderedList(): array;
 }
