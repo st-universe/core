@@ -5,6 +5,7 @@ namespace Stu\Module\Maintenance;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EmptyPlotDeletion implements MaintenanceHandlerInterface
@@ -13,13 +14,17 @@ final class EmptyPlotDeletion implements MaintenanceHandlerInterface
 
     private RpgPlotRepositoryInterface $rpgPlotRepository;
 
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         RpgPlotRepositoryInterface $rpgPlotRepository,
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -36,6 +41,8 @@ final class EmptyPlotDeletion implements MaintenanceHandlerInterface
                     $member->getUser()->getId(),
                     sprintf($txtTemplate, $plot->getTitle())
                 );
+
+                $this->rpgPlotMemberRepository->delete($member);
             }
 
             // delete plot

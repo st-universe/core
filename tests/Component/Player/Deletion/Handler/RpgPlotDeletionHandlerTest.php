@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
@@ -49,26 +50,19 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
         $rpgPlotMemberUser = Mockery::mock(RpgPlotMemberInterface::class);
         $newRpgPlotMemberUser = Mockery::mock(RpgPlotMemberInterface::class);
 
+        $members = new ArrayCollection([666 => $rpgPlotMemberUser, $newRpgPlotMemberUser]);
+
         $userId = 666;
-        $plotId = 42;
 
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
 
-        $rpgPlot->shouldReceive('getId')
+        $rpgPlot->shouldReceive('getMembers')
             ->withNoArgs()
             ->once()
-            ->andReturn($plotId);
-        $rpgPlot->shouldReceive('getMembers->count')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(33);
-        $rpgPlot->shouldReceive('getMembers->current')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($newRpgPlotMemberUser);
+            ->andReturn($members);
         $rpgPlot->shouldReceive('setUser')
             ->with($newUser)
             ->once();
@@ -86,10 +80,6 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
             ->with($rpgPlot)
             ->once();
 
-        $this->rpgPlotMemberRepository->shouldReceive('getByPlotAndUser')
-            ->with($plotId, $userId)
-            ->once()
-            ->andReturn($rpgPlotMemberUser);
         $this->rpgPlotMemberRepository->shouldReceive('delete')
             ->with($rpgPlotMemberUser)
             ->once();
@@ -108,22 +98,19 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
         $gameFallbackUser = Mockery::mock(UserInterface::class);
         $rpgPlot = Mockery::mock(RpgPlotInterface::class);
 
+        $members = new ArrayCollection([]);
+
         $userId = 666;
-        $plotId = 42;
 
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
 
-        $rpgPlot->shouldReceive('getId')
+        $rpgPlot->shouldReceive('getMembers')
             ->withNoArgs()
             ->once()
-            ->andReturn($plotId);
-        $rpgPlot->shouldReceive('getMembers->count')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(0);
+            ->andReturn($members);
         $rpgPlot->shouldReceive('setUser')
             ->with($gameFallbackUser)
             ->once();
@@ -135,11 +122,6 @@ class RpgPlotDeletionHandlerTest extends MockeryTestCase
         $this->rpgPlotRepository->shouldReceive('save')
             ->with($rpgPlot)
             ->once();
-
-        $this->rpgPlotMemberRepository->shouldReceive('getByPlotAndUser')
-            ->with($plotId, $userId)
-            ->once()
-            ->andReturnNull();
 
         $this->userRepository->shouldReceive('getFallbackUser')
             ->withNoArgs()
