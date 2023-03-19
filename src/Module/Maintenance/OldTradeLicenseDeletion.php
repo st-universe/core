@@ -44,7 +44,6 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
         $almostExpiredLicenses = $this->tradeLicenseRepository->getLicensesExpiredInLessThan(self::INFORM_ABOUT_ALMOST_EXPIRED_IN_DAYS);
 
         foreach ($almostExpiredLicenses as $license) {
-
             //skip just deleted licenses
             if (array_key_exists($license->getId(), $deletedLicenses)) {
                 continue;
@@ -77,7 +76,6 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
         $licensesToDelete = $this->tradeLicenseRepository->getExpiredLicenses();
 
         foreach ($licensesToDelete as $license) {
-
             $latestLicenseInfo = $this->tradeLicenseInfoRepository->getLatestLicenseInfo($license->getTradePostId());
 
             // send message to user

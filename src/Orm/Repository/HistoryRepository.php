@@ -42,7 +42,8 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
                 $search ? [
                     'typeId' => $typeId,
                     'search' => sprintf('%%%s%%', $search)
-                ] : ['typeId' => $typeId])
+                ] : ['typeId' => $typeId]
+            )
             ->setMaxResults($limit)
             ->getResult();
     }

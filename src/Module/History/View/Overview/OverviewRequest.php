@@ -19,7 +19,8 @@ final class OverviewRequest implements OverviewRequestInterface
         return $value;
     }
 
-    public function getCount(int $default): int{
+    public function getCount(int $default): int
+    {
         return $this->queryParameter('hcount')->int()->defaultsTo($default);
     }
 }

@@ -81,7 +81,9 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
      */
     private function getFixture(string $usedShipKey, array $attacker, array $defender): array
     {
-        if ($attacker === []) die();
+        if ($attacker === []) {
+            die();
+        }
 
         $attackingShip = $attacker[array_rand($attacker)];
         $this->usedShips[$usedShipKey][$attackingShip->get()->getId()] = $attackingShip;

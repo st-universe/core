@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsBidAuction;
 
-use Stu\Exception\AccessViolation;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\AuctionBidInterface;
 use Stu\Orm\Entity\DealsInterface;
+use Stu\Orm\Repository\AuctionBidRepositoryInterface;
+use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use Stu\Orm\Repository\DealsRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
-use Stu\Orm\Repository\AuctionBidRepositoryInterface;
 
 final class DealsBidAuction implements ActionControllerInterface
 {
@@ -191,7 +191,6 @@ final class DealsBidAuction implements ActionControllerInterface
         $game->addInformation(sprintf(_('Dein Maximalgebot hat nicht ausgereicht. Höchstgebot liegt nun bei %d'), $newAmount));
 
         if ($auction->isPrestigeCost()) {
-
             $this->privateMessageSender->send(
                 UserEnum::USER_NPC_FERG,
                 $auction->getHighestBid()->getUserId(),

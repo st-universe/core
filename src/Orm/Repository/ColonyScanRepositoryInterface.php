@@ -3,8 +3,8 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\ColonyScanInterface;
 use Stu\Orm\Entity\ColonyScan;
+use Stu\Orm\Entity\ColonyScanInterface;
 
 /**
  * @extends ObjectRepository<ColonyScan>

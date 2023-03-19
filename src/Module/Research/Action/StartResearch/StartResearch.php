@@ -13,7 +13,6 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class StartResearch implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_DO_RESEARCH';
 
     private ResearchedRepositoryInterface $researchedRepository;

@@ -9,7 +9,6 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
@@ -34,7 +33,7 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         $shipSystemRepository->save($system);
     }
 
-    public abstract function getSystemType(): int;
+    abstract public function getSystemType(): int;
 
     public function activate(ShipWrapperInterface $wrapper, ShipSystemManagerInterface $manager): void
     {

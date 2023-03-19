@@ -10,8 +10,8 @@ final class GiveUpRequest implements GiveUpRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getColonyId(): int {
+    public function getColonyId(): int
+    {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

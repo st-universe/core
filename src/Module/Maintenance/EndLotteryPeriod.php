@@ -90,7 +90,6 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
         //set winner and loser
         for ($i = 0; $i < $ticketCount; $i++) {
-
             $ticket = $tickets[$i];
             $user = $ticket->getUser();
 
@@ -129,7 +128,6 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
         //PM to all losers
         foreach ($losers as $loserId => $user) {
-
             //skip winner if he had more than one ticket
             if ($user === $winner) {
                 continue;
@@ -152,7 +150,6 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
         //give random users a ticket
         foreach ($this->userRepository->getNonNpcList() as $user) {
-
             $winRateInPercent = 10 * ($user->getId() - UserEnum::USER_FIRST_ID) / $userCount;
 
             if (rand(1, 100) > $winRateInPercent) {

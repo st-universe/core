@@ -12,7 +12,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CheckInput implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_CHECK_REGVAR';
     public const REGISTER_STATE_OK = "OK";
     public const REGISTER_STATE_NOK = "NA";

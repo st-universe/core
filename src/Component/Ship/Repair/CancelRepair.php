@@ -45,7 +45,7 @@ final class CancelRepair implements CancelRepairInterface
             $this->stationShipRepairRepository->truncateByShipId($ship->getId());
 
             return true;
-        } else if ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
+        } elseif ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
             $this->setStateNoneAndSave($ship);
 
             $this->repairTaskRepository->truncateByShipId($ship->getId());

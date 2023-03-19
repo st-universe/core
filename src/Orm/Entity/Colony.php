@@ -19,7 +19,6 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
-use Stu\Lib\ColonyProduction\ColonyProduction;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")

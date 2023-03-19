@@ -126,7 +126,7 @@ class ModuleSelector implements ModuleSelectorInterface
                         $this->getRump()->getId(),
                         $this->getShipRumpRoleId()
                     );
-                } else if ($this->station !== null) {
+                } elseif ($this->station !== null) {
                     $modules = $this->moduleRepository->getBySpecialTypeShipAndRump(
                         $this->station->getId(),
                         $this->getModuleType(),
@@ -135,7 +135,6 @@ class ModuleSelector implements ModuleSelectorInterface
                     );
                 }
             } else {
-
                 if ($this->getColony() !== null) {
                     $mod_level = $this->shipRumpModuleLevelRepository->getByShipRump(
                         $this->getRump()->getId()

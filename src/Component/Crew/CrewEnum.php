@@ -6,7 +6,6 @@ namespace Stu\Component\Crew;
 
 final class CrewEnum
 {
-
     /**
      * @var int
      */

@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message;
 
-use Stu\Module\Message\Lib\PrivateMessageUiFactory;
-use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
-use Stu\Module\Message\Lib\PrivateMessageSender;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Message\Action\AddContact\AddContact;
 use Stu\Module\Message\Action\AddContact\AddContactRequest;
@@ -53,14 +49,19 @@ use Stu\Module\Message\Action\SwitchContactMode\SwitchContactModeRequestInterfac
 use Stu\Module\Message\Action\WritePm\WritePm;
 use Stu\Module\Message\Action\WritePm\WritePmRequest;
 use Stu\Module\Message\Action\WritePm\WritePmRequestInterface;
+use Stu\Module\Message\Lib\PrivateMessageSender;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageUiFactory;
+use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Message\View\Noop\Noop;
 use Stu\Module\Message\View\Overview\Overview;
+use Stu\Module\Message\View\Overview\OverviewRequest;
 use Stu\Module\Message\View\Overview\OverviewRequestInterface;
 use Stu\Module\Message\View\ShowContactList\ShowContactList;
 use Stu\Module\Message\View\ShowContactMode\ShowContactMode;
-use Stu\Module\Message\View\ShowContactModeSwitch5\ShowContactModeSwitch;
 use Stu\Module\Message\View\ShowContactModeSwitch\ShowContactModeSwitchRequest;
 use Stu\Module\Message\View\ShowContactModeSwitch\ShowContactModeSwitchRequestInterface;
+use Stu\Module\Message\View\ShowContactModeSwitch5\ShowContactModeSwitch;
 use Stu\Module\Message\View\ShowEditPmCategory\ShowEditCategoryRequest;
 use Stu\Module\Message\View\ShowEditPmCategory\ShowEditCategoryRequestInterface;
 use Stu\Module\Message\View\ShowEditPmCategory\ShowEditPmCategory;
@@ -68,12 +69,12 @@ use Stu\Module\Message\View\ShowIgnore\ShowIgnore;
 use Stu\Module\Message\View\ShowIgnoreList\ShowIgnoreList;
 use Stu\Module\Message\View\ShowNewPm\ShowNewPm;
 use Stu\Module\Message\View\ShowNewPmCategory\ShowNewPmCategory;
-use Stu\Module\Message\View\Overview\OverviewRequest;
 use Stu\Module\Message\View\ShowPmCategoryList\ShowPmCategoryList;
 use Stu\Module\Message\View\ShowWritePm\ShowWritePm;
 use Stu\Module\Message\View\ShowWritePm\ShowWritePmRequest;
 use Stu\Module\Message\View\ShowWritePm\ShowWritePmRequestInterface;
 use Stu\Module\Message\View\ShowWriteQuickPm\ShowWriteQuickPm;
+
 use function DI\autowire;
 
 return [

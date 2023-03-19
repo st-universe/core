@@ -7,7 +7,7 @@ $config = new PhpCsFixer\Config();
 $config->setRules(
     [
         '@PSR12' => true,
-        '@PHP74Migration' => true,
+        '@PHP82Migration' => true,
         'array_syntax' => ['syntax' => 'short'],
         'method_argument_space' => [
             'on_multiline' => 'ensure_fully_multiline',
@@ -18,6 +18,7 @@ $config->setRules(
             'sort_algorithm' => 'alpha',
             'imports_order' => ['const', 'class', 'function'],
         ],
+        'trailing_comma_in_multiline' => ['elements' => []]
     ]
 )->setFinder($finder);
 

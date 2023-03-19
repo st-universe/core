@@ -12,7 +12,6 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class DiscovererRanking implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_TOP_DISCOVER';
 
     private DatabaseUserRepositoryInterface $databaseUserRepository;

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\ToggleFleetVisibility;
 
 use request;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 
 final class ToggleFleetVisibility implements ActionControllerInterface

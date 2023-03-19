@@ -37,7 +37,6 @@ class ManageMan implements ManagerInterface
             && $ship->canMan()
             && $ship->getUser() === $user
         ) {
-
             /**
              * @var ShipBuildplanInterface
              */

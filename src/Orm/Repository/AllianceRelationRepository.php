@@ -14,7 +14,6 @@ use Stu\Orm\Entity\AllianceRelationInterface;
  */
 final class AllianceRelationRepository extends EntityRepository implements AllianceRelationRepositoryInterface
 {
-
     public function prototype(): AllianceRelationInterface
     {
         return new AllianceRelation();

@@ -12,7 +12,6 @@ use Stu\Orm\Entity\UserMap;
  */
 final class UserMapRepository extends EntityRepository implements UserMapRepositoryInterface
 {
-
     public function insertMapFieldsForUser(int $userId, int $layerId, int $cx, int $cy, int $range): void
     {
         $this->getEntityManager()->getConnection()->executeQuery(

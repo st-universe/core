@@ -14,7 +14,6 @@ use Stu\Orm\Entity\UserTagInterface;
  */
 final class UserTagRepository extends EntityRepository implements UserTagRepositoryInterface
 {
-
     public function getByUser(UserInterface $user): iterable
     {
         return $this->findBy([

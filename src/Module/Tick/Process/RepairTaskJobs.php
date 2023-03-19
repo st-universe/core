@@ -43,7 +43,6 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
 
             if (!$ship->hasEnoughCrew()) {
-
                 $this->privateMessageSender->send(
                     GameEnum::USER_NOONE,
                     $ship->getUser()->getId(),

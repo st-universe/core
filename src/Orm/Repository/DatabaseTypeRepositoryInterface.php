@@ -13,5 +13,4 @@ use Stu\Orm\Entity\DatabaseTypeInterface;
  */
 interface DatabaseTypeRepositoryInterface extends ObjectRepository
 {
-
 }

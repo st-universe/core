@@ -6,9 +6,9 @@ namespace Stu\Module\Alliance\Action\AddBoard;
 
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Boards\Boards;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 /**

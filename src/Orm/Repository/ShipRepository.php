@@ -24,10 +24,10 @@ use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipCrew;
-use Stu\Orm\Entity\ShipRump;
-use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpSpecial;
+use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -40,7 +40,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
 {
-
     public function prototype(): ShipInterface
     {
         return new Ship();
@@ -222,7 +221,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getShipsForAlertRed(
         ShipInterface $ship
     ): iterable {
-
         $isSystem = $ship->getSystem() !== null;
 
         return $this->getEntityManager()->createQuery(
@@ -870,7 +868,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $mapId = null,
         int $sysMapId = null
     ): iterable {
-
         $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
@@ -958,7 +955,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ?int $mapId,
         int $ignoreId
     ): bool {
-
         $cloakSql = sprintf(
             ' AND EXISTS (SELECT ss.id
                             FROM %s ss
@@ -1024,7 +1020,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 $isSystem ? 'starsystem_map_id' : 'map_id',
             )
         )->setParameters([
-            'mapId' => $isSystem  ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
             'type' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION
         ]);
 

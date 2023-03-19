@@ -23,15 +23,15 @@ final class RegistrationEmailSender implements RegistrationEmailSenderInterface
     public function send(UserInterface $player, string $password): void
     {
         $body = <<<EOT
-        Hallo %s\n\n
-        Vielen Dank für Deine Anmeldung bei Star Trek Universe. Du kannst Dich nun mit folgendem Passwort und Deinem gewählten Loginnamen einloggen.\n\n
-        Login:  %s\n
-        Passwort:  %s\n\n
-        Bitte ändere das Passwort und auch Deinen Spielernamen gleich nach Deinem ersten Login.\n
-        Und nun wünschen wir Dir viel Spaß!\n\n
-        Das STU-Team\n\n
-        %s
-        EOT;
+            Hallo %s\n\n
+            Vielen Dank für Deine Anmeldung bei Star Trek Universe. Du kannst Dich nun mit folgendem Passwort und Deinem gewählten Loginnamen einloggen.\n\n
+            Login:  %s\n
+            Passwort:  %s\n\n
+            Bitte ändere das Passwort und auch Deinen Spielernamen gleich nach Deinem ersten Login.\n
+            Und nun wünschen wir Dir viel Spaß!\n\n
+            Das STU-Team\n\n
+            %s
+            EOT;
 
         $mail = new Message();
         $mail->addTo($player->getEmail());

@@ -10,7 +10,6 @@ use Stu\Module\Control\GameControllerInterface;
 
 final class DisplayNotOwner implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_NOT_OWNER';
 
     public function handle(GameControllerInterface $game): void

@@ -13,7 +13,7 @@ interface FightLibInterface
 
     /**
      * @param ShipWrapperInterface[] $base
-     * 
+     *
      * @return ShipWrapperInterface[]
      */
     public function filterInactiveShips(array $base): array;

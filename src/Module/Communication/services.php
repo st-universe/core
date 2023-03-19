@@ -74,6 +74,7 @@ use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequestInterface;
 use Stu\Module\Communication\View\ShowUserPlotList\ShowUserPlotList;
 use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
 use Stu\Module\Control\GameController;
+
 use function DI\autowire;
 use function DI\get;
 

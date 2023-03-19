@@ -219,7 +219,7 @@ final class ShipWrapper implements ShipWrapperInterface
 
     /**
      * highest damage first, then prio
-     * 
+     *
      * @return ShipSystemInterface[]
      */
     public function getDamagedSystems(): array

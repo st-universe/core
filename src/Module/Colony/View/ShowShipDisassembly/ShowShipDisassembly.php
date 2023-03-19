@@ -6,10 +6,10 @@ namespace Stu\Module\Colony\View\ShowShipDisassembly;
 
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
@@ -70,7 +70,6 @@ final class ShowShipDisassembly implements ViewControllerInterface
         $colonySurface = $this->colonyLibFactory->createColonySurface($colony);
 
         if ($colonySurface->hasShipyard()) {
-
             $repairableShips = [];
             foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
                 /** @var ShipInterface $ship */

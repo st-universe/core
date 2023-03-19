@@ -14,5 +14,4 @@ final class ShowMiscRequest implements ShowMiscRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

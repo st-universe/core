@@ -20,10 +20,11 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperReactor;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperShield;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSpecial;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpcore;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
@@ -31,10 +32,8 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
-use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
 {
@@ -95,7 +94,7 @@ final class ShipCreator implements ShipCreatorInterface
         $ship->setRump($this->shipRumpRepository->find($shipRumpId));
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 
-        //create ship systems        
+        //create ship systems
         $this->createShipSystemsByModuleList(
             $ship,
             $this->buildplanModuleRepository->getByBuildplan(

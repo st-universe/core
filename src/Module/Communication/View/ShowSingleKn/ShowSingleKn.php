@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowSingleKn;
 
 use Stu\Component\Communication\Kn\KnFactoryInterface;
-use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequestInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -41,7 +40,6 @@ final class ShowSingleKn implements ViewControllerInterface
 
         $knPostings = [];
         if ($post !== null) {
-
             $knPostings[] = $this->knFactory->createKnItem(
                 $post,
                 $user

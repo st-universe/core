@@ -144,7 +144,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
 
                         if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
                             return 'border: 1px solid ' . $ally->getRgbCode();
-                        } else if (strlen($user->getRgbCode()) > 0) {
+                        } elseif (strlen($user->getRgbCode()) > 0) {
                             return 'border: 1px solid ' . $user->getRgbCode();
                         }
                     }

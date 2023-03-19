@@ -10,7 +10,8 @@ final class DeleteContactsRequest implements DeleteContactsRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getContactIds(): array {
+    public function getContactIds(): array
+    {
         return $this->queryParameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]);
     }
 }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowTradeMenuTransfer;
 
-use Stu\Exception\AccessViolation;
 use request;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
@@ -63,7 +63,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
         }
 
         if (!$this->interactionChecker->checkPosition($ship, $tradepost->getShip())) {
-            new AccessViolation;
+            new AccessViolation();
         }
 
         $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));

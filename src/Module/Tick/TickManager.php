@@ -3,7 +3,6 @@
 namespace Stu\Module\Tick;
 
 use Stu\Component\Game\TimeConstants;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\GameTurnInterface;

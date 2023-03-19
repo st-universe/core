@@ -14,5 +14,4 @@ final class ShowSurfaceRequest implements ShowSurfaceRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

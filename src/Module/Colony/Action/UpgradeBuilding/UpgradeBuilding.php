@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
 use request;
-use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\BuildingUpgradeCostInterface;
 use Stu\Orm\Entity\BuildingUpgradeInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
@@ -21,7 +21,6 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class UpgradeBuilding implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_UPGRADE_BUILDING';
 
     private ColonyLoaderInterface $colonyLoader;

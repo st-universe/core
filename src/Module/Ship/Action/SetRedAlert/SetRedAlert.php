@@ -26,7 +26,7 @@ final class SetRedAlert implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
-    
+
         $this->helper->setAlertState(request::indInt('id'), ShipAlertStateEnum::ALERT_RED, $game);
     }
 

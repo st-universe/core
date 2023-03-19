@@ -6,10 +6,10 @@ namespace Stu\Module\Colony\Action\BuildTorpedos;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -50,7 +50,7 @@ final class BuildTorpedos implements ActionControllerInterface
 
         $torps = request::postArray('torp');
         $storage = $colony->getStorage();
-        $msg = array();
+        $msg = [];
         foreach ($torps as $torp_id => $count) {
             if (!array_key_exists($torp_id, $buildableTorpedoTypes)) {
                 continue;

@@ -6,5 +6,4 @@ namespace Stu\Exception;
 
 final class SemaphoreException extends StuException
 {
-
 }

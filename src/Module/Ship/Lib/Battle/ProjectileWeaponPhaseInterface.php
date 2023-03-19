@@ -9,7 +9,7 @@ interface ProjectileWeaponPhaseInterface
 {
     /**
      * @param ShipWrapperInterface[] $targetPool
-     * 
+     *
      * @return FightMessageInterface[]
      */
     public function fire(

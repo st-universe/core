@@ -20,6 +20,7 @@ use Stu\Module\Tick\Ship\ShipTickInterface;
 use Stu\Module\Tick\Ship\ShipTickManager;
 use Stu\Module\Tick\Ship\ShipTickManagerInterface;
 use Stu\Module\Tick\Ship\ShipTickRunner;
+
 use function DI\autowire;
 use function DI\get;
 

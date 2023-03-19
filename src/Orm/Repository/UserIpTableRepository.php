@@ -14,7 +14,6 @@ use Stu\Orm\Entity\UserIpTableInterface;
  */
 final class UserIpTableRepository extends EntityRepository implements UserIpTableRepositoryInterface
 {
-
     public function prototype(): UserIpTableInterface
     {
         return new UserIpTable();

@@ -82,7 +82,6 @@ final class BeamFromColony implements ActionControllerInterface
 
         if ($target->getUserId() !== $userId && $this->colonyLibFactory->createColonyShieldingManager($target)->isShieldingEnabled()) {
             if ($target->getShieldFrequency() !== 0) {
-
                 $frequency = (int) request::postInt('frequency');
 
                 if ($frequency !== $target->getShieldFrequency()) {

@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSubspaceTelescope;
 
-use Stu\Module\Colony\Lib\ColonyMenu;
 use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Map\MapEnum;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\Lib\ColonyMenu;
 use Stu\Module\Colony\View\RefreshSubspaceSection\RefreshSubspaceSection;
-use Stu\Module\Starmap\Lib\MapSectionHelper;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 
 final class ShowSubspaceTelescope implements ViewControllerInterface

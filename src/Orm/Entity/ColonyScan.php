@@ -8,10 +8,9 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyScanRepository")
@@ -71,7 +70,7 @@ class ColonyScan implements ColonyScanInterface
 
     /**
      * @var ColonyInterface
-     * 
+     *
      * @ManyToOne(targetEntity="Colony", inversedBy="colonyscan")
      * @JoinColumn(name="colony_id", referencedColumnName="id")
      */
@@ -80,7 +79,7 @@ class ColonyScan implements ColonyScanInterface
 
     /**
      * @var UserInterface
-     * 
+     *
      * @ManyToOne(targetEntity="User", inversedBy="colonyscan")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Management;
 
+use Stu\Component\Crew\CrewCountRetrieverInterface;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
-use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Component\Crew\CrewCountRetrieverInterface;
 
 /**
  * Service class for wrapping alliance members for UI purposes

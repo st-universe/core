@@ -5,7 +5,6 @@ namespace Stu\Module\Starmap\Lib;
 use Stu\Orm\Entity\MapBorderTypeInterface;
 use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Entity\TradePostInterface;
 
 interface ExploreableStarMapInterface
 {

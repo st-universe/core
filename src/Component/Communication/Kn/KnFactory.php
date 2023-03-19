@@ -9,8 +9,8 @@ use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
-final class KnFactory implements KnFactoryInterface {
-
+final class KnFactory implements KnFactoryInterface
+{
     private Parser $bbcodeParser;
 
     private KnCommentRepositoryInterface $knCommentRepository;
@@ -27,11 +27,11 @@ final class KnFactory implements KnFactoryInterface {
         KnPostInterface $knPost,
         UserInterface $currentUser
     ): KnItemInterface {
-       return new KnItem(
-           $this->bbcodeParser,
-           $this->knCommentRepository,
-           $knPost,
-           $currentUser
-       );
+        return new KnItem(
+            $this->bbcodeParser,
+            $this->knCommentRepository,
+            $knPost,
+            $currentUser
+        );
     }
 }

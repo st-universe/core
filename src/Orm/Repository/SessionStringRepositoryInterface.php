@@ -12,7 +12,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 interface SessionStringRepositoryInterface extends ObjectRepository
 {
-
     public function isValid(string $sessionString, int $userId): bool;
 
     public function truncate(UserInterface $user): void;

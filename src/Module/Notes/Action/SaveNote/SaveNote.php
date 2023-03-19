@@ -12,7 +12,6 @@ use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class SaveNote implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_SAVE_NOTE';
 
     private SaveNoteRequestInterface $saveNoteRequest;

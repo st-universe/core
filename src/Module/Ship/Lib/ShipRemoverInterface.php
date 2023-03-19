@@ -6,7 +6,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface ShipRemoverInterface
 {
-
     /**
      * Destroys a ship and replaces it by a nice debrisfield,
      * also starts escape pods if present

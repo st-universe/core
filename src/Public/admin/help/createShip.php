@@ -8,8 +8,8 @@ use Stu\Config\Init;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -50,7 +50,6 @@ Init::run(function (ContainerInterface $dic): void {
     $noTorps = request::indInt('noTorps');
 
     if ($torptypeId > 0 || $noTorps) {
-
         $plan = $buildplanRepo->find($buildplanId);
         $layerId = request::postIntFatal('layer');
         $cx = request::postIntFatal('cx');
@@ -93,7 +92,6 @@ Init::run(function (ContainerInterface $dic): void {
         echo $shipcount . ' Schiff(e) erstellt, mit Wurstblinkern!';
     } else {
         if ($buildplanId > 0) {
-
             printf(
                 '<form action="" method="post">
             <input type="hidden" name="userId" value="%d" />

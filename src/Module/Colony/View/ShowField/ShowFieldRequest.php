@@ -19,5 +19,4 @@ final class ShowFieldRequest implements ShowFieldRequestInterface
     {
         return $this->queryParameter('fid')->int()->required();
     }
-
 }

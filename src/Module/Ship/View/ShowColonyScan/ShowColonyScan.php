@@ -17,8 +17,8 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ColonyScanRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowColonyScan implements ViewControllerInterface
 {

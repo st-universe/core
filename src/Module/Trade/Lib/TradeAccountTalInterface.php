@@ -7,7 +7,6 @@ use Stu\Orm\Entity\StorageInterface;
 
 interface TradeAccountTalInterface
 {
-
     public function getId(): int;
 
     public function getShip(): ShipInterface;

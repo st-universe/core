@@ -22,7 +22,7 @@ class SignaturePanel
     /**
      * @param array{minx: int, maxx: int, miny: int, maxy: int} $entry
      */
-    function __construct(
+    public function __construct(
         ShipRepositoryInterface $shipRepository,
         int $userId,
         int $allyId,
@@ -38,7 +38,7 @@ class SignaturePanel
 
     private $rows = null;
 
-    function getRows()
+    public function getRows()
     {
         if ($this->rows === null) {
             $this->loadLSS();
@@ -46,7 +46,7 @@ class SignaturePanel
         return $this->rows;
     }
 
-    function getOuterSystemResult()
+    public function getOuterSystemResult()
     {
         if ($this->userId) {
             return $this->shipRepository->getSignaturesOuterSystemOfUser(
@@ -56,7 +56,7 @@ class SignaturePanel
                 $this->data['maxy'],
                 $this->userId
             );
-        } else if ($this->allyId) {
+        } elseif ($this->allyId) {
             return $this->shipRepository->getSignaturesOuterSystemOfAlly(
                 $this->data['minx'],
                 $this->data['maxx'],
@@ -67,7 +67,7 @@ class SignaturePanel
         }
     }
 
-    function loadLSS()
+    public function loadLSS()
     {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -91,7 +91,7 @@ class SignaturePanel
             }
             if ($data['posy'] != $y) {
                 $y = $data['posy'];
-                $rows[$y] = new SignaturePanelRow;
+                $rows[$y] = new SignaturePanelRow();
                 $entry = new SignaturePanelEntry();
                 $entry->setRow($y);
                 $entry->setCSSClass('th');
@@ -112,7 +112,7 @@ class SignaturePanel
 
     private $headRow = null;
 
-    function getHeadRow()
+    public function getHeadRow()
     {
         if ($this->headRow === null) {
             $min = $this->data['minx'];
@@ -142,7 +142,7 @@ class SignaturePanel
         return $this->viewport;
     }
 
-    function getViewportPerColumn()
+    public function getViewportPerColumn()
     {
         if (!$this->viewportPerColumn) {
             $this->viewportPerColumn = number_format($this->getViewport(), 1);
@@ -150,7 +150,7 @@ class SignaturePanel
         return $this->viewportPerColumn;
     }
 
-    function getViewportForFont()
+    public function getViewportForFont()
     {
         if (!$this->viewportForFont) {
             $this->viewportForFont = number_format($this->getViewport() / 2, 1);

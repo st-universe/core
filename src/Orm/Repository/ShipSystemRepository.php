@@ -14,7 +14,6 @@ use Stu\Orm\Entity\ShipSystemInterface;
  */
 final class ShipSystemRepository extends EntityRepository implements ShipSystemRepositoryInterface
 {
-
     public function prototype(): ShipSystemInterface
     {
         return new ShipSystem();

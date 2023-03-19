@@ -14,6 +14,7 @@ use Stu\Module\Notes\View\ShowNewNote\ShowNewNote;
 use Stu\Module\Notes\View\ShowNote\ShowNote;
 use Stu\Module\Notes\View\ShowNote\ShowNoteRequest;
 use Stu\Module\Notes\View\ShowNote\ShowNoteRequestInterface;
+
 use function DI\autowire;
 
 return [

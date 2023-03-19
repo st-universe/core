@@ -14,5 +14,4 @@ final class ShowAcademyRequest implements ShowAcademyRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

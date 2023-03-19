@@ -6,22 +6,22 @@ namespace Stu\Module\Station\Action\DockFleet;
 
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DockFleet implements ActionControllerInterface
 {
@@ -116,7 +116,8 @@ final class DockFleet implements ActionControllerInterface
 
         $this->loggerUtil->log('F');
         $msg = [];
-        $msg[] = _("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName();;
+        $msg[] = _("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName();
+        ;
         $freeSlots = $station->getFreeDockingSlotCount();
         foreach ($targetFleet->getShips() as $ship) {
             $this->loggerUtil->log('G');

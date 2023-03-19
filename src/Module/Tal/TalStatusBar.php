@@ -6,7 +6,6 @@ namespace Stu\Module\Tal;
 
 final class TalStatusBar implements TalStatusBarInterface
 {
-
     private string $color = '';
 
     private string $label = '';

@@ -37,7 +37,6 @@ final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInterface
         $userId = $user->getId();
 
         foreach ($this->rpgPlotRepository->getByFoundingUser($userId) as $plot) {
-
             $members = $plot->getMembers();
 
             /**

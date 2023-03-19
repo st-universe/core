@@ -43,7 +43,7 @@ class Deals implements DealsInterface
      * @Column(type="boolean")
      *
      */
-    private bool $auction = FALSE;
+    private bool $auction = false;
 
     /**
      * @Column(type="integer", nullable=true)
@@ -55,43 +55,43 @@ class Deals implements DealsInterface
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $give_commodity = NULL;
+    private ?int $give_commodity = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $want_commodity = NULL;
+    private ?int $want_commodity = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $give_commodity_amonut = NULL;
+    private ?int $give_commodity_amonut = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $want_commodity_amount = NULL;
+    private ?int $want_commodity_amount = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $want_prestige = NULL;
+    private ?int $want_prestige = null;
 
     /**
      * @Column(type="integer", nullable=true)
      *
      */
-    private ?int $buildplan_id = NULL;
+    private ?int $buildplan_id = null;
 
     /**
      * @Column(type="boolean", nullable=true)
      *
      */
-    private ?bool $ship = NULL;
+    private ?bool $ship = null;
 
     /**
      * @Column(type="integer")
@@ -167,7 +167,6 @@ class Deals implements DealsInterface
 
     public function setAuction(bool $auction): DealsInterface
     {
-
         $this->auction = $auction;
 
         return $this;

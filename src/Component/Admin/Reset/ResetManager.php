@@ -96,7 +96,6 @@ final class ResetManager implements ResetManagerInterface
         );
 
         $this->entityManager->commit();
-
     }
 
     /**

@@ -7,9 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\ColonyScan;
-
 
 /**
  * @extends EntityRepository<DatabaseEntry>

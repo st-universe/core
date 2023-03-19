@@ -9,7 +9,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ModuleRumpWrapperWarpcore extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 {
-
     public function getValue(): int
     {
         $module = current($this->modules);

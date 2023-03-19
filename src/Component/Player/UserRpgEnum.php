@@ -8,7 +8,6 @@ use InvalidArgumentException;
 
 final class UserRpgEnum
 {
-
     //RPG behavior
     public const RPG_BEHAVIOR_NOT_SET = 0;
     public const RPG_BEHAVIOR_ACTIVE = 1;

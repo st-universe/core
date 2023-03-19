@@ -13,6 +13,7 @@ use Stu\Module\Starmap\View\ShowByPosition\ShowByPosition;
 use Stu\Module\Starmap\View\ShowSection\ShowSection;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequest;
 use Stu\Module\Starmap\View\ShowSection\ShowSectionRequestInterface;
+
 use function DI\autowire;
 
 return [

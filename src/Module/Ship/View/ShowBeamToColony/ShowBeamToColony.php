@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowBeamToColony;
 
 use request;
-use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;

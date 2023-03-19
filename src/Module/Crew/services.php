@@ -6,6 +6,7 @@ namespace Stu\Module\Crew;
 
 use Stu\Module\Crew\Lib\CrewCreator;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+
 use function DI\autowire;
 
 return [

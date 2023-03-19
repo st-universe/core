@@ -207,7 +207,6 @@ class VisualNavPanelEntry
             $this->ship !== null &&
             $this->ship->getLSSmode() == ShipLSSModeEnum::LSS_BORDER
         ) {
-
             $factionColor = $this->data['factioncolor'] ?? null;
             if (!empty($factionColor)) {
                 return $factionColor;

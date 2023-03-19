@@ -121,7 +121,6 @@ final class ColonySurface implements ColonySurfaceInterface
                         $field->getTerraformingId() === null &&
                         $building->getBuildableFields()->containsKey((int) $field->getFieldType())
                     ) {
-
                         //PlanetFieldTypeBuildingInterface
                         $fieldBuilding = $building->getBuildableFields()->get((int) $field->getFieldType());
 
@@ -210,7 +209,6 @@ final class ColonySurface implements ColonySurfaceInterface
         }
 
         if ($this->colony->getMask() === null) {
-
             $planetConfig = $this->planetGenerator->generateColony(
                 $this->colony->getColonyClassId(),
                 $this->colony->getSystem()->getBonusFieldAmount()
@@ -231,7 +229,7 @@ final class ColonySurface implements ColonySurfaceInterface
                 $fields[$fieldId] = $newField;
                 $fields[$fieldId]->setColony($this->colony);
                 $fields[$fieldId]->setFieldId($fieldId);
-                $this->colony->getPlanetFields()->set($fieldId,  $newField);
+                $this->colony->getPlanetFields()->set($fieldId, $newField);
             }
             $fields[$fieldId]->setBuilding(null);
             $fields[$fieldId]->setIntegrity(0);

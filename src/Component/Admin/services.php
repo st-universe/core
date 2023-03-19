@@ -8,6 +8,7 @@ use Stu\Component\Admin\Notification\FailureEmailSender;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Admin\Reset\ResetManager;
 use Stu\Component\Admin\Reset\ResetManagerInterface;
+
 use function DI\autowire;
 
 return [

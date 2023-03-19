@@ -16,5 +16,4 @@ final class ChangeUserNameRequest implements ChangeUserNameRequestInterface
             $this->queryParameter('uname')->string()->defaultsToIfEmpty('')
         );
     }
-
 }

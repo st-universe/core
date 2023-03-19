@@ -33,7 +33,6 @@ final class ShipSystemDataFactory implements ShipSystemDataFactoryInterface
         int $systemType,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ): AbstractSystemData {
-
         switch ($systemType) {
             case ShipSystemTypeEnum::SYSTEM_HULL:
                 return  new HullSystemData();

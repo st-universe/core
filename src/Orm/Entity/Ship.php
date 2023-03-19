@@ -1063,7 +1063,6 @@ class Ship implements ShipInterface
         }
 
         if ($this->isBase()) {
-
             foreach ($this->getSystems() as $system) {
                 $module = $system->getModule();
 

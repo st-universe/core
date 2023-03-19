@@ -10,7 +10,8 @@ final class DeleteAllPmsRequest implements DeleteAllPmsRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getCategoryId(): int {
+    public function getCategoryId(): int
+    {
         return $this->queryParameter('pmcat')->int()->required();
     }
 }

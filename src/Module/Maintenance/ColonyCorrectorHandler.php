@@ -8,7 +8,6 @@ use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
 
 final class ColonyCorrectorHandler implements MaintenanceHandlerInterface
 {
-
     private ColonyCorrectorInterface $colonyCorrector;
 
     public function __construct(

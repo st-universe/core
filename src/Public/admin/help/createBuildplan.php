@@ -139,7 +139,6 @@ Init::run(function (ContainerInterface $dic): void {
 
             echo 'Bauplan angelegt';
         } else {
-
             printf(
                 '<form action="" method="post">
             <input type="hidden" name="userId" value="%d">',
@@ -147,7 +146,6 @@ Init::run(function (ContainerInterface $dic): void {
             );
 
             foreach ($moduleTypes as $moduleTypeId) {
-
                 $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
                     $rump->getId()
                 );

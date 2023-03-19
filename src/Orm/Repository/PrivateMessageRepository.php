@@ -79,7 +79,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         int $limit
     ): iterable {
         return $this->findBy(
-            ['recip_user' => $userId, 'cat_id' => $folderId, 'deleted' => NULL],
+            ['recip_user' => $userId, 'cat_id' => $folderId, 'deleted' => null],
             ['date' => 'desc', 'id' => 'desc'],
             $limit,
             $offset
@@ -90,7 +90,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     {
         return $this->count([
             'category' => $privateMessageFolder,
-            'deleted' => NULL
+            'deleted' => null
         ]);
     }
 
@@ -99,7 +99,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         return $this->count([
             'category' => $privateMessageFolder,
             'new' => 1,
-            'deleted' => NULL
+            'deleted' => null
         ]);
     }
 

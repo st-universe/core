@@ -13,7 +13,7 @@ final class GraphInfo
 
     public bool $yAxisStartAtZero;
 
-    function __construct(
+    public function __construct(
         string $title,
         array $plotInfos,
         bool $yAxisStartAtZero = false

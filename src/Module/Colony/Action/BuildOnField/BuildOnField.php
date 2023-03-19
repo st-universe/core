@@ -109,7 +109,6 @@ final class BuildOnField implements ActionControllerInterface
         }
 
         if ($userId !== GameEnum::USER_NOONE) {
-
             if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
                 return;
             }
@@ -219,7 +218,6 @@ final class BuildOnField implements ActionControllerInterface
         PlanetFieldInterface $field,
         GameControllerInterface $game
     ): bool {
-
         $isEnoughAvailable = true;
         $storage = $colony->getStorage();
 
@@ -229,7 +227,6 @@ final class BuildOnField implements ActionControllerInterface
             $currentBuildingCost = [];
 
             if ($field->hasBuilding()) {
-
                 $currentBuildingCost = $field->getBuilding()->getCosts()->toArray();
 
                 $result = array_filter(

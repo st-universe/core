@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Orm\Entity\Building;
-use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\BuildingCommodity;
+use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetField;
@@ -20,7 +20,6 @@ use Stu\Orm\Entity\PlanetFieldInterface;
  */
 final class PlanetFieldRepository extends EntityRepository implements PlanetFieldRepositoryInterface
 {
-
     public function prototype(): PlanetFieldInterface
     {
         return new PlanetField();

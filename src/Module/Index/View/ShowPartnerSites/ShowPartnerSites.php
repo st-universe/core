@@ -34,7 +34,8 @@ final class ShowPartnerSites implements ViewControllerInterface
     /**
      * @return array<array{name: string, description: string, url: string, banner_path: string}>
      */
-    private function getPartnerSites(): array {
+    private function getPartnerSites(): array
+    {
         $baseBannerPath = $this->config->get('partner_sites.banner_path');
 
         return array_map(

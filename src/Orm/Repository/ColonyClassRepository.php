@@ -6,8 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Database\DatabaseCategoryTypeEnum;
-use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\ColonyClass;
+use Stu\Orm\Entity\DatabaseEntry;
 
 /**
  * @extends EntityRepository<ColonyClass>

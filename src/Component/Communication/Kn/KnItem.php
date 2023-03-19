@@ -15,7 +15,6 @@ use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class KnItem implements KnItemInterface
 {
-
     private Parser $bbcodeParser;
 
     private KnCommentRepositoryInterface $knCommentRepository;
@@ -141,7 +140,7 @@ final class KnItem implements KnItemInterface
         return (int) array_sum(
             array_filter(
                 $this->post->getRatings(),
-                static fn(int $value): bool => $value > 0
+                static fn (int $value): bool => $value > 0
             )
         );
     }

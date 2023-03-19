@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\Action\UndockStationShip;
 
-use request;
 use Doctrine\ORM\EntityManagerInterface;
+use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -67,7 +67,6 @@ final class UndockStationShip implements ActionControllerInterface
         }
 
         if ($target->getUser() !== $game->getUser()) {
-
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
 
             $this->privateMessageSender->send(

@@ -131,7 +131,6 @@ final class ReactorUtil implements ReactorUtilInterface
         $this->shipRepository->save($ship);
 
         if ($managerProvider !== null) {
-
             $this->privateMessageSender->send(
                 $managerProvider->getUser()->getId(),
                 $ship->getUser()->getId(),

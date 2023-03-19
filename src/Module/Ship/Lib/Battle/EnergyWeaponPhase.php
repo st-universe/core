@@ -173,7 +173,6 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
-
                 $this->entryCreator->addColonyEntry(
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
@@ -187,8 +186,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
                 break;
             }
             //deactivate if high damage
-            else if ($target->hasHighDamage()) {
-
+            elseif ($target->hasHighDamage()) {
                 $this->buildingManager->deactivate($target);
             }
         }

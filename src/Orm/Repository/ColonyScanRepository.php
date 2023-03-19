@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Orm\Entity\ColonyScanInterface;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyScan;
+use Stu\Orm\Entity\ColonyScanInterface;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
-use Stu\Orm\Entity\Colony;
-use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 
 /**
  * @extends EntityRepository<ColonyScan>

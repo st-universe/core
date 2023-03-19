@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\DealsTakeAuction;
 
-use Stu\Exception\AccessViolation;
 use Stu\Component\Trade\TradeEnum;
-use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
-use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\StuTime;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowDeals\ShowDeals;
 use Stu\Orm\Entity\DealsInterface;
@@ -19,10 +19,10 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\DealsRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
@@ -126,10 +126,8 @@ final class DealsTakeAuction implements ActionControllerInterface
 
         //give overpay back
         if ($auction->getAuctionAmount() < $currentMaxAmount) {
-
             //give prestige back
             if ($auction->isPrestigeCost()) {
-
                 $description = sprintf(
                     '%d Prestige: Du hast Prestige bei einer Auktion zurückerhalten, weil dein Maximalgebot über dem Höchstgebot lag',
                     $currentMaxAmount - $currentBidAmount
@@ -141,7 +139,6 @@ final class DealsTakeAuction implements ActionControllerInterface
                     $currentMaxAmount - $currentBidAmount,
                 ));
             } else {
-
                 if ($freeStorage < ($currentMaxAmount - $currentBidAmount)) {
                     $game->addInformation(sprintf(
                         _('Es befindet sich nicht genügend Platz für die Rückerstattung von %d %s diesem Handelsposten'),
@@ -173,7 +170,6 @@ final class DealsTakeAuction implements ActionControllerInterface
         }
 
         if ($auction->getShip() == true) {
-
             $this->createShip($auction->getBuildplan(), $tradePost, $userId);
             $game->addInformation(sprintf(_('Du hast dein Schiff erhalten')));
         }

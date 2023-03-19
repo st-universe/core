@@ -6,7 +6,6 @@ namespace Stu\Component\Colony;
 
 final class ColonyEnum
 {
-
     /**
      * @var int
      */

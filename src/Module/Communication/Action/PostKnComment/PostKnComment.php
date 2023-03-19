@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\PostKnComment;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\KnPostInterface;

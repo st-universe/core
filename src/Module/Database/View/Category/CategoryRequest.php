@@ -10,8 +10,8 @@ final class CategoryRequest implements CategoryRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getCategoryId(): int {
+    public function getCategoryId(): int
+    {
         return $this->queryParameter('cat')->int()->required();
     }
-
 }

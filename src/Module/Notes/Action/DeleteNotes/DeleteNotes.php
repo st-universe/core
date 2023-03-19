@@ -34,7 +34,6 @@ final class DeleteNotes implements ActionControllerInterface
         $delnotes = explode(',', $delnotesString);
 
         foreach ($delnotes as $noteId) {
-
             if ($noteId == "") {
                 continue;
             }

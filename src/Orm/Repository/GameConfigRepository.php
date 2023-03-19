@@ -15,7 +15,6 @@ use Stu\Orm\Entity\GameConfigInterface;
  */
 final class GameConfigRepository extends EntityRepository implements GameConfigRepositoryInterface
 {
-
     public function save(GameConfigInterface $item): void
     {
         $em = $this->getEntityManager();

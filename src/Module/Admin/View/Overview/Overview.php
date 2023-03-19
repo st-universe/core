@@ -9,10 +9,8 @@ use Stu\Module\Control\ViewControllerInterface;
 
 final class Overview implements ViewControllerInterface
 {
-
     public function __construct()
     {
-
     }
 
     public function handle(GameControllerInterface $game): void

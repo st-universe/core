@@ -15,12 +15,12 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\FightMessageInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -204,10 +204,10 @@ final class AttackBuilding implements ActionControllerInterface
         $isOrbitField = $this->planetFieldTypeRetriever->isOrbitField($field);
         $attackerPool = $this->fightLib->filterInactiveShips($attacker);
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
-                $colony,
-                BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE,
-                [ColonyFunctionManager::STATE_ENABLED]
-            ) * 6;
+            $colony,
+            BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE,
+            [ColonyFunctionManager::STATE_ENABLED]
+        ) * 6;
 
         foreach ($attackerPool as $attacker) {
             if ($isOrbitField) {
@@ -238,7 +238,6 @@ final class AttackBuilding implements ActionControllerInterface
         );
 
         if ($ship->isDestroyed()) {
-
             $game->addInformationMerge($this->messages);
             return;
         }

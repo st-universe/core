@@ -36,7 +36,7 @@ final class ShipTorpedoManager implements ShipTorpedoManagerInterface
         $torpedoStorage = $ship->getTorpedoStorage();
         if ($torpedoStorage === null) {
             $this->setupNewTorpedo($ship, $changeAmount, $type);
-        } else if ($torpedoStorage->getStorage()->getAmount() + $changeAmount === 0) {
+        } elseif ($torpedoStorage->getStorage()->getAmount() + $changeAmount === 0) {
             $this->clearTorpedo->clearTorpedoStorage($wrapper);
         } else {
             $storage = $torpedoStorage->getStorage();

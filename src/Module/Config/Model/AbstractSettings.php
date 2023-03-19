@@ -70,7 +70,7 @@ abstract class AbstractSettings implements SettingsInterface
 
     /**
      * @param array<string> $default
-     * 
+     *
      * @return array<string>
      */
     protected function getArrayConfigValue(string $setting, array $default = null): array
@@ -91,7 +91,7 @@ abstract class AbstractSettings implements SettingsInterface
 
     /**
      * @param int|string|bool $default
-     * 
+     *
      * @return int|string|bool
      */
     private function getConfigValue(string $path, $default = null)
@@ -112,7 +112,7 @@ abstract class AbstractSettings implements SettingsInterface
 
     /**
      * @param array<string> $default
-     * 
+     *
      * @return array<string>
      */
     private function getConfigArray(string $path, array $default = null): array

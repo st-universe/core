@@ -65,7 +65,6 @@ class LotteryTicket implements LotteryTicketInterface
 
     public function getUser(): UserInterface
     {
-
         return $this->user;
     }
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeclineApplication;
 
-use Stu\Exception\AccessViolation;
 use Stu\Component\Game\GameEnum;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Applications\Applications;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class DeclineApplication implements ActionControllerInterface

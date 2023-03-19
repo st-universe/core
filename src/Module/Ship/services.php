@@ -183,14 +183,14 @@ use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipStateChanger;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
-use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManager;
-use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactory;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\TholianWebUtil;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Ship\Lib\Torpedo\ClearTorpedo;
 use Stu\Module\Ship\Lib\Torpedo\ClearTorpedoInterface;
+use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManager;
+use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtility;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\Lib\Ui\ShipUiFactory;
@@ -226,6 +226,7 @@ use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use Stu\Module\Ship\View\ShowTroopTransfer\ShowTroopTransfer;
 use Stu\Module\Ship\View\ShowWebEmitter\ShowWebEmitter;
+
 use function DI\autowire;
 
 return [

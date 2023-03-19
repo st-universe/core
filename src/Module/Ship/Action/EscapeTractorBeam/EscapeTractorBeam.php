@@ -6,20 +6,19 @@ namespace Stu\Module\Ship\Action\EscapeTractorBeam;
 
 use request;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Lib\DamageWrapper;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\DamageWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class EscapeTractorBeam implements ActionControllerInterface
@@ -110,7 +109,6 @@ final class EscapeTractorBeam implements ActionControllerInterface
         } elseif ($chance < 55) {
             $this->sufferDeflectorDamage($wrapper, $game);
         } else {
-
             $this->sufferHullDamage($wrapper, $game);
         }
 
@@ -140,7 +138,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $ship->getUser()->getId(),
             $tractoringShip->getUser()->getId(),
             sprintf(_('Bei dem Fluchtversuch der %s wurde der Traktorstrahl der %s in Sektor %s zerstört'), $ship->getName(), $tractoringShip->getName(), $ship->getSectorString()),
-            $tractoringShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $tractoringShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
 
@@ -168,7 +166,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $ship->getUser()->getId(),
             $tractoringShip->getUser()->getId(),
             sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
-            $tractoringShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $tractoringShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
     }
@@ -202,10 +200,9 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $ship->getUser()->getId(),
                 $otherUserId,
                 sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $shipName),
-                $tractoringShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                $tractoringShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         } else {
-
             $this->privateMessageSender->send(
                 $ship->getUser()->getId(),
                 $otherUserId,

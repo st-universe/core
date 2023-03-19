@@ -6,6 +6,7 @@ namespace Stu\Module\Control;
 
 use Stu\Module\Control\Render\GameTalRenderer;
 use Stu\Module\Control\Render\GameTalRendererInterface;
+
 use function DI\autowire;
 
 return [

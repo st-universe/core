@@ -13,7 +13,6 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
 {
-
     public function fire(
         ?ShipWrapperInterface $wrapper,
         $attackingPhalanx,
@@ -25,7 +24,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         $attacker = $wrapper !== null ? $wrapper->get() : $attackingPhalanx;
 
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
-
             if (count($targetPool) === 0) {
                 break;
             }
@@ -59,7 +57,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             /* higher evade chance for pulseships against torpedo ships
 
             if ($attacker->getRump()->getRoleId() === ShipRoleEnum::ROLE_TORPEDOSHIP && $target->getRump()->getRoleId() === ShipRoleEnum::ROLE_PULSESHIP) {
-                $hitchance = round($attacker->getHitChance() * 0.65); 
+                $hitchance = round($attacker->getHitChance() * 0.65);
             } else { */
             $hitchance = $attacker->getHitChance();
             //}
@@ -144,7 +142,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
         $attacker = $attackerWrapper->get();
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
-
             if (!$attacker->getTorpedoState() || $this->hasUnsufficientEnergy($attackerWrapper, null)) {
                 break;
             }
@@ -178,7 +175,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
-
                 $this->entryCreator->addColonyEntry(
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
@@ -192,8 +188,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 break;
             }
             //deactivate if high damage
-            else if ($target->hasHighDamage()) {
-
+            elseif ($target->hasHighDamage()) {
                 $this->buildingManager->deactivate($target);
             }
         }

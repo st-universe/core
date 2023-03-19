@@ -6,12 +6,11 @@ namespace Stu\Module\Admin\View\ShowSignatures;
 
 class SignaturePanelEntry
 {
-
     private $data = [];
 
     private ?int $row = null;
 
-    function __construct(&$entry = [])
+    public function __construct(&$entry = [])
     {
         $this->data = $entry;
     }

@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\RenameTopic;
 
 use Stu\Exception\AccessViolation;
+use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Board\Board;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class RenameTopic implements ActionControllerInterface
 {
-
     /**
      * @var string
      */

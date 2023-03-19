@@ -31,6 +31,7 @@ use Stu\Component\Player\Register\SmsVerificationCodeSenderInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+
 use function DI\autowire;
 use function DI\create;
 use function DI\get;

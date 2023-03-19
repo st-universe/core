@@ -9,7 +9,6 @@ use Stu\Orm\Entity\ShipRumpInterface;
 
 final class ModuleValueCalculator implements ModuleValueCalculatorInterface
 {
-
     public function calculateModuleValue(
         $rump,
         ModuleInterface $module,

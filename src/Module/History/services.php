@@ -10,6 +10,7 @@ use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\History\View\Overview\Overview;
 use Stu\Module\History\View\Overview\OverviewRequest;
 use Stu\Module\History\View\Overview\OverviewRequestInterface;
+
 use function DI\autowire;
 
 return [

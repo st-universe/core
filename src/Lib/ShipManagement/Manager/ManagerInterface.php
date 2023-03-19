@@ -11,7 +11,7 @@ interface ManagerInterface
 {
     /**
      * @param array<string, array<int|string, mixed>> $values
-     * 
+     *
      * @return array<string>
      */
     public function manage(

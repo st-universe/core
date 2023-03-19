@@ -222,7 +222,7 @@ class Research implements ResearchInterface
     public function getUpperMoonLimit(): int
     {
         return $this->upper_limit_colony_type === ColonyTypeEnum::COLONY_TYPE_MOON
-            && $this->upper_limit_colony_amount !== null  ? $this->upper_limit_colony_amount : 0;
+            && $this->upper_limit_colony_amount !== null ? $this->upper_limit_colony_amount : 0;
     }
 
     public function getUpperAsteroidLimit(): int

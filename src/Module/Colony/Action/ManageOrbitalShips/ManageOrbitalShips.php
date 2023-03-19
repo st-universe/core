@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
 use request;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Lib\ShipManagement\HandleManagersInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -94,7 +94,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     /**
      * @param array<string, array<int|string, mixed>> $values
-     * 
+     *
      * @return array<string>
      */
     private function handleShip(
@@ -103,7 +103,6 @@ final class ManageOrbitalShips implements ActionControllerInterface
         int $shipId,
         ColonyInterface $colony
     ): array {
-
         $ship = $this->shipRepository->find($shipId);
         if ($ship === null) {
             return [];

@@ -13,7 +13,6 @@ use Stu\Orm\Entity\NoteInterface;
  */
 final class NoteRepository extends EntityRepository implements NoteRepositoryInterface
 {
-
     public function getByUserId(int $userId): array
     {
         return $this->findBy([

@@ -18,7 +18,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class ResearchRepository extends EntityRepository implements ResearchRepositoryInterface
 {
-
     public function getAvailableResearch(int $userId): array
     {
         return $this->getEntityManager()

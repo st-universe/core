@@ -25,7 +25,6 @@ final class ShowColonySurface implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-
         $game->setPageTitle(_('Letzter Oberflächenscan'));
         $game->setMacroInAjaxWindow('html/databasemacros.xhtml/colonysurface');
 

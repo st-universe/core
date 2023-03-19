@@ -6,17 +6,16 @@ namespace Stu\Module\Alliance\Action\DeletePost;
 
 use request;
 use Stu\Exception\AccessViolation;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\AllianceBoardPostInterface;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class DeletePost implements ActionControllerInterface
 {
-
     /**
      * @var string
      */

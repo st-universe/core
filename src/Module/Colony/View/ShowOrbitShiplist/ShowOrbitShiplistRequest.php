@@ -14,5 +14,4 @@ final class ShowOrbitShiplistRequest implements ShowOrbitShiplistRequestInterfac
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

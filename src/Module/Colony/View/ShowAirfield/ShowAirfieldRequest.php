@@ -14,5 +14,4 @@ final class ShowAirfieldRequest implements ShowAirfieldRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

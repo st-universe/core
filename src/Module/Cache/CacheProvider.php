@@ -2,10 +2,10 @@
 
 namespace Stu\Module\Cache;
 
-use Redis;
 use Cache\Adapter\Redis\RedisCachePool;
 use Exception;
 use Psr\Cache\CacheItemPoolInterface;
+use Redis;
 use Stu\Module\Config\StuConfigInterface;
 
 final class CacheProvider implements CacheProviderInterface

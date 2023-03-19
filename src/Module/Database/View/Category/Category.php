@@ -12,7 +12,6 @@ use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
 final class Category implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_CATEGORY';
 
     private CategoryRequestInterface $categoryRequest;

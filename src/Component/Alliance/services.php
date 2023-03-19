@@ -8,6 +8,7 @@ use Stu\Component\Alliance\Relations\Renderer\AllianceDataToGraphAttributeConver
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRenderer;
 use Stu\Component\Alliance\Relations\Renderer\AllianceRelationRendererInterface;
 use Stu\Component\Alliance\Relations\Renderer\RelationItemVertexBuilder;
+
 use function DI\autowire;
 
 return [

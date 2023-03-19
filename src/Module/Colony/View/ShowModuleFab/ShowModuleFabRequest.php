@@ -14,5 +14,4 @@ final class ShowModuleFabRequest implements ShowModuleFabRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

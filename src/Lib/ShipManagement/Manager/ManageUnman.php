@@ -41,7 +41,6 @@ class ManageUnman implements ManagerInterface
             && $ship->getUser() === $user
             && $ship->getCrewCount() > 0
         ) {
-
             //check if there is enough space for crew on colony
             if (!$managerProvider->isAbleToStoreCrew($ship->getCrewCount())) {
                 $msg[] = sprintf(

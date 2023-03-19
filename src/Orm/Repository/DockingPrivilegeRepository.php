@@ -13,7 +13,6 @@ use Stu\Orm\Entity\DockingPrivilegeInterface;
  */
 final class DockingPrivilegeRepository extends EntityRepository implements DockingPrivilegeRepositoryInterface
 {
-
     public function prototype(): DockingPrivilegeInterface
     {
         return new DockingPrivilege();

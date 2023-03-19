@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
+use Doctrine\DBAL\Connection;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Stu\Lib\SessionInterface;
-use Throwable;
-use Doctrine\DBAL\Connection;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Throwable;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;

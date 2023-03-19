@@ -11,6 +11,7 @@ use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequestInterface;
 use Stu\Module\Maindesk\Action\SmsVerification\SmsVerification;
 use Stu\Module\Maindesk\View\Overview\Overview;
 use Stu\Module\Maindesk\View\ShowColonyList\ShowColonyList;
+
 use function DI\autowire;
 
 return [

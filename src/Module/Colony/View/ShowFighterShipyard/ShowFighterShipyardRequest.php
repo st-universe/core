@@ -14,5 +14,4 @@ final class ShowFighterShipyardRequest implements ShowFighterShipyardRequestInte
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

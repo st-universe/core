@@ -8,7 +8,6 @@ use Stu\Component\Game\ModuleViewEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Starmap\Lib\MapSectionHelper;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
 use Stu\Orm\Repository\LayerRepositoryInterface;

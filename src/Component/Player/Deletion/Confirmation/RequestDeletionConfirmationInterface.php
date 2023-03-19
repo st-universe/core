@@ -6,5 +6,4 @@ namespace Stu\Component\Player\Deletion\Confirmation;
 
 interface RequestDeletionConfirmationInterface
 {
-
 }

@@ -19,5 +19,4 @@ final class ShowBuildingRequest implements ShowBuildingRequestInterface
     {
         return $this->queryParameter('bid')->int()->required();
     }
-
 }

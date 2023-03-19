@@ -16,5 +16,4 @@ final class AddBoardRequest implements AddBoardRequestInterface
             $this->queryParameter('board')->string()->defaultsToIfEmpty('')
         );
     }
-
 }

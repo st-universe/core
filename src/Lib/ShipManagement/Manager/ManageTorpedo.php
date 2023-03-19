@@ -9,8 +9,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -60,7 +60,6 @@ class ManageTorpedo implements ManagerInterface
         $isUnload = $load < 0;
 
         if ($isUnload) {
-
             return $this->unloadTorpedo((int)abs($load), $wrapper, $managerProvider);
         } else {
             $selectedTorpedoTypeArray = $values['torp_type'] ?? null;

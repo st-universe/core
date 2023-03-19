@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Config\Model;
 
-
 final class DbSettings extends AbstractSettings implements DbSettingsInterface
 {
     private const CONFIG_PATH = 'db';

@@ -38,6 +38,7 @@ use Stu\Module\Index\View\ShowRegistration\ShowRegistrationRequestInterface;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPassword;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPasswordRequest;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPasswordRequestInterface;
+
 use function DI\autowire;
 
 return [

@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Notification;
 
-use Noodlehaus\ConfigInterface;
-use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
+use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 final class FailureEmailSender implements FailureEmailSenderInterface
 {
-
     private ConfigInterface $config;
 
     private LoggerUtilInterface $loggerUtil;

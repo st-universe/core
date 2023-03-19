@@ -9,7 +9,6 @@ use RuntimeException;
 
 final class ImageCreation implements ImageCreationInterface
 {
-
     public function graphInSrc(Graph $graph): string
     {
         $img = $graph->Stroke(_IMG_HANDLER);

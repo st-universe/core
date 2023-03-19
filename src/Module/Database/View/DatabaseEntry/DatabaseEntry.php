@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\DatabaseEntry;
 
+use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Exception\AccessViolation;
-use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
@@ -25,7 +25,6 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_ENTRY';
 
     private ColonyScanRepositoryInterface $colonyScanRepository;
@@ -185,7 +184,6 @@ final class DatabaseEntry implements ViewControllerInterface
      */
     public function getColonyScanList(UserInterface $user, int $systemId): iterable
     {
-
         $scanlist = [];
 
         foreach ($this->colonyScanRepository->getEntryByUserAndSystem($user->getId(), $systemId) as $element) {

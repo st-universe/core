@@ -7,9 +7,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseUser;
-use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseUserInterface;
 
 /**
@@ -17,7 +17,6 @@ use Stu\Orm\Entity\DatabaseUserInterface;
  */
 final class DatabaseUserRepository extends EntityRepository implements DatabaseUserRepositoryInterface
 {
-
     public function truncateByUserId(int $userId): void
     {
         $this->getEntityManager()->createQuery(

@@ -6,9 +6,9 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 final class FightLib implements FightLibInterface

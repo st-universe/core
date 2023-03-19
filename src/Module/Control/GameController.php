@@ -233,7 +233,7 @@ final class GameController implements GameControllerInterface
     public function addInformationWithLink(string $msg, string $link, bool $override = false): void
     {
         if ($override) {
-            $this->gameInformations = array();
+            $this->gameInformations = [];
         }
         $notification = new Notification();
         $notification->setText($msg);
@@ -245,7 +245,7 @@ final class GameController implements GameControllerInterface
     public function addInformation(string $msg, bool $override = false): void
     {
         if ($override) {
-            $this->gameInformations = array();
+            $this->gameInformations = [];
         }
         $notification = new Notification();
         $notification->setText($msg);
@@ -267,7 +267,7 @@ final class GameController implements GameControllerInterface
 
     public function addInformationMergeDown(array $info): void
     {
-        $notificationArray = array();
+        $notificationArray = [];
         foreach ($info as $value) {
             $notification = new Notification();
             $notification->setText($value);
@@ -288,12 +288,11 @@ final class GameController implements GameControllerInterface
         $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
         ?string $href = null
     ): void {
-
         if ($sender_id === $recipient_id) {
             return;
         }
 
-        $textOnlyArray = array();
+        $textOnlyArray = [];
         foreach ($this->getInformation() as $value) {
             $textOnlyArray[] = $value->getText();
         }
@@ -690,7 +689,6 @@ final class GameController implements GameControllerInterface
     {
         foreach ($actions as $actionIdentifier => $actionController) {
             if (request::indString($actionIdentifier)) {
-
                 $gameRequest->setAction($actionIdentifier);
 
                 if ($actionController->performSessionCheck() === true && !request::isPost()) {
@@ -714,7 +712,6 @@ final class GameController implements GameControllerInterface
     private function executeView(array $views, GameRequestInterface $gameRequest): void
     {
         foreach ($views as $viewIdentifier => $config) {
-
             if (request::indString($viewIdentifier)) {
                 $gameRequest->setView($viewIdentifier);
 

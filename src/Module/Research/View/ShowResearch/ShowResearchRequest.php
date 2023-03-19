@@ -10,8 +10,8 @@ final class ShowResearchRequest implements ShowResearchRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getResearchId(): int {
+    public function getResearchId(): int
+    {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

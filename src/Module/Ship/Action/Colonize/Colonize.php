@@ -6,11 +6,11 @@ namespace Stu\Module\Ship\Action\Colonize;
 
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;

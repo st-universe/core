@@ -14,7 +14,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class PrestigeLogRepository extends EntityRepository implements PrestigeLogRepositoryInterface
 {
-
     public function save(PrestigeLogInterface $log): void
     {
         $em = $this->getEntityManager();

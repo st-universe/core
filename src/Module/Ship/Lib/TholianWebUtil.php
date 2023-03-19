@@ -200,7 +200,8 @@ final class TholianWebUtil implements TholianWebUtilInterface
             return;
         }
 
-        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());;
+        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
+        ;
         $time = $this->stuTime->time();
 
         //adjust by modified web spinner count

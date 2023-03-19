@@ -6,8 +6,8 @@ namespace Stu\Module\Message\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use JBBCode\Parser;
-use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
+use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
@@ -80,7 +80,6 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         }
 
         if ($senderId != GameEnum::USER_NOONE) {
-
             $this->entityManager->flush();
 
             $this->createPrivateMessage(
@@ -101,7 +100,6 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         array $recipients,
         string $text
     ): void {
-
         if (empty($recipients)) {
             return;
         }

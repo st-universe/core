@@ -2,7 +2,6 @@
 
 namespace Stu\Lib;
 
-
 class CleanTextUtils
 {
     public static function clearEmojis(string $text): string
@@ -23,7 +22,7 @@ class CleanTextUtils
      */
     public static function checkBBCode($str): bool
     {
-        $taglist = array("b", "i", "u", "color"); //the bb-tags to search for
+        $taglist = ["b", "i", "u", "color"]; //the bb-tags to search for
 
         foreach ($taglist as $tag) {
             // How often is the open tag?

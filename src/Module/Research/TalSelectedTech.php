@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Noodlehaus\ConfigInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
@@ -20,7 +19,6 @@ use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 final class TalSelectedTech implements TalSelectedTechInterface
 {
-
     private ResearchInterface $research;
 
     private UserInterface $currentUser;

@@ -16,7 +16,6 @@ use Stu\Orm\Entity\TradePost;
  */
 final class TradeLicenseRepository extends EntityRepository implements TradeLicenseRepositoryInterface
 {
-
     public function prototype(): TradeLicenseInterface
     {
         return new TradeLicense();

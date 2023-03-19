@@ -8,6 +8,5 @@ use Stu\Orm\Entity\UserInterface;
 
 interface SmsVerificationCodeSenderInterface
 {
-
     public function send(UserInterface $player, string $code): void;
 }

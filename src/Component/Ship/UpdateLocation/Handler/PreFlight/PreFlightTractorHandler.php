@@ -58,7 +58,6 @@ final class PreFlightTractorHandler extends AbstractUpdateLocationHandler implem
         $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShip);
 
         if ($abortionMsg === null) {
-
             //Traktorstrahl Kosten
             if ($wrapper->getEpsSystemData()->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
                 $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);

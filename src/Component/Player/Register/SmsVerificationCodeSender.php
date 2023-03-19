@@ -23,10 +23,10 @@ final class SmsVerificationCodeSender implements SmsVerificationCodeSenderInterf
     public function send(UserInterface $player, string $code): void
     {
         $body = <<<EOT
-        Dein Aktivierungscode für Star Trek Universe lautet:\n\n
-        %s\n\n
-        Viel Spaß!
-        EOT;
+            Dein Aktivierungscode für Star Trek Universe lautet:\n\n
+            %s\n\n
+            Viel Spaß!
+            EOT;
 
         $mail = new Message();
         $mail->addTo(sprintf('%s@%s', $player->getMobile(), $this->config->get('game.registration.sms_code_verification.email_to_sms_mail_domain')));

@@ -8,6 +8,5 @@ use Stu\Orm\Entity\UserInterface;
 
 interface RegistrationEmailSenderInterface
 {
-
     public function send(UserInterface $player, string $password): void;
 }

@@ -43,8 +43,12 @@ final class FinishTerraformingJobs implements ProcessTickHandlerInterface
             $this->colonyTerraformingRepository->delete($field);
             $txt = "Kolonie " . $colony->getName() . ": " . $field->getTerraforming()->getDescription() . " auf Feld " . $colonyField->getFieldId() . " abgeschlossen";
 
-            $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$colony->getUserId(), $txt,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY);
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                (int)$colony->getUserId(),
+                $txt,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            );
         }
     }
 }

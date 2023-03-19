@@ -9,15 +9,14 @@ use Stu\Module\Tal\TalHelper;
 
 class SignatureWrapper
 {
-
     private $signature = null;
 
-    function __construct($signature)
+    public function __construct($signature)
     {
         $this->signature = $signature;
     }
 
-    function getRump()
+    public function getRump()
     {
         if ($this->signature->isCloaked()) {
             if ($this->signature->getTime() > (time() - FlightSignatureVisibilityEnum::RUMP_VISIBILITY_CLOAKED)) {
@@ -33,7 +32,7 @@ class SignatureWrapper
         }
     }
 
-    function getShipName()
+    public function getShipName()
     {
         if ($this->signature->isCloaked()) {
             if ($this->signature->getTime() > (time() - FlightSignatureVisibilityEnum::NAME_VISIBILITY_CLOAKED)) {
@@ -49,7 +48,7 @@ class SignatureWrapper
         }
     }
 
-    function getAge()
+    public function getAge()
     {
         return TalHelper::formatSeconds(strval(time() - $this->signature->getTime()));
     }

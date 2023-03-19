@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
+use Stu\Component\Crew\CrewCountRetrieverInterface;
+use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Alliance\View\Management\ManagementListItem;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceRelationInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
-use Stu\Component\Player\CrewLimitCalculatorInterface;
-use Stu\Component\Crew\CrewCountRetrieverInterface;
-
 
 /**
  * Creates several UI related item/wrapper classes
@@ -33,7 +32,6 @@ final class AllianceUiFactory implements AllianceUiFactoryInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         CrewCountRetrieverInterface $crewCountRetriever,
         CrewLimitCalculatorInterface $crewLimitCalculator
-
     ) {
         $this->allianceJobRepository = $allianceJobRepository;
         $this->shipRumpRepository = $shipRumpRepository;

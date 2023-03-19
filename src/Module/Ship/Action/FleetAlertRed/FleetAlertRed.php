@@ -14,7 +14,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 final class FleetAlertRed implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_FLEET_ALERT_RED';
-    
+
     private ActivatorDeactivatorHelperInterface $helper;
 
     public function __construct(

@@ -13,6 +13,7 @@ use Stu\Module\Research\View\Overview\Overview;
 use Stu\Module\Research\View\ShowResearch\ShowResearch;
 use Stu\Module\Research\View\ShowResearch\ShowResearchRequest;
 use Stu\Module\Research\View\ShowResearch\ShowResearchRequestInterface;
+
 use function DI\autowire;
 
 return [

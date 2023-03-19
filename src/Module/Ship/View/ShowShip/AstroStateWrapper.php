@@ -6,31 +6,30 @@ use Stu\Component\Ship\AstronomicalMappingEnum;
 
 class AstroStateWrapper
 {
-
     private $state;
 
-    function __construct(int $state)
+    public function __construct(int $state)
     {
         $this->state = $state;
     }
 
-    function isPlannable()
+    public function isPlannable()
     {
         return $this->state == AstronomicalMappingEnum::PLANNABLE;
     }
-    function isPlanned()
+    public function isPlanned()
     {
         return $this->state == AstronomicalMappingEnum::PLANNED;
     }
-    function isMeasured()
+    public function isMeasured()
     {
         return $this->state == AstronomicalMappingEnum::MEASURED;
     }
-    function isFinishing()
+    public function isFinishing()
     {
         return $this->state == AstronomicalMappingEnum::FINISHING;
     }
-    function isDone()
+    public function isDone()
     {
         return $this->state == AstronomicalMappingEnum::DONE;
     }

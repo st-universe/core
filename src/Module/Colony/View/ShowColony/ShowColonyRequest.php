@@ -14,5 +14,4 @@ final class ShowColonyRequest implements ShowColonyRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

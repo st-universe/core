@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeleteAvatar;
 
-use Stu\Exception\AccessViolation;
 use Noodlehaus\ConfigInterface;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class DeleteAvatar implements ActionControllerInterface

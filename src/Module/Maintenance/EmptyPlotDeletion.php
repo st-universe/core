@@ -33,7 +33,6 @@ final class EmptyPlotDeletion implements MaintenanceHandlerInterface
         $txtTemplate = _('Der Plot "%s" wurde gelöscht, da er veraltet ist und keine Beiträge enthält.');
 
         foreach ($this->rpgPlotRepository->getEmptyOldPlots(self::MAX_AGE_IN_SECONDS) as $plot) {
-
             // send deletion messages
             foreach ($plot->getMembers() as $member) {
                 $this->privateMessageSender->send(

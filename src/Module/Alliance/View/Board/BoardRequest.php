@@ -14,5 +14,4 @@ final class BoardRequest implements BoardRequestInterface
     {
         return $this->queryParameter('bid')->int()->required();
     }
-
 }

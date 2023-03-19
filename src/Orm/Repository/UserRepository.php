@@ -19,7 +19,6 @@ use Stu\Orm\Entity\UserInterface;
  */
 final class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
-
     public function prototype(): UserInterface
     {
         return new User();

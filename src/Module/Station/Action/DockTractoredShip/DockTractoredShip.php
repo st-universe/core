@@ -6,13 +6,13 @@ namespace Stu\Module\Station\Action\DockTractoredShip;
 
 use request;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 
 final class DockTractoredShip implements ActionControllerInterface
 {

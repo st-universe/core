@@ -105,7 +105,6 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         int $shipRumpRoleId,
         array $moduleLevel
     ): array {
-
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT

@@ -14,5 +14,4 @@ final class ShowBuildMenuPartRequest implements ShowBuildMenuPartRequestInterfac
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

@@ -8,7 +8,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
-use Stu\Module\Starmap\Lib\YRow;
 
 final class ShowSystem implements ViewControllerInterface
 {

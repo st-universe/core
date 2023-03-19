@@ -35,7 +35,7 @@ interface ShipWrapperInterface
 
     /**
      * highest damage first, then prio
-     * 
+     *
      * @return ShipSystemInterface[]
      */
     public function getDamagedSystems(): array;

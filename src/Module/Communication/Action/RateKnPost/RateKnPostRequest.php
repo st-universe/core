@@ -6,7 +6,8 @@ namespace Stu\Module\Communication\Action\RateKnPost;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class RateKnPostRequest implements RateKnPostRequestInterface {
+final class RateKnPostRequest implements RateKnPostRequestInterface
+{
     use CustomControllerHelperTrait;
 
     public function getPostId(): int
@@ -14,7 +15,8 @@ final class RateKnPostRequest implements RateKnPostRequestInterface {
         return $this->bodyParameter('postid')->int()->required();
     }
 
-    public function getRating(): int{
+    public function getRating(): int
+    {
         return (int)$this->bodyParameter('rating')->oneOf([1, -1])->required();
     }
 }

@@ -18,7 +18,7 @@ class UserYRow extends YRow
     private MapRepositoryInterface $mapRepository;
     private StarmapUiFactoryInterface $starmapUiFactory;
 
-    function __construct(
+    public function __construct(
         StarmapUiFactoryInterface $starmapUiFactory,
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,

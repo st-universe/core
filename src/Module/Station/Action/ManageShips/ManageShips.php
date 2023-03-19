@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\ManageShips;
 
 use request;
-use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\ShipManagement\HandleManagersInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderFactoryInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
@@ -101,7 +101,7 @@ final class ManageShips implements ActionControllerInterface
 
     /**
      * @param array<string, array<int|string, mixed>> $values
-     * 
+     *
      * @return array<string>
      */
     private function handleShip(
@@ -110,7 +110,6 @@ final class ManageShips implements ActionControllerInterface
         int $shipId,
         ShipInterface $station
     ): array {
-
         $ship = $this->shipRepository->find($shipId);
         if ($ship === null) {
             return [];

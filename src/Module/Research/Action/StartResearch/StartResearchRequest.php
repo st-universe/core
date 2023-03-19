@@ -10,8 +10,8 @@ final class StartResearchRequest implements StartResearchRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getResearchId(): int {
+    public function getResearchId(): int
+    {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

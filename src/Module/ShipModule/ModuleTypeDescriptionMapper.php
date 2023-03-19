@@ -6,8 +6,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 
 class ModuleTypeDescriptionMapper
 {
-
-    static function getDescription($type): string
+    public static function getDescription($type): string
     {
         switch ($type) {
             case ShipModuleTypeEnum::MODULE_TYPE_HULL:

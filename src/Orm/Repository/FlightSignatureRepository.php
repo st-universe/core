@@ -135,11 +135,11 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
     {
         $q = $this->getEntityManager()
             ->createQuery(
-            sprintf(
-                'DELETE FROM %s fs WHERE fs.time < :maxAge',
-                FlightSignature::class
-            )
-        );
+                sprintf(
+                    'DELETE FROM %s fs WHERE fs.time < :maxAge',
+                    FlightSignature::class
+                )
+            );
         $q->setParameter('maxAge', time() - $threshold);
         $q->execute();
     }

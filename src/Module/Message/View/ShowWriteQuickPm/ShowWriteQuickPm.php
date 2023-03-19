@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
 use InvalidArgumentException;
-use request;
 use JBBCode\Parser;
+use request;
 use Stu\Component\Player\UserRpgEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;

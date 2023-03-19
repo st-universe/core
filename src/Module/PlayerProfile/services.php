@@ -7,6 +7,7 @@ namespace Stu\Module\PlayerProfile;
 use Stu\Module\Control\GameController;
 use Stu\Module\PlayerProfile\View\Overview\Overview;
 use Stu\Module\PlayerProfile\View\Overview\OverviewRequest;
+
 use function DI\autowire;
 
 return [

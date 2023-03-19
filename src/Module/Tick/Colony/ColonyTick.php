@@ -163,14 +163,12 @@ final class ColonyTick implements ColonyTickInterface
         while (true) {
             $rewind = 0;
             foreach ($production as $commodityId => $pro) {
-
                 if ($pro->getProduction() >= 0) {
                     continue;
                 }
 
                 $depositMining = $userDepositMinings[$commodityId] ?? null;
                 if ($depositMining !== null) {
-
                     if ($depositMining->isEnoughLeft((int) abs($pro->getProduction()))) {
                         continue;
                     }

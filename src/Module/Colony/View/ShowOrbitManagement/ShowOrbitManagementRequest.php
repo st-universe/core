@@ -14,5 +14,4 @@ final class ShowOrbitManagementRequest implements ShowOrbitManagementRequestInte
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

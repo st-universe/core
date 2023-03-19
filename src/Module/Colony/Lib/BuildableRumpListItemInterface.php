@@ -4,7 +4,6 @@ namespace Stu\Module\Colony\Lib;
 
 interface BuildableRumpListItemInterface
 {
-
     public function getId(): int;
 
     public function getName(): string;

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Module\Alliance\View\Create\Create;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Alliance\View\Create\Create;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;

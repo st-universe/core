@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Component\Trade\TradeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\Storage;

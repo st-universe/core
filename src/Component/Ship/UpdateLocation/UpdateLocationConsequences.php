@@ -124,6 +124,4 @@ final class UpdateLocationConsequences implements UpdateLocationConsequencesInte
     //TODO andockschleuse deaktivieren, wenn aktiv
     //  $ship->setDockedTo(null);
     //TODO andockschleuse schrotten, wenn passiv
-
-
 }

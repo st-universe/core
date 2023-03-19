@@ -66,7 +66,7 @@ final class ShowModuleScreen implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $moduleScreenTabs = new ModuleScreenTabWrapper;
+        $moduleScreenTabs = new ModuleScreenTabWrapper();
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             $moduleScreenTabs->register(new ModuleScreenTab($this->shipRumpModuleLevelRepository, $i, $colony, $rump));
         }

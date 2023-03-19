@@ -17,7 +17,6 @@ use Stu\Orm\Entity\TradeOfferInterface;
  */
 final class TradeOfferRepository extends EntityRepository implements TradeOfferRepositoryInterface
 {
-
     public function prototype(): TradeOfferInterface
     {
         return new TradeOffer();
@@ -83,7 +82,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         if ($commodityId !== null && $commodityId !== 0) {
             if ($direction === TradeEnum::FILTER_COMMODITY_IN_BOTH) {
                 $commoditySql = sprintf(' AND (to.gg_id = %1$d OR to.wg_id = %1$d) ', $commodityId);
-            } else if ($direction === TradeEnum::FILTER_COMMODITY_IN_OFFER) {
+            } elseif ($direction === TradeEnum::FILTER_COMMODITY_IN_OFFER) {
                 $commoditySql = sprintf(' AND to.gg_id = %d ', $commodityId);
             } else {
                 $commoditySql = sprintf(' AND to.wg_id = %d ', $commodityId);

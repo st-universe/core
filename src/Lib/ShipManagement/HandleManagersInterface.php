@@ -11,7 +11,7 @@ interface HandleManagersInterface
 {
     /**
      * @param array<string, array<int|string, mixed>> $values
-     * 
+     *
      * @return array<string>
      */
     public function handle(ShipWrapperInterface $wrapper, array $values, ManagerProviderInterface $managerProvider): array;

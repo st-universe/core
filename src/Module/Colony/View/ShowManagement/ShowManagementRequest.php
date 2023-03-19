@@ -14,5 +14,4 @@ final class ShowManagementRequest implements ShowManagementRequestInterface
     {
         return $this->queryParameter('id')->int()->required();
     }
-
 }

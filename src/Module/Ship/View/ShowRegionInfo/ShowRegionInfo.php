@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowRegionInfo;
 
-use Stu\Exception\AccessViolation;
 use request;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -44,7 +44,7 @@ final class ShowRegionInfo implements ViewControllerInterface
 
         if ($mapRegion !== null && $mapRegion->getId() === $regionId) {
             $region = $mapRegion;
-        } else if ($adminRegion !== null &&  $adminRegion->getId() === $regionId) {
+        } elseif ($adminRegion !== null &&  $adminRegion->getId() === $regionId) {
             $region = $adminRegion;
         } else {
             throw new AccessViolation();

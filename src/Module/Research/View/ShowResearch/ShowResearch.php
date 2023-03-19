@@ -13,7 +13,6 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class ShowResearch implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_RESEARCH';
 
     private ShowResearchRequestInterface $showResearchRequest;

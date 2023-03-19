@@ -11,7 +11,6 @@ use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-
     private DatabaseCategoryRepositoryInterface $databaseCategoryRepository;
 
     public function __construct(

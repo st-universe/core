@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Alliance;
 
-use Stu\Orm\Entity\AllianceRelationInterface;
-
 final class AllianceEnum
 {
-
     /**
      * @var int
      */

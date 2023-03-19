@@ -63,7 +63,6 @@ final class PlanetColonization implements PlanetColonizationInterface
         $this->colonyLibFactory->createColonySurface($colony)->updateSurface();
 
         if ($field === null) {
-
             $list = $this->planetFieldRepository->getByColonyAndType(
                 $colony->getId(),
                 ColonyEnum::COLONY_FIELDTYPE_MEADOW
