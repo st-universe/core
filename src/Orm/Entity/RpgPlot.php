@@ -187,4 +187,9 @@ class RpgPlot implements RpgPlotInterface
     {
         return $this->members;
     }
+
+    public function __toString()
+    {
+        return sprintf('id: %d, title: %s', $this->getId(), $this->getTitle());
+    }
 }
