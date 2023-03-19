@@ -190,6 +190,6 @@ class RpgPlot implements RpgPlotInterface
 
     public function __toString()
     {
-        return sprintf('id: %d, title: %s', $this->getId(), $this->getTitle());
+        return sprintf('title: %s', $this->getTitle());
     }
 }
