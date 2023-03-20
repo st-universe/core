@@ -173,7 +173,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      *     d4c?: int
      * }>
      */
-    public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, int $ignoreId): iterable;
+    public function getSensorResultOuterSystem(int $cx, int $cy, int $layerId, int $sensorRange, bool $doSubspace, int $ignoreId): iterable;
 
     /**
      * @return iterable<array{
@@ -187,7 +187,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      *     d4c: int
      * }>
      */
-    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable;
+    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $userId): iterable;
 
     /**
      * @return iterable<array{
@@ -201,7 +201,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      *     d4c: int
      * }>
      */
-    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId): iterable;
+    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): iterable;
 
     /**
      * @return iterable<array{

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -54,6 +55,7 @@ class SignaturePanel
                 $this->data['maxx'],
                 $this->data['miny'],
                 $this->data['maxy'],
+                MapEnum::LAYER_ID_CRAGGANMORE,
                 $this->userId
             );
         } elseif ($this->allyId) {
@@ -62,6 +64,7 @@ class SignaturePanel
                 $this->data['maxx'],
                 $this->data['miny'],
                 $this->data['maxy'],
+                MapEnum::LAYER_ID_CRAGGANMORE,
                 $this->allyId
             );
         }

@@ -159,6 +159,7 @@ class VisualNavPanel
         return $this->shipRepository->getSensorResultOuterSystem(
             $cx,
             $cy,
+            $layerId,
             $range,
             $this->getShip()->getSubspaceState(),
             $this->user->getId()

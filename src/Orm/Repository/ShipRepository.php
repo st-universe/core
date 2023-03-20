@@ -586,7 +586,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, int $ignoreId): iterable
+    public function getSensorResultOuterSystem(int $cx, int $cy, int $layerId, int $sensorRange, bool $doSubspace, int $ignoreId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
@@ -642,7 +642,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 %s
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
-                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd
+                AND a.cy BETWEEN :syStart AND :syEnd
+                AND a.layer_id = :layerId
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
                 $doSubspace ? sprintf(self::FLIGHT_SIGNATURE_MAP_COUNT, $ignoreId, $maxAge) : ''
             ),
@@ -652,6 +654,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $cx + $sensorRange,
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
+            'layerId' => $layerId,
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }
@@ -678,7 +681,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable
+    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $userId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
@@ -701,7 +704,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 %s
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
-                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd
+                AND a.cy BETWEEN :syStart AND :syEnd
+                AND a.layer_id = :layerId
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
                 sprintf(self::ADMIN_SIGNATURE_MAP_COUNT_USER, $userId, 0)
             ),
@@ -711,6 +716,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $maxx,
             'syStart' => $miny,
             'syEnd' => $maxy,
+            'layerId' => $layerId,
             'userId' => $userId
         ])->getResult();
     }
@@ -741,7 +747,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId): iterable
+    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $layerId, int $allyId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
@@ -765,7 +771,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 %s
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
-                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd
+                AND a.cy BETWEEN :syStart AND :syEnd
+                AND a.layer_id = :layerId
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
                 sprintf(self::ADMIN_SIGNATURE_MAP_COUNT_ALLY, $allyId, 0)
             ),
@@ -775,6 +783,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $maxx,
             'syStart' => $miny,
             'syEnd' => $maxy,
+            'layerId' => $layerId,
             'allyId' => $allyId
         ])->getResult();
     }
