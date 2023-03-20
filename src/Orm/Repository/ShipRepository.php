@@ -519,21 +519,21 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.sx as posx, a.sy as posy, a.systems_id as sysid, d.type,
-                (select count(distinct b.id)from stu_ships b
-                    where a.id = b.starsystem_map_id
+                'SELECT a.id, a.sx as posx, a.sy AS posy, a.systems_id AS sysid, d.type,
+                (SELECT count(DISTINCT b.id) FROM stu_ships b
+                    WHERE a.id = b.starsystem_map_id
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss
                                         WHERE b.id = ss.ship_id
                                         AND ss.system_type = :systemId
-                                        AND ss.mode > 1)) as shipcount,
-                (select count(distinct c.id) from stu_ships c
-                    where a.id = c.starsystem_map_id
+                                        AND ss.mode > 1)) AS shipcount,
+                (SELECT count(DISTINCT c.id) FROM stu_ships c
+                    WHERE a.id = c.starsystem_map_id
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_ship_system ss2
                                         WHERE c.id = ss2.ship_id
                                         AND ss2.system_type = :systemId
-                                        AND ss2.mode > 1)) as cloakcount,
+                                        AND ss2.mode > 1)) AS cloakcount,
                 (SELECT COUNT(cfd) > 0
                     FROM stu_colonies col
                     JOIN stu_colonies_fielddata cfd
@@ -543,7 +543,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     AND cfd.buildings_id IN (
                         SELECT bf.buildings_id
                         FROM stu_buildings_functions bf
-                        WHERE bf.function = :shieldBuilding)) as shieldstate
+                        WHERE bf.function = :shieldBuilding)) AS shieldstate
                 %s
                 FROM stu_sys_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
@@ -612,7 +612,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT a.id, a.cx AS posx,a.cy AS posy, d.type,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
-                    WHERE b.map_id = a.id
+                    WHERE b.cx = a.cx AND b.cy = a.cy AND b.layer_id = a.layer_id
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss
                                         WHERE b.id = ss.ship_id
@@ -700,7 +700,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
                     (SELECT count(distinct b.id)
                         FROM stu_ships b
-                        WHERE b.map_id =a.id
+                        WHERE b.cx = a.cx AND b.cy = a.cy AND b.layer_id = a.layer_id
                         AND b.user_id = :userId) as shipcount
                 %s
                 FROM stu_map a
@@ -767,7 +767,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     (SELECT count(distinct b.id)
                         FROM stu_ships b
                         JOIN stu_user u ON b.user_id = u.id
-                        WHERE b.map_id = a.id
+                        WHERE b.cx = a.cx AND b.cy = a.cy AND b.layer_id = a.layer_id
                         AND u.allys_id = :allyId) as shipcount
                 %s
                 FROM stu_map a
