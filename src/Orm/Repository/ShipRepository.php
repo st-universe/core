@@ -607,38 +607,39 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
         }
 
+        //TODO increase performance of allycolor/usercolor/factioncolor calculation
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
-                (select count(distinct b.id)from stu_ships b
-                    where b.cx=a.cx AND b.cy=a.cy
+                'SELECT a.id, a.cx AS posx,a.cy AS posy, d.type,
+                (SELECT count(DISTINCT b.id) FROM stu_ships b
+                    WHERE b.map_id = a.id
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ship_system ss
                                         WHERE b.id = ss.ship_id
                                         AND ss.system_type = :systemId
-                                        AND ss.mode > 1)) as shipcount,
-                (select count(distinct c.id) from stu_ships c
-                    where c.cx = a.cx AND c.cy=a.cy
+                                        AND ss.mode > 1)) AS shipcount,
+                (SELECT count(DISTINCT c.id) FROM stu_ships c
+                    WHERE c.map_id = a.id
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_ship_system ss2
                                         WHERE c.id = ss2.ship_id
                                         AND ss2.system_type = :systemId
-                                        AND ss2.mode > 1)) as cloakcount,
-				(select al.rgb_code FROM stu_alliances al
+                                        AND ss2.mode > 1)) AS cloakcount,
+				(SELECT al.rgb_code FROM stu_alliances al
 					JOIN stu_user u ON al.id = u.allys_id
 						JOIN stu_ships s ON u.id = s.user_id
 							JOIN stu_map m ON m.influence_area_id = s.influence_area_id
-							WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
-							as allycolor,
-				(select u.rgb_code FROM stu_user u
+							WHERE m.id = a.id AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
+							AS allycolor,
+				(SELECT u.rgb_code FROM stu_user u
 					JOIN stu_ships s ON u.id = s.user_id
 						JOIN stu_map m ON m.influence_area_id = s.influence_area_id
-						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
+						WHERE m.id = a.id AND m.bordertype_id IS NULL AND m.admin_region_id IS NULL)
 						as usercolor,
-				(select mb.color FROM stu_map_bordertypes mb
+				(SELECT mb.color FROM stu_map_bordertypes mb
 					JOIN stu_map m ON m.bordertype_id = mb.id
-						WHERE m.cx = a.cx AND m.cy = a.cy AND m.bordertype_id IS NOT NULL)
-						as factioncolor
+						WHERE m.id = a.id AND m.bordertype_id IS NOT NULL)
+						AS factioncolor
                 %s
                 FROM stu_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
@@ -699,7 +700,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
                     (SELECT count(distinct b.id)
                         FROM stu_ships b
-                        WHERE b.cx=a.cx AND b.cy=a.cy
+                        WHERE b.map_id =a.id
                         AND b.user_id = :userId) as shipcount
                 %s
                 FROM stu_map a
@@ -766,7 +767,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     (SELECT count(distinct b.id)
                         FROM stu_ships b
                         JOIN stu_user u ON b.user_id = u.id
-                        WHERE b.cx=a.cx AND b.cy=a.cy
+                        WHERE b.map_id = a.id
                         AND u.allys_id = :allyId) as shipcount
                 %s
                 FROM stu_map a
