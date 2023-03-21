@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_rumps_cat_role_crew",
  *     indexes={
- *         @Index(name="ship_rump_category_role_idx", columns={"rump_category_id","rump_role_id"})
+ *         @Index(name="ship_rump_category_role_idx", columns={"rump_category_id", "rump_role_id"})
  *     }
  * )
  **/

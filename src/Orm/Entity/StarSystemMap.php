@@ -93,7 +93,7 @@ class StarSystemMap implements StarSystemMapInterface
      * @var ArrayCollection<int, FlightSignatureInterface>
      *
      * @OneToMany(targetEntity="FlightSignature", mappedBy="starsystem_map")
-     * @OrderBy({"time" = "DESC"})
+     * @OrderBy({"time": "DESC"})
      */
     private $signatures;
 

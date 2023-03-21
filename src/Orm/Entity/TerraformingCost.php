@@ -18,8 +18,8 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_terraforming_cost",
  *     indexes={
- *          @Index(name="terraforming_idx", columns={"terraforming_id"})
- * })
+ *         @Index(name="terraforming_idx", columns={"terraforming_id"})
+ *     })
  **/
 class TerraformingCost implements TerraformingCostInterface
 {

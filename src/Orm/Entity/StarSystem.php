@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_systems",
  *     indexes={
- *         @Index(name="coordinate_idx", columns={"cx","cy"})
+ *         @Index(name="coordinate_idx", columns={"cx", "cy"})
  *     }
  * )
  **/
@@ -125,7 +125,7 @@ class StarSystem implements StarSystemInterface
      * @var Collection<int, StarSystemMapInterface>
      *
      * @OneToMany(targetEntity="StarSystemMap", mappedBy="starSystem")
-     * @OrderBy({"sy" = "ASC", "sx" = "ASC"})
+     * @OrderBy({"sy": "ASC", "sx": "ASC"})
      */
     private Collection $fields;
 

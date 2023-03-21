@@ -221,7 +221,7 @@ class User implements UserInterface
     private ?string $start_page;
 
     /**
-     * @Column(type="integer", options={"default" : 0})
+     * @Column(type="integer", options={"default": 0})
      *
      */
     private int $rpg_behavior = UserRpgEnum::RPG_BEHAVIOR_NOT_SET;
@@ -246,7 +246,7 @@ class User implements UserInterface
      * @var ArrayCollection<int, UserAwardInterface>
      *
      * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id", cascade={"remove"})
-     * @OrderBy({"award_id" = "ASC"})
+     * @OrderBy({"award_id": "ASC"})
      */
     private $awards;
 
@@ -254,7 +254,7 @@ class User implements UserInterface
      * @var ArrayCollection<int, ColonyInterface>
      *
      * @OneToMany(targetEntity="Colony", mappedBy="user")
-     * @OrderBy({"colonies_classes_id" = "ASC", "id" = "ASC"})
+     * @OrderBy({"colonies_classes_id": "ASC", "id": "ASC"})
      */
     private $colonies;
 

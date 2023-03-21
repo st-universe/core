@@ -92,7 +92,7 @@ class KnPost implements KnPostInterface
      * @var ArrayCollection<int, KnCommentInterface>
      *
      * @OneToMany(targetEntity="KnComment", mappedBy="post")
-     * @OrderBy({"id" = "ASC"})
+     * @OrderBy({"id": "ASC"})
      */
     private $comments;
 

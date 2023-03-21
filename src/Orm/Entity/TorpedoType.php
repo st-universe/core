@@ -21,9 +21,9 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_torpedo_types",
  *     indexes={
- *          @Index(name="torpedo_type_research_idx", columns={"research_id"}),
- *          @Index(name="level_idx", columns={"level"})
- * })
+ *         @Index(name="torpedo_type_research_idx", columns={"research_id"}),
+ *         @Index(name="level_idx", columns={"level"})
+ *     })
  **/
 class TorpedoType implements TorpedoTypeInterface
 {

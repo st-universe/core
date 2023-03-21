@@ -19,7 +19,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
  * @Table(
  *     name="stu_pm_cats",
  *     indexes={
- *         @Index(name="user_special_idx", columns={"user_id","special"})
+ *         @Index(name="user_special_idx", columns={"user_id", "special"})
  *     }
  * )
  **/

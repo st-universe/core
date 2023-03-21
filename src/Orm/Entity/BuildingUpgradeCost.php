@@ -16,10 +16,10 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeCostRepository")
  * @Table(
- *      name="stu_buildings_upgrades_cost",
- *      indexes={
- *          @Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})
- *      }
+ *     name="stu_buildings_upgrades_cost",
+ *     indexes={
+ *         @Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})
+ *     }
  * )
  **/
 class BuildingUpgradeCost implements BuildingUpgradeCostInterface

@@ -90,7 +90,7 @@ class Fleet implements FleetInterface
 
     /**
      * @OneToMany(targetEntity="Ship", mappedBy="fleet", indexBy="id")
-     * @OrderBy({"is_fleet_leader" = "DESC", "name" = "ASC"})
+     * @OrderBy({"is_fleet_leader": "DESC", "name": "ASC"})
      */
     private $shiplist;
 

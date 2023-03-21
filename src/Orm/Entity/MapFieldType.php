@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_map_ftypes",
  *     indexes={
- *          @Index(name="map_ftypes_type_idx", columns={"type"})
+ *         @Index(name="map_ftypes_type_idx", columns={"type"})
  *     }
  * )
  **/

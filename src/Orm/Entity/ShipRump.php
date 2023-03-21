@@ -22,7 +22,7 @@ use Stu\Component\Ship\ShipRumpEnum;
  * @Table(
  *     name="stu_rumps",
  *     indexes={
- *          @Index(name="rump_category_idx", columns={"category_id"})
+ *         @Index(name="rump_category_idx", columns={"category_id"})
  *     }
  * )
  */

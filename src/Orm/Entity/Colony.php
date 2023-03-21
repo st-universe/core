@@ -188,7 +188,7 @@ class Colony implements ColonyInterface
      * @var ArrayCollection<int, PlanetFieldInterface>
      *
      * @OneToMany(targetEntity="PlanetField", mappedBy="colony", indexBy="field_id", fetch="EXTRA_LAZY")
-     * @OrderBy({"field_id" = "ASC"})
+     * @OrderBy({"field_id": "ASC"})
      */
     private $planetFields;
 
@@ -196,7 +196,7 @@ class Colony implements ColonyInterface
      * @var ArrayCollection<int, StorageInterface>
      *
      * @OneToMany(targetEntity="Storage", mappedBy="colony", indexBy="commodity_id")
-     * @OrderBy({"commodity_id" = "ASC"})
+     * @OrderBy({"commodity_id": "ASC"})
      */
     private $storage;
 
@@ -240,7 +240,7 @@ class Colony implements ColonyInterface
      * @var Collection<int, ColonyDepositMiningInterface>
      *
      * @OneToMany(targetEntity="ColonyDepositMining", mappedBy="colony")
-     * @OrderBy({"commodity_id" = "ASC"})
+     * @OrderBy({"commodity_id": "ASC"})
      */
     private Collection $depositMinings;
 

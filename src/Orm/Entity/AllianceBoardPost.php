@@ -18,8 +18,8 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_alliance_posts",
  *     indexes={
- *         @Index(name="topic_date_idx", columns={"topic_id","date"}),
- *         @Index(name="board_date_idx", columns={"board_id","date"})
+ *         @Index(name="topic_date_idx", columns={"topic_id", "date"}),
+ *         @Index(name="board_date_idx", columns={"board_id", "date"})
  *     }
  * )
  **/

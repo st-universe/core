@@ -132,7 +132,7 @@ class Module implements ModuleInterface
      * @var ArrayCollection<int, ModuleSpecialInterface>
      *
      * @OneToMany(targetEntity="ModuleSpecial", mappedBy="module")
-     * @OrderBy({"special_id" = "ASC"})
+     * @OrderBy({"special_id": "ASC"})
      */
     private $moduleSpecials;
 

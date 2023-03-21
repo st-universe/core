@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_history",
  *     indexes={
- *         @Index(name="type_idx",columns={"type"})
+ *         @Index(name="type_idx", columns={"type"})
  *     }
  * )
  **/

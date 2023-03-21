@@ -20,7 +20,7 @@ use Stu\Module\Tal\TalStatusBar;
  * @Table(
  *     name="stu_colonies_fielddata",
  *     indexes={
- *         @Index(name="colony_field_idx", columns={"colonies_id","field_id"}),
+ *         @Index(name="colony_field_idx", columns={"colonies_id", "field_id"}),
  *         @Index(name="colony_building_active_idx", columns={"colonies_id", "buildings_id", "aktiv"}),
  *         @Index(name="active_idx", columns={"aktiv"})
  *     }

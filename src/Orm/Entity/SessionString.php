@@ -19,8 +19,8 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_session_strings",
  *     indexes={
- *          @Index(name="session_string_user_idx", columns={"sess_string", "user_id"}),
- *          @Index(name="session_string_date_idx", columns={"date"})
+ *         @Index(name="session_string_user_idx", columns={"sess_string", "user_id"}),
+ *         @Index(name="session_string_date_idx", columns={"date"})
  *     }
  * )
  **/

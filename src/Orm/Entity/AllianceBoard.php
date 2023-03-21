@@ -59,7 +59,7 @@ class AllianceBoard implements AllianceBoardInterface
      * @var ArrayCollection<int, AllianceBoardPostInterface>
      *
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="board")
-     * @OrderBy({"date" = "DESC"})
+     * @OrderBy({"date": "DESC"})
      */
     private Collection $posts;
 

@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_ignorelist",
  *     indexes={
- *         @Index(name="user_recipient_idx", columns={"user_id","recipient"})
+ *         @Index(name="user_recipient_idx", columns={"user_id", "recipient"})
  *     }
  * )
  **/

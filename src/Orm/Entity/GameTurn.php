@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_game_turns",
  *     indexes={
- *          @Index(name="turn_idx",columns={"turn"})
+ *         @Index(name="turn_idx", columns={"turn"})
  *     }
  * )
  **/

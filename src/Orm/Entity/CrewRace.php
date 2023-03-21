@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_crew_race",
  *     indexes={
- * })
+ *     })
  **/
 class CrewRace implements CrewRaceInterface
 {

@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseTypeRepository")
  * @Table(
  *     name="stu_database_types",
- *     options={"engine":"InnoDB"}
+ *     options={"engine": "InnoDB"}
  * )
  **/
 class DatabaseType implements DatabaseTypeInterface

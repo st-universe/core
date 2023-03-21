@@ -18,9 +18,9 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_buildings_commodity",
  *     indexes={
- *          @Index(name="building_commodity_building_idx", columns={"buildings_id"}),
- *          @Index(name="commodity_count_idx", columns={"commodity_id","count"})
- * })
+ *         @Index(name="building_commodity_building_idx", columns={"buildings_id"}),
+ *         @Index(name="commodity_count_idx", columns={"commodity_id", "count"})
+ *     })
  **/
 class BuildingCommodity implements BuildingCommodityInterface
 {

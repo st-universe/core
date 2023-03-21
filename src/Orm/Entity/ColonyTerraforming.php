@@ -18,8 +18,8 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_colonies_terraforming",
  *     indexes={
- *          @Index(name="colony_idx",columns={"colonies_id"}),
- *          @Index(name="finished_idx",columns={"finished"})
+ *         @Index(name="colony_idx", columns={"colonies_id"}),
+ *         @Index(name="finished_idx", columns={"finished"})
  *     }
  * )
  */

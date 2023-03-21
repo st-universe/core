@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_colonies_shipqueue",
  *     indexes={
- *         @Index(name="colony_shipqueue_building_function_idx", columns={"colony_id","building_function_id"}),
+ *         @Index(name="colony_shipqueue_building_function_idx", columns={"colony_id", "building_function_id"}),
  *         @Index(name="colony_shipqueue_user_idx", columns={"user_id"}),
  *         @Index(name="colony_shipqueue_finish_date_idx", columns={"finish_date"})
  *     }

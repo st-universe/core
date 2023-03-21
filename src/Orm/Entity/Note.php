@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\NoteRepository")
- * @Table(name="stu_notes",indexes={@Index(name="note_user_idx", columns={"user_id"})})
+ * @Table(name="stu_notes", indexes={@Index(name="note_user_idx", columns={"user_id"})})
  */
 class Note implements NoteInterface
 {

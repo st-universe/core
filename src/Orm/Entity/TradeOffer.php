@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_trade_offers",
  *     indexes={
- *         @Index(name="trade_post_user_idx", columns={"posts_id","user_id"})
+ *         @Index(name="trade_post_user_idx", columns={"posts_id", "user_id"})
  *     }
  * )
  **/

@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_basic_trade",
  *     indexes={
- *         @Index(name="base_trade_idx", columns={"faction_id","commodity_id","date_ms"})
+ *         @Index(name="base_trade_idx", columns={"faction_id", "commodity_id", "date_ms"})
  *     }
  * )
  **/

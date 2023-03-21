@@ -17,7 +17,7 @@ use Throwable;
  * @Table(
  *     name="stu_game_request",
  *     indexes={
- *          @Index(name="game_request_idx",columns={"user_id", "action", "view"})
+ *         @Index(name="game_request_idx", columns={"user_id", "action", "view"})
  *     }
  * )
  *

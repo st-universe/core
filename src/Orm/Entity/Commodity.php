@@ -13,7 +13,7 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\CommodityRepository")
- * @Table(name="stu_commodity",indexes={
+ * @Table(name="stu_commodity", indexes={
  * })
  **/
 class Commodity implements CommodityInterface

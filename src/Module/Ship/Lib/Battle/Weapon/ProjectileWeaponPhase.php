@@ -10,9 +10,9 @@ use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 
+//TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
 {
-
     public function fire(
         ProjectileAttackerInterface $attacker,
         array $targetPool,
@@ -21,7 +21,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         $fightMessages = [];
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
-
             if (count($targetPool) === 0) {
                 break;
             }
@@ -110,7 +109,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         bool $isOrbitField,
         int &$antiParticleCount
     ): array {
-
         $building = $target->getBuilding();
         if ($building === null) {
             return [];
@@ -118,7 +116,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
         $msg = [];
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
-
             $torpedo = $attacker->getTorpedo();
 
             if (
@@ -162,7 +159,6 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
-
                 $this->entryCreator->addColonyEntry(
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
@@ -176,8 +172,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 break;
             }
             //deactivate if high damage
-            else if ($target->hasHighDamage()) {
-
+            elseif ($target->hasHighDamage()) {
                 $this->buildingManager->deactivate($target);
             }
         }

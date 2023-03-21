@@ -18,8 +18,8 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_field_build",
  *     indexes={
- *          @Index(name="type_building_idx", columns={"type", "buildings_id"}),
- *          @Index(name="type_building_research_idx", columns={"type", "research_id"})
+ *         @Index(name="type_building_idx", columns={"type", "buildings_id"}),
+ *         @Index(name="type_building_research_idx", columns={"type", "research_id"})
  *     }
  * )
  **/

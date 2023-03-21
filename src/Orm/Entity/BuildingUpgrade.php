@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_buildings_upgrades",
  *     indexes={
- *          @Index(name="upgrade_from_research_idx", columns={"upgrade_from", "research_id"})
+ *         @Index(name="upgrade_from_research_idx", columns={"upgrade_from", "research_id"})
  *     }
  * )
  **/

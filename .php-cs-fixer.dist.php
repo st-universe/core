@@ -6,6 +6,7 @@ $finder = PhpCsFixer\Finder::create()
 $config = new PhpCsFixer\Config();
 $config->setRules(
     [
+        '@DoctrineAnnotation' => true,
         '@PSR12' => true,
         '@PHP82Migration' => true,
         'array_syntax' => ['syntax' => 'short'],

@@ -23,8 +23,8 @@ use Stu\Module\Alliance\View\Topic\Topic;
  * @Table(
  *     name="stu_alliance_topics",
  *     indexes={
- *         @Index(name="recent_topics_idx", columns={"alliance_id","last_post_date"}),
- *         @Index(name="ordered_topics_idx", columns={"board_id","last_post_date"})
+ *         @Index(name="recent_topics_idx", columns={"alliance_id", "last_post_date"}),
+ *         @Index(name="ordered_topics_idx", columns={"board_id", "last_post_date"})
  *     }
  * )
  **/
@@ -102,7 +102,7 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
      * @var ArrayCollection<int, AllianceBoardPostInterface>
      *
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="topic")
-     * @OrderBy({"date" = "DESC"})
+     * @OrderBy({"date": "DESC"})
      */
     private Collection $posts;
 

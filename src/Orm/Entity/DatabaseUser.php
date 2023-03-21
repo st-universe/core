@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
  * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseUserRepository")
  * @Table(
  *     name="stu_database_user",
- *     options={"engine":"InnoDB"},
+ *     options={"engine": "InnoDB"},
  *     uniqueConstraints={@UniqueConstraint(name="entry_user_idx", columns={"database_id", "user_id"})}
  * )
  **/

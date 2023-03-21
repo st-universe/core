@@ -20,7 +20,7 @@ use Stu\Module\Control\StuTime;
  * @Table(
  *     name="stu_trade_license",
  *     indexes={
- *         @Index(name="user_trade_post_idx", columns={"user_id","posts_id"})
+ *         @Index(name="user_trade_post_idx", columns={"user_id", "posts_id"})
  *     }
  * )
  **/

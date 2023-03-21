@@ -18,8 +18,8 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_buildings_field_alternative",
  *     indexes={
- *          @Index(name="building_field_idx", columns={"fieldtype", "buildings_id"})
- * })
+ *         @Index(name="building_field_idx", columns={"fieldtype", "buildings_id"})
+ *     })
  **/
 class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 {

@@ -25,13 +25,13 @@ use Stu\Component\Map\MapEnum;
  * @Table(
  *     name="stu_map",
  *     indexes={
- *         @Index(name="coordinates_idx", columns={"cx","cy"}),
- *         @Index(name="coordinates_reverse_idx", columns={"cy","cx"}),
+ *         @Index(name="coordinates_idx", columns={"cx", "cy"}),
+ *         @Index(name="coordinates_reverse_idx", columns={"cy", "cx"}),
  *         @Index(name="map_field_type_idx", columns={"field_id"}),
  *         @Index(name="map_layer_idx", columns={"layer_id"})
  *     },
  *     uniqueConstraints={
- *        @UniqueConstraint(name="map_coordinate_idx", columns={"layer_id", "cx", "cy"})
+ *         @UniqueConstraint(name="map_coordinate_idx", columns={"layer_id", "cx", "cy"})
  *     }
  * )
  **/
@@ -166,7 +166,7 @@ class Map implements MapInterface
      * @var ArrayCollection<int, FlightSignatureInterface>
      *
      * @OneToMany(targetEntity="FlightSignature", mappedBy="map")
-     * @OrderBy({"time" = "DESC"})
+     * @OrderBy({"time": "DESC"})
      */
     private $signatures;
 

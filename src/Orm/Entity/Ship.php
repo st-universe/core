@@ -40,7 +40,7 @@ use Stu\Module\Logging\LoggerUtilInterface;
  *     indexes={
  *         @Index(name="ship_map_idx", columns={"map_id"}),
  *         @Index(name="ship_starsystem_map_idx", columns={"starsystem_map_id"}),
- *         @Index(name="outer_system_location_idx", columns={"cx","cy"}),
+ *         @Index(name="outer_system_location_idx", columns={"cx", "cy"}),
  *         @Index(name="ship_rump_idx", columns={"rumps_id"}),
  *         @Index(name="ship_web_idx", columns={"holding_web_id"}),
  *         @Index(name="ship_user_idx", columns={"user_id"})
@@ -300,7 +300,7 @@ class Ship implements ShipInterface
      * @var ArrayCollection<int, ShipInterface>
      *
      * @OneToMany(targetEntity="Ship", mappedBy="dockedTo", indexBy="id")
-     * @OrderBy({"fleets_id" = "DESC", "is_fleet_leader" = "DESC"})
+     * @OrderBy({"fleets_id": "DESC", "is_fleet_leader": "DESC"})
      */
     private $dockedShips;
 
@@ -338,7 +338,7 @@ class Ship implements ShipInterface
      * @var ArrayCollection<int, ShipCrewInterface>
      *
      * @OneToMany(targetEntity="ShipCrew", mappedBy="ship", indexBy="id")
-     * @OrderBy({"id" = "ASC"})
+     * @OrderBy({"id": "ASC"})
      */
     private $crew;
 
@@ -351,7 +351,7 @@ class Ship implements ShipInterface
      * @var ArrayCollection<int, ShipSystemInterface>
      *
      * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"remove"})
-     * @OrderBy({"system_type" = "ASC"})
+     * @OrderBy({"system_type": "ASC"})
      */
     private $systems;
 
@@ -371,7 +371,7 @@ class Ship implements ShipInterface
      * @var ArrayCollection<int, StorageInterface>
      *
      * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
-     * @OrderBy({"commodity_id" = "ASC"})
+     * @OrderBy({"commodity_id": "ASC"})
      */
     private $storage;
 
@@ -397,7 +397,7 @@ class Ship implements ShipInterface
      * @var ArrayCollection<int, ShipLogInterface>
      *
      * @OneToMany(targetEntity="ShipLog", mappedBy="ship", fetch="EXTRA_LAZY")
-     * @OrderBy({"id" = "DESC"})
+     * @OrderBy({"id": "DESC"})
      */
     private $logbook;
 

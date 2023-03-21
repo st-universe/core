@@ -19,7 +19,7 @@ use Stu\Component\Alliance\AllianceEnum;
  * @Table(
  *     name="stu_alliances_relations",
  *     indexes={
- *         @Index(name="alliance_relation_idx", columns={"alliance_id","recipient"})
+ *         @Index(name="alliance_relation_idx", columns={"alliance_id", "recipient"})
  *     }
  * )
  **/

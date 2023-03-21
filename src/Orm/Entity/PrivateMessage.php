@@ -76,7 +76,7 @@ class PrivateMessage implements PrivateMessageInterface
     private int $cat_id = 0;
 
     /**
-     * @Column(type="integer", nullable = true)
+     * @Column(type="integer", nullable=true)
      *
      */
     private ?int $inbox_pm_id;
