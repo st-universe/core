@@ -2400,6 +2400,11 @@ parameters:
 			path: src/Module/Control/SemaphoreUtilInterface.php
 
 		-
+			message: "#^Method Stu\\\\Module\\\\Control\\\\StuRandom\\:\\:array_rand\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Module/Control/StuRandom.php
+
+		-
 			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Crew/Lib/CrewCreator.php
@@ -3010,129 +3015,9 @@ parameters:
 			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
 
 		-
-			message: "#^Parameter \\#2 \\$module of class Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx constructor expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface, Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\AttackBuilding\\:\\:\\$messages type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:getBaseDamage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:getModule\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:getModuleId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:getModuleLevel\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:getRoleId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:getRump\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:getShipSystem\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:getUser\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:hasShipSystem\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\EnergyPhalanx\\:\\:setEps\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/EnergyPhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getModule\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getModuleId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getModuleLevel\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getRoleId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getRump\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getShipSystem\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getTorpedo\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getTorpedoVolleys\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:getUser\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:hasShipSystem\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:setEps\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:setMode\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\ProjectilePhalanx\\:\\:setTorpedoCount\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/ProjectilePhalanx.php
 
 		-
 			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
@@ -4005,66 +3890,6 @@ parameters:
 			path: src/Module/Ship/Lib/ActivatorDeactivatorHelper.php
 
 		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelper\\:\\:checkForAlertRedShips\\(\\) has parameter \\$informations with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelper\\:\\:checkForAlertRedShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelper\\:\\:doItAll\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelper\\:\\:informAboutTrojanHorse\\(\\) has parameter \\$users with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelper\\:\\:performAttackCycle\\(\\) has parameter \\$informations with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelper\\:\\:performAttackCycle\\(\\) has parameter \\$isColonyDefense with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelperInterface\\:\\:checkForAlertRedShips\\(\\) has parameter \\$informations with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelperInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelperInterface\\:\\:checkForAlertRedShips\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelperInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelperInterface\\:\\:doItAll\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelperInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelperInterface\\:\\:performAttackCycle\\(\\) has parameter \\$informations with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelperInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelperInterface\\:\\:performAttackCycle\\(\\) has parameter \\$isColonyDefense with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/AlertRedHelperInterface.php
-
-		-
 			message: "#^Cannot call method setAstroStartTurn\\(\\) on Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/Lib/AstroEntryLib.php
@@ -4078,6 +3903,11 @@ parameters:
 			message: "#^Parameter \\#1 \\$entry of method Stu\\\\Orm\\\\Repository\\\\AstroEntryRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface, Stu\\\\Orm\\\\Entity\\\\AstronomicalEntryInterface\\|null given\\.$#"
 			count: 2
 			path: src/Module/Ship/Lib/AstroEntryLib.php
+
+		-
+			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/AlertRedHelper.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamage\\:\\:checkForDamagedShipSystems\\(\\) has parameter \\$msg with no type specified\\.$#"
@@ -4145,254 +3975,9 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
 
 		-
-			message: "#^Cannot call method getCriticalChance\\(\\) on Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getFiringMode\\(\\) on Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getVariance\\(\\) on Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:fire\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:fireAtBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:getEnergyWeapon\\(\\) has parameter \\$ship with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:getEnergyWeaponDamage\\(\\) has parameter \\$ship with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:hasUnsufficientEnergy\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:isCritical\\(\\) has parameter \\$ship with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhase\\:\\:reduceEps\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Parameter \\#2 \\$target of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageBuilding\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PlanetField, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhaseInterface\\:\\:fire\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhaseInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\EnergyWeaponPhaseInterface\\:\\:fireAtBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/EnergyWeaponPhaseInterface.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightLib\\:\\:alertLevelBasedReaction\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/FightLib.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessage\\:\\:addMessageMerge\\(\\) has parameter \\$msg with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessage.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessage\\:\\:getMessage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessage.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessage\\:\\:\\$msg has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessage.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessage\\:\\:\\$senderUserId is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessage.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessageCollection\\:\\:getMessageDump\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessageCollection.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessageCollection\\:\\:getRecipientIds\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessageCollection.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessageCollectionInterface\\:\\:getMessageDump\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessageCollectionInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessageCollectionInterface\\:\\:getRecipientIds\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessageCollectionInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessageInterface\\:\\:addMessageMerge\\(\\) has parameter \\$msg with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessageInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightMessageInterface\\:\\:getMessage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightMessageInterface.php
-
-		-
-			message: "#^Cannot call method getCriticalChance\\(\\) on Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getHullDamageFactor\\(\\) on Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Cannot call method getShieldDamageFactor\\(\\) on Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:fire\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:fireAtBuilding\\(\\) has parameter \\$antiParticleCount with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:fireAtBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:getProjectileWeaponDamage\\(\\) has parameter \\$ship with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:getProjectileWeaponDamage\\(\\) has parameter \\$torpedo with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:hasUnsufficientEnergy\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:isCritical\\(\\) has parameter \\$torpedo with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhase\\:\\:reduceEps\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Torpedo\\\\ShipTorpedoManagerInterface\\:\\:changeTorpedo\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Parameter \\#2 \\$target of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageBuilding\\(\\) expects Stu\\\\Orm\\\\Entity\\\\PlanetField, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhaseInterface\\:\\:fire\\(\\) has parameter \\$attackingPhalanx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhaseInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhaseInterface\\:\\:fireAtBuilding\\(\\) has parameter \\$antiParticleCount with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhaseInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ProjectileWeaponPhaseInterface\\:\\:fireAtBuilding\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/ProjectileWeaponPhaseInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\TholianWebWeaponPhase\\:\\:damageCapturedShip\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/TholianWebWeaponPhase.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\TholianWebWeaponPhaseInterface\\:\\:damageCapturedShip\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/TholianWebWeaponPhaseInterface.php
 
 		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
@@ -4530,31 +4115,6 @@ parameters:
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
 
 		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:getFixture\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycle\\:\\:\\$usedShips type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycle.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipAttackCycleInterface\\:\\:cycle\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipAttackCycleInterface.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipCreator.php
@@ -4668,216 +4228,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLoader\\:\\:acquireSemaphores\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipLoader.php
-
-		-
-			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getDefendedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getHeight\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getMaxHull\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 4
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getSectorString\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method getWidth\\(\\) on Stu\\\\Orm\\\\Entity\\\\LayerInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method isDestroyed\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method isFleetFixed\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Cannot call method updateLocation\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:addInformation\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:addInformationMerge\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:applyFieldDamage\\(\\) has parameter \\$cause with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:applyFieldDamage\\(\\) has parameter \\$damage with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:applyFieldDamage\\(\\) has parameter \\$isAbsolutDmg with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:getFieldData\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:getFieldData\\(\\) has parameter \\$x with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:getFieldData\\(\\) has parameter \\$y with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:getInformations\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:getNextField\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:getNextField\\(\\) has parameter \\$flightMethod with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:moveOneField\\(\\) has parameter \\$currentField with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:moveOneField\\(\\) has parameter \\$flightMethod with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:moveOneField\\(\\) has parameter \\$nextField with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:updateDestination\\(\\) has parameter \\$posx with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:updateDestination\\(\\) has parameter \\$posy with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:checkAstronomicalStuff\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipRemoverInterface\\:\\:destroy\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Parameter \\#2 \\$shipWrapper of method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damage\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tractorSystemSurvivedTowing\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Parameter \\#2 \\$tractoredShip of method Stu\\\\Component\\\\Ship\\\\System\\\\Utility\\\\TractorMassPayloadUtilInterface\\:\\:tryToTow\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:\\$fieldData has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:\\$hasTravelled has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:\\$informations type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:\\$leaderMovedToNextField has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:\\$lostShips has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMover\\:\\:\\$tractoredShips has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMoverInterface\\:\\:checkAndMove\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMoverInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipMoverInterface\\:\\:getInformations\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMoverInterface.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsItem\\:\\:__construct\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
@@ -6023,66 +5373,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Tick\\\\Ship\\\\ShipTick\\:\\:\\$msg type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Tick/Ship/ShipTick.php
-
-		-
-			message: "#^Cannot call method getCloakState\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Cannot call method getCrewlist\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Cannot call method getWarpState\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Cannot call method isBase\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Cannot call method setAlertStateGreen\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Tick\\\\Ship\\\\ShipTickManager\\:\\:letCrewQuit\\(\\) never returns null so it can be removed from the return type\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Tick\\\\Ship\\\\ShipTickManager\\:\\:repairShipOnEntity\\(\\) has parameter \\$entity with no type specified\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\ShipRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\AlertRedHelperInterface\\:\\:doItAll\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTickManager.php
-
-		-
-			message: "#^Variable \\$startTime might not be defined\\.$#"
-			count: 6
-			path: src/Module/Tick/Ship/ShipTickManager.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null\\.$#"
@@ -7760,6 +7050,11 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$weapon type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Weapon\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleBuildingFunction.php
@@ -9128,6 +8423,16 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserTag.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Weapon\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Weapon.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Weapon\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Weapon.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Map\\|null but property expects Stu\\\\Orm\\\\Entity\\\\MapInterface\\.$#"

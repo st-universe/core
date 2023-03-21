@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
@@ -141,6 +142,11 @@ class Module implements ModuleInterface
      * @OneToMany(targetEntity="ModuleCost", mappedBy="module")
      */
     private $buildingCosts;
+
+    /**
+     * @OneToOne(targetEntity="Weapon", mappedBy="module")
+     */
+    private ?WeaponInterface $weapon;
 
     /** @var null|array<int> */
     private $specialAbilities;
@@ -274,6 +280,11 @@ class Module implements ModuleInterface
         $this->rumps_role_id = $shipRumpRoleId;
 
         return $this;
+    }
+
+    public function getWeapon(): ?WeaponInterface
+    {
+        return $this->weapon;
     }
 
     public function getEcost(): int

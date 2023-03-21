@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Battle;
+namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Game\GameEnum;
@@ -12,9 +12,9 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
@@ -37,8 +37,6 @@ abstract class AbstractWeaponPhase
 
     protected LoggerUtilInterface $loggerUtil;
 
-    protected ShipTorpedoManagerInterface $shipTorpedoManager;
-
     private CreatePrestigeLogInterface $createPrestigeLog;
 
     private PrivateMessageSenderInterface $privateMessageSender;
@@ -53,7 +51,6 @@ abstract class AbstractWeaponPhase
         BuildingManagerInterface $buildingManager,
         CreatePrestigeLogInterface $createPrestigeLog,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipTorpedoManagerInterface $shipTorpedoManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipSystemManager = $shipSystemManager;
@@ -65,7 +62,6 @@ abstract class AbstractWeaponPhase
         $this->buildingManager = $buildingManager;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->privateMessageSender = $privateMessageSender;
-        $this->shipTorpedoManager = $shipTorpedoManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 

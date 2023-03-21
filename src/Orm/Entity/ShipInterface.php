@@ -135,9 +135,9 @@ interface ShipInterface
 
     public function setIsDestroyed(bool $isDestroyed): ShipInterface;
 
-    public function getDisabled(): bool;
+    public function isDisabled(): bool;
 
-    public function setDisabled(bool $disabled): ShipInterface;
+    public function setDisabled(bool $isDisabled): ShipInterface;
 
     public function getCanBeDisabled(): bool;
 

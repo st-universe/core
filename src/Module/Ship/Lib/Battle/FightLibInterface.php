@@ -14,7 +14,9 @@ interface FightLibInterface
     /**
      * @param ShipWrapperInterface[] $base
      *
-     * @return ShipWrapperInterface[]
+     * @return array<int, ShipWrapperInterface>
      */
     public function filterInactiveShips(array $base): array;
+
+    public function canFire(ShipWrapperInterface $wrapper): bool;
 }

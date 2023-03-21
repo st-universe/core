@@ -12,7 +12,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\Battle\TholianWebWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;

@@ -4,7 +4,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
-use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\PlanetFieldInterface;
 
 interface ApplyDamageInterface
 {
@@ -15,7 +15,7 @@ interface ApplyDamageInterface
 
     public function damageBuilding(
         DamageWrapper $damage_wrapper,
-        PlanetField $target,
+        PlanetFieldInterface $target,
         bool $isOrbitField
     ): array;
 

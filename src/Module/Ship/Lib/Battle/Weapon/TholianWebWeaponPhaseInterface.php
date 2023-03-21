@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Battle;
+namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface TholianWebWeaponPhaseInterface
 {
+    /**
+     * @return array<string>
+     */
     public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game): array;
 }

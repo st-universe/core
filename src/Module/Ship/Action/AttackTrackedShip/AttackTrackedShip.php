@@ -10,9 +10,9 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -98,7 +98,7 @@ final class AttackTrackedShip implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        if ($ship->getDisabled()) {
+        if ($ship->isDisabled()) {
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
@@ -112,12 +112,12 @@ final class AttackTrackedShip implements ActionControllerInterface
 
         [$attacker, $defender, $fleet] = $this->getAttackerDefender($ship, $target);
 
-        $this->shipAttackCycle->init(
+        $fightMessageCollection = $this->shipAttackCycle->cycle(
             $this->shipWrapperFactory->wrapShips($attacker),
-            $this->shipWrapperFactory->wrapShips($defender),
+            $this->shipWrapperFactory->wrapShips($defender)
         );
-        $this->shipAttackCycle->cycle();
-        $messageDump = $this->shipAttackCycle->getMessages()->getMessageDump();
+
+        $messageDump = $fightMessageCollection->getMessageDump();
 
         $pm = sprintf(_('Kampf in Sektor %s') . "\n", $ship->getSectorString());
         foreach ($messageDump as $value) {

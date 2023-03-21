@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Battle;
+namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
+//TODO unit tests
 final class TholianWebWeaponPhase extends AbstractWeaponPhase implements TholianWebWeaponPhaseInterface
 {
     public function damageCapturedShip(ShipWrapperInterface $wrapper, GameControllerInterface $game): array

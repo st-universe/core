@@ -47,6 +47,13 @@ class EpsSystemData extends AbstractSystemData
         return $this;
     }
 
+    //TODO use this everywhere!
+    public function lowerEps(int $amount): EpsSystemData
+    {
+        $this->eps = $this->eps - $amount;
+        return $this;
+    }
+
     public function setMaxEps(int $maxEps): EpsSystemData
     {
         $this->maxEps = $maxEps;

@@ -2,22 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Battle;
+namespace Stu\Module\Ship\Lib\Battle\Message;
 
 final class FightMessage implements FightMessageInterface
 {
-    private $msg = [];
+    /**
+     * @var array<string>
+     */
+    private array $msg = [];
 
-    private int $senderUserId;
+    private int $senderId;
 
     private ?int $recipientId;
 
+    /**
+     * @param array<string>|null $msg
+     */
     public function __construct(
-        int $senderUserId,
-        ?int $recipientId
+        int $senderId,
+        ?int $recipientId,
+        ?array $msg = null
     ) {
-        $this->senderUserId = $senderUserId;
+        $this->senderId = $senderId;
         $this->recipientId = $recipientId;
+        if ($msg !== null) {
+            $this->msg = $msg;
+        }
+    }
+
+    public function getSenderId(): int
+    {
+        return $this->senderId;
     }
 
     public function getRecipientId(): ?int

@@ -773,14 +773,14 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getDisabled(): bool
+    public function isDisabled(): bool
     {
         return $this->disabled;
     }
 
-    public function setDisabled(bool $disabled): ShipInterface
+    public function setDisabled(bool $isDisabled): ShipInterface
     {
-        $this->disabled = $disabled;
+        $this->disabled = $isDisabled;
         return $this;
     }
 

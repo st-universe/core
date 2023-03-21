@@ -16,7 +16,7 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getAmountByLayer(int $layerId): int;
 
     /**
-     * @return list<MapInterface>
+     * @return array<MapInterface>
      */
     public function getAllOrdered(int $layerId): array;
 
@@ -33,7 +33,7 @@ interface MapRepositoryInterface extends ObjectRepository
     public function getByCoordinates(int $layerId, int $cx, int $cy): ?MapInterface;
 
     /**
-     * @return list<MapInterface>
+     * @return array<MapInterface>
      */
     public function getByCoordinateRange(
         int $layerId,

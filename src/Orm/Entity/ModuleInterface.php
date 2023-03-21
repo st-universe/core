@@ -48,6 +48,8 @@ interface ModuleInterface
 
     public function setShipRumpRoleId(int $shipRumpRoleId): ModuleInterface;
 
+    public function getWeapon(): ?WeaponInterface;
+
     public function getEcost(): int;
 
     public function setEcost(int $energyCosts): ModuleInterface;

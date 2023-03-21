@@ -20,7 +20,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -153,14 +153,13 @@ final class ActivateTractorBeam implements ActionControllerInterface
                 $attacker = [$target->getId() => $target];
             }
 
-            $this->shipAttackCycle->init(
+            $fightMessageCollection = $this->shipAttackCycle->cycle(
                 $this->shipWrapperFactory->wrapShips($attacker),
                 $this->shipWrapperFactory->wrapShips($defender),
                 true
             );
-            $this->shipAttackCycle->cycle();
 
-            $messageDump = $this->shipAttackCycle->getMessages()->getMessageDump();
+            $messageDump = $fightMessageCollection->getMessageDump();
             $game->addInformationMergeDown($messageDump);
 
             $this->privateMessageSender->send(

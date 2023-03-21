@@ -2,72 +2,63 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Battle;
+namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
-use Stu\Component\Ship\ShipRoleEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
+use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TorpedoTypeInterface;
 
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
 {
+
     public function fire(
-        ?ShipWrapperInterface $wrapper,
-        $attackingPhalanx,
+        ProjectileAttackerInterface $attacker,
         array $targetPool,
         bool $isAlertRed = false
     ): array {
         $fightMessages = [];
 
-        $attacker = $wrapper !== null ? $wrapper->get() : $attackingPhalanx;
+        for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
 
-        for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
             if (count($targetPool) === 0) {
                 break;
             }
 
+            $torpedo = $attacker->getTorpedo();
             $targetWrapper = $targetPool[array_rand($targetPool)];
             $target = $targetWrapper->get();
+
             if (
-                !$attacker->getTorpedoState() ||
-                $this->hasUnsufficientEnergy($wrapper, $attackingPhalanx) ||
-                $attacker->getTorpedoCount() === 0
+                $torpedo === null
+                || !$attacker->getTorpedoState()
+                || !$attacker->hasSufficientEnergy($this->getProjectileWeaponEnergyCosts())
+                || $attacker->getTorpedoCount() === 0
             ) {
                 break;
             }
 
-            $torpedo = $attacker->getTorpedo();
             $torpedoName =  $torpedo->getName();
 
-            if ($attacker instanceof ShipInterface) {
-                $this->shipTorpedoManager->changeTorpedo($wrapper, -1);
-            } else {
-                $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
-            }
-
-            $this->reduceEps($wrapper, $attackingPhalanx);
+            $attacker->lowerTorpedoCount(1);
+            $attacker->reduceEps($this->getProjectileWeaponEnergyCosts());
 
             $fightMessage = new FightMessage($attacker->getUser()->getId(), $target->getUser()->getId());
             $fightMessages[] = $fightMessage;
 
             $fightMessage->add("Die " . $attacker->getName() . " feuert einen " . $torpedoName . " auf die " . $target->getName());
 
-            /* higher evade chance for pulseships against torpedo ships
-
-            if ($attacker->getRump()->getRoleId() === ShipRoleEnum::ROLE_TORPEDOSHIP && $target->getRump()->getRoleId() === ShipRoleEnum::ROLE_PULSESHIP) {
-                $hitchance = round($attacker->getHitChance() * 0.65);
-            } else { */
             $hitchance = $attacker->getHitChance();
-            //}
             if ($hitchance * (100 - $target->getEvadeChance()) < rand(1, 10000)) {
                 $fightMessage->add("Die " . $target->getName() . " wurde verfehlt");
                 continue;
             }
+
             $isCritical = $this->isCritical($torpedo, $target->getCloakState());
+
             $damage_wrapper = new DamageWrapper(
-                $this->getProjectileWeaponDamage($attacker, $torpedo, $isCritical),
+                $attacker->getProjectileWeaponDamage($isCritical),
                 $attacker
             );
             $damage_wrapper->setCrit($isCritical);
@@ -113,45 +104,41 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         return $fightMessages;
     }
 
-    private function hasUnsufficientEnergy(?ShipWrapperInterface $wrapper, $attackingPhalanx): bool
-    {
-        if ($wrapper !== null) {
-            return $wrapper->getEpsSystemData()->getEps() < $this->getProjectileWeaponEnergyCosts();
-        } else {
-            return $attackingPhalanx->getEps() < $this->getProjectileWeaponEnergyCosts();
-        }
-    }
-
-    private function reduceEps(?ShipWrapperInterface $wrapper, $attackingPhalanx): void
-    {
-        if ($wrapper !== null) {
-            $eps = $wrapper->getEpsSystemData();
-            $eps->setEps($eps->getEps() - $this->getProjectileWeaponEnergyCosts())->update();
-        } else {
-            $attackingPhalanx->setEps($attackingPhalanx->getEps() - $this->getProjectileWeaponEnergyCosts());
-        }
-    }
-
     public function fireAtBuilding(
-        ShipWrapperInterface $attackerWrapper,
+        ProjectileAttackerInterface $attacker,
         PlanetFieldInterface $target,
         bool $isOrbitField,
-        &$antiParticleCount
+        int &$antiParticleCount
     ): array {
-        $msg = [];
 
-        $attacker = $attackerWrapper->get();
-        for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
-            if (!$attacker->getTorpedoState() || $this->hasUnsufficientEnergy($attackerWrapper, null)) {
+        $building = $target->getBuilding();
+        if ($building === null) {
+            return [];
+        }
+
+        $msg = [];
+        for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
+
+            $torpedo = $attacker->getTorpedo();
+
+            if (
+                $torpedo === null
+                || !$attacker->getTorpedoState()
+                || !$attacker->hasSufficientEnergy($this->getProjectileWeaponEnergyCosts())
+            ) {
                 break;
             }
 
-            $torpedo = $attacker->getTorpedo();
-            $this->shipTorpedoManager->changeTorpedo($attackerWrapper, -1);
+            $attacker->lowerTorpedoCount(1);
+            $attacker->reduceEps($this->getProjectileWeaponEnergyCosts());
 
-            $this->reduceEps($attackerWrapper, null);
-
-            $msg[] = sprintf(_("Die %s feuert einen %s auf das Gebäude %s auf Feld %d"), $attacker->getName(), $torpedo->getName(), $target->getBuilding()->getName(), $target->getFieldId());
+            $msg[] = sprintf(
+                _("Die %s feuert einen %s auf das Gebäude %s auf Feld %d"),
+                $attacker->getName(),
+                $torpedo->getName(),
+                $building->getName(),
+                $target->getFieldId()
+            );
 
             if ($antiParticleCount > 0) {
                 $antiParticleCount--;
@@ -164,7 +151,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             }
             $isCritical = rand(1, 100) <= $torpedo->getCriticalChance();
             $damage_wrapper = new DamageWrapper(
-                $this->getProjectileWeaponDamage($attacker, $torpedo, $isCritical),
+                $attacker->getProjectileWeaponDamage($isCritical),
                 $attacker
             );
             $damage_wrapper->setCrit($isCritical);
@@ -175,10 +162,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
+
                 $this->entryCreator->addColonyEntry(
                     sprintf(
                         _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
-                        $target->getBuilding()->getName(),
+                        $building->getName(),
                         $target->getColony()->getName(),
                         $attacker->getName()
                     )
@@ -188,7 +176,8 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                 break;
             }
             //deactivate if high damage
-            elseif ($target->hasHighDamage()) {
+            else if ($target->hasHighDamage()) {
+
                 $this->buildingManager->deactivate($target);
             }
         }
@@ -202,26 +191,12 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         return 1;
     }
 
-    private function isCritical($torpedo, bool $isTargetCloaked): bool
+    private function isCritical(TorpedoTypeInterface $torpedo, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $torpedo->getCriticalChance() * 2 : $torpedo->getCriticalChance();
         if (rand(1, 100) <= $critChance) {
             return true;
         }
         return false;
-    }
-
-    private function getProjectileWeaponDamage($ship, $torpedo, bool $isCritical): float
-    {
-        $variance = (int) round($torpedo->getBaseDamage() / 100 * $torpedo->getVariance());
-        $basedamage = $this->moduleValueCalculator->calculateModuleValue(
-            $ship->getRump(),
-            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->getModule(),
-            false,
-            $torpedo->getBaseDamage()
-        );
-        $damage = rand($basedamage - $variance, $basedamage + $variance);
-
-        return $isCritical ? $damage * 2 : $damage;
     }
 }

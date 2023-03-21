@@ -142,20 +142,24 @@ use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelper;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
-use Stu\Module\Ship\Lib\AlertRedHelper;
-use Stu\Module\Ship\Lib\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\AlertRedHelper;
+use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\AstroEntryLib;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamage;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhase;
-use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Battle\AttackMatchup;
+use Stu\Module\Ship\Lib\Battle\AttackMatchupInterface;
 use Stu\Module\Ship\Lib\Battle\FightLib;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
-use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhase;
-use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
-use Stu\Module\Ship\Lib\Battle\TholianWebWeaponPhase;
-use Stu\Module\Ship\Lib\Battle\TholianWebWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactory;
+use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
+use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhase;
+use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhase;
+use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Battle\Weapon\TholianWebWeaponPhase;
+use Stu\Module\Ship\Lib\Battle\Weapon\TholianWebWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefend;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtility;
@@ -169,8 +173,8 @@ use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMovementComponentsFactory;
 use Stu\Module\Ship\Lib\ReactorUtil;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
-use Stu\Module\Ship\Lib\ShipAttackCycle;
-use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCycle;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipCreator;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLeaver;
@@ -267,6 +271,8 @@ return [
     TholianWebUtilInterface::class => autowire(TholianWebUtil::class),
     ShipStateChangerInterface::class => autowire(ShipStateChanger::class),
     LeaveFleetInterface::class => autowire(LibLeaveFleet::class),
+    AttackerProviderFactoryInterface::class => autowire(AttackerProviderFactory::class),
+    AttackMatchupInterface::class => autowire(AttackMatchup::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),

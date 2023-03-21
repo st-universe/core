@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
 /**
@@ -65,6 +67,12 @@ class Weapon implements WeaponInterface
      *
      */
     private int $module_id = 0;
+
+    /**
+     * @OneToOne(targetEntity="Module", inversedBy="weapon")
+     * @JoinColumn(name="module_id", referencedColumnName="id")
+     */
+    private ModuleInterface $module;
 
     public function getId(): int
     {

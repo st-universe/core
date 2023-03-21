@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
+//TODO unit tests
 final class FightLib implements FightLibInterface
 {
     private ShipSystemManagerInterface $shipSystemManager;
@@ -127,8 +128,28 @@ final class FightLib implements FightLibInterface
         return array_filter(
             $base,
             function (ShipWrapperInterface $wrapper): bool {
-                return !$wrapper->get()->isDestroyed() && !$wrapper->get()->getDisabled();
+                return !$wrapper->get()->isDestroyed() && !$wrapper->get()->isDisabled();
             }
         );
+    }
+
+    public function canFire(ShipWrapperInterface $wrapper): bool
+    {
+        $ship = $wrapper->get();
+        if ($ship->isDisabled()) {
+            return false;
+        }
+
+        $epsSystem = $wrapper->getEpsSystemData();
+        if ($epsSystem === null || $epsSystem->getEps() === 0) {
+            return false;
+        }
+        if (!$ship->getNbs()) {
+            return false;
+        }
+        if (!$ship->canAttack()) {
+            return false;
+        }
+        return true;
     }
 }

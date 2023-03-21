@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
@@ -12,9 +12,12 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
+//TODO create unit tests
 final class AlertRedHelper implements AlertRedHelperInterface
 {
     private ShipRepositoryInterface $shipRepository;
@@ -205,6 +208,9 @@ final class AlertRedHelper implements AlertRedHelperInterface
         return $shipsToShuffle;
     }
 
+    /**
+     * @param array<int, string> $users
+     */
     private function informAboutTrojanHorse(array $users): void
     {
         foreach ($users as $userId => $txt) {
@@ -250,8 +256,12 @@ final class AlertRedHelper implements AlertRedHelperInterface
         return true;
     }
 
-    public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations, $isColonyDefense = false): void
-    {
+    public function performAttackCycle(
+        ShipInterface $alertShip,
+        ShipInterface $leadShip,
+        &$informations,
+        bool $isColonyDefense = false
+    ): void {
         $alert_user_id = $alertShip->getUser()->getId();
         $lead_user_id = $leadShip->getUser()->getId();
         $isAlertShipBase = $alertShip->isBase();
@@ -293,12 +303,14 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
         //$this->loggerUtil->log(sprintf('before_shipAttackCycle, attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
 
-        $this->shipAttackCycle->init(
+        $fightMessageCollection = $this->shipAttackCycle->cycle(
             $this->shipWrapperFactory->wrapShips($attacker),
             $this->shipWrapperFactory->wrapShips($defender),
+            false,
+            true
         );
-        $this->shipAttackCycle->cycle(true);
-        $messages = $this->shipAttackCycle->getMessages()->getMessageDump();
+
+        $messages = $fightMessageCollection->getMessageDump();
 
         if (empty($messages)) {
             //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
@@ -311,8 +323,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $alertShip->getId());
         $this->privateMessageSender->send(
-            (int) $lead_user_id,
-            (int) $alert_user_id,
+            $lead_user_id,
+            $alert_user_id,
             $pm,
             $isAlertShipBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $alertShip->isDestroyed() ? null : $href
@@ -322,8 +334,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
-            (int) $alert_user_id,
-            (int) $lead_user_id,
+            $alert_user_id,
+            $lead_user_id,
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );

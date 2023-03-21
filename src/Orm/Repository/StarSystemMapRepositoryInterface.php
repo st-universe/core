@@ -15,7 +15,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 interface StarSystemMapRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<StarSystemMapInterface>
+     * @return array<StarSystemMapInterface>
      */
     public function getBySystemOrdered(int $starSystemId): array;
 
@@ -26,7 +26,7 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     ): ?StarSystemMapInterface;
 
     /**
-     * @return list<StarSystemMapInterface>
+     * @return array<StarSystemMapInterface>
      */
     public function getByCoordinateRange(
         StarSystemInterface $starSystem,
@@ -37,12 +37,12 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return list<StarSystemMapInterface>
+     * @return array<StarSystemMapInterface>
      */
     public function getRandomFieldsForAstroMeasurement(int $starSystemId): array;
 
     /**
-     * @return list<array{category_name: string, amount: int}>
+     * @return array<array{category_name: string, amount: int}>
      */
     public function getRumpCategoryInfo(int $cx, int $cy): array;
 

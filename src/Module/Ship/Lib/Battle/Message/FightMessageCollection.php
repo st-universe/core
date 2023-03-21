@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Lib\Battle;
+namespace Stu\Module\Ship\Lib\Battle\Message;
 
 final class FightMessageCollection implements FightMessageCollectionInterface
 {
@@ -16,6 +16,13 @@ final class FightMessageCollection implements FightMessageCollectionInterface
         $this->messages[] = $msg;
     }
 
+    public function addMultiple(array $messages): void
+    {
+        foreach ($messages as $msg) {
+            $this->messages[] = $msg;
+        }
+    }
+
     public function getRecipientIds(): array
     {
         $recipientIds = [];
@@ -27,8 +34,8 @@ final class FightMessageCollection implements FightMessageCollectionInterface
                 continue;
             }
 
-            if (!array_key_exists($recipientId, $recipientIds)) {
-                $recipientIds[$recipientId] = $recipientId;
+            if (!in_array($recipientId, $recipientIds)) {
+                $recipientIds[] = $recipientId;
             }
         }
 

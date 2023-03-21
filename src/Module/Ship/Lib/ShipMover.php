@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
+use InvalidArgumentException;
 use RuntimeException;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipEnum;
@@ -13,8 +14,11 @@ use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMovementComponentsFactoryInterface;
+use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
@@ -55,13 +59,29 @@ final class ShipMover implements ShipMoverInterface
     private int $new_x = 0;
     private int $new_y = 0;
     private bool $fleetMode = false;
+
+    /**
+     * @var array<string, MapInterface|StarSystemMapInterface>
+     */
     private $fieldData = null;
 
+    /**
+     * @var array<int, ShipInterface>
+     */
     private $lostShips = [];
+
+    /**
+     * @var array<int, array<ShipInterface>>
+     */
     private $tractoredShips = [];
 
-    private $leaderMovedToNextField = false;
-    private $hasTravelled = false;
+    private bool $leaderMovedToNextField = false;
+    private bool $hasTravelled = false;
+
+    /**
+     * @var array<string>
+     */
+    private array $informations = [];
 
     public function __construct(
         MapRepositoryInterface $mapRepository,
@@ -129,6 +149,10 @@ final class ShipMover implements ShipMoverInterface
         } else {
             $layer = $leadShip->getLayer();
 
+            if ($layer === null) {
+                throw new RuntimeException('layer can not be null outside of system');
+            }
+
             if ($posx > $layer->getWidth()) {
                 $posx = $layer->getWidth();
             }
@@ -184,42 +208,43 @@ final class ShipMover implements ShipMoverInterface
         $this->new_y = $value;
     }
 
-    private array $informations = [];
-
-    private function addInformation($value): void
+    private function addInformation(string $value): void
     {
         $this->informations[] = $value;
     }
 
-    private function addInformationMerge($value): void
+    /**
+     * @param array<string> $value
+     */
+    private function addInformationMerge(array $value): void
     {
-        if (!is_array($value)) {
-            return;
-        }
-        $this->informations = array_merge($this->getInformations(), $value);
-    }
-
-    public function getInformations(): array
-    {
-        return $this->informations;
+        $this->informations = array_merge($this->informations, $value);
     }
 
     public function checkAndMove(
         ShipWrapperInterface $leadShipWrapper,
         int $destinationX,
         int $destinationY
-    ): void {
-        //echo "- CAP: ".$leadShip->foobar()."\n";
-
+    ): array {
         $leadShip = $leadShipWrapper->get();
-        if ($leadShip->isFleetLeader() && $leadShip->getFleet()->getDefendedColony() !== null) {
+        if (
+            $leadShip->isFleetLeader()
+            && $leadShip->getFleet() !== null
+            && $leadShip->getFleet()->getDefendedColony() !== null
+        ) {
             $this->addInformation(_('Flug während Kolonie-Verteidigung nicht möglich'));
-            return;
+
+            return $this->informations;
         }
 
-        if ($leadShip->isFleetLeader() && $leadShip->getFleet()->getBlockedColony() !== null) {
+        if (
+            $leadShip->isFleetLeader()
+            && $leadShip->getFleet() !== null
+            && $leadShip->getFleet()->getBlockedColony() !== null
+        ) {
             $this->addInformation(_('Flug während Kolonie-Blockierung nicht möglich'));
-            return;
+
+            return $this->informations;
         }
 
         $this->setDestination($leadShip, $destinationX, $destinationY);
@@ -228,11 +253,14 @@ final class ShipMover implements ShipMoverInterface
 
         $wrappers = $this->isFleetMode() ? $this->alertRedHelper->getShips($leadShip) : [$leadShipWrapper];
 
-        $isFixedFleetMode = $this->isFleetMode() && $leadShip->getFleet()->isFleetFixed();
+        $isFixedFleetMode = $this->isFleetMode()
+            && $leadShip->getFleet() !== null
+            && $leadShip->getFleet()->isFleetFixed();
         $this->getReadyForFlight($leadShip, $wrappers, $isFixedFleetMode);
         if (!empty($this->lostShips)) {
             $this->addInformation(_('Der Weiterflug wurde abgebrochen!'));
-            return;
+
+            return $this->informations;
         }
 
         $this->initTractoredShips($wrappers);
@@ -306,7 +334,8 @@ final class ShipMover implements ShipMoverInterface
 
         //skip save and log info if flight did not happen
         if (!$this->hasTravelled) {
-            return;
+
+            return $this->informations;
         }
 
         // save all ships
@@ -315,9 +344,11 @@ final class ShipMover implements ShipMoverInterface
             if (!$ship->isDestroyed()) {
                 $this->shipRepository->save($ship);
             }
-            if ($ship->isTractoring()) {
-                $this->addInformation(sprintf(_('Die %s wurde per Traktorstrahl mitgezogen'), $ship->getTractoredShip()->getName()));
-                $this->shipRepository->save($ship->getTractoredShip());
+
+            $tractoredShip = $ship->getTractoredShip();
+            if ($tractoredShip !== null) {
+                $this->addInformation(sprintf(_('Die %s wurde per Traktorstrahl mitgezogen'), $tractoredShip->getName()));
+                $this->shipRepository->save($tractoredShip);
             }
         }
 
@@ -332,6 +363,8 @@ final class ShipMover implements ShipMoverInterface
         } else {
             $this->addInformation(sprintf(_('Die %s fliegt in Sektor %d|%d ein'), $leadShip->getName(), $leadShip->getPosX(), $leadShip->getPosY()));
         }
+
+        return $this->informations;
     }
 
     /**
@@ -341,11 +374,13 @@ final class ShipMover implements ShipMoverInterface
     {
         foreach ($wrappers as $fleetShipWrapper) {
             $fleetShip = $fleetShipWrapper->get();
+
+            $tractoredShip = $fleetShip->getTractoredShip();
             if (
-                $fleetShip->isTractoring() &&
-                !array_key_exists($fleetShip->getId(), $this->lostShips)
+                $tractoredShip !== null
+                && !array_key_exists($fleetShip->getId(), $this->lostShips)
             ) {
-                $this->tractoredShips[$fleetShip->getId()] = [$fleetShip, $fleetShip->getTractoredShip()];
+                $this->tractoredShips[$fleetShip->getId()] = [$fleetShip, $tractoredShip];
             }
         }
     }
@@ -481,22 +516,26 @@ final class ShipMover implements ShipMoverInterface
     private function moveOneField(
         ShipInterface $leadShip,
         ShipWrapperInterface $wrapper,
-        $flightMethod,
-        $currentField,
-        $nextField,
+        int $flightMethod,
+        MapInterface|StarSystemMapInterface $currentField,
+        MapInterface|StarSystemMapInterface $nextField,
         bool $isFixedFleetMode
     ): void {
         $ship = $wrapper->get();
 
         // zu wenig Crew
         if (!$ship->hasEnoughCrew()) {
+            /**
+             * @var ShipBuildplanInterface
+             */
+            $buildplan = $ship->getBuildplan();
             $this->addLostShip(
                 $wrapper,
                 $leadShip,
                 $isFixedFleetMode,
                 sprintf(
                     _('Es werden %d Crewmitglieder benötigt'),
-                    $ship->getBuildplan()->getCrew()
+                    $buildplan->getCrew()
                 )
             );
             return;
@@ -528,8 +567,8 @@ final class ShipMover implements ShipMoverInterface
         }
 
 
-        if ($ship->isTractoring()) {
-            $tractoredShip = $ship->getTractoredShip();
+        $tractoredShip = $ship->getTractoredShip();
+        if ($tractoredShip !== null) {
 
             //can tow tractored ship?
             $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShip);
@@ -552,10 +591,10 @@ final class ShipMover implements ShipMoverInterface
         //MOVE!
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
-        if ($ship->getSystem() === null) {
-            $ship->updateLocation($nextField, null);
-        } else {
+        if ($nextField instanceof StarSystemMapInterface) {
             $ship->updateLocation(null, $nextField);
+        } else {
+            $ship->updateLocation($nextField, null);
         }
         $this->hasTravelled = true;
         if ($ship === $leadShip) {
@@ -570,14 +609,14 @@ final class ShipMover implements ShipMoverInterface
         $epsSystem->setEps($epsSystem->getEps() - $flight_ecost);
 
         //Traktorstrahl Energie abziehen
-        if ($ship->isTractoring()) {
-            $tractoredShip = $ship->getTractoredShip();
+        $tractoredShip = $ship->getTractoredShip();
+        if ($tractoredShip !== null) {
             $epsSystem->setEps($epsSystem->getEps() - $tractoredShip->getRump()->getFlightEcost());
             $this->$met($tractoredShip);
-            if ($ship->getSystem() === null) {
-                $tractoredShip->updateLocation($nextField, null);
-            } else {
+            if ($nextField instanceof StarSystemMapInterface) {
                 $tractoredShip->updateLocation(null, $nextField);
+            } else {
+                $tractoredShip->updateLocation($nextField, null);
             }
 
             //check for tractor system health
@@ -590,7 +629,7 @@ final class ShipMover implements ShipMoverInterface
             }
 
             //check astro stuff for tractor
-            if ($ship->getSystem() !== null) {
+            if ($nextField instanceof StarSystemMapInterface) {
                 $this->checkAstronomicalStuff($tractoredShip, $nextField);
             }
             $this->addInformationMerge($this->cancelColonyBlockOrDefend->work($ship, true));
@@ -598,15 +637,21 @@ final class ShipMover implements ShipMoverInterface
 
         //create flight signatures
         $flightSignatureCreator = $this->shipMovementComponentsFactory->createFlightSignatureCreator();
-        if ($leadShip->getSystem() !== null) {
-            $this->shipMovementComponentsFactory->createFlightSignatureCreator()->createInnerSystemSignatures(
+        if (
+            $currentField instanceof StarSystemMapInterface
+            && $nextField instanceof StarSystemMapInterface
+        ) {
+            $flightSignatureCreator->createInnerSystemSignatures(
                 $ship,
                 $flightMethod,
                 $currentField,
                 $nextField,
             );
-        } else {
-            $this->shipMovementComponentsFactory->createFlightSignatureCreator()->createOuterSystemSignatures(
+        } elseif (
+            $currentField instanceof MapInterface
+            && $nextField instanceof MapInterface
+        ) {
+            $flightSignatureCreator->createOuterSystemSignatures(
                 $ship,
                 $flightMethod,
                 $currentField,
@@ -616,7 +661,7 @@ final class ShipMover implements ShipMoverInterface
 
 
         //check astro stuff
-        if ($ship->getSystem() !== null) {
+        if ($ship->getSystem() !== null && $nextField instanceof StarSystemMapInterface) {
             $this->checkAstronomicalStuff($ship, $nextField);
         }
 
@@ -662,14 +707,19 @@ final class ShipMover implements ShipMoverInterface
         }
     }
 
-    private function applyFieldDamage(ShipWrapperInterface $wrapper, ShipInterface $leadShip, $damage, $isAbsolutDmg, $cause): void
-    {
+    private function applyFieldDamage(
+        ShipWrapperInterface $wrapper,
+        ShipInterface $leadShip,
+        int $damage,
+        bool $isAbsolutDmg,
+        string $cause
+    ): void {
         $ship = $wrapper->get();
 
         //tractored ship
-        if ($ship->isTractoring()) {
-            $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
-            $tractoredShip = $ship->getTractoredShip();
+        $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+        if ($tractoredShipWrapper !== null) {
+            $tractoredShip = $tractoredShipWrapper->get();
             $dmg = $isAbsolutDmg ? $damage : $tractoredShip->getMaxHull() * $damage / 100;
 
             $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $tractoredShip->getName(), $ship->getPosX(), $ship->getPosY()));
@@ -743,7 +793,7 @@ final class ShipMover implements ShipMoverInterface
         }
     }
 
-    private function getNextField(ShipInterface $leadShip, $flightMethod)
+    private function getNextField(ShipInterface $leadShip, int $flightMethod): MapInterface|StarSystemMapInterface
     {
         switch ($flightMethod) {
             case ShipEnum::DIRECTION_RIGHT:
@@ -754,11 +804,13 @@ final class ShipMover implements ShipMoverInterface
                 return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() - 1);
             case ShipEnum::DIRECTION_BOTTOM:
                 return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() + 1);
+            default:
+                throw new InvalidArgumentException('unknown flight direction');
         }
     }
 
 
-    private function updateDestination($posx, $posy): void
+    private function updateDestination(int $posx, int $posy): void
     {
         $this->setDestX($posx);
         $this->setDestY($posy);
@@ -788,13 +840,13 @@ final class ShipMover implements ShipMoverInterface
         $ship->setFlightDirection(ShipEnum::DIRECTION_LEFT);
     }
 
-    private function getFieldData(ShipInterface $leadShip, $x, $y)
+    private function getFieldData(ShipInterface $leadShip, int $x, int $y): MapInterface|StarSystemMapInterface
     {
         if ($this->fieldData === null) {
-            $sx = (int) $leadShip->getPosX();
-            $sy = (int) $leadShip->getPosY();
-            $destx = (int) $this->getDestX();
-            $desty = (int) $this->getDestY();
+            $sx = $leadShip->getPosX();
+            $sy = $leadShip->getPosY();
+            $destx = $this->getDestX();
+            $desty = $this->getDestY();
 
             if ($sy > $desty) {
                 $oy = $sy;

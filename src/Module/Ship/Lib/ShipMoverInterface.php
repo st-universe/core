@@ -4,11 +4,13 @@ namespace Stu\Module\Ship\Lib;
 
 interface ShipMoverInterface
 {
-    public function getInformations(): array;
 
+    /**
+     * @return array<string>
+     */
     public function checkAndMove(
         ShipWrapperInterface $leadShip,
         int $destinationX,
         int $destinationY
-    );
+    ): array;
 }

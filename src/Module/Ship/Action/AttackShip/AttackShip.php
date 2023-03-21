@@ -11,10 +11,10 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\AlertRedHelperInterface;
-use Stu\Module\Ship\Lib\Battle\FightMessageCollectionInterface;
+use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
-use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
+use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -122,7 +122,7 @@ final class AttackShip implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        if ($ship->getDisabled()) {
+        if ($ship->isDisabled()) {
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
@@ -134,17 +134,15 @@ final class AttackShip implements ActionControllerInterface
 
         [$attacker, $defender, $fleet, $isWebSituation] = $this->getAttackerDefender($ship, $target);
 
-        $this->shipAttackCycle->init(
+        $fightMessageCollection = $this->shipAttackCycle->cycle(
             $this->shipWrapperFactory->wrapShips($attacker),
             $this->shipWrapperFactory->wrapShips($defender),
             $isWebSituation
         );
-        $this->shipAttackCycle->cycle();
-        $messageCollection = $this->shipAttackCycle->getMessages();
 
-        $this->sendPms($ship, $messageCollection, !$isWebSituation && $isTargetBase);
+        $this->sendPms($ship, $fightMessageCollection, !$isWebSituation && $isTargetBase);
 
-        $msg = $messageCollection->getMessageDump();
+        $msg = $fightMessageCollection->getMessageDump();
 
         if ($isActiveTractorShipWarped) {
             //Alarm-Rot check for ship
