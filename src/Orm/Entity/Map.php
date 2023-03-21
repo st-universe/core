@@ -319,7 +319,7 @@ class Map implements MapInterface
     public function getFieldStyle(): string
     {
         // @todo hide unexplored fields
-        $style = "background-image: url('/assets/map/" . $this->getFieldId() . ".png');";
+        $style = "background-image: url('/assets/map/" . $this->getFieldId() . ".jpg');";
         $style .= $this->getBorder();
         return $style;
     }
