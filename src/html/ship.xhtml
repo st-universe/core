@@ -64,7 +64,7 @@
 						tal:attributes="class entry/getCSSClass" tal:content="entry/getRow">.</td>
 					<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
 						tal:attributes="class entry/getCSSClass"
-						style="background-image: url(assets/map/${entry/getMapfieldType}.png); border:1px solid ${entry/getBorder}; width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
+						style="background-image: url(assets/map/${entry/getMapfieldType}.jpg); border:1px solid ${entry/getBorder}; width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
 						<tal:block tal:condition="entry/isClickable">
 							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
 								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
@@ -648,7 +648,7 @@
 			</td>
 			<tal:block tal:condition="not:SHIP/getSystem">
 				<td tal:condition="SHIP/isOverSystem">
-					<img src="assets/map/${SHIP/isOverSystem/getMapField/getFieldId}.png"
+					<img src="assets/map/${SHIP/isOverSystem/getMapField/getFieldId}.jpg"
 						style="width: 15px; height: 15px;" title="Sternensystem" />
 					${SHIP/isOverSystem/getName}<br />
 					<a tal:condition="SHIP/hasWarpdrive"
@@ -1330,8 +1330,7 @@
 								<span tal:replace="SHIP/getCrewCount">CURRENT</span>&nbsp;(<span
 									tal:condition="SHIP/getBuildplan"
 									tal:replace="SHIP/getBuildplan/getCrew">MIN</span><span
-									tal:condition="not:SHIP/getBuildplan">kA</span>,<span
-									tal:condition="MAX_CREW_COUNT"
+									tal:condition="not:SHIP/getBuildplan">kA</span>,<span tal:condition="MAX_CREW_COUNT"
 									tal:replace="MAX_CREW_COUNT">MAX</span><span
 									tal:condition="not:MAX_CREW_COUNT">kA</span>)
 							</td>
