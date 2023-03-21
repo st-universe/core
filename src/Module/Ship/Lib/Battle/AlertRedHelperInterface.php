@@ -24,7 +24,7 @@ interface AlertRedHelperInterface
 
     /**
      * @param array<string> $informations
-     * 
+     *
      * @return array<ShipInterface>
      */
     public function checkForAlertRedShips(

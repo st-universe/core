@@ -7,7 +7,6 @@ use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
 interface ShipAttackCycleInterface
 {
-
     /**
      * @param ShipWrapperInterface[] $attackingShips indexed by ship id
      * @param ShipWrapperInterface[] $defendingShips indexed by ship id

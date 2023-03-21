@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Provider;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
 use RuntimeException;
 use Stu\Component\Ship\System\Data\EpsSystemData;
@@ -12,12 +11,10 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
-use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;

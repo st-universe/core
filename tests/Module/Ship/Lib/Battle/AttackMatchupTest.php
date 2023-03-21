@@ -348,7 +348,7 @@ class AttackMatchupTest extends StuTestCase
             ->andReturn(true);
 
         $this->stuRandom->shouldReceive('array_rand')
-            ->with($randomNumber === 1 ?  $attackers : $defenders)
+            ->with($randomNumber === 1 ? $attackers : $defenders)
             ->once()
             ->andReturn($randomNumber);
         $this->stuRandom->shouldReceive('rand')

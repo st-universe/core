@@ -20,7 +20,7 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
     private ModuleValueCalculatorInterface $moduleValueCalculator;
     private ShipTorpedoManagerInterface $shipTorpedoManager;
 
-    function __construct(
+    public function __construct(
         ShipWrapperInterface $wrapper,
         ModuleValueCalculatorInterface $moduleValueCalculator,
         ShipTorpedoManagerInterface $shipTorpedoManager
@@ -49,7 +49,7 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
         return $epsSystemData->getEps() >= $amount;
     }
 
-    function getWeaponModule(): ModuleInterface
+    public function getWeaponModule(): ModuleInterface
     {
         if ($this->module === null) {
             $shipSystem = $this->get()->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER);
@@ -65,7 +65,7 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
         return $this->module;
     }
 
-    function getEnergyWeaponBaseDamage(): int
+    public function getEnergyWeaponBaseDamage(): int
     {
         return $this->moduleValueCalculator->calculateModuleValue(
             $this->get()->getRump(),

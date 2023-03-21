@@ -76,7 +76,7 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
         return $this->isDisruptor() ? 3 : 1;
     }
 
-    function getWeaponModule(): ModuleInterface
+    public function getWeaponModule(): ModuleInterface
     {
         if ($this->module === null) {
             $module = $this->moduleRepository->find($this->getModuleId());
@@ -90,7 +90,7 @@ final class EnergyPhalanx extends AbstractEnergyAttacker
         return $this->module;
     }
 
-    function getEnergyWeaponBaseDamage(): int
+    public function getEnergyWeaponBaseDamage(): int
     {
         return $this->isDisruptor() ? 180 : 250;
     }

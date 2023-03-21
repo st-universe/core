@@ -334,7 +334,6 @@ final class ShipMover implements ShipMoverInterface
 
         //skip save and log info if flight did not happen
         if (!$this->hasTravelled) {
-
             return $this->informations;
         }
 
@@ -569,7 +568,6 @@ final class ShipMover implements ShipMoverInterface
 
         $tractoredShip = $ship->getTractoredShip();
         if ($tractoredShip !== null) {
-
             //can tow tractored ship?
             $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($wrapper, $tractoredShip);
 

@@ -18,7 +18,7 @@ class Matchup
     /**
      * @param array<ShipWrapperInterface> $targetShipWrappers
      */
-    function __construct(ShipWrapperInterface $attackingShipWrapper, array $targetShipWrappers)
+    public function __construct(ShipWrapperInterface $attackingShipWrapper, array $targetShipWrappers)
     {
         $this->attackingShipWrapper = $attackingShipWrapper;
         $this->targetShipWrappers = $targetShipWrappers;

@@ -170,7 +170,9 @@ class ShipAttackCycleTest extends StuTestCase
                 $attackers,
                 $defenders,
                 Mockery::on(function (&$data) {
-                    if (!is_array($data)) return false;
+                    if (!is_array($data)) {
+                        return false;
+                    }
                     $data[] = 42;
                     return true;
                 }),

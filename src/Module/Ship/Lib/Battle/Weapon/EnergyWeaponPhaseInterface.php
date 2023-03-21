@@ -13,7 +13,7 @@ interface EnergyWeaponPhaseInterface
 {
     /**
      * @param ShipWrapperInterface[] $targetPool
-     * 
+     *
      * @return FightMessageInterface[]
      */
     public function fire(

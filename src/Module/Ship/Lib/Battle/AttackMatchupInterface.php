@@ -10,7 +10,7 @@ interface AttackMatchupInterface
      * @param array<int, ShipWrapperInterface> $attackers
      * @param array<int, ShipWrapperInterface> $defenders
      * @param array<int> $usedShipIds
-     * 
+     *
      */
     public function getMatchup(
         array $attackers,

@@ -88,6 +88,8 @@ class SignaturePanel
             $startTime = microtime(true);
         }
 
+        $rows = [];
+
         foreach ($result as $data) {
             if ($data['posy'] < 1) {
                 continue;

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
-use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollection;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\AttackerProviderFactoryInterface;
+use Stu\Module\Ship\Lib\Battle\Weapon\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\Weapon\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -50,7 +49,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         bool $oneWay = false,
         bool $isAlertRed = false
     ): FightMessageCollectionInterface {
-
         $fightMessages = new FightMessageCollection();
 
         $this->getReady($attackers, $defenders, $oneWay, $fightMessages);
@@ -59,7 +57,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $usedShipIds = [];
 
         while (true) {
-
             $matchup = $this->attackMatchup->getMatchup(
                 $attackers,
                 $defenders,

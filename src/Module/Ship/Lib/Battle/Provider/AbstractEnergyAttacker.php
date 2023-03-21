@@ -20,12 +20,11 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
         return $weapon->getFiringMode();
     }
 
-    abstract function getWeaponModule(): ModuleInterface;
+    abstract public function getWeaponModule(): ModuleInterface;
 
     public function getWeapon(): WeaponInterface
     {
         if ($this->weapon === null) {
-
             $weapon = $this->getWeaponModule()->getWeapon();
             if ($weapon === null) {
                 throw new RuntimeException('module system should have a weapon');
@@ -37,7 +36,7 @@ abstract class AbstractEnergyAttacker implements EnergyAttackerInterface
         return $this->weapon;
     }
 
-    abstract function getEnergyWeaponBaseDamage(): int;
+    abstract public function getEnergyWeaponBaseDamage(): int;
 
     public function getWeaponDamage(bool $isCritical): int
     {

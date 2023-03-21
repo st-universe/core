@@ -4,7 +4,6 @@ namespace Stu\Module\Ship\Lib;
 
 interface ShipMoverInterface
 {
-
     /**
      * @return array<string>
      */

@@ -28,7 +28,6 @@ final class AttackMatchup implements AttackMatchupInterface
         bool $firstStrike = false,
         bool $oneWay = false
     ): ?Matchup {
-
         // Check if there're any useable ships at all
         if ($this->isEveryShipUsed($attackers, $defenders, $usedShipIds)) {
             return null;
@@ -44,7 +43,6 @@ final class AttackMatchup implements AttackMatchupInterface
         if ($firstStrike) {
             return $this->getMatchupInternal($attackerPool, $defenderPool, $usedShipIds);
         } else {
-
             return $this->getMatchupForFurtherStrike(
                 $attackerPool,
                 $defenderPool,
@@ -82,7 +80,7 @@ final class AttackMatchup implements AttackMatchupInterface
      * @param array<int, ShipWrapperInterface> $attackers
      * @param array<int, ShipWrapperInterface> $defenders
      * @param array<int> $usedShipIds
-     * 
+     *
      */
     private function getMatchupInternal(array $attackers, array $defenders, array &$usedShipIds): ?Matchup
     {
@@ -103,7 +101,7 @@ final class AttackMatchup implements AttackMatchupInterface
      * @param array<ShipWrapperInterface> $attackers
      * @param array<ShipWrapperInterface> $defenders
      * @param array<int> $usedShipIds
-     * 
+     *
      */
     private function getMatchupForFurtherStrike(
         array $attackers,
