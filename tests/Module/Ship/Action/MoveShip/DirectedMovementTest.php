@@ -109,9 +109,6 @@ class DirectedMovementTest extends StuTestCase
                 $destX,
                 $destY
             )
-            ->once();
-        $this->shipMover->shouldReceive('getInformations')
-            ->withNoArgs()
             ->once()
             ->andReturn([$message]);
 
@@ -192,9 +189,6 @@ class DirectedMovementTest extends StuTestCase
                 $destX,
                 $destY
             )
-            ->once();
-        $this->shipMover->shouldReceive('getInformations')
-            ->withNoArgs()
             ->once()
             ->andReturn([$message]);
 
@@ -265,9 +259,6 @@ class DirectedMovementTest extends StuTestCase
                 $destX,
                 $destY
             )
-            ->once();
-        $this->shipMover->shouldReceive('getInformations')
-            ->withNoArgs()
             ->once()
             ->andReturn([$message]);
 
