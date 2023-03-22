@@ -5,30 +5,52 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Component\Ship\Repair\CancelRepairInterface;
-use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 
-//TODO unit tests
 final class FightLib implements FightLibInterface
 {
     private ShipSystemManagerInterface $shipSystemManager;
 
     private CancelRepairInterface $cancelRepair;
 
+    private AlertLevelBasedReactionInterface $alertLevelBasedReaction;
+
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,
-        CancelRepairInterface $cancelRepair
+        CancelRepairInterface $cancelRepair,
+        AlertLevelBasedReactionInterface $alertLevelBasedReaction
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->cancelRepair = $cancelRepair;
+        $this->alertLevelBasedReaction = $alertLevelBasedReaction;
     }
 
     public function ready(ShipWrapperInterface $wrapper): array
     {
         $ship = $wrapper->get();
+
+        if (
+            $ship->isDestroyed()
+            || $ship->getRump()->isEscapePods()
+        ) {
+            return [];
+        }
+        if ($ship->getBuildplan() === null) {
+            return [];
+        }
+        if (!$ship->hasEnoughCrew()) {
+            return [];
+        }
+
+        $msg = [];
+        if ($ship->getDockedTo() !== null) {
+            $ship->setDockedTo(null);
+            $msg[] = "- Das Schiff hat abgedockt";
+        }
+
         try {
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
         } catch (ShipSystemException $e) {
@@ -40,86 +62,12 @@ final class FightLib implements FightLibInterface
 
         $this->cancelRepair->cancelRepair($ship);
 
-        $msg = $this->alertLevelBasedReaction($wrapper);
+        $msg = array_merge($msg, $this->alertLevelBasedReaction->react($wrapper));
 
         if ($msg !== []) {
             $msg = array_merge([sprintf(_('Aktionen der %s'), $ship->getName())], $msg);
         }
 
-        return $msg;
-    }
-
-    private function alertLevelBasedReaction(ShipWrapperInterface $wrapper): array
-    {
-        $ship = $wrapper->get();
-        $msg = [];
-        if ($ship->getRump()->isEscapePods() || $ship->isDestroyed()) {
-            return $msg;
-        }
-        if ($ship->getBuildplan() === null) {
-            return $msg;
-        }
-        if (!$ship->hasEnoughCrew() || $ship->getRump()->isTrumfield()) {
-            return $msg;
-        }
-        if ($ship->getDockedTo()) {
-            $ship->setDockedTo(null);
-            $msg[] = "- Das Schiff hat abgedockt";
-        }
-        if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
-            try {
-                $alertMsg = null;
-                $wrapper->setAlertState(ShipAlertStateEnum::ALERT_YELLOW, $alertMsg);
-                $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb";
-                if ($alertMsg !== null) {
-                    $msg[] = "- " . $alertMsg;
-                }
-                return $msg;
-            } catch (ShipSystemException $e) {
-                $msg[] = "- Nicht genügend Energie vorhanden um auf Alarm-Gelb zu wechseln";
-                return $msg;
-            }
-        }
-        if ($ship->getCloakState() && $ship->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
-            try {
-                $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_CLOAK);
-                $msg[] = "- Die Tarnung wurde deaktiviert";
-                return $msg;
-            } catch (ShipSystemException $e) {
-            }
-        }
-        if ($ship->getTractoredShip() === null && $ship->getTractoringShip() === null) {
-            try {
-                $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-
-                $msg[] = "- Die Schilde wurden aktiviert";
-            } catch (ShipSystemException $e) {
-            }
-        } else {
-            $msg[] = "- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden";
-        }
-        try {
-            $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_NBS);
-
-            $msg[] = "- Die Nahbereichssensoren wurden aktiviert";
-        } catch (ShipSystemException $e) {
-        }
-        if ($ship->getAlertState() >= ShipAlertStateEnum::ALERT_YELLOW) {
-            try {
-                $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_PHASER);
-
-                $msg[] = "- Die Energiewaffe wurde aktiviert";
-            } catch (ShipSystemException $e) {
-            }
-        }
-        if ($ship->getAlertState() >= ShipAlertStateEnum::ALERT_RED) {
-            try {
-                $this->shipSystemManager->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TORPEDO);
-
-                $msg[] = "- Der Torpedowerfer wurde aktiviert";
-            } catch (ShipSystemException $e) {
-            }
-        }
         return $msg;
     }
 
@@ -136,7 +84,10 @@ final class FightLib implements FightLibInterface
     public function canFire(ShipWrapperInterface $wrapper): bool
     {
         $ship = $wrapper->get();
-        if ($ship->isDisabled()) {
+        if (!$ship->getNbs()) {
+            return false;
+        }
+        if (!$ship->hasActiveWeapon()) {
             return false;
         }
 
@@ -144,12 +95,7 @@ final class FightLib implements FightLibInterface
         if ($epsSystem === null || $epsSystem->getEps() === 0) {
             return false;
         }
-        if (!$ship->getNbs()) {
-            return false;
-        }
-        if (!$ship->canAttack()) {
-            return false;
-        }
+
         return true;
     }
 }

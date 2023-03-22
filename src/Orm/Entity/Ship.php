@@ -1515,7 +1515,7 @@ class Ship implements ShipInterface
         return !$this->getRump()->isTrumfield() && (!$checkWarpState || !$this->getWarpState());
     }
 
-    public function canAttack(): bool
+    public function hasActiveWeapon(): bool
     {
         return $this->getPhaserState() || $this->getTorpedoState();
     }

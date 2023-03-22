@@ -8,7 +8,6 @@ use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -31,8 +30,6 @@ class ShipWrapperFactoryTest extends StuTestCase
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private CancelRepairInterface $cancelRepair;
-
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
     private GameControllerInterface $game;
@@ -40,6 +37,8 @@ class ShipWrapperFactoryTest extends StuTestCase
     private JsonMapperInterface $jsonMapper;
 
     private ShipSystemDataFactoryInterface $shipSystemDataFactory;
+
+    private ShipStateChangerInterface $shipStateChanger;
 
     /** @var MockInterface&ColonyFunctionManagerInterface */
     private MockInterface $colonyFunctionManager;
@@ -53,12 +52,12 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->colonyShipRepairRepository = $this->mock(ColonyShipRepairRepositoryInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
-        $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->jsonMapper = (new JsonMapperFactory())->bestFit();
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
+        $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
 
         $this->shipWrapperFactory = new ShipWrapperFactory(
             $this->colonyFunctionManager,
@@ -66,11 +65,11 @@ class ShipWrapperFactoryTest extends StuTestCase
             $this->shipRepository,
             $this->colonyShipRepairRepository,
             $this->colonyLibFactory,
-            $this->cancelRepair,
             $this->torpedoTypeRepository,
             $this->game,
             $this->jsonMapper,
-            $this->shipSystemDataFactory
+            $this->shipSystemDataFactory,
+            $this->shipStateChanger
         );
     }
 
@@ -102,7 +101,7 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->assertEquals(PHP_INT_MAX, $fleetwrapper->get()->getSort());
     }
 
-    public function testwrapShipsAsFleetIfNotSingleShipMode(): void
+    public function testWrapShipsAsFleetIfNotSingleShipMode(): void
     {
         $shipA = $this->mock(ShipInterface::class);
         $shipB = $this->mock(ShipInterface::class);
@@ -117,7 +116,7 @@ class ShipWrapperFactoryTest extends StuTestCase
             ->andReturn($user);
         $shipA->shouldReceive('getFleet')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn($fleet);
         $fleet->shouldReceive('getName')
             ->withNoArgs()

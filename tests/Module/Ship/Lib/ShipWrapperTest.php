@@ -10,7 +10,6 @@ use JsonMapper\JsonMapperInterface;
 use Mockery\MockInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
@@ -50,8 +49,6 @@ class ShipWrapperTest extends StuTestCase
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private CancelRepairInterface $cancelRepair;
-
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
     private GameControllerInterface $game;
@@ -59,6 +56,8 @@ class ShipWrapperTest extends StuTestCase
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     private ShipSystemDataFactoryInterface $shipSystemDataFactory;
+
+    private ShipStateChangerInterface $shipStateChanger;
 
     private JsonMapperInterface $jsonMapper;
 
@@ -76,12 +75,12 @@ class ShipWrapperTest extends StuTestCase
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->colonyShipRepairRepository = $this->mock(ColonyShipRepairRepositoryInterface::class);
         $this->colonyLibFactory = $this->mock(ColonyLibFactoryInterface::class);
-        $this->cancelRepair = $this->mock(CancelRepairInterface::class);
         $this->torpedoTypeRepository = $this->mock(TorpedoTypeRepositoryInterface::class);
         $this->game = $this->mock(GameControllerInterface::class);
         $this->jsonMapper = (new JsonMapperFactory())->bestFit();
         $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
+        $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
         $this->shipSystem = $this->mock(ShipSystemInterface::class);
 
@@ -92,16 +91,16 @@ class ShipWrapperTest extends StuTestCase
             $this->shipRepository,
             $this->colonyShipRepairRepository,
             $this->colonyLibFactory,
-            $this->cancelRepair,
             $this->torpedoTypeRepository,
             $this->game,
             $this->jsonMapper,
             $this->shipWrapperFactory,
-            $this->shipSystemDataFactory
+            $this->shipSystemDataFactory,
+            $this->shipStateChanger
         );
     }
 
-    public function testgetHullSystemData(): void
+    public function testGetHullSystemData(): void
     {
         $hullSystemData = new HullSystemData();
 
@@ -115,7 +114,7 @@ class ShipWrapperTest extends StuTestCase
         $this->assertEquals($hullSystemData, $hull);
     }
 
-    public function testgetEpsSystemDataReturnNullIfSystemNotFound(): void
+    public function testGetEpsSystemDataReturnNullIfSystemNotFound(): void
     {
         $this->ship->shouldReceive('hasShipSystem')
             ->with(ShipSystemTypeEnum::SYSTEM_EPS)
@@ -127,7 +126,7 @@ class ShipWrapperTest extends StuTestCase
         $this->assertNull($eps);
     }
 
-    public function testgetEpsSystemDataWithDataEmptyExpectDefaultValues(): void
+    public function testGetEpsSystemDataWithDataEmptyExpectDefaultValues(): void
     {
         $shipSystemRepo = $this->mock(ShipSystemRepositoryInterface::class);
         $epsSystemData = new EpsSystemData($shipSystemRepo);
@@ -159,7 +158,7 @@ class ShipWrapperTest extends StuTestCase
         $this->assertEquals(false, $eps->reloadBattery());
     }
 
-    public function testgetEpsSystemDataWithDataNotEmptyExpectCorrectValues(): void
+    public function testGetEpsSystemDataWithDataNotEmptyExpectCorrectValues(): void
     {
         $shipSystemRepo = $this->mock(ShipSystemRepositoryInterface::class);
         $epsSystemData = new EpsSystemData($shipSystemRepo);

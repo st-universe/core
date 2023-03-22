@@ -429,7 +429,7 @@
   <tal:block tal:condition="SHIP/displayNbsActions"
     tal:define="sstr string:${THIS/getSessionString}; nameWithoutMarkup bbcode2txt:ship/getName">
     <td style="width: 30px; text-align: center;">
-      <tal:block tal:condition="SHIP/canAttack">
+      <tal:block tal:condition="SHIP/hasActiveWeapon">
         <tal:block tal:condition="SHIP/isTractored">
           <tal:block tal:condition="php:ship.getId() EQ SHIP.getTractoringShip().getId()">
             <div style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"

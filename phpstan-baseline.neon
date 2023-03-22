@@ -119,11 +119,6 @@ parameters:
 			path: src/Component/Ship/System/Data/AbstractSystemData.php
 
 		-
-			message: "#^Cannot call method get\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Data/TrackerSystemData.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 2
 			path: src/Component/Ship/System/ShipSystemManager.php
@@ -300,11 +295,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\WarpdriveShipSystem\\:\\:checkActivationConditions\\(\\) has parameter \\$reason with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/Type/WarpdriveShipSystem.php
-
-		-
-			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipStateChangerInterface\\:\\:changeShipState\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Type/WarpdriveShipSystem.php
 
@@ -810,11 +800,6 @@ parameters:
 			message: "#^Cannot call method read\\(\\) on Directory\\|false\\.$#"
 			count: 1
 			path: src/Module/Admin/Action/StartMirrorWorld.php
-
-		-
-			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Tick\\\\Ship\\\\ShipTickInterface\\:\\:work\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Admin/Action/Ticks/DoManualShipTick.php
 
 		-
 			message: "#^'row_0'\\|'row_1'\\|'row_2'\\|'row_3'\\|'row_4'\\|'row_5'\\|non\\-empty\\-list\\<Stu\\\\Orm\\\\Entity\\\\MapFieldType\\> does not accept Stu\\\\Orm\\\\Entity\\\\MapFieldType\\.$#"
@@ -1347,11 +1332,6 @@ parameters:
 			path: src/Module/Alliance/View/ShowEditPost/ShowEditPost.php
 
 		-
-			message: "#^Parameter \\#1 \\$ships of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShips\\(\\) expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
-			count: 1
-			path: src/Module/Alliance/View/ShowMemberRumpInfo/ShowMemberRumpInfo.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Alliance\\\\View\\\\Topic\\\\Topic\\:\\:getTopicNavigation\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Alliance/View/Topic/Topic.php
@@ -1593,11 +1573,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getFunctions\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/RepairShip/RepairShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/RepairShip/RepairShip.php
 
@@ -1922,11 +1897,6 @@ parameters:
 			path: src/Module/Colony/View/ShowManagement/ShowManagement.php
 
 		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|false given\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowManagement/ShowManagement.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Colony\\\\View\\\\ShowModuleFab\\\\ModuleFabricationListItemTal\\:\\:getConstructionCosts\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowModuleFab/ModuleFabricationListItemTal.php
@@ -1938,11 +1908,6 @@ parameters:
 
 		-
 			message: "#^Cannot access an offset on array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowOrbitManagement/ShowOrbitManagement.php
-
-		-
-			message: "#^Parameter \\#1 \\$ships of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShipsAsFleet\\(\\) expects array\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>, array\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\>\\|Stu\\\\Orm\\\\Entity\\\\ShipInterface given\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowOrbitManagement/ShowOrbitManagement.php
 
@@ -2003,11 +1968,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/View/ShowShuttleManagement/ShowShuttleManagement.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Colony/View/ShowShuttleManagement/ShowShuttleManagement.php
 
@@ -2975,11 +2935,6 @@ parameters:
 			path: src/Module/Ship/Action/ActivateTractorBeam/ActivateTractorBeam.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/ActivateTractorBeam/ActivateTractorBeam.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\AstroMapping\\\\PlanAstroMapping\\:\\:obtainMeasurementFields\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/AstroMapping/PlanAstroMapping.php
@@ -3040,11 +2995,6 @@ parameters:
 			path: src/Module/Ship/Action/AttackShip/AttackShip.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackShip/AttackShip.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/AttackTrackedShip/AttackTrackedShip.php
@@ -3060,11 +3010,6 @@ parameters:
 			path: src/Module/Ship/Action/AttackTrackedShip/AttackTrackedShip.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackTrackedShip/AttackTrackedShip.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 5
 			path: src/Module/Ship/Action/BeamFrom/BeamFrom.php
@@ -3076,11 +3021,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BeamFrom/BeamFrom.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/BeamFrom/BeamFrom.php
 
@@ -3111,11 +3051,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BeamTo/BeamTo.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/BeamTo/BeamTo.php
 
@@ -3181,11 +3116,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/ChangeFleetFleader/ChangeFleetFleader.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/ChangeFleetFleader/ChangeFleetFleader.php
 
@@ -3335,18 +3265,8 @@ parameters:
 			path: src/Module/Ship/Action/DockShip/DockShip.php
 
 		-
-			message: "#^Cannot call method getShipWrappers\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetWrapperInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/DockShip/DockShip.php
-
-		-
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 2
-			path: src/Module/Ship/Action/DockShip/DockShip.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
 			path: src/Module/Ship/Action/DockShip/DockShip.php
 
 		-
@@ -3388,16 +3308,6 @@ parameters:
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/EpsTransfer/EpsTransfer.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EpsTransfer/EpsTransfer.php
-
-		-
-			message: "#^Cannot call method get\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EscapeTractorBeam/EscapeTractorBeam.php
 
 		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
@@ -3440,11 +3350,6 @@ parameters:
 			path: src/Module/Ship/Action/EscapeTractorBeam/EscapeTractorBeam.php
 
 		-
-			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Component\\\\Ship\\\\System\\\\ShipSystemManagerInterface\\:\\:deactivate\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EscapeTractorBeam/EscapeTractorBeam.php
-
-		-
 			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/FleetDeactivateWarp/FleetDeactivateWarp.php
@@ -3465,11 +3370,6 @@ parameters:
 			path: src/Module/Ship/Action/InterceptShip/InterceptShip.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/InterceptShip/InterceptShip.php
-
-		-
 			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/JoinFleet/AbstractJoinFleet.php
@@ -3486,11 +3386,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Ship\\\\Storage\\\\ShipStorageManagerInterface\\:\\:upperStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LandShuttle/LandShuttle.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LandShuttle/LandShuttle.php
 
@@ -3545,11 +3440,6 @@ parameters:
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
 
 		-
-			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveStarSystem\\\\LeaveStarSystem\\:\\:leaveStarSystem\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
-
-		-
 			message: "#^Parameter \\#2 \\$map of method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveStarSystem\\\\LeaveStarSystem\\:\\:leaveStarSystem\\(\\) expects Stu\\\\Orm\\\\Entity\\\\MapInterface, Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null given\\.$#"
 			count: 2
 			path: src/Module/Ship/Action/LeaveStarSystem/LeaveStarSystem.php
@@ -3580,11 +3470,6 @@ parameters:
 			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
 
 		-
-			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Module\\\\Ship\\\\Action\\\\LeaveWormhole\\\\LeaveWormhole\\:\\:leaveWormhole\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveWormhole/LeaveWormhole.php
-
-		-
 			message: "#^Access to an undefined property Stu\\\\Module\\\\Ship\\\\Action\\\\LoadReactor\\\\LoadReactor\\:\\:\\$shipRepository\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/LoadReactor/LoadReactor.php
@@ -3606,11 +3491,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Action\\\\SalvageCrew\\\\SalvageCrew\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/SalvageCrew/SalvageCrew.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/SalvageCrew/SalvageCrew.php
 
@@ -3656,11 +3536,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Action\\\\SalvageEmergencyPods\\\\SalvageEmergencyPods\\:\\:sendPMsToCrewOwners\\(\\) has parameter \\$crewmanPerUser with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/SalvageEmergencyPods/SalvageEmergencyPods.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/SalvageEmergencyPods/SalvageEmergencyPods.php
 
@@ -3745,11 +3620,6 @@ parameters:
 			path: src/Module/Ship/Action/StoreShuttle/StoreShuttle.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/StoreShuttle/StoreShuttle.php
-
-		-
 			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TholianWeb/CancelTholianWeb.php
@@ -3805,17 +3675,7 @@ parameters:
 			path: src/Module/Ship/Action/TorpedoTransfer/TorpedoTransfer.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TorpedoTransfer/TorpedoTransfer.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/TrackShip/TrackShip.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/TrackShip/TrackShip.php
 
@@ -3873,11 +3733,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Action\\\\UnloadBattery\\\\UnloadBattery\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/UnloadBattery/UnloadBattery.php
-
-		-
-			message: "#^Cannot call method getShipWrappers\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\FleetWrapperInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Lib/ActivatorDeactivatorHelper.php
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ActivatorDeactivatorHelper\\:\\:\\$loggerUtil is never read, only written\\.$#"
@@ -3968,11 +3823,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageShipSystem\\(\\) has parameter \\$system with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\FightLib\\:\\:alertLevelBasedReaction\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/FightLib.php
 
 		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
@@ -4205,21 +4055,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipLeaver.php
 
 		-
-			message: "#^Call to an undefined method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\:\\:getUser\\(\\)\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLoader.php
-
-		-
-			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLoader.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLoader\\:\\:acquireSemaphores\\(\\) should return array\\<Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\> but returns array\\<int, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\>\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLoader.php
-
-		-
 			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLoader\\:\\:acquireSemaphores\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipLoader.php
@@ -4365,11 +4200,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipNfsIterator.php
 
 		-
-			message: "#^Cannot call method get\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipRemover.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipRemover\\:\\:destroyTradepost\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipRemover.php
@@ -4390,134 +4220,9 @@ parameters:
 			path: src/Module/Ship/Lib/ShipRemover.php
 
 		-
-			message: "#^Parameter \\#1 \\$wrapper of method Stu\\\\Component\\\\Ship\\\\System\\\\ShipSystemManagerInterface\\:\\:deactivate\\(\\) expects Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface, Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null given\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipRemover.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipRemover\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipRemover.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 6
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Cannot call method getMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:getPossibleTorpedoTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:getRepairCosts\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:getSpecificShipSystem\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:lowerEpsUsage\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:setAlertState\\(\\) has parameter \\$msg with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShip\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:\\$effectiveEpsProduction has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:\\$epsUsage has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapper\\:\\:\\$shipSystemDataCache has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapper.php
-
-		-
-			message: "#^Cannot call method getFleet\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|false\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipWrapperFactory.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperFactory.php
-
-		-
-			message: "#^Cannot call method getSort\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperFactory.php
-
-		-
-			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|false\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperFactory.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactory\\:\\:wrapFleets\\(\\) has parameter \\$fleets with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperFactory.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactory\\:\\:wrapShips\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperFactory.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapFleets\\(\\) has parameter \\$fleets with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperFactoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapShips\\(\\) has parameter \\$ships with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperFactoryInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\:\\:getPossibleTorpedoTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\:\\:getRepairCosts\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\:\\:lowerEpsUsage\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperInterface.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\:\\:setAlertState\\(\\) has parameter \\$msg with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipWrapperInterface.php
 
 		-
 			message: "#^Cannot access property \\$ownedWebId on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
@@ -4620,16 +4325,6 @@ parameters:
 			path: src/Module/Ship/View/ShowAstroEntry/ShowAstroEntry.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowBeamFrom/ShowBeamFrom.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowBeamTo/ShowBeamTo.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowBeamTo/ShowBeamTo.php
@@ -4638,16 +4333,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$sysmap of method Stu\\\\Orm\\\\Repository\\\\ColonyRepositoryInterface\\:\\:getByPosition\\(\\) expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowColonization/ShowColonization.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowEpsTransfer/ShowEpsTransfer.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowScan/ShowScan.php
 
 		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
@@ -4745,11 +4430,6 @@ parameters:
 			path: src/Module/Ship/View/ShowShip/ShowShip.php
 
 		-
-			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperFactoryInterface\\:\\:wrapFleet\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowShip/ShowShip.php
-
-		-
 			message: "#^Variable \\$astroEntry might not be defined\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowShip/ShowShip.php
@@ -4761,11 +4441,6 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\View\\\\ShowTorpedoTransfer\\\\ShowTorpedoTransfer\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowTorpedoTransfer/ShowTorpedoTransfer.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowTorpedoTransfer/ShowTorpedoTransfer.php
 
@@ -5095,16 +4770,6 @@ parameters:
 			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Station/Action/ManageShuttles/ManageShuttles.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Station/Action/RepairShip/RepairShip.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: src/Module/Station/Action/RepairShip/RepairShip.php
@@ -5160,11 +4825,6 @@ parameters:
 			path: src/Module/Station/Action/ToggleBatteryReload/ToggleBatteryReload.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Station/Action/UndockStationShip/UndockStationShip.php
-
-		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 2
 			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
@@ -5208,11 +4868,6 @@ parameters:
 			message: "#^PHPDoc tag @var contains unknown class Stu\\\\Module\\\\Station\\\\View\\\\ShowShipManagement\\\\FleetWrapperInterface\\.$#"
 			count: 1
 			path: src/Module/Station/View/ShowShipManagement/ShowShipManagement.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowShuttleManagement/ShowShuttleManagement.php
 
 		-
 			message: "#^Property Stu\\\\Module\\\\Station\\\\View\\\\ShowStationCosts\\\\ShowStationCosts\\:\\:\\$loggerUtil is never read, only written\\.$#"
@@ -5343,11 +4998,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Tick\\\\Process\\\\ShieldRegeneration\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Tick/Process/ShieldRegeneration.php
-
-		-
-			message: "#^Cannot call method get\\(\\) on Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipWrapperInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Tick/Ship/ShipTick.php
 
 		-
 			message: "#^Cannot call method getDatabaseEntry\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use RuntimeException;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipLSSModeEnum;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
@@ -127,8 +128,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
 
+        $fleetWrapper = $wrapper->getFleetWrapper();
+        if ($fleetWrapper === null) {
+            throw new RuntimeException('ship not in fleet');
+        }
+
         $success = false;
-        foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $wrapper) {
+        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
             if ($this->activateIntern($wrapper, $systemId, $game)) {
                 $success = true;
                 $this->shipRepository->save($wrapper->get());
@@ -203,8 +209,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
 
+        $fleetWrapper = $wrapper->getFleetWrapper();
+        if ($fleetWrapper === null) {
+            throw new RuntimeException('ship not in fleet');
+        }
+
         $success = false;
-        foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $wrapper) {
+        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
             if ($this->deactivateIntern($wrapper, $systemId, $game)) {
                 $success = true;
                 $this->shipRepository->save($wrapper->get());
@@ -279,8 +290,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
 
+        $fleetWrapper = $wrapper->getFleetWrapper();
+        if ($fleetWrapper === null) {
+            throw new RuntimeException('ship not in fleet');
+        }
+
         $success = false;
-        foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $wrapper) {
+        foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
             $success = $this->setAlertStateShip($wrapper, $alertState, $game) || $success;
         }
 
@@ -320,8 +336,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
 
         try {
-            $alertMsg = null;
-            $wrapper->setAlertState($alertState, $alertMsg);
+            $alertMsg = $wrapper->setAlertState($alertState);
             $this->shipRepository->save($ship);
 
             if ($alertMsg !== null) {

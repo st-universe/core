@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use JsonMapper\JsonMapperInterface;
+use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\Data\AbstractSystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
 use Stu\Component\Ship\System\Data\ShieldSystemData;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\Data\TrackerSystemData;
 use Stu\Component\Ship\System\Data\WebEmitterSystemData;
-use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -29,6 +29,7 @@ use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
+//TODO increase coverage
 final class ShipWrapper implements ShipWrapperInterface
 {
     private ShipInterface $ship;
@@ -41,8 +42,6 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
-    private CancelRepairInterface $cancelRepair;
-
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
     private GameControllerInterface $game;
@@ -53,13 +52,18 @@ final class ShipWrapper implements ShipWrapperInterface
 
     private ShipSystemDataFactoryInterface $shipSystemDataFactory;
 
+    private ColonyFunctionManagerInterface $colonyFunctionManager;
+
+    private ShipStateChangerInterface $shipStateChanger;
+
+    /**
+     * @var array<int, AbstractSystemData>
+     */
     private $shipSystemDataCache = [];
 
-    private $epsUsage;
+    private ?int $epsUsage = null;
 
-    private $effectiveEpsProduction;
-
-    private ColonyFunctionManagerInterface $colonyFunctionManager;
+    private ?int $effectiveEpsProduction = null;
 
     public function __construct(
         ColonyFunctionManagerInterface $colonyFunctionManager,
@@ -68,25 +72,25 @@ final class ShipWrapper implements ShipWrapperInterface
         ShipRepositoryInterface $shipRepository,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        CancelRepairInterface $cancelRepair,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         GameControllerInterface $game,
         JsonMapperInterface $jsonMapper,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        ShipSystemDataFactoryInterface $shipSystemDataFactory
+        ShipSystemDataFactoryInterface $shipSystemDataFactory,
+        ShipStateChangerInterface $shipStateChanger
     ) {
         $this->ship = $ship;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
-        $this->cancelRepair = $cancelRepair;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->game = $game;
         $this->jsonMapper = $jsonMapper;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->shipSystemDataFactory = $shipSystemDataFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
+        $this->shipStateChanger = $shipStateChanger;
     }
 
     public function get(): ShipInterface
@@ -116,17 +120,17 @@ final class ShipWrapper implements ShipWrapperInterface
     public function getEpsUsage(): int
     {
         if ($this->epsUsage === null) {
-            $this->reloadEpsUsage();
+            $this->epsUsage = $this->reloadEpsUsage();
         }
         return $this->epsUsage;
     }
 
-    public function lowerEpsUsage($value): void
+    public function lowerEpsUsage(int $value): void
     {
         $this->epsUsage -= $value;
     }
 
-    private function reloadEpsUsage(): void
+    private function reloadEpsUsage(): int
     {
         $result = 0;
 
@@ -141,19 +145,23 @@ final class ShipWrapper implements ShipWrapperInterface
             $result += ShipAlertStateEnum::ALERT_RED_EPS_USAGE;
         }
 
-        $this->epsUsage = $result;
+        return $result;
     }
 
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
-            $eps = $this->getEpsSystemData();
 
             $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
             if ($prod <= 0) {
                 return $prod;
             }
-            if ($eps->getEps() + $prod > $eps->getMaxEps()) {
+
+            $eps = $this->getEpsSystemData();
+            if (
+                $eps !== null
+                && $eps->getEps() + $prod > $eps->getMaxEps()
+            ) {
                 return $eps->getMaxEps() - $eps->getEps();
             }
             $this->effectiveEpsProduction = $prod;
@@ -166,40 +174,12 @@ final class ShipWrapper implements ShipWrapperInterface
         return $this->getEffectiveEpsProduction() + $this->getEpsUsage();
     }
 
-    public function setAlertState(int $alertState, &$msg): void
+    public function setAlertState(int $alertState): ?string
     {
-        $eps = $this->getEpsSystemData();
+        $msg = $this->shipStateChanger->changeAlertState($this, $alertState);
+        $this->epsUsage = $this->reloadEpsUsage();
 
-        //check if enough energy
-        if (
-            $alertState == ShipAlertStateEnum::ALERT_YELLOW
-            && $this->get()->getAlertState() == ShipAlertStateEnum::ALERT_GREEN
-        ) {
-            if ($eps->getEps() < 1) {
-                throw new InsufficientEnergyException(1);
-            }
-            $eps->setEps($eps->getEps() - 1)->update();
-        }
-        if (
-            $alertState == ShipAlertStateEnum::ALERT_RED
-            && $this->get()->getAlertState() !== ShipAlertStateEnum::ALERT_RED
-        ) {
-            if ($eps->getEps() < 2) {
-                throw new InsufficientEnergyException(2);
-            }
-            $eps->setEps($eps->getEps() - 2)->update();
-        }
-
-        // cancel repair if not on alert green
-        if ($alertState !== ShipAlertStateEnum::ALERT_GREEN) {
-            if ($this->cancelRepair->cancelRepair($this->get())) {
-                $msg = _('Die Reparatur wurde abgebrochen');
-            }
-        }
-
-        // now change
-        $this->get()->setAlertState($alertState);
-        $this->reloadEpsUsage();
+        return $msg;
     }
 
     public function leaveFleet(): void
@@ -379,26 +359,29 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function getTractoredShipWrapper(): ?ShipWrapperInterface
     {
-        if (!$this->get()->isTractoring()) {
+        $tractoredShip = $this->get()->getTractoredShip();
+        if ($tractoredShip === null) {
             return null;
         }
 
-        return $this->shipWrapperFactory->wrapShip($this->get()->getTractoredShip());
+        return $this->shipWrapperFactory->wrapShip($tractoredShip);
     }
 
     public function getTractoringShipWrapper(): ?ShipWrapperInterface
     {
-        if (!$this->get()->isTractored()) {
+        $tractoringShip = $this->get()->getTractoringShip();
+        if ($tractoringShip === null) {
             return null;
         }
 
-        return $this->shipWrapperFactory->wrapShip($this->get()->getTractoringShip());
+        return $this->shipWrapperFactory->wrapShip($tractoringShip);
     }
 
     public function getHullSystemData(): HullSystemData
     {
         $hullSystemData = $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_HULL
+            ShipSystemTypeEnum::SYSTEM_HULL,
+            HullSystemData::class
         );
 
         if ($hullSystemData === null) {
@@ -411,32 +394,48 @@ final class ShipWrapper implements ShipWrapperInterface
     public function getShieldSystemData(): ?ShieldSystemData
     {
         return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_SHIELDS
+            ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            ShieldSystemData::class
         );
     }
 
     public function getEpsSystemData(): ?EpsSystemData
     {
         return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_EPS
+            ShipSystemTypeEnum::SYSTEM_EPS,
+            EpsSystemData::class
         );
     }
 
     public function getTrackerSystemData(): ?TrackerSystemData
     {
         return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_TRACKER
+            ShipSystemTypeEnum::SYSTEM_TRACKER,
+            TrackerSystemData::class
         );
     }
 
     public function getWebEmitterSystemData(): ?WebEmitterSystemData
     {
-        return $this->getSpecificShipSystem(
-            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB
+        $specificSystem = $this->getSpecificShipSystem(
+            ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB,
+            WebEmitterSystemData::class
         );
+
+        if ($specificSystem === null) {
+            return null;
+        }
+
+        return null;
     }
 
-    private function getSpecificShipSystem(int $systemType)
+    /**
+     * @template T
+     * @param class-string<T> $className
+     * 
+     * @return T|null
+     */
+    private function getSpecificShipSystem(int $systemType, string $className)
     {
         if (
             $systemType !== ShipSystemTypeEnum::SYSTEM_HULL
@@ -467,7 +466,12 @@ final class ShipWrapper implements ShipWrapperInterface
             }
         }
 
-        //return deserialized system
-        return $this->shipSystemDataCache[$systemType];
+        //load deserialized system from cache
+        $cacheItem = $this->shipSystemDataCache[$systemType];
+        if (!$cacheItem instanceof $className) {
+            throw new RuntimeException('this should not happen');
+        }
+
+        return $cacheItem;
     }
 }

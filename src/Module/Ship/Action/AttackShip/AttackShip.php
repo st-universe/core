@@ -214,7 +214,7 @@ final class AttackShip implements ActionControllerInterface
                     if (
                         $defShip->getDockedTo() !== null
                         && !$defShip->getDockedTo()->getUser()->isNpc()
-                        && $defShip->getDockedTo()->canAttack()
+                        && $defShip->getDockedTo()->hasActiveWeapon()
                     ) {
                         $defender[$defShip->getDockedTo()->getId()] = $defShip->getDockedTo();
                     }
@@ -233,7 +233,7 @@ final class AttackShip implements ActionControllerInterface
             if (
                 $target->getDockedTo() !== null
                 && !$target->getDockedTo()->getUser()->isNpc()
-                && $target->getDockedTo()->canAttack()
+                && $target->getDockedTo()->hasActiveWeapon()
             ) {
                 $defender[$target->getDockedTo()->getId()] = $target->getDockedTo();
             }

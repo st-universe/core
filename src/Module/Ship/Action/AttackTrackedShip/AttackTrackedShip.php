@@ -77,7 +77,7 @@ final class AttackTrackedShip implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->canAttack()) {
+        if (!$ship->hasActiveWeapon()) {
             $game->addInformation(_('Waffen sind offline'));
             return;
         }
@@ -181,7 +181,7 @@ final class AttackTrackedShip implements ActionControllerInterface
                     if (
                         $defShip->getDockedTo() !== null
                         && !$defShip->getDockedTo()->getUser()->isNpc()
-                        && $defShip->getDockedTo()->canAttack()
+                        && $defShip->getDockedTo()->hasActiveWeapon()
                     ) {
                         $defender[$defShip->getDockedTo()->getId()] = $defShip->getDockedTo();
                     }
@@ -200,7 +200,7 @@ final class AttackTrackedShip implements ActionControllerInterface
             if (
                 $target->getDockedTo() !== null
                 && !$target->getDockedTo()->getUser()->isNpc()
-                && $target->getDockedTo()->canAttack()
+                && $target->getDockedTo()->hasActiveWeapon()
             ) {
                 $defender[$target->getDockedTo()->getId()] = $target->getDockedTo();
             }

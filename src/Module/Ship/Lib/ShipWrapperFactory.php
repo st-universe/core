@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use InvalidArgumentException;
 use JsonMapper\JsonMapperInterface;
+use RuntimeException;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
-use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Data\ShipSystemDataFactoryInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -28,8 +29,6 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private CancelRepairInterface $cancelRepair;
-
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
     private GameControllerInterface $game;
@@ -40,28 +39,30 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
+    private ShipStateChangerInterface $shipStateChanger;
+
     public function __construct(
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipSystemManagerInterface $shipSystemManager,
         ShipRepositoryInterface $shipRepository,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        CancelRepairInterface $cancelRepair,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         GameControllerInterface $game,
         JsonMapperInterface $jsonMapper,
-        ShipSystemDataFactoryInterface $shipSystemDataFactory
+        ShipSystemDataFactoryInterface $shipSystemDataFactory,
+        ShipStateChangerInterface $shipStateChanger
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->colonyLibFactory = $colonyLibFactory;
-        $this->cancelRepair = $cancelRepair;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->game = $game;
         $this->jsonMapper = $jsonMapper;
         $this->shipSystemDataFactory = $shipSystemDataFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
+        $this->shipStateChanger = $shipStateChanger;
     }
 
     public function wrapShip(ShipInterface $ship): ShipWrapperInterface
@@ -73,12 +74,12 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $this->shipRepository,
             $this->colonyShipRepairRepository,
             $this->colonyLibFactory,
-            $this->cancelRepair,
             $this->torpedoTypeRepository,
             $this->game,
             $this->jsonMapper,
             $this,
-            $this->shipSystemDataFactory
+            $this->shipSystemDataFactory,
+            $this->shipStateChanger
         );
     }
 
@@ -95,6 +96,10 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     public function wrapShipsAsFleet(array $ships, bool $isSingleShips = false): FleetWrapperInterface
     {
+        if (empty($ships)) {
+            throw new InvalidArgumentException('ship array should not be empty');
+        }
+
         $fleet = new Fleet();
         foreach ($ships as $key => $value) {
             $fleet->getShips()->set($key, $value);
@@ -104,9 +109,14 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
             $fleet->setSort(PHP_INT_MAX);
             $fleet->setName(_('Einzelschiffe'));
         } else {
-            $fleet->setName(current($ships)->getFleet()->getName());
+            $originalFleet = current($ships)->getFleet();
+            if ($originalFleet === null) {
+                throw new RuntimeException('ship should have fleet');
+            }
+
+            $fleet->setName($originalFleet->getName());
             $fleet->setUser(current($ships)->getUser());
-            $fleet->setSort(current($ships)->getFleet()->getSort());
+            $fleet->setSort($originalFleet->getSort());
         }
 
         return new FleetWrapper($fleet, $this, $this->game, $isSingleShips);

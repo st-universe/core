@@ -144,6 +144,8 @@ use Stu\Module\Ship\Lib\ActivatorDeactivatorHelper;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\AstroEntryLib;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\Battle\AlertLevelBasedReaction;
+use Stu\Module\Ship\Lib\Battle\AlertLevelBasedReactionInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelper;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamage;
@@ -273,6 +275,7 @@ return [
     LeaveFleetInterface::class => autowire(LibLeaveFleet::class),
     AttackerProviderFactoryInterface::class => autowire(AttackerProviderFactory::class),
     AttackMatchupInterface::class => autowire(AttackMatchup::class),
+    AlertLevelBasedReactionInterface::class => autowire(AlertLevelBasedReaction::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),

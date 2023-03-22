@@ -10,6 +10,7 @@ use Stu\Component\Ship\System\Data\WebEmitterSystemData;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Entity\TorpedoTypeInterface;
 
 interface ShipWrapperInterface
 {
@@ -23,13 +24,13 @@ interface ShipWrapperInterface
 
     public function getEpsUsage(): int;
 
-    public function lowerEpsUsage($value): void;
+    public function lowerEpsUsage(int $value): void;
 
     public function getEffectiveEpsProduction(): int;
 
     public function getWarpcoreUsage(): int;
 
-    public function setAlertState(int $alertState, &$msg): void;
+    public function setAlertState(int $alertState): ?string;
 
     public function leaveFleet(): void;
 
@@ -50,8 +51,14 @@ interface ShipWrapperInterface
 
     public function getRepairDurationPreview(): int;
 
+    /**
+     * @return array{0: ShipRepairCost, 1: ShipRepairCost}
+     */
     public function getRepairCosts(): array;
 
+    /**
+     * @return array<int, TorpedoTypeInterface>
+     */
     public function getPossibleTorpedoTypes(): array;
 
     public function getTractoredShipWrapper(): ?ShipWrapperInterface;
