@@ -48,7 +48,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $fightMessage->add(sprintf(
                 "Die %s feuert mit einem %s auf die %s",
                 $attacker->getName(),
-                $$weapon->getName(),
+                $weapon->getName(),
                 $target->getName()
             ));
 
