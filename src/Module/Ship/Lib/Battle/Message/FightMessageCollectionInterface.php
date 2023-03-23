@@ -19,5 +19,5 @@ interface FightMessageCollectionInterface
     /**
      * @return array<string>
      */
-    public function getMessageDump(?int $recipientId = null): array;
+    public function getMessageDump(?int $userId = null): array;
 }

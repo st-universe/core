@@ -42,15 +42,16 @@ final class FightMessageCollection implements FightMessageCollectionInterface
         return $recipientIds;
     }
 
-    public function getMessageDump(?int $recipientId = null): array
+    public function getMessageDump(?int $userId = null): array
     {
         $result = [];
 
         foreach ($this->messages as $message) {
             if (
-                $recipientId === null
+                $userId === null
+                || $message->getSenderId() === $userId
                 || $message->getRecipientId() === null
-                || $message->getRecipientId() === $recipientId
+                || $message->getRecipientId() === $userId
             ) {
                 $result = array_merge($result, $message->getMessage());
             }

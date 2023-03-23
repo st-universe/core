@@ -60,18 +60,28 @@ class FightMessageCollectionTest extends StuTestCase
 
     public function testGetMessageDumpExpectFilteredResultWhenParameterIsNotNull(): void
     {
-        $fightMessage1 = $this->mock(FightMessageInterface::class);
+        $fightMessage5to42 = $this->mock(FightMessageInterface::class);
         $fightMessage2 = $this->mock(FightMessageInterface::class);
-        $fightMessage3 = $this->mock(FightMessageInterface::class);
+        $fightMessage5to666 = $this->mock(FightMessageInterface::class);
+        $fightMessage42to5 = $this->mock(FightMessageInterface::class);
 
-        $fightMessage1->shouldReceive('getRecipientId')
+        $fightMessage5to42->shouldReceive('getSenderId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5);
+        $fightMessage5to42->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->twice()
             ->andReturn(42);
-        $fightMessage1->shouldReceive('getMessage')
+        $fightMessage5to42->shouldReceive('getMessage')
             ->withNoArgs()
             ->once()
-            ->andReturn(['message1-a', 'message1-b']);
+            ->andReturn(['message5to42-a', 'message5to42-b']);
+
+        $fightMessage2->shouldReceive('getSenderId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(2);
         $fightMessage2->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->andReturn(null);
@@ -79,16 +89,39 @@ class FightMessageCollectionTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(['message2-a', 'message2-b']);
-        $fightMessage3->shouldReceive('getRecipientId')
+
+        $fightMessage5to666->shouldReceive('getSenderId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(5);
+        $fightMessage5to666->shouldReceive('getRecipientId')
             ->withNoArgs()
             ->andReturn(666);
 
-        $this->subject->add($fightMessage1);
+        $fightMessage42to5->shouldReceive('getSenderId')
+            ->withNoArgs()
+            ->andReturn(42);
+        $fightMessage42to5->shouldReceive('getRecipientId')
+            ->withNoArgs()
+            ->andReturn(5);
+        $fightMessage42to5->shouldReceive('getMessage')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(['message42to5']);
+
+        $this->subject->add($fightMessage5to42);
         $this->subject->add($fightMessage2);
-        $this->subject->add($fightMessage3);
+        $this->subject->add($fightMessage5to666);
+        $this->subject->add($fightMessage42to5);
 
         $result = $this->subject->getMessageDump(42);
 
-        $this->assertEquals(['message1-a', 'message1-b', 'message2-a', 'message2-b'], $result);
+        $this->assertEquals([
+            'message5to42-a',
+            'message5to42-b',
+            'message2-a',
+            'message2-b',
+            'message42to5'
+        ], $result);
     }
 }
