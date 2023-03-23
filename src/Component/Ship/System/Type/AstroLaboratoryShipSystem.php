@@ -29,7 +29,7 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
         return ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if ($ship->getCloakState()) {
             $reason = _('die Tarnung aktiv ist');

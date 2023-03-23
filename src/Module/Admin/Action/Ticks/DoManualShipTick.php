@@ -6,6 +6,7 @@ namespace Stu\Module\Admin\Action\Ticks;
 
 use Doctrine\ORM\EntityManagerInterface;
 use request;
+use Stu\Exception\ShipDoesNotExistException;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -53,9 +54,13 @@ final class DoManualShipTick implements ActionControllerInterface
             $game->addInformation("Der Schiff-Tick für alle Schiffe wurde durchgeführt!");
         } else {
             $shipId = request::postInt('shiptickid');
-            $ship = $this->shipLoader->find($shipId);
+            $wrapper = $this->shipLoader->find($shipId);
 
-            $this->shipTick->work($ship);
+            if ($wrapper === null) {
+                throw new ShipDoesNotExistException(_('Ship does not exist!'));
+            }
+
+            $this->shipTick->work($wrapper);
             $this->entityManager->flush();
 
             $game->addInformation("Der Schiff-Tick für dieses Schiff wurde durchgeführt!");

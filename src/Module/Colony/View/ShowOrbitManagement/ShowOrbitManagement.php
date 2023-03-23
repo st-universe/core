@@ -52,7 +52,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         );
 
         /**
-         * @var ShipInterface[]
+         * @var array<int, array<ShipInterface>>
          */
         $groupedList = [];
 

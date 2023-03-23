@@ -575,7 +575,7 @@
             </div>
           </div>
         </div>
-        <div class="box">
+        <div class="box" tal:condition="exists:STARSYSTEM_ENTRY_TAL">
           <div class="box_title">Sternensystem</div>
           <div class="box_body">
             <tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">

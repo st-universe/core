@@ -26,7 +26,7 @@ final class LongRangeScannerShipSystem extends AbstractShipSystemType implements
         return ShipSystemTypeEnum::SYSTEM_LSS;
     }
 
-    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, &$reason): bool
+    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
         $trackerData = $wrapper->getTrackerSystemData();
 
@@ -66,7 +66,11 @@ final class LongRangeScannerShipSystem extends AbstractShipSystemType implements
         }
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)) {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACKER)->setMode(ShipSystemModeEnum::MODE_OFF);
-            $wrapper->getTrackerSystemData()->setTarget(null)->update();
+
+            $trackerSystemData = $wrapper->getTrackerSystemData();
+            if ($trackerSystemData !== null) {
+                $trackerSystemData->setTarget(null)->update();
+            }
         }
     }
 }

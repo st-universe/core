@@ -38,14 +38,14 @@ final class EpsTransfer implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
-        $targetWrapper = $shipArray[$targetId];
+        $wrapper = $wrappers->getSource();
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -61,7 +61,7 @@ final class EpsTransfer implements ActionControllerInterface
 
         $eps = $wrapper->getEpsSystemData();
 
-        if ($eps->getEps() == 0) {
+        if ($eps === null || $eps->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }

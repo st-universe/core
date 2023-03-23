@@ -18,8 +18,6 @@ use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class StoreShuttle implements ActionControllerInterface
@@ -44,8 +42,6 @@ final class StoreShuttle implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        CommodityRepositoryInterface $commodityRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
         EntityManagerInterface $entityManager,
@@ -55,8 +51,6 @@ final class StoreShuttle implements ActionControllerInterface
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->commodityRepository = $commodityRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->entityManager = $entityManager;
@@ -73,27 +67,32 @@ final class StoreShuttle implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $shipId = request::indInt('id');
-        $targetId = request::getIntFatal('target');
+        $shuttleId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
-            $targetId
+            $shuttleId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
-        $targetWrapper = $shipArray[$targetId];
-        if ($targetWrapper === null) {
+        $shuttleWrapper = $wrappers->getTarget();
+        if ($shuttleWrapper === null) {
             return;
         }
-        $target = $targetWrapper->get();
+        $shuttle = $shuttleWrapper->get();
 
-        if (!$this->interactionChecker->checkPosition($ship, $target)) {
+        $commodity = $shuttle->getRump()->getCommodity();
+        if ($commodity === null || !$commodity->isShuttle()) {
             return;
         }
-        if ($target->getUser() !== $ship->getUser()) {
+
+        if (!$this->interactionChecker->checkPosition($ship, $shuttle)) {
+            return;
+        }
+        if ($shuttle->getUser() !== $ship->getUser()) {
             return;
         }
 
@@ -106,7 +105,7 @@ final class StoreShuttle implements ActionControllerInterface
             return;
         }
 
-        if ($target->getShieldState()) {
+        if ($shuttle->getShieldState()) {
             $game->addInformation(_("Das Schiff hat die Schilde aktiviert"));
             return;
         }
@@ -130,7 +129,7 @@ final class StoreShuttle implements ActionControllerInterface
         }
 
         // check if troop quarter free
-        if ($this->troopTransferUtility->getFreeQuarters($ship) < $target->getCrewCount()) {
+        if ($this->troopTransferUtility->getFreeQuarters($ship) < $shuttle->getCrewCount()) {
             $game->addInformation(_('Nicht genügend Crew-Quartiere frei'));
             return;
         }
@@ -138,27 +137,27 @@ final class StoreShuttle implements ActionControllerInterface
         // send shuttle to target storage
         $this->shipStorageManager->upperStorage(
             $ship,
-            $target->getRump()->getCommodity(),
+            $commodity,
             1
         );
 
         // land shuttle and transfer crew
-        $this->storeShuttle($ship, $target);
+        $this->storeShuttle($ship, $shuttle);
 
         $game->addInformation("Shuttle erfolgreich eingesammelt");
     }
 
-    private function storeShuttle(ShipInterface $ship, ShipInterface $target): void
+    private function storeShuttle(ShipInterface $ship, ShipInterface $shuttle): void
     {
-        foreach ($target->getCrewlist() as $shipCrew) {
+        foreach ($shuttle->getCrewlist() as $shipCrew) {
             $shipCrew->setShip($ship);
             $ship->getCrewlist()->add($shipCrew);
             $this->shipCrewRepository->save($shipCrew);
         }
-        $target->getCrewlist()->clear();
+        $shuttle->getCrewlist()->clear();
         $this->entityManager->flush();
 
-        $this->shipRemover->remove($target);
+        $this->shipRemover->remove($shuttle);
 
         $this->shipLoader->save($ship);
     }

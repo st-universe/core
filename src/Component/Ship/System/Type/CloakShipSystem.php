@@ -29,7 +29,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
         return ShipSystemTypeEnum::SYSTEM_CLOAK;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if ($ship->isTractoring()) {
             $reason = _('das Schiff den Traktorstrahl aktiviert hat');

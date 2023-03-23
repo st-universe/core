@@ -19,6 +19,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class EscapeTractorBeam implements ActionControllerInterface
@@ -85,10 +86,15 @@ final class EscapeTractorBeam implements ActionControllerInterface
             return;
         }
 
+        $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
+        if ($tractoringShipWrapper === null) {
+            return;
+        }
+
         $epsSystem = $wrapper->getEpsSystemData();
 
         //enough energy?
-        if ($epsSystem->getEps() < 20) {
+        if ($epsSystem === null || $epsSystem->getEps() < 20) {
             $game->addInformation(sprintf(_('Nicht genug Energie für Fluchtversuch (%d benötigt)'), 20));
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;
@@ -97,19 +103,21 @@ final class EscapeTractorBeam implements ActionControllerInterface
         //eps cost
         $epsSystem->setEps($epsSystem->getEps() - 20)->update();
 
+        $tractoringShip = $tractoringShipWrapper->get();
+
         //parameters
         $ownMass = $ship->getRump()->getTractorMass();
-        $otherPayload = $ship->getTractoringShip()->getTractorPayload();
+        $otherPayload = $tractoringShip->getTractorPayload();
         $ratio = $ownMass / $otherPayload;
 
         // probabilities
         $chance = rand(1, 100);
         if ($chance < (int)ceil(11 * $ratio)) {
-            $this->escape($wrapper, $game);
+            $this->escape($tractoringShipWrapper, $wrapper, $game);
         } elseif ($chance < 55) {
-            $this->sufferDeflectorDamage($wrapper, $game);
+            $this->sufferDeflectorDamage($tractoringShip, $wrapper, $game);
         } else {
-            $this->sufferHullDamage($wrapper, $game);
+            $this->sufferHullDamage($tractoringShip, $wrapper, $game);
         }
 
         if ($ship->isDestroyed()) {
@@ -121,10 +129,12 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function escape(ShipWrapperInterface $wrapper, $game): void
-    {
+    private function escape(
+        ShipWrapperInterface $tractoringShipWrapper,
+        ShipWrapperInterface $wrapper,
+        GameControllerInterface $game
+    ): void {
         $ship = $wrapper->get();
-        $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
         $tractoringShip = $tractoringShipWrapper->get();
 
         $tractoringShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setStatus(0);
@@ -148,8 +158,11 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $this->alertRedHelper->doItAll($ship, $game);
     }
 
-    private function sufferDeflectorDamage(ShipWrapperInterface $wrapper, GameControllerInterface $game): void
-    {
+    private function sufferDeflectorDamage(
+        ShipInterface $tractoringShip,
+        ShipWrapperInterface $wrapper,
+        GameControllerInterface $game
+    ): void {
         $msg = [];
         $msg[] = _('Der Fluchtversuch ist fehlgeschlagen:');
 
@@ -159,7 +172,6 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $game->addInformationMergeDown($msg);
 
-        $tractoringShip = $ship->getTractoringShip();
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
 
         $this->privateMessageSender->send(
@@ -171,10 +183,12 @@ final class EscapeTractorBeam implements ActionControllerInterface
         );
     }
 
-    private function sufferHullDamage(ShipWrapperInterface $wrapper, $game): void
-    {
+    private function sufferHullDamage(
+        ShipInterface $tractoringShip,
+        ShipWrapperInterface $wrapper,
+        GameControllerInterface $game
+    ): void {
         $ship = $wrapper->get();
-        $tractoringShip = $ship->getTractoringShip();
         $otherUserId = $tractoringShip->getUser()->getId();
         $shipName = $ship->getName();
 

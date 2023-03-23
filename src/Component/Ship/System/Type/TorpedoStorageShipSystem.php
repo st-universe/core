@@ -30,6 +30,7 @@ final class TorpedoStorageShipSystem extends AbstractShipSystemType implements S
 
     public function handleDestruction(ShipWrapperInterface $wrapper): void
     {
+        //TODO should destroy whole ship, not only setting field
         $ship = $wrapper->get();
         if ($ship->getTorpedoCount() > 0) {
             $ship->setIsDestroyed(true);

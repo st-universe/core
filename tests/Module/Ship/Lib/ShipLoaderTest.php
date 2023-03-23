@@ -13,8 +13,6 @@ use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\StuTestCase;
@@ -54,17 +52,6 @@ class ShipLoaderTest extends StuTestCase
         $this->game = $this->mock(GameControllerInterface::class);
         $this->shipWrapperFactory = $this->mock(ShipWrapperFactoryInterface::class);
 
-        $loggerUtil = $this->mock(LoggerUtilInterface::class);
-        $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
-
-        $loggerUtilFactory->shouldReceive('getLoggerUtil')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($loggerUtil);
-        $loggerUtil->shouldReceive('log')
-            ->withSomeOfArgs()
-            ->zeroOrMoreTimes();
-
         $this->ship->shouldReceive('getUser->getId')
             ->withNoArgs()
             ->zeroOrMoreTimes()
@@ -78,8 +65,7 @@ class ShipLoaderTest extends StuTestCase
             $this->shipRepository,
             $this->semaphoreUtil,
             $this->game,
-            $this->shipWrapperFactory,
-            $loggerUtilFactory
+            $this->shipWrapperFactory
         );
     }
 
@@ -284,7 +270,7 @@ class ShipLoaderTest extends StuTestCase
         $this->assertEquals($this->wrapper, $result);
     }
 
-    public function testGetWrappersByIdAndUserAndTargetAwaitTargetNull(): void
+    public function testgetWrappersBySourceAndUserAndTargetAwaitTargetNull(): void
     {
         $userSema = 123456;
 
@@ -316,13 +302,12 @@ class ShipLoaderTest extends StuTestCase
             ->once()
             ->andReturn(null);
 
-        $resultArray = $this->shipLoader->getWrappersByIdAndUserAndTarget($this->shipId, $this->userId, 0);
+        $result = $this->shipLoader->getWrappersBySourceAndUserAndTarget($this->shipId, $this->userId, 0);
 
-        $this->assertEquals(2, count($resultArray));
-        $this->assertNull($resultArray[0]);
+        $this->assertNull($result->getTarget());
     }
 
-    public function testGetWrappersByIdAndUserAndTargetAwaitTargetWrapperIsNotNull(): void
+    public function testgetWrappersBySourceAndUserAndTargetAwaitTargetWrapperIsNotNull(): void
     {
         $userSema = 123456;
         $targetUserSema = 23456;
@@ -376,10 +361,10 @@ class ShipLoaderTest extends StuTestCase
             ->zeroOrMoreTimes()
             ->andReturn(1);
 
-        $resultArray = $this->shipLoader->getWrappersByIdAndUserAndTarget($this->shipId, $this->userId, 1);
+        $result = $this->shipLoader->getWrappersBySourceAndUserAndTarget($this->shipId, $this->userId, 1);
 
-        $this->assertEquals(2, count($resultArray));
-        $this->assertEquals($targetWrapper, $resultArray[1]);
+        $this->assertEquals($this->wrapper, $result->getSource());
+        $this->assertEquals($targetWrapper, $result->getTarget());
     }
 
     private function verifyMainSemaphore(): void

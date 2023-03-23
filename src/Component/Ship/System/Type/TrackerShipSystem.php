@@ -18,7 +18,7 @@ class TrackerShipSystem extends AbstractShipSystemType implements ShipSystemType
         return ShipSystemTypeEnum::SYSTEM_TRACKER;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if (!$ship->getLss()) {
             $reason = _('die Langstreckensensoren nicht aktiv sind');

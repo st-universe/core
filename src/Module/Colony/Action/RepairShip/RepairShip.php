@@ -7,12 +7,14 @@ namespace Stu\Module\Colony\Action\RepairShip;
 use request;
 use Stu\Component\Colony\OrbitShipListRetrieverInterface;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -40,6 +42,8 @@ final class RepairShip implements ActionControllerInterface
 
     private OrbitShipListRetrieverInterface $orbitShipListRetriever;
 
+    private InteractionCheckerInterface $interactionChecker;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
@@ -48,6 +52,7 @@ final class RepairShip implements ActionControllerInterface
         ShipRepositoryInterface $shipRepository,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         OrbitShipListRetrieverInterface $orbitShipListRetriever,
+        InteractionCheckerInterface $interactionChecker,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -57,6 +62,7 @@ final class RepairShip implements ActionControllerInterface
         $this->shipRepository = $shipRepository;
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->privateMessageSender = $privateMessageSender;
+        $this->interactionChecker = $interactionChecker;
         $this->orbitShipListRetriever = $orbitShipListRetriever;
     }
 
@@ -71,12 +77,21 @@ final class RepairShip implements ActionControllerInterface
             $userId
         );
 
+        $ship = $this->shipRepository->find(request::getIntFatal('ship_id'));
+        if ($ship === null) {
+            return;
+        }
+
+        if (!$this->interactionChecker->checkColonyPosition($colony, $ship)) {
+            throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
+        }
+
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
             $colony->getId(),
             (int) request::indInt('fid'),
         );
 
-        if ($field === null) {
+        if ($field === null || $field->getBuilding() === null) {
             return;
         }
 
@@ -99,9 +114,8 @@ final class RepairShip implements ActionControllerInterface
             }
         }
 
-        $ship = $this->shipRepository->find((int) request::getIntFatal('ship_id'));
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
-        if ($ship === null || !array_key_exists($ship->getId(), $repairableShiplist)) {
+        if (!array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }
         if ($colony->isBlocked()) {
@@ -128,8 +142,8 @@ final class RepairShip implements ActionControllerInterface
         $this->shipRepository->save($ship);
 
         $jobs = $this->colonyShipRepairRepository->getByColonyField(
-            (int) $colony->getId(),
-            (int) $field->getFieldId()
+            $colony->getId(),
+            $field->getFieldId()
         );
 
         if (count($jobs) > 1) {

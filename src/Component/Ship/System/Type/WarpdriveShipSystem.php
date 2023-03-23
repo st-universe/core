@@ -33,7 +33,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         return ShipSystemTypeEnum::SYSTEM_WARPDRIVE;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if ($ship->isTractored()) {
             $reason = _('es von einem Traktorstrahl gehalten wird');
@@ -65,12 +65,13 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $this->undock($ship);
         $ship->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_ON);
 
-        if ($ship->isTractoring()) {
+        $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+        if ($tractoredShipWrapper !== null) {
             $eps = $wrapper->getEpsSystemData();
-            if ($eps->getEps() > $this->getEnergyUsageForActivation()) {
-                $this->shipStateChanger->changeShipState($wrapper->getTractoredShipWrapper(), ShipStateEnum::SHIP_STATE_NONE);
+            if ($eps !== null && $eps->getEps() > $this->getEnergyUsageForActivation()) {
+                $this->shipStateChanger->changeShipState($tractoredShipWrapper, ShipStateEnum::SHIP_STATE_NONE);
 
-                $eps->setEps($eps->getEps() - $this->getEnergyUsageForActivation())->update();
+                $eps->lowerEps($this->getEnergyUsageForActivation())->update();
             } else {
                 $manager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             }

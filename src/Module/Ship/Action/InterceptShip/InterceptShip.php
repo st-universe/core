@@ -64,16 +64,16 @@ final class InterceptShip implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::indInt('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -97,7 +97,7 @@ final class InterceptShip implements ActionControllerInterface
             $game->addInformation('Das Schiff hat abgedockt');
             $ship->setDockedTo(null);
         }
-        if ($target->getFleetId()) {
+        if ($target->getFleet() !== null) {
             foreach ($target->getFleet()->getShips() as $fleetShip) {
                 try {
                     $this->shipSystemManager->deactivate($this->shipWrapperFactory->wrapShip($fleetShip), ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
@@ -127,7 +127,7 @@ final class InterceptShip implements ActionControllerInterface
             $href
         );
         $interceptorLeftWarp = false;
-        if ($ship->getFleetId()) {
+        if ($ship->getFleet() !== null) {
             foreach ($ship->getFleet()->getShips() as $fleetShip) {
                 try {
                     $this->shipSystemManager->deactivate($this->shipWrapperFactory->wrapShip($fleetShip), ShipSystemTypeEnum::SYSTEM_WARPDRIVE);

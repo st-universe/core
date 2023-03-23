@@ -10,8 +10,6 @@ use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
@@ -21,17 +19,13 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private PlayerRelationDeterminatorInterface $playerRelationDeterminator;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PlayerRelationDeterminatorInterface $playerRelationDeterminator,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        PlayerRelationDeterminatorInterface $playerRelationDeterminator
     ) {
         $this->shipLoader = $shipLoader;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->playerRelationDeterminator = $playerRelationDeterminator;
     }
 
@@ -42,16 +36,16 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }

@@ -51,13 +51,13 @@ final class BeamFrom implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
 
@@ -66,7 +66,7 @@ final class BeamFrom implements ActionControllerInterface
             return;
         }
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -103,7 +103,7 @@ final class BeamFrom implements ActionControllerInterface
 
         //sanity checks
         $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
-        if (!$isDockTransfer && $epsSystem->getEps() == 0) {
+        if (!$isDockTransfer && ($epsSystem === null || $epsSystem->getEps() === 0)) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -212,7 +212,9 @@ final class BeamFrom implements ActionControllerInterface
             sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId())
         );
 
-        $epsSystem->update();
+        if ($epsSystem !== null) {
+            $epsSystem->update();
+        }
 
         $this->shipRepository->save($ship);
     }

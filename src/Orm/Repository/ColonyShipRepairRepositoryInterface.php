@@ -14,14 +14,14 @@ interface ColonyShipRepairRepositoryInterface extends ObjectRepository
     public function prototype(): ColonyShipRepairInterface;
 
     /**
-     * @return list<ColonyShipRepairInterface>
+     * @return array<ColonyShipRepairInterface>
      */
     public function getByColonyField(int $colonyId, int $fieldId): array;
 
     public function getByShip(int $shipId): ?ColonyShipRepairInterface;
 
     /**
-     * @return list<ColonyShipRepairInterface>
+     * @return array<ColonyShipRepairInterface>
      */
     public function getMostRecentJobs(int $tickId): array;
 

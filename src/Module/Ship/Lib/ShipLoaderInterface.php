@@ -6,7 +6,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface ShipLoaderInterface
 {
-    public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface;
+    public function getByIdAndUser(
+        int $shipId,
+        int $userId,
+        bool $allowUplink = false
+    ): ShipInterface;
 
     public function getWrapperByIdAndUser(
         int $shipId,
@@ -14,10 +18,12 @@ interface ShipLoaderInterface
         bool $allowUplink = false
     ): ShipWrapperInterface;
 
-    /**
-     * @return ShipWrapperInterface[]
-     */
-    public function getWrappersByIdAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): array;
+    public function getWrappersBySourceAndUserAndTarget(
+        int $shipId,
+        int $userId,
+        int $targetId,
+        bool $allowUplink = false
+    ): SourceAndTargetWrappersInterface;
 
     public function find(int $shipId): ?ShipWrapperInterface;
 

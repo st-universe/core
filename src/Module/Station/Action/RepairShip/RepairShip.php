@@ -53,16 +53,16 @@ final class RepairShip implements ActionControllerInterface
         $stationId = request::indInt('id');
         $shipId = (int) request::getIntFatal('ship_id');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $userId,
             $shipId
         );
 
-        $wrapper = $shipArray[$stationId];
+        $wrapper = $wrappers->getSource();
         $station = $wrapper->get();
 
-        $targetWrapper = $shipArray[$shipId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -82,7 +82,7 @@ final class RepairShip implements ActionControllerInterface
             $repairableShiplist[$dockedShip->getId()] = $dockedShip;
         }
 
-        if ($ship === null || !array_key_exists($ship->getId(), $repairableShiplist)) {
+        if (!array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }
         if (!$this->shipWrapperFactory->wrapShip($ship)->canBeRepaired()) {

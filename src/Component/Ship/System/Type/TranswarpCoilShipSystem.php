@@ -33,7 +33,7 @@ final class TranswarpCoilShipSystem extends AbstractShipSystemType implements Sh
         return ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if ($ship->isTractored()) {
             $reason = _('es von einem Traktorstrahl gehalten wird');

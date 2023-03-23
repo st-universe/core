@@ -13,8 +13,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -36,8 +34,6 @@ final class SalvageCrew implements ActionControllerInterface
 
     private CancelRepairInterface $cancelRepair;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
     public function __construct(
@@ -47,14 +43,12 @@ final class SalvageCrew implements ActionControllerInterface
         ActivatorDeactivatorHelperInterface $helper,
         CancelRepairInterface $cancelRepair,
         ShipCrewCalculatorInterface $shipCrewCalculator,
-        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->helper = $helper;
         $this->cancelRepair = $cancelRepair;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->shipCrewCalculator = $shipCrewCalculator;
     }
 
@@ -67,15 +61,15 @@ final class SalvageCrew implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -97,7 +91,7 @@ final class SalvageCrew implements ActionControllerInterface
             throw new SanityCheckException('no crew to rescue', self::ACTION_IDENTIFIER);
         }
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() < 1) {
+        if ($epsSystem === null || $epsSystem->getEps() < 1) {
             $game->addInformation(sprintf(_('Zum Bergen der Crew wird %d Energie benötigt'), 1));
             return;
         }
@@ -136,7 +130,7 @@ final class SalvageCrew implements ActionControllerInterface
             }
         }
 
-        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+        $epsSystem->lowerEps(1)->update();
 
         $this->shipLoader->save($ship);
     }

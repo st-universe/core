@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\TorpedoTransfer;
 
 use request;
-
+use RuntimeException;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -45,15 +45,15 @@ final class TorpedoTransfer implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -72,7 +72,7 @@ final class TorpedoTransfer implements ActionControllerInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() == 0) {
+        if ($epsSystem === null || $epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -113,7 +113,12 @@ final class TorpedoTransfer implements ActionControllerInterface
             );
 
             if ($amount > 0) {
-                if ($target->getRump()->getTorpedoLevel() !== $ship->getTorpedo()->getLevel()) {
+                $torpedo = $ship->getTorpedo();
+                if ($torpedo === null) {
+                    throw new RuntimeException('torpedo should not be null');
+                }
+
+                if ($target->getRump()->getTorpedoLevel() !== $torpedo->getLevel()) {
                     $game->addInformation(sprintf(_('Die %s kann den Torpedotyp nicht ausrüsten'), $target->getName()));
                     return;
                 }

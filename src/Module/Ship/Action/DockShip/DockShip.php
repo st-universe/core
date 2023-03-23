@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
+use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -61,16 +62,16 @@ final class DockShip implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::indInt('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -119,13 +120,15 @@ final class DockShip implements ActionControllerInterface
             $game->addInformation('Das Andocken wurde verweigert');
             return;
         }
-        if ($ship->isFleetLeader()) {
-            $this->fleetDock($wrapper, $target, $game);
+
+        $fleetWrapper = $wrapper->getFleetWrapper();
+        if ($ship->isFleetLeader() && $fleetWrapper !== null) {
+            $this->fleetDock($fleetWrapper, $wrapper, $target, $game);
             return;
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+        if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }
@@ -146,7 +149,7 @@ final class DockShip implements ActionControllerInterface
         if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
-        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+        $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo($target);
 
         $this->shipLoader->save($ship);
@@ -163,27 +166,30 @@ final class DockShip implements ActionControllerInterface
         $game->addInformation('Andockvorgang abgeschlossen');
     }
 
-    private function fleetDock(ShipWrapperInterface $wrapper, ShipInterface $target, GameControllerInterface $game): void
-    {
+    private function fleetDock(
+        FleetWrapperInterface $fleetWrapper,
+        ShipWrapperInterface $wrapper,
+        ShipInterface $target,
+        GameControllerInterface $game
+    ): void {
         $ship = $wrapper->get();
 
         $msg = [];
-        $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();
-        ;
+        $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();;
         $freeSlots = $target->getFreeDockingSlotCount();
-        foreach ($wrapper->getFleetWrapper()->getShipWrappers() as $fleetShipWrapper) {
+        foreach ($fleetWrapper->getShipWrappers() as $fleetShipWrapper) {
             if ($freeSlots <= 0) {
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
             }
 
             $fleetShip = $fleetShipWrapper->get();
-            if ($fleetShip->getDockedTo()) {
+            if ($fleetShip->getDockedTo() !== null) {
                 continue;
             }
 
             $epsSystem = $fleetShipWrapper->getEpsSystemData();
-            if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+            if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $fleetShip->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
@@ -209,7 +215,7 @@ final class DockShip implements ActionControllerInterface
 
             $fleetShip->setDockedTo($target);
 
-            $epsSystem->setEps($epsSystem->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK)->update();
+            $epsSystem->lowerEps(ShipSystemTypeEnum::SYSTEM_ECOST_DOCK)->update();
 
             $this->shipLoader->save($fleetShip);
 
@@ -221,7 +227,7 @@ final class DockShip implements ActionControllerInterface
         $this->privateMessageSender->send(
             $game->getUser()->getId(),
             $target->getUser()->getId(),
-            'Die Flotte ' . $ship->getFleet()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
+            'Die Flotte ' . $fleetWrapper->get()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
             $href
         );

@@ -20,10 +20,10 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
     /**
      * @param array<int, BuildplanModuleInterface> $modules
      */
-    public function __construct(ShipWrapperInterface $wrapper, ShipRumpInterface $rump, array $modules)
+    public function __construct(ShipWrapperInterface $wrapper, array $modules)
     {
         $this->wrapper = $wrapper;
-        $this->rump = $rump;
+        $this->rump = $wrapper->get()->getRump();
         $this->modules = $modules;
     }
 

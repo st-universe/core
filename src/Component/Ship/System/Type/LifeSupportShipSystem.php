@@ -23,7 +23,7 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
         return 0;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if ($ship->getCrewCount() === 0) {
             $reason = _('keine Crew vorhanden ist');

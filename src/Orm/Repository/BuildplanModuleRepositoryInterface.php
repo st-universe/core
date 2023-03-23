@@ -12,12 +12,12 @@ use Stu\Orm\Entity\BuildplanModuleInterface;
 interface BuildplanModuleRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<BuildplanModuleInterface>
+     * @return array<BuildplanModuleInterface>
      */
     public function getByBuildplan(int $buildplanId): array;
 
     /**
-     * @return list<BuildplanModuleInterface>
+     * @return array<BuildplanModuleInterface>
      */
     public function getByBuildplanAndModuleType(int $buildplanId, int $moduleType): array;
 

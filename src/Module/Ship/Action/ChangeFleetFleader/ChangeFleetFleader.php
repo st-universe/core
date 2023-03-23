@@ -33,20 +33,20 @@ final class ChangeFleetFleader implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
         if ($ship->getFleetId() === null) {
             return;
         }
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -56,11 +56,14 @@ final class ChangeFleetFleader implements ActionControllerInterface
             return;
         }
 
+        $fleet = $ship->getFleet();
+        if ($fleet === null) {
+            return;
+        }
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $fleet = $ship->getFleet();
         $fleet->setLeadShip($target);
-
         $this->fleetRepository->save($fleet);
 
         $ship->setIsFleetLeader(false);

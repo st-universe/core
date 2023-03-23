@@ -40,14 +40,14 @@ final class TrackShip implements ActionControllerInterface
         $shipId = request::getIntFatal('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
-        $targetWrapper = $shipArray[$targetId];
+        $wrapper = $wrappers->getSource();
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -67,17 +67,18 @@ final class TrackShip implements ActionControllerInterface
             return;
         }
 
-        $eps = $wrapper->getEpsSystemData();
         $tracker = $wrapper->getTrackerSystemData();
 
         if ($tracker === null || $tracker->targetId !== null) {
             return;
         }
 
-        if ($eps->getEps() === 0) {
+        $eps = $wrapper->getEpsSystemData();
+        if ($eps === null || $eps->getEps() === 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
+
         if ($ship->getCloakState()) {
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;

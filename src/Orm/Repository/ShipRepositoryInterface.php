@@ -37,9 +37,9 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getByUser(UserInterface $user): iterable;
 
     /**
-     * @return iterable<ShipInterface>
+     * @return array<ShipInterface>
      */
-    public function getByUserAndRump(int $userId, int $rumpId): iterable;
+    public function getByUserAndRump(int $userId, int $rumpId): array;
 
     /**
      * @return iterable<ShipInterface>
@@ -54,7 +54,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @return list<ShipInterface>
+     * @return array<ShipInterface>
      */
     public function getByLocationAndUser(
         ?StarSystemMapInterface $starSystemMap,
@@ -63,7 +63,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return list<ShipInterface>
+     * @return array<ShipInterface>
      */
     public function getByLocation(
         ?StarSystemMapInterface $starSystemMap,
@@ -71,7 +71,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return list<ShipInterface>
+     * @return array<ShipInterface>
      */
     public function getForeignStationsInBroadcastRange(ShipInterface $ship): array;
 
@@ -81,12 +81,12 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getTradePostsWithoutDatabaseEntry(): iterable;
 
     /**
-     * @return list<ShipInterface>
+     * @return array<ShipInterface>
      */
     public function getByUserAndFleetAndType(int $userId, ?int $fleetId, int $type): array;
 
     /**
-     * @return list<ShipInterface>
+     * @return array<ShipInterface>
      */
     public function getByUplink(int $userId): array;
 
@@ -267,7 +267,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function isBaseOnLocation(ShipInterface $ship): bool;
 
     /**
-     * @return list<ShipInterface>
+     * @return array<ShipInterface>
      */
     public function getStationsByUser(int $userId): array;
 }

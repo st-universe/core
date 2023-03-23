@@ -50,13 +50,13 @@ final class BeamTo implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
         //bad request
@@ -64,7 +64,7 @@ final class BeamTo implements ActionControllerInterface
             return;
         }
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -96,7 +96,7 @@ final class BeamTo implements ActionControllerInterface
 
         //sanity checks
         $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
-        if (!$isDockTransfer && $epsSystem->getEps() == 0) {
+        if (!$isDockTransfer && ($epsSystem === null || $epsSystem->getEps() === 0)) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -193,11 +193,13 @@ final class BeamTo implements ActionControllerInterface
             $this->shipStorageManager->upperStorage($target, $commodity, $count);
 
             if (!$isDockTransfer) {
-                $epsSystem->setEps($epsSystem->getEps() - (int)ceil($count / $transferAmount));
+                $epsSystem->lowerEps((int)ceil($count / $transferAmount));
             }
         }
 
-        $epsSystem->update();
+        if ($epsSystem !== null) {
+            $epsSystem->update();
+        }
 
         $game->sendInformation(
             $target->getUser()->getId(),

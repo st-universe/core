@@ -10,7 +10,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -24,18 +23,14 @@ final class UndockShip implements ActionControllerInterface
 
     private CancelRepairInterface $cancelRepair;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        CancelRepairInterface $cancelRepair,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        CancelRepairInterface $cancelRepair
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->cancelRepair = $cancelRepair;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -50,15 +45,23 @@ final class UndockShip implements ActionControllerInterface
         );
         $ship = $wrapper->get();
 
-        if ($ship->isFleetLeader()) {
+        $dockedTo = $ship->getDockedTo();
+        if ($dockedTo === null) {
+            return;
+        }
+
+        $fleetWrapper = $wrapper->getFleetWrapper();
+        if ($fleetWrapper === null) {
+            return;
+        }
+
+        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $msg = [];
-            $msg[] = _("Flottenbefehl ausgeführt: Abdocken von ") . $ship->getDockedTo()->getName();
-            ;
-            foreach ($ship->getFleet()->getShips() as $fleetShip) {
-                $wrapper = $this->shipWrapperFactory->wrapShip($fleetShip);
+            $msg[] = _("Flottenbefehl ausgeführt: Abdocken von ") . $dockedTo->getName();;
+            foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
                 $ship = $wrapper->get();
 
-                if (!$ship->getDockedTo()) {
+                if ($ship->getDockedTo() === null) {
                     continue;
                 }
                 if (!$ship->hasEnoughCrew()) {
@@ -70,7 +73,7 @@ final class UndockShip implements ActionControllerInterface
                 }
 
                 $epsSystem = $wrapper->getEpsSystemData();
-                if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+                if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                     $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                     continue;
                 }
@@ -79,7 +82,7 @@ final class UndockShip implements ActionControllerInterface
                     continue;
                 }
                 $ship->setDockedTo(null);
-                $epsSystem->setEps($epsSystem->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK)->update();
+                $epsSystem->lowerEps(ShipSystemTypeEnum::SYSTEM_ECOST_DOCK)->update();
 
                 $this->shipRepository->save($ship);
             }
@@ -95,14 +98,14 @@ final class UndockShip implements ActionControllerInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() == 0) {
+        if ($epsSystem === null || $epsSystem->getEps() == 0) {
             $game->addInformation('Zum Abdocken wird 1 Energie benötigt');
             return;
         }
         if ($this->cancelRepair->cancelRepair($ship)) {
             $game->addInformation("Die Reparatur wurde abgebrochen");
         }
-        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+        $epsSystem->lowerEps(1)->update();
         $ship->setDockedTo(null);
 
         $this->shipRepository->save($ship);

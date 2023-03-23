@@ -25,6 +25,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
@@ -87,16 +88,16 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -126,8 +127,10 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->abort($ship, $game);
             return;
         }
-        if ($target->isTractored()) {
-            $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $target->getTractoringShip()->getName() . " gehalten");
+
+        $tractoringShip = $target->getTractoringShip();
+        if ($tractoringShip !== null) {
+            $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $tractoringShip->getName() . " gehalten");
             $this->abort($ship, $game);
             return;
         }
@@ -147,7 +150,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         ) {
             $defender = [$ship->getId() => $ship];
 
-            if ($target->getFleetId()) {
+            if ($target->getFleetId() && $target->getFleet() !== null) {
                 $attacker = $target->getFleet()->getShips()->toArray();
             } else {
                 $attacker = [$target->getId() => $target];
@@ -225,7 +228,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $game->addInformation("Der Traktorstrahl wurde auf die " . $targetName . " gerichtet");
     }
 
-    private function abort($ship, $game): void
+    private function abort(ShipInterface $ship, GameControllerInterface $game): void
     {
         //flush to persist activated state
         $this->entityManager->flush();

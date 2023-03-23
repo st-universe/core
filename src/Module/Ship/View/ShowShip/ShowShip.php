@@ -119,11 +119,12 @@ final class ShowShip implements ViewControllerInterface
             $startTime = microtime(true);
         }
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId,
             true
         );
+        $ship = $wrapper->get();
 
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
@@ -180,10 +181,10 @@ final class ShowShip implements ViewControllerInterface
         $game->setPagetitle($ship->getName());
         $game->setTemplateFile('html/ship.xhtml');
 
-        $game->setTemplateVar('WRAPPER', $this->shipWrapperFactory->wrapShip($ship));
+        $game->setTemplateVar('WRAPPER', $wrapper);
 
         if ($ship->isFleetLeader()) {
-            $game->setTemplateVar('FLEETWRAPPER', $this->shipWrapperFactory->wrapFleet($ship->getFleet()));
+            $game->setTemplateVar('FLEETWRAPPER', $wrapper->getFleetWrapper());
         }
         if ($starsystem !== null) {
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);

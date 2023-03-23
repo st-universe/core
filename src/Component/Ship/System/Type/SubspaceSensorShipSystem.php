@@ -15,7 +15,7 @@ final class SubspaceSensorShipSystem extends AbstractShipSystemType implements S
         return ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if ($ship->getCloakState()) {
             $reason = _('die Tarnung aktiviert ist');

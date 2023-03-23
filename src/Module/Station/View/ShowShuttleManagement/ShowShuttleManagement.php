@@ -41,16 +41,16 @@ final class ShowShuttleManagement implements ViewControllerInterface
         $stationId = $this->request->getStationId();
         $shipId = $this->request->getShipId();
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $game->getUser()->getId(),
             $shipId
         );
 
-        $wrapper = $shipArray[$stationId];
+        $wrapper = $wrappers->getSource();
         $station = $wrapper->get();
 
-        $targetWrapper = $shipArray[$shipId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }

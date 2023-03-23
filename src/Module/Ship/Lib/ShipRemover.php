@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -11,8 +12,6 @@ use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Torpedo\ClearTorpedoInterface;
@@ -27,6 +26,7 @@ use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
+//TODO unit tests
 final class ShipRemover implements ShipRemoverInterface
 {
     private ShipSystemRepositoryInterface $shipSystemRepository;
@@ -63,8 +63,6 @@ final class ShipRemover implements ShipRemoverInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         StorageRepositoryInterface $storageRepository,
@@ -82,8 +80,7 @@ final class ShipRemover implements ShipRemoverInterface
         ShipStateChangerInterface $shipStateChanger,
         ShipWrapperFactoryInterface $shipWrapperFactory,
         LeaveFleetInterface $leaveFleet,
-        PrivateMessageSenderInterface $privateMessageSender,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->storageRepository = $storageRepository;
@@ -102,11 +99,15 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipWrapperFactory = $shipWrapperFactory;
         $this->leaveFleet = $leaveFleet;
         $this->privateMessageSender = $privateMessageSender;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function destroy(ShipWrapperInterface $wrapper): ?string
     {
+        $trumfieldRump = $this->shipRumpRepository->find(ShipRumpEnum::SHIP_CATEGORY_TRUMFIELD);
+        if ($trumfieldRump === null) {
+            throw new RuntimeException('trumfield rump missing');
+        }
+
         $msg = null;
 
         $ship = $wrapper->get();
@@ -137,9 +138,9 @@ final class ShipRemover implements ShipRemoverInterface
         $this->leaveSomeIntactModules($ship);
 
         $ship->setFormerRumpId($ship->getRump()->getId());
-        $ship->setRump($this->shipRumpRepository->find(ShipRumpEnum::SHIP_CATEGORY_TRUMFIELD));
+        $ship->setRump($trumfieldRump);
         $ship->setHuell((int) ceil($ship->getMaxHull() / 20));
-        $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
+        $ship->setUser($this->userRepository->getFallbackUser());
         $ship->setBuildplan(null);
         $ship->setSpacecraftType(SpacecraftTypeEnum::SPACECRAFT_TYPE_OTHER);
         $ship->setShield(0);
@@ -176,8 +177,9 @@ final class ShipRemover implements ShipRemoverInterface
         }
 
         // clear tractor status
-        if ($ship->isTractored()) {
-            $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
+
+        $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
+        if ($tractoringShipWrapper !== null) {
             $tractoringShip = $tractoringShipWrapper->get();
             $this->shipSystemManager->deactivate($tractoringShipWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
@@ -245,12 +247,12 @@ final class ShipRemover implements ShipRemoverInterface
     private function orphanizeStorage(ShipInterface $ship): void
     {
         foreach ($ship->getStorage() as $storage) {
-            $storage->setUser($this->userRepository->find(GameEnum::USER_NOONE));
+            $storage->setUser($this->userRepository->getFallbackUser());
             $this->storageRepository->save($storage);
         }
     }
 
-    private function destroyTradepost(TradePostInterface $tradePost)
+    private function destroyTradepost(TradePostInterface $tradePost): void
     {
         //salvage offers and storage
         $storages = $this->storageRepository->getByTradePost($tradePost->getId());
@@ -296,8 +298,11 @@ final class ShipRemover implements ShipRemoverInterface
         //both sides have to be cleared, foreign key violation
         if ($ship->isTractoring()) {
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
-        } elseif ($ship->isTractored()) {
-            $this->shipSystemManager->deactivate($wrapper->getTractoringShipWrapper(), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+        } else {
+            $tractoringShipWrapper = $wrapper->getTractoringShipWrapper();
+            if ($tractoringShipWrapper !== null) {
+                $this->shipSystemManager->deactivate($tractoringShipWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
+            }
         }
 
         foreach ($ship->getStorage() as $item) {

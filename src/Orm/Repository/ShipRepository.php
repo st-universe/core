@@ -99,7 +99,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
-    public function getByUserAndRump(int $userId, int $rumpId): iterable
+    public function getByUserAndRump(int $userId, int $rumpId): array
     {
         return $this->findBy([
             'user_id' => $userId,

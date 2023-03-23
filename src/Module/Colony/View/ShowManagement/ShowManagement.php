@@ -81,12 +81,12 @@ final class ShowManagement implements ViewControllerInterface
         $firstOrbitShip = null;
 
         $shipList = $this->orbitShipListRetriever->retrieve($colony);
-        if ($shipList !== []) {
+        if (!empty($shipList)) {
             // if selected, return the current target
             $target = request::postInt('target');
 
             if ($target) {
-                foreach ($shipList as $key => $fleet) {
+                foreach ($shipList as $fleet) {
                     foreach ($fleet['ships'] as $idx => $ship) {
                         if ($idx == $target) {
                             $firstOrbitShip = $ship;
@@ -113,13 +113,16 @@ final class ShowManagement implements ViewControllerInterface
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_INFO));
         $game->setTemplateVar(
             'FIRST_ORBIT_SHIP',
-            $firstOrbitShip === null ? null : $this->shipWrapperFactory->wrapShip($firstOrbitShip)
+            !$firstOrbitShip ? null : $this->shipWrapperFactory->wrapShip($firstOrbitShip)
         );
         $game->setTemplateVar('COLONY_SURFACE', $surface);
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
 
-        $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($colony->getSystem()->getDatabaseEntry(), $game->getUser());
-        $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
+        $systemDatabaseEntry = $colony->getSystem()->getDatabaseEntry();
+        if ($systemDatabaseEntry !== null) {
+            $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($systemDatabaseEntry, $game->getUser());
+            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
+        }
 
         $particlePhalanx = $this->colonyFunctionManager->hasFunction($colony, BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
         $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', $particlePhalanx ? $this->torpedoTypeRepository->getForUser($userId) : null);

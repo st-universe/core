@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Ship;
 
+use RuntimeException;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
@@ -20,6 +21,7 @@ use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -48,6 +50,9 @@ final class ShipTick implements ShipTickInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
+    /**
+     * @var array<string>
+     */
     private array $msg = [];
 
     public function __construct(
@@ -336,12 +341,15 @@ final class ShipTick implements ShipTickInterface
             && $this->game->getCurrentRound()->getTurn() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
         ) {
             $this->astroEntryLib->finish($ship);
+
+            /** @var StarSystemInterface */
+            $system = $ship->getSystem();
             $this->msg[] = sprintf(
                 _('Die Kartographierung des Systems %s wurde vollendet'),
-                $ship->getSystem()->getName()
+                $system->getName()
             );
 
-            $databaseEntry = $ship->getSystem()->getDatabaseEntry();
+            $databaseEntry = $system->getDatabaseEntry();
             if ($databaseEntry !== null) {
                 $userId = $ship->getUser()->getId();
                 $databaseEntryId = $databaseEntry->getId();
@@ -370,7 +378,12 @@ final class ShipTick implements ShipTickInterface
             return;
         }
 
-        $target = $tracker->getTargetWrapper()->get();
+        $targetWrapper = $tracker->getTargetWrapper();
+        if ($targetWrapper === null) {
+            throw new RuntimeException('should not happen');
+        }
+
+        $target = $targetWrapper->get();
         $remainingTicks = $tracker->getRemainingTicks();
 
         $reduceByTicks = max(1, (int)ceil((abs($ship->getCx() - $target->getCx()) +  abs($ship->getCy() - $target->getCy())) / 50));
@@ -416,9 +429,10 @@ final class ShipTick implements ShipTickInterface
             case 1:
                 return sprintf(_('Der Ursprung lässt auf %s schließen'), $user->getName());
             case 2:
-                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction()->getName());
+                return sprintf(_('Der Ursprung lässt darauf schließen, dass er %s-Herkunft ist'), $user->getFaction() !== null ? $user->getFaction()->getName() : '?');
+            default:
+                return '';
         }
-        return '';
     }
 
     private function getSystemDescription(ShipSystemInterface $shipSystem): string

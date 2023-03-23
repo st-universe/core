@@ -45,12 +45,12 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         $wrapper->get()->getShipSystem($this->getSystemType())->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         return true;
     }
 
-    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, &$reason): bool
+    public function checkDeactivationConditions(ShipWrapperInterface $wrapper, ?string &$reason): bool
     {
         return true;
     }

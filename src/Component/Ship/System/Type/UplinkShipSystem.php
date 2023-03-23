@@ -17,7 +17,7 @@ final class UplinkShipSystem extends AbstractShipSystemType implements ShipSyste
         return ShipSystemTypeEnum::SYSTEM_UPLINK;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if (!$this->hasForeignCrew($ship)) {
             $reason = _('keine fremde Crew an Bord ist');

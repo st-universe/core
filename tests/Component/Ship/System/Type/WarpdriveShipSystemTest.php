@@ -225,16 +225,16 @@ class WarpdriveShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
-        $this->ship->shouldReceive('isTractoring')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
 
         //wrapper and eps
         $this->wrapper->shouldReceive('get')
             ->withNoArgs()
             ->once()
             ->andReturn($this->ship);
+        $this->wrapper->shouldReceive('getTractoredShipWrapper')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(ShipWrapperInterface::class));
         $this->wrapper->shouldReceive('getEpsSystemData')
             ->withNoArgs()
             ->once()
@@ -293,10 +293,6 @@ class WarpdriveShipSystemTest extends StuTestCase
         $system->shouldReceive('setMode')
             ->with(ShipSystemModeEnum::MODE_ON)
             ->once();
-        $this->ship->shouldReceive('isTractoring')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(true);
 
         //wrapper and eps
         $this->wrapper->shouldReceive('get')
@@ -309,9 +305,9 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->andReturn($epsSystem);
         $epsSystem->shouldReceive('getEps')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn(2);
-        $epsSystem->shouldReceive('setEps')
+        $epsSystem->shouldReceive('lowerEps')
             ->with(1)
             ->once()
             ->andReturnSelf();

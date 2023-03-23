@@ -55,16 +55,16 @@ final class ManageShuttles implements ActionControllerInterface
         $stationId = request::indInt('id');
         $shipId = request::indInt('sid');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $userId,
             $shipId
         );
 
-        $wrapper = $shipArray[$stationId];
+        $wrapper = $wrappers->getSource();
         $station = $wrapper->get();
 
-        $targetWrapper = $shipArray[$shipId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }

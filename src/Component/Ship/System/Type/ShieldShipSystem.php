@@ -28,7 +28,7 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         return ShipSystemTypeEnum::SYSTEM_SHIELDS;
     }
 
-    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    public function checkActivationConditions(ShipInterface $ship, ?string &$reason): bool
     {
         if ($ship->getCloakState()) {
             $reason = _('die Tarnung aktiviert ist');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\AccessViolation;
@@ -12,9 +13,6 @@ use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\SemaphoreUtilInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -28,25 +26,21 @@ final class ShipLoader implements ShipLoaderInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         SemaphoreUtilInterface $semaphoreUtil,
         GameControllerInterface $game,
         ShipWrapperFactoryInterface $shipWrapperFactory,
-        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
         $this->semaphoreUtil = $semaphoreUtil;
         $this->game = $game;
         $this->shipWrapperFactory = $shipWrapperFactory;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface
     {
-        return $this->getByIdAndUserAndTargetIntern($shipId, $userId, null, $allowUplink)[$shipId]->get();
+        return $this->getByIdAndUserAndTargetIntern($shipId, $userId, null, $allowUplink)->getSource()->get();
     }
 
     public function getWrapperByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipWrapperInterface
@@ -56,37 +50,23 @@ final class ShipLoader implements ShipLoaderInterface
             $userId,
             null,
             $allowUplink
-        )[$shipId];
+        )->getSource();
     }
 
-    public function getWrappersByIdAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): array
+    public function getWrappersBySourceAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): SourceAndTargetWrappersInterface
     {
         return $this->getByIdAndUserAndTargetIntern($shipId, $userId, $targetId, $allowUplink);
     }
 
-    /**
-     * @return ShipWrapperInterface[]
-     */
-    private function getByIdAndUserAndTargetIntern(int $shipId, int $userId, ?int $targetId, bool $allowUplink): array
+    private function getByIdAndUserAndTargetIntern(int $shipId, int $userId, ?int $targetId, bool $allowUplink): SourceAndTargetWrappersInterface
     {
-        //$this->loggerUtil->init('LOAD', LoggerEnum::LEVEL_ERROR);
-
-        $this->loggerUtil->log(sprintf(
-            'userId: %d, shipId: %d, targetId: %d',
-            $userId,
-            $shipId,
-            $targetId !== null ? $targetId : 0
-        ));
-
         $ship = $this->shipRepository->find($shipId);
         if ($ship === null) {
             throw new ShipDoesNotExistException(_('Ship does not exist!'));
         }
         $this->checkviolations($ship, $userId, $allowUplink);
 
-        $shipArray = $this->acquireSemaphores($ship, $targetId);
-
-        return $shipArray;
+        return $this->acquireSemaphores($ship, $targetId);
     }
 
     private function checkviolations(ShipInterface $ship, int $userId, bool $allowUplink): void
@@ -114,7 +94,12 @@ final class ShipLoader implements ShipLoaderInterface
 
     public function find(int $shipId): ?ShipWrapperInterface
     {
-        return $this->acquireSemaphores($this->shipRepository->find($shipId), null)[$shipId];
+        $ship = $this->shipRepository->find($shipId);
+        if ($ship === null) {
+            return null;
+        }
+
+        return $this->acquireSemaphores($ship, null)->getSource();
     }
 
     public function save(ShipInterface $ship): void
@@ -122,79 +107,41 @@ final class ShipLoader implements ShipLoaderInterface
         $this->shipRepository->save($ship);
     }
 
-    /**
-     * @return ShipWrapperInterface[]
-     */
-    private function acquireSemaphores(ShipInterface $ship, ?int $targetId, ?int $userId = null): array
+    private function acquireSemaphores(ShipInterface $ship, ?int $targetId): SourceAndTargetWrappersInterface
     {
-        $shipId = $ship->getId();
-        $result = [];
-
         if ($targetId === null) {
             if ($this->game->isSemaphoreAlreadyAcquired($ship->getUser()->getId())) {
-                $result[$shipId] = $this->shipWrapperFactory->wrapShip($ship);
 
-                return $result;
+                return new SourceAndTargetWrappers($this->shipWrapperFactory->wrapShip($ship));
             }
         }
 
         //main ship sema on
         $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreConstants::MAIN_SHIP_SEMAPHORE_KEY);
-        if ($userId !== null) {
-            $this->loggerUtil->log(sprintf('userId %d waiting for main semaphore', $userId));
-        }
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
-        if ($userId !== null) {
-            $this->loggerUtil->log(sprintf('userId %d acquired main semaphore', $userId));
-        }
 
-        if ($userId !== null) {
-            $this->loggerUtil->log(sprintf(
-                'userId %d waiting for shipId %d',
-                $userId,
-                $shipId
-            ));
+        $wrapper = $this->acquireSemaphoreForShip($ship, null);
+        if ($wrapper === null) {
+            throw new RuntimeException('wrapper should not be null here');
         }
-        $result[$shipId] = $this->acquireSemaphoresWithoutMain($ship, $shipId);
-        if ($userId !== null) {
-            $this->loggerUtil->log(sprintf(
-                'userId %d acquired semaphore %d (shipId: %d)',
-                $userId,
-                $result[$shipId]->getUser()->getId(),
-                $shipId
-            ));
-        }
+        $result = new SourceAndTargetWrappers($wrapper);
 
         if ($targetId !== null) {
-            if ($userId !== null) {
-                $this->loggerUtil->log(sprintf(
-                    'userId %d waiting for targetId %d',
-                    $userId,
-                    $targetId
-                ));
-            }
-            $result[$targetId] = $this->acquireSemaphoresWithoutMain(null, $targetId);
-            if ($userId !== null) {
-                $this->loggerUtil->log(sprintf(
-                    'userId %d acquired semaphore %d (targetId: %d)',
-                    $userId,
-                    $result[$targetId] !== null ? $result[$targetId]->getUser()->getId() : 0,
-                    $targetId
-                ));
-            }
+            $result->setTarget($this->acquireSemaphoreForShip(null, $targetId));
         }
 
         //main ship sema off
         $this->semaphoreUtil->releaseSemaphore($mainSema);
-        if ($userId !== null) {
-            $this->loggerUtil->log(sprintf('userId %d released main semaphore', $userId));
-        }
 
         return $result;
     }
 
-    private function acquireSemaphoresWithoutMain(?ShipInterface $ship, int $shipId): ?ShipWrapperInterface
+    private function acquireSemaphoreForShip(?ShipInterface $ship, ?int $shipId): ?ShipWrapperInterface
     {
+        if ($ship === null && $shipId === null) {
+            return null;
+        }
+
         if ($ship === null) {
             $ship = $this->shipRepository->find($shipId);
         }

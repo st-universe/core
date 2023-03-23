@@ -78,15 +78,16 @@ final class LeaveWormhole implements ActionControllerInterface
         );
         $ship = $wrapper->get();
 
-        if ($ship->getSystem() === null) {
+        $starsystemMap = $ship->getStarsystemMap();
+        if ($starsystemMap === null) {
             return;
         }
 
-        if (!$ship->getSystem()->isWormhole()) {
+        if (!$starsystemMap->getSystem()->isWormhole()) {
             return;
         }
 
-        $wormholeEntry = $ship->getStarsystemMap()->getRandomWormholeEntry();
+        $wormholeEntry = $starsystemMap->getRandomWormholeEntry();
         if ($wormholeEntry === null) {
             return;
         }
@@ -110,10 +111,12 @@ final class LeaveWormhole implements ActionControllerInterface
         $outerMap = $wormholeEntry->getMap();
 
         $this->leaveWormhole($wrapper, $outerMap);
-        if ($ship->isTractoring()) {
-            $this->leaveWormholeTraktor($wrapper, $outerMap, $game);
+
+        $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+        if ($tractoredShipWrapper !== null) {
+            $this->leaveWormholeTraktor($tractoredShipWrapper, $wrapper, $outerMap, $game);
         }
-        if ($ship->isFleetLeader()) {
+        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $msg = [];
 
             /** @var ShipInterface[] $result */
@@ -126,8 +129,10 @@ final class LeaveWormhole implements ActionControllerInterface
             foreach ($result as $fleetShip) {
                 $fleetShipWrapper = $this->shipWrapperFactory->wrapShip($fleetShip);
                 $this->leaveWormhole($fleetShipWrapper, $outerMap);
-                if ($fleetShip->isTractoring()) {
-                    $this->leaveWormholeTraktor($fleetShipWrapper, $outerMap, $game);
+
+                $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+                if ($tractoredShipWrapper !== null) {
+                    $this->leaveWormholeTraktor($tractoredShipWrapper, $fleetShipWrapper, $outerMap, $game);
                 }
                 $this->shipRepository->save($fleetShip);
             }
@@ -156,10 +161,13 @@ final class LeaveWormhole implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function leaveWormholeTraktor(ShipWrapperInterface $wrapper, MapInterface $map, GameControllerInterface $game): void
-    {
+    private function leaveWormholeTraktor(
+        ShipWrapperInterface $tractoredShipWrapper,
+        ShipWrapperInterface $wrapper,
+        MapInterface $map,
+        GameControllerInterface $game
+    ): void {
         $ship = $wrapper->get();
-        $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
 
         /**
          * @var ShipInterface
@@ -188,7 +196,7 @@ final class LeaveWormhole implements ActionControllerInterface
 
         $epsSystem = $wrapper->getEpsSystemData();
 
-        if ($epsSystem->getEps() < 1) {
+        if ($epsSystem === null || $epsSystem->getEps() < 1) {
             $name = $tractoredShip->getName();
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Wurmlochs aufgrund Energiemangels deaktiviert");
@@ -196,7 +204,7 @@ final class LeaveWormhole implements ActionControllerInterface
         }
         $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship, true));
         $this->leaveWormhole($tractoredShipWrapper, $map);
-        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+        $epsSystem->lowerEps(1)->update();
 
         $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit aus dem Wurmloch gezogen");
 

@@ -20,6 +20,7 @@ use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -83,15 +84,15 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $shipId = request::indInt('id');
         $targetId = request::postIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -110,7 +111,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             return;
         }
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() < 1) {
+        if ($epsSystem === null || $epsSystem->getEps() < 1) {
             $game->addInformation(sprintf(_('Zum Bergen der Rettungskapseln wird %d Energie benötigt'), 1));
             return;
         }
@@ -140,6 +141,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $this->shipLoader->save($ship);
     }
 
+    /**
+     * @return array<int, int>
+     */
     private function determineCrewmanPerUser(ShipInterface $target): array
     {
         $crewmanPerUser = [];
@@ -157,6 +161,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         return $crewmanPerUser;
     }
 
+    /**
+     * @param array<int, int> $crewmanPerUser
+     */
     private function sendPMsToCrewOwners(
         array $crewmanPerUser,
         ShipInterface $ship,
@@ -220,10 +227,29 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         return $this->troopTransferUtility->getFreeQuarters($ship) >= $count;
     }
 
-    private function transferToClosestLocation(ShipInterface $ship, ShipInterface $target, int $count, TradePostInterface $closestTradepost): string
-    {
-        [$colonyDistance, $colony] = $this->searchClosestUsableColony($ship, $count);
-        [$stationDistance, $station] = $this->searchClosestUsableStation($ship, $count);
+    private function transferToClosestLocation(
+        ShipInterface $ship,
+        ShipInterface $target,
+        int $count,
+        TradePostInterface $closestTradepost
+    ): string {
+        $closestColony = null;
+        $colonyDistance = null;
+
+        $closestColonyArray = $this->searchClosestUsableColony($ship, $count);
+        if ($closestColonyArray !== null) {
+            [$colonyDistance, $closestColony] = $closestColonyArray;
+        }
+
+
+        $stationDistance = null;
+        $closestStation = null;
+        $closestStationArray = $this->searchClosestUsableStation($ship, $count);
+        if ($closestStationArray !== null) {
+            [$stationDistance, $closestStation] = $closestStationArray;
+        }
+
+
         $tradepostDistance = $this->calculateDistance(
             $ship->getCx(),
             $closestTradepost->getShip()->getCx(),
@@ -236,33 +262,33 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         //$this->loggerUtil->log(sprintf('distance: %d, closestTradepost: %s', $tradepostDistance, $closestTradepost->getName()));
 
         //transfer to closest colony
-        if ($colony !== null && $colonyDistance <= $stationDistance && $colonyDistance <= $tradepostDistance) {
+        if ($closestColony !== null && $colonyDistance <= $stationDistance && $colonyDistance <= $tradepostDistance) {
             foreach ($target->getCrewlist() as $crewAssignment) {
                 if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
-                    $crewAssignment->setColony($colony);
+                    $crewAssignment->setColony($closestColony);
                     $crewAssignment->setShip(null);
                     $this->shipCrewRepository->save($crewAssignment);
                 }
             }
             return sprintf(
                 _('Deine Crew wurde geborgen und an die Kolonie "%s" (%s) überstellt'),
-                $colony->getName(),
-                $colony->getSectorString()
+                $closestColony->getName(),
+                $closestColony->getSectorString()
             );
         }
 
         //transfer to closest station
-        if ($station !== null && $stationDistance <= $tradepostDistance) {
+        if ($closestStation !== null && $stationDistance <= $tradepostDistance) {
             foreach ($target->getCrewlist() as $crewAssignment) {
                 if ($crewAssignment->getCrew()->getUser() === $ship->getUser()) {
-                    $crewAssignment->setShip($station);
+                    $crewAssignment->setShip($closestStation);
                     $this->shipCrewRepository->save($crewAssignment);
                 }
             }
             return sprintf(
                 _('Deine Crew wurde geborgen und an die Station "%s" (%s) überstellt'),
-                $station->getName(),
-                $station->getSectorString()
+                $closestStation->getName(),
+                $closestStation->getSectorString()
             );
         }
 
@@ -281,9 +307,13 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         );
     }
 
+    /**
+     * @return null|array{0: int, 1: ShipInterface}
+     */
     private function searchClosestUsableStation(ShipInterface $ship, int $count): ?array
     {
-        $result = [424242, null];
+        $result = null;
+
         $stations = $this->shipRepository->getStationsByUser($ship->getUser()->getId());
         foreach ($stations as $station) {
             $freeQuarters = $this->troopTransferUtility->getFreeQuarters($station);
@@ -300,7 +330,11 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     $station->getSystem() !== null ? $station->getSy() : 0,
                 );
 
-                if ($result === null || $distance < $result[0]) {
+                if ($result === null) {
+                    $result = [];
+                }
+
+                if (empty($result) || $distance < $result[0]) {
                     $result = [$distance, $station];
                 }
             }
@@ -309,9 +343,13 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         return $result;
     }
 
+    /**
+     * @return null|array{0: int, 1: ColonyInterface}
+     */
     private function searchClosestUsableColony(ShipInterface $ship, int $count): ?array
     {
-        $result = [424242, null];
+        $result = null;
+
         $colonies = $ship->getUser()->getColonies();
         foreach ($colonies as $colony) {
             $crewLimit = $this->colonyLibFactory->createColonyPopulationCalculator(
@@ -337,7 +375,11 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     $distance += 1;
                 }
 
-                if ($result === null || $distance < $result[0]) {
+                if ($result === null) {
+                    $result = [];
+                }
+
+                if (empty($result) || $distance < $result[0]) {
                     $result = [$distance, $colony];
                 }
             }

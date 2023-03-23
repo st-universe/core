@@ -57,16 +57,16 @@ final class AttackTrackedShip implements ActionControllerInterface
         $shipId = request::getIntFatal('id');
         $targetId = request::getIntFatal('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $shipId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$shipId];
+        $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
@@ -94,7 +94,8 @@ final class AttackTrackedShip implements ActionControllerInterface
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
-        if ($wrapper->getEpsSystemData()->getEps() == 0) {
+        $epsSystemData = $wrapper->getEpsSystemData();
+        if ($epsSystemData === null || $epsSystemData->getEps() === 0) {
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
@@ -157,11 +158,14 @@ final class AttackTrackedShip implements ActionControllerInterface
         }
     }
 
+    /**
+     * @return array{0: array<int, ShipInterface>, 1: array<int, ShipInterface>, 2: bool}
+     */
     private function getAttackerDefender(ShipInterface $ship, ShipInterface $target): array
     {
         $fleet = false;
 
-        if ($ship->isFleetLeader()) {
+        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $attacker = $ship->getFleet()->getShips()->toArray();
             $fleet = true;
         } else {

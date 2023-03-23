@@ -87,7 +87,12 @@ class TrackerSystemData extends AbstractSystemData
 
     public function canAttackCloakedTarget(): bool
     {
-        $target = $this->getTargetWrapper()->get();
+        $targetWrapper = $this->getTargetWrapper();
+        if ($targetWrapper === null) {
+            return false;
+        }
+
+        $target = $targetWrapper->get();
 
         return (new InteractionChecker())->checkPosition($this->ship, $target) && $target->getCloakState();
     }

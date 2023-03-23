@@ -47,16 +47,16 @@ final class UndockStationShip implements ActionControllerInterface
         $stationId = request::indInt('id');
         $targetId = request::indInt('target');
 
-        $shipArray = $this->shipLoader->getWrappersByIdAndUserAndTarget(
+        $wrappers = $this->shipLoader->getWrappersBySourceAndUserAndTarget(
             $stationId,
             $userId,
             $targetId
         );
 
-        $wrapper = $shipArray[$stationId];
+        $wrapper = $wrappers->getSource();
         $station = $wrapper->get();
 
-        $targetWrapper = $shipArray[$targetId];
+        $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
