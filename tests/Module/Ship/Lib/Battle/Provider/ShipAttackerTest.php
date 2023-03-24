@@ -382,7 +382,7 @@ class ShipAttackerTest extends StuTestCase
     public function testLowerTorpedoCount(): void
     {
         $this->shipTorpedoManager->shouldReceive('changeTorpedo')
-            ->with($this->wrapper, 5)
+            ->with($this->wrapper, -5)
             ->once();
 
         $this->subject->lowerTorpedoCount(5);

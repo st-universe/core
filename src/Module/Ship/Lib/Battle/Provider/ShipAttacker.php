@@ -135,7 +135,7 @@ class ShipAttacker extends AbstractEnergyAttacker implements ProjectileAttackerI
 
     public function lowerTorpedoCount(int $amount): void
     {
-        $this->shipTorpedoManager->changeTorpedo($this->wrapper, $amount);
+        $this->shipTorpedoManager->changeTorpedo($this->wrapper, -$amount);
     }
 
     public function getProjectileWeaponDamage(bool $isCritical): int
