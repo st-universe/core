@@ -882,6 +882,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('shipid', 'shipid', 'integer');
+        $rsm->addScalarResult('fleetid', 'fleetid', 'integer');
         $rsm->addScalarResult('rumpid', 'rumpid', 'integer');
         $rsm->addScalarResult('formerrumpid', 'formerrumpid', 'integer');
         $rsm->addScalarResult('warpstate', 'warpstate', 'integer');
@@ -905,7 +906,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT s.id as shipid, s.rumps_id as rumpid , s.former_rumps_id as formerrumpid, ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate,
+                'SELECT s.id as shipid, s.fleets_id as fleetid, s.rumps_id as rumpid , s.former_rumps_id as formerrumpid, ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate,
                     ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed, s.type as spacecrafttype, s.name as shipname,
                     s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, s.holding_web_id as webid, tw.finished_time as webfinishtime, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname, r.role_id as rumproleid,

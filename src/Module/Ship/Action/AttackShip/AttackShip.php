@@ -92,6 +92,11 @@ final class AttackShip implements ActionControllerInterface
             throw new SanityCheckException('InteractionChecker->checkPosition failed', self::ACTION_IDENTIFIER);
         }
 
+        // no attack on self or own fleet
+        if ($this->isAttackOnSelfOrOwnFleet($ship, $target)) {
+            return;
+        }
+
         $isAttackingActiveTractorShip = false;
         $isActiveTractorShipWarped = false;
         if ($ship->isTractored()) {
@@ -174,6 +179,22 @@ final class AttackShip implements ActionControllerInterface
             $game->addInformationMerge($msg);
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
+    }
+
+    private function isAttackOnSelfOrOwnFleet(ShipInterface $ship, ShipInterface $target): bool
+    {
+        if ($target === $ship) {
+            return true;
+        }
+
+        $ownFleet = $ship->getFleet();
+        $targetFleet = $target->getFleet();
+
+        if ($ownFleet === null || $targetFleet === null) {
+            return false;
+        }
+
+        return $targetFleet === $ownFleet;
     }
 
     private function sendPms(ShipInterface $ship, FightMessageCollectionInterface $messageCollection, bool $isTargetBase): void

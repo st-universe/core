@@ -439,7 +439,8 @@
             </div>
           </tal:block>
         </tal:block>
-        <tal:block tal:condition="not:SHIP/isTractored">
+        <tal:block
+          tal:condition="php: !SHIP.isTractored() && ship.getId() != SHIP.getId() && ship.getFleetId() != SHIP.getFleetId()">
           <tal:block tal:condition="php:ship.getCloakState() OR ship.canBeAttacked()">
             <div style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"
               onmouseover="cp('att_${ship/getId}','buttons/phaser2')"

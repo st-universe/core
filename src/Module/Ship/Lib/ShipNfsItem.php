@@ -22,72 +22,75 @@ final class ShipNfsItem
         $this->userId = $userId;
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->values['shipid'];
     }
-    public function getName()
+    public function getFleetId(): int
+    {
+        return $this->values['fleetid'];
+    }
+    public function getName(): string
     {
         return $this->values['shipname'];
     }
-    public function getHull()
+    public function getHull(): int
     {
         return $this->values['hull'];
     }
-    public function getMaxHull()
+    public function getMaxHull(): int
     {
         return $this->values['maxhull'];
     }
-    public function getShield()
+    public function getShield(): int
     {
         return $this->values['shield'];
     }
-    public function getShieldState()
+    public function getShieldState(): bool
     {
         return $this->values['shieldstate'] > 1;
     }
-    public function getCloakState()
+    public function getCloakState(): bool
     {
         return $this->values['cloakstate'] > 1;
     }
-    public function getWarpState()
+    public function getWarpState(): bool
     {
         return $this->values['warpstate'] > 1;
     }
-    public function tractorbeamNotPossible()
+    public function tractorbeamNotPossible(): bool
     {
         return $this->isBase() || $this->isTrumfield() || $this->getCloakState() || $this->getShieldState() || $this->getWarpState();
     }
-    public function canBeAttacked()
+    public function canBeAttacked(): bool
     {
         return !$this->isTrumfield() && !$this->getWarpState();
     }
-    public function isInterceptable()
+    public function isInterceptable(): bool
     {
         return $this->getWarpState();
     }
-    public function isDestroyed()
+    public function isDestroyed(): bool
     {
         return $this->values['isdestroyed'];
     }
-    public function isBase()
+    public function isBase(): bool
     {
         return $this->values['spacecrafttype'] === SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION;
     }
-    public function isTrumfield()
+    public function isTrumfield(): bool
     {
-        return $this->values['rumpcategoryid'] === ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD;
-        ;
+        return $this->values['rumpcategoryid'] === ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD;;
     }
-    public function isShuttle()
+    public function isShuttle(): bool
     {
         return $this->values['rumpcategoryid'] === ShipRumpEnum::SHIP_CATEGORY_SHUTTLE;
     }
-    public function getRumpId()
+    public function getRumpId(): int
     {
         return $this->values['rumpid'];
     }
-    public function getFormerRumpId()
+    public function getFormerRumpId(): int
     {
         return $this->values['formerrumpid'];
     }
@@ -113,19 +116,19 @@ final class ShipNfsItem
 
         return sprintf('background-image: url(assets/buttons/%s); vertical-align: middle; text-align: center;', $icon);
     }
-    public function getRumpName()
+    public function getRumpName(): string
     {
         return $this->values['rumpname'];
     }
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->values['userid'];
     }
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->values['username'];
     }
-    public function isOwnedByCurrentUser()
+    public function isOwnedByCurrentUser(): bool
     {
         return $this->userId == $this->getUserId();
     }
@@ -135,7 +138,7 @@ final class ShipNfsItem
         return $this->values['uplinkstate'] > 0;
     }
 
-    public function getRump()
+    public function getRump(): mixed
     {
         return $this;
     }
