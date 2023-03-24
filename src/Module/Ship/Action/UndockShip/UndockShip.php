@@ -56,8 +56,8 @@ final class UndockShip implements ActionControllerInterface
         }
 
         if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
-            $msg = [];
-            $msg[] = _("Flottenbefehl ausgeführt: Abdocken von ") . $dockedTo->getName();;
+            $msg = [_("Flottenbefehl ausgeführt: Abdocken von ") . $dockedTo->getName()];
+
             foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
                 $ship = $wrapper->get();
 

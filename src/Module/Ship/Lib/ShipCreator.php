@@ -92,7 +92,6 @@ final class ShipCreator implements ShipCreatorInterface
         ?ColonyInterface $colony = null,
         ?ConstructionProgressInterface $progress = null
     ): ShipWrapperInterface {
-
         $user = $this->userRepository->find($userId);
         if ($user === null) {
             throw new RuntimeException('user not existent');

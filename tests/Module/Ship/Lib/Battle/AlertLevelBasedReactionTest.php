@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;

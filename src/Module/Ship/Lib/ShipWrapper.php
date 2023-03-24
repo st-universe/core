@@ -151,7 +151,6 @@ final class ShipWrapper implements ShipWrapperInterface
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
-
             $prod = $this->get()->getReactorOutputCappedByReactorLoad() - $this->getEpsUsage();
             if ($prod <= 0) {
                 return $prod;
@@ -432,7 +431,7 @@ final class ShipWrapper implements ShipWrapperInterface
     /**
      * @template T
      * @param class-string<T> $className
-     * 
+     *
      * @return T|null
      */
     private function getSpecificShipSystem(int $systemType, string $className)

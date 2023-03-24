@@ -111,7 +111,6 @@ final class ShipLoader implements ShipLoaderInterface
     {
         if ($targetId === null) {
             if ($this->game->isSemaphoreAlreadyAcquired($ship->getUser()->getId())) {
-
                 return new SourceAndTargetWrappers($this->shipWrapperFactory->wrapShip($ship));
             }
         }

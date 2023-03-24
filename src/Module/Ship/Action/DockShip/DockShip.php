@@ -17,7 +17,6 @@ use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\FleetWrapperInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -123,7 +122,7 @@ final class DockShip implements ActionControllerInterface
 
         $fleetWrapper = $wrapper->getFleetWrapper();
         if ($ship->isFleetLeader() && $fleetWrapper !== null) {
-            $this->fleetDock($fleetWrapper, $wrapper, $target, $game);
+            $this->fleetDock($fleetWrapper, $target, $game);
             return;
         }
 
@@ -168,14 +167,11 @@ final class DockShip implements ActionControllerInterface
 
     private function fleetDock(
         FleetWrapperInterface $fleetWrapper,
-        ShipWrapperInterface $wrapper,
         ShipInterface $target,
         GameControllerInterface $game
     ): void {
-        $ship = $wrapper->get();
+        $msg = [_("Flottenbefehl ausgeführt: Andocken an ") . $target->getName()];
 
-        $msg = [];
-        $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();;
         $freeSlots = $target->getFreeDockingSlotCount();
         foreach ($fleetWrapper->getShipWrappers() as $fleetShipWrapper) {
             if ($freeSlots <= 0) {

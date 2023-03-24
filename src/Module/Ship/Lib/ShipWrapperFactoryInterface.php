@@ -11,7 +11,7 @@ interface ShipWrapperFactoryInterface
 
     /**
      * @param array<ShipInterface> $ships
-     * 
+     *
      * @return array<ShipWrapperInterface>
      */
     public function wrapShips(array $ships): array;
@@ -25,7 +25,7 @@ interface ShipWrapperFactoryInterface
 
     /**
      * @param array<FleetInterface> $fleets
-     * 
+     *
      * @return array<FleetWrapperInterface>
      */
     public function wrapFleets(array $fleets): array;
