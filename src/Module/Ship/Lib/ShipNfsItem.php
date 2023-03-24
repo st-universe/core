@@ -26,7 +26,7 @@ final class ShipNfsItem
     {
         return $this->values['shipid'];
     }
-    public function getFleetId(): int
+    public function getFleetId(): ?int
     {
         return $this->values['fleetid'];
     }
