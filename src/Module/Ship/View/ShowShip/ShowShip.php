@@ -113,7 +113,9 @@ final class ShowShip implements ViewControllerInterface
         $userId = $user->getId();
         $ownsCurrentColony = false;
 
-        // $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        if ($game->getUser()->getId() === 126) {
+            $this->loggerUtil->init('ship', LoggerEnum::LEVEL_ERROR);
+        }
 
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
