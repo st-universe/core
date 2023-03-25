@@ -6,6 +6,7 @@ namespace Stu\Module\Starmap\View\Overview;
 
 use request;
 use Stu\Component\Map\MapEnum;
+use Stu\Exception\SanityCheckException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
@@ -36,6 +37,10 @@ final class Overview implements ViewControllerInterface
         if (!$layerId) {
             $layer = current($layers);
         } else {
+            if (!array_key_exists($layerId, $layers)) {
+                throw new SanityCheckException('user tried to access unknown layer');
+            }
+
             $layer = $layers[$layerId];
         }
         $game->setTemplateVar('LAYERID', $layer->getId());
