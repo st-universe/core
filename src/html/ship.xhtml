@@ -65,12 +65,12 @@
 					<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
 						tal:attributes="class entry/getCSSClass"
 						style="border:1px solid ${entry/getBorder}; width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
+						<img src="assets/map/${entry/getMapfieldType}.png"
+						style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 						<tal:block tal:condition="entry/isClickable">
 							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
 								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
 								<tal:block tal:condition="entry/getShieldState">
-									<img src="assets/map/${entry/getMapfieldType}.png"
-										style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="z-index:2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
@@ -78,8 +78,6 @@
 										style="z-index: 3; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								</tal:block>
 								<tal:block tal:condition="not:entry/getShieldState">
-									<img src="assets/map/${entry/getMapfieldType}.png"
-										style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
 										src="assets/subspace/generated/${code}.png"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw; position: relative;" />
@@ -92,8 +90,6 @@
 						<tal:block tal:condition="not:entry/isClickable">
 							<div class="imgOverlayText">
 								<tal:block tal:condition="entry/getShieldState">
-									<img src="assets/map/${entry/getMapfieldType}.png"
-										style="z-index: 1;width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
@@ -101,8 +97,6 @@
 										style="z-index: 3; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								</tal:block>
 								<tal:block tal:condition="not:entry/getShieldState">
-									<img src="assets/map/${entry/getMapfieldType}.png"
-										style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
 										src="assets/subspace/generated/${code}.png"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw; position: relative;" />
