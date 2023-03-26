@@ -82,7 +82,7 @@
 										style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
 										src="assets/subspace/generated/${code}.png"
-										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw; position: relative;" />
 								</tal:block>
 								<div style="font-size: ${viewportFont}vw;" class="centered"
 									tal:content="entry/getDisplayCount">.
@@ -105,7 +105,7 @@
 										style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
 										src="assets/subspace/generated/${code}.png"
-										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw; position: relative;" />
 								</tal:block>
 								<div style="font-size: ${viewportFont}vw;" class="centered"
 									tal:content="entry/getDisplayCount">.
