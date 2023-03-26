@@ -38,6 +38,9 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         if ($rump->getModuleLevel() < $module->getLevel()) {
             return '+' . $module->getUpgradeFactor() . '%';
         }
+        if ($rump->getModuleLevel() === $module->getLevel()) {
+            return '+' . $module->getDefaultFactor() . '%';
+        }
         return _('Normal');
     }
 
@@ -48,6 +51,8 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
             $value = (1 - $base / 100) * 1 / (1 - $module->getDowngradeFactor() / 100);
         } elseif ($rump->getModuleLevel() < $module->getLevel()) {
             $value = (1 - $base / 100) * 1 / (1 + $module->getUpgradeFactor() / 100);
+        } elseif ($rump->getModuleLevel() === $module->getLevel()) {
+            $value = (1 - $base / 100) * 1 / (1 + $module->getDefaultFactor() / 100);
         } else {
             return $base;
         }
