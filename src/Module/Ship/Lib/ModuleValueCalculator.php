@@ -24,6 +24,9 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         if ($rump->getModuleLevel() < $module->getLevel()) {
             return (int) round($value + $value / 100 * $module->getUpgradeFactor());
         }
+        if ($rump->getModuleLevel() === $module->getLevel()) {
+            return (int) round($value + $value / 100 * $module->getDefaultFactor());
+        }
         return (int) $value;
     }
 

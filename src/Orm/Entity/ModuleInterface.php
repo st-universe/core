@@ -20,6 +20,10 @@ interface ModuleInterface
 
     public function setUpgradeFactor(int $upgradeFactor): ModuleInterface;
 
+    public function getDefaultFactor(): int;
+
+    public function setDefaultFactor(int $defaultFactor): ModuleInterface;
+
     public function getDowngradeFactor(): int;
 
     public function setDowngradeFactor(int $downgradeFactor): ModuleInterface;

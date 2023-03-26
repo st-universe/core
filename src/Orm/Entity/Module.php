@@ -60,6 +60,12 @@ class Module implements ModuleInterface
      * @Column(type="smallint")
      *
      */
+    private int $default_factor = 0;
+
+    /**
+     * @Column(type="smallint")
+     *
+     */
     private int $downgrade_factor = 0;
 
     /**
@@ -194,6 +200,18 @@ class Module implements ModuleInterface
     public function setUpgradeFactor(int $upgradeFactor): ModuleInterface
     {
         $this->upgrade_factor = $upgradeFactor;
+
+        return $this;
+    }
+
+    public function getDefaultFactor(): int
+    {
+        return $this->default_factor;
+    }
+
+    public function setDefaultFactor(int $defaultFactor): ModuleInterface
+    {
+        $this->default_factor = $defaultFactor;
 
         return $this;
     }
