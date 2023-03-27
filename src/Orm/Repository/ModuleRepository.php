@@ -66,7 +66,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT
-                        m.id, m.name, m.level, m.upgrade_factor, m.default_factor m.downgrade_factor, m.crew,
+                        m.id, m.name, m.level, m.upgrade_factor, m.default_factor, m.downgrade_factor, m.crew,
                         m.type, m.research_id, m.commodity_id, m.viewable, m.rumps_role_id, m.ecost
                     FROM stu_modules m
                     WHERE m.type = :typeId
