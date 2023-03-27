@@ -2119,9 +2119,11 @@
               id="field${field/getFieldId}">
               <div
                 style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${field/getPictureType}${field/getDayNightPrefix}.png)">
-                <div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img
-                    style="width: 40px; height: 40px;" tal:attributes="title planetFieldTitle:field"
-                    src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${field/getDayNightPrefix}.png" />
+                <div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;">
+                  <a
+                    href="?id=${SHIP/getId}&B_ATTACK_BUILDING=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}"><img
+                      style="width: 40px; height: 40px;" tal:attributes="title planetFieldTitle:field"
+                      src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${field/getDayNightPrefix}.png" />
                 </div>
               </div>
             </div>
