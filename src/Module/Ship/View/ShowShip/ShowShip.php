@@ -109,13 +109,15 @@ final class ShowShip implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $user = $game->getUser();
-        $userId = $user->getId();
-        $ownsCurrentColony = false;
-
         if ($game->getUser()->getId() === 126) {
             $this->loggerUtil->init('ship', LoggerEnum::LEVEL_ERROR);
         }
+
+        $this->loggerUtil->log(sprintf('ShowShip.handle-start, timestamp: %F', microtime(true)));
+
+        $user = $game->getUser();
+        $userId = $user->getId();
+        $ownsCurrentColony = false;
 
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -254,7 +256,7 @@ final class ShowShip implements ViewControllerInterface
                 : $this->shipCrewCalculator->getMaxCrewCountByShip($ship)
         );
 
-        $this->loggerUtil->log(sprintf('ShowShip.php-end, timestamp: %F', microtime(true)));
+        $this->loggerUtil->log(sprintf('ShowShip.handle-end, timestamp: %F', microtime(true)));
     }
 
     private function getColony(ShipInterface $ship): ?ColonyInterface
