@@ -55,7 +55,11 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'UPDATE %s sq SET sq.finish_date = (:time - sq.stop_date + sq.finish_date), sq.stop_date = :stopDate WHERE sq.colony_id = :colonyId AND sq.building_function_id = :buildingFunctionId',
+                    'UPDATE %s sq
+                    SET sq.finish_date = (:time - sq.stop_date + sq.finish_date), sq.stop_date = :stopDate
+                    WHERE sq.stop_date != 0
+                    AND sq.colony_id = :colonyId
+                    AND sq.building_function_id = :buildingFunctionId',
                     ColonyShipQueue::class
                 )
             )
