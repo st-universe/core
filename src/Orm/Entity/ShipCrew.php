@@ -15,6 +15,8 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Stu\Component\Crew\CrewEnum;
 
+
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
  * @Table(
@@ -92,7 +94,7 @@ class ShipCrew implements ShipCrewInterface
     /**
      * @var null|ShipInterface
      *
-     * @ManyToOne(targetEntity="Ship")
+     * @ManyToOne(targetEntity="Ship", cascade={"persist"})
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
