@@ -90,7 +90,7 @@ class ShipSystem implements ShipSystemInterface
     /**
      * @var ShipInterface
      *
-     * @ManyToOne(targetEntity="Ship")
+     * @ManyToOne(targetEntity="Ship", cascade={"persist"})
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
