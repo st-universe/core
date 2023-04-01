@@ -362,7 +362,7 @@ class Ship implements ShipInterface
     private ShipRumpInterface $rump;
 
     /**
-     * @ManyToOne(targetEntity="ShipBuildplan")
+     * @ManyToOne(targetEntity="ShipBuildplan", cascade={"persist"})
      * @JoinColumn(name="plans_id", referencedColumnName="id")
      */
     private ?ShipBuildplanInterface $buildplan;
