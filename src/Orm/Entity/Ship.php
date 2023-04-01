@@ -350,7 +350,7 @@ class Ship implements ShipInterface
     /**
      * @var ArrayCollection<int, ShipSystemInterface>
      *
-     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"persist"})
+     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"persist", "remove"})
      * @OrderBy({"system_type": "ASC"})
      */
     private $systems;
@@ -370,7 +370,7 @@ class Ship implements ShipInterface
     /**
      * @var ArrayCollection<int, StorageInterface>
      *
-     * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
+     * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id", cascade={"persist", "remove"})
      * @OrderBy({"commodity_id": "ASC"})
      */
     private $storage;
