@@ -73,7 +73,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     /**
      * @var Collection<int, ShipInterface>
      *
-     * @OneToMany(targetEntity="Ship", mappedBy="buildplan", fetch="EXTRA_LAZY")
+     * @OneToMany(targetEntity="Ship", mappedBy="buildplan", fetch="EXTRA_LAZY", onDelete="CASCADE")
      */
     private Collection $ships;
 
