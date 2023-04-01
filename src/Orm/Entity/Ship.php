@@ -337,7 +337,7 @@ class Ship implements ShipInterface
     /**
      * @var ArrayCollection<int, ShipCrewInterface>
      *
-     * @OneToMany(targetEntity="ShipCrew", mappedBy="ship", indexBy="id", cascade={"persist"})
+     * @OneToMany(targetEntity="ShipCrew", mappedBy="ship", indexBy="id")
      * @OrderBy({"id": "ASC"})
      */
     private $crew;
