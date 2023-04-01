@@ -85,7 +85,7 @@ class ShipCrew implements ShipCrewInterface
      * @var CrewInterface
      *
      * @ManyToOne(targetEntity="Crew")
-     * @JoinColumn(name="crew_id", referencedColumnName="id", cascade={"persist"})
+     * @JoinColumn(name="crew_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $crew;
 
