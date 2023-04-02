@@ -51,7 +51,7 @@ class AllianceJob implements AllianceJobInterface
     /**
      * @var AllianceInterface
      *
-     * @ManyToOne(targetEntity="Alliance")
+     * @ManyToOne(targetEntity="Alliance", cascade={"persist"})
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $alliance;
