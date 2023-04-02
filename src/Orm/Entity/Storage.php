@@ -80,7 +80,7 @@ class Storage implements StorageInterface
     /**
      * @var UserInterface
      *
-     * @ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User", cascade={"persist"})
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
