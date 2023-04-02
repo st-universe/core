@@ -45,7 +45,7 @@ class RpgPlotMember implements RpgPlotMemberInterface
     /**
      * @var RpgPlotInterface
      *
-     * @ManyToOne(targetEntity="RpgPlot", inversedBy="members")
+     * @ManyToOne(targetEntity="RpgPlot", inversedBy="members", cascade={"persist"})
      * @JoinColumn(name="plot_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $rpgPlot;
