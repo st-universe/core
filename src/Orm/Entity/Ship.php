@@ -330,7 +330,7 @@ class Ship implements ShipInterface
 
     /**
      * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private UserInterface $user;
 
