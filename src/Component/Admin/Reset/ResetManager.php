@@ -67,7 +67,7 @@ final class ResetManager implements ResetManagerInterface
         $this->entityManager->beginTransaction();
 
         try {
-            $this->playerDeletion->handleReset();
+            //$this->playerDeletion->handleReset();
 
             $this->entityManager->flush();
 
