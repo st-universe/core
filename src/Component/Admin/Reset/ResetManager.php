@@ -67,14 +67,14 @@ final class ResetManager implements ResetManagerInterface
         $this->entityManager->beginTransaction();
 
         try {
-            //$this->playerDeletion->handleReset();
+            $this->playerDeletion->handleReset();
 
             $this->entityManager->flush();
 
             //$this->resetColonySurfaceMasks();
             //$this->deleteKnPostings();
             //$this->deleteKnPlotMembers();
-            $this->deleteKnPlots();
+            //$this->deleteKnPlots();
             //$this->deleteHistory();
             //$this->resetGameTurns();
 
