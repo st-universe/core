@@ -109,10 +109,6 @@ final class ShowShip implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->init('ship', LoggerEnum::LEVEL_ERROR);
-        }
-
         $this->loggerUtil->log(sprintf('ShowShip.handle-start, timestamp: %F', microtime(true)));
 
         $user = $game->getUser();
