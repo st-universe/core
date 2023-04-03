@@ -97,7 +97,7 @@ class GameTurnStats implements GameTurnStatsInterface
     /**
      * @var GameTurnInterface
      *
-     * @OneToOne(targetEntity="GameTurn")
+     * @OneToOne(targetEntity="GameTurn", cascade={"persist"})
      * @JoinColumn(name="turn_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $turn;
