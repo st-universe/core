@@ -71,12 +71,12 @@ final class ResetManager implements ResetManagerInterface
 
             $this->entityManager->flush();
 
-            $this->resetColonySurfaceMasks();
-            $this->deleteKnPostings();
-            $this->deleteKnPlotMembers();
-            $this->deleteKnPlots();
+            //$this->resetColonySurfaceMasks();
+            //$this->deleteKnPostings();
+            //$this->deleteKnPlotMembers();
+            //$this->deleteKnPlots();
             $this->deleteHistory();
-            $this->resetGameTurns();
+            //$this->resetGameTurns();
 
             // clear game data
             // flight signatures
