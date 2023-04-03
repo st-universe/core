@@ -90,7 +90,7 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     /**
      * @var UserInterface
      *
-     * @ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User", cascade={"persist"})
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
