@@ -72,7 +72,7 @@ final class ResetManager implements ResetManagerInterface
             $this->entityManager->flush();
 
             $this->resetColonySurfaceMasks();
-            $this->deleteKnPostings();
+            //$this->deleteKnPostings();
             //$this->deleteKnPlotMembers();
             //$this->deleteKnPlots();
             $this->deleteHistory();
