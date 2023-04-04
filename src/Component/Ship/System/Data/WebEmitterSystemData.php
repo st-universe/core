@@ -11,7 +11,7 @@ use Stu\Orm\Repository\TholianWebRepositoryInterface;
 
 class WebEmitterSystemData extends AbstractSystemData
 {
-    private ?int $webUnderConstructionId = null;
+    private ?int $webUnderConstructionId;
     private ?int $ownedWebId = null;
 
     private ShipSystemRepositoryInterface $shipSystemRepository;
