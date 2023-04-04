@@ -39,9 +39,9 @@ class WebEmitterSystemData extends AbstractSystemData
     {
         if ($this->webUnderConstructionId === null) {
             return null;
+        } else {
+            return $this->tholianWebRepository->find($this->webUnderConstructionId);
         }
-
-        return $this->tholianWebRepository->find($this->webUnderConstructionId);
     }
 
     public function getOwnedTholianWeb(): ?TholianWebInterface
