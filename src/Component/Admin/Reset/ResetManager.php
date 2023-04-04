@@ -122,6 +122,7 @@ final class ResetManager implements ResetManagerInterface
         }
     }
 
+    //
     /**
      * Deletes all history entries
      */
