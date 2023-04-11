@@ -79,6 +79,7 @@ final class RepairShip implements ActionControllerInterface
 
         $ship = $this->shipRepository->find(request::getIntFatal('ship_id'));
         if ($ship === null) {
+            $game->addInformation(_('Das Schiff existiert nicht'));
             return;
         }
 
@@ -92,6 +93,7 @@ final class RepairShip implements ActionControllerInterface
         );
 
         if ($field === null || $field->getBuilding() === null) {
+            $game->addInformation(_('Es ist keine Werft vorhanden'));
             return;
         }
 
@@ -116,6 +118,7 @@ final class RepairShip implements ActionControllerInterface
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
+            $game->addInformation(_('Das Schiff ist nicht vorhanden'));
             return;
         }
         if ($colony->isBlocked()) {
