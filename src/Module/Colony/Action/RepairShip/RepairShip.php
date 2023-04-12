@@ -118,7 +118,7 @@ final class RepairShip implements ActionControllerInterface
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
-            $game->addInformation(_('Das Schiff ist nicht vorhanden'));
+            $game->addInformation(_('Das Schiff mit der ID %s ist nicht im Array %s vorhanden'), $ship->getId(), $repairableShiplist);
             return;
         }
         if ($colony->isBlocked()) {

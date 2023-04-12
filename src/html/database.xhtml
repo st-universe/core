@@ -3,7 +3,7 @@
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<div style="width: 300px; float: left;">
-			<div class="divhead">Schiffe & Stationen</div>
+			<div class="divhead">Schiffe + Stationen</div>
 			<div class="divbody">
 				<div tal:repeat="data RUMP_LIST">
 					<a href="?SHOW_CATEGORY=1&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
