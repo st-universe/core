@@ -117,6 +117,7 @@ final class RepairShip implements ActionControllerInterface
             }
         }
 
+
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
