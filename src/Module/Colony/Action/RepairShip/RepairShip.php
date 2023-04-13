@@ -102,14 +102,14 @@ final class RepairShip implements ActionControllerInterface
         $repairableShiplist = [];
         foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
             /** @var ShipInterface $ship */
-            foreach ($fleet['ships'] as $ship) {
-                $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+            foreach ($fleet['ships'] as $ships) {
+                $wrapper = $this->shipWrapperFactory->wrapShip($ships);
                 if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
                     if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
-                        $repairableShiplist[$ship->getId()] = $ship;
+                        $repairableShiplist[$ship->getId()] = $ships;
                         break;
                     }
                 }
