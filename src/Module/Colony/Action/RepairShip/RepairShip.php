@@ -77,7 +77,7 @@ final class RepairShip implements ActionControllerInterface
             $userId
         );
 
-        $ship = $this->shipRepository->find(request::getIntFatal('ship_id'));
+        $ship = $this->shipRepository->find(request::indInt('ship_id'));
         if ($ship === null) {
             $game->addInformation(_('Das Schiff existiert nicht'));
             return;
