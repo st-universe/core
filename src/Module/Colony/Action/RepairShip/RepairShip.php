@@ -109,7 +109,7 @@ final class RepairShip implements ActionControllerInterface
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
                     if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
-                        $repairableShiplist[$ship->getId()] = $ship;
+                        $repairableShiplist[$ship->getId()] = $wrapper;
                         break;
                     }
                 }
@@ -118,7 +118,7 @@ final class RepairShip implements ActionControllerInterface
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
-            $game->addInformationf(_('Das Schiff mit der ID %s ist nicht im Array %s vorhanden'), $ship->getId(), print_r($repairableShiplist, true));
+            $game->addInformationf(_('Das Schiff mit der ID %s ist nicht im Array vorhanden'), $ship->getId());
             return;
         }
         if ($colony->isBlocked()) {
