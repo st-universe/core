@@ -72,23 +72,23 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
+        /**@var array<int, ShipWrapperInterface> */
         $repairableShiplist = [];
         foreach ($station->getDockedShips() as $dockedShip) {
+            $wrapper = $this->shipWrapperFactory->wrapShip($dockedShip);
             if (
-                !$this->shipWrapperFactory->wrapShip($dockedShip)->canBeRepaired() || $dockedShip->isUnderRepair()
+                !$wrapper->canBeRepaired() || $dockedShip->isUnderRepair()
             ) {
                 continue;
             }
-            $repairableShiplist[$dockedShip->getId()] = $dockedShip;
+            $repairableShiplist[$dockedShip->getId()] = $wrapper;
         }
 
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
-            return;
-        }
-        if (!$this->shipWrapperFactory->wrapShip($ship)->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
+
         if ($ship->getState() == ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
@@ -112,7 +112,8 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
-        $ticks = $this->shipWrapperFactory->wrapShip($ship)->getRepairDuration();
+        $wrapper = $repairableShiplist[$ship->getId()];
+        $ticks = $wrapper->getRepairDuration();
         $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
 
         $this->privateMessageSender->send(
