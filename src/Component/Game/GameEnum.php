@@ -12,6 +12,7 @@ final class GameEnum
     public const CONFIG_GAMESTATE_VALUE_TICK = 2;
     public const CONFIG_GAMESTATE_VALUE_MAINTENANCE = 3;
     public const CONFIG_GAMESTATE_VALUE_RELOCATION = 4;
+    public const CONFIG_GAMESTATE_VALUE_RESET = 5;
 
     //user stuff
     public const USER_NOONE = 1;
@@ -37,6 +38,8 @@ final class GameEnum
                 return 'Online';
             case GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE:
                 return 'Wartung';
+            case GameEnum::CONFIG_GAMESTATE_VALUE_RESET:
+                return 'Reset';
             case GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION:
                 return 'Umzug';
             case GameEnum::CONFIG_GAMESTATE_VALUE_TICK:
