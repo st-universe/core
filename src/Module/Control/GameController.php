@@ -645,6 +645,10 @@ final class GameController implements GameControllerInterface
                 throw new MaintenanceGameStateException();
             }
 
+            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RESET) {
+                throw new MaintenanceGameStateException();
+            }
+
             if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION) {
                 throw new RelocationGameStateException();
             }
