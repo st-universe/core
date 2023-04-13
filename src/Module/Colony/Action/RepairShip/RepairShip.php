@@ -104,7 +104,7 @@ final class RepairShip implements ActionControllerInterface
             /** @var ShipInterface $ship */
             foreach ($fleet['ships'] as $ships) {
                 $wrapper = $this->shipWrapperFactory->wrapShip($ships);
-                if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {
+                if (!$wrapper->canBeRepaired() || $ships->isUnderRepair()) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
