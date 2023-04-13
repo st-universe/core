@@ -99,24 +99,23 @@ final class RepairShip implements ActionControllerInterface
 
         $fieldFunctions = $field->getBuilding()->getFunctions()->toArray();
 
+        /**@var array<int, ShipWrapperInterface> */
         $repairableShiplist = [];
         foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
             /** @var ShipInterface $orbitShip */
             foreach ($fleet['ships'] as $orbitShip) {
                 $wrapper = $this->shipWrapperFactory->wrapShip($orbitShip);
-                if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {
+                if (!$wrapper->canBeRepaired() || $orbitShip->isUnderRepair()) {
                     continue;
                 }
-                foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
+                foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($orbitShip->getRump()) as $rump_rel) {
                     if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
-                        $repairableShiplist[$ship->getId()] = $orbitShip;
+                        $repairableShiplist[$orbitShip->getId()] = $wrapper;
                         break;
                     }
                 }
             }
         }
-
-        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
 
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
             $game->addInformationf(_('Das Schiff mit der ID %s ist nicht im Array vorhanden'), $ship->getId());
@@ -127,6 +126,8 @@ final class RepairShip implements ActionControllerInterface
             $game->addInformation(_('Schiffsreparatur ist nicht möglich während die Kolonie blockiert wird'));
             return;
         }
+
+        $wrapper = $repairableShiplist[$ship->getId()];
 
         if (!$wrapper->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
