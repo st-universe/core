@@ -119,11 +119,18 @@ final class RepairShip implements ActionControllerInterface
 
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
+        $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
             return;
         }
 
         if ($colony->isBlocked()) {
             $game->addInformation(_('Schiffsreparatur ist nicht möglich während die Kolonie blockiert wird'));
+            return;
+        }
+
+        if (!$wrapper->canBeRepaired()) {
+            $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
 
