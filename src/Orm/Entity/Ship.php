@@ -280,6 +280,12 @@ class Ship implements ShipInterface
     private ?int $influence_area_id = null;
 
     /**
+     * @Column(type="boolean")
+     *
+     */
+    private bool $in_emergency = false;
+
+    /**
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -929,6 +935,17 @@ class Ship implements ShipInterface
     public function setState(int $state): ShipInterface
     {
         $this->state = $state;
+        return $this;
+    }
+
+    public function getIsInEmergency(): bool
+    {
+        return $this->in_emergency;
+    }
+
+    public function setIsInEmergency(bool $inEmergency): ShipInterface
+    {
+        $this->in_emergency = $inEmergency;
         return $this;
     }
 

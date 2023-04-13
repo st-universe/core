@@ -441,4 +441,8 @@ interface ShipInterface
     public function hasCrewmanOfUser(int $userId): bool;
 
     public function getHullColorStyle(): string;
+
+    public function getIsInEmergency(): bool;
+
+    public function setIsInEmergency(bool $inEmergency): ShipInterface;
 }
