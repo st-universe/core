@@ -77,7 +77,7 @@ final class RepairShip implements ActionControllerInterface
             $userId
         );
 
-        $ship = $this->shipRepository->find(request::getIntFatal('ship_id'));
+        $ship = $this->shipRepository->find(request::indInt('ship_id'));
         if ($ship === null) {
             $game->addInformation(_('Das Schiff existiert nicht'));
             return;
@@ -101,15 +101,15 @@ final class RepairShip implements ActionControllerInterface
 
         $repairableShiplist = [];
         foreach ($this->orbitShipListRetriever->retrieve($colony) as $fleet) {
-            /** @var ShipInterface $ship */
-            foreach ($fleet['ships'] as $ship) {
-                $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+            /** @var ShipInterface $orbitShip */
+            foreach ($fleet['ships'] as $orbitShip) {
+                $wrapper = $this->shipWrapperFactory->wrapShip($orbitShip);
                 if (!$wrapper->canBeRepaired() || $ship->isUnderRepair()) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
                     if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
-                        $repairableShiplist[$ship->getId()] = $ship;
+                        $repairableShiplist[$ship->getId()] = $orbitShip;
                         break;
                     }
                 }
@@ -117,18 +117,22 @@ final class RepairShip implements ActionControllerInterface
         }
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
+
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
-            $game->addInformationf(_('Das Schiff mit der ID %s ist nicht im Array %s vorhanden'), $ship->getId(), print_r($repairableShiplist, true));
+            $game->addInformationf(_('Das Schiff mit der ID %s ist nicht im Array vorhanden'), $ship->getId());
             return;
         }
+
         if ($colony->isBlocked()) {
             $game->addInformation(_('Schiffsreparatur ist nicht möglich während die Kolonie blockiert wird'));
             return;
         }
+
         if (!$wrapper->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
+
         if ($ship->getState() == ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
