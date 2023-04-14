@@ -71,7 +71,7 @@ final class ShipStateChanger implements ShipStateChangerInterface
         }
 
         //emergency
-        elseif ($currentState === ShipStateEnum::SHIP_STATE_EMERGENCY) {
+        elseif ($ship->getIsInEmergency() === true) {
             $emergency = $this->spacecraftEmergencyRepository->getByShipId($ship->getId());
 
             if ($emergency !== null) {

@@ -175,8 +175,6 @@ interface ShipInterface
 
     public function isUnderRepair(): bool;
 
-    public function isInEmergency(): bool;
-
     public function getAstroStartTurn(): ?int;
 
     public function setAstroStartTurn(?int $turn): ShipInterface;

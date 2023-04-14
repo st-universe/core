@@ -955,11 +955,6 @@ class Ship implements ShipInterface
             || $this->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE;
     }
 
-    public function isInEmergency(): bool
-    {
-        return $this->getState() === ShipStateEnum::SHIP_STATE_EMERGENCY;
-    }
-
     public function getAstroStartTurn(): ?int
     {
         return $this->astro_start_turn;

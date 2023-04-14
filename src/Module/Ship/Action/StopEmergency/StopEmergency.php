@@ -45,11 +45,11 @@ final class StopEmergency implements ActionControllerInterface
 
         $ship = $wrapper->get();
 
-        if (!$ship->isInEmergency()) {
+        if (!$ship->getIsInEmergency() === true) {
             return;
         }
 
-        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
+        $ship->setIsInEmergency(false);
 
         $game->addInformation('Das Notrufsignal wurde beendet');
     }
