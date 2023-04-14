@@ -48,28 +48,15 @@ final class ErrorHandler
 
     public function register(): void
     {
+        $this->setErrorReporting();
+
         $whoops = new Run();
         $whoops->prependHandler(function () {
-            $isAdminUser = false;
-
-            // load the session handler only if a session has been started
-            if (session_id() !== '') {
-                $user = $this->session->getUser();
-
-                $isAdminUser = $user !== null
-                    && in_array(
-                        $user->getId(),
-                        $this->stuConfig->getGameSettings()->getAdminIds(),
-                        true
-                    );
-            }
 
             if (
-                $this->stuConfig->getDebugSettings()->isDebugMode() ||
-                $isAdminUser
+                $this->stuConfig->getDebugSettings()->isDebugMode()
+                || $this->isAdminUser()
             ) {
-                error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
-
                 if (Misc::isCommandLine()) {
                     $handler = new PlainTextHandler();
                 } else {
@@ -77,8 +64,6 @@ final class ErrorHandler
                     $handler->setPageTitle('Error - Star Trek Universe');
                 }
             } else {
-                error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
                 if (Misc::isCommandLine()) {
                     $handler = new PlainTextHandler();
                 } else {
@@ -123,5 +108,36 @@ final class ErrorHandler
             );
         });
         $whoops->register();
+    }
+
+    private function setErrorReporting(): void
+    {
+        if (
+            $this->stuConfig->getDebugSettings()->isDebugMode()
+            || $this->isAdminUser()
+        ) {
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+        } else {
+            error_reporting(E_ERROR | E_WARNING | E_PARSE);
+        }
+    }
+
+    private function isAdminUser(): bool
+    {
+        $isAdminUser = false;
+
+        // load the session handler only if a session has been started
+        if (session_id() !== '') {
+            $user = $this->session->getUser();
+
+            $isAdminUser = $user !== null
+                && in_array(
+                    $user->getId(),
+                    $this->stuConfig->getGameSettings()->getAdminIds(),
+                    true
+                );
+        }
+
+        return $isAdminUser;
     }
 }
