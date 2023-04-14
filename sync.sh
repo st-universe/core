@@ -14,10 +14,10 @@ send_mail () {
 if [ $LOCAL = $REMOTE ]; then
     :
     #echo "git: up-to-date"
-elif [ $LOCAL = $BASE ]; then
+else
     echo "git: need to pull"
 
-    git reset --hard HEAD && git pull
+    git reset --hard HEAD && git pull --rebase
     if [ $? -eq 0 ]; then
   	echo "Success: pulled from git"
     else
@@ -56,8 +56,4 @@ elif [ $LOCAL = $BASE ]; then
     jq '.game.version += 1' config.json | sponge config.json
 
     exit 0
-elif [ $REMOTE = $BASE ]; then
-    echo "git: need to push"
-else
-    echo "git: workspace diverged!"
 fi
