@@ -129,7 +129,6 @@ final class RepairShip implements ActionControllerInterface
         }
 
         $wrapper = $this->shipWrapperFactory->wrapShip($ship);
-
         if (!$wrapper->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
