@@ -50,13 +50,13 @@ final class UndockShip implements ActionControllerInterface
             return;
         }
 
-        $fleetWrapper = $wrapper->getFleetWrapper();
-        if ($fleetWrapper === null) {
-            return;
-        }
-
         if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $msg = [_("Flottenbefehl ausgeführt: Abdocken von ") . $dockedTo->getName()];
+
+            $fleetWrapper = $wrapper->getFleetWrapper();
+            if ($fleetWrapper === null) {
+                return;
+            }
 
             foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
                 $ship = $wrapper->get();
@@ -87,9 +87,6 @@ final class UndockShip implements ActionControllerInterface
                 $this->shipRepository->save($ship);
             }
             $game->addInformationMerge($msg);
-            return;
-        }
-        if (!$ship->getDockedTo()) {
             return;
         }
         if (!$ship->hasEnoughCrew()) {
