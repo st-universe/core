@@ -1470,7 +1470,7 @@
     <div class="box_body">
       <form method="post" action="ship.php">
         <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
-        <table class="tcal" tal:condition="not:SHIP/isInEmergency">
+        <table class="tcal" tal:condition="not:SHIP/getIsInEmergency">
           <tr>
             <th colspan="2">Sende Notrufsignal</th>
           </tr>
@@ -1487,7 +1487,7 @@
                 value="Notruf senden" /></td>
           </tr>
         </table>
-        <table class="tcal" tal:condition="SHIP/isInEmergency">
+        <table class="tcal" tal:condition="SHIP/getIsInEmergency">
           <tr>
             <th>Aktuelles Notrufsignal</th>
           </tr>
