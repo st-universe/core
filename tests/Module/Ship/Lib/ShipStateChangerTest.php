@@ -178,51 +178,6 @@ class ShipStateChangerTest extends StuTestCase
         $this->subject->changeShipState($this->wrapper, -42);
     }
 
-    public function testChangeShipStateExpectEmergencyDeletion(): void
-    {
-        $shipId = 123;
-        $emergency = $this->mock(SpacecraftEmergencyInterface::class);
-
-        $this->ship->shouldReceive('getState')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(ShipStateEnum::SHIP_STATE_EMERGENCY);
-        $this->ship->shouldReceive('isUnderRepair')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(false);
-        $this->ship->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($shipId);
-
-        $this->spacecraftEmergencyRepository->shouldReceive('getByShipId')
-            ->with($shipId)
-            ->once()
-            ->andReturn($emergency);
-        $this->spacecraftEmergencyRepository->shouldReceive('save')
-            ->with($emergency)
-            ->once();
-
-        $this->stuTime->shouldReceive('time')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(999);
-
-        $emergency->shouldReceive('setDeleted')
-            ->with(999)
-            ->once();
-
-        $this->ship->shouldReceive('setState')
-            ->with(-42)
-            ->once();
-
-        $this->shipRepository->shouldReceive('save')
-            ->with($this->ship)
-            ->once();
-
-        $this->subject->changeShipState($this->wrapper, -42);
-    }
 
     //ALERT STATE
 

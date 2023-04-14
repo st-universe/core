@@ -135,8 +135,8 @@ class StopEmergencyTest extends StuTestCase
             ->once()
             ->andReturnTrue();
 
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($shipWrapper, ShipStateEnum::SHIP_STATE_NONE)
+        $ship->shouldReceive('setIsInEmergency')
+            ->with(true)
             ->once();
 
         $this->subject->handle(
