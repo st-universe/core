@@ -416,16 +416,10 @@ final class ShipWrapper implements ShipWrapperInterface
 
     public function getWebEmitterSystemData(): ?WebEmitterSystemData
     {
-        $specificSystem = $this->getSpecificShipSystem(
+        return $this->getSpecificShipSystem(
             ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB,
             WebEmitterSystemData::class
         );
-
-        if ($specificSystem === null) {
-            return null;
-        }
-
-        return null;
     }
 
     /**
