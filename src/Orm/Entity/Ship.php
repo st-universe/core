@@ -262,19 +262,19 @@ class Ship implements ShipInterface
     private bool $is_fleet_leader = false;
 
     /**
-     * @Column(type="integer", nullable=true) *
+     * @Column(type="integer", nullable=true)
      *
      */
     private ?int $map_id = null;
 
     /**
-     * @Column(type="integer", nullable=true) *
+     * @Column(type="integer", nullable=true)
      *
      */
     private ?int $starsystem_map_id = null;
 
     /**
-     * @Column(type="integer", nullable=true) *
+     * @Column(type="integer", nullable=true)
      *
      */
     private ?int $influence_area_id = null;
@@ -284,6 +284,12 @@ class Ship implements ShipInterface
      *
      */
     private bool $in_emergency = false;
+
+    /**
+     * @Column(type="boolean", nullable=true)
+     *
+     */
+    private ?bool $test;
 
     /**
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
