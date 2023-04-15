@@ -8,9 +8,7 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
-use Stu\Module\Control\StuTime;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 
 final class ShipStateChanger implements ShipStateChangerInterface
 {
@@ -22,24 +20,16 @@ final class ShipStateChanger implements ShipStateChangerInterface
 
     private TholianWebUtilInterface $tholianWebUtil;
 
-    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
-
-    private StuTime $stuTime;
-
     public function __construct(
         CancelRepairInterface $cancelRepair,
         AstroEntryLibInterface $astroEntryLib,
         ShipRepositoryInterface $shipRepository,
-        TholianWebUtilInterface $tholianWebUtil,
-        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
-        StuTime $stuTime
+        TholianWebUtilInterface $tholianWebUtil
     ) {
         $this->cancelRepair = $cancelRepair;
         $this->astroEntryLib = $astroEntryLib;
         $this->shipRepository = $shipRepository;
         $this->tholianWebUtil = $tholianWebUtil;
-        $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
-        $this->stuTime = $stuTime;
     }
 
     public function changeShipState(ShipWrapperInterface $wrapper, int $newState): void
@@ -68,16 +58,6 @@ final class ShipStateChanger implements ShipStateChangerInterface
         //web spinning
         elseif ($currentState === ShipStateEnum::SHIP_STATE_WEB_SPINNING) {
             $this->tholianWebUtil->releaseWebHelper($wrapper);
-        }
-
-        //emergency
-        elseif ($ship->getIsInEmergency() === true) {
-            $emergency = $this->spacecraftEmergencyRepository->getByShipId($ship->getId());
-
-            if ($emergency !== null) {
-                $emergency->setDeleted($this->stuTime->time());
-                $this->spacecraftEmergencyRepository->save($emergency);
-            }
         }
 
         $ship->setState($newState);

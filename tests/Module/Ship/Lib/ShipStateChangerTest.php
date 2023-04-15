@@ -17,9 +17,7 @@ use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\TholianWebUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\SpacecraftEmergencyInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipStateChangerTest extends StuTestCase
@@ -35,9 +33,6 @@ class ShipStateChangerTest extends StuTestCase
 
     /** @var MockInterface|TholianWebUtilInterface */
     private TholianWebUtilInterface $tholianWebUtil;
-
-    /** @var MockInterface|SpacecraftEmergencyRepositoryInterface */
-    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
 
     /** @var MockInterface|StuTime */
     private StuTime $stuTime;
@@ -57,7 +52,6 @@ class ShipStateChangerTest extends StuTestCase
         $this->astroEntryLib = $this->mock(AstroEntryLibInterface::class);
         $this->shipRepository = $this->mock(ShipRepositoryInterface::class);
         $this->tholianWebUtil = $this->mock(TholianWebUtilInterface::class);
-        $this->spacecraftEmergencyRepository = $this->mock(SpacecraftEmergencyRepositoryInterface::class);
         $this->stuTime = $this->mock(StuTime::class);
 
         //params
@@ -76,7 +70,6 @@ class ShipStateChangerTest extends StuTestCase
             $this->astroEntryLib,
             $this->shipRepository,
             $this->tholianWebUtil,
-            $this->spacecraftEmergencyRepository,
             $this->stuTime
         );
     }
