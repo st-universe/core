@@ -49,4 +49,9 @@ final class ChangeSettingsRequest implements ChangeSettingsRequestInterface
     {
         return $this->queryParameter('rpgbehavior')->int()->defaultsTo(0);
     }
+
+    public function getCssStyle(): string
+    {
+        return $this->queryParameter('css')->string()->defaultsTo('');
+    }
 }
