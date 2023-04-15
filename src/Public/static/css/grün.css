@@ -212,7 +212,7 @@ td.l {
 }
 
 table.tcal {
-  background-color: #262323;
+  background-color: #8f8f8f;
   width: 100%;
   border-collapse: separate;
   border-spacing: 1px;
@@ -682,7 +682,7 @@ div.userTerritory img {
 }
 
 table.tcal tr:nth-child(odd) td {
-  background-color: #0b2900;
+  background-color: #051300;
 }
 
 table.population td {
@@ -917,7 +917,7 @@ div.header_box_help:hover,
 div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
-  background-color: #00960c;
+  background-color: #346600;
   color: #ffffff ! important;
 }
 
@@ -934,7 +934,7 @@ div.header_box {
   font-size: 75%;
   height: 70px;
   float: left;
-  color: #9d9d9d;
+  color: #ffffff;
 }
 
 div.header_box_user {
@@ -1120,7 +1120,7 @@ div.pm_footer {
 }
 
 ul.pm_categories li:not(:first-child) {
-  border-top: 1px solid #0b2900;
+  border-top: 1px solid #051300;
 }
 
 .title {
@@ -1129,7 +1129,7 @@ ul.pm_categories li:not(:first-child) {
 }
 
 div.list:nth-child(even) {
-  background-color: #0b2900;
+  background-color: #051300;
 }
 
 div.list {
