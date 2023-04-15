@@ -1336,7 +1336,7 @@ div.pmGrid {
 
 div.knGridText {
   grid-row-start: span 2;
-  background-color: #161515;
+  background-color: #222;
 }
 
 div.knGridUser {
