@@ -161,7 +161,7 @@ class StopEmergencyTest extends StuTestCase
             ->once()
             ->andReturn(3);
 
-        $emergency->shoutReceive('setDeleted')
+        $emergency->shouldReceive('setDeleted')
             ->with(3)
             ->opece()
             ->andReturn(3);
