@@ -163,8 +163,7 @@ class StopEmergencyTest extends StuTestCase
 
         $emergency->shouldReceive('setDeleted')
             ->with(3)
-            ->once()
-            ->andReturn(3);
+            ->once();
 
         $this->spacecraftEmergencyRepository->shouldReceive('save')
             ->with($emergency)
