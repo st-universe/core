@@ -219,7 +219,7 @@
                             <select name="css">
                                 <tal:block tal:repeat="value CSS_VALUES">
                                     <option tal:content="value/title"
-                                        tal:attributes="value value/rpg; selected php:CSSSTYLE==value['css']">
+                                        tal:attributes="value value/css; selected php:CSSSTYLE==value['css']">
                                         CSSSTYLE</option>
                                 </tal:block>
                             </select>
