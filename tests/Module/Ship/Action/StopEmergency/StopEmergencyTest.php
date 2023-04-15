@@ -118,7 +118,7 @@ class StopEmergencyTest extends StuTestCase
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn($userId);
+            ->andReturn($emergency);
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
             ->with($shipId, $userId)
