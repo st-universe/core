@@ -98,7 +98,6 @@ class StopEmergencyTest extends StuTestCase
     {
         $shipId = 666;
         $userId = 42;
-        $emergency = 4;
 
         $ship = $this->mock(ShipInterface::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
@@ -115,11 +114,6 @@ class StopEmergencyTest extends StuTestCase
         $game->shouldReceive('addInformation')
             ->with('Das Notrufsignal wurde beendet')
             ->once();
-
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($emergency);
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
             ->with($shipId, $userId)
