@@ -11,6 +11,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftEmergencyInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\StuTestCase;
@@ -103,6 +104,7 @@ class StopEmergencyTest extends StuTestCase
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $user = $this->mock(UserInterface::class);
         $game = $this->mock(GameControllerInterface::class);
+        $emergency = $this->mock(SpacecraftEmergencyInterface::class);
 
         $game->shouldReceive('setView')
             ->with(ShowShip::VIEW_IDENTIFIER)
@@ -148,6 +150,11 @@ class StopEmergencyTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($shipId);
+
+        $this->spacecraftEmergencyRepository->shouldReceive('getByShipId')
+            ->with($shipId)
+            ->once()
+            ->andReturn($emergency);
 
         $this->subject->handle(
             $game
