@@ -1007,7 +1007,7 @@ div.box div.box_body {
 }
 
 div.box {
-  border: 1px solid #262323;
+  border: 1px solid #b1b1b1;
   border-radius: 3px 3px 3px 3px;
 }
 
@@ -1336,7 +1336,7 @@ div.pmGrid {
 
 div.knGridText {
   grid-row-start: span 2;
-  background-color: #161515;
+  background-color: #031800;
 }
 
 div.knGridUser {
@@ -1437,7 +1437,7 @@ div.finishedResearchList div.finishedResearchListItem {
   display: inline-grid;
   grid-template-columns: 45px auto;
   grid-column-gap: 10px;
-  background-color: #171616;
+  background-color: #031500;
 }
 
 div.finishedResearchListItemImage {
