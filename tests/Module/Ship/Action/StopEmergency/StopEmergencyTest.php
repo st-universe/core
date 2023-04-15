@@ -156,6 +156,11 @@ class StopEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($emergency);
 
+        $this->stuTime->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(3);
+
         $this->subject->handle(
             $game
         );
