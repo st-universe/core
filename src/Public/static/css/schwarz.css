@@ -639,7 +639,7 @@ a.tradebutton:hover {
 }
 
 .divhead {
-  background-color: #000;
+  background-color: #0f0f0f;
   color: #dddddd;
   text-align: center;
   padding: 3px;
@@ -917,7 +917,7 @@ div.header_box_help:hover,
 div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
-  background-color: #2b2b4d;
+  background-color: #161616;
   color: #dddddd ! important;
 }
 
