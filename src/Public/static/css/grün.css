@@ -35,7 +35,7 @@ div.innerContent {
 
 div.sidebar {
   width: 120px;
-  background-color: #346800;
+  background-color: #2b5500;
   height: 100%;
   border-right: 1px solid #4b4b4b;
   left: 0;
@@ -128,21 +128,21 @@ td.selectable:hover {
 }
 
 th {
-  background-color: #346800;
+  background-color: #2b5500;
   color: #dddddd;
   text-align: center;
   padding: 3px;
 }
 
 td.th {
-  background-color: #346800;
+  background-color: #2b5500;
   color: #dddddd;
   text-align: center;
   font-weight: bold;
 }
 
 .ttop {
-  background-color: #346800;
+  background-color: #2b5500;
   color: #dddddd;
   padding: 3px;
   font-weight: bold;
@@ -150,7 +150,7 @@ td.th {
 
 .tcal td.m,
 .use td.m {
-  background-color: #346800;
+  background-color: #2b5500;
   color: #dddddd;
 }
 
@@ -639,7 +639,7 @@ a.tradebutton:hover {
 }
 
 .divhead {
-  background-color: #346800;
+  background-color: #2b5500;
   color: #dddddd;
   text-align: center;
   padding: 3px;
@@ -682,7 +682,7 @@ div.userTerritory img {
 }
 
 table.tcal tr:nth-child(odd) td {
-  background-color: #161515;
+  background-color: #0b2900;
 }
 
 table.population td {
@@ -865,7 +865,7 @@ div.top_box {
 }
 
 .border_box {
-  border: 1px solid #4b4b4b;
+  border: 1px solid #141414;
   border-radius: 3px 3px 3px 3px;
 }
 
@@ -917,8 +917,8 @@ div.header_box_help:hover,
 div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
-  background-color: #2b2b4d;
-  color: #dddddd ! important;
+  background-color: #00960c;
+  color: #ffffff ! important;
 }
 
 div.header_box_logout:hover {
@@ -992,7 +992,7 @@ div.border_box p {
 }
 
 div.box div.box_title {
-  background-color: #346800;
+  background-color: #2b5500;
   color: #dddddd;
   padding: 1px;
   text-align: center;
@@ -1120,16 +1120,16 @@ div.pm_footer {
 }
 
 ul.pm_categories li:not(:first-child) {
-  border-top: 1px solid #262323;
+  border-top: 1px solid #0b2900;
 }
 
 .title {
-  background-color: #346800;
+  background-color: #2b5500;
   padding: 3px;
 }
 
 div.list:nth-child(even) {
-  background-color: #161515;
+  background-color: #0b2900;
 }
 
 div.list {
@@ -1478,7 +1478,7 @@ div.researchNavletImage img {
 div.header {
   height: 80px;
   width: 100%;
-  background-color: #346800;
+  background-color: #2b5500;
   z-Index: 111111111;
   grid-column: 1 / span 2;
   top: 0;
