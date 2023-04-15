@@ -53,7 +53,7 @@ final class StartEmergency implements ActionControllerInterface
         $ship = $wrapper->get();
 
         // stop if emergency call is already active
-        if ($ship->isInEmergency()) {
+        if ($ship->getIsInEmergency() === true) {
             return;
         }
 
@@ -69,8 +69,7 @@ final class StartEmergency implements ActionControllerInterface
         $emergency->setText($text);
         $emergency->setDate(time());
         $this->spacecraftEmergencyRepository->save($emergency);
-
-        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_EMERGENCY);
+        $ship->setIsInEmergency(true);
 
         $game->addInformation('Das Notrufsignal wurde gestartet');
     }

@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeSettings;
 
 use Stu\Component\Game\ModuleViewEnum;
 use Stu\Component\Player\UserRpgEnum;
+use Stu\Component\Player\UserCssEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -74,6 +75,13 @@ final class ChangeSettings implements ActionControllerInterface
 
                 if (array_key_exists($value, UserRpgEnum::RPG_BEHAVIOR)) {
                     $user->setRpgBehavior($value);
+                }
+            },
+            function (UserInterface $user): void {
+                $value = $this->changeSettingsRequest->getCssStyle();
+
+                if (array_key_exists($value, UserCssEnum::CSS_CLASS)) {
+                    $user->setCss($value);
                 }
             },
         ];

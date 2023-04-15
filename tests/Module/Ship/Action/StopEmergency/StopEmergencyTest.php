@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\StopEmergency;
 
 use Mockery\MockInterface;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\SpacecraftEmergencyInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\StuTestCase;
 
 class StopEmergencyTest extends StuTestCase
@@ -20,24 +21,29 @@ class StopEmergencyTest extends StuTestCase
     /** @var ShipLoaderInterface&MockInterface */
     private MockInterface $shipLoader;
 
-    /** @var ShipStateChangerInterface&MockInterface */
-    private MockInterface $shipStateChanger;
-
     /** @var StopEmergencyRequestInterface&MockInterface */
     private MockInterface $stopEmergencyRequest;
 
+    /** @var MockInterface|SpacecraftEmergencyRepositoryInterface */
+    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
+
     private StopEmergency $subject;
+
+    /** @var MockInterface|StuTime */
+    private StuTime $stuTime;
 
     protected function setUp(): void
     {
         $this->shipLoader = $this->mock(ShipLoaderInterface::class);
-        $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
+        $this->spacecraftEmergencyRepository = $this->mock(SpacecraftEmergencyRepositoryInterface::class);
         $this->stopEmergencyRequest = $this->mock(StopEmergencyRequestInterface::class);
+        $this->stuTime = $this->mock(StuTime::class);
 
         $this->subject = new StopEmergency(
             $this->shipLoader,
-            $this->shipStateChanger,
-            $this->stopEmergencyRequest
+            $this->spacecraftEmergencyRepository,
+            $this->stopEmergencyRequest,
+            $this->stuTime
         );
     }
 
@@ -79,7 +85,7 @@ class StopEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($shipId);
 
-        $ship->shouldReceive('isInEmergency')
+        $ship->shouldReceive('getIsInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -98,6 +104,7 @@ class StopEmergencyTest extends StuTestCase
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $user = $this->mock(UserInterface::class);
         $game = $this->mock(GameControllerInterface::class);
+        $emergency = $this->mock(SpacecraftEmergencyInterface::class);
 
         $game->shouldReceive('setView')
             ->with(ShowShip::VIEW_IDENTIFIER)
@@ -130,13 +137,36 @@ class StopEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($shipId);
 
-        $ship->shouldReceive('isInEmergency')
+        $ship->shouldReceive('getIsInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
 
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($shipWrapper, ShipStateEnum::SHIP_STATE_NONE)
+        $ship->shouldReceive('setIsInEmergency')
+            ->with(false)
+            ->once();
+
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipId);
+
+        $this->spacecraftEmergencyRepository->shouldReceive('getByShipId')
+            ->with($shipId)
+            ->once()
+            ->andReturn($emergency);
+
+        $this->stuTime->shouldReceive('time')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(3);
+
+        $emergency->shouldReceive('setDeleted')
+            ->with(3)
+            ->once();
+
+        $this->spacecraftEmergencyRepository->shouldReceive('save')
+            ->with($emergency)
             ->once();
 
         $this->subject->handle(

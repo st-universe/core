@@ -19,4 +19,6 @@ interface ChangeSettingsRequestInterface
     public function getStartpage(): string;
 
     public function getRpgBehavior(): int;
+
+    public function getCssStyle(): string;
 }

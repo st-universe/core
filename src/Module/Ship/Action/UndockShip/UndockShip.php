@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\UndockShip;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Exception\InvalidParamException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -35,6 +36,10 @@ final class UndockShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        if ($game->getUser()->getId() === 126) {
+            throw new InvalidParamException('foo');
+        }
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -50,13 +55,13 @@ final class UndockShip implements ActionControllerInterface
             return;
         }
 
-        $fleetWrapper = $wrapper->getFleetWrapper();
-        if ($fleetWrapper === null) {
-            return;
-        }
-
         if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $msg = [_("Flottenbefehl ausgeführt: Abdocken von ") . $dockedTo->getName()];
+
+            $fleetWrapper = $wrapper->getFleetWrapper();
+            if ($fleetWrapper === null) {
+                return;
+            }
 
             foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
                 $ship = $wrapper->get();
@@ -87,9 +92,6 @@ final class UndockShip implements ActionControllerInterface
                 $this->shipRepository->save($ship);
             }
             $game->addInformationMerge($msg);
-            return;
-        }
-        if (!$ship->getDockedTo()) {
             return;
         }
         if (!$ship->hasEnoughCrew()) {

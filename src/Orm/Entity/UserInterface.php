@@ -42,6 +42,10 @@ interface UserInterface
 
     public function getFaction(): ?FactionInterface;
 
+    public function getCss(): string;
+
+    public function setCss(string $Css): UserInterface;
+
     /**
      * @return Collection<int, UserAwardInterface>
      */

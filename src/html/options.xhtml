@@ -10,20 +10,17 @@
                     </tr>
                     <tr>
                         <td style="width: 50%;">
-                            <input type="text" style="width: 75%;" name="uname"
-                                   tal:attributes="value USER/getName" value="runtime" class="text"
-                                   maxlength="255" />
-                            <input type="submit" name="B_CHANGE_NAME" value="ändern"
-                                   class="button" />
+                            <input type="text" style="width: 75%;" name="uname" tal:attributes="value USER/getName"
+                                value="runtime" class="text" maxlength="255" />
+                            <input type="submit" name="B_CHANGE_NAME" value="ändern" class="button" />
                         </td>
-                        <td style="width: 50%;">Vorschau: <span
-                                tal:replace="structure bbcode:USER/getName">NAME</span></td>
+                        <td style="width: 50%;">Vorschau: <span tal:replace="structure bbcode:USER/getName">NAME</span>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">Dein Spielername ist im Spiel an allen Ecken zu finden. Beachte
-                            deshalb bei der Wahl des Namens bitte die <a
-                                    href="${WIKI}/index.php?title=Spielregeln"
-                                    target="_blank">Regeln</a><br />
+                            deshalb bei der Wahl des Namens bitte die <a href="${WIKI}/index.php?title=Spielregeln"
+                                target="_blank">Regeln</a><br />
                             Du kannst BB-Code ([b][/b], [i][/i], [color][/color]) verwenden um
                             Deinen Namen zu designen.</td>
                     </tr>
@@ -48,8 +45,7 @@
                     <tr>
                         <td>Neues Passwort wiederholen</td>
                         <td><input type="password" style="width: 150px;" name="pass2" class="text" />
-                            <input type="submit" name="B_CHANGE_PASSWORD" value="ändern"
-                                   class="button" />
+                            <input type="submit" name="B_CHANGE_PASSWORD" value="ändern" class="button" />
                         </td>
                     </tr>
                     <tr>
@@ -66,8 +62,8 @@
                     </tr>
                     <tr>
                         <td><input type="text" style="width: 250px;" name="email" class="text"
-                                   value="${THIS/getUser/getEmail}" /> <input type="submit"
-                                                                              name="B_CHANGE_EMAIL" value="ändern" class="button" /></td>
+                                value="${THIS/getUser/getEmail}" /> <input type="submit" name="B_CHANGE_EMAIL"
+                                value="ändern" class="button" /></td>
                     </tr>
                     <tr>
                         <td>Beachte bitte, dass diese Adresse gültig ist und benutze keine Wegwerf
@@ -87,7 +83,7 @@
                             <metal:macro metal:use-macro="macros.xhtml/useravatar" />
                         </td>
                         <td><input type="file" class="button" name="avatar" /> <input type="submit"
-                                                                                      name="B_CHANGE_AVATAR" value="Hochladen" class="button" /></td>
+                                name="B_CHANGE_AVATAR" value="Hochladen" class="button" /></td>
                     </tr>
                     <tr>
                         <td style="height: 125px; vertical-align: top;">Hier kannst Du einen Avatar
@@ -104,8 +100,8 @@
                     </tr>
                     <tr>
                         <td><input type="text" style="width: 250px;" name="rgb" class="text"
-                                   value="${THIS/getUser/getRgbCode}" /> <input type="submit"
-                                                                                name="B_CHANGE_USER_RGB" value="ändern" class="button" /></td>
+                                value="${THIS/getUser/getRgbCode}" /> <input type="submit" name="B_CHANGE_USER_RGB"
+                                value="ändern" class="button" /></td>
                     </tr>
                     <tr>
                         <td>Dieser RGB-Farbcode kennzeichnet Kartenfelder, die dem Spieler zugeordnet
@@ -121,11 +117,10 @@
                     </tr>
                     <tr>
                         <td><textarea name="description" style="width: 100%; height: 200px;"
-                                      tal:content="structure USER/getDescription"></textarea></td>
+                                tal:content="structure USER/getDescription"></textarea></td>
                     </tr>
                     <tr>
-                        <td><input type="submit" value="ändern" name="B_CHANGE_DESCRIPTION"
-                                   class="button" /></td>
+                        <td><input type="submit" value="ändern" name="B_CHANGE_DESCRIPTION" class="button" /></td>
                     </tr>
                 </table>
             </form>
@@ -136,7 +131,7 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="email_not" value="1"
-                                   tal:attributes="checked THIS/getUser/isEmailNotification" />
+                                tal:attributes="checked THIS/getUser/isEmailNotification" />
                         </td>
                         <td>
                             Emailbenachrichtigung bei privaten Nachrichten
@@ -145,7 +140,7 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="save_login" value="1"
-                                   tal:attributes="checked THIS/getUser/isSaveLogin" />
+                                tal:attributes="checked THIS/getUser/isSaveLogin" />
                         </td>
                         <td>
                             Login nicht speichern (Ideal an fremden Computern)
@@ -154,7 +149,7 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="storage_not" value="1"
-                                   tal:attributes="checked THIS/getUser/isStorageNotification" />
+                                tal:attributes="checked THIS/getUser/isStorageNotification" />
                         </td>
                         <td>
                             Nachricht bei vollen Lagern zum Tick
@@ -163,7 +158,7 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="show_online" value="1"
-                                   tal:attributes="checked THIS/getUser/isShowOnlineState" />
+                                tal:attributes="checked THIS/getUser/isShowOnlineState" />
                         </td>
                         <td>
                             Online Status öffentlich
@@ -172,7 +167,7 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="pm_read_receipt" value="1"
-                                   tal:attributes="checked THIS/getUser/isShowPmReadReceipt" />
+                                tal:attributes="checked THIS/getUser/isShowPmReadReceipt" />
                         </td>
                         <td>
                             Lesebestätigungen bei PMs anzeigen (nur wenn sowohl Sender als auch
@@ -182,7 +177,7 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="fleets_fixed" value="1"
-                                   tal:attributes="checked THIS/getUser/getFleetFixedDefault" />
+                                tal:attributes="checked THIS/getUser/getFleetFixedDefault" />
                         </td>
                         <td>
                             Flotten standardmäßig fixieren, sodass keine Schiffe beim Flug verloren
@@ -195,7 +190,7 @@
                                 <option value="0">----------------------</option>
                                 <tal:block tal:repeat="value STARTPAGE_VALUES">
                                     <option tal:content="value/title"
-                                            tal:attributes="value value/view; selected php:STARTPAGE==value['view']">
+                                        tal:attributes="value value/view; selected php:STARTPAGE==value['view']">
                                         STARTPAGE</option>
                                 </tal:block>
                             </select>
@@ -210,7 +205,7 @@
                                 <option value="0">----------------------</option>
                                 <tal:block tal:repeat="value RPG_BEHAVIOR_VALUES">
                                     <option tal:content="value/title"
-                                            tal:attributes="value value/rpg; selected php:RPGBEHAVIOR==value['rpg']">
+                                        tal:attributes="value value/rpg; selected php:RPGBEHAVIOR==value['rpg']">
                                         RPGBEHAVIOR</option>
                                 </tal:block>
                             </select>
@@ -220,9 +215,22 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>
+                            <select name="css">
+                                <tal:block tal:repeat="value CSS_VALUES">
+                                    <option tal:content="value/title"
+                                        tal:attributes="value value/css; selected php:CSSSTYLE==value['css']">
+                                        CSSSTYLE</option>
+                                </tal:block>
+                            </select>
+                        </td>
+                        <td>
+                            Auswahl der Interface-Farben.
+                        </td>
+                    </tr>
+                    <tr>
                         <td colspan="4">
-                            <input type="submit" class="button" value="Einstellungen ändern"
-                                   name="B_CHANGE_SETTINGS" />
+                            <input type="submit" class="button" value="Einstellungen ändern" name="B_CHANGE_SETTINGS" />
                         </td>
                     </tr>
                 </table>
@@ -252,8 +260,8 @@
                         <td>Ein erneuter Login deaktiviert den Urlaubsmodus wieder.</td>
                     </tr>
                     <tr>
-                        <td style="width: 100px;"><input type="submit" class="button"
-                                                         value="Urlaubsmodus aktivieren" /></td>
+                        <td style="width: 100px;"><input type="submit" class="button" value="Urlaubsmodus aktivieren" />
+                        </td>
                     </tr>
                 </table>
             </form>
@@ -263,8 +271,7 @@
                 <input type="hidden" name="B_DELETE_ACCOUNT" value="1" />
                 <table class="tcal">
                     <tr>
-                        <td style="width: 100px;"><input type="submit" class="button"
-                                                         value="Accountlöschung" /></td>
+                        <td style="width: 100px;"><input type="submit" class="button" value="Accountlöschung" /></td>
                         <td>Um eine Löschung durchzuführen muss diese bestätigt werden. Dies geschieht
                             via eines Links in einer Email</td>
                     </tr>
@@ -273,4 +280,5 @@
         </div>
     </tal:block>
 </tal:block>
+
 </html>

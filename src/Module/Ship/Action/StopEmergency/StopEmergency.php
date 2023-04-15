@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StopEmergency;
 
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Control\StuTime;
 
 /**
  * Stops a ship's emergency call
@@ -20,18 +20,22 @@ final class StopEmergency implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipStateChangerInterface $shipStateChanger;
+    private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
 
     private StopEmergencyRequestInterface $stopEmergencyRequest;
 
+    private StuTime $stuTime;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipStateChangerInterface $shipStateChanger,
-        StopEmergencyRequestInterface $stopEmergencyRequest
+        SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
+        StopEmergencyRequestInterface $stopEmergencyRequest,
+        StuTime $stuTime
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipStateChanger = $shipStateChanger;
+        $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
         $this->stopEmergencyRequest = $stopEmergencyRequest;
+        $this->stuTime = $stuTime;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,11 +49,19 @@ final class StopEmergency implements ActionControllerInterface
 
         $ship = $wrapper->get();
 
-        if (!$ship->isInEmergency()) {
+        if (!$ship->getIsInEmergency() === true) {
             return;
         }
 
-        $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_NONE);
+        $ship->setIsInEmergency(false);
+
+        $emergency = $this->spacecraftEmergencyRepository->getByShipId($ship->getId());
+
+        if ($emergency !== null) {
+            $emergency->setDeleted($this->stuTime->time());
+            $this->spacecraftEmergencyRepository->save($emergency);
+        }
+
 
         $game->addInformation('Das Notrufsignal wurde beendet');
     }

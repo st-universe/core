@@ -227,6 +227,12 @@ class User implements UserInterface
     private int $rpg_behavior = UserRpgEnum::RPG_BEHAVIOR_NOT_SET;
 
     /**
+     * @Column(type="string", length=100, nullable=true)
+     *
+     */
+    private ?string $css = 'schwarz';
+
+    /**
      * @var null|AllianceInterface
      *
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
@@ -367,6 +373,18 @@ class User implements UserInterface
         $this->rgb_code = $rgbCode;
         return $this;
     }
+
+    public function getCss(): string
+    {
+        return $this->css;
+    }
+
+    public function setCss(string $Css): UserInterface
+    {
+        $this->css = $Css;
+        return $this;
+    }
+
 
     public function getFactionId(): ?int
     {

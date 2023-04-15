@@ -87,7 +87,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('isInEmergency')
+        $ship->shouldReceive('getIsInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnTrue();
@@ -144,7 +144,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('isInEmergency')
+        $ship->shouldReceive('getIsInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -199,7 +199,7 @@ class StartEmergencyTest extends StuTestCase
             ->once()
             ->andReturn($ship);
 
-        $ship->shouldReceive('isInEmergency')
+        $ship->shouldReceive('getIsInEmergency')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
@@ -222,8 +222,8 @@ class StartEmergencyTest extends StuTestCase
             ->with(Mockery::type('int'))
             ->once();
 
-        $this->shipStateChanger->shouldReceive('changeShipState')
-            ->with($shipWrapper, ShipStateEnum::SHIP_STATE_EMERGENCY)
+        $ship->shouldReceive('setIsInEmergency')
+            ->with(true)
             ->once();
 
         $this->subject->handle($game);
