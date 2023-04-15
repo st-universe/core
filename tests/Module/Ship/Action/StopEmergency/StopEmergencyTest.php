@@ -141,7 +141,7 @@ class StopEmergencyTest extends StuTestCase
             ->andReturnTrue();
 
         $ship->shouldReceive('setIsInEmergency')
-            ->with(true)
+            ->with(false)
             ->once();
 
         $this->subject->handle(
