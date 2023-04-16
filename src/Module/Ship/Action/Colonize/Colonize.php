@@ -123,7 +123,7 @@ final class Colonize implements ActionControllerInterface
             return;
         }
 
-        if ($user->getColonies() === null) {
+        if ($user->getState() === UserEnum::USER_STATE_UNCOLONIZED || $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP) {
             $user->setState(UserEnum::USER_STATE_ACTIVE);
             $this->userRepository->save($user);
         }
