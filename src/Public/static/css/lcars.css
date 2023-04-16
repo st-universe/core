@@ -98,13 +98,13 @@ div.navlet {
 }
 
 input.text {
-    background-color: #1b1b1f;
+    background-color: #b28452;
     border: 1px solid #7c85a8;
-    color: #8897cf;
+    color: #000000;
 }
 
 a:link {
-    color: #909090;
+    color: #000000;
     text-decoration: none;
 }
 
@@ -151,7 +151,7 @@ td.th {
 .tcal td.m,
 .use td.m {
     background-color: #000;
-    color: #dddddd;
+    color: #b46757;
 }
 
 .tcal td,
@@ -233,9 +233,9 @@ table.lssarea {
 }
 
 textarea {
-    background-color: #1b1b1f;
+    background-color: #c2b74b;
     border: 1px solid #7c85a8;
-    color: #8897cf;
+    color: #000000;
     font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
@@ -246,10 +246,10 @@ select {
 }
 
 input {
-    color: #8897cf;
     padding: 2px;
-    background-color: #1b1b1f;
+    background-color: #b28452;
     border: 1px solid #7c85a8;
+    color: #000000;
 }
 
 .cbutton {
@@ -930,7 +930,7 @@ div.header_box_logout:hover {
 }
 
 div.navigation_item:hover {
-    color: #dddddd ! important;
+    color: #000000 ! important;
 }
 
 div.header_box {
@@ -1340,7 +1340,7 @@ div.pmGrid {
 
 div.knGridText {
     grid-row-start: span 2;
-    background-color: #222;
+    background-color: #0b0b13;
 }
 
 div.knGridUser {
