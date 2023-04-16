@@ -35,7 +35,7 @@ div.innerContent {
 
 div.sidebar {
     width: 120px;
-    background-color: #000;
+    background-color: #ae697d;
     height: 100%;
     border-right: 1px solid #4b4b4b;
     left: 0;
@@ -109,7 +109,7 @@ a:link {
 }
 
 a:visited {
-    color: #909090;
+    color: #000000;
     TEXT-DECORATION: none
 }
 
@@ -892,7 +892,7 @@ div.navigation_item_servertime {
     color: #000000;
     vertical-align: middle;
     margin-top: 2vh;
-    background-color: #f8fbdb;
+    background-color: #ffcc99;
 }
 }
 
@@ -920,7 +920,7 @@ div.header_box_help:hover,
 div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
-    background-color: #f8fbdb;
+    background-color: #ffcc99;
     color: #000000 ! important;
 }
 
@@ -996,8 +996,8 @@ div.border_box p {
 }
 
 div.box div.box_title {
-    background-color: #151515;
-    color: #dddddd;
+    background-color: #aa71a1;
+    color: #000000;
     padding: 1px;
     text-align: center;
     font-weight: bold;
