@@ -129,7 +129,7 @@ td.selectable:hover {
 
 th {
   background-color: #860101;
-  color: #dddddd;
+  color: #000000;
   text-align: center;
   padding: 3px;
 }
@@ -157,7 +157,7 @@ td.th {
 .tcal td,
 .use td {
   background-color: #000000;
-  color: #dddddd;
+  color: #d00000;
   padding: 3px;
 }
 
@@ -996,7 +996,7 @@ div.border_box p {
 
 div.box div.box_title {
   background-color: #530202;
-  color: #dddddd;
+  color: #f06848;
   padding: 1px;
   text-align: center;
   font-weight: bold;
@@ -1010,7 +1010,7 @@ div.box div.box_body {
 }
 
 div.box {
-  border: 1px solid #b1b1b1;
+  border: 1px solid #370000;
   border-radius: 3px 3px 3px 3px;
 }
 
