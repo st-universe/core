@@ -240,9 +240,9 @@ textarea {
 }
 
 select {
-  color: #8897cf;
-  background-color: #1b1b1f;
-  border: 1px solid #7c85a8;
+  color: #00bd26;
+  background-color: #003a09;
+  border: 1px solid #47866c;
 }
 
 input {
@@ -282,9 +282,9 @@ button {
 }
 
 input[disabled] {
-  background-color: #202020;
+  background-color: #1e241a;
   border: 1px solid #505050;
-  color: #505050;
+  color: #334632;
 }
 
 .historybutton {
@@ -471,9 +471,9 @@ a.linkbutton {
   text-align: center;
   display: inline-block;
   padding: 3px;
-  background-color: #1b1b1f;
-  border: 1px solid #7c85a8;
-  color: #8897cf;
+  background-color: #173700;
+  border: 1px solid #47866c;
+  color: #9d9d9d;
   white-space: nowrap;
 }
 
@@ -626,7 +626,7 @@ a.tradebutton:hover {
 }
 
 .selected {
-  background-color: #262323;
+  background-color: #00530d;
   font-weight: bold;
 }
 
@@ -793,8 +793,8 @@ td.module_select_base {
 
 td.module_select_base_selected {
   width: 20%;
-  background-color: #161515 ! important;
-  color: #8897cf;
+  background-color: #154d3d ! important;
+  color: #00a641;
   font-weight: bold;
 }
 
