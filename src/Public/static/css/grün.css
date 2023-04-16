@@ -15,7 +15,7 @@ img {
 
 body {
   background-color: #000000;
-  color: #dddddd;
+  color: #e0e0e0;
   margin: 2px 2px 2px 2px;
   scrollbar-arrow-color: #8897cf;
   scrollbar-base-color: #000000;
@@ -100,7 +100,7 @@ div.navlet {
 input.text {
   background-color: #172200;
   border: 1px solid #03684c;
-  color: #8897cf;
+  color: #3f878a;
 }
 
 a:link {
@@ -235,7 +235,7 @@ table.lssarea {
 textarea {
   background-color: #0b1509;
   border: 1px solid #559532;
-  color: #8897cf;
+  color: #3f878a;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
@@ -1010,7 +1010,7 @@ div.box div.box_body {
 }
 
 div.box {
-  border: 1px solid #b1b1b1;
+  border: 1px solid #1d5100;
   border-radius: 3px 3px 3px 3px;
 }
 

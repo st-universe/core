@@ -15,7 +15,7 @@ img {
 
 body {
   background-color: #000000;
-  color: #dddddd;
+  color: #a25b00;
   margin: 2px 2px 2px 2px;
   scrollbar-arrow-color: #4f2900;
   scrollbar-base-color: #000000;
@@ -157,7 +157,7 @@ td.th {
 .tcal td,
 .use td {
   background-color: #000000;
-  color: #930000;
+  color: #a25b00;
   padding: 3px;
 }
 
@@ -233,9 +233,9 @@ table.lssarea {
 }
 
 textarea {
-  background-color: #1f1d1b;
+  background-color: #18130e;
   border: 1px solid #4f2900;
-  color: #8897cf;
+  color: #a25b00;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
@@ -649,7 +649,7 @@ a.tradebutton:hover {
 .divbody {
   border: 1px solid #262323;
   padding: 3px;
-  color: #dddddd;
+  color: #a25b00;
 }
 
 .userbox {
@@ -937,7 +937,7 @@ div.header_box {
   height: 70px;
   float: left;
   color: #9d9d9d;
-  background-color: #371700;
+  background-color: #220000;
 }
 
 div.header_box_user {
