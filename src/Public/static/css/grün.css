@@ -104,12 +104,12 @@ input.text {
 }
 
 a:link {
-  color: #909090;
+  color: #b1b1b1;
   text-decoration: none;
 }
 
 a:visited {
-  color: #909090;
+  color: #b9b9b9;
   TEXT-DECORATION: none
 }
 
@@ -128,7 +128,7 @@ td.selectable:hover {
 }
 
 th {
-  background-color: #2b5500;
+  background-color: #418000;
   color: #dddddd;
   text-align: center;
   padding: 3px;
@@ -878,6 +878,7 @@ div.navigation_item {
   vertical-align: middle;
   font-size: 80% ! important;
   cursor: pointer;
+  background-color: #173700;
 }
 
 div.navitem_title {
@@ -935,6 +936,7 @@ div.header_box {
   height: 70px;
   float: left;
   color: #ffffff;
+  background-color: #173700;
 }
 
 div.header_box_user {
@@ -992,7 +994,7 @@ div.border_box p {
 }
 
 div.box div.box_title {
-  background-color: #2b5500;
+  background-color: #1f3e00;
   color: #dddddd;
   padding: 1px;
   text-align: center;
