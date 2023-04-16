@@ -17,7 +17,7 @@ body {
   background-color: #000000;
   color: #dddddd;
   margin: 2px 2px 2px 2px;
-  scrollbar-arrow-color: #8897cf;
+  scrollbar-arrow-color: #4f2900;
   scrollbar-base-color: #000000;
   scrollbar-3dlight-color: #000000;
   scrollbar-face-color: #262323;
@@ -57,7 +57,7 @@ a.selected {
 a.pages {
   text-align: center;
   width: 30px;
-  border: 1px groove #8897cf;
+  border: 1px groove #4f2900;
   display: block;
   padding: 3px;
 }
@@ -99,17 +99,17 @@ div.navlet {
 
 input.text {
   background-color: #1b1b1f;
-  border: 1px solid #7c85a8;
-  color: #8897cf;
+  border: 1px solid #4f2900;
+  color: #4f2900;
 }
 
 a:link {
-  color: #ff6001;
+  color: #ff8e4b;
   text-decoration: none;
 }
 
 a:visited {
-  color: #ff7f36;
+  color: #ff995e;
   TEXT-DECORATION: none
 }
 
@@ -233,8 +233,8 @@ table.lssarea {
 }
 
 textarea {
-  background-color: #1b1b1f;
-  border: 1px solid #7c85a8;
+  background-color: #1f1d1b;
+  border: 1px solid #4f2900;
   color: #8897cf;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
@@ -264,7 +264,7 @@ input {
 
 button {
   background-color: #000000;
-  color: #8897cf;
+  color: #4f2900;
   padding: 1px;
   border: 1px double #262323;
   height: 15px;
@@ -488,7 +488,7 @@ a.linkbutton_red:hover {
 }
 
 .ajaxwin {
-  border: 1px solid #8897cf;
+  border: 1px solid #4f2900;
   background-color: #000000;
   width: 100%;
   margin: 0;
@@ -695,7 +695,7 @@ table.population td span {
 }
 
 .colonymenu {
-  color: #8897cf;
+  color: #4f2900;
   text-align: center;
   vertical-align: middle;
   border: 1px #404040 solid;
