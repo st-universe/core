@@ -17,6 +17,7 @@ final class UserEnum
     public const USER_STATE_UNCOLONIZED = 1;
     public const USER_STATE_ACTIVE = 2;
     public const USER_STATE_SMS_VERIFICATION = 3;
+    public const USER_STATE_COLONIZATION_SHIP = 4;
 
     //DELMARK
     public const DELETION_REQUESTED = 1;
@@ -38,6 +39,8 @@ final class UserEnum
                 return _("AKTIV");
             case self::USER_STATE_SMS_VERIFICATION:
                 return _("SMS VERIFIKATION");
+            case self::USER_STATE_COLONIZATION_SHIP:
+                return _("KOLONISATIONS SCHIFF");
         }
         return '';
     }
