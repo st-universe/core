@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyDepositMiningRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -117,12 +118,17 @@ final class Colonize implements ActionControllerInterface
             return;
         }
 
+        if ($user->getColonies() === null) {
+            $user->setState(UserEnum::USER_STATE_ACTIVE);
+        }
+
         $this->planetColonization->colonize(
             $colony,
             $userId,
             $this->buildingRepository->find($base_building->getBuildingId()),
             $field
         );
+
 
         $this->transferCrewToColony($ship, $colony);
 
