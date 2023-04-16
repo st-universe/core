@@ -99,7 +99,7 @@ div.navlet {
 
 input.text {
     background-color: #b28452;
-    border: 1px solid #7c85a8;
+    border: 1px solid #ff9966;
     color: #000000;
 }
 
@@ -109,7 +109,7 @@ a:link {
 }
 
 a:visited {
-    color: #000000;
+    color: #b46757;
     TEXT-DECORATION: none
 }
 
@@ -157,7 +157,7 @@ td.th {
 .tcal td,
 .use td {
     background-color: #000000;
-    color: #dddddd;
+    color: #b46757;
     padding: 3px;
 }
 
@@ -248,7 +248,7 @@ select {
 input {
     padding: 2px;
     background-color: #b28452;
-    border: 1px solid #7c85a8;
+    border: 1px solid #ff9966;
     color: #000000;
 }
 
