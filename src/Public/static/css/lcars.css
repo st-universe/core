@@ -104,12 +104,12 @@ input.text {
 }
 
 a:link {
-    color: #ffffff;
+    color: #c4c4c4;
     text-decoration: none;
 }
 
 a:visited {
-    color: #ffffff;
+    color: #c4c4c4;
     TEXT-DECORATION: none
 }
 
@@ -277,7 +277,7 @@ button {
 
 .button:hover {
     text-decoration: none;
-    background-color: #161515 ! important;
+    background-color: #9c7347 ! important;
     cursor: pointer;
 }
 
