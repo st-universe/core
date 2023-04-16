@@ -120,6 +120,7 @@ final class Colonize implements ActionControllerInterface
 
         if ($user->getColonies() === null) {
             $user->setState(UserEnum::USER_STATE_ACTIVE);
+            $this->userRepository->save($user);
         }
 
         $this->planetColonization->colonize(
