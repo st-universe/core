@@ -19,7 +19,7 @@ final class UserCssEnum
         self::CSS_BLACK => ['css' => self::CSS_BLACK, 'title' => 'Schwarz'],
         self::CSS_PURPLE => ['css' => self::CSS_PURPLE, 'title' => 'Lila'],
         //self::CSS_YELLOW => ['css' => self::CSS_YELLOW, 'title' => 'Gelb'],
-        //self::CSS_RED => ['css' => self::CSS_RED, 'title' => 'Rot'],
+        self::CSS_RED => ['css' => self::CSS_RED, 'title' => 'Rot'],
         self::CSS_GREEN => ['css' => self::CSS_GREEN, 'title' => 'Grün'],
         //self::CSS_LCARS => ['css' => self::CSS_LCARS, 'title' => 'LCars'],
     ];

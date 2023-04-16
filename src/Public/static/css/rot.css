@@ -100,7 +100,7 @@ div.navlet {
 input.text {
   background-color: #1b1b1f;
   border: 1px solid #4f2900;
-  color: #4f2900;
+  color: #824503;
 }
 
 a:link {
@@ -924,7 +924,7 @@ div.header_box_user:hover {
 }
 
 div.header_box_logout:hover {
-  background-color: #4d0000;
+  background-color: #804800;
   color: #dddddd ! important;
 }
 
@@ -964,7 +964,7 @@ div.header_box_logout {
   margin: 5px 10px 0 15px;
   padding: 5px;
   float: right;
-  background-color: #2d0000;
+  background-color: #5e3603;
   text-align: center;
   width: 70px;
 }
