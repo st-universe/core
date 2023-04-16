@@ -104,7 +104,7 @@ input.text {
 }
 
 a:link {
-  color: #b1b1b1;
+  color: #c4c4c4;
   text-decoration: none;
 }
 
@@ -212,7 +212,7 @@ td.l {
 }
 
 table.tcal {
-  background-color: #8f8f8f;
+  background-color: #0e4200;
   width: 100%;
   border-collapse: separate;
   border-spacing: 1px;
@@ -246,10 +246,10 @@ select {
 }
 
 input {
-  color: #8897cf;
+  color: #00bd26;
   padding: 2px;
-  background-color: #1b1b1f;
-  border: 1px solid #7c85a8;
+  background-color: #003a09;
+  border: 1px solid #47866c;
 }
 
 .cbutton {
@@ -874,7 +874,7 @@ div.navigation_item {
   height: 6.2vh;
   padding: 0.8vh 0 0.5vh 0;
   margin-bottom: 0.6vh;
-  color: #9d9d9d;
+  color: #d9d9d9;
   vertical-align: middle;
   font-size: 80% ! important;
   cursor: pointer;
@@ -892,6 +892,7 @@ div.navigation_item_servertime {
   color: #9d9d9d;
   vertical-align: middle;
   margin-top: 2vh;
+  background-color: #173700;
 }
 
 div.navigation_item_planets {
@@ -923,7 +924,7 @@ div.header_box_user:hover {
 }
 
 div.header_box_logout:hover {
-  background-color: #4d0000;
+  background-color: #61b782;
   color: #dddddd ! important;
 }
 
@@ -963,7 +964,7 @@ div.header_box_logout {
   margin: 5px 10px 0 15px;
   padding: 5px;
   float: right;
-  background-color: #2d0000;
+  background-color: #4a8862;
   text-align: center;
   width: 70px;
 }
