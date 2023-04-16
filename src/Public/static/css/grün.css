@@ -98,8 +98,8 @@ div.navlet {
 }
 
 input.text {
-  background-color: #1b1b1f;
-  border: 1px solid #7c85a8;
+  background-color: #172200;
+  border: 1px solid #03684c;
   color: #8897cf;
 }
 
@@ -157,7 +157,7 @@ td.th {
 .tcal td,
 .use td {
   background-color: #000000;
-  color: #dddddd;
+  color: #7fc600;
   padding: 3px;
 }
 
@@ -233,8 +233,8 @@ table.lssarea {
 }
 
 textarea {
-  background-color: #1b1b1f;
-  border: 1px solid #7c85a8;
+  background-color: #0b1509;
+  border: 1px solid #559532;
   color: #8897cf;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
@@ -695,10 +695,10 @@ table.population td span {
 }
 
 .colonymenu {
-  color: #8897cf;
+  color: #717171;
   text-align: center;
   vertical-align: middle;
-  border: 1px #404040 solid;
+  border: 1px #283300 solid;
 }
 
 .colmenubutton {
