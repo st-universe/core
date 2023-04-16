@@ -35,7 +35,7 @@ div.innerContent {
 
 div.sidebar {
     width: 120px;
-    background-color: #ae697d;
+    background-color: #9999ff;
     height: 100%;
     border-right: 1px solid #4b4b4b;
     left: 0;
@@ -878,7 +878,7 @@ div.navigation_item {
     vertical-align: middle;
     font-size: 80% ! important;
     cursor: pointer;
-    background-color: #fc9;
+    background-color: #ae697d;
 }
 
 div.navitem_title {
@@ -920,7 +920,7 @@ div.header_box_help:hover,
 div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
-    background-color: #ffcc99;
+    background-color: #ff9966;
     color: #000000 ! important;
 }
 
@@ -1483,7 +1483,7 @@ div.researchNavletImage img {
 div.header {
     height: 80px;
     width: 100%;
-    background-color: #ae697d;
+    background-color: #9999ff;
     z-Index: 111111111;
     grid-column: 1 / span 2;
     top: 0;
