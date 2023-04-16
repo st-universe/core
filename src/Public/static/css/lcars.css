@@ -104,12 +104,12 @@ input.text {
 }
 
 a:link {
-    color: #000000;
+    color: #b46757;
     text-decoration: none;
 }
 
 a:visited {
-    color: #b46757;
+    color: #bdadad;
     TEXT-DECORATION: none
 }
 
@@ -240,9 +240,9 @@ textarea {
 }
 
 select {
-    color: #8897cf;
-    background-color: #1b1b1f;
-    border: 1px solid #7c85a8;
+    background-color: #bebcdf;
+    color: #000000;
+    border: 1px outset #8e8da5;
 }
 
 input {
@@ -626,7 +626,7 @@ a.tradebutton:hover {
 }
 
 .selected {
-    background-color: #262323;
+    background-color: #cac8ec;
     font-weight: bold;
 }
 
