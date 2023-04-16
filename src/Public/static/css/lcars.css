@@ -15,7 +15,7 @@ img {
 
 body {
     background-color: #000000;
-    color: #dddddd;
+    color: #b46757;
     margin: 2px 2px 2px 2px;
     scrollbar-arrow-color: #8897cf;
     scrollbar-base-color: #000000;
@@ -129,7 +129,7 @@ td.selectable:hover {
 
 th {
     background-color: #97567b;
-    color: #dddddd;
+    color: #000000;
     text-align: center;
     padding: 3px;
 }
@@ -874,11 +874,11 @@ div.navigation_item {
     height: 6.2vh;
     padding: 0.8vh 0 0.5vh 0;
     margin-bottom: 0.6vh;
-    color: #9d9d9d;
+    color: #000000;
     vertical-align: middle;
     font-size: 80% ! important;
     cursor: pointer;
-    background-color: #cc6666;
+    background-color: ff9966;
 }
 
 div.navitem_title {
@@ -889,9 +889,11 @@ div.navigation_item_servertime {
     font-size: 80% ! important;
     text-align: center;
     padding: 5px;
-    color: #9d9d9d;
+    color: #000000;
     vertical-align: middle;
     margin-top: 2vh;
+    background-color: #f8fbdb;
+}
 }
 
 div.navigation_item_planets {
@@ -918,8 +920,8 @@ div.header_box_help:hover,
 div.header_box_settings:hover,
 div.header_box_col:hover,
 div.header_box_user:hover {
-    background-color: #161616;
-    color: #dddddd ! important;
+    background-color: #f8fbdb;
+    color: #000000 ! important;
 }
 
 div.header_box_logout:hover {
@@ -935,7 +937,8 @@ div.header_box {
     font-size: 75%;
     height: 70px;
     float: left;
-    color: #9d9d9d;
+    color: #fcfcfc;
+    background-color: #9999ff;
 }
 
 div.header_box_user {
