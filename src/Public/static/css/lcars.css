@@ -878,7 +878,7 @@ div.navigation_item {
     vertical-align: middle;
     font-size: 80% ! important;
     cursor: pointer;
-    background-color: #9999ff;
+    background-color: #ff9966;
 }
 
 div.navitem_title {
@@ -925,8 +925,8 @@ div.header_box_user:hover {
 }
 
 div.header_box_logout:hover {
-    background-color: #b1b1fd;
-    color: #dddddd ! important;
+    background-color: #ffcc99;
+    color: #000000 ! important;
 }
 
 div.navigation_item:hover {
@@ -938,7 +938,7 @@ div.header_box {
     height: 70px;
     float: left;
     color: #000000;
-    background-color: #ff9966;
+    background-color: #9999ff;
 }
 
 div.header_box_user {
@@ -965,8 +965,8 @@ div.header_box_logout {
     margin: 5px 10px 0 15px;
     padding: 5px;
     float: right;
-    color: #ffffff;
-    background-color: #9999ff;
+    color: #000000;
+    background-color: #ff9966;
     text-align: center;
     width: 70px;
 }
