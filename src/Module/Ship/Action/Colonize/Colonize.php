@@ -24,6 +24,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Colonize implements ActionControllerInterface
 {
@@ -51,6 +52,8 @@ final class Colonize implements ActionControllerInterface
 
     private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository;
 
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
@@ -62,7 +65,8 @@ final class Colonize implements ActionControllerInterface
         InteractionCheckerInterface $interactionChecker,
         ColonizationCheckerInterface $colonizationChecker,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository
+        ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
@@ -75,6 +79,7 @@ final class Colonize implements ActionControllerInterface
         $this->colonizationChecker = $colonizationChecker;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
