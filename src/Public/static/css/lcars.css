@@ -135,7 +135,7 @@ th {
 }
 
 td.th {
-    background-color: #000;
+    background-color: #9999ff;
     color: #dddddd;
     text-align: center;
     font-weight: bold;
@@ -479,7 +479,7 @@ a.linkbutton {
 
 a.linkbutton:hover {
     text-decoration: none;
-    background-color: #3c3c3c;
+    background-color: #d49d62;
 }
 
 a.linkbutton_red:hover {
@@ -639,8 +639,8 @@ a.tradebutton:hover {
 }
 
 .divhead {
-    background-color: #0f0f0f;
-    color: #dddddd;
+    background-color: #97567b;
+    color: #000000;
     text-align: center;
     padding: 3px;
     font-weight: bold;
@@ -874,11 +874,11 @@ div.navigation_item {
     height: 6.2vh;
     padding: 0.8vh 0 0.5vh 0;
     margin-bottom: 0.6vh;
-    color: #000000;
+    color: #ffffff;
     vertical-align: middle;
     font-size: 80% ! important;
     cursor: pointer;
-    background-color: ff9966;
+    background-color: #9999ff;
 }
 
 div.navitem_title {
@@ -925,7 +925,7 @@ div.header_box_user:hover {
 }
 
 div.header_box_logout:hover {
-    background-color: #4d0000;
+    background-color: #b1b1fd;
     color: #dddddd ! important;
 }
 
@@ -937,8 +937,8 @@ div.header_box {
     font-size: 75%;
     height: 70px;
     float: left;
-    color: #fcfcfc;
-    background-color: #9999ff;
+    color: #000000;
+    background-color: #ff9966;
 }
 
 div.header_box_user {
@@ -965,7 +965,8 @@ div.header_box_logout {
     margin: 5px 10px 0 15px;
     padding: 5px;
     float: right;
-    background-color: #2d0000;
+    color: #ffffff;
+    background-color: #9999ff;
     text-align: center;
     width: 70px;
 }
