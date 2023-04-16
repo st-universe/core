@@ -99,17 +99,17 @@ div.navlet {
 
 input.text {
     background-color: #b28452;
-    border: 1px solid #ff9966;
+    border: 1px solid #71594d;
     color: #000000;
 }
 
 a:link {
-    color: #b46757;
+    color: #ffffff;
     text-decoration: none;
 }
 
 a:visited {
-    color: #bdadad;
+    color: #ffffff;
     TEXT-DECORATION: none
 }
 
@@ -248,7 +248,7 @@ select {
 input {
     padding: 2px;
     background-color: #b28452;
-    border: 1px solid #ff9966;
+    border: 1px solid #71594d;
     color: #000000;
 }
 
@@ -471,9 +471,9 @@ a.linkbutton {
     text-align: center;
     display: inline-block;
     padding: 3px;
-    background-color: #1b1b1f;
-    border: 1px solid #7c85a8;
-    color: #8897cf;
+    background-color: #b28452;
+    border: 1px solid #71594d;
+    color: #000000;
     white-space: nowrap;
 }
 
@@ -695,7 +695,7 @@ table.population td span {
 }
 
 .colonymenu {
-    color: #8897cf;
+    color: #b46757;
     text-align: center;
     vertical-align: middle;
     border: 1px #404040 solid;
@@ -794,7 +794,7 @@ td.module_select_base {
 td.module_select_base_selected {
     width: 20%;
     background-color: #161515 ! important;
-    color: #8897cf;
+    color: #b46757;
     font-weight: bold;
 }
 
