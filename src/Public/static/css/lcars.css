@@ -874,11 +874,11 @@ div.navigation_item {
     height: 6.2vh;
     padding: 0.8vh 0 0.5vh 0;
     margin-bottom: 0.6vh;
-    color: #ffffff;
+    color: #000000;
     vertical-align: middle;
     font-size: 80% ! important;
     cursor: pointer;
-    background-color: #ff9966;
+    background-color: #fc9;
 }
 
 div.navitem_title {
@@ -892,7 +892,7 @@ div.navigation_item_servertime {
     color: #000000;
     vertical-align: middle;
     margin-top: 2vh;
-    background-color: #ffcc99;
+    background-color: #f96;
 }
 }
 
