@@ -11,6 +11,8 @@ use Stu\Module\Config\Model\DebugSettings;
 use Stu\Module\Config\Model\DebugSettingsInterface;
 use Stu\Module\Config\Model\GameSettings;
 use Stu\Module\Config\Model\GameSettingsInterface;
+use Stu\Module\Config\Model\ResetSettings;
+use Stu\Module\Config\Model\ResetSettingsInterface;
 
 final class StuConfig implements StuConfigInterface
 {
@@ -40,5 +42,10 @@ final class StuConfig implements StuConfigInterface
     public function getGameSettings(): GameSettingsInterface
     {
         return new GameSettings(null, $this->config);
+    }
+
+    public function getResetSettings(): ResetSettingsInterface
+    {
+        return new ResetSettings(null, $this->config);
     }
 }

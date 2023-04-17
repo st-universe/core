@@ -6,6 +6,7 @@ use Stu\Module\Config\Model\CacheSettingsInterface;
 use Stu\Module\Config\Model\DbSettingsInterface;
 use Stu\Module\Config\Model\DebugSettingsInterface;
 use Stu\Module\Config\Model\GameSettingsInterface;
+use Stu\Module\Config\Model\ResetSettingsInterface;
 
 interface StuConfigInterface
 {
@@ -16,4 +17,6 @@ interface StuConfigInterface
     public function getDebugSettings(): DebugSettingsInterface;
 
     public function getGameSettings(): GameSettingsInterface;
+
+    public function getResetSettings(): ResetSettingsInterface;
 }
