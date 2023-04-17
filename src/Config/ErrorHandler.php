@@ -55,7 +55,7 @@ final class ErrorHandler
 
     public function register(): void
     {
-        $this->loggerUtil->init('ERRHAND', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init('ERRHAND', LoggerEnum::LEVEL_INFO);
 
         $this->loggerUtil->log('A');
 
