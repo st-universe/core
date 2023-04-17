@@ -12,12 +12,15 @@
 								<div class="box_body">
 									<div>
 										Der Erste Schritt um in das Spiel einzusteigen ist die Gründung Deiner Ersten
-										Kolonie. Diese kannst Du Dir unter folgendem Link selbst aussuchen.
+										Kolonie. Du kannst dir entweder eine Kolonie aus einer Liste an freien Kolonien
+										im Kerngebiet deiner Fraktion auswählen, oder ein Kolonisationsschiff erhalten
+										und auf eigene Faust eine freie Kolonie suchen.
 									</div>
 									<div>
 										Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung.
 									</div><br />
-									- <a href="?SHOW_COLONYLIST=1">Kolonie gründen</a>
+									- <a href="?SHOW_COLONYLIST=1">Kolonie gründen</a> - <a
+										href="?B_COLONIZATION_SHIP=1">Kolonisationsschiff erhalten</a>
 								</div>
 							</div>
 							<br />
@@ -37,7 +40,8 @@
 								<tr>
 									<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
 										<div class="maindeskNewsItemAvatar">
-											<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data/getUser" />
+											<metal:macro metal:use-macro="macros.xhtml/useravatar"
+												tal:define="USER data/getUser" />
 										</div>
 									</td>
 									<td>
@@ -80,7 +84,8 @@
 										<tr>
 											<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
 												<div class="maindeskNewsItemAvatar">
-													<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER RECENT_POST/getUser" />
+													<metal:macro metal:use-macro="macros.xhtml/useravatar"
+														tal:define="USER RECENT_POST/getUser" />
 												</div>
 											</td>
 											<td>
@@ -194,7 +199,8 @@
 								</div>
 								<div class="recentProfileVisitors">
 									<tal:block tal:repeat="data RECENT_PROFILE_VISITORS">
-										<metal:macro metal:use-macro="macros.xhtml/useravatar" tal:define="USER data/getUser" />
+										<metal:macro metal:use-macro="macros.xhtml/useravatar"
+											tal:define="USER data/getUser" />
 									</tal:block>
 								</div>
 							</div>
