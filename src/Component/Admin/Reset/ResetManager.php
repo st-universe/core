@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Component\Admin\Reset;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
@@ -38,12 +38,11 @@ final class ResetManager implements ResetManagerInterface
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
+    private StuConfigInterface $stuConfig;
+
     private EntityManagerInterface $entityManager;
 
-    private ConfigInterface $config;
-
     public function __construct(
-        ConfigInterface $config,
         GameConfigRepositoryInterface $gameConfigRepository,
         PlayerDeletionInterface $playerDeletion,
         ColonyRepositoryInterface $colonyRepository,
@@ -53,6 +52,7 @@ final class ResetManager implements ResetManagerInterface
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
+        StuConfigInterface $stuConfig,
         EntityManagerInterface $entityManager
     ) {
         $this->gameConfigRepository = $gameConfigRepository;
@@ -64,8 +64,8 @@ final class ResetManager implements ResetManagerInterface
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->stuConfig = $stuConfig;
         $this->entityManager = $entityManager;
-        $this->config = $config;
     }
 
     public function performReset(): void
@@ -76,7 +76,7 @@ final class ResetManager implements ResetManagerInterface
 
         //wait for other processes (e.g. ticks) to finish
         echo "  - starting sleep, so other processes can finish (e.g. ticks)";
-        $sleepCountdownInSeconds = 30;
+        $sleepCountdownInSeconds = $this->stuConfig->getResetSettings()->getDelayInSeconds();
 
         while ($sleepCountdownInSeconds > 0) {
             echo "  - sleeping for " . $sleepCountdownInSeconds . " seconds";
@@ -114,7 +114,7 @@ final class ResetManager implements ResetManagerInterface
         $this->entityManager->getConnection()->executeQuery(
             sprintf(
                 'ALTER SEQUENCE stu_user_id_seq RESTART WITH %d',
-                (int) $this->config->get('game.admin.id')
+                $this->stuConfig->getGameSettings()->getAdminSettings()->getId()
             )
         );
 

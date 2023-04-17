@@ -18,6 +18,11 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
         return array_map('intval', $this->getArrayConfigValue(self::SETTING_ADMINS, []));
     }
 
+    public function getAdminSettings(): AdminSettingsInterface
+    {
+        return new AdminSettings($this->getPath(), $this->getConfig());
+    }
+
     public function getColonySettings(): ColonySettingsInterface
     {
         return new ColonySettings($this->getPath(), $this->getConfig());
