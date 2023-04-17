@@ -6,10 +6,8 @@ namespace Stu\Module\Ship\Action\StartEmergency;
 
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -23,9 +21,6 @@ class StartEmergencyTest extends StuTestCase
     /** @var MockInterface&ShipLoaderInterface */
     private MockInterface $shipLoader;
 
-    /** @var MockInterface&ShipStateChangerInterface */
-    private MockInterface $shipStateChanger;
-
     /** @var MockInterface&SpacecraftEmergencyRepositoryInterface */
     private MockInterface $spacecraftEmergencyRepository;
 
@@ -37,13 +32,11 @@ class StartEmergencyTest extends StuTestCase
     protected function setUp(): void
     {
         $this->shipLoader = $this->mock(ShipLoaderInterface::class);
-        $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
         $this->spacecraftEmergencyRepository = $this->mock(SpacecraftEmergencyRepositoryInterface::class);
         $this->startEmergencyRequest = $this->mock(StartEmergencyRequestInterface::class);
 
         $this->subject = new StartEmergency(
             $this->shipLoader,
-            $this->shipStateChanger,
             $this->spacecraftEmergencyRepository,
             $this->startEmergencyRequest
         );
