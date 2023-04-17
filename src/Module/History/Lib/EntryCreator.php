@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\History\Lib;
 
+use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class EntryCreator implements EntryCreatorInterface
 {
-    public const HISTORY_SHIP = 1;
-    public const HISTORY_STATION = 2;
-    public const HISTORY_COLONY = 3;
-    public const HISTORY_ALLIANCE = 4;
-    public const HISTORY_OTHER = 5;
     private HistoryRepositoryInterface $historyRepository;
 
     public function __construct(
@@ -26,28 +22,35 @@ final class EntryCreator implements EntryCreatorInterface
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(self::HISTORY_SHIP, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_SHIP, $text, $userId);
     }
 
     public function addStationEntry(
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(self::HISTORY_STATION, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_STATION, $text, $userId);
     }
 
     public function addColonyEntry(
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(self::HISTORY_COLONY, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_COLONY, $text, $userId);
     }
 
     public function addAllianceEntry(
         string $text,
         int $userId = UserEnum::USER_NOONE
     ): void {
-        $this->addEntry(self::HISTORY_ALLIANCE, $text, $userId);
+        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_ALLIANCE, $text, $userId);
+    }
+
+    public function addOtherEntry(
+        string $text,
+        int $userId = UserEnum::USER_NOONE
+    ): void {
+        $this->addEntry(HistoryTypeEnum::HISTORY_TYPE_OTHER, $text, $userId);
     }
 
     private function addEntry(
