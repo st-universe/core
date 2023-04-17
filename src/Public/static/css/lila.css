@@ -354,6 +354,8 @@ div.arrow:hover {
 
 .pm_new {
   color: #FF0000;
+  margin-top: 5px;
+  text-decoration: blink;
 }
 
 .sibutton {
@@ -1716,7 +1718,7 @@ ul.statistics div.placement {
   grid-row: span 2;
 }
 
-ul.statistics div.placement > span {
+ul.statistics div.placement>span {
   line-height: 50px;
 }
 
