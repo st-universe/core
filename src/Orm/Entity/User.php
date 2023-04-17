@@ -227,10 +227,10 @@ class User implements UserInterface
     private int $rpg_behavior = UserRpgEnum::RPG_BEHAVIOR_NOT_SET;
 
     /**
-     * @Column(type="string", length=100, nullable=true)
+     * @Column(type="string", length=100)
      *
      */
-    private ?string $css = 'schwarz';
+    private string $css = 'schwarz';
 
     /**
      * @var null|AllianceInterface
