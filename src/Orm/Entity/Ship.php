@@ -1739,7 +1739,7 @@ class Ship implements ShipInterface
     {
         // full
         if ($actual == $max) {
-            return 'color: #dddddd;';
+            return '';
         }
 
         // less than 100% - green
