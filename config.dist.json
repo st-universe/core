@@ -84,6 +84,9 @@
       "email": "max@example.com"
     }
   },
+  "reset": {
+    "delay_in_seconds": 10
+  },
   "board": {
     "base_url": "https://board.change.me"
   },
