@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Stu\Module\Tick\TickRunnerInterface;
-use Stu\Module\Tick\TransactionTickRunnerInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Tick\AbstractTickRunner;
 
 /**
  * Executes all process related tasks (e.g. finishing build processes, ...)
  */
-final class ProcessTickRunner implements TickRunnerInterface
+final class ProcessTickRunner extends AbstractTickRunner
 {
-    private const TICK_DESCRIPTION = "processtick";
-
-    private TransactionTickRunnerInterface $transactionTickRunner;
-
     /** @var array<ProcessTickHandlerInterface> */
     private array $handlerList;
 
@@ -23,24 +21,25 @@ final class ProcessTickRunner implements TickRunnerInterface
      * @param array<ProcessTickHandlerInterface> $handlerList
      */
     public function __construct(
-        TransactionTickRunnerInterface $transactionTickRunner,
+        GameControllerInterface $game,
+        EntityManagerInterface $entityManager,
+        FailureEmailSenderInterface $failureEmailSender,
         array $handlerList
     ) {
-        $this->transactionTickRunner = $transactionTickRunner;
+        parent::__construct($game, $entityManager, $failureEmailSender);
+
         $this->handlerList = $handlerList;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
     {
-        $this->transactionTickRunner->runWithResetCheck(
-            function (): void {
-                foreach ($this->handlerList as $process) {
-                    $process->work();
-                }
-            },
-            self::TICK_DESCRIPTION,
-            $batchGroup,
-            $batchGroupCount
-        );
+        foreach ($this->handlerList as $process) {
+            $process->work();
+        }
+    }
+
+    public function getTickDescription(): string
+    {
+        return "processtick";
     }
 }
