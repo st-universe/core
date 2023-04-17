@@ -4,37 +4,35 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
-use Stu\Module\Tick\TickRunnerInterface;
-use Stu\Module\Tick\TransactionTickRunnerInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Tick\AbstractTickRunner;
 
 /**
  * Executes the colony tick (energy and commodity production, etc)
  */
-final class ColonyTickRunner implements TickRunnerInterface
+final class ColonyTickRunner extends AbstractTickRunner
 {
-    private const TICK_DESCRIPTION = "colonytick";
-
     private ColonyTickManagerInterface $colonyTickManager;
 
-    private TransactionTickRunnerInterface $transactionTickRunner;
-
     public function __construct(
+        GameControllerInterface $game,
+        EntityManagerInterface $entityManager,
         ColonyTickManagerInterface $colonyTickManager,
-        TransactionTickRunnerInterface $transactionTickRunner
+        FailureEmailSenderInterface $failureEmailSender
     ) {
+        parent::__construct($game, $entityManager, $failureEmailSender);
         $this->colonyTickManager = $colonyTickManager;
-        $this->transactionTickRunner = $transactionTickRunner;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
     {
-        $this->transactionTickRunner->runWithResetCheck(
-            function (int $batchGroup, int $batchGroupCount): void {
-                $this->colonyTickManager->work($batchGroup, $batchGroupCount);
-            },
-            self::TICK_DESCRIPTION,
-            $batchGroup,
-            $batchGroupCount
-        );
+        $this->colonyTickManager->work($batchGroup, $batchGroupCount);
+    }
+
+    public function getTickDescription(): string
+    {
+        return "colonytick";
     }
 }

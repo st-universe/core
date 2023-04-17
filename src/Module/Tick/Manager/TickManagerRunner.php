@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Manager;
 
+use Stu\Module\Tick\AbstractTickRunner;
 use Stu\Module\Tick\TickManagerInterface;
-use Stu\Module\Tick\TickRunnerInterface;
 
 /**
  * Executes the tick manager (stats refresh, etc...)
  */
-final class TickManagerRunner implements TickRunnerInterface
+final class TickManagerRunner extends AbstractTickRunner
 {
     private TickManagerInterface $tickManager;
 
@@ -20,8 +20,13 @@ final class TickManagerRunner implements TickRunnerInterface
         $this->tickManager = $tickManager;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
     {
         $this->tickManager->work();
+    }
+
+    public function getTickDescription(): string
+    {
+        return "tickmanager";
     }
 }

@@ -3767,26 +3767,6 @@ parameters:
 			path: src/Module/Ship/View/ShowTradeMenuTransfer/ShowTradeMenuTransfer.php
 
 		-
-			message: "#^Cannot call method getCooldown\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowWebEmitter/ShowWebEmitter.php
-
-		-
-			message: "#^Cannot call method getOwnedTholianWeb\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowWebEmitter/ShowWebEmitter.php
-
-		-
-			message: "#^Cannot call method getWebUnderConstruction\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowWebEmitter/ShowWebEmitter.php
-
-		-
-			message: "#^Cannot call method isUseable\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\WebEmitterSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowWebEmitter/ShowWebEmitter.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\ShipModule\\\\ModuleSpecialAbilityEnum\\:\\:getHash\\(\\) should return int\\|null but returns float\\|int\\|null\\.$#"
 			count: 1
 			path: src/Module/ShipModule/ModuleSpecialAbilityEnum.php

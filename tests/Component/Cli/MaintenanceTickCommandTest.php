@@ -53,7 +53,7 @@ class MaintenanceTickCommandTest extends StuTestCase
             ->once()
             ->andReturn($tickRunner);
 
-        $tickRunner->shouldReceive('run')
+        $tickRunner->shouldReceive('runWithResetCheck')
             ->with(1, 1)
             ->once();
 
