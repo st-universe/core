@@ -69,7 +69,7 @@
 							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
 								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
 								<img src="assets/map/${entry/getMapfieldType}.png"
-								style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+									style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="z-index:2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
@@ -90,7 +90,7 @@
 						<tal:block tal:condition="not:entry/isClickable">
 							<div class="imgOverlayText">
 								<img src="assets/map/${entry/getMapfieldType}.png"
-								style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+									style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
@@ -1155,7 +1155,8 @@
 		<tal:block tal:repeat="wrapper FLEETWRAPPER/getShipWrappers">
 			<tr tal:define="ship wrapper/get" tal:condition="php:SHIP.getId() != ship.getId()">
 				<td style="background-color: #000000 ! important">
-					<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+					<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
+						onmouseout="closeStorage();">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagenameastitle" />
 					</a>
 				</td>
