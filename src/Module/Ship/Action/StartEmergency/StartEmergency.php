@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StartEmergency;
 
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 
@@ -23,20 +21,16 @@ final class StartEmergency implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipStateChangerInterface $shipStateChanger;
-
     private SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository;
 
     private StartEmergencyRequestInterface $startEmergencyRequest;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipStateChangerInterface $shipStateChanger,
         SpacecraftEmergencyRepositoryInterface $spacecraftEmergencyRepository,
         StartEmergencyRequestInterface $startEmergencyRequest
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipStateChanger = $shipStateChanger;
         $this->spacecraftEmergencyRepository = $spacecraftEmergencyRepository;
         $this->startEmergencyRequest = $startEmergencyRequest;
     }
