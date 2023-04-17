@@ -129,7 +129,7 @@ td.selectable:hover {
 
 th {
     background-color: #97567b;
-    color: #000000;
+    color: #000000 !important;
     text-align: center;
     padding: 3px;
 }
@@ -287,6 +287,8 @@ input[disabled] {
     color: #505050;
 }
 
+
+
 .historybutton {
     display: block;
     text-decoration: none;
@@ -353,7 +355,10 @@ div.arrow:hover {
 }
 
 .pm_new {
-    color: #FF0000;
+    margin-top: 5px;
+    color: #d00b0b;
+    text-decoration: blink;
+    font-weight: bold;
 }
 
 .sibutton {

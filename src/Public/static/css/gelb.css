@@ -354,6 +354,9 @@ div.arrow:hover {
 
 .pm_new {
   color: #FF0000;
+  margin-top: 5px;
+  text-decoration: blink;
+  font-weight: bold;
 }
 
 .sibutton {

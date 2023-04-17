@@ -156,7 +156,7 @@
       <tal:block tal:condition="new_pm_amount">
         <img src="/assets/buttons/pmnavlet_${repeat/item/key}_1.png" width="30" height="30"
           title="${item/getDescription}" />
-        <div style="margin-top: 5px; color: red; text-decoration: blink" tal:content="new_pm_amount">COUNT</div>
+        <div class="pm_new" tal:content="new_pm_amount">COUNT</div>
       </tal:block>
       <tal:block tal:condition="not:new_pm_amount">
         <img src="/assets/buttons/pmnavlet_${repeat/item/key}_0.png" width="30" height="30" id="newpm${repeat/item/key}"
