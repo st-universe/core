@@ -116,7 +116,7 @@ final class ApplyKnPostToPlot implements ActionControllerInterface
                 $user = $member->getUser();
 
                 $text = sprintf(
-                    _('Der Beitrag mit ID und Titel "%s" wurde nachträglich zum Plot "%s" hinzugefügt.'),
+                    _('Der Beitrag mit ID %d und Titel "%s" wurde nachträglich zum Plot "%s" hinzugefügt.'),
                     $post->getId(),
                     $post->getTitle(),
                     $plot->getTitle()
