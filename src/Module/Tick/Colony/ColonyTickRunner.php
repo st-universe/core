@@ -6,53 +6,33 @@ namespace Stu\Module\Tick\Colony;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Module\Tick\TickRunnerInterface;
-use Throwable;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Tick\AbstractTickRunner;
 
 /**
  * Executes the colony tick (energy and commodity production, etc)
  */
-final class ColonyTickRunner implements TickRunnerInterface
+final class ColonyTickRunner extends AbstractTickRunner
 {
-    private EntityManagerInterface $entityManager;
     private ColonyTickManagerInterface $colonyTickManager;
-    private FailureEmailSenderInterface $failureEmailSender;
 
     public function __construct(
+        GameControllerInterface $game,
         EntityManagerInterface $entityManager,
         ColonyTickManagerInterface $colonyTickManager,
         FailureEmailSenderInterface $failureEmailSender
     ) {
-        $this->entityManager = $entityManager;
+        parent::__construct($game, $entityManager, $failureEmailSender);
         $this->colonyTickManager = $colonyTickManager;
-        $this->failureEmailSender = $failureEmailSender;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
     {
-        $this->entityManager->beginTransaction();
+        $this->colonyTickManager->work($batchGroup, $batchGroupCount);
+    }
 
-        try {
-            $this->colonyTickManager->work($batchGroup, $batchGroupCount);
-
-            $this->entityManager->flush();
-            $this->entityManager->commit();
-        } catch (Throwable $e) {
-            $this->entityManager->rollback();
-
-            $this->failureEmailSender->sendMail(
-                'stu colonytick failure',
-                sprintf(
-                    "Current system time: %s\nThe colonytick cron (group %d/%d) caused an error:\n\n%s\n\n%s",
-                    date('Y-m-d H:i:s'),
-                    $batchGroup,
-                    $batchGroupCount,
-                    $e->getMessage(),
-                    $e->getTraceAsString()
-                )
-            );
-
-            throw $e;
-        }
+    public function getTickDescription(): string
+    {
+        return "colonytick";
     }
 }

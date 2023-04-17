@@ -6,17 +6,14 @@ namespace Stu\Module\Tick\Process;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Module\Tick\TickRunnerInterface;
-use Throwable;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Tick\AbstractTickRunner;
 
 /**
  * Executes all process related tasks (e.g. finishing build processes, ...)
  */
-final class ProcessTickRunner implements TickRunnerInterface
+final class ProcessTickRunner extends AbstractTickRunner
 {
-    private EntityManagerInterface $entityManager;
-    private FailureEmailSenderInterface $failureEmailSender;
-
     /** @var array<ProcessTickHandlerInterface> */
     private array $handlerList;
 
@@ -24,40 +21,25 @@ final class ProcessTickRunner implements TickRunnerInterface
      * @param array<ProcessTickHandlerInterface> $handlerList
      */
     public function __construct(
+        GameControllerInterface $game,
         EntityManagerInterface $entityManager,
         FailureEmailSenderInterface $failureEmailSender,
         array $handlerList
     ) {
+        parent::__construct($game, $entityManager, $failureEmailSender);
+
         $this->handlerList = $handlerList;
-        $this->entityManager = $entityManager;
-        $this->failureEmailSender = $failureEmailSender;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
     {
-        $this->entityManager->beginTransaction();
-
-        try {
-            foreach ($this->handlerList as $process) {
-                $process->work();
-            }
-
-            $this->entityManager->flush();
-            $this->entityManager->commit();
-        } catch (Throwable $e) {
-            $this->entityManager->rollback();
-
-            $this->failureEmailSender->sendMail(
-                'stu processtick failure',
-                sprintf(
-                    "Current system time: %s\nThe processtick cron caused an error:\n\n%s\n\n%s",
-                    date('Y-m-d H:i:s'),
-                    $e->getMessage(),
-                    $e->getTraceAsString()
-                )
-            );
-
-            throw $e;
+        foreach ($this->handlerList as $process) {
+            $process->work();
         }
+    }
+
+    public function getTickDescription(): string
+    {
+        return "processtick";
     }
 }

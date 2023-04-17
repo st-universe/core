@@ -5,21 +5,17 @@ namespace Stu\Module\Tick\Maintenance;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
-use Stu\Module\Tick\TickRunnerInterface;
+use Stu\Module\Tick\AbstractTickRunner;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
-use Throwable;
 
 /**
  * Executes maintenance tasks like db backup and such
  */
-final class MaintenanceTickRunner implements TickRunnerInterface
+final class MaintenanceTickRunner extends AbstractTickRunner
 {
     private GameConfigRepositoryInterface $gameConfigRepository;
-
-    private EntityManagerInterface $entityManager;
-
-    private FailureEmailSenderInterface $failureEmailSender;
 
     /** @var array<MaintenanceHandlerInterface> */
     private array $handlerList;
@@ -28,52 +24,35 @@ final class MaintenanceTickRunner implements TickRunnerInterface
      * @param array<MaintenanceHandlerInterface> $handlerList
      */
     public function __construct(
+        GameControllerInterface $game,
         GameConfigRepositoryInterface $gameConfigRepository,
         EntityManagerInterface $entityManager,
         FailureEmailSenderInterface $failureEmailSender,
         array $handlerList
     ) {
+        parent::__construct($game, $entityManager, $failureEmailSender);
         $this->gameConfigRepository = $gameConfigRepository;
         $this->handlerList = $handlerList;
-        $this->entityManager = $entityManager;
-        $this->failureEmailSender = $failureEmailSender;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
     {
         $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE);
 
-        $this->entityManager->beginTransaction();
-
-        try {
-            foreach ($this->handlerList as $handler) {
-                $handler->handle();
-            }
-
-            $this->entityManager->flush();
-            $this->entityManager->commit();
-        } catch (Throwable $e) {
-            $this->entityManager->rollback();
-
-            $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE);
-
-            $this->failureEmailSender->sendMail(
-                'stu maintenancetick failure',
-                sprintf(
-                    "Current system time: %s\nThe maintenancetick cron caused an error:\n\n%s\n\n%s",
-                    date('Y-m-d H:i:s'),
-                    $e->getMessage(),
-                    $e->getTraceAsString()
-                )
-            );
-
-            throw $e;
+        foreach ($this->handlerList as $handler) {
+            $handler->handle();
         }
+
         $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE);
     }
 
     private function setGameState(int $stateId): void
     {
         $this->gameConfigRepository->updateGameState($stateId);
+    }
+
+    public function getTickDescription(): string
+    {
+        return "maintenancetick";
     }
 }

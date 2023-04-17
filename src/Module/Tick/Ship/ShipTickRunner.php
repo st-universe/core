@@ -6,42 +6,44 @@ namespace Stu\Module\Tick\Ship;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Tick\TickRunnerInterface;
+use Stu\Module\Tick\AbstractTickRunner;
 use Throwable;
 
 /**
  * Executes the shiptick
  */
-final class ShipTickRunner implements TickRunnerInterface
+final class ShipTickRunner extends AbstractTickRunner
 {
     /** @var int */
     private const ATTEMPTS = 5;
-
-    private EntityManagerInterface $entityManager;
-
-    private FailureEmailSenderInterface $failureEmailSender;
 
     private ShipTickManagerInterface $shipTickManager;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
+        GameControllerInterface $game,
         EntityManagerInterface $entityManager,
         FailureEmailSenderInterface $failureEmailSender,
         ShipTickManagerInterface $shipTickManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
+        parent::__construct($game, $entityManager, $failureEmailSender);
+
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->entityManager = $entityManager;
-        $this->failureEmailSender = $failureEmailSender;
         $this->shipTickManager = $shipTickManager;
     }
 
-    public function run(int $batchGroup, int $batchGroupCount): void
+    public function runWithResetCheck(int $batchGroup, int $batchGroupCount): void
     {
+        if ($this->isGameStateReset()) {
+            return;
+        }
+
         $this->loggerUtil->init('mail', LoggerEnum::LEVEL_ERROR);
 
         /**
@@ -53,9 +55,13 @@ final class ShipTickRunner implements TickRunnerInterface
             if ($exception === null) {
                 break;
             } else {
+
+                $tickDescription = $this->getTickDescription();
+
                 // logging problem
                 $this->loggerUtil->log(sprintf(
-                    "Shiptick caused an exception. Remaing tries: %d\nException-Message: %s\nException-Trace: %s",
+                    "%s caused an exception. Remaing tries: %d\nException-Message: %s\nException-Trace: %s",
+                    $tickDescription,
                     self::ATTEMPTS - $i,
                     $exception->getMessage(),
                     $exception->getTraceAsString()
@@ -64,10 +70,11 @@ final class ShipTickRunner implements TickRunnerInterface
                 // sending email if no remaining tries left
                 if ($i === self::ATTEMPTS) {
                     $this->failureEmailSender->sendMail(
-                        'stu shiptick failure',
+                        sprintf('stu %s failure', $tickDescription),
                         sprintf(
-                            "Current system time: %s\nThe shiptick cron caused an error:\n\n%s\n\n%s",
+                            "Current system time: %s\nThe %s cron caused an error:\n\n%s\n\n%s",
                             date('Y-m-d H:i:s'),
+                            $tickDescription,
                             $exception->getMessage(),
                             $exception->getTraceAsString()
                         )
@@ -77,6 +84,16 @@ final class ShipTickRunner implements TickRunnerInterface
                 }
             }
         }
+    }
+
+    public function getTickDescription(): string
+    {
+        return "shiptick";
+    }
+
+    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
+    {
+        //nothing to do here
     }
 
     private function execute(LoggerUtilInterface $loggerUtil): ?Throwable

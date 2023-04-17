@@ -53,7 +53,7 @@ class ColonyTickCommandTest extends StuTestCase
             ->once()
             ->andReturn($colonyTickRunner);
 
-        $colonyTickRunner->shouldReceive('run')
+        $colonyTickRunner->shouldReceive('runWithResetCheck')
             ->with(1, 1)
             ->once();
 

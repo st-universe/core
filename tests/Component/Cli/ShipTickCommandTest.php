@@ -53,7 +53,7 @@ class ShipTickCommandTest extends StuTestCase
             ->once()
             ->andReturn($shipTickRunner);
 
-        $shipTickRunner->shouldReceive('run')
+        $shipTickRunner->shouldReceive('runWithResetCheck')
             ->with(1, 1)
             ->once();
 

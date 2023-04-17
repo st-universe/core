@@ -6,8 +6,10 @@ namespace Stu\Component\Admin\Reset;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -18,6 +20,8 @@ use Throwable;
 
 final class ResetManager implements ResetManagerInterface
 {
+    private GameConfigRepositoryInterface $gameConfigRepository;
+
     private PlayerDeletionInterface $playerDeletion;
 
     private ColonyRepositoryInterface $colonyRepository;
@@ -40,6 +44,7 @@ final class ResetManager implements ResetManagerInterface
 
     public function __construct(
         ConfigInterface $config,
+        GameConfigRepositoryInterface $gameConfigRepository,
         PlayerDeletionInterface $playerDeletion,
         ColonyRepositoryInterface $colonyRepository,
         KnPostRepositoryInterface $knPostRepository,
@@ -50,6 +55,7 @@ final class ResetManager implements ResetManagerInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         EntityManagerInterface $entityManager
     ) {
+        $this->gameConfigRepository = $gameConfigRepository;
         $this->playerDeletion = $playerDeletion;
         $this->colonyRepository = $colonyRepository;
         $this->knPostRepository = $knPostRepository;
@@ -64,9 +70,25 @@ final class ResetManager implements ResetManagerInterface
 
     public function performReset(): void
     {
+        echo "starting game reset";
+
+        $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_RESET);
+
+        //wait for other processes (e.g. ticks) to finish
+        echo "  - starting sleep, so other processes can finish (e.g. ticks)";
+        $sleepCountdownInSeconds = 30;
+
+        while ($sleepCountdownInSeconds > 0) {
+            echo "  - sleeping for " . $sleepCountdownInSeconds . " seconds";
+            sleep(5);
+
+            $sleepCountdownInSeconds -= 5;
+        }
+
         $this->entityManager->beginTransaction();
 
         try {
+            echo "  - deleting users";
             $this->playerDeletion->handleReset();
 
             $this->entityManager->flush();
@@ -88,6 +110,7 @@ final class ResetManager implements ResetManagerInterface
             throw $t;
         }
 
+        echo "  - resetting sequences";
         $this->entityManager->getConnection()->executeQuery(
             sprintf(
                 'ALTER SEQUENCE stu_user_id_seq RESTART WITH %d',
@@ -96,6 +119,16 @@ final class ResetManager implements ResetManagerInterface
         );
 
         $this->entityManager->commit();
+        $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE);
+
+        echo "finished game reset";
+    }
+
+    private function setGameState(int $stateId): void
+    {
+        $this->gameConfigRepository->updateGameState($stateId);
+
+        echo "  - setting game state to '" . GameEnum::gameStateTypeToDescription(GameEnum::CONFIG_GAMESTATE_VALUE_RESET) . " - " . GameEnum::CONFIG_GAMESTATE_VALUE_RESET . "'";
     }
 
     /**
@@ -103,6 +136,8 @@ final class ResetManager implements ResetManagerInterface
      */
     private function resetColonySurfaceMasks(): void
     {
+        echo "  - reset colony surfaces";
+
         foreach ($this->colonyRepository->findAll() as $colony) {
             $colony->setMask(null);
 
@@ -117,6 +152,8 @@ final class ResetManager implements ResetManagerInterface
      */
     private function deleteKnPostings(): void
     {
+        echo "  - deleting kn postings";
+
         foreach ($this->knPostRepository->findAll() as $knPost) {
             $this->knPostRepository->delete($knPost);
         }
@@ -128,6 +165,8 @@ final class ResetManager implements ResetManagerInterface
      */
     private function deleteHistory(): void
     {
+        echo "  - deleting history";
+
         foreach ($this->historyRepository->findAll() as $entry) {
             $this->historyRepository->delete($entry);
         }
@@ -138,6 +177,8 @@ final class ResetManager implements ResetManagerInterface
      */
     private function deleteKnPlotMembers(): void
     {
+        echo "  - deleting kn plot members";
+
         foreach ($this->rpgPlotMemberRepository->findAll() as $plotMember) {
             $this->rpgPlotMemberRepository->delete($plotMember);
         }
@@ -148,6 +189,8 @@ final class ResetManager implements ResetManagerInterface
      */
     private function deleteKnPlots(): void
     {
+        echo "  - deleting kn plots";
+
         foreach ($this->rpgPlotRepository->findAll() as $plot) {
             //echo "plot:" . $plot->getId() . ", memberCount:" . $plot->getMemberCount() . "\n";
             /* 
@@ -166,6 +209,8 @@ final class ResetManager implements ResetManagerInterface
      */
     private function resetGameTurns(): void
     {
+        echo "  - reset game turns";
+
         foreach ($this->gameTurnRepository->findAll() as $turn) {
             $this->gameTurnRepository->delete($turn);
         }
