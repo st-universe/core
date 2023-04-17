@@ -36,27 +36,27 @@ final class ColonizationShip implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        if ((int) $user->getFaction() == 1) {
+        if ((int) $user->getFactionId() == 1) {
             $rumpId = ShipEnum::FED_COL_RUMP;
             $buildplanId = ShipEnum::FED_COL_BUILDPLAN;
         }
 
-        if ((int) $user->getFaction() == 2) {
+        if ((int) $user->getFactionId() == 2) {
             $rumpId = ShipEnum::ROM_COL_RUMP;
             $buildplanId = ShipEnum::ROM_COL_BUILDPLAN;
         }
 
-        if ((int) $user->getFaction() == 3) {
+        if ((int) $user->getFactionId() == 3) {
             $rumpId = ShipEnum::KLING_COL_RUMP;
             $buildplanId = ShipEnum::KLING_COL_BUILDPLAN;
         }
 
-        if ((int) $user->getFaction() == 4) {
+        if ((int) $user->getFactionId() == 4) {
             $rumpId = ShipEnum::CARD_COL_RUMP;
             $buildplanId = ShipEnum::CARD_COL_BUILDPLAN;
         }
 
-        if ((int) $user->getFaction() == 5) {
+        if ((int) $user->getFactionId() == 5) {
             $rumpId = ShipEnum::FERG_COL_RUMP;
             $buildplanId = ShipEnum::FERG_COL_BUILDPLAN;
         }
@@ -71,6 +71,9 @@ final class ColonizationShip implements ActionControllerInterface
 
         $user->setState(UserEnum::USER_STATE_COLONIZATION_SHIP);
         $this->userRepository->save($user);
+
+        $game->redirectTo('./ship.php');
+        $game->addInformation(sprintf('Du hast dein Kolonisationsschiff erhalten'));
     }
 
     public function performSessionCheck(): bool
