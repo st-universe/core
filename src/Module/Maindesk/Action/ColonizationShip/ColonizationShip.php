@@ -61,19 +61,24 @@ final class ColonizationShip implements ActionControllerInterface
             $buildplanId = ShipEnum::FERG_COL_BUILDPLAN;
         }
 
-        $ship = $this->shipCreator->createBy(
+        $wrapper = $this->shipCreator->createBy(
             $user->getId(),
             $rumpId,
             $buildplanId
-        )->get();
+        );
+
+        $ship = $wrapper->get();
 
         $ship->updateLocation($user->getFaction()->getStartMap(), null);
+        $ship->setReactorLoad((int)floor($ship->getReactorCapacity()));
+
+        $eps = $wrapper->getEpsSystemData();
+        $eps->setEps((int)floor($eps->getTheoreticalMaxEps()))->update();
 
         $user->setState(UserEnum::USER_STATE_COLONIZATION_SHIP);
         $this->userRepository->save($user);
 
         $game->redirectTo('./ship.php');
-        $game->addInformation(sprintf('Du hast dein Kolonisationsschiff erhalten'));
     }
 
     public function performSessionCheck(): bool
