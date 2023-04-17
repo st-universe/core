@@ -12,6 +12,7 @@ use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\AnomalyType;
 use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\AuctionBid;
@@ -172,6 +173,11 @@ return [
         ContainerInterface $c
     ): AnomalyTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(AnomalyType::class);
+    },
+    AnomalyRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): AnomalyRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Anomaly::class);
     },
     AwardRepositoryInterface::class => function (
         ContainerInterface $c
