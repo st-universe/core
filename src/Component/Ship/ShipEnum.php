@@ -45,4 +45,17 @@ final class ShipEnum
 
     //other
     public const SHIELD_REGENERATION_TIME = 900;
+
+    //First Coloship
+    public const FED_COL_RUMP = 1501;
+    public const ROM_COL_RUMP = 2;
+    public const KLING_COL_RUMP = 3;
+    public const CARD_COL_RUMP = 4;
+    public const FERG_COL_RUMP = 5;
+
+    public const FED_COL_BUILDPLAN = 1;
+    public const ROM_COL_BUILDPLAN = 2;
+    public const KLING_COL_BUILDPLAN = 3;
+    public const CARD_COL_BUILDPLAN = 4;
+    public const FERG_COL_BUILDPLAN = 5;
 }

@@ -33,4 +33,8 @@ interface FactionInterface
     public function getStartResearch(): ?ResearchInterface;
 
     public function setStartResearch(?ResearchInterface $start_research): FactionInterface;
+
+    public function getStartMap(): ?MapInterface;
+
+    public function setStartMap(?MapInterface $start_map): FactionInterface;
 }

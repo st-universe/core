@@ -70,6 +70,12 @@ class Faction implements FactionInterface
      */
     private ?int $start_research_id;
 
+    /**
+     * @Column(type="integer", nullable=true)
+     *
+     */
+    private ?int $start_map_id;
+
     //TODO survivor_rate to escape pods
 
     /**
@@ -79,6 +85,14 @@ class Faction implements FactionInterface
      * @JoinColumn(name="start_research_id", referencedColumnName="id")
      */
     private $start_research;
+
+    /**
+     * @var null|ResearchInterface
+     *
+     * @ManyToOne(targetEntity="Map")
+     * @JoinColumn(name="start_map_id", referencedColumnName="id")
+     */
+    private $start_map;
 
     public function getId(): int
     {
@@ -165,6 +179,17 @@ class Faction implements FactionInterface
     public function setStartResearch(?ResearchInterface $start_research): FactionInterface
     {
         $this->start_research = $start_research;
+        return $this;
+    }
+
+    public function getStartMap(): ?MapInterface
+    {
+        return $this->start_map;
+    }
+
+    public function setStartMap(?MapInterface $start_map): FactionInterface
+    {
+        $this->start_map = $start_map;
         return $this;
     }
 }

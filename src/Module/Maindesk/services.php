@@ -6,6 +6,7 @@ namespace Stu\Module\Maindesk;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColony;
+use Stu\Module\Maindesk\Action\ColonizationShip\ColonizationShip;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequest;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequestInterface;
 use Stu\Module\Maindesk\Action\SmsVerification\SmsVerification;
@@ -18,6 +19,7 @@ return [
     FirstColonyRequestInterface::class => autowire(FirstColonyRequest::class),
     'MAINDESK_ACTIONS' => [
         FirstColony::ACTION_IDENTIFIER => autowire(FirstColony::class),
+        ColonizationShip::ACTION_IDENTIFIER => autowire(ColonizationShip::class),
         SmsVerification::ACTION_IDENTIFIER => autowire(SmsVerification::class)
     ],
     'MAINDESK_VIEWS' => [
