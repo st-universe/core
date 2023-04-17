@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\History\View\Overview;
 
 use request;
+use Stu\Component\History\HistoryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\History\Lib\EntryCreator;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
@@ -17,11 +17,11 @@ final class Overview implements ViewControllerInterface
     private const LIMIT = 50;
 
     private array $possibleTypes = [
-        EntryCreator::HISTORY_SHIP => "Schiffe",
-        EntryCreator::HISTORY_STATION => "Station",
-        EntryCreator::HISTORY_COLONY => "Kolonie",
-        EntryCreator::HISTORY_ALLIANCE => "Diplomatie",
-        EntryCreator::HISTORY_OTHER => "Sonstiges"
+        HistoryTypeEnum::HISTORY_TYPE_SHIP => "Schiffe",
+        HistoryTypeEnum::HISTORY_TYPE_STATION => "Station",
+        HistoryTypeEnum::HISTORY_TYPE_COLONY => "Kolonie",
+        HistoryTypeEnum::HISTORY_TYPE_ALLIANCE => "Diplomatie",
+        HistoryTypeEnum::HISTORY_TYPE_OTHER => "Sonstiges"
     ];
 
     private OverviewRequestInterface $overviewRequest;
@@ -38,7 +38,7 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $type = $this->overviewRequest->getTypeId(array_keys($this->possibleTypes), EntryCreator::HISTORY_SHIP);
+        $type = $this->overviewRequest->getTypeId(array_keys($this->possibleTypes), HistoryTypeEnum::HISTORY_TYPE_SHIP);
         $count = $this->overviewRequest->getCount(self::LIMIT);
         $search = request::indString('hsearch');
 
@@ -63,6 +63,10 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar(
             'HISTORY_TYPE',
             $type
+        );
+        $game->setTemplateVar(
+            'HISTORY_TYPE_COUNT',
+            count($history_types)
         );
         $game->setTemplateVar(
             'HISTORY_TYPES',
