@@ -10,7 +10,9 @@ use Exception;
 use Mockery;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\HistoryInterface;
@@ -18,6 +20,7 @@ use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -28,8 +31,8 @@ use Stu\StuTestCase;
 
 class ResetManagerTest extends StuTestCase
 {
-    /** @var MockInterface&ConfigInterface */
-    private MockInterface $config;
+    /** @var MockInterface&GameConfigRepositoryInterface */
+    private MockInterface $gameConfigRepository;
 
     /** @var MockInterface&PlayerDeletionInterface */
     private MockInterface $playerDeletion;
@@ -55,6 +58,9 @@ class ResetManagerTest extends StuTestCase
     /** @var MockInterface&PlanetFieldRepositoryInterface */
     private MockInterface $planetFieldRepository;
 
+    /** @var MockInterface&StuConfigInterface */
+    private MockInterface $stuConfig;
+
     /** @var MockInterface&EntityManagerInterface */
     private MockInterface $entityManager;
 
@@ -62,7 +68,7 @@ class ResetManagerTest extends StuTestCase
 
     public function setUp(): void
     {
-        $this->config = $this->mock(ConfigInterface::class);
+        $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);
         $this->playerDeletion = $this->mock(PlayerDeletionInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->knPostRepository = $this->mock(KnPostRepositoryInterface::class);
@@ -71,10 +77,11 @@ class ResetManagerTest extends StuTestCase
         $this->rpgPlotRepository = $this->mock(RpgPlotRepositoryInterface::class);
         $this->rpgPlotMemberRepository = $this->mock(RpgPlotMemberRepositoryInterface::class);
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
+        $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->manager = new ResetManager(
-            $this->config,
+            $this->gameConfigRepository,
             $this->playerDeletion,
             $this->colonyRepository,
             $this->knPostRepository,
@@ -83,6 +90,7 @@ class ResetManagerTest extends StuTestCase
             $this->rpgPlotMemberRepository,
             $this->rpgPlotRepository,
             $this->planetFieldRepository,
+            $this->stuConfig,
             $this->entityManager
         );
     }
@@ -98,10 +106,15 @@ class ResetManagerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
-        $this->config->shouldReceive('get')
-            ->with('game.admin.id')
+        $this->stuConfig->shouldReceive('getResetSettings->getDelayInSeconds')
+            ->withNoArgs()
             ->once()
-            ->andReturn((string) $adminId);
+            ->andReturn(0);
+
+        $this->stuConfig->shouldReceive('getGameSettings->getAdminSettings->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($adminId);
 
         $this->entityManager->shouldReceive('beginTransaction')
             ->withNoArgs()
@@ -213,6 +226,13 @@ class ResetManagerTest extends StuTestCase
             ->once()
             ->andReturnSelf();
 
+        $this->gameConfigRepository->shouldReceive('updateGameState')
+            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET)
+            ->once();
+        $this->gameConfigRepository->shouldReceive('updateGameState')
+            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE)
+            ->once();
+
         $this->manager->performReset();
     }
 
@@ -224,6 +244,11 @@ class ResetManagerTest extends StuTestCase
         static::expectException(Exception::class);
         static::expectExceptionMessage($error);
 
+        $this->stuConfig->shouldReceive('getResetSettings->getDelayInSeconds')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(0);
+
         $this->playerDeletion->shouldReceive('handleReset')
             ->withNoArgs()
             ->once()
@@ -234,6 +259,10 @@ class ResetManagerTest extends StuTestCase
             ->once();
         $this->entityManager->shouldReceive('rollback')
             ->withNoArgs()
+            ->once();
+
+        $this->gameConfigRepository->shouldReceive('updateGameState')
+            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET)
             ->once();
 
         $this->manager->performReset();
