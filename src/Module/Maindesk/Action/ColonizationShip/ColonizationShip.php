@@ -70,12 +70,14 @@ final class ColonizationShip implements ActionControllerInterface
         $ship = $wrapper->get();
 
         $ship->updateLocation($user->getFaction()->getStartMap(), null);
-        $ship->setReactorLoad((int)floor($ship->getReactorCapacity()));
+        $ship->setReactorLoad((int)floor($ship->getReactorCapacity() * 20));
         $ship->setCanBeDisabled(true);
         $ship->setSensorRange(5);
+        $ship->setReactorOutput((int)floor($ship->getReactorOutput() * 10));
 
         $eps = $wrapper->getEpsSystemData();
-        $eps->setEps((int)floor($eps->getTheoreticalMaxEps()))->update();
+        $eps->setEps((int)floor($eps->getTheoreticalMaxEps() * 10))->update();
+        $eps->setMaxEps((int)floor($eps->getTheoreticalMaxEps() * 10))->update();
 
         $user->setState(UserEnum::USER_STATE_COLONIZATION_SHIP);
         $this->userRepository->save($user);
