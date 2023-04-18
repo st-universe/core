@@ -105,7 +105,7 @@ final class SelfDestruct implements ActionControllerInterface
             $this->alertRedHelper->doItAll($tractoredShipToTriggerAlertRed, $game);
         }
 
-        if ($user->getState == UserEnum::USER_STATE_COLONIZATION_SHIP && $this->shipRepository->getAmountByUserAndSpecialAbility($userId, ShipRumpSpecialAbilityEnum::COLONIZE) === 0) {
+        if ($user->getState() == UserEnum::USER_STATE_COLONIZATION_SHIP && $this->shipRepository->getAmountByUserAndSpecialAbility($userId, ShipRumpSpecialAbilityEnum::COLONIZE) === 0) {
             $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
         }
     }
