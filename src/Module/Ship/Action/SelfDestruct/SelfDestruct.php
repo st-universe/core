@@ -13,6 +13,9 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class SelfDestruct implements ActionControllerInterface
 {
@@ -24,23 +27,28 @@ final class SelfDestruct implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
+    private ShipRepositoryInterface $shipRepository;
+
     private AlertRedHelperInterface $alertRedHelper;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         EntryCreatorInterface $entryCreator,
         ShipRemoverInterface $shipRemover,
+        ShipRepositoryInterface $shipRepository,
         AlertRedHelperInterface $alertRedHelper
     ) {
         $this->shipLoader = $shipLoader;
         $this->entryCreator = $entryCreator;
         $this->shipRemover = $shipRemover;
+        $this->shipRepository = $shipRepository;
         $this->alertRedHelper = $alertRedHelper;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -95,6 +103,10 @@ final class SelfDestruct implements ActionControllerInterface
         //Alarm-Rot check for tractor ship
         if ($tractoredShipToTriggerAlertRed !== null) {
             $this->alertRedHelper->doItAll($tractoredShipToTriggerAlertRed, $game);
+        }
+
+        if ($user->getState == UserEnum::USER_STATE_COLONIZATION_SHIP && $this->shipRepository->getAmountByUserAndSpecialAbility($userId, ShipRumpSpecialAbilityEnum::COLONIZE) === 0) {
+            $user->setState(UserEnum::USER_STATE_UNCOLONIZED);
         }
     }
 

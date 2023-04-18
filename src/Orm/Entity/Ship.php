@@ -795,6 +795,12 @@ class Ship implements ShipInterface
         return $this->can_be_disabled;
     }
 
+    public function setCanBeDisabled(bool $canbeDisabled): ShipInterface
+    {
+        $this->can_be_disabled = $canbeDisabled;
+        return $this;
+    }
+
     /**
      * proportional to computer system status
      */
