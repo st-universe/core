@@ -111,6 +111,11 @@ final class Overview implements ViewControllerInterface
             $user->getState() === UserEnum::USER_STATE_UNCOLONIZED
         );
 
+        $game->setTemplateVar(
+            'DISPLAY_COLONIZATION_SHIP_DIALOGUE',
+            $user->getState() === UserEnum::USER_STATE_COLONIZATION_SHIP
+        );
+
         $newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
 
         $game->setTemplateVar(
