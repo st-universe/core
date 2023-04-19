@@ -87,12 +87,10 @@ class Faction implements FactionInterface
     private $start_research;
 
     /**
-     * @var null|ResearchInterface
-     *
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="start_map_id", referencedColumnName="id")
      */
-    private $start_map;
+    private ?MapInterface $start_map;
 
     public function getId(): int
     {

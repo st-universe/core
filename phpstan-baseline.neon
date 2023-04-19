@@ -5635,6 +5635,11 @@ parameters:
 			path: src/Orm/Entity/DockingPrivilege.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Faction.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_research type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Research\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Faction.php
