@@ -2,19 +2,20 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          bootstrap="tests/Bootstrap.php"
          colors="true"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
          cacheDirectory="build/.phpunit.cache"
 >
-  <coverage>
+  <coverage/>
+  <source>
     <include>
-      <directory suffix=".php">src</directory>
+      <directory>src</directory>
     </include>
     <exclude>
       <directory suffix="services.php">src</directory>
       <directory>src/Public</directory>
       <directory>src/OrmProxy</directory>
     </exclude>
-  </coverage>
+  </source>
   <testsuites>
     <testsuite name="STU">
       <directory>./tests</directory>
