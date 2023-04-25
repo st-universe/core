@@ -25,4 +25,6 @@ interface NoteRepositoryInterface extends ObjectRepository
     public function delete(NoteInterface $note): void;
 
     public function truncateByUserId(int $userId): void;
+
+    public function truncateAllNotes(): void;
 }

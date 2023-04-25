@@ -123,6 +123,6 @@ class DatabaseAdapterTest extends StuTestCase
             )
             ->once();
 
-        $this->subject->info($gameRequest);
+        $this->subject->info($gameRequest, false);
     }
 }

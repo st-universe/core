@@ -45,4 +45,14 @@ final class UserIpTableRepository extends EntityRepository implements UserIpTabl
             'session' => $sessionId
         ]);
     }
+
+    public function truncateAllEntries(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s uit',
+                UserIpTable::class
+            )
+        )->execute();
+    }
 }

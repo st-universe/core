@@ -48,4 +48,14 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
             ])
             ->getResult();
     }
+
+    public function truncateAllTradeTransactions(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s ta',
+                TradeTransaction::class
+            )
+        )->execute();
+    }
 }

@@ -64,4 +64,14 @@ final class LotteryTicketRepository extends EntityRepository implements LotteryT
             )
             ->getResult();
     }
+
+    public function truncateAllLotteryTickets(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s lt',
+                LotteryTicket::class
+            )
+        )->execute();
+    }
 }

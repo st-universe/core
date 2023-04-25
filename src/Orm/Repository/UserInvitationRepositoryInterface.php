@@ -28,4 +28,6 @@ interface UserInvitationRepositoryInterface extends ObjectRepository
     public function getByToken(string $token): ?UserInvitationInterface;
 
     public function truncateExpiredTokens(DateTimeInterface $ttl): void;
+
+    public function truncateAllEntries(): void;
 }

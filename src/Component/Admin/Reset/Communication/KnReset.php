@@ -36,6 +36,7 @@ final class KnReset implements KnResetInterface
         $this->deleteKnPlotMembers();
         $this->deleteKnPostings();
         $this->deleteKnPlots();
+
         $this->entityManager->flush();
     }
 

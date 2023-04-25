@@ -7,6 +7,7 @@ namespace Stu\Component\Logging\GameRequest\Adapter;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Monolog\Level;
+use request;
 use Stu\Orm\Entity\GameRequest;
 use Stu\Orm\Entity\GameRequestInterface;
 
@@ -27,8 +28,13 @@ final class DatabaseAdapter extends AbstractAdapter
 
     protected function log(
         GameRequestInterface $gameRequest,
-        Level $logLevel
+        Level $logLevel,
+        bool $isRequestCheck
     ): void {
+        if ($isRequestCheck && !request::isRequest()) {
+            return;
+        }
+
         $params = $gameRequest->getParameterArray();
         $params['request_id'] = $gameRequest->getRequestId();
         $params['log_type'] = $logLevel;

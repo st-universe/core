@@ -14,6 +14,8 @@ use Stu\Component\Admin\Reset\Fleet\FleetResetInterface;
 use Stu\Component\Admin\Reset\Map\MapResetInterface;
 use Stu\Component\Admin\Reset\Ship\ShipResetInterface;
 use Stu\Component\Admin\Reset\Storage\StorageResetInterface;
+use Stu\Component\Admin\Reset\Trade\TradeResetInterface;
+use Stu\Component\Admin\Reset\User\UserResetInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Module\Config\StuConfigInterface;
@@ -44,6 +46,10 @@ final class ResetManager implements ResetManagerInterface
 
     private MapResetInterface $mapReset;
 
+    private TradeResetInterface $tradeReset;
+
+    private UserResetInterface $userReset;
+
     private GameRequestRepositoryInterface $gameRequestRepository;
 
     private GameConfigRepositoryInterface $gameConfigRepository;
@@ -71,6 +77,8 @@ final class ResetManager implements ResetManagerInterface
         ShipResetInterface $shipReset,
         StorageResetInterface $storageReset,
         MapResetInterface $mapReset,
+        TradeResetInterface $tradeReset,
+        UserResetInterface $userReset,
 
         GameRequestRepositoryInterface $gameRequestRepository,
 
@@ -91,6 +99,8 @@ final class ResetManager implements ResetManagerInterface
         $this->shipReset = $shipReset;
         $this->storageReset = $storageReset;
         $this->mapReset = $mapReset;
+        $this->tradeReset = $tradeReset;
+        $this->userReset = $userReset;
 
         $this->gameRequestRepository = $gameRequestRepository;
 
@@ -129,33 +139,52 @@ final class ResetManager implements ResetManagerInterface
             $this->fleetReset->deleteAllFleets();
             $this->knReset->resetKn();
             $this->pmReset->resetPms();
+            $this->pmReset->deleteAllContacts();
+
+            $this->tradeReset->deleteAllBasicTrades();
+            $this->tradeReset->deleteAllDeals();
+            $this->tradeReset->deleteAllLotteryTickets();
+            $this->tradeReset->deleteAllTradeShoutboxEntries();
+            $this->tradeReset->deleteAllTradeTransactions();
 
             $this->allianceReset->deleteAllAllianceBoards();
-            $this->allianceReset->deleteAllUserAllianceJobs();
-            $this->allianceReset->deleteAllUserAllianceRelations();
-            $this->allianceReset->deleteAllUserAlliances();
+            $this->allianceReset->deleteAllAllianceJobs();
+            $this->allianceReset->deleteAllAllianceRelations();
+            $this->allianceReset->deleteAllAlliances();
 
             $this->shipReset->undockAllDockedShips();
             $this->shipReset->deactivateAllTractorBeams();
             $this->shipReset->deleteAllTradeposts();
             $this->shipReset->deleteAllShips();
-            $this->shipReset->deleteAllUserBuildplans();
+            $this->shipReset->deleteAllBuildplans();
+
+            $this->userReset->archiveBlockedUsers();
+            $this->userReset->deleteAllDatabaseUserEntries();
+            $this->userReset->deleteAllNotes();
+            $this->userReset->deleteAllPrestigeLogs();
+            $this->userReset->resetNpcs();
+            $this->userReset->deleteAllUserInvitations();
+            $this->userReset->deleteAllUserIpTableEntries();
+            $this->userReset->deleteAllUserProfileVisitors();
+
+            $this->mapReset->deleteAllUserMaps();
+            $this->mapReset->deleteAllFlightSignatures();
+            $this->mapReset->deleteAllAstroEntries();
+            $this->mapReset->deleteAllColonyScans();
+            $this->mapReset->deleteAllTachyonScans();
+            $this->mapReset->deleteAllUserLayers();
 
             $io->info('  - deleting all non npc users', true);
             $this->playerDeletion->handleReset();
             $this->entityManager->flush();
 
-            //other
-            $this->mapReset->deleteAllUserMaps();
-            $this->mapReset->deleteAllFlightSignatures();
-            $this->resetColonySurfaceMasks($io);
-            $this->deleteHistory($io);
+            // clear game data
             $this->resetGameTurns($io);
             $this->gameRequestRepository->truncateAllGameRequests();
 
-            // clear game data
-            // user locks
-            // blocked users
+            //other
+            $this->resetColonySurfaceMasks($io);
+            $this->deleteHistory($io);
         } catch (Throwable $t) {
             $this->entityManager->rollback();
 

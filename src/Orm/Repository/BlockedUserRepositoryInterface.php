@@ -10,6 +10,7 @@ use Stu\Orm\Entity\BlockedUserInterface;
  * @extends ObjectRepository<BlockedUser>
  *
  * @method null|BlockedUserInterface find(integer $id)
+ * @method BlockedUserInterface[] findAll()
  */
 interface BlockedUserRepositoryInterface extends ObjectRepository
 {

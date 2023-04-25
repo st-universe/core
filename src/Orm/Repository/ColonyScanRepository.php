@@ -138,4 +138,14 @@ final class ColonyScanRepository extends EntityRepository implements ColonyScanR
             ])
             ->getSingleScalarResult();
     }
+
+    public function truncateAllColonyScans(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s cs',
+                ColonyScan::class
+            )
+        )->execute();
+    }
 }

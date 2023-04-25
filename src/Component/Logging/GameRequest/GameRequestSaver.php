@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Logging\GameRequest;
 
-use Stu\Component\Logging\GameRequest\Adapter\GameRequstLoggerInterface;
+use Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface;
 use Stu\Orm\Entity\GameRequestInterface;
 
 /**
@@ -12,13 +12,13 @@ use Stu\Orm\Entity\GameRequestInterface;
  */
 final class GameRequestSaver implements GameRequestSaverInterface
 {
-    private GameRequstLoggerInterface $gameRequstLogger;
+    private GameRequestLoggerInterface $gameRequstLogger;
 
     private ParameterSanitizerInterface $parameterSanitizer;
 
     public function __construct(
         ParameterSanitizerInterface $parameterSanitizer,
-        GameRequstLoggerInterface $gameRequstLogger
+        GameRequestLoggerInterface $gameRequstLogger
     ) {
         $this->gameRequstLogger = $gameRequstLogger;
         $this->parameterSanitizer = $parameterSanitizer;

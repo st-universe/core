@@ -23,4 +23,6 @@ interface TradeShoutboxRepositoryInterface extends ObjectRepository
     public function save(TradeShoutboxInterface $tradeShoutbox): void;
 
     public function truncateByUser(int $userId): void;
+
+    public function truncateAllEntries(): void;
 }

@@ -69,4 +69,14 @@ final class TradeShoutboxRepository extends EntityRepository implements TradeSho
             ->setParameters(['userId' => $userId])
             ->execute();
     }
+
+    public function truncateAllEntries(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s ts',
+                TradeShoutbox::class
+            )
+        )->execute();
+    }
 }

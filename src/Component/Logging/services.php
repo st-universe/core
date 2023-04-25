@@ -10,7 +10,7 @@ use Monolog\Logger;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Logging\GameRequest\Adapter\DatabaseAdapter;
-use Stu\Component\Logging\GameRequest\Adapter\GameRequstLoggerInterface;
+use Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface;
 use Stu\Component\Logging\GameRequest\Adapter\LogfileAdapter;
 use Stu\Component\Logging\GameRequest\GameRequestSaver;
 use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
@@ -36,7 +36,7 @@ return [
         );
     },
     DatabaseAdapter::class => autowire(),
-    LogfileAdapter::class => function (ConfigInterface $config): GameRequstLoggerInterface {
+    LogfileAdapter::class => function (ConfigInterface $config): GameRequestLoggerInterface {
         $logger = new Logger(
             'GameRequestLogger',
             [

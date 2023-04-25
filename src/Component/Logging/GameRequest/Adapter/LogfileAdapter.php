@@ -24,7 +24,8 @@ final class LogfileAdapter extends AbstractAdapter
 
     protected function log(
         GameRequestInterface $gameRequest,
-        Level $logLevel
+        Level $logLevel,
+        bool $isRequestCheck = true
     ): void {
         $this->logger->log(
             $logLevel,
