@@ -300,6 +300,6 @@ final class ResetManager implements ResetManagerInterface
             )
         );
 
-        $io->info('    - resetted " . $count . " sequences', true);
+        $io->info('    - resetted ' . $count . ' sequences', true);
     }
 }
