@@ -125,7 +125,7 @@ final class ResetManager implements ResetManagerInterface
         $sleepCountdownInSeconds = $this->stuConfig->getResetSettings()->getDelayInSeconds();
 
         while ($sleepCountdownInSeconds > 0) {
-            $io->info('  - sleeping for " . $sleepCountdownInSeconds . " seconds', true);
+            $io->info('  - sleeping for ' . $sleepCountdownInSeconds . ' seconds', true);
             sleep(5);
 
             $sleepCountdownInSeconds -= 5;
