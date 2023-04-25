@@ -34,7 +34,7 @@ final class ProcessTickCommand extends Command
     public function execute(): void
     {
         $tickRunner = $this->dic->get(ProcessTickRunner::class);
-        $tickRunner->runWithResetCheck(1, 1);
+        $tickRunner->run(1, 1);
 
         $this->io()->ok(
             'Process tick has been executed',

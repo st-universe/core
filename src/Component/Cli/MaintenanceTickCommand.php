@@ -34,7 +34,7 @@ final class MaintenanceTickCommand extends Command
     public function execute(): void
     {
         $tickRunner = $this->dic->get(MaintenanceTickRunner::class);
-        $tickRunner->runWithResetCheck(1, 1);
+        $tickRunner->run(1, 1);
 
         $this->io()->ok(
             'Maintenance tick has been executed',

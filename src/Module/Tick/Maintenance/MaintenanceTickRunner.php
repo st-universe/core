@@ -2,20 +2,22 @@
 
 namespace Stu\Module\Tick\Maintenance;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
-use Stu\Module\Tick\AbstractTickRunner;
+use Stu\Module\Tick\TickRunnerInterface;
+use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
 /**
  * Executes maintenance tasks like db backup and such
  */
-final class MaintenanceTickRunner extends AbstractTickRunner
+final class MaintenanceTickRunner implements TickRunnerInterface
 {
+    private const TICK_DESCRIPTION = "maintenancetick";
+
     private GameConfigRepositoryInterface $gameConfigRepository;
+
+    private TransactionTickRunnerInterface $transactionTickRunner;
 
     /** @var array<MaintenanceHandlerInterface> */
     private array $handlerList;
@@ -24,24 +26,29 @@ final class MaintenanceTickRunner extends AbstractTickRunner
      * @param array<MaintenanceHandlerInterface> $handlerList
      */
     public function __construct(
-        GameControllerInterface $game,
         GameConfigRepositoryInterface $gameConfigRepository,
-        EntityManagerInterface $entityManager,
-        FailureEmailSenderInterface $failureEmailSender,
+        TransactionTickRunnerInterface $transactionTickRunner,
         array $handlerList
     ) {
-        parent::__construct($game, $entityManager, $failureEmailSender);
         $this->gameConfigRepository = $gameConfigRepository;
+        $this->transactionTickRunner = $transactionTickRunner;
         $this->handlerList = $handlerList;
     }
 
-    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
+    public function run(int $batchGroup, int $batchGroupCount): void
     {
         $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE);
 
-        foreach ($this->handlerList as $handler) {
-            $handler->handle();
-        }
+        $this->transactionTickRunner->runWithResetCheck(
+            function (): void {
+                foreach ($this->handlerList as $handler) {
+                    $handler->handle();
+                }
+            },
+            self::TICK_DESCRIPTION,
+            $batchGroup,
+            $batchGroupCount
+        );
 
         $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE);
     }
@@ -49,10 +56,5 @@ final class MaintenanceTickRunner extends AbstractTickRunner
     private function setGameState(int $stateId): void
     {
         $this->gameConfigRepository->updateGameState($stateId);
-    }
-
-    public function getTickDescription(): string
-    {
-        return "maintenancetick";
     }
 }

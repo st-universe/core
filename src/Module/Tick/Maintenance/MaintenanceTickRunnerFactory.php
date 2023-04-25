@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Maintenance;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Module\Tick\TickRunnerInterface;
+use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
 /**
@@ -16,24 +14,16 @@ use Stu\Orm\Repository\GameConfigRepositoryInterface;
  */
 final class MaintenanceTickRunnerFactory implements MaintenanceTickRunnerFactoryInterface
 {
-    private GameControllerInterface $game;
-
     private GameConfigRepositoryInterface $gameConfigRepository;
 
-    private EntityManagerInterface $entityManager;
-
-    private FailureEmailSenderInterface $failureEmailSender;
+    private TransactionTickRunnerInterface $transactionTickRunner;
 
     public function __construct(
-        GameControllerInterface $game,
         GameConfigRepositoryInterface $gameConfigRepository,
-        EntityManagerInterface $entityManager,
-        FailureEmailSenderInterface $failureEmailSender
+        TransactionTickRunnerInterface $transactionTickRunner
     ) {
-        $this->game = $game;
         $this->gameConfigRepository = $gameConfigRepository;
-        $this->entityManager = $entityManager;
-        $this->failureEmailSender = $failureEmailSender;
+        $this->transactionTickRunner = $transactionTickRunner;
     }
 
     /**
@@ -43,10 +33,8 @@ final class MaintenanceTickRunnerFactory implements MaintenanceTickRunnerFactory
         array $handlerList
     ): TickRunnerInterface {
         return new MaintenanceTickRunner(
-            $this->game,
             $this->gameConfigRepository,
-            $this->entityManager,
-            $this->failureEmailSender,
+            $this->transactionTickRunner,
             $handlerList
         );
     }
