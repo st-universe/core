@@ -10,6 +10,7 @@ use Stu\Orm\Entity\AllianceBoardInterface;
  * @extends ObjectRepository<AllianceBoard>
  *
  * @method null|AllianceBoardInterface find(integer $id)
+ * @method AllianceBoardInterface[] findAll()
  */
 interface AllianceBoardRepositoryInterface extends ObjectRepository
 {
@@ -20,7 +21,7 @@ interface AllianceBoardRepositoryInterface extends ObjectRepository
     public function delete(AllianceBoardInterface $post): void;
 
     /**
-     * @return list<AllianceBoardInterface>
+     * @return array<AllianceBoardInterface>
      */
     public function getByAlliance(int $allianceId): array;
 }

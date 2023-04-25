@@ -58,4 +58,6 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
      * @return list<TradeOfferInterface>
      */
     public function getOldOffers(int $threshold): array;
+
+    public function truncateAllTradeOffers(): void;
 }

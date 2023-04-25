@@ -51,6 +51,19 @@ class UserCreateCommandTest extends StuTestCase
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage('The provided faction is invalid');
 
+        $app = $this->mock(Application::class);
+        $interactor = $this->mock(CliInteractorHelper::class);
+
+        $this->subject->bind($app);
+
+        $app->shouldReceive('io')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($interactor);
+
+        $interactor->shouldReceive('info')
+            ->zeroOrMoreTimes();
+
         $this->subject->execute(
             'snafu',
             'roedlbroem@example.com',
@@ -87,6 +100,9 @@ class UserCreateCommandTest extends StuTestCase
                 }),
                 2
             );
+
+        $interactor->shouldReceive('info')
+            ->zeroOrMoreTimes();
 
         $this->subject->execute(
             $userName,
@@ -137,6 +153,9 @@ class UserCreateCommandTest extends StuTestCase
                 true
             )
             ->once();
+
+        $interactor->shouldReceive('info')
+            ->zeroOrMoreTimes();
 
         $this->dic->shouldReceive('get')
             ->with(FactionRepositoryInterface::class)

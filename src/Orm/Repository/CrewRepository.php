@@ -75,4 +75,14 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             ->setParameter('userId', $userId)
             ->execute();
     }
+
+    public function truncateAllCrew(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s c',
+                Crew::class
+            )
+        )->execute();
+    }
 }

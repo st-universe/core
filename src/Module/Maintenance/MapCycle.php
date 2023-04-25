@@ -46,6 +46,6 @@ final class MapCycle implements MaintenanceHandlerInterface
         $userLayer->setMappingType(MapEnum::MAPTYPE_LAYER_EXPLORED);
         $this->userLayerRepository->save($userLayer);
 
-        $this->userMapRepository->truncateByUser($userLayer->getUser()->getId(), $userLayer->getLayer()->getId());
+        $this->userMapRepository->truncateByUserAndLayer($userLayer->getUser()->getId(), $userLayer->getLayer()->getId());
     }
 }

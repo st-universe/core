@@ -33,7 +33,6 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em = $this->getEntityManager();
 
         $em->remove($fleet);
-        $em->flush();
     }
 
     public function truncateByUser(UserInterface $user): void
@@ -83,5 +82,15 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             )
             ->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
             ->getResult();
+    }
+
+    public function truncateAllFleets(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s f',
+                Fleet::class
+            )
+        )->execute();
     }
 }

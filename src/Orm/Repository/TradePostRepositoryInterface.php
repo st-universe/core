@@ -11,6 +11,8 @@ use Stu\Orm\Entity\UserInterface;
  * @extends ObjectRepository<TradePost>
  *
  * @method null|TradePostInterface find(integer $id)
+ * @method TradePostInterface[] findAll()
+ * 
  */
 interface TradePostRepositoryInterface extends ObjectRepository
 {

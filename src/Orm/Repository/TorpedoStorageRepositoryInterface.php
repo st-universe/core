@@ -18,4 +18,6 @@ interface TorpedoStorageRepositoryInterface extends ObjectRepository
     public function save(TorpedoStorageInterface $torpedoStorage): void;
 
     public function delete(TorpedoStorageInterface $torpedoStorage): void;
+
+    public function truncateAllTorpedoStorages(): void;
 }

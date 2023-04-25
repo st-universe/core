@@ -32,7 +32,6 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
     }
 
     public function getBy(int $offset, int $limit): array

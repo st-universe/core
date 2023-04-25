@@ -32,4 +32,14 @@ final class GameRequestRepository extends EntityRepository implements GameReques
         $em = $this->getEntityManager();
         $em->remove($gameRequest);
     }
+
+    public function truncateAllGameRequests(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s gr',
+                GameRequest::class
+            )
+        )->execute();
+    }
 }

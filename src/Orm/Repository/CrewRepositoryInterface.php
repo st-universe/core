@@ -11,6 +11,7 @@ use Stu\Orm\Entity\UserInterface;
  * @extends ObjectRepository<Crew>
  *
  * @method null|CrewInterface find(integer $id)
+ * @method CrewInterface[] findAll()
  */
 interface CrewRepositoryInterface extends ObjectRepository
 {
@@ -26,4 +27,6 @@ interface CrewRepositoryInterface extends ObjectRepository
     ): int;
 
     public function truncateByUser(int $userId): void;
+
+    public function truncateAllCrew(): void;
 }

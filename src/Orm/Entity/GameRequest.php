@@ -54,10 +54,10 @@ class GameRequest implements GameRequestInterface
     private int $time;
 
     /**
-     * @Column(type="string")
+     * @Column(type="string", nullable=true)
      *
      */
-    private string $module;
+    private ?string $module = null;
 
     /**
      * @Column(type="string", nullable=true)
@@ -195,7 +195,7 @@ class GameRequest implements GameRequestInterface
         return $this->time;
     }
 
-    public function getModule(): string
+    public function getModule(): ?string
     {
         return $this->module;
     }

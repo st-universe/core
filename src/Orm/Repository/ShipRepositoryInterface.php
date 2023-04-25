@@ -270,4 +270,16 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return array<ShipInterface>
      */
     public function getStationsByUser(int $userId): array;
+
+    /**
+     * @return array<ShipInterface>
+     */
+    public function getAllDockedShips(): array;
+
+    /**
+     * @return array<ShipInterface>
+     */
+    public function getAllTractoringShips(): array;
+
+    public function truncateAllShips(): void;
 }

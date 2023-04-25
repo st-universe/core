@@ -272,4 +272,9 @@ class TradePost implements TradePostInterface
     {
         return $this->getUserId() < UserEnum::USER_FIRST_ID;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
