@@ -34,7 +34,7 @@ final class ManagerTickCommand extends Command
     public function execute(): void
     {
         $tickRunner = $this->dic->get(TickManagerRunner::class);
-        $tickRunner->runWithResetCheck(1, 1);
+        $tickRunner->run(1, 1);
 
         $this->io()->ok(
             'Manager tick has been executed',

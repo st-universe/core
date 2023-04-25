@@ -251,7 +251,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection<int, UserAwardInterface>
      *
-     * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="award_id")
      * @OrderBy({"award_id": "ASC"})
      */
     private $awards;
@@ -267,7 +267,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection<int, UserLayerInterface>
      *
-     * @OneToMany(targetEntity="UserLayer", mappedBy="user", indexBy="layer_id", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="UserLayer", mappedBy="user", indexBy="layer_id")
      */
     private $userLayers;
 
@@ -699,6 +699,12 @@ class User implements UserInterface
     public function setAlliance(?AllianceInterface $alliance): UserInterface
     {
         $this->alliance = $alliance;
+        return $this;
+    }
+
+    public function setAllianceId(?int $allianceId): UserInterface
+    {
+        $this->allys_id = $allianceId;
         return $this;
     }
 

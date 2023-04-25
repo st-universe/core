@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
+use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\StuTestCase;
 
 class ProcessTickRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
-
-    /** @var MockInterface&FailureEmailSenderInterface */
-    private MockInterface $failureEmailSender;
+    /** @var MockInterface&TransactionTickRunnerInterface */
+    private MockInterface $transactionTickRunner;
 
     /** @var MockInterface&ProcessTickHandlerInterface */
     private MockInterface $handler;
@@ -26,67 +21,43 @@ class ProcessTickRunnerTest extends StuTestCase
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->mock(EntityManagerInterface::class);
-        $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
+        $this->transactionTickRunner = $this->mock(TransactionTickRunnerInterface::class);
 
         $this->handler = $this->mock(ProcessTickHandlerInterface::class);
 
         $this->subject = new ProcessTickRunner(
-            $this->entityManager,
-            $this->failureEmailSender,
+            $this->transactionTickRunner,
             [
                 $this->handler
             ]
         );
     }
 
-    public function testRunErrorsOnInternalError(): void
+    public function testRunRuns(): void
     {
-        $errorMessage = 'some-error';
-        $error = new Exception($errorMessage);
-
-        static::expectException(Exception::class);
-        static::expectExceptionMessage($errorMessage);
-
-        $this->entityManager->shouldReceive('beginTransaction')
-            ->withNoArgs()
-            ->once();
-        $this->entityManager->shouldReceive('rollback')
-            ->withNoArgs()
-            ->once();
+        $batchGroup = 2;
+        $batchGroupCount = 5;
 
         $this->handler->shouldReceive('work')
             ->withNoArgs()
-            ->once()
-            ->andThrow($error);
+            ->once();
 
-        $this->failureEmailSender
-            ->shouldReceive('sendMail')
+        $this->transactionTickRunner->shouldReceive('runWithResetCheck')
             ->with(
-                'stu processtick failure',
-                Mockery::type('string')
+                Mockery::on(function ($callable): bool {
+                    if (!is_callable($callable)) {
+                        return false;
+                    }
+                    $callable();
+                    return true;
+                }),
+                "processtick",
+                $batchGroup,
+                $batchGroupCount
             )
             ->once();
 
-        $this->subject->run(1, 1);
-    }
 
-    public function testRunRuns(): void
-    {
-        $this->entityManager->shouldReceive('beginTransaction')
-            ->withNoArgs()
-            ->once();
-        $this->entityManager->shouldReceive('flush')
-            ->withNoArgs()
-            ->once();
-        $this->entityManager->shouldReceive('commit')
-            ->withNoArgs()
-            ->once();
-
-        $this->handler->shouldReceive('work')
-            ->withNoArgs()
-            ->once();
-
-        $this->subject->run(1, 1);
+        $this->subject->run($batchGroup, $batchGroupCount);
     }
 }

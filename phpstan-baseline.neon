@@ -2017,14 +2017,6 @@ parameters:
 			path: src/Module/Control/GameController.php
 
 		-
-			message: """
-				#^Parameter \\$gameRequestRepository of method Stu\\\\Module\\\\Control\\\\GameController\\:\\:__construct\\(\\) has typehint with deprecated interface Stu\\\\Orm\\\\Repository\\\\GameRequestRepositoryInterface\\:
-				Use logfile logging$#
-			"""
-			count: 1
-			path: src/Module/Control/GameController.php
-
-		-
 			message: "#^Property Stu\\\\Module\\\\Control\\\\GameController\\:\\:\\$gameStats type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Control/GameController.php
@@ -6610,12 +6602,7 @@ parameters:
 			path: src/Orm/Entity/ShipSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipSystem.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipSystem.php
 
@@ -7383,14 +7370,6 @@ parameters:
 			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
 			count: 1
 			path: src/Orm/Repository/ShipRepository.php
-
-		-
-			message: """
-				#^Fetching class constant class of deprecated class Stu\\\\Orm\\\\Repository\\\\GameRequestRepositoryInterface\\:
-				Use logfile logging$#
-			"""
-			count: 1
-			path: src/Orm/Repository/services.php
 
 		-
 			message: """

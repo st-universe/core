@@ -31,7 +31,6 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
     }
 
     public function truncateByAlliances(AllianceInterface $alliance, AllianceInterface $opponent): void

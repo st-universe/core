@@ -335,7 +335,7 @@ class Ship implements ShipInterface
     private ?TholianWebInterface $holdingWeb;
 
     /**
-     * @ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User", cascade={"persist"})
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private UserInterface $user;
@@ -356,7 +356,7 @@ class Ship implements ShipInterface
     /**
      * @var ArrayCollection<int, ShipSystemInterface>
      *
-     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type")
      * @OrderBy({"system_type": "ASC"})
      */
     private $systems;
@@ -376,7 +376,7 @@ class Ship implements ShipInterface
     /**
      * @var ArrayCollection<int, StorageInterface>
      *
-     * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="Storage", mappedBy="ship", indexBy="commodity_id")
      * @OrderBy({"commodity_id": "ASC"})
      */
     private $storage;

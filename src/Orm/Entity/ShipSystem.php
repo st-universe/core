@@ -80,20 +80,16 @@ class ShipSystem implements ShipSystemInterface
     private ?string $data = null;
 
     /**
-     * @var ModuleInterface
-     *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $module;
+    private ?ModuleInterface $module;
 
     /**
-     * @var ShipInterface
-     *
-     * @ManyToOne(targetEntity="Ship", cascade={"persist"})
+     * @ManyToOne(targetEntity="Ship")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $ship;
+    private ShipInterface $ship;
 
     public function getId(): int
     {

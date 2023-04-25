@@ -8,10 +8,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Tick\TickRunnerInterface;
 use Throwable;
 
-abstract class AbstractTickRunner implements TickRunnerInterface
+final class TransactionTickRunner implements TransactionTickRunnerInterface
 {
     protected EntityManagerInterface $entityManager;
     protected FailureEmailSenderInterface $failureEmailSender;
@@ -28,30 +27,29 @@ abstract class AbstractTickRunner implements TickRunnerInterface
         $this->failureEmailSender = $failureEmailSender;
     }
 
-    public abstract function runInTransaction(int $batchGroup, int $batchGroupCount): void;
-
-    public abstract function getTickDescription(): string;
-
-    public function runWithResetCheck(int $batchGroup, int $batchGroupCount): void
+    public function runWithResetCheck(callable $fn, string $tickDescription, int $batchGroup, int $batchGroupCount): void
     {
         if (!$this->isGameStateReset()) {
-            $this->run($batchGroup, $batchGroupCount);
+            $this->runInTransaction(
+                $fn,
+                $tickDescription,
+                $batchGroup,
+                $batchGroupCount
+            );
         }
     }
 
-    private function run(int $batchGroup, int $batchGroupCount): void
+    private function runInTransaction(callable $fn, string $tickDescription, int $batchGroup, int $batchGroupCount): void
     {
         $this->entityManager->beginTransaction();
 
         try {
-            $this->runInTransaction($batchGroup, $batchGroupCount);
+            $fn($batchGroup, $batchGroupCount);
 
             $this->entityManager->flush();
             $this->entityManager->commit();
         } catch (Throwable $e) {
             $this->entityManager->rollback();
-
-            $tickDescription = $this->getTickDescription();
 
             $this->failureEmailSender->sendMail(
                 sprintf('stu %s failure', $tickDescription),
@@ -68,7 +66,7 @@ abstract class AbstractTickRunner implements TickRunnerInterface
         }
     }
 
-    protected function isGameStateReset(): bool
+    public function isGameStateReset(): bool
     {
         return $this->game->getGameState() === GameEnum::CONFIG_GAMESTATE_VALUE_RESET;
     }

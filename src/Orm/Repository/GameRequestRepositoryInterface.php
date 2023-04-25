@@ -10,8 +10,6 @@ use Stu\Orm\Entity\GameRequestInterface;
  * @extends ObjectRepository<GameRequest>
  *
  * @method GameRequestInterface[] findAll()
- *
- * @deprecated Use logfile logging
  */
 interface GameRequestRepositoryInterface extends ObjectRepository
 {
@@ -20,4 +18,6 @@ interface GameRequestRepositoryInterface extends ObjectRepository
     public function save(GameRequestInterface $gameRequest): void;
 
     public function delete(GameRequestInterface $gameRequest): void;
+
+    public function truncateAllGameRequests(): void;
 }

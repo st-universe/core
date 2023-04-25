@@ -14,7 +14,7 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 interface ShipBuildplanRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<ShipBuildplanInterface>
+     * @return array<ShipBuildplanInterface>
      */
     public function getByUserAndBuildingFunction(int $userId, int $buildingFunction): array;
 
@@ -25,12 +25,12 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
     public function getShuttleBuildplan(int $commodityId): ?ShipBuildplanInterface;
 
     /**
-     * @return list<ShipBuildplanInterface>
+     * @return array<ShipBuildplanInterface>
      */
     public function getStationBuildplansByUser(int $userId): array;
 
     /**
-     * @return list<ShipBuildplanInterface>
+     * @return array<ShipBuildplanInterface>
      */
     public function getShipyardBuildplansByUser(int $userId): array;
 
@@ -41,9 +41,14 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
     public function delete(ShipBuildplanInterface $shipBuildplan): void;
 
     /**
-     * @return list<ShipBuildplanInterface>
+     * @return array<ShipBuildplanInterface>
      */
     public function getByUser(int $userId): array;
 
     public function findByUserAndName(int $userId, string $name): ?ShipBuildplanInterface;
+
+    /**
+     * @return array<ShipBuildplanInterface>
+     */
+    public function findAllNonNpcBuildplans(): array;
 }

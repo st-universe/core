@@ -43,7 +43,7 @@ interface GameRequestInterface
 
     public function getTime(): int;
 
-    public function getModule(): string;
+    public function getModule(): ?string;
 
     public function getAction(): ?string;
 

@@ -64,16 +64,24 @@ final class UserCreateCommand extends Command
             throw new InvalidArgumentException('The provided email address is invalid');
         }
 
+        $io->info('email validated', true);
+
         $factionId = FactionEnum::FACTION_NAME_TO_ID_MAP[$faction] ?? null;
         if ($factionId === null) {
             throw new InvalidArgumentException('The provided faction is invalid');
         }
 
+        $io->info('faction is valid', true);
+
         // prompt for the password
         $password = $io->promptHidden('Password', $passValidator, 2);
 
+        $io->info('passwort validated', true);
+
         /** @var FactionInterface $faction */
         $faction = $this->dic->get(FactionRepositoryInterface::class)->find($factionId);
+
+        $io->info('faction exists', true);
 
         $player = $this->dic->get(LocalPlayerCreator::class)->createPlayer(
             $username,

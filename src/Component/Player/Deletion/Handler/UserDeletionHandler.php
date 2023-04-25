@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserLockRepositoryInterface;
@@ -38,10 +37,6 @@ final class UserDeletionHandler implements PlayerDeletionHandlerInterface
         $this->unlockUser($user);
         $this->sessionStringRepository->truncate($user);
         $this->userProfileVisitorRepository->truncateByUser($user);
-
-        // set user state to deleted
-        $user->setState(UserEnum::DELETION_EXECUTED);
-        $this->userRepository->save($user);
 
         // delete user
         $this->userRepository->delete($user);

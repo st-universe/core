@@ -101,7 +101,7 @@ class Alliance implements AllianceInterface
     /**
      * @var ArrayCollection<int, AllianceJobInterface>
      *
-     * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance", indexBy="type")
+     * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance", indexBy="type", cascade={"remove"})
      */
     private Collection $jobs;
 
@@ -239,11 +239,22 @@ class Alliance implements AllianceInterface
 
     public function isNpcAlliance(): bool
     {
-        return $this->getFounder()->getUser()->isNpc();
+        $founder = $this->jobs->get(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+
+        if ($founder === null) {
+            return false;
+        }
+
+        return $founder->getUser()->isNpc();
     }
 
     public function getJobs(): Collection
     {
         return $this->jobs;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

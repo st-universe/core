@@ -70,7 +70,20 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
         ])->getSingleScalarResult();
     }
 
-    public function truncateByUser(int $userId, int $layerId): void
+    public function truncateByUser(int $userId): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s um
+                WHERE um.user_id = :userId',
+                UserMap::class
+            )
+        )->setParameters([
+            'userId' => $userId
+        ])->execute();
+    }
+
+    public function truncateByUserAndLayer(int $userId, int $layerId): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(
@@ -83,5 +96,15 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
             'userId' => $userId,
             'layerId' => $layerId
         ])->execute();
+    }
+
+    public function truncateAllUserMaps(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s um',
+                UserMap::class
+            )
+        )->execute();
     }
 }

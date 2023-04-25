@@ -30,7 +30,6 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
     }
 
     public function findAllOrdered(): array

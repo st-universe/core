@@ -93,12 +93,6 @@ class UserDeletionHandlerTest extends StuTestCase
             ->with($user)
             ->once();
 
-        $user->shouldReceive('setState')
-            ->with(UserEnum::DELETION_EXECUTED)
-            ->once();
-        $this->userRepository->shouldReceive('save')
-            ->with($user)
-            ->once();
         $this->userRepository->shouldReceive('delete')
             ->with($user)
             ->once();

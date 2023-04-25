@@ -9,33 +9,50 @@ use Exception;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
+use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\StuTestCase;
 
 class ShipTickRunnerTest extends StuTestCase
 {
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
+    /** @var MockInterface&ShipTickManagerInterface */
+    private MockInterface $shipTickManager;
+
+    /** @var MockInterface&TransactionTickRunnerInterface */
+    private MockInterface $transactionTickRunner;
 
     /** @var MockInterface&FailureEmailSenderInterface */
     private MockInterface $failureEmailSender;
 
-    /** @var MockInterface&ShipTickManagerInterface */
-    private MockInterface $shipTickManager;
+
+    /** @var MockInterface&EntityManagerInterface */
+    private MockInterface $entityManager;
 
     private ShipTickRunner $subject;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->mock(EntityManagerInterface::class);
-        $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
         $this->shipTickManager = $this->mock(ShipTickManagerInterface::class);
+        $this->transactionTickRunner = $this->mock(TransactionTickRunnerInterface::class);
+        $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
+        $this->entityManager = $this->mock(EntityManagerInterface::class);
 
         $this->subject = new ShipTickRunner(
-            $this->entityManager,
-            $this->failureEmailSender,
             $this->shipTickManager,
-            $this->initLoggerUtil()
+            $this->transactionTickRunner,
+            $this->failureEmailSender,
+            $this->initLoggerUtil(),
+            $this->entityManager
         );
+    }
+
+    public function testRunExpectNothingWhenGameStateReset(): void
+    {
+        $this->transactionTickRunner->shouldReceive('isGameStateReset')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $this->subject->run(1, 1);
     }
 
     public function testRunRuns5TimesUntilGivingUp(): void
@@ -45,6 +62,11 @@ class ShipTickRunnerTest extends StuTestCase
 
         static::expectException(Exception::class);
         static::expectExceptionMessage($errorText);
+
+        $this->transactionTickRunner->shouldReceive('isGameStateReset')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
 
         $this->entityManager->shouldReceive('beginTransaction')
             ->withNoArgs()
@@ -70,6 +92,11 @@ class ShipTickRunnerTest extends StuTestCase
 
     public function testRunRunsShipTick(): void
     {
+        $this->transactionTickRunner->shouldReceive('isGameStateReset')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
         $this->entityManager->shouldReceive('beginTransaction')
             ->withNoArgs()
             ->once();

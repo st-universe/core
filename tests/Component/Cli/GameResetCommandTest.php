@@ -60,7 +60,7 @@ class GameResetCommandTest extends StuTestCase
             ->once();
 
         $resetManager->shouldReceive('performReset')
-            ->withNoArgs()
+            ->with($interactor)
             ->once();
 
         $this->subject->execute();
