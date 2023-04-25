@@ -337,15 +337,10 @@ class ResetManagerTest extends StuTestCase
             ->with($entry)
             ->once();
 
-        $existingTurn = $this->mock(GameTurnInterface::class);
         $newTurn = $this->mock(GameTurnInterface::class);
 
-        $this->gameTurnRepository->shouldReceive('findAll')
+        $this->gameTurnRepository->shouldReceive('truncateAllGameTurns')
             ->withNoArgs()
-            ->once()
-            ->andReturn([$existingTurn]);
-        $this->gameTurnRepository->shouldReceive('delete')
-            ->with($existingTurn)
             ->once();
         $this->gameTurnRepository->shouldReceive('prototype')
             ->withNoArgs()

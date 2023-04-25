@@ -249,9 +249,7 @@ final class ResetManager implements ResetManagerInterface
     {
         $io->info('  - reset game turns', true);
 
-        foreach ($this->gameTurnRepository->findAll() as $turn) {
-            $this->gameTurnRepository->delete($turn);
-        }
+        $this->gameTurnRepository->truncateAllGameTurns();
 
         $turn = $this->gameTurnRepository->prototype()
             ->setTurn(1)
