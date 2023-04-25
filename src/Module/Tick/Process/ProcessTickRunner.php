@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Tick\AbstractTickRunner;
+use Stu\Module\Tick\TickRunnerInterface;
+use Stu\Module\Tick\TransactionTickRunnerInterface;
 
 /**
  * Executes all process related tasks (e.g. finishing build processes, ...)
  */
-final class ProcessTickRunner extends AbstractTickRunner
+final class ProcessTickRunner implements TickRunnerInterface
 {
+    private const TICK_DESCRIPTION = "processtick";
+
+    private TransactionTickRunnerInterface $transactionTickRunner;
+
     /** @var array<ProcessTickHandlerInterface> */
     private array $handlerList;
 
@@ -21,25 +23,24 @@ final class ProcessTickRunner extends AbstractTickRunner
      * @param array<ProcessTickHandlerInterface> $handlerList
      */
     public function __construct(
-        GameControllerInterface $game,
-        EntityManagerInterface $entityManager,
-        FailureEmailSenderInterface $failureEmailSender,
+        TransactionTickRunnerInterface $transactionTickRunner,
         array $handlerList
     ) {
-        parent::__construct($game, $entityManager, $failureEmailSender);
-
+        $this->transactionTickRunner = $transactionTickRunner;
         $this->handlerList = $handlerList;
     }
 
-    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
+    public function run(int $batchGroup, int $batchGroupCount): void
     {
-        foreach ($this->handlerList as $process) {
-            $process->work();
-        }
-    }
-
-    public function getTickDescription(): string
-    {
-        return "processtick";
+        $this->transactionTickRunner->runWithResetCheck(
+            function (): void {
+                foreach ($this->handlerList as $process) {
+                    $process->work();
+                }
+            },
+            self::TICK_DESCRIPTION,
+            $batchGroup,
+            $batchGroupCount
+        );
     }
 }

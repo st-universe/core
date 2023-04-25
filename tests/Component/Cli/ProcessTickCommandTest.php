@@ -53,7 +53,7 @@ class ProcessTickCommandTest extends StuTestCase
             ->once()
             ->andReturn($colonyTickRunner);
 
-        $colonyTickRunner->shouldReceive('runWithResetCheck')
+        $colonyTickRunner->shouldReceive('run')
             ->with(1, 1)
             ->once();
 

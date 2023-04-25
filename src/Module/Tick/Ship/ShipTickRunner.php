@@ -6,41 +6,50 @@ namespace Stu\Module\Tick\Ship;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Tick\AbstractTickRunner;
+use Stu\Module\Tick\TickRunnerInterface;
+use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Throwable;
 
 /**
  * Executes the shiptick
  */
-final class ShipTickRunner extends AbstractTickRunner
+final class ShipTickRunner implements TickRunnerInterface
 {
     /** @var int */
     private const ATTEMPTS = 5;
 
+    private const TICK_DESCRIPTION = "shiptick";
+
     private ShipTickManagerInterface $shipTickManager;
+
+    private TransactionTickRunnerInterface $transactionTickRunner;
+
+    private FailureEmailSenderInterface $failureEmailSender;
 
     private LoggerUtilInterface $loggerUtil;
 
-    public function __construct(
-        GameControllerInterface $game,
-        EntityManagerInterface $entityManager,
-        FailureEmailSenderInterface $failureEmailSender,
-        ShipTickManagerInterface $shipTickManager,
-        LoggerUtilFactoryInterface $loggerUtilFactory
-    ) {
-        parent::__construct($game, $entityManager, $failureEmailSender);
+    private EntityManagerInterface $entityManager;
 
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+    public function __construct(
+        ShipTickManagerInterface $shipTickManager,
+        TransactionTickRunnerInterface $transactionTickRunner,
+        FailureEmailSenderInterface $failureEmailSender,
+        LoggerUtilFactoryInterface $loggerUtilFactory,
+        EntityManagerInterface $entityManager
+    ) {
         $this->shipTickManager = $shipTickManager;
+        $this->transactionTickRunner = $transactionTickRunner;
+        $this->failureEmailSender = $failureEmailSender;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
+        $this->entityManager = $entityManager;
     }
 
-    public function runWithResetCheck(int $batchGroup, int $batchGroupCount): void
+    public function run(int $batchGroup, int $batchGroupCount): void
     {
-        if ($this->isGameStateReset()) {
+        if ($this->transactionTickRunner->isGameStateReset()) {
             return;
         }
 
@@ -56,12 +65,10 @@ final class ShipTickRunner extends AbstractTickRunner
                 break;
             } else {
 
-                $tickDescription = $this->getTickDescription();
-
                 // logging problem
                 $this->loggerUtil->log(sprintf(
                     "%s caused an exception. Remaing tries: %d\nException-Message: %s\nException-Trace: %s",
-                    $tickDescription,
+                    self::TICK_DESCRIPTION,
                     self::ATTEMPTS - $i,
                     $exception->getMessage(),
                     $exception->getTraceAsString()
@@ -70,11 +77,11 @@ final class ShipTickRunner extends AbstractTickRunner
                 // sending email if no remaining tries left
                 if ($i === self::ATTEMPTS) {
                     $this->failureEmailSender->sendMail(
-                        sprintf('stu %s failure', $tickDescription),
+                        sprintf('stu %s failure', self::TICK_DESCRIPTION),
                         sprintf(
                             "Current system time: %s\nThe %s cron caused an error:\n\n%s\n\n%s",
                             date('Y-m-d H:i:s'),
-                            $tickDescription,
+                            self::TICK_DESCRIPTION,
                             $exception->getMessage(),
                             $exception->getTraceAsString()
                         )
@@ -84,16 +91,6 @@ final class ShipTickRunner extends AbstractTickRunner
                 }
             }
         }
-    }
-
-    public function getTickDescription(): string
-    {
-        return "shiptick";
-    }
-
-    public function runInTransaction(int $batchGroup, int $batchGroupCount): void
-    {
-        //nothing to do here
     }
 
     private function execute(LoggerUtilInterface $loggerUtil): ?Throwable

@@ -4,15 +4,26 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
+use Ahc\Cli\IO\Interactor;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
-use Noodlehaus\ConfigInterface;
+use org\bovigo\vfs\vfsStream;
+use Stu\Component\Admin\Reset\Alliance\AllianceResetInterface;
+use Stu\Component\Admin\Reset\Communication\KnResetInterface;
+use Stu\Component\Admin\Reset\Communication\PmResetInterface;
+use Stu\Component\Admin\Reset\Crew\CrewResetInterface;
+use Stu\Component\Admin\Reset\Fleet\FleetResetInterface;
+use Stu\Component\Admin\Reset\Map\MapResetInterface;
+use Stu\Component\Admin\Reset\Ship\ShipResetInterface;
+use Stu\Component\Admin\Reset\Storage\StorageResetInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\HistoryInterface;
@@ -21,16 +32,41 @@ use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
+use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
-use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
-use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\StuTestCase;
 
 class ResetManagerTest extends StuTestCase
 {
+    /** @var MockInterface&KnResetInterface */
+    private MockInterface $knReset;
+
+    /** @var MockInterface&PmResetInterface */
+    private MockInterface $pmReset;
+
+    /** @var MockInterface&AllianceResetInterface */
+    private MockInterface $allianceReset;
+
+    /** @var MockInterface&FleetResetInterface */
+    private MockInterface $fleetReset;
+
+    /** @var MockInterface&CrewResetInterface */
+    private MockInterface $crewReset;
+
+    /** @var MockInterface&ShipResetInterface */
+    private MockInterface $shipReset;
+
+    /** @var MockInterface&StorageResetInterface */
+    private MockInterface $storageReset;
+
+    /** @var MockInterface&MapResetInterface */
+    private MockInterface $mapReset;
+
+    /** @var MockInterface&GameRequestRepositoryInterface */
+    private MockInterface $gameRequestRepository;
+
     /** @var MockInterface&GameConfigRepositoryInterface */
     private MockInterface $gameConfigRepository;
 
@@ -40,20 +76,11 @@ class ResetManagerTest extends StuTestCase
     /** @var MockInterface&ColonyRepositoryInterface */
     private MockInterface $colonyRepository;
 
-    /** @var MockInterface&KnPostRepositoryInterface */
-    private MockInterface $knPostRepository;
-
     /** @var MockInterface&HistoryRepositoryInterface */
     private MockInterface $historyRepository;
 
     /** @var MockInterface&GameTurnRepositoryInterface */
     private MockInterface $gameTurnRepository;
-
-    /** @var MockInterface&RpgPlotRepositoryInterface */
-    private MockInterface $rpgPlotRepository;
-
-    /** @var MockInterface&RpgPlotMemberRepositoryInterface */
-    private MockInterface $rpgPlotMemberRepository;
 
     /** @var MockInterface&PlanetFieldRepositoryInterface */
     private MockInterface $planetFieldRepository;
@@ -64,31 +91,50 @@ class ResetManagerTest extends StuTestCase
     /** @var MockInterface&EntityManagerInterface */
     private MockInterface $entityManager;
 
+    private Interactor $interactor;
+
     private ResetManager $manager;
 
     public function setUp(): void
     {
+        vfsStream::setup('tmpDir');
+
+        $this->knReset = $this->mock(KnResetInterface::class);
+        $this->pmReset = $this->mock(PmResetInterface::class);
+        $this->allianceReset = $this->mock(AllianceResetInterface::class);
+        $this->fleetReset = $this->mock(FleetResetInterface::class);
+        $this->crewReset = $this->mock(CrewResetInterface::class);
+        $this->shipReset = $this->mock(ShipResetInterface::class);
+        $this->storageReset = $this->mock(StorageResetInterface::class);
+        $this->mapReset = $this->mock(MapResetInterface::class);
+        $this->gameRequestRepository = $this->mock(GameRequestRepositoryInterface::class);
+
         $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);
         $this->playerDeletion = $this->mock(PlayerDeletionInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
-        $this->knPostRepository = $this->mock(KnPostRepositoryInterface::class);
         $this->historyRepository = $this->mock(HistoryRepositoryInterface::class);
         $this->gameTurnRepository = $this->mock(GameTurnRepositoryInterface::class);
-        $this->rpgPlotRepository = $this->mock(RpgPlotRepositoryInterface::class);
-        $this->rpgPlotMemberRepository = $this->mock(RpgPlotMemberRepositoryInterface::class);
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->stuConfig = $this->mock(StuConfigInterface::class);
         $this->entityManager = $this->mock(EntityManagerInterface::class);
 
+        $this->interactor = new Interactor(null, vfsStream::url('tmpDir') . '/foo');
+
         $this->manager = new ResetManager(
+            $this->knReset,
+            $this->pmReset,
+            $this->allianceReset,
+            $this->fleetReset,
+            $this->crewReset,
+            $this->shipReset,
+            $this->storageReset,
+            $this->mapReset,
+            $this->gameRequestRepository,
             $this->gameConfigRepository,
             $this->playerDeletion,
             $this->colonyRepository,
-            $this->knPostRepository,
             $this->historyRepository,
             $this->gameTurnRepository,
-            $this->rpgPlotMemberRepository,
-            $this->rpgPlotRepository,
             $this->planetFieldRepository,
             $this->stuConfig,
             $this->entityManager
@@ -100,7 +146,71 @@ class ResetManagerTest extends StuTestCase
         $database = $this->mock(Connection::class);
         $colony = $this->mock(ColonyInterface::class);
 
-        $adminId = 666;
+        $this->storageReset->shouldReceive('deleteAllTradeOffers')
+            ->withNoArgs()
+            ->once();
+        $this->storageReset->shouldReceive('deleteAllTorpedoStorages')
+            ->withNoArgs()
+            ->once();
+        $this->storageReset->shouldReceive('deleteAllStorages')
+            ->withNoArgs()
+            ->once();
+
+        $this->crewReset->shouldReceive('deleteAllCrew')
+            ->withNoArgs()
+            ->once();
+
+        $this->fleetReset->shouldReceive('deleteAllFleets')
+            ->withNoArgs()
+            ->once();
+
+        $this->knReset->shouldReceive('resetKn')
+            ->withNoArgs()
+            ->once();
+
+        $this->pmReset->shouldReceive('resetPms')
+            ->withNoArgs()
+            ->once();
+
+        $this->allianceReset->shouldReceive('deleteAllAllianceBoards')
+            ->withNoArgs()
+            ->once();
+        $this->allianceReset->shouldReceive('deleteAllUserAllianceJobs')
+            ->withNoArgs()
+            ->once();
+        $this->allianceReset->shouldReceive('deleteAllUserAllianceRelations')
+            ->withNoArgs()
+            ->once();
+        $this->allianceReset->shouldReceive('deleteAllUserAlliances')
+            ->withNoArgs()
+            ->once();
+
+        $this->shipReset->shouldReceive('undockAllDockedShips')
+            ->withNoArgs()
+            ->once();
+        $this->shipReset->shouldReceive('deactivateAllTractorBeams')
+            ->withNoArgs()
+            ->once();
+        $this->shipReset->shouldReceive('deleteAllTradeposts')
+            ->withNoArgs()
+            ->once();
+        $this->shipReset->shouldReceive('deleteAllShips')
+            ->withNoArgs()
+            ->once();
+        $this->shipReset->shouldReceive('deleteAllUserBuildplans')
+            ->withNoArgs()
+            ->once();
+
+        $this->mapReset->shouldReceive('deleteAllUserMaps')
+            ->withNoArgs()
+            ->once();
+        $this->mapReset->shouldReceive('deleteAllFlightSignatures')
+            ->withNoArgs()
+            ->once();
+
+        $this->gameRequestRepository->shouldReceive('truncateAllGameRequests')
+            ->withNoArgs()
+            ->once();
 
         $this->playerDeletion->shouldReceive('handleReset')
             ->withNoArgs()
@@ -110,11 +220,6 @@ class ResetManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(0);
-
-        $this->stuConfig->shouldReceive('getGameSettings->getAdminSettings->getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($adminId);
 
         $this->entityManager->shouldReceive('beginTransaction')
             ->withNoArgs()
@@ -130,14 +235,17 @@ class ResetManagerTest extends StuTestCase
             ->once()
             ->andReturn($database);
 
+        $result = $this->mock(Result::class);
+
         $database->shouldReceive('executeQuery')
-            ->with(
-                sprintf(
-                    'ALTER SEQUENCE stu_user_id_seq RESTART WITH %d',
-                    $adminId
-                )
-            )
-            ->once();
+            ->withAnyArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn($result);
+
+        $result->shouldReceive('fetchOne')
+            ->withAnyArgs()
+            ->zeroOrMoreTimes()
+            ->andReturn(false);
 
         $this->colonyRepository->shouldReceive('findAll')
             ->withNoArgs()
@@ -155,16 +263,6 @@ class ResetManagerTest extends StuTestCase
             ->with(null)
             ->once();
 
-        $post = $this->mock(KnPostInterface::class);
-
-        $this->knPostRepository->shouldReceive('findAll')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$post]);
-        $this->knPostRepository->shouldReceive('delete')
-            ->with($post)
-            ->once();
-
         $entry = $this->mock(HistoryInterface::class);
 
         $this->historyRepository->shouldReceive('findAll')
@@ -173,26 +271,6 @@ class ResetManagerTest extends StuTestCase
             ->andReturn([$entry]);
         $this->historyRepository->shouldReceive('delete')
             ->with($entry)
-            ->once();
-
-        $plot = $this->mock(RpgPlotInterface::class);
-
-        $this->rpgPlotRepository->shouldReceive('findAll')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$plot]);
-        $this->rpgPlotRepository->shouldReceive('delete')
-            ->with($plot)
-            ->once();
-
-        $plotMember = $this->mock(RpgPlotMemberInterface::class);
-
-        $this->rpgPlotMemberRepository->shouldReceive('findAll')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([$plotMember]);
-        $this->rpgPlotMemberRepository->shouldReceive('delete')
-            ->with($plotMember)
             ->once();
 
         $existingTurn = $this->mock(GameTurnInterface::class);
@@ -233,7 +311,7 @@ class ResetManagerTest extends StuTestCase
             ->with(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE)
             ->once();
 
-        $this->manager->performReset();
+        $this->manager->performReset($this->interactor);
     }
 
 
@@ -249,7 +327,7 @@ class ResetManagerTest extends StuTestCase
             ->once()
             ->andReturn(0);
 
-        $this->playerDeletion->shouldReceive('handleReset')
+        $this->storageReset->shouldReceive('deleteAllTradeOffers')
             ->withNoArgs()
             ->once()
             ->andThrow(new Exception($error));
@@ -265,6 +343,6 @@ class ResetManagerTest extends StuTestCase
             ->with(GameEnum::CONFIG_GAMESTATE_VALUE_RESET)
             ->once();
 
-        $this->manager->performReset();
+        $this->manager->performReset($this->interactor);
     }
 }

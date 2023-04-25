@@ -49,7 +49,7 @@ final class DoManualMaintenance implements ActionControllerInterface
             )
         );
 
-        $maintenance->runWithResetCheck(1, 1);
+        $maintenance->run(1, 1);
 
         $game->addInformation('Der Wartungs-Tick wurde durchgeführt!');
     }
