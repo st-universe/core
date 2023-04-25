@@ -203,7 +203,7 @@ final class ResetManager implements ResetManagerInterface
     {
         $this->gameConfigRepository->updateGameState($stateId);
 
-        $io->info("  - setting game state to '" . GameEnum::gameStateTypeToDescription($stateId) . " - " . GameEnum::CONFIG_GAMESTATE_VALUE_RESET . "'", true);
+        $io->info("  - setting game state to '" . GameEnum::gameStateTypeToDescription($stateId) . " - " . $stateId . "'", true);
     }
 
     private function deleteAllStorages(): void
