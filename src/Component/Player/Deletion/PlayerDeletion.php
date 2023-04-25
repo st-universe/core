@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion;
 
-use Doctrine\ORM\EntityManagerInterface;
 use JBBCode\Parser;
 use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Module\Config\StuConfigInterface;
@@ -31,9 +30,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     private LoggerUtilInterface $loggerUtil;
 
-    /** @todo remove EntityManager as it should only be used within repositories */
-    private EntityManagerInterface $entityManager;
-
     /** @var array<PlayerDeletionHandlerInterface> */
     private array $deletionHandler;
 
@@ -47,14 +43,12 @@ final class PlayerDeletion implements PlayerDeletionInterface
         StuConfigInterface $config,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         Parser $bbCodeParser,
-        EntityManagerInterface $entityManager,
         array $deletionHandler
     ) {
         $this->userRepository = $userRepository;
         $this->config = $config;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->bbCodeParser = $bbCodeParser;
-        $this->entityManager = $entityManager;
         $this->deletionHandler = $deletionHandler;
     }
 
@@ -103,7 +97,6 @@ final class PlayerDeletion implements PlayerDeletionInterface
             }
         );
 
-        $this->entityManager->flush();
         $this->loggerUtil->log(sprintf('deleted user (id: %d, name: %s, delmark: %d)', $userId, $name, $delmark));
     }
 }

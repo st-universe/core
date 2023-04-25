@@ -34,4 +34,6 @@ interface FleetRepositoryInterface extends ObjectRepository
      * @return iterable<FleetInterface>
      */
     public function getNonNpcFleetList(): iterable;
+
+    public function truncateAllFleets(): void;
 }

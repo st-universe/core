@@ -71,7 +71,7 @@ class ColonyScan implements ColonyScanInterface
     /**
      * @var ColonyInterface
      *
-     * @ManyToOne(targetEntity="Colony", inversedBy="colonyscan")
+     * @ManyToOne(targetEntity="Colony")
      * @JoinColumn(name="colony_id", referencedColumnName="id")
      */
     private $colony;
@@ -80,7 +80,7 @@ class ColonyScan implements ColonyScanInterface
     /**
      * @var UserInterface
      *
-     * @ManyToOne(targetEntity="User", inversedBy="colonyscan")
+     * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;

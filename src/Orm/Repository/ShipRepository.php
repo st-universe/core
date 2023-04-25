@@ -1059,4 +1059,36 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ])
             ->getResult();
     }
+
+    public function getAllDockedShips(): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.dock IS NOT NULL',
+                Ship::class
+            )
+        )->getResult();
+    }
+
+    public function getAllTractoringShips(): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.tractored_ship_id IS NOT NULL',
+                Ship::class
+            )
+        )->getResult();
+    }
+
+    public function truncateAllShips(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s s',
+                Ship::class
+            )
+        )->execute();
+    }
 }

@@ -23,12 +23,12 @@ interface AllianceRepositoryInterface extends ObjectRepository
     public function delete(AllianceInterface $post): void;
 
     /**
-     * @return list<AllianceInterface>
+     * @return array<AllianceInterface>
      */
     public function findAllOrdered(): array;
 
     /**
-     * @return list<AllianceInterface>
+     * @return array<AllianceInterface>
      */
     public function findByApplicationState(bool $acceptApplications): array;
 }

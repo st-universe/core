@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion;
 
-use Doctrine\ORM\EntityManagerInterface;
 use JBBCode\Parser;
 use Mockery;
 use Mockery\MockInterface;
@@ -40,11 +39,6 @@ class PlayerDeletionTest extends StuTestCase
     private $bbCodeParser;
 
     /**
-     * @var null|MockInterface|EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
      * @var null|MockInterface|PlayerDeletionHandlerInterface
      */
     private $deletionHandler;
@@ -60,7 +54,6 @@ class PlayerDeletionTest extends StuTestCase
         $this->config = $this->mock(StuConfigInterface::class);
         $this->loggerUtil = $this->mock(LoggerUtilInterface::class);
         $this->bbCodeParser = $this->mock(Parser::class);
-        $this->entityManager = $this->mock(EntityManagerInterface::class);
         $this->deletionHandler = $this->mock(PlayerDeletionHandlerInterface::class);
 
         $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
@@ -74,7 +67,6 @@ class PlayerDeletionTest extends StuTestCase
             $this->config,
             $loggerUtilFactory,
             $this->bbCodeParser,
-            $this->entityManager,
             [$this->deletionHandler]
         );
     }
@@ -152,10 +144,6 @@ class PlayerDeletionTest extends StuTestCase
             ->twice()
             ->andReturn('bar');
 
-        $this->entityManager->shouldReceive('flush')
-            ->withNoArgs()
-            ->twice();
-
         $this->playerDeletion->handleDeleteable();
     }
 
@@ -201,10 +189,6 @@ class PlayerDeletionTest extends StuTestCase
             ->with()
             ->once()
             ->andReturn('bar');
-
-        $this->entityManager->shouldReceive('flush')
-            ->withNoArgs()
-            ->once();
 
         $this->playerDeletion->handleReset();
     }

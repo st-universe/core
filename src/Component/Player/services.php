@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Player;
 
-use Doctrine\ORM\EntityManagerInterface;
 use JBBCode\Parser;
 use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;
@@ -45,7 +44,6 @@ return [
         get(StuConfigInterface::class),
         get(LoggerUtilFactoryInterface::class),
         get(Parser::class),
-        get(EntityManagerInterface::class),
         [
             autowire(Handler\AllianceDeletionHandler::class),
             autowire(Handler\ColonyDeletionHandler::class),
@@ -57,6 +55,7 @@ return [
             autowire(Handler\ShipDeletionHandler::class),
             autowire(Handler\FleetDeletionHandler::class),
             autowire(Handler\ShipBuildplanDeletionHandler::class),
+            autowire(Handler\UserMapDeletionHandler::class),
             autowire(Handler\UserDeletionHandler::class)
         ]
     ),

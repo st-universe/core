@@ -47,7 +47,7 @@ final class DatabaseAdapter extends AbstractAdapter
                 'action_ms' => $gameRequest->getActionMs(),
                 'view' => $gameRequest->getView(),
                 'view_ms' => $gameRequest->getViewMs(),
-                'user_id' => (int) $gameRequest->getUserId(),
+                'user_id' => $gameRequest->getUserId(),
                 'render_ms' => $gameRequest->getRenderMs(),
                 'params' => json_encode($params, JSON_PRETTY_PRINT),
             ],

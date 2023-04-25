@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRump;
@@ -140,7 +141,6 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em = $this->getEntityManager();
 
         $em->remove($shipBuildplan);
-        $em->flush();
     }
 
     public function getByUser(int $userId): array
@@ -156,5 +156,21 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             'user_id' => $userId,
             'name' => $name
         ]);
+    }
+
+    public function findAllNonNpcBuildplans(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT bp FROM %s bp
+                    WHERE bp.user_id >= :firstUserId',
+                    ShipBuildplan::class
+                )
+            )
+            ->setParameters([
+                'firstUserId' => UserEnum::USER_FIRST_ID
+            ])
+            ->getResult();
     }
 }

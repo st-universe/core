@@ -38,7 +38,6 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
         $em = $this->getEntityManager();
 
         $em->remove($tradePost);
-        $em->flush();
     }
 
     public function getByUser(int $userId): array

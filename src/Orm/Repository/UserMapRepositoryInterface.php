@@ -16,5 +16,9 @@ interface UserMapRepositoryInterface extends ObjectRepository
 
     public function getAmountByUser(int $userId, int $layerId): int;
 
-    public function truncateByUser(int $userId, int $layerId): void;
+    public function truncateByUser(int $userId): void;
+
+    public function truncateByUserAndLayer(int $userId, int $layerId): void;
+
+    public function truncateAllUserMaps(): void;
 }

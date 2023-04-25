@@ -2,7 +2,9 @@
 
 namespace Stu\Component\Admin\Reset;
 
+use Ahc\Cli\IO\Interactor;
+
 interface ResetManagerInterface
 {
-    public function performReset(): void;
+    public function performReset(Interactor $io): void;
 }

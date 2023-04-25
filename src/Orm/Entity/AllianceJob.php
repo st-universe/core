@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
 /**
@@ -59,7 +60,7 @@ class AllianceJob implements AllianceJobInterface
     /**
      * @var UserInterface
      *
-     * @ManyToOne(targetEntity="User")
+     * @OneToOne(targetEntity="User", cascade={"persist"})
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;

@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Maintenance;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
+use Stu\Module\Tick\TransactionTickRunnerInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -19,11 +18,8 @@ class MaintenanceTickRunnerTest extends StuTestCase
     /** @var MockInterface&GameConfigRepositoryInterface */
     private MockInterface $gameConfigRepository;
 
-    /** @var MockInterface&EntityManagerInterface */
-    private MockInterface $entityManager;
-
-    /** @var MockInterface&FailureEmailSenderInterface */
-    private MockInterface $failureEmailSender;
+    /** @var MockInterface&TransactionTickRunnerInterface */
+    private MockInterface $transactionTickRunner;
 
     /** @var MockInterface&MaintenanceHandlerInterface */
     private MockInterface $maintenanceHandler;
@@ -33,15 +29,13 @@ class MaintenanceTickRunnerTest extends StuTestCase
     protected function setUp(): void
     {
         $this->gameConfigRepository = $this->mock(GameConfigRepositoryInterface::class);
-        $this->entityManager = $this->mock(EntityManagerInterface::class);
-        $this->failureEmailSender = $this->mock(FailureEmailSenderInterface::class);
+        $this->transactionTickRunner = $this->mock(TransactionTickRunnerInterface::class);
 
         $this->maintenanceHandler = $this->mock(MaintenanceHandlerInterface::class);
 
         $this->subject = new MaintenanceTickRunner(
             $this->gameConfigRepository,
-            $this->entityManager,
-            $this->failureEmailSender,
+            $this->transactionTickRunner,
             [
                 $this->maintenanceHandler,
             ]
@@ -59,26 +53,8 @@ class MaintenanceTickRunnerTest extends StuTestCase
         $this->gameConfigRepository->shouldReceive('updateGameState')
             ->with(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE)
             ->once();
-        $this->gameConfigRepository->shouldReceive('updateGameState')
-            ->with(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE)
-            ->once();
 
-        $this->entityManager->shouldReceive('beginTransaction')
-            ->withNoArgs()
-            ->once();
-        $this->entityManager->shouldReceive('rollback')
-            ->withNoArgs()
-            ->once();
-
-        $this->failureEmailSender->shouldReceive('sendMail')
-            ->with(
-                'stu maintenancetick failure',
-                Mockery::type('string')
-            )
-            ->once();
-
-        $this->maintenanceHandler->shouldReceive('handle')
-            ->withNoArgs()
+        $this->transactionTickRunner->shouldReceive('runWithResetCheck')
             ->once()
             ->andThrow($error);
 
@@ -87,6 +63,9 @@ class MaintenanceTickRunnerTest extends StuTestCase
 
     public function testRunRuns(): void
     {
+        $batchGroup = 2;
+        $batchGroupCount = 5;
+
         $this->gameConfigRepository->shouldReceive('updateGameState')
             ->with(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE)
             ->once();
@@ -94,20 +73,25 @@ class MaintenanceTickRunnerTest extends StuTestCase
             ->with(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE)
             ->once();
 
-        $this->entityManager->shouldReceive('beginTransaction')
-            ->withNoArgs()
-            ->once();
-        $this->entityManager->shouldReceive('flush')
-            ->withNoArgs()
-            ->once();
-        $this->entityManager->shouldReceive('commit')
-            ->withNoArgs()
-            ->once();
-
         $this->maintenanceHandler->shouldReceive('handle')
             ->withNoArgs()
             ->once();
 
-        $this->subject->run(1, 1);
+        $this->transactionTickRunner->shouldReceive('runWithResetCheck')
+            ->with(
+                Mockery::on(function ($callable): bool {
+                    if (!is_callable($callable)) {
+                        return false;
+                    }
+                    $callable();
+                    return true;
+                }),
+                "maintenancetick",
+                $batchGroup,
+                $batchGroupCount
+            )
+            ->once();
+
+        $this->subject->run($batchGroup, $batchGroupCount);
     }
 }

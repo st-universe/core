@@ -236,4 +236,9 @@ class Fleet implements FleetInterface
         $this->hiddenStyle = $hiddenStyle;
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

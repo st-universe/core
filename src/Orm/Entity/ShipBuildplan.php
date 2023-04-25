@@ -73,7 +73,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     /**
      * @var Collection<int, ShipInterface>
      *
-     * @OneToMany(targetEntity="Ship", mappedBy="buildplan", fetch="EXTRA_LAZY", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="Ship", mappedBy="buildplan", fetch="EXTRA_LAZY")
      */
     private Collection $ships;
 
@@ -88,7 +88,7 @@ class ShipBuildplan implements ShipBuildplanInterface
     /**
      * @var UserInterface
      *
-     * @ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User", cascade={"persist"})
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;

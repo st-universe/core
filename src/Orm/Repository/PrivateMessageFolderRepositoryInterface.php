@@ -11,6 +11,7 @@ use Stu\Orm\Entity\UserInterface;
  * @extends ObjectRepository<PrivateMessageFolder>
  *
  * @method null|PrivateMessageFolderInterface find(integer $id)
+ * @method PrivateMessageFolderInterface[] findAll()
  */
 interface PrivateMessageFolderRepositoryInterface extends ObjectRepository
 {

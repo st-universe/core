@@ -4,82 +4,156 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
+use Ahc\Cli\IO\Interactor;
 use Doctrine\ORM\EntityManagerInterface;
-use Noodlehaus\ConfigInterface;
+use Stu\Component\Admin\Reset\Alliance\AllianceResetInterface;
+use Stu\Component\Admin\Reset\Communication\KnResetInterface;
+use Stu\Component\Admin\Reset\Communication\PmResetInterface;
+use Stu\Component\Admin\Reset\Crew\CrewResetInterface;
+use Stu\Component\Admin\Reset\Fleet\FleetResetInterface;
+use Stu\Component\Admin\Reset\Map\MapResetInterface;
+use Stu\Component\Admin\Reset\Ship\ShipResetInterface;
+use Stu\Component\Admin\Reset\Storage\StorageResetInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
+use Stu\Module\Config\StuConfigInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\GameConfigRepositoryInterface;
+use Stu\Orm\Repository\GameRequestRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
-use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
-use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Throwable;
 
 final class ResetManager implements ResetManagerInterface
 {
+    private KnResetInterface $knReset;
+
+    private PmResetInterface $pmReset;
+
+    private AllianceResetInterface $allianceReset;
+
+    private FleetResetInterface $fleetReset;
+
+    private CrewResetInterface $crewReset;
+
+    private ShipResetInterface $shipReset;
+
+    private StorageResetInterface $storageReset;
+
+    private MapResetInterface $mapReset;
+
+    private GameRequestRepositoryInterface $gameRequestRepository;
+
+    private GameConfigRepositoryInterface $gameConfigRepository;
+
     private PlayerDeletionInterface $playerDeletion;
 
     private ColonyRepositoryInterface $colonyRepository;
-
-    private KnPostRepositoryInterface $knPostRepository;
 
     private HistoryRepositoryInterface $historyRepository;
 
     private GameTurnRepositoryInterface $gameTurnRepository;
 
-    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
-
-    private RpgPlotRepositoryInterface $rpgPlotRepository;
-
     private PlanetFieldRepositoryInterface $planetFieldRepository;
+
+    private StuConfigInterface $stuConfig;
 
     private EntityManagerInterface $entityManager;
 
-    private ConfigInterface $config;
-
     public function __construct(
-        ConfigInterface $config,
+        KnResetInterface $knReset,
+        PmResetInterface $pmReset,
+        AllianceResetInterface $allianceReset,
+        FleetResetInterface $fleetReset,
+        CrewResetInterface $crewReset,
+        ShipResetInterface $shipReset,
+        StorageResetInterface $storageReset,
+        MapResetInterface $mapReset,
+
+        GameRequestRepositoryInterface $gameRequestRepository,
+
+        GameConfigRepositoryInterface $gameConfigRepository,
         PlayerDeletionInterface $playerDeletion,
         ColonyRepositoryInterface $colonyRepository,
-        KnPostRepositoryInterface $knPostRepository,
         HistoryRepositoryInterface $historyRepository,
         GameTurnRepositoryInterface $gameTurnRepository,
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
+        StuConfigInterface $stuConfig,
         EntityManagerInterface $entityManager
     ) {
+        $this->knReset = $knReset;
+        $this->pmReset = $pmReset;
+        $this->allianceReset = $allianceReset;
+        $this->fleetReset = $fleetReset;
+        $this->crewReset = $crewReset;
+        $this->shipReset = $shipReset;
+        $this->storageReset = $storageReset;
+        $this->mapReset = $mapReset;
+
+        $this->gameRequestRepository = $gameRequestRepository;
+
+        $this->gameConfigRepository = $gameConfigRepository;
         $this->playerDeletion = $playerDeletion;
         $this->colonyRepository = $colonyRepository;
-        $this->knPostRepository = $knPostRepository;
         $this->historyRepository = $historyRepository;
         $this->gameTurnRepository = $gameTurnRepository;
-        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
-        $this->rpgPlotRepository = $rpgPlotRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->stuConfig = $stuConfig;
         $this->entityManager = $entityManager;
-        $this->config = $config;
     }
 
-    public function performReset(): void
+    public function performReset(Interactor $io): void
     {
+        $io->info('starting game reset', true);
+
+        $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_RESET, $io);
+
+        //wait for other processes (e.g. ticks) to finish
+        $io->info('  - starting sleep, so other processes can finish (e.g. ticks)', true);
+        $sleepCountdownInSeconds = $this->stuConfig->getResetSettings()->getDelayInSeconds();
+
+        while ($sleepCountdownInSeconds > 0) {
+            $io->info('  - sleeping for " . $sleepCountdownInSeconds . " seconds', true);
+            sleep(5);
+
+            $sleepCountdownInSeconds -= 5;
+        }
+
         $this->entityManager->beginTransaction();
 
         try {
-            $this->playerDeletion->handleReset();
+            $this->deleteAllStorages();
+            $this->crewReset->deleteAllCrew();
+            $this->fleetReset->deleteAllFleets();
+            $this->knReset->resetKn();
+            $this->pmReset->resetPms();
 
+            $this->allianceReset->deleteAllAllianceBoards();
+            $this->allianceReset->deleteAllUserAllianceJobs();
+            $this->allianceReset->deleteAllUserAllianceRelations();
+            $this->allianceReset->deleteAllUserAlliances();
+
+            $this->shipReset->undockAllDockedShips();
+            $this->shipReset->deactivateAllTractorBeams();
+            $this->shipReset->deleteAllTradeposts();
+            $this->shipReset->deleteAllShips();
+            $this->shipReset->deleteAllUserBuildplans();
+
+            $io->info('  - deleting all non npc users', true);
+            $this->playerDeletion->handleReset();
             $this->entityManager->flush();
 
-            $this->resetColonySurfaceMasks();
-            $this->deleteHistory();
-            $this->deleteKnPlotMembers();
-            $this->deleteKnPostings();
-            $this->deleteKnPlots();
-            $this->resetGameTurns();
+            //other
+            $this->mapReset->deleteAllUserMaps();
+            $this->mapReset->deleteAllFlightSignatures();
+            $this->resetColonySurfaceMasks($io);
+            $this->deleteHistory($io);
+            $this->resetGameTurns($io);
+            $this->gameRequestRepository->truncateAllGameRequests();
 
             // clear game data
-            // flight signatures
             // user locks
             // blocked users
         } catch (Throwable $t) {
@@ -88,21 +162,35 @@ final class ResetManager implements ResetManagerInterface
             throw $t;
         }
 
-        $this->entityManager->getConnection()->executeQuery(
-            sprintf(
-                'ALTER SEQUENCE stu_user_id_seq RESTART WITH %d',
-                (int) $this->config->get('game.admin.id')
-            )
-        );
+        $this->resetSequences($io);
 
         $this->entityManager->commit();
+        $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE, $io);
+
+        $io->info('finished game reset', true);
+    }
+
+    private function setGameState(int $stateId, Interactor $io): void
+    {
+        $this->gameConfigRepository->updateGameState($stateId);
+
+        $io->info("  - setting game state to '" . GameEnum::gameStateTypeToDescription($stateId) . " - " . GameEnum::CONFIG_GAMESTATE_VALUE_RESET . "'", true);
+    }
+
+    private function deleteAllStorages(): void
+    {
+        $this->storageReset->deleteAllTradeOffers();
+        $this->storageReset->deleteAllTorpedoStorages();
+        $this->storageReset->deleteAllStorages();
     }
 
     /**
      * Resets the saved colony surface mask
      */
-    private function resetColonySurfaceMasks(): void
+    private function resetColonySurfaceMasks(Interactor $io): void
     {
+        $io->info('  - reset colony surfaces', true);
+
         foreach ($this->colonyRepository->findAll() as $colony) {
             $colony->setMask(null);
 
@@ -112,60 +200,26 @@ final class ResetManager implements ResetManagerInterface
         }
     }
 
-    /**
-     * Deletes all kn postings
-     */
-    private function deleteKnPostings(): void
-    {
-        foreach ($this->knPostRepository->findAll() as $knPost) {
-            $this->knPostRepository->delete($knPost);
-        }
-    }
-
     //
     /**
      * Deletes all history entries
      */
-    private function deleteHistory(): void
+    private function deleteHistory(Interactor $io): void
     {
+        $io->info('  - deleting history', true);
+
         foreach ($this->historyRepository->findAll() as $entry) {
             $this->historyRepository->delete($entry);
         }
     }
 
     /**
-     * Deletes all rpg plot members
-     */
-    private function deleteKnPlotMembers(): void
-    {
-        foreach ($this->rpgPlotMemberRepository->findAll() as $plotMember) {
-            $this->rpgPlotMemberRepository->delete($plotMember);
-        }
-    }
-
-    /**
-     * Deletes all rpg plots
-     */
-    private function deleteKnPlots(): void
-    {
-        foreach ($this->rpgPlotRepository->findAll() as $plot) {
-            //echo "plot:" . $plot->getId() . ", memberCount:" . $plot->getMemberCount() . "\n";
-            /* 
-             if ($plot->getMemberCount() > 0) {
-                foreach ($plot->getMembers() as $member) {
-                    //echo "\tmember:" . $member->getUser()->getId() . "\n";
-                }
-            }
-             */
-            $this->rpgPlotRepository->delete($plot);
-        }
-    }
-
-    /**
      * Deletes all existing game turns and starts over
      */
-    private function resetGameTurns(): void
+    private function resetGameTurns(Interactor $io): void
     {
+        $io->info('  - reset game turns', true);
+
         foreach ($this->gameTurnRepository->findAll() as $turn) {
             $this->gameTurnRepository->delete($turn);
         }
@@ -176,5 +230,47 @@ final class ResetManager implements ResetManagerInterface
             ->setEnd(0);
 
         $this->gameTurnRepository->save($turn);
+    }
+
+    private function resetSequences(Interactor $io): void
+    {
+        $io->info('  - resetting sequences', true);
+
+        $connection = $this->entityManager->getConnection();
+
+        $result = $connection->executeQuery(
+            "SELECT  'SELECT SETVAL(' ||quote_literal(S.relname)|| ',
+                        (SELECT COALESCE(MAX(' ||quote_ident(C.attname)|| '), 1)
+                        FROM ' ||quote_ident(T.relname)  || '));'
+            FROM pg_class S
+            JOIN pg_depend D
+                ON S.oid = D.objid
+            JOIN pg_class T
+                ON D.refobjid = T.oid
+            JOIN pg_attribute C
+                ON D.refobjid = C.attrelid
+                AND D.refobjsubid = C.attnum
+            WHERE S.relkind = 'S'
+            ORDER BY S.relname"
+        );
+
+        $count = 0;
+
+        while ($query = $result->fetchOne()) {
+            $connection->executeQuery(
+                $query
+            );
+
+            $count++;
+        }
+
+        $connection->executeQuery(
+            sprintf(
+                "SELECT SETVAL('stu_user_id_seq', %d)",
+                UserEnum::USER_FIRST_ID
+            )
+        );
+
+        $io->info('    - resetted " . $count . " sequences', true);
     }
 }

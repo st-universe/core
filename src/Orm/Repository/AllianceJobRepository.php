@@ -32,7 +32,6 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
     }
 
     public function getByUser(int $userId): array

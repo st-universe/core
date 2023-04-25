@@ -22,6 +22,7 @@ use Stu\Module\Tick\Ship\ShipTickManagerInterface;
 use Stu\Module\Tick\Ship\ShipTickRunner;
 
 use function DI\autowire;
+use function DI\create;
 use function DI\get;
 
 return [
@@ -43,9 +44,9 @@ return [
     MaintenanceTickRunner::class => fn (ContainerInterface $dic): TickRunnerInterface => $dic
         ->get(MaintenanceTickRunnerFactoryInterface::class)
         ->createMaintenanceTickRunner($dic->get('maintenance_handler')),
-    ProcessTickRunner::class => autowire(ProcessTickRunner::class)
-        ->constructorParameter(
-            'handlerList',
+    ProcessTickRunner::class => create(ProcessTickRunner::class)
+        ->constructor(
+            autowire(TransactionTickRunnerInterface::class),
             get('process_tick_handler')
         ),
     ShipTickRunner::class => autowire(),

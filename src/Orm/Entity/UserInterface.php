@@ -163,6 +163,8 @@ interface UserInterface
 
     public function setAlliance(?AllianceInterface $alliance): UserInterface;
 
+    public function setAllianceId(?int $allianceId): UserInterface;
+
     public function getSessionDataUnserialized(): array;
 
     public function isContactable(): bool;

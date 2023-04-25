@@ -50,4 +50,6 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
      * @return array<array{user_id: int, sc: int, race: null|int, shipc: int}>
      */
     public function getFlightsTop10(): array;
+
+    public function truncateAllSignatures(): void;
 }

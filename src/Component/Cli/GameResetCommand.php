@@ -42,7 +42,7 @@ final class GameResetCommand extends Command
 
         $io->info('Starting reset...', true);
 
-        $this->dic->get(ResetManagerInterface::class)->performReset();
+        $this->dic->get(ResetManagerInterface::class)->performReset($io);
 
         $io->info('The game has been resetted', true);
     }
