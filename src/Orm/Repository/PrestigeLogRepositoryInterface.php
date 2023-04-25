@@ -26,4 +26,6 @@ interface PrestigeLogRepositoryInterface extends ObjectRepository
      * @return list<PrestigeLogInterface>
      */
     public function getPrestigeHistory(UserInterface $user, int $maxResults): array;
+
+    public function truncateAllPrestigeLogs(): void;
 }

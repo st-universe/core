@@ -10,4 +10,12 @@ interface MapResetInterface
     public function deleteAllFlightSignatures(): void;
 
     public function deleteAllUserMaps(): void;
+
+    public function deleteAllAstroEntries(): void;
+
+    public function deleteAllColonyScans(): void;
+
+    public function deleteAllTachyonScans(): void;
+
+    public function deleteAllUserLayers(): void;
 }

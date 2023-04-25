@@ -14,5 +14,5 @@ interface ShipResetInterface
 
     public function deleteAllShips(): void;
 
-    public function deleteAllUserBuildplans(): void;
+    public function deleteAllBuildplans(): void;
 }

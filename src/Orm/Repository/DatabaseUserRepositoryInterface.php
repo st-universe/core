@@ -29,4 +29,6 @@ interface DatabaseUserRepositoryInterface extends ObjectRepository
     public function getCountForUser(int $userId): int;
 
     public function hasUserCompletedCategory(int $userId, int $categoryId): bool;
+
+    public function truncateAllEntries(): void;
 }

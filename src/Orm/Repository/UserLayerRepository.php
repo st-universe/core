@@ -38,4 +38,14 @@ final class UserLayerRepository extends EntityRepository implements UserLayerRep
             'map_type' => $mappingType
         ]);
     }
+
+    public function truncateAllUserLayer(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s ul',
+                UserLayer::class
+            )
+        )->execute();
+    }
 }

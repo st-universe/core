@@ -148,4 +148,6 @@ interface DealsRepositoryInterface extends ObjectRepository
      * @return array<DealsInterface>
      */
     public function getOwnEndedAuctionsBuildplansPrestige(int $userId): array;
+
+    public function truncateAllDeals(): void;
 }

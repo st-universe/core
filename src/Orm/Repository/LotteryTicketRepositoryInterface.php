@@ -30,4 +30,6 @@ interface LotteryTicketRepositoryInterface extends ObjectRepository
      * @return list<array{period: string, amount: int}>
      */
     public function getLotteryHistory(): array;
+
+    public function truncateAllLotteryTickets(): void;
 }

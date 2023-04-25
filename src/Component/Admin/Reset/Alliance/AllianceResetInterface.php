@@ -8,9 +8,9 @@ interface AllianceResetInterface
 {
     public function deleteAllAllianceBoards(): void;
 
-    public function deleteAllUserAllianceJobs(): void;
+    public function deleteAllAllianceJobs(): void;
 
-    public function deleteAllUserAllianceRelations(): void;
+    public function deleteAllAllianceRelations(): void;
 
-    public function deleteAllUserAlliances(): void;
+    public function deleteAllAlliances(): void;
 }

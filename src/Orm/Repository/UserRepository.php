@@ -262,10 +262,13 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id BETWEEN 10 AND 99 ORDER BY u.id',
+                'SELECT u FROM %s u
+                WHERE u.id BETWEEN 10 AND :firstUserId - 1
+                ORDER BY u.id',
                 User::class
             )
-        )->getResult();
+        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->getResult();
     }
 
     public function getNonNpcList(): iterable

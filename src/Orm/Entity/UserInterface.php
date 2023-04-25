@@ -149,7 +149,7 @@ interface UserInterface
 
     public function getStartPage(): ?string;
 
-    public function setStartPage(string $startPage): UserInterface;
+    public function setStartPage(?string $startPage): UserInterface;
 
     public function getRpgBehavior(): int;
 

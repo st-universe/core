@@ -50,5 +50,5 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
     /**
      * @return array<ShipBuildplanInterface>
      */
-    public function findAllNonNpcBuildplans(): array;
+    public function findAllBuildplansExceptNoOne(): array;
 }

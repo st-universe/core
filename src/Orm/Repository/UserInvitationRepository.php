@@ -50,9 +50,19 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
                 UserInvitation::class
             )
         )
-        ->setParameters([
-            'ttl' => $ttl
-        ])
-        ->execute();
+            ->setParameters([
+                'ttl' => $ttl
+            ])
+            ->execute();
+    }
+
+    public function truncateAllEntries(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s ui',
+                UserInvitation::class
+            )
+        )->execute();
     }
 }

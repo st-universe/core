@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipBuildplan;
@@ -158,18 +159,18 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
-    public function findAllNonNpcBuildplans(): array
+    public function findAllBuildplansExceptNoOne(): array
     {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT bp FROM %s bp
-                    WHERE bp.user_id >= :firstUserId',
+                    WHERE bp.user_id != :noOne',
                     ShipBuildplan::class
                 )
             )
             ->setParameters([
-                'firstUserId' => UserEnum::USER_FIRST_ID
+                'noOne' => GameEnum::USER_NOONE
             ])
             ->getResult();
     }

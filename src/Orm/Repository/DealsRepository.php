@@ -672,4 +672,14 @@ final class DealsRepository extends EntityRepository implements DealsRepositoryI
             ])
             ->getResult();
     }
+
+    public function truncateAllDeals(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s d',
+                Deals::class
+            )
+        )->execute();
+    }
 }

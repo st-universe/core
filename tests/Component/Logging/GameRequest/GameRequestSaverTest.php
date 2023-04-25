@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Component\Logging\GameRequest;
 
 use Mockery\MockInterface;
-use Stu\Component\Logging\GameRequest\Adapter\GameRequstLoggerInterface;
+use Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\StuTestCase;
 
 class GameRequestSaverTest extends StuTestCase
 {
-    /** @var MockInterface&\Stu\Component\Logging\GameRequest\Adapter\GameRequstLoggerInterface */
+    /** @var MockInterface&\Stu\Component\Logging\GameRequest\Adapter\GameRequestLoggerInterface */
     private MockInterface $gameRequestLogger;
 
     /** @var MockInterface&ParameterSanitizerInterface */
@@ -22,7 +22,7 @@ class GameRequestSaverTest extends StuTestCase
     protected function setUp(): void
     {
         $this->parameterSanitizer = $this->mock(ParameterSanitizerInterface::class);
-        $this->gameRequestLogger = $this->mock(GameRequstLoggerInterface::class);
+        $this->gameRequestLogger = $this->mock(GameRequestLoggerInterface::class);
 
         $this->subject = new GameRequestSaver(
             $this->parameterSanitizer,

@@ -22,8 +22,17 @@ class request
         return $_POST;
     }
 
+    public static function isRequest(): bool
+    {
+        return array_key_exists('REQUEST_METHOD', $_SERVER);
+    }
+
     public static function isPost(): bool
     {
+        if (!static::isRequest()) {
+            return false;
+        }
+
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 

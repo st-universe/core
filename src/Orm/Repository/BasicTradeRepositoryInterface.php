@@ -30,4 +30,6 @@ interface BasicTradeRepositoryInterface extends ObjectRepository
      * @return array<BasicTradeInterface>
      */
     public function getLatestRates(BasicTradeInterface $basicTrade): array;
+
+    public function truncateAllBasicTrades(): void;
 }

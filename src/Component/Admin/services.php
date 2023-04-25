@@ -24,6 +24,10 @@ use Stu\Component\Admin\Reset\Ship\ShipReset;
 use Stu\Component\Admin\Reset\Ship\ShipResetInterface;
 use Stu\Component\Admin\Reset\Storage\StorageReset;
 use Stu\Component\Admin\Reset\Storage\StorageResetInterface;
+use Stu\Component\Admin\Reset\Trade\TradeReset;
+use Stu\Component\Admin\Reset\Trade\TradeResetInterface;
+use Stu\Component\Admin\Reset\User\UserReset;
+use Stu\Component\Admin\Reset\User\UserResetInterface;
 
 use function DI\autowire;
 
@@ -37,5 +41,7 @@ return [
     PmResetInterface::class => autowire(PmReset::class),
     ResetManagerInterface::class => autowire(ResetManager::class),
     ShipResetInterface::class => autowire(ShipReset::class),
-    StorageResetInterface::class => autowire(StorageReset::class)
+    StorageResetInterface::class => autowire(StorageReset::class),
+    TradeResetInterface::class => autowire(TradeReset::class),
+    UserResetInterface::class => autowire(UserReset::class)
 ];

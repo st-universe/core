@@ -53,15 +53,11 @@ final class AllianceReset implements AllianceResetInterface
         $this->entityManager->flush();
     }
 
-    public function deleteAllUserAllianceJobs(): void
+    public function deleteAllAllianceJobs(): void
     {
-        echo "  - deleting user alliance jobs\n";
+        echo "  - deleting alliance jobs\n";
 
-        foreach ($this->allianceRepository->findAllOrdered() as $alliance) {
-
-            if ($alliance->isNpcAlliance()) {
-                continue;
-            }
+        foreach ($this->allianceRepository->findAll() as $alliance) {
 
             foreach ($alliance->getJobs() as $job) {
                 $this->allianceJobRepository->delete($job);
@@ -73,15 +69,11 @@ final class AllianceReset implements AllianceResetInterface
         $this->entityManager->flush();
     }
 
-    public function deleteAllUserAllianceRelations(): void
+    public function deleteAllAllianceRelations(): void
     {
-        echo "  - deleting user alliance relations\n";
+        echo "  - deleting alliance relations\n";
 
-        foreach ($this->allianceRepository->findAllOrdered() as $alliance) {
-
-            if ($alliance->isNpcAlliance()) {
-                continue;
-            }
+        foreach ($this->allianceRepository->findAll() as $alliance) {
 
             foreach ($this->allianceRelationRepository->getByAlliance($alliance->getId()) as $relation) {
                 $this->allianceRelationRepository->delete($relation);
@@ -91,19 +83,11 @@ final class AllianceReset implements AllianceResetInterface
         $this->entityManager->flush();
     }
 
-    public function deleteAllUserAlliances(): void
+    public function deleteAllAlliances(): void
     {
-        echo "  - deleting user alliances\n";
+        echo "  - deleting all alliances\n";
 
-        foreach ($this->allianceRepository->findAllOrdered() as $alliance) {
-
-            if ($alliance->isNpcAlliance()) {
-                continue;
-            }
-
-            if ($alliance->getJobs()->count() > 0) {
-                echo "    - error\n";
-            }
+        foreach ($this->allianceRepository->findAll() as $alliance) {
 
             foreach ($alliance->getMembers() as $member) {
                 $member->setAlliance(null);

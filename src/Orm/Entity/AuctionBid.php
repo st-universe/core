@@ -54,7 +54,7 @@ class AuctionBid implements AuctionBidInterface
      * @var DealsInterface
      *
      * @ManyToOne(targetEntity="Deals")
-     * @JoinColumn(name="auction_id", referencedColumnName="id")
+     * @JoinColumn(name="auction_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $auction;
 

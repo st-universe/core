@@ -21,4 +21,6 @@ interface TradeTransactionRepositoryInterface extends ObjectRepository
      * @return list<array{id: int, name: string, transactions: int}>
      */
     public function getTradePostsTop10(): array;
+
+    public function truncateAllTradeTransactions(): void;
 }

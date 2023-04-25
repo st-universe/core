@@ -661,7 +661,7 @@ class User implements UserInterface
         return $this->start_page;
     }
 
-    public function setStartPage(string $startPage): UserInterface
+    public function setStartPage(?string $startPage): UserInterface
     {
         $this->start_page = $startPage;
         return $this;
