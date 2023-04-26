@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\FlightSignature;
@@ -48,7 +47,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
                 WHERE s.user_id != :noOne',
                 Ship::class
             )
-        )->setParameter('noOne', GameEnum::USER_NOONE)
+        )->setParameter('noOne', UserEnum::USER_NOONE)
             ->getSingleScalarResult();
     }
 
@@ -64,7 +63,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
                 ShipRump::class,
                 ShipCrew::class
             )
-        )->setParameter('noOne', GameEnum::USER_NOONE)
+        )->setParameter('noOne', UserEnum::USER_NOONE)
             ->getSingleScalarResult();
     }
 
@@ -78,7 +77,7 @@ final class GameTurnStatsRepository extends EntityRepository implements GameTurn
                 Ship::class
             )
         )->setParameters([
-            'noOne' => GameEnum::USER_NOONE,
+            'noOne' => UserEnum::USER_NOONE,
             'firstUserId' => UserEnum::USER_FIRST_ID
         ])
             ->getSingleScalarResult();

@@ -15,8 +15,6 @@ final class GameEnum
     public const CONFIG_GAMESTATE_VALUE_RESET = 5;
 
     //user stuff
-    public const USER_NOONE = 1;
-    public const USER_FERG_NPC = 14;
     public const USER_ONLINE_PERIOD = 300;
 
     //trade stuff

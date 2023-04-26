@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
@@ -99,7 +99,7 @@ abstract class AbstractWeaponPhase
     private function sendSystemMessage(string $description, int $userId): void
     {
         $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
+            UserEnum::USER_NOONE,
             $userId,
             $description
         );

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -61,5 +62,17 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         )->setParameters([
             'user' => $user
         ])->getSingleScalarResult();
+    }
+
+    public function truncateAllNonNpcFolders(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s pmf
+                WHERE pmf.user_id >= :firstUserId',
+                PrivateMessageFolder::class
+            )
+        )->setParameter('firstUserId', UserEnum::USER_FIRST_ID)
+            ->execute();
     }
 }

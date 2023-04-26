@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Management\Management;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -93,7 +93,7 @@ final class KickPlayer implements ActionControllerInterface
             $alliance->getName()
         );
 
-        $this->privateMessageSender->send(GameEnum::USER_NOONE, $playerId, $text);
+        $this->privateMessageSender->send(UserEnum::USER_NOONE, $playerId, $text);
 
         $game->setView(Management::VIEW_IDENTIFIER);
 

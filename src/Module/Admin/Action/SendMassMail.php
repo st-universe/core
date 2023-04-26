@@ -9,7 +9,6 @@ use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use request;
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -17,6 +16,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SendMassMail implements ActionControllerInterface
@@ -112,7 +112,7 @@ final class SendMassMail implements ActionControllerInterface
         foreach ($this->userRepository->findAll() as $user) {
             $count++;
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $user->getId(),
                 $message
             );

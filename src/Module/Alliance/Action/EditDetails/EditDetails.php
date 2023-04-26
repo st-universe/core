@@ -6,7 +6,6 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 
 use JBBCode\Parser;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Lib\CleanTextUtils;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -14,6 +13,7 @@ use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 
@@ -110,7 +110,7 @@ final class EditDetails implements ActionControllerInterface
                     _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
                     $alliance->getName()
                 );
-                $this->privateMessageSender->send(GameEnum::USER_NOONE, $applicant->getUserId(), $text);
+                $this->privateMessageSender->send(UserEnum::USER_NOONE, $applicant->getUserId(), $text);
             }
         }
 

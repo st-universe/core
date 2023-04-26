@@ -3,7 +3,6 @@
 namespace Stu\Module\Tick\Ship;
 
 use RuntimeException;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -15,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -325,7 +325,7 @@ final class ShipTick implements ShipTickInterface
             );
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $station->getUser()->getId(),
                 $shipOwnerMessage,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
@@ -397,7 +397,7 @@ final class ShipTick implements ShipTickInterface
             if ($target->getUser() !== $ship->getUser()) {
                 //send pm to target owner
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $target->getUser()->getId(),
                     sprintf(
                         'Die Crew der %s hat einen Transponder gefunden und deaktiviert. %s',
@@ -409,7 +409,7 @@ final class ShipTick implements ShipTickInterface
 
                 //send pm to tracker owner
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $ship->getUser()->getId(),
                     sprintf(
                         'Die %s hat die Verbindung zum Tracker verloren',
@@ -453,7 +453,7 @@ final class ShipTick implements ShipTickInterface
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
 
         $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
+            UserEnum::USER_NOONE,
             (int) $ship->getUser()->getId(),
             $text,
             $ship->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,

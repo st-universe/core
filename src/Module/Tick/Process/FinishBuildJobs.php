@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Stu\Component\Building\BuildingManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishBuildJobs implements ProcessTickHandlerInterface
@@ -43,7 +43,7 @@ final class FinishBuildJobs implements ProcessTickHandlerInterface
             );
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 (int) $colony->getUserId(),
                 $txt,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY

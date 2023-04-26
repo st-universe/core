@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -44,7 +44,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
 
             if (!$ship->hasEnoughCrew()) {
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $ship->getUser()->getId(),
                     sprintf(
                         _('Ungenügend Crew auf der %s vorhanden, daher wurde die Reparatur des Systems %s abgebrochen'),
@@ -79,7 +79,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
             }
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $ship->getUser()->getId(),
                 $msg,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,

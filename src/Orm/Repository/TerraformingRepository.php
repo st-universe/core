@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\Terraforming;
 
@@ -16,7 +16,7 @@ final class TerraformingRepository extends EntityRepository implements Terraform
 {
     public function getBySourceFieldTypeAndUser(int $sourceFieldTypeId, int $userId): array
     {
-        if ($userId == GameEnum::USER_NOONE) {
+        if ($userId == UserEnum::USER_NOONE) {
             return $this->getEntityManager()->createQuery(
                 sprintf(
                     'SELECT t FROM %s t

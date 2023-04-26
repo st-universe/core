@@ -138,6 +138,7 @@ final class ResetManager implements ResetManagerInterface
             $this->crewReset->deleteAllCrew();
             $this->fleetReset->deleteAllFleets();
             $this->knReset->resetKn();
+            $this->pmReset->resetAllNonNpcPmFolders();
             $this->pmReset->resetPms();
             $this->pmReset->deleteAllContacts();
 

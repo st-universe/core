@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Handler;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
@@ -54,7 +54,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             foreach ($this->tradePostRepository->getUsersWithStorageOnTradepost($tradepost->getId()) as $user) {
                 if ($user->getId() !== $tradepost->getUserId()) {
                     $this->privateMessageSender->send(
-                        GameEnum::USER_NOONE,
+                        UserEnum::USER_NOONE,
                         $user->getId(),
                         sprintf(
                             'Der Handelsposten "%s" bei den Koordinaten %s wurde verlassen. Du solltest deine Waren hier schleunigst abholen, sonst gehen sie verloren.',
@@ -75,7 +75,7 @@ final class TradepostDeletionHandler implements PlayerDeletionHandlerInterface
             $tradepost->setUser($fallbackUser);
             $tradepost->setName('Verlassener Handelsposten');
             $tradepost->setDescription('Verlassener Handelsposten');
-            $tradepost->setTradeNetwork(GameEnum::USER_NOONE);
+            $tradepost->setTradeNetwork(UserEnum::USER_NOONE);
             $this->tradePostRepository->save($tradepost);
 
             $ship->setUser($fallbackUser);

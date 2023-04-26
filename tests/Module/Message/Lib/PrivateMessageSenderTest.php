@@ -8,10 +8,10 @@ use Doctrine\ORM\EntityManager;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -310,7 +310,7 @@ class PrivateMessageSenderTest extends StuTestCase
             ->once();
 
         $this->userRepository->shouldReceive('find')
-            ->with(GameEnum::USER_NOONE)
+            ->with(UserEnum::USER_NOONE)
             ->once()
             ->andReturn($userNoOne);
 

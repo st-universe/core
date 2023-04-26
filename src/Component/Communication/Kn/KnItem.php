@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Communication\Kn;
 
 use JBBCode\Parser;
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\KnPostInterface;
@@ -92,7 +92,7 @@ final class KnItem implements KnItemInterface
     public function displayContactLinks(): bool
     {
         $user = $this->post->getUser();
-        return $user !== $this->currentUser && $user->getId() !== GameEnum::USER_NOONE;
+        return $user !== $this->currentUser && $user->getId() !== UserEnum::USER_NOONE;
     }
 
     public function getUserName(): string

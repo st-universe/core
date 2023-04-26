@@ -2,10 +2,10 @@
 
 namespace Stu\Module\Maintenance;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\TradeLicenseInfoRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 
@@ -53,7 +53,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 
             // send message to user
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $license->getUser()->getId(),
                 sprintf(
                     "Deine Lizenz am Handelsposten %s läuft in weniger als %d Tage(n) ab.%s",
@@ -80,7 +80,7 @@ final class OldTradeLicenseDeletion implements MaintenanceHandlerInterface
 
             // send message to user
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $license->getUser()->getId(),
                 sprintf(
                     "Deine Lizenz am Handelsposten %s ist abgelaufen.\nEine neue Lizenz kostet dort aktuell %d %s.",

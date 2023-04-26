@@ -29,4 +29,6 @@ interface PrivateMessageFolderRepositoryInterface extends ObjectRepository
     public function getByUserAndSpecial(int $userId, int $specialId): ?PrivateMessageFolderInterface;
 
     public function getMaxOrderIdByUser(UserInterface $user): int;
+
+    public function truncateAllNonNpcFolders(): void;
 }

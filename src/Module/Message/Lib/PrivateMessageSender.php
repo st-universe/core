@@ -10,11 +10,11 @@ use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -79,7 +79,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $this->sendEmailNotification($sender->getName(), $text, $recipient);
         }
 
-        if ($senderId != GameEnum::USER_NOONE) {
+        if ($senderId != UserEnum::USER_NOONE) {
             $this->entityManager->flush();
 
             $this->createPrivateMessage(
@@ -122,7 +122,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         //single item to outbox
         $this->createPrivateMessage(
-            $this->userRepository->find(GameEnum::USER_NOONE),
+            $this->userRepository->find(UserEnum::USER_NOONE),
             $sender,
             $time,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT,

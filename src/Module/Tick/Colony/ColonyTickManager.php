@@ -7,7 +7,6 @@ namespace Stu\Module\Tick\Colony;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Crew\CrewCountRetrieverInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -16,6 +15,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tick\AbstractTickManager;
 use Stu\Module\Tick\Lock\LockEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
@@ -169,7 +169,7 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
             }
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $userId,
                 sprintf(
                     "Es wurden erfolgreich %d Crewman ausgebildet.",

@@ -17,8 +17,8 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")
@@ -693,7 +693,7 @@ class Colony implements ColonyInterface
 
     public function isFree(): bool
     {
-        return $this->getUserId() === GameEnum::USER_NOONE;
+        return $this->getUserId() === UserEnum::USER_NOONE;
     }
 
     public function getUser(): UserInterface

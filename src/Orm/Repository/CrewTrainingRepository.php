@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\CrewTrainingInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -70,7 +70,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
             ->setParameters([
                 'groupId' => $batchGroup,
                 'groupCount' => $batchGroupCount,
-                'idNoOne' => GameEnum::USER_NOONE
+                'idNoOne' => UserEnum::USER_NOONE
             ])
             ->getResult();
     }

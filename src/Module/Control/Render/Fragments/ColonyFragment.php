@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control\Render\Fragments;
 
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -19,7 +19,7 @@ final class ColonyFragment implements RenderFragmentInterface
     ): void {
         $talPage->setVar(
             'COLONIES',
-            $user->getId() === GameEnum::USER_NOONE ? [] : $user->getColonies()
+            $user->getId() === UserEnum::USER_NOONE ? [] : $user->getColonies()
         );
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Control\Render\Fragments;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\StuTestCase;
@@ -27,7 +27,7 @@ class ColonyFragmentTest extends StuTestCase
         $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
-            ->andReturn(GameEnum::USER_NOONE);
+            ->andReturn(UserEnum::USER_NOONE);
 
         $talPage->shouldReceive('setVar')
             ->with('COLONIES', [])

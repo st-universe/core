@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipBuildplan;
@@ -170,7 +169,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
                 )
             )
             ->setParameters([
-                'noOne' => GameEnum::USER_NOONE
+                'noOne' => UserEnum::USER_NOONE
             ])
             ->getResult();
     }

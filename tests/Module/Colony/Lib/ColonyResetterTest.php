@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\Lib;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use Mockery\MockInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyTerraformingInterface;
 use Stu\Orm\Entity\CrewInterface;
@@ -117,7 +117,7 @@ class ColonyResetterTest extends StuTestCase
         $fieldTerraforming = Mockery::mock(ColonyTerraformingInterface::class);
 
         $this->userRepository->shouldReceive('find')
-            ->with(GameEnum::USER_NOONE)
+            ->with(UserEnum::USER_NOONE)
             ->once()
             ->andReturn($user);
 

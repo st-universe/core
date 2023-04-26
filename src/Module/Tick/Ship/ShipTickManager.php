@@ -8,7 +8,6 @@ use InvalidArgumentException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
@@ -20,6 +19,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -228,7 +228,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         foreach ($escapedToColonies as [$colony, $count]) {
             $msg = sprintf(_('%d deiner Crewman sind aus Fluchtkapseln auf deiner Kolonie %s gelandet'), $count, $colony->getName());
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $colony->getUser()->getId(),
                 $msg,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
@@ -317,7 +317,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d Crewman ihren Dienst auf deinen Kolonien quittiert'), $amount);
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $userId,
                 $msg,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
@@ -343,7 +343,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Handelsposten ihren Dienst quittiert'), $amount);
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $userId,
                 $msg,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
@@ -369,7 +369,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Fluchtkapseln ihren Dienst quittiert'), $amount);
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $userId,
                 $msg,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
@@ -434,7 +434,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
 
         $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
         $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
+            UserEnum::USER_NOONE,
             $userId,
             $msg,
             $randomShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
@@ -464,7 +464,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
 
     private function lowerOrphanizedTradepostHull(): void
     {
-        foreach ($this->tradePostRepository->getByUser(GameEnum::USER_NOONE) as $tradepost) {
+        foreach ($this->tradePostRepository->getByUser(UserEnum::USER_NOONE) as $tradepost) {
             $ship = $tradepost->getShip();
 
             $lower = (int)ceil($ship->getMaxHull() / 100);
@@ -491,7 +491,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             if ($ship->getHull() <= $lower) {
                 $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $ship->getSectorString());
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $ship->getUser()->getId(),
                     $msg,
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
@@ -542,7 +542,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
                     );
 
                     $this->privateMessageSender->send(
-                        GameEnum::USER_NOONE,
+                        UserEnum::USER_NOONE,
                         $colony->getUser()->getId(),
                         sprintf(
                             _('Es wurden %d %s hergestellt'),
@@ -715,7 +715,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             );
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $ship->getUser()->getId(),
                 $shipOwnerMessage,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
@@ -737,7 +737,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             );
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $entity->getUser()->getId(),
                 $entityOwnerMessage,
                 $isColony ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY :

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\AddKnPostToPlot;
 
 use request;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -102,7 +102,7 @@ final class AddKnPostToPlot implements ActionControllerInterface
                 );
 
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $user->getId(),
                     $text,
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,

@@ -8,7 +8,6 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Award\Lib\CreateUserAwardInterface;
@@ -19,6 +18,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\BuildingCommodityInterface;
@@ -484,7 +484,7 @@ final class ColonyTick implements ColonyTickInterface
         $href = sprintf(_('colony.php?SHOW_COLONY=1&id=%d'), $colony->getId());
 
         $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
+            UserEnum::USER_NOONE,
             (int) $colony->getUserId(),
             $text,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,

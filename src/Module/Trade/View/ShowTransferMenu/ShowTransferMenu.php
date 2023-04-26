@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowTransferMenu;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
@@ -58,7 +58,7 @@ final class ShowTransferMenu implements ViewControllerInterface
             if (
                 $tradePost !== $obj
                 && $obj->getTradeNetwork() == $tradePost->getTradeNetwork()
-                && $obj->getUser()->getId() !== GameEnum::USER_NOONE
+                && $obj->getUser()->getId() !== UserEnum::USER_NOONE
             ) {
                 $trade_post_list[] = $this->tradeLibFactory->createTradePostStorageManager($obj, $game->getUser());
             }
