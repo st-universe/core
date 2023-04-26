@@ -116,8 +116,8 @@ class ColonyResetterTest extends StuTestCase
         $user = Mockery::mock(UserInterface::class);
         $fieldTerraforming = Mockery::mock(ColonyTerraformingInterface::class);
 
-        $this->userRepository->shouldReceive('find')
-            ->with(UserEnum::USER_NOONE)
+        $this->userRepository->shouldReceive('getFallbackUser')
+            ->withNoArgs()
             ->once()
             ->andReturn($user);
 

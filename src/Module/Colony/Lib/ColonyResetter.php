@@ -81,7 +81,7 @@ final class ColonyResetter implements ColonyResetterInterface
             ->setMaxBev(0)
             ->setImmigrationstate(true)
             ->setPopulationlimit(0)
-            ->setUser($this->userRepository->find(UserEnum::USER_NOONE))
+            ->setUser($this->userRepository->getFallbackUser())
             ->setName('');
 
         $this->colonyRepository->save($colony);
