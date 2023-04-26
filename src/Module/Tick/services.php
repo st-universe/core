@@ -50,4 +50,5 @@ return [
             get('process_tick_handler')
         ),
     ShipTickRunner::class => autowire(),
+    TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class)
 ];
