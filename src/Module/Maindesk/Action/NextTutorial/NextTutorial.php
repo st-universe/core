@@ -26,9 +26,9 @@ final class NextTutorial implements ActionControllerInterface
     {
         $user = $game->getUser();
 
-        //if ((int) $user->getState() !== UserEnum::USER_STATE_TUTORIAL1 || (int) $user->getState() !== UserEnum::USER_STATE_TUTORIAL2 || (int) $user->getState() !== UserEnum::USER_STATE_TUTORIAL3 || (int) $user->getState() !== UserEnum::USER_STATE_TUTORIAL4) {
-        //          throw new AccessViolation();
-        //    }
+        if ((int) $user->getState() !== UserEnum::USER_STATE_TUTORIAL1 || (int) $user->getState() !== UserEnum::USER_STATE_TUTORIAL2 || (int) $user->getState() !== UserEnum::USER_STATE_TUTORIAL3 || (int) $user->getState() !== UserEnum::USER_STATE_TUTORIAL4) {
+            throw new AccessViolation();
+        }
 
         if ((int) $user->getState() === UserEnum::USER_STATE_TUTORIAL1) {
             $user->setState(UserEnum::USER_STATE_TUTORIAL2);
