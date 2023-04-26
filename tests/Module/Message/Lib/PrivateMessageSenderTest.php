@@ -309,8 +309,8 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with($sender)
             ->once();
 
-        $this->userRepository->shouldReceive('find')
-            ->with(UserEnum::USER_NOONE)
+        $this->userRepository->shouldReceive('getFallbackUser')
+            ->withNoArgs()
             ->once()
             ->andReturn($userNoOne);
 

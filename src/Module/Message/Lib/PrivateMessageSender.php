@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use JBBCode\Parser;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Message;
@@ -71,6 +72,14 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         }
         $recipient = $this->userRepository->find($recipientId);
         $sender = $this->userRepository->find($senderId);
+
+        if ($sender === null) {
+            throw new InvalidArgumentException(sprintf('Sender with id %d does not exist', $senderId));
+        }
+        if ($recipient === null) {
+            throw new InvalidArgumentException(sprintf('Recipient with id %d does not exist', $recipientId));
+        }
+
         $time = $this->stuTime->time();
 
         $pm = $this->createPrivateMessage($sender, $recipient, $time, $category, $text, $href, true, null);
@@ -122,7 +131,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         //single item to outbox
         $this->createPrivateMessage(
-            $this->userRepository->find(UserEnum::USER_NOONE),
+            $this->userRepository->getFallbackUser(),
             $sender,
             $time,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT,
@@ -144,6 +153,10 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         ?int $inboxPmId
     ): PrivateMessageInterface {
         $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $category);
+
+        if ($folder === null) {
+            throw new InvalidArgumentException(sprintf('Folder with user_id %d and category %d does not exist', $recipient->getId(), $category));
+        }
 
         $pm = $this->privateMessageRepository->prototype();
         $pm->setDate($time);
