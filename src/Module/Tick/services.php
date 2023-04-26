@@ -40,15 +40,15 @@ return [
         autowire(Process\RepairTaskJobs::class),
         autowire(Process\FinishTholianWebs::class)
     ],
+    TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class),
     MaintenanceTickRunnerFactoryInterface::class => autowire(MaintenanceTickRunnerFactory::class),
     MaintenanceTickRunner::class => fn (ContainerInterface $dic): TickRunnerInterface => $dic
         ->get(MaintenanceTickRunnerFactoryInterface::class)
         ->createMaintenanceTickRunner($dic->get('maintenance_handler')),
     ProcessTickRunner::class => create(ProcessTickRunner::class)
         ->constructor(
-            autowire(TransactionTickRunnerInterface::class),
+            get(TransactionTickRunnerInterface::class),
             get('process_tick_handler')
         ),
-    ShipTickRunner::class => autowire(),
-    TransactionTickRunnerInterface::class => autowire(TransactionTickRunner::class)
+    ShipTickRunner::class => autowire()
 ];
