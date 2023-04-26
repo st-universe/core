@@ -7,10 +7,13 @@ namespace Stu\Component\Admin\Reset\Communication;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class PmReset implements PmResetInterface
 {
     private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
+
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
     private ContactRepositoryInterface $contactRepository;
 
@@ -18,21 +21,30 @@ final class PmReset implements PmResetInterface
 
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        PrivateMessageRepositoryInterface $privateMessageRepository,
         ContactRepositoryInterface $contactRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->privateMessageRepository = $privateMessageRepository;
         $this->contactRepository = $contactRepository;
         $this->entityManager = $entityManager;
+    }
+
+    public function resetAllNonNpcPmFolders(): void
+    {
+        echo "  - deleting all non npc pm folders\n";
+
+        $this->privateMessageFolderRepository->truncateAllNonNpcFolders();
+
+        $this->entityManager->flush();
     }
 
     public function resetPms(): void
     {
         echo "  - deleting all pms\n";
 
-        foreach ($this->privateMessageFolderRepository->findAll() as $pm) {
-            $this->privateMessageFolderRepository->delete($pm);
-        }
+        $this->privateMessageRepository->truncateAllPrivateMessages();
 
         $this->entityManager->flush();
     }

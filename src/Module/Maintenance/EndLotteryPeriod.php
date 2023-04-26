@@ -116,7 +116,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
 
         //PM to winner
         $this->privateMessageSender->send(
-            GameEnum::USER_FERG_NPC,
+            UserEnum::USER_NOONE,
             $winner->getId(),
             sprintf(
                 "Du hast %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nDer Gewinn wartet auf dich am Handelsposten 'Zur goldenen Kugel'",
@@ -134,7 +134,7 @@ final class EndLotteryPeriod implements MaintenanceHandlerInterface
             }
 
             $this->privateMessageSender->send(
-                GameEnum::USER_FERG_NPC,
+                UserEnum::USER_NOONE,
                 $loserId,
                 sprintf(
                     "%s hat %d Latinum in der Lotterie gewonnen.\nEs waren %d Lose im Topf.\nViel Glück beim nächsten Mal!",

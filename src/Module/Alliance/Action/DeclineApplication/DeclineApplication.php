@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeclineApplication;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class DeclineApplication implements ActionControllerInterface
@@ -64,7 +64,7 @@ final class DeclineApplication implements ActionControllerInterface
             $alliance->getName()
         );
 
-        $this->privateMessageSender->send(GameEnum::USER_NOONE, $appl->getUserId(), $text);
+        $this->privateMessageSender->send(UserEnum::USER_NOONE, $appl->getUserId(), $text);
 
         $game->setView(Applications::VIEW_IDENTIFIER);
 

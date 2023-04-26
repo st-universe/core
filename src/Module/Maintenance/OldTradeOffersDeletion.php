@@ -2,10 +2,10 @@
 
 namespace Stu\Module\Maintenance;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\StorageRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
@@ -105,7 +105,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
+            UserEnum::USER_NOONE,
             $userId,
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE

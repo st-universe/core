@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
 use Stu\Orm\Entity\ColonyInterface;
@@ -83,7 +83,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             )
             ->setParameters([
                 'allowStart' => 1,
-                'userId' => GameEnum::USER_NOONE,
+                'userId' => UserEnum::USER_NOONE,
                 'factionId' => $factionId
             ])
             ->getResult();
@@ -115,7 +115,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 )
             )
             ->setParameters([
-                'ignoreIds' => [$user->getId(), GameEnum::USER_NOONE],
+                'ignoreIds' => [$user->getId(), UserEnum::USER_NOONE],
                 'systemId' => $systemMap->getSystem()->getId(),
                 'sx' => $systemMap->getSx(),
                 'sy' => $systemMap->getSy()
@@ -137,7 +137,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->setParameters([
                 'groupId' => $batchGroup,
                 'groupCount' => $batchGroupCount,
-                'userId' => GameEnum::USER_NOONE
+                'userId' => UserEnum::USER_NOONE
             ])
             ->getResult();
     }
@@ -152,7 +152,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 )
             )
             ->setParameters([
-                'userId' => GameEnum::USER_NOONE,
+                'userId' => UserEnum::USER_NOONE,
             ])
             ->getResult();
     }

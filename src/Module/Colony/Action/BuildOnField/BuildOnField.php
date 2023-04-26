@@ -7,13 +7,13 @@ namespace Stu\Module\Colony\Action\BuildOnField;
 use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Colony\View\ShowInformation\ShowInformation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -108,7 +108,7 @@ final class BuildOnField implements ActionControllerInterface
             return;
         }
 
-        if ($userId !== GameEnum::USER_NOONE) {
+        if ($userId !== UserEnum::USER_NOONE) {
             if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
                 return;
             }
@@ -155,11 +155,11 @@ final class BuildOnField implements ActionControllerInterface
         }
 
         //check for sufficient commodities
-        if ($userId !== GameEnum::USER_NOONE && !$this->checkBuildingCosts($colony, $building, $field, $game)) {
+        if ($userId !== UserEnum::USER_NOONE && !$this->checkBuildingCosts($colony, $building, $field, $game)) {
             return;
         }
 
-        if ($userId !== GameEnum::USER_NOONE &&  $colony->getEps() < $building->getEpsCost()) {
+        if ($userId !== UserEnum::USER_NOONE &&  $colony->getEps() < $building->getEpsCost()) {
             $game->addInformationf(
                 _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $building->getEpsCost(),
@@ -187,7 +187,7 @@ final class BuildOnField implements ActionControllerInterface
          */
         $colony = $this->colonyRepository->find(request::indInt('id'));
 
-        if ($userId !== GameEnum::USER_NOONE) {
+        if ($userId !== UserEnum::USER_NOONE) {
             foreach ($building->getCosts() as $cost) {
                 $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
             }

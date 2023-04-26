@@ -176,6 +176,9 @@ class ResetManagerTest extends StuTestCase
             ->withNoArgs()
             ->once();
 
+        $this->pmReset->shouldReceive('resetAllNonNpcPmFolders')
+            ->withNoArgs()
+            ->once();
         $this->pmReset->shouldReceive('resetPms')
             ->withNoArgs()
             ->once();

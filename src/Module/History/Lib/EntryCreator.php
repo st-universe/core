@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\History\Lib;
 
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class EntryCreator implements EntryCreatorInterface
@@ -24,28 +24,28 @@ final class EntryCreator implements EntryCreatorInterface
 
     public function addShipEntry(
         string $text,
-        int $userId = GameEnum::USER_NOONE
+        int $userId = UserEnum::USER_NOONE
     ): void {
         $this->addEntry(self::HISTORY_SHIP, $text, $userId);
     }
 
     public function addStationEntry(
         string $text,
-        int $userId = GameEnum::USER_NOONE
+        int $userId = UserEnum::USER_NOONE
     ): void {
         $this->addEntry(self::HISTORY_STATION, $text, $userId);
     }
 
     public function addColonyEntry(
         string $text,
-        int $userId = GameEnum::USER_NOONE
+        int $userId = UserEnum::USER_NOONE
     ): void {
         $this->addEntry(self::HISTORY_COLONY, $text, $userId);
     }
 
     public function addAllianceEntry(
         string $text,
-        int $userId = GameEnum::USER_NOONE
+        int $userId = UserEnum::USER_NOONE
     ): void {
         $this->addEntry(self::HISTORY_ALLIANCE, $text, $userId);
     }

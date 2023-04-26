@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -207,7 +206,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 )
             )
             ->setParameters([
-                'ignoreIds' => [$ship->getUser()->getId(), GameEnum::USER_NOONE],
+                'ignoreIds' => [$ship->getUser()->getId(), UserEnum::USER_NOONE],
                 'spacecraftType' => SpacecraftTypeEnum::SPACECRAFT_TYPE_STATION,
                 'systemId' => $systemMap === null ? 0 : $systemMap->getSystem()->getId(),
                 'sx' => $systemMap === null ? 0 : $systemMap->getSx(),

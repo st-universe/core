@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
@@ -64,7 +64,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
                 );
             }
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $colony->getUser()->getId(),
                 sprintf(
                     _('Die Flotte %s hat von Spieler %s hat die Verteidigung der Kolonie %s aufgehoben'),
@@ -105,7 +105,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
             }
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $colony->getUser()->getId(),
                 sprintf(
                     _('Die Flotte %s hat von Spieler %s hat die Blockade der Kolonie %s aufgehoben'),

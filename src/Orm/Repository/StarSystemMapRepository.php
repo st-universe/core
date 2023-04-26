@@ -6,9 +6,9 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -93,7 +93,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             )
             ->setParameters([
                 'systemId' => $starSystemId,
-                'noOne' => GameEnum::USER_NOONE
+                'noOne' => UserEnum::USER_NOONE
             ])
             ->getResult();
 

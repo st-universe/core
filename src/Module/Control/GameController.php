@@ -284,7 +284,7 @@ final class GameController implements GameControllerInterface
 
     public function sendInformation(
         $recipient_id,
-        $sender_id = GameEnum::USER_NOONE,
+        $sender_id = UserEnum::USER_NOONE,
         $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
         ?string $href = null
     ): void {

@@ -6,9 +6,9 @@ namespace Stu\Module\Alliance\Lib;
 
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -76,7 +76,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
         foreach ($alliance->getMembers() as $user) {
             if ($sendMesage === true) {
-                $this->privateMessageSender->send(GameEnum::USER_NOONE, $user->getId(), $text);
+                $this->privateMessageSender->send(UserEnum::USER_NOONE, $user->getId(), $text);
             }
 
             $user->setAlliance(null);
@@ -127,7 +127,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         );
 
         foreach ($jobList as $job) {
-            $this->privateMessageSender->send(GameEnum::USER_NOONE, $job->getUserId(), $text);
+            $this->privateMessageSender->send(UserEnum::USER_NOONE, $job->getUserId(), $text);
         }
     }
 

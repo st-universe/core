@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\CreateOffer;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Entity\CommodityInterface;
@@ -62,7 +62,7 @@ final class CreateOffer implements ActionControllerInterface
 
         $tradePost = $storage->getTradePost();
 
-        if ($tradePost->getUserId() === GameEnum::USER_NOONE) {
+        if ($tradePost->getUserId() === UserEnum::USER_NOONE) {
             $game->addInformation(_('Dieser Handelsposten wurde verlassen. Handel ist nicht mehr möglich.'));
             return;
         }

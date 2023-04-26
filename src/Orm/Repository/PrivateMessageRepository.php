@@ -115,4 +115,14 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             'timestamp' => $timestamp
         ])->execute();
     }
+
+    public function truncateAllPrivateMessages(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s pm',
+                PrivateMessage::class
+            )
+        )->execute();
+    }
 }

@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Colony\ColonyEnum;
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
@@ -24,7 +24,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         int $buildMenu,
         int $offset
     ): iterable {
-        if ($userId === GameEnum::USER_NOONE) {
+        if ($userId === UserEnum::USER_NOONE) {
             $rsm = new ResultSetMapping();
             $rsm->addEntityResult(Building::class, 'b');
             $rsm->addFieldResult('b', 'id', 'id');

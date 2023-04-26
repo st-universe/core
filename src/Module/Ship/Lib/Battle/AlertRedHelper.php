@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -121,7 +120,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     public function checkForAlertRedShips(ShipInterface $leadShip, &$informations, ?ShipInterface $tractoringShip = null): array
     {
-        if ($leadShip->getUser()->getId() === GameEnum::USER_NOONE) {
+        if ($leadShip->getUser()->getId() === UserEnum::USER_NOONE) {
             return [];
         }
         if ($this->allFleetShipsWarped($leadShip)) {
@@ -215,7 +214,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
     {
         foreach ($users as $userId => $txt) {
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $userId,
                 $txt
             );

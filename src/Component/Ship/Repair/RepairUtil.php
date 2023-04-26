@@ -6,7 +6,6 @@ namespace Stu\Component\Ship\Repair;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Crew\CrewEnum;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -14,6 +13,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\RepairTaskInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -157,7 +157,7 @@ final class RepairUtil implements RepairUtilInterface
             );
         }
         $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
+            UserEnum::USER_NOONE,
             $entity->getUserId(),
             $entityOwnerMessage,
             $isColony ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY : PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION

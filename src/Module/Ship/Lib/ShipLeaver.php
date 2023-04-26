@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -177,7 +177,7 @@ final class ShipLeaver implements ShipLeaverInterface
         }
 
         $pods = $this->shipRepository->prototype();
-        $pods->setUser($this->userRepository->find(GameEnum::USER_NOONE));
+        $pods->setUser($this->userRepository->find(UserEnum::USER_NOONE));
         $pods->setRump($shipRump);
         $pods->setName(sprintf(_('Rettungskapseln von (%d)'), $ship->getId()));
         $pods->setHuell(1);

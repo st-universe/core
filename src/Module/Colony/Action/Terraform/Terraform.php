@@ -6,12 +6,12 @@ namespace Stu\Module\Colony\Action\Terraform;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\TerraformingInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
@@ -98,7 +98,7 @@ final class Terraform implements ActionControllerInterface
         }
 
 
-        if ($userId !== GameEnum::USER_NOONE && $terraf->getEnergyCosts() > $colony->getEps()) {
+        if ($userId !== UserEnum::USER_NOONE && $terraf->getEnergyCosts() > $colony->getEps()) {
             $game->addInformationf(
                 _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
                 $terraf->getEnergyCosts(),
@@ -111,7 +111,7 @@ final class Terraform implements ActionControllerInterface
 
         $colonyTerraforming = $this->colonyTerraformingRepository->prototype();
 
-        if ($userId !== GameEnum::USER_NOONE) {
+        if ($userId !== UserEnum::USER_NOONE) {
             foreach ($terraf->getCosts() as $obj) {
                 $commodityId = $obj->getCommodityId();
                 if (!$storage->containsKey($commodityId)) {

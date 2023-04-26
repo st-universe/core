@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\PostKnComment;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -86,7 +86,7 @@ final class PostKnComment implements ActionControllerInterface
             );
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $post->getUserId(),
                 $text,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
@@ -119,7 +119,7 @@ final class PostKnComment implements ActionControllerInterface
                 );
 
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $commentatorId,
                     $text,
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,

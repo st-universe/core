@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Maintenance;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
@@ -36,7 +36,7 @@ final class EmptyPlotDeletion implements MaintenanceHandlerInterface
             // send deletion messages
             foreach ($plot->getMembers() as $member) {
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $member->getUser()->getId(),
                     sprintf($txtTemplate, $plot->getTitle())
                 );

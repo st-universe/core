@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Lib;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
@@ -43,7 +43,7 @@ final class NewKnPostNotificator implements NewKnPostNotificatorInterface
             )
             ->map(function (RpgPlotMemberInterface $member) use ($text, $url): void {
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $member->getUserId(),
                     $text,
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,

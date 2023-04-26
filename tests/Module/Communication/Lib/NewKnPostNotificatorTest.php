@@ -6,9 +6,9 @@ namespace Stu\Module\Communication\Lib;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery\MockInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\RpgPlotMemberInterface;
@@ -83,7 +83,7 @@ class NewKnPostNotificatorTest extends StuTestCase
 
         $this->privateMessageSender->shouldReceive('send')
             ->with(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $memberUserId,
                 $messageText,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,

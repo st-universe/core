@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -81,7 +81,7 @@ final class ColonyResetter implements ColonyResetterInterface
             ->setMaxBev(0)
             ->setImmigrationstate(true)
             ->setPopulationlimit(0)
-            ->setUser($this->userRepository->find(GameEnum::USER_NOONE))
+            ->setUser($this->userRepository->find(UserEnum::USER_NOONE))
             ->setName('');
 
         $this->colonyRepository->save($colony);
@@ -142,7 +142,7 @@ final class ColonyResetter implements ColonyResetterInterface
         );
 
         $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
+            UserEnum::USER_NOONE,
             (int) $fleet->getUserId(),
             $txt,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP

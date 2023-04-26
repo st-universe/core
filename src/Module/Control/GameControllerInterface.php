@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Control;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -42,7 +42,7 @@ interface GameControllerInterface
 
     public function sendInformation(
         $recipient_id,
-        $sender_id = GameEnum::USER_NOONE,
+        $sender_id = UserEnum::USER_NOONE,
         $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
         ?string $href = null
     );

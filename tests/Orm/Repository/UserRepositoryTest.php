@@ -7,7 +7,7 @@ namespace Orm\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Mockery\MockInterface;
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepository;
@@ -41,7 +41,7 @@ class UserRepositoryTest extends StuTestCase
         $user = $this->mock(UserInterface::class);
 
         $this->entityManager->shouldReceive('find')
-            ->with(User::class, GameEnum::USER_NOONE, null, null)
+            ->with(User::class, UserEnum::USER_NOONE, null, null)
             ->once()
             ->andReturn($user);
 

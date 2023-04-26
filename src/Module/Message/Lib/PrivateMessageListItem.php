@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
-use Stu\Component\Game\GameEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -110,7 +110,7 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
 
     public function displayUserLinks(): bool
     {
-        return $this->getSender() && $this->getSender()->getId() !== GameEnum::USER_NOONE;
+        return $this->getSender() && $this->getSender()->getId() !== UserEnum::USER_NOONE;
     }
 
     public function getReplied(): bool

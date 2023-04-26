@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use request;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Exception\SanityCheckException;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -16,6 +15,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\InteractionChecker;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
@@ -178,7 +178,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         foreach ($crewmanPerUser as $ownerId => $count) {
             if ($ownerId !== $userId) {
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $ownerId,
                     sprintf(
                         _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an den Handelsposten "%s" (%s) überstellt.'),

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -15,6 +14,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\TholianWebInterface;
@@ -156,7 +156,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
                 $ship = $system->getShip();
 
                 $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
+                    UserEnum::USER_NOONE,
                     $ship->getUser()->getId(),
                     sprintf(
                         'Das Energienetz in Sektor %s wurde fertiggestellt',
@@ -200,8 +200,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
             return;
         }
 
-        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
-        ;
+        $currentSpinnerSystems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());;
         $time = $this->stuTime->time();
 
         //adjust by modified web spinner count
