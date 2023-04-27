@@ -99,7 +99,7 @@ final class EnterStarSystem implements ActionControllerInterface
             $this->enterStarSystemTraktor($wrapper, $starsystemMap, $game);
         }
 
-        if ($ship->isFleetLeader()) {
+        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $msg = [];
 
             /** @var ShipInterface[] $result */
@@ -123,7 +123,7 @@ final class EnterStarSystem implements ActionControllerInterface
 
                 $epsSystem = $wrapper->getEpsSystemData();
 
-                if ($epsSystem->getEps() === 0) {
+                if ($epsSystem === null || $epsSystem->getEps() === 0) {
                     $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: Energiemangel";
                     $wrapper->leaveFleet();
                     continue;
@@ -140,7 +140,7 @@ final class EnterStarSystem implements ActionControllerInterface
                     $this->enterStarSystemTraktor($wrapper, $starsystemMap, $game);
                 }
 
-                $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+                $epsSystem->lowerEps(1)->update();
 
                 $this->shipRepository->save($fleetShip);
             }
@@ -244,7 +244,7 @@ final class EnterStarSystem implements ActionControllerInterface
 
         $epsSystem = $wrapper->getEpsSystemData();
 
-        if ($epsSystem->getEps() < 1) {
+        if ($epsSystem === null || $epsSystem->getEps() < 1) {
             $name = $tractoredShip->getName();
             $this->shipSystemManager->deactivate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
@@ -255,7 +255,7 @@ final class EnterStarSystem implements ActionControllerInterface
             $starsystemMap
         );
         // @todo Beschädigung bei Systemeinflug
-        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+        $epsSystem->lowerEps(1)->update();
         $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit in das System gezogen");
 
         //check for tractor system health

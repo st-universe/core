@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BuildConstruction;
 
 use request;
+use RuntimeException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Station\StationEnum;
@@ -18,7 +20,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -135,7 +136,7 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() == 0) {
+        if ($epsSystem === null || $epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -183,7 +184,7 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         // check if ship has excess crew
-        if ($ship->getCrewCount() - $ship->getBuildplan()->getCrew() < $neededCrew) {
+        if ($ship->getExcessCrewCount() < $neededCrew) {
             $game->addInformation(sprintf(
                 _('Nicht genügend Crew für den Start der %d Workbees vorhanden, benötigt wird %d'),
                 count($workbeePlans),
@@ -207,21 +208,28 @@ final class BuildConstruction implements ActionControllerInterface
         foreach ($workbeePlans as $plan) {
             $rump = $plan->getRump();
 
-            // remove shuttle from storage
-            $this->shipStorageManager->lowerStorage(
-                $ship,
-                $rump->getCommodity(),
-                1
-            );
+            $rumpCommodity = $rump->getCommodity();
+            if ($rumpCommodity !== null) {
+                // remove shuttle from storage
+                $this->shipStorageManager->lowerStorage(
+                    $ship,
+                    $rumpCommodity,
+                    1
+                );
+            }
 
             // start workbee and transfer crew
-            $workbees[] = $this->startWorkbee($wrapper, $plan);
+            $workbees[] = $this->startWorkbee($ship, $epsSystem, $plan);
             $game->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
         }
 
         // use build ressources
         foreach (self::NEEDED_RESOURCES as $key => $amount) {
             $commodity = $this->commodityRepository->find($key);
+
+            if ($commodity === null) {
+                throw new RuntimeException('commodity not existent');
+            }
 
             $this->shipStorageManager->lowerStorage(
                 $ship,
@@ -246,9 +254,8 @@ final class BuildConstruction implements ActionControllerInterface
         $game->addInformation('Die gestarteten Workbees haben an das Konstrukt angedockt');
     }
 
-    private function startWorkbee(ShipWrapperInterface $wrapper, ShipBuildplanInterface $plan): ShipInterface
+    private function startWorkbee(ShipInterface $ship, EpsSystemData $epsSystem, ShipBuildplanInterface $plan): ShipInterface
     {
-        $ship = $wrapper->get();
         $rump = $plan->getRump();
 
         $workbeeWrapper = $this->shipCreator->createBy(
@@ -258,6 +265,10 @@ final class BuildConstruction implements ActionControllerInterface
         );
         $workbee = $workbeeWrapper->get();
         $workbeeEps = $workbeeWrapper->getEpsSystemData();
+
+        if ($workbeeEps === null) {
+            throw new RuntimeException('workbee has not eps system installed');
+        }
 
         $workbeeEps->setEps($workbeeEps->getMaxEps())->update();
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
@@ -276,8 +287,7 @@ final class BuildConstruction implements ActionControllerInterface
 
         $this->shipRepository->save($workbee);
 
-        $epsSystem = $wrapper->getEpsSystemData();
-        $epsSystem->setEps($epsSystem->getEps() - $workbeeEps->getMaxEps())->update();
+        $epsSystem->lowerEps($workbeeEps->getMaxEps())->update();
         $this->shipRepository->save($ship);
 
         return $workbee;
@@ -286,6 +296,10 @@ final class BuildConstruction implements ActionControllerInterface
     private function buildConstruction(ShipInterface $ship, int $rumpId): ShipInterface
     {
         $rump = $this->shipRumpRepository->find($rumpId);
+
+        if ($rump === null) {
+            throw new RuntimeException('rump does not exist');
+        }
 
         $construction = $this->shipRepository->prototype();
         $construction->setUser($ship->getUser());

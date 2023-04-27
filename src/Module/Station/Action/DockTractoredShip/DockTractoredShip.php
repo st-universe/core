@@ -63,7 +63,7 @@ final class DockTractoredShip implements ActionControllerInterface
 
         //check for energy
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+        if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }
@@ -83,7 +83,7 @@ final class DockTractoredShip implements ActionControllerInterface
             return;
         }
 
-        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+        $epsSystem->lowerEps(1)->update();
         $tractoredShip->setDockedTo($station);
 
         $this->shipLoader->save($station);

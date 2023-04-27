@@ -604,12 +604,12 @@ final class ShipMover implements ShipMoverInterface
             $this->leaveFleet($wrapper);
         }
         //Flugkosten abziehen
-        $epsSystem->setEps($epsSystem->getEps() - $flight_ecost);
+        $epsSystem->lowerEps($flight_ecost);
 
         //Traktorstrahl Energie abziehen
         $tractoredShip = $ship->getTractoredShip();
         if ($tractoredShip !== null) {
-            $epsSystem->setEps($epsSystem->getEps() - $tractoredShip->getRump()->getFlightEcost());
+            $epsSystem->lowerEps($tractoredShip->getRump()->getFlightEcost());
             $this->$met($tractoredShip);
             if ($nextField instanceof StarSystemMapInterface) {
                 $tractoredShip->updateLocation(null, $nextField);
@@ -687,7 +687,7 @@ final class ShipMover implements ShipMoverInterface
             if ($notEnoughEnergyForDeflector) {
                 $epsSystem->setEps(0);
             } else {
-                $epsSystem->setEps($epsSystem->getEps() - $nextField->getFieldType()->getEnergyCosts());
+                $epsSystem->lowerEps($nextField->getFieldType()->getEnergyCosts());
             }
         } else {
             $deflectorDestroyed = true;

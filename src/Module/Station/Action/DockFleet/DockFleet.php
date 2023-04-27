@@ -11,7 +11,6 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
@@ -105,8 +104,6 @@ final class DockFleet implements ActionControllerInterface
         }
 
         $this->fleetDock($wrapper, $targetFleet, $game);
-
-        //$game->addInformation('Andockvorgang abgeschlossen');
     }
 
     private function fleetDock(ShipWrapperInterface $stationWrapper, FleetInterface $targetFleet, GameControllerInterface $game): void
@@ -116,8 +113,7 @@ final class DockFleet implements ActionControllerInterface
 
         $this->loggerUtil->log('F');
         $msg = [];
-        $msg[] = _("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName();
-        ;
+        $msg[] = _("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName();;
         $freeSlots = $station->getFreeDockingSlotCount();
         foreach ($targetFleet->getShips() as $ship) {
             $this->loggerUtil->log('G');
@@ -129,7 +125,7 @@ final class DockFleet implements ActionControllerInterface
                 continue;
             }
 
-            if ($epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+            if ($epsSystem === null || $epsSystem->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $station->getName() . _(": Nicht genügend Energie vorhanden");
                 break;
             }
@@ -155,14 +151,16 @@ final class DockFleet implements ActionControllerInterface
 
             $ship->setDockedTo($station);
 
-            $epsSystem->setEps($epsSystem->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
+            $epsSystem->lowerEps(ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
             $this->shipRepository->save($ship);
 
             $freeSlots--;
         }
 
-        $epsSystem->update();
+        if ($epsSystem !== null) {
+            $epsSystem->update();
+        }
 
         $game->addInformationMerge($msg);
     }

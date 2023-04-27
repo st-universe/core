@@ -91,7 +91,7 @@ final class ShowColonyScan implements ViewControllerInterface
             return;
         }
 
-        $epsSystem->setEps($epsSystem->getEps() - MatrixScannerShipSystem::SCAN_EPS_COST)->update();
+        $epsSystem->lowerEps(MatrixScannerShipSystem::SCAN_EPS_COST)->update();
         $this->shipRepository->save($ship);
 
         $this->privateMessageSender->send(

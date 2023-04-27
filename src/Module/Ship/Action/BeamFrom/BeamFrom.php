@@ -202,7 +202,7 @@ final class BeamFrom implements ActionControllerInterface
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);
 
             if (!$isDockTransfer) {
-                $epsSystem->setEps($epsSystem->getEps() - (int)ceil($count / $transferAmount));
+                $epsSystem->lowerEps((int)ceil($count / $transferAmount));
             }
         }
         $game->sendInformation(

@@ -11,7 +11,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -40,8 +39,11 @@ final class ShowSensorScan implements ViewControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
-    private $fadedSignaturesUncloaked = [];
-    private $fadedSignaturesCloaked = [];
+    /** @var array<int> */
+    private array $fadedSignaturesUncloaked = [];
+
+    /** @var array<int> */
+    private array $fadedSignaturesCloaked = [];
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -95,6 +97,9 @@ final class ShowSensorScan implements ViewControllerInterface
             $mapField = $this->mapRepository->getByCoordinates($station->getLayerId(), $cx, $cy);
         } else {
             $mapField = $this->starSystemMapRepository->getByCoordinates($sysid, $cx, $cy);
+            if ($mapField === null) {
+                return;
+            }
 
             $system = $mapField->getSystem();
 
@@ -120,12 +125,12 @@ final class ShowSensorScan implements ViewControllerInterface
         }
 
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
+        if ($epsSystem === null || $epsSystem->getEps() < self::ENERGY_COST_SECTOR_SCAN) {
             $game->addInformation(sprintf(_('Nicht genügend Energie vorhanden (%d benötigt)'), self::ENERGY_COST_SECTOR_SCAN));
             return;
         }
 
-        $epsSystem->setEps($epsSystem->getEps() - self::ENERGY_COST_SECTOR_SCAN)->update();
+        $epsSystem->lowerEps(self::ENERGY_COST_SECTOR_SCAN)->update();
         $this->shipRepository->save($station);
 
         //$tachyonActive = $this->nbsUtility->isTachyonActive($ship);
@@ -141,16 +146,19 @@ final class ShowSensorScan implements ViewControllerInterface
         }
 
         $game->setTemplateVar('MAPFIELD', $mapField);
-        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $userId, $sysid !== 0));
+        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField->getId(), $userId, $sysid !== 0));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('WRAPPER', $wrapper);
         $game->setTemplateVar('ERROR', false);
     }
 
-    private function getSignatures($field, $ignoreId, bool $isSystem)
+    /**
+     * @return array<int, SignatureWrapper>
+     */
+    private function getSignatures(int $fieldId, int $ignoreId, bool $isSystem): array
     {
-        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($field, $isSystem, $ignoreId);
+        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($fieldId, $isSystem, $ignoreId);
 
         $filteredSigs = [];
 
@@ -163,10 +171,10 @@ final class ShowSensorScan implements ViewControllerInterface
                 if ($wrapper->getRump() == null) {
                     if ($sig->isCloaked()) {
                         if ($sig->getTime() > (time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_CLOAKED)) {
-                            $this->fadedSignaturesCloaked[$id] = $id;
+                            $this->fadedSignaturesCloaked[] = $id;
                         }
                     } else {
-                        $this->fadedSignaturesUncloaked[$id] = $id;
+                        $this->fadedSignaturesUncloaked[] = $id;
                     }
                 } else {
                     $filteredSigs[$id] = $wrapper;

@@ -103,7 +103,7 @@ final class EpsTransfer implements ActionControllerInterface
         if ($load + $targetEps->getBattery() > $targetEps->getMaxBattery()) {
             $load = $targetEps->getMaxBattery() - $targetEps->getBattery();
         }
-        $eps->setEps($eps->getEps() - $load * 3)->update();
+        $eps->lowerEps($load * 3)->update();
         $targetEps->setBattery($targetEps->getBattery() + $load)->update();
 
         $this->privateMessageSender->send(

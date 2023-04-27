@@ -119,21 +119,6 @@ parameters:
 			path: src/Component/Ship/System/Data/AbstractSystemData.php
 
 		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Component/Ship/System/ShipSystemManager.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Component/Ship/System/ShipSystemManager.php
-
-		-
-			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\ShipSystemManager\\:\\:checkActivationConditions\\(\\) has parameter \\$time with no type specified\\.$#"
-			count: 1
-			path: src/Component/Ship/System/ShipSystemManager.php
-
-		-
 			message: "#^Method Stu\\\\Component\\\\Ship\\\\System\\\\Type\\\\AbstractShipSystemType\\:\\:updateSystemData\\(\\) has parameter \\$data with no type specified\\.$#"
 			count: 1
 			path: src/Component/Ship/System/Type/AbstractShipSystemType.php
@@ -2723,16 +2708,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/AstroMapping/StartAstroMapping.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AstroMapping/StartAstroMapping.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
 
@@ -2755,76 +2730,6 @@ parameters:
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/AttackShip/AttackShip.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 5
-			path: src/Module/Ship/Action/BeamFromColony/BeamFromColony.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BeamFromColony/BeamFromColony.php
-
-		-
-			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BeamFromColony/BeamFromColony.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 5
-			path: src/Module/Ship/Action/BeamToColony/BeamToColony.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BeamToColony/BeamToColony.php
-
-		-
-			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BeamToColony/BeamToColony.php
-
-		-
-			message: "#^Cannot call method getBaseHull\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/BuildConstruction/BuildConstruction.php
-
-		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BuildConstruction/BuildConstruction.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Action/BuildConstruction/BuildConstruction.php
-
-		-
-			message: "#^Cannot call method getMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/BuildConstruction/BuildConstruction.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BuildConstruction/BuildConstruction.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/BuildConstruction/BuildConstruction.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipRump of method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:setRump\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface, Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/BuildConstruction/BuildConstruction.php
-
-		-
-			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Ship\\\\Storage\\\\ShipStorageManagerInterface\\:\\:lowerStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/BuildConstruction/BuildConstruction.php
 
 		-
 			message: "#^Parameter \\#3 \\$building of method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetColonizationInterface\\:\\:colonize\\(\\) expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface, Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null given\\.$#"
@@ -2952,46 +2857,6 @@ parameters:
 			path: src/Module/Ship/Action/DeleteFleet/DeleteFleet.php
 
 		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/DoTachyonScan/DoTachyonScan.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/DoTachyonScan/DoTachyonScan.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 4
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/EnterStarSystem/EnterStarSystem.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 4
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/EnterWormhole/EnterWormhole.php
-
-		-
 			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/FleetDeactivateWarp/FleetDeactivateWarp.php
@@ -3040,41 +2905,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Ship\\\\Action\\\\Selfrepair\\\\Selfrepair\\:\\:\\$loggerUtil is never read, only written\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/Selfrepair/Selfrepair.php
-
-		-
-			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 3
-			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
-
-		-
-			message: "#^Cannot call method getMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
-
-		-
-			message: "#^Parameter \\#1 \\$key of method Doctrine\\\\Common\\\\Collections\\\\ReadableCollection\\<int,Stu\\\\Orm\\\\Entity\\\\StorageInterface\\>\\:\\:containsKey\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
-
-		-
-			message: "#^Parameter \\#2 \\$commodity of method Stu\\\\Component\\\\Ship\\\\Storage\\\\ShipStorageManagerInterface\\:\\:lowerStorage\\(\\) expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface, Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/StartShuttle/StartShuttle.php
 
 		-
 			message: "#^Cannot call method getCapturedShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null\\.$#"
@@ -3572,51 +3402,6 @@ parameters:
 			path: src/Module/Ship/View/ShowColonization/ShowColonization.php
 
 		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Cannot call method getSystemType\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) has parameter \\$field with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) has parameter \\$ignoreId with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) has parameter \\$isSystem with no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesCloaked has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:\\$fadedSignaturesUncloaked has no type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\View\\\\ShowShip\\\\AstroStateWrapper\\:\\:isDone\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowShip/AstroStateWrapper.php
@@ -3847,46 +3632,6 @@ parameters:
 			path: src/Module/Starmap/View/ShowSection/ShowSection.php
 
 		-
-			message: "#^Cannot call method getBuildtime\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 3
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 3
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
-			message: "#^Cannot call method getModules\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
-			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
-			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
-			message: "#^Parameter \\#1 \\$shipBuildplan of method Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueueInterface\\:\\:setShipBuildplan\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface, Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: src/Module/Station/Action/BuildShipyardShip/BuildShipyardShip.php
-
-		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Station/Action/BuildStation/BuildStation.php
@@ -3940,31 +3685,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$post of method Stu\\\\Orm\\\\Repository\\\\DockingPrivilegeRepositoryInterface\\:\\:delete\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DockingPrivilegeInterface, Stu\\\\Orm\\\\Entity\\\\DockingPrivilegeInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Station/Action/DeleteDockPrivilege/DeleteDockPrivilege.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Station/Action/DockFleet/DockFleet.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/DockFleet/DockFleet.php
-
-		-
-			message: "#^Cannot call method update\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/DockFleet/DockFleet.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Station/Action/DockTractoredShip/DockTractoredShip.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/Action/DockTractoredShip/DockTractoredShip.php
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
@@ -4030,46 +3750,6 @@ parameters:
 			message: "#^Cannot call method setReloadBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Module/Station/Action/ToggleBatteryReload/ToggleBatteryReload.php
-
-		-
-			message: "#^Cannot call method getEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 2
-			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
-
-		-
-			message: "#^Cannot call method getSystem\\(\\) on Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
-
-		-
-			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowSensorScan\\\\ShowSensorScan\\:\\:getSignatures\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowSensorScan\\\\ShowSensorScan\\:\\:getSignatures\\(\\) has parameter \\$field with no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Station\\\\View\\\\ShowSensorScan\\\\ShowSensorScan\\:\\:getSignatures\\(\\) has parameter \\$ignoreId with no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Station\\\\View\\\\ShowSensorScan\\\\ShowSensorScan\\:\\:\\$fadedSignaturesCloaked has no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Station\\\\View\\\\ShowSensorScan\\\\ShowSensorScan\\:\\:\\$fadedSignaturesUncloaked has no type specified\\.$#"
-			count: 1
-			path: src/Module/Station/View/ShowSensorScan/ShowSensorScan.php
 
 		-
 			message: "#^PHPDoc tag @var contains unknown class Stu\\\\Module\\\\Station\\\\View\\\\ShowShipManagement\\\\FleetWrapperInterface\\.$#"

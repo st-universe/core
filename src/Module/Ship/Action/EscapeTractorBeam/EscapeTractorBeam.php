@@ -101,7 +101,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         }
 
         //eps cost
-        $epsSystem->setEps($epsSystem->getEps() - 20)->update();
+        $epsSystem->lowerEps(20)->update();
 
         $tractoringShip = $tractoringShipWrapper->get();
 

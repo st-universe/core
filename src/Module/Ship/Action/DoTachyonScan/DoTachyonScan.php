@@ -66,7 +66,7 @@ final class DoTachyonScan implements ActionControllerInterface
         $epsSystem = $wrapper->getEpsSystemData();
 
         // scanner needs to be active
-        if ($epsSystem->getEps() < TachyonScannerShipSystem::SCAN_EPS_COST) {
+        if ($epsSystem === null || $epsSystem->getEps() < TachyonScannerShipSystem::SCAN_EPS_COST) {
             $game->addInformation(sprintf(_('[b][color=FF2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), TachyonScannerShipSystem::SCAN_EPS_COST));
             return;
         }
@@ -79,7 +79,7 @@ final class DoTachyonScan implements ActionControllerInterface
 
         $this->tachyonScanRepository->save($tachyonScan);
 
-        $epsSystem->setEps($epsSystem->getEps() - TachyonScannerShipSystem::SCAN_EPS_COST)->update();
+        $epsSystem->lowerEps(TachyonScannerShipSystem::SCAN_EPS_COST)->update();
         $this->shipRepository->save($ship);
 
         $game->setView(ShowShip::VIEW_IDENTIFIER, ['TACHYON_SCAN_JUST_HAPPENED' => true]);

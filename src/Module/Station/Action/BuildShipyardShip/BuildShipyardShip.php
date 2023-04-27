@@ -55,13 +55,11 @@ final class BuildShipyardShip implements ActionControllerInterface
         $shipyardId = $shipyard->getId();
 
         $plan = $this->shipBuildplanRepository->find(request::getIntFatal('planid'));
-
-        if ($plan->getUser() !== $game->getUser()) {
+        if ($plan === null) {
             return;
         }
 
-        $rump = $plan->getRump();
-        if ($rump === null) {
+        if ($plan->getUser() !== $game->getUser()) {
             return;
         }
 
@@ -76,12 +74,14 @@ final class BuildShipyardShip implements ActionControllerInterface
             return;
         }
 
+        $rump = $plan->getRump();
+
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() < $rump->getEpsCost()) {
+        if ($epsSystem === null || $epsSystem->getEps() < $rump->getEpsCost()) {
             $game->addInformationf(
                 _('Zum Bau wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
                 $rump->getEpsCost(),
-                $epsSystem->getEps()
+                $epsSystem === null ? 0 : $epsSystem->getEps()
             );
             return;
         }
@@ -112,7 +112,7 @@ final class BuildShipyardShip implements ActionControllerInterface
         $queue->setBuildtime($plan->getBuildtime());
         $queue->setFinishDate(time() + $plan->getBuildtime());
 
-        $epsSystem->setEps($epsSystem->getEps() - $rump->getEpsCost())->update();
+        $epsSystem->lowerEps($rump->getEpsCost())->update();
 
         $this->shipRepository->save($shipyard);
         $this->shipyardShipQueueRepository->save($queue);

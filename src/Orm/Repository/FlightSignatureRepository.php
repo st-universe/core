@@ -68,7 +68,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getSingleScalarResult();
     }
 
-    public function getVisibleSignatures($field, bool $isSystem, int $ignoreId): array
+    public function getVisibleSignatures(int $fieldId, bool $isSystem, int $ignoreId): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -84,7 +84,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             )
             ->setParameters([
                 'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
-                'fieldId' => $field->getId(),
+                'fieldId' => $fieldId,
                 'ignoreId' => $ignoreId
             ])
             ->getResult();
