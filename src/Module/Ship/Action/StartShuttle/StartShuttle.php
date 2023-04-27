@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\StartShuttle;
 
 use request;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,10 +14,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipBuildplanInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -33,8 +33,6 @@ final class StartShuttle implements ActionControllerInterface
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
-    private CommodityRepositoryInterface $commodityRepository;
-
     private ShipStorageManagerInterface $shipStorageManager;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
@@ -46,7 +44,6 @@ final class StartShuttle implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         ShipCreatorInterface $shipCreator,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        CommodityRepositoryInterface $commodityRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
         ActivatorDeactivatorHelperInterface $helper
@@ -55,7 +52,6 @@ final class StartShuttle implements ActionControllerInterface
         $this->shipLoader = $shipLoader;
         $this->shipCreator = $shipCreator;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->commodityRepository = $commodityRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->helper = $helper;
@@ -92,7 +88,7 @@ final class StartShuttle implements ActionControllerInterface
             return;
         }
         $epsSystem = $wrapper->getEpsSystemData();
-        if ($epsSystem->getEps() == 0) {
+        if ($epsSystem === null || $epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -112,17 +108,18 @@ final class StartShuttle implements ActionControllerInterface
         // check if ship storage contains shuttle commodity
         $storage = $ship->getStorage();
 
-        if (!$storage->containsKey($rump->getCommodityId())) {
+        $rumpCommodity = $rump->getCommodity();
+        if ($rumpCommodity !== null && !$storage->containsKey($rumpCommodity->getId())) {
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
-                $this->commodityRepository->find((int) $rump->getCommodityId())->getName()
+                $rumpCommodity
             );
             return;
         }
 
         // check if ship has excess crew
-        if ($ship->getCrewCount() - $ship->getBuildplan()->getCrew() < $plan->getCrew()) {
+        if ($ship->getExcessCrewCount() < $plan->getCrew()) {
             $game->addInformation(sprintf(_('Es werden %d freie Crewman für den Start des %s benötigt'), $plan->getCrew(), $rump->getName()));
             return;
         }
@@ -134,21 +131,26 @@ final class StartShuttle implements ActionControllerInterface
         }
 
         // remove shuttle from storage
-        $this->shipStorageManager->lowerStorage(
-            $ship,
-            $rump->getCommodity(),
-            1
-        );
+        if ($rumpCommodity !== null) {
+            $this->shipStorageManager->lowerStorage(
+                $ship,
+                $rumpCommodity,
+                1
+            );
+        }
 
         // start shuttle and transfer crew
-        $this->startShuttle($wrapper, $plan, $game);
+        $this->startShuttle($ship, $epsSystem, $plan, $game);
 
         $game->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
     }
 
-    private function startShuttle(ShipWrapperInterface $wrapper, ShipBuildplanInterface $plan, GameControllerInterface $game): void
-    {
-        $ship = $wrapper->get();
+    private function startShuttle(
+        ShipInterface $ship,
+        EpsSystemData $epsSystem,
+        ShipBuildplanInterface $plan,
+        GameControllerInterface $game
+    ): void {
         $rump = $plan->getRump();
 
         $shuttleWrapper = $this->shipCreator->createBy(
@@ -158,7 +160,10 @@ final class StartShuttle implements ActionControllerInterface
         );
 
         $shuttleEps = $shuttleWrapper->getEpsSystemData();
-        $shuttleEps->setEps($shuttleEps->getMaxEps())->update();
+        if ($shuttleEps !== null) {
+            $shuttleEps->setEps($shuttleEps->getMaxEps())->update();
+            $epsSystem->lowerEps($shuttleEps->getMaxEps())->update();
+        }
 
         $shuttle = $shuttleWrapper->get();
         $shuttle->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
@@ -176,12 +181,10 @@ final class StartShuttle implements ActionControllerInterface
 
         $this->shipRepository->save($shuttle);
 
-        $epsSystem = $wrapper->getEpsSystemData();
-        $epsSystem->setEps($epsSystem->getEps() - $shuttleEps->getMaxEps())->update();
         if (
             $ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $ship->getSystemState(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-            &&  $ship->getCrewCount() <= $ship->getBuildplan()->getCrew()
+            && $ship->getExcessCrewCount() <= 0
         ) {
             $this->helper->deactivate($ship->getId(), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }

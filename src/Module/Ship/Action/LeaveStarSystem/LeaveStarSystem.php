@@ -230,7 +230,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         }
         $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship, true));
         $this->leaveStarSystem($tractoredShipWrapper, $currentField, $map, $game);
-        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+        $epsSystem->lowerEps(1)->update();
 
         $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit aus dem System gezogen");
 

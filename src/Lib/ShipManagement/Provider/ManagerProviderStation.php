@@ -65,7 +65,7 @@ class ManagerProviderStation implements ManagerProviderInterface
             throw new RuntimeException('can not lower eps without eps system');
         }
 
-        $eps->setEps($eps->getEps() - $amount)->update();
+        $eps->lowerEps($amount)->update();
 
         return $this;
     }

@@ -120,12 +120,8 @@ class ManagerProviderStationTest extends StuTestCase
             ->once()
             ->andReturn($eps);
 
-        $eps->shouldReceive('getEps')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(42);
-        $eps->shouldReceive('setEps')
-            ->with(37)
+        $eps->shouldReceive('lowerEps')
+            ->with(5)
             ->once()
             ->andReturn($eps);
         $eps->shouldReceive('update')

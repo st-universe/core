@@ -370,10 +370,10 @@ class ShipSystemManagerTest extends StuTestCase
             ->andReturn($epsSystem);
         $epsSystem->shouldReceive('getEps')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn(1);
-        $epsSystem->shouldReceive('setEps')
-            ->with(0)
+        $epsSystem->shouldReceive('lowerEps')
+            ->with(1)
             ->once()
             ->andReturnSelf();
         $epsSystem->shouldReceive('update')
@@ -443,10 +443,10 @@ class ShipSystemManagerTest extends StuTestCase
             ->andReturn($epsSystem);
         $epsSystem->shouldReceive('getEps')
             ->withNoArgs()
-            ->twice()
+            ->once()
             ->andReturn(1);
-        $epsSystem->shouldReceive('setEps')
-            ->with(0)
+        $epsSystem->shouldReceive('lowerEps')
+            ->with(1)
             ->once()
             ->andReturnSelf();
         $epsSystem->shouldReceive('update')

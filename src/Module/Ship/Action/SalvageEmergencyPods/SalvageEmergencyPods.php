@@ -136,7 +136,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             }
          */
 
-        $epsSystem->setEps($epsSystem->getEps() - 1)->update();
+        $epsSystem->lowerEps(1)->update();
 
         $this->shipLoader->save($ship);
     }

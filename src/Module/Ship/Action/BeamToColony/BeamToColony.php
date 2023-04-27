@@ -114,7 +114,7 @@ final class BeamToColony implements ActionControllerInterface
         if (!$ship->hasEnoughCrew($game)) {
             return;
         }
-        if ($epsSystem->getEps() == 0) {
+        if ($epsSystem === null || $epsSystem->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
@@ -206,7 +206,7 @@ final class BeamToColony implements ActionControllerInterface
             $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
             $this->colonyStorageManager->upperStorage($target, $commodity, $count);
 
-            $epsSystem->setEps($epsSystem->getEps() - (int) ceil($count / $transferAmount));
+            $epsSystem->lowerEps((int) ceil($count / $transferAmount));
         }
         $game->sendInformation(
             $target->getUser()->getId(),

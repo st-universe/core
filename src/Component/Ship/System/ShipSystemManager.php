@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
+use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
@@ -48,8 +49,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         if (!$force) {
             $this->checkActivationConditions($wrapper, $system, $shipSystemId, $time);
         }
+
         $epsSystem = $wrapper->getEpsSystemData();
-        $epsSystem->setEps($epsSystem->getEps() - $system->getEnergyUsageForActivation())->update();
+        if ($epsSystem !== null) {
+            $epsSystem->lowerEps($system->getEnergyUsageForActivation())->update();
+        }
 
         //cooldown
         $shipSystem = $wrapper->get()->getSystems()[$shipSystemId] ?? null;
@@ -103,7 +107,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         ShipWrapperInterface $wrapper,
         ShipSystemTypeInterface $system,
         int $shipSystemId,
-        $time
+        int $time
     ): void {
         $ship = $wrapper->get();
         $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
@@ -131,7 +135,8 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new InsufficientCrewException();
         }
 
-        if ($wrapper->getEpsSystemData()->getEps() < $system->getEnergyUsageForActivation()) {
+        $epsSystem = $wrapper->getEpsSystemData();
+        if ($epsSystem === null || $epsSystem->getEps() < $system->getEnergyUsageForActivation()) {
             throw new InsufficientEnergyException($system->getEnergyUsageForActivation());
         }
 

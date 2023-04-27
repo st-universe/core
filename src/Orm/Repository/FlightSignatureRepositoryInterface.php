@@ -38,11 +38,9 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     public function getSignatureRangeForAlly(int $allyId): array;
 
     /**
-     * @param MapInterface|StarSystemMapInterface $field
-     *
-     * @return list<FlightSignatureInterface>
+     * @return array<FlightSignatureInterface>
      */
-    public function getVisibleSignatures($field, bool $isSystem, int $ignoreId): array;
+    public function getVisibleSignatures(int $fieldId, bool $isSystem, int $ignoreId): array;
 
     public function deleteOldSignatures(int $threshold): void;
 
