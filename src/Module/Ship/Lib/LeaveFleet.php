@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
+//TODO unit test!
 final class LeaveFleet implements LeaveFleetInterface
 {
     private FleetRepositoryInterface $fleetRepository;
@@ -34,6 +36,7 @@ final class LeaveFleet implements LeaveFleetInterface
 
     public function leaveFleet(ShipInterface $ship): bool
     {
+        $this->loggerUtil->init('fleet', LoggerEnum::LEVEL_ERROR);
         $this->loggerUtil->log('leaveFleet');
 
         $fleet = $ship->getFleet();
