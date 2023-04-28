@@ -33,6 +33,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em = $this->getEntityManager();
 
         $em->remove($fleet);
+        $em->flush();
     }
 
     public function truncateByUser(UserInterface $user): void
