@@ -112,7 +112,7 @@ class PrivateMessage implements PrivateMessageInterface
     /**
      * @var UserInterface
      *
-     * @ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="recip_user", referencedColumnName="id", onDelete="CASCADE")
      */
     private $receivingUser;

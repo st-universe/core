@@ -58,7 +58,7 @@ class TholianWeb implements TholianWebInterface
     /**
      * @var ArrayCollection<int, ShipInterface>
      *
-     * @OneToMany(targetEntity="Ship", mappedBy="holdingWeb", cascade={"remove"})
+     * @OneToMany(targetEntity="Ship", mappedBy="holdingWeb")
      */
     private $capturedShips;
 

@@ -97,7 +97,7 @@ class TradePost implements TradePostInterface
     /**
      * @var ArrayCollection<int, TradeLicenseInfoInterface>
      *
-     * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost", cascade={"remove"})
+     * @OneToMany(targetEntity="TradeLicenseInfo", mappedBy="tradePost")
      * @OrderBy({"id": "DESC"})
      */
     private $licenseInfos;
