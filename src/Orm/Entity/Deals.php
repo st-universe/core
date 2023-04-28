@@ -150,7 +150,7 @@ class Deals implements DealsInterface
     /**
      * @var ArrayCollection<int, AuctionBidInterface>
      *
-     * @OneToMany(targetEntity="AuctionBid", mappedBy="auction", cascade={"remove"})
+     * @OneToMany(targetEntity="AuctionBid", mappedBy="auction")
      * @OrderBy({"max_amount": "ASC"})
      */
     private $auctionBids;

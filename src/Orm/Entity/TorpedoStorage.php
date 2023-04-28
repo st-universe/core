@@ -44,7 +44,7 @@ class TorpedoStorage implements TorpedoStorageInterface
     /**
      * @var ShipInterface
      *
-     * @OneToOne(targetEntity="Ship", inversedBy="torpedoStorage", cascade={"persist"})
+     * @OneToOne(targetEntity="Ship", inversedBy="torpedoStorage")
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;

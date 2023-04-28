@@ -101,7 +101,7 @@ class Alliance implements AllianceInterface
     /**
      * @var ArrayCollection<int, AllianceJobInterface>
      *
-     * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance", indexBy="type", cascade={"remove"})
+     * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance", indexBy="type")
      */
     private Collection $jobs;
 
