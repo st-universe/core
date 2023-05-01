@@ -89,6 +89,11 @@ final class DealsTakeOffer implements ActionControllerInterface
 
         $selectedDeal = $this->dealsRepository->find($dealId);
 
+        if ($userId < 100) {
+            $game->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            return;
+        }
+
         if ($amount < 1 && $selectedDeal->getgiveCommodityId() !== null) {
             $game->addInformation(_('Zu geringe Anzahl ausgewählt'));
             return;

@@ -94,6 +94,11 @@ final class DealsTakeAuction implements ActionControllerInterface
             return;
         }
 
+        if ($userId < 100) {
+            $game->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            return;
+        }
+
         // sanity checks
         if ($auction->getTakenTime() !== null) {
             return;

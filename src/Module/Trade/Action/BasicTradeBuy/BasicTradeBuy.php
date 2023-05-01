@@ -44,6 +44,11 @@ final class BasicTradeBuy implements ActionControllerInterface
         $uniqId = request::postStringFatal('uid');
         $basicTrade = $this->basicTradeRepository->getByUniqId($uniqId);
 
+        if ($game->getUser()->getId() < 100) {
+            $game->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            return;
+        }
+
         if ($basicTrade === null) {
             return;
         }
