@@ -107,7 +107,7 @@ final class KnItem implements KnItemInterface
 
     public function userCanRate(): bool
     {
-        return !$this->userHasRated() && $this->currentUser !== $this->post->getUser();
+        return !$this->userHasRated() && $this->currentUser !== $this->post->getUser() && $this->currentUser->getId() > 100;
     }
 
     public function userHasRated(): bool
