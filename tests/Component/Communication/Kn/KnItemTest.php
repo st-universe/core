@@ -392,6 +392,11 @@ class KnItemTest extends StuTestCase
             ->once()
             ->andReturn($userId);
 
+        $this->currentUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+
         $this->assertTrue(
             $this->item->userCanRate()
         );
