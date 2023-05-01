@@ -55,6 +55,11 @@ final class BuyLotteryTickets implements ActionControllerInterface
             return;
         }
 
+        if ($userId < 100) {
+            $game->addInformation(_('NPCs können keine Lose kaufen'));
+            return;
+        }
+
         $amount = request::postIntFatal('amount');
 
         if ($amount < 0) {

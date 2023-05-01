@@ -51,6 +51,11 @@ final class BasicTradeSell implements ActionControllerInterface
 
         $isNewest = $this->basicTradeRepository->isNewest($basicTrade);
 
+        if ($userId < 100) {
+            $game->addInformation(_('NPCs können dieses Angebot nicht annehmen'));
+            return;
+        }
+
         if (!$isNewest) {
             $game->addInformation("Kurs wurde zwischenzeitlich aktualisiert - es konnte nicht verkauft werden");
             return;
