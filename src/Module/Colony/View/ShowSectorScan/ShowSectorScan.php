@@ -65,7 +65,7 @@ final class ShowSectorScan implements ViewControllerInterface
 
     private function getSignatures($field, $isSystem, $ignoreId)
     {
-        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($field, $isSystem, $ignoreId);
+        $allSigs = $this->flightSignatureRepository->getVisibleSignatures((int) $field->getId(), $isSystem, $ignoreId);
 
         $filteredSigs = [];
 
