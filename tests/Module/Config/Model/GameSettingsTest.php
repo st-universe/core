@@ -62,6 +62,47 @@ class GameSettingsTest extends StuTestCase
         $this->subject->getAdminIds();
     }
 
+    // USE_SEMAPHORES
+
+    public function testUseSemaphoresExpectConfigValueWhenPresent(): void
+    {
+        $this->config->shouldReceive('get')
+            ->with('game.useSemaphores')
+            ->once()
+            ->andReturn(true);
+
+        $result = $this->subject->useSemaphores();
+
+        $this->assertTrue($result);
+    }
+
+    public function testUseSemaphoresExpectDefaultWhenNotPresent(): void
+    {
+        $this->config->shouldReceive('get')
+            ->with('game.useSemaphores')
+            ->once()
+            ->andReturn(null);
+
+        $result = $this->subject->useSemaphores();
+
+        $this->assertFalse($result);
+    }
+
+    public function testUseSemaphoresExpectErrorWhenTypeWrong(): void
+    {
+        static::expectExceptionMessage('The value "123" with path "game.useSemaphores" is no valid boolean.');
+        static::expectException(StuConfigException::class);
+
+        $this->config->shouldReceive('get')
+            ->with('game.useSemaphores')
+            ->once()
+            ->andReturn(123);
+
+        $this->subject->useSemaphores();
+    }
+
+    //TEMP_DIR
+
     public function testGetTempDirExpectConfigValueWhenPresent(): void
     {
         $this->config->shouldReceive('get')
