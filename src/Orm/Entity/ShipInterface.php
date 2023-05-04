@@ -307,7 +307,10 @@ interface ShipInterface
      */
     public function getSystems(): Collection;
 
-    public function hasShipSystem($system): bool;
+    /**
+     * with ShipSystemTypeEnum
+     */
+    public function hasShipSystem(int $systemType): bool;
 
     /**
      * @param int $systemType

@@ -5937,11 +5937,6 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:hasShipSystem\\(\\) has parameter \\$system with no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Ship.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$buildplan type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
@@ -6133,11 +6128,6 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getStoredShuttles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Orm/Entity/ShipInterface.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:hasShipSystem\\(\\) has parameter \\$system with no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipInterface.php
 
