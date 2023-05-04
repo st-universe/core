@@ -47,9 +47,7 @@ final class KnReset implements KnResetInterface
     {
         echo "  - deleting kn plot members\n";
 
-        foreach ($this->rpgPlotMemberRepository->findAll() as $plotMember) {
-            $this->rpgPlotMemberRepository->delete($plotMember);
-        }
+        $this->rpgPlotMemberRepository->truncateAllEntities();
     }
 
     /**
@@ -59,9 +57,7 @@ final class KnReset implements KnResetInterface
     {
         echo "  - deleting kn postings\n";
 
-        foreach ($this->knPostRepository->findAll() as $knPost) {
-            $this->knPostRepository->delete($knPost);
-        }
+        $this->knPostRepository->truncateAllEntities();
     }
 
     /**
@@ -71,8 +67,6 @@ final class KnReset implements KnResetInterface
     {
         echo "  - deleting kn plots\n";
 
-        foreach ($this->rpgPlotRepository->findAll() as $plot) {
-            $this->rpgPlotRepository->delete($plot);
-        }
+        $this->rpgPlotRepository->truncateAllEntities();
     }
 }

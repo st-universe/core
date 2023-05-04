@@ -73,4 +73,14 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
 
         $em->remove($history);
     }
+
+    public function truncateAllEntities(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s h',
+                History::class
+            )
+        )->execute();
+    }
 }

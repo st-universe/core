@@ -99,4 +99,14 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
             'type' => $typeId,
         ]);
     }
+
+    public function truncateAllAllianceJobs(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s aj',
+                AllianceJob::class
+            )
+        )->execute();
+    }
 }

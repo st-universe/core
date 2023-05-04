@@ -43,7 +43,7 @@ class UserLayer implements UserLayerInterface
     /**
      * @var UserInterface
      *
-     * @ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;

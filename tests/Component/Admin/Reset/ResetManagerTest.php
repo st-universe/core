@@ -27,7 +27,6 @@ use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\GameTurnInterface;
-use Stu\Orm\Entity\HistoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameRequestRepositoryInterface;
@@ -330,14 +329,8 @@ class ResetManagerTest extends StuTestCase
             ->with(null)
             ->once();
 
-        $entry = $this->mock(HistoryInterface::class);
-
-        $this->historyRepository->shouldReceive('findAll')
+        $this->historyRepository->shouldReceive('truncateAllEntities')
             ->withNoArgs()
-            ->once()
-            ->andReturn([$entry]);
-        $this->historyRepository->shouldReceive('delete')
-            ->with($entry)
             ->once();
 
         $newTurn = $this->mock(GameTurnInterface::class);

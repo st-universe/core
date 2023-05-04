@@ -9,7 +9,6 @@ use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AllianceReset implements AllianceResetInterface
 {
@@ -21,8 +20,6 @@ final class AllianceReset implements AllianceResetInterface
 
     private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private UserRepositoryInterface $userRepository;
-
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -30,14 +27,12 @@ final class AllianceReset implements AllianceResetInterface
         AllianceBoardRepositoryInterface $allianceBoardRepository,
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
-        UserRepositoryInterface $userRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->allianceRepository = $allianceRepository;
         $this->allianceBoardRepository = $allianceBoardRepository;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRelationRepository = $allianceRelationRepository;
-        $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -45,10 +40,7 @@ final class AllianceReset implements AllianceResetInterface
     {
         echo "  - deleting all alliance boards\n";
 
-        foreach ($this->allianceBoardRepository->findAll() as $board) {
-
-            $this->allianceBoardRepository->delete($board);
-        }
+        $this->allianceBoardRepository->truncateAllAllianceBoards();
 
         $this->entityManager->flush();
     }
@@ -57,14 +49,7 @@ final class AllianceReset implements AllianceResetInterface
     {
         echo "  - deleting alliance jobs\n";
 
-        foreach ($this->allianceRepository->findAll() as $alliance) {
-
-            foreach ($alliance->getJobs() as $job) {
-                $this->allianceJobRepository->delete($job);
-            }
-
-            $alliance->getJobs()->clear();
-        }
+        $this->allianceJobRepository->truncateAllAllianceJobs();
 
         $this->entityManager->flush();
     }
@@ -73,12 +58,7 @@ final class AllianceReset implements AllianceResetInterface
     {
         echo "  - deleting alliance relations\n";
 
-        foreach ($this->allianceRepository->findAll() as $alliance) {
-
-            foreach ($this->allianceRelationRepository->getByAlliance($alliance->getId()) as $relation) {
-                $this->allianceRelationRepository->delete($relation);
-            }
-        }
+        $this->allianceRelationRepository->truncateAllAllianceRelations();
 
         $this->entityManager->flush();
     }
@@ -87,18 +67,9 @@ final class AllianceReset implements AllianceResetInterface
     {
         echo "  - deleting all alliances\n";
 
-        foreach ($this->allianceRepository->findAll() as $alliance) {
+        $this->entityManager->getConnection()->executeQuery('update stu_user set allys_id = null');
 
-            foreach ($alliance->getMembers() as $member) {
-                $member->setAlliance(null);
-                $member->setAllianceId(null);
-                $this->userRepository->save($member);
-            }
-
-            $alliance->getMembers()->clear();
-
-            $this->allianceRepository->delete($alliance);
-        }
+        $this->allianceRepository->truncateAllAlliances();
 
         $this->entityManager->flush();
     }
