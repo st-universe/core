@@ -335,7 +335,7 @@ class Ship implements ShipInterface
     private ?TholianWebInterface $holdingWeb;
 
     /**
-     * @ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private UserInterface $user;
@@ -368,7 +368,7 @@ class Ship implements ShipInterface
     private ShipRumpInterface $rump;
 
     /**
-     * @ManyToOne(targetEntity="ShipBuildplan", cascade={"persist"})
+     * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="plans_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private ?ShipBuildplanInterface $buildplan;
