@@ -156,8 +156,8 @@ final class ResetManager implements ResetManagerInterface
             $this->shipReset->undockAllDockedShips();
             $this->shipReset->deactivateAllTractorBeams();
             $this->shipReset->deleteAllTradeposts();
-            $this->shipReset->deleteAllShips();
             $this->shipReset->deleteAllBuildplans();
+            $this->shipReset->deleteAllShips();
 
             $this->userReset->archiveBlockedUsers();
             $this->userReset->deleteAllDatabaseUserEntries();

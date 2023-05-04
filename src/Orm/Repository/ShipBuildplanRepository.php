@@ -158,12 +158,12 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
-    public function findAllBuildplansExceptNoOne(): array
+    public function truncateAllBuildplansExceptNoOne(): void
     {
-        return $this->getEntityManager()
+        $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT bp FROM %s bp
+                    'DELETE FROM %s bp
                     WHERE bp.user_id != :noOne',
                     ShipBuildplan::class
                 )
@@ -171,6 +171,6 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->setParameters([
                 'noOne' => UserEnum::USER_NOONE
             ])
-            ->getResult();
+            ->execute();
     }
 }

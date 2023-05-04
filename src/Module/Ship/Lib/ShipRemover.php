@@ -153,7 +153,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipStateChanger->changeShipState($wrapper, ShipStateEnum::SHIP_STATE_DESTROYED);
 
         // delete ship systems
-        $this->shipSystemRepository->truncateByShip((int) $ship->getId());
+        $this->shipSystemRepository->truncateByShip($ship->getId());
         $ship->getSystems()->clear();
 
         // delete torpedo storage
@@ -313,10 +313,6 @@ final class ShipRemover implements ShipRemoverInterface
             $dockedShip->setDockedTo(null);
             $this->shipRepository->save($dockedShip);
         }
-
-        // delete ship systems
-        $this->shipSystemRepository->truncateByShip((int) $ship->getId());
-        $ship->getSystems()->clear();
 
         // delete torpedo storage
         $this->clearTorpedo->clearTorpedoStorage($wrapper);

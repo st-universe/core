@@ -98,9 +98,9 @@ final class ShipReset implements ShipResetInterface
     {
         echo "  - deleting all buildplans\n";
 
-        foreach ($this->shipBuildplanRepository->findAllBuildplansExceptNoOne() as $buildplan) {
-            $this->shipBuildplanRepository->delete($buildplan);
-        }
+        $this->entityManager->getConnection()->executeQuery('update stu_ships set plans_id = null');
+
+        $this->shipBuildplanRepository->truncateAllBuildplansExceptNoOne();
 
         $this->entityManager->flush();
     }
