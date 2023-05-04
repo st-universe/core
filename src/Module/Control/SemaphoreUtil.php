@@ -5,6 +5,7 @@ namespace Stu\Module\Control;
 use RuntimeException;
 use Stu\Component\Game\SemaphoreConstants;
 use Stu\Exception\SemaphoreException;
+use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -13,22 +14,30 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 {
     private GameControllerInterface $game;
 
+    private StuConfigInterface $stuConfig;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         GameControllerInterface $game,
+        StuConfigInterface $stuConfig,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->game = $game;
+        $this->stuConfig = $stuConfig;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getSemaphore(int $key)
     {
+        if (!$this->isSemaphoreUsageActive()) {
+            return;
+        }
+
         $semaphore = sem_get(
             $key,
             1,
-            0o666,
+            0666,
             SemaphoreConstants::AUTO_RELEASE_SEMAPHORES
         );
 
@@ -41,11 +50,19 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
     public function acquireMainSemaphore($semaphore): void
     {
+        if (!$this->isSemaphoreUsageActive()) {
+            return;
+        }
+
         $this->acquire($semaphore);
     }
 
     public function acquireSemaphore(int $key, $semaphore): void
     {
+        if (!$this->isSemaphoreUsageActive()) {
+            return;
+        }
+
         if ($this->game->isSemaphoreAlreadyAcquired($key)) {
             return;
         }
@@ -63,6 +80,10 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
     public function releaseSemaphore($semaphore, bool $doRemove = false): void
     {
+        if (!$this->isSemaphoreUsageActive()) {
+            return;
+        }
+
         $this->release($semaphore, $doRemove);
     }
 
@@ -80,5 +101,10 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
             $this->loggerUtil->log("Error removing Semaphore!");
             //throw new SemaphoreException("Error removing Semaphore!");
         }
+    }
+
+    private function isSemaphoreUsageActive(): bool
+    {
+        return $this->stuConfig->getGameSettings()->useSemaphores();
     }
 }

@@ -10,6 +10,7 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
 
     private const SETTING_ADMINS = 'admins';
     private const SETTING_TEMP_DIR = 'temp_dir';
+    private const SETTING_USE_SEMAPHORES = 'useSemaphores';
     private const SETTING_VERSION = 'version';
     private const SETTING_WEBROOT = 'webroot';
 
@@ -31,6 +32,11 @@ final class GameSettings extends AbstractSettings implements GameSettingsInterfa
     public function getTempDir(): string
     {
         return $this->getStringConfigValue(self::SETTING_TEMP_DIR);
+    }
+
+    public function useSemaphores(): bool
+    {
+        return $this->getBooleanConfigValue(self::SETTING_USE_SEMAPHORES, false);
     }
 
     public function getVersion(): string|int

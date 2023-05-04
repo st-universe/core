@@ -9,6 +9,8 @@ interface GameSettingsInterface
 
     public function getTempDir(): string;
 
+    public function useSemaphores(): bool;
+
     public function getVersion(): string|int;
 
     public function getWebroot(): string;

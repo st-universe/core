@@ -75,6 +75,7 @@
     "colony": {
       "tick_worker": 1
     },
+    "useSemaphores": false,
     "imprint": {
       "name": "Max Mustermann",
       "address": "123 Fake street",
