@@ -209,11 +209,6 @@ parameters:
 			path: src/Component/Station/StationUtility.php
 
 		-
-			message: "#^Variable \\$neededWorkbees might not be defined\\.$#"
-			count: 1
-			path: src/Component/Station/StationUtility.php
-
-		-
 			message: """
 				#^Call to deprecated method createAnnotationMetadataConfiguration\\(\\) of class Doctrine\\\\ORM\\\\ORMSetup\\:
 				Use another mapping driver\\.$#

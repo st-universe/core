@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station;
 
+use RuntimeException;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
@@ -23,6 +24,7 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
+//TODO unit tests
 final class StationUtility implements StationUtilityInterface
 {
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
@@ -144,16 +146,22 @@ final class StationUtility implements StationUtilityInterface
 
     public function hasEnoughDockedWorkbees(ShipInterface $station, ShipRumpInterface $rump): bool
     {
-        if ($station->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION) {
-            $neededWorkbees = $rump->getNeededWorkbees();
-        }
-
-        if ($station->getState() === ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING) {
-            $neededWorkbees = (int)ceil($rump->getNeededWorkbees() / 2);
-        }
-
-        if ($station->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            $neededWorkbees = (int)ceil($rump->getNeededWorkbees() / 5);
+        switch ($station->getState()) {
+            case ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION:
+                $neededWorkbees = $rump->getNeededWorkbees();
+                break;
+            case ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING:
+                $neededWorkbees = (int)ceil($rump->getNeededWorkbees() / 2);
+                break;
+            case ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE:
+                $neededWorkbees = (int)ceil($rump->getNeededWorkbees() / 5);
+                break;
+            default:
+                throw new RuntimeException(sprintf(
+                    'shipState %d of shipId %d is not supported',
+                    $station->getState(),
+                    $station->getId()
+                ));
         }
 
         return $this->getDockedWorkbeeCount($station) >= $neededWorkbees;
@@ -227,7 +235,7 @@ final class StationUtility implements StationUtilityInterface
         $rumpId = $station->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
         $rump = $this->shipRumpRepository->find($rumpId);
 
-        $station->setState(ShipStateEnum::SHIP_STATE_NONE);
+        $station->setState(ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
         $station->setBuildplan(null);
         $station->setRump($rump);
         $station->setName($rump->getName());
