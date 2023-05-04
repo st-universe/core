@@ -153,10 +153,10 @@ final class ResetManager implements ResetManagerInterface
             $this->allianceReset->deleteAllAllianceRelations();
             $this->allianceReset->deleteAllAlliances();
 
-            $this->shipReset->undockAllDockedShips();
-            $this->shipReset->deactivateAllTractorBeams();
-            $this->shipReset->deleteAllTradeposts();
             $this->shipReset->deleteAllBuildplans();
+            $this->shipReset->deleteAllTradeposts();
+            $this->shipReset->deactivateAllTractorBeams();
+            $this->shipReset->undockAllDockedShips();
             $this->shipReset->deleteAllShips();
 
             $this->userReset->archiveBlockedUsers();
@@ -230,7 +230,6 @@ final class ResetManager implements ResetManagerInterface
         }
     }
 
-    //
     /**
      * Deletes all history entries
      */
@@ -238,9 +237,7 @@ final class ResetManager implements ResetManagerInterface
     {
         $io->info('  - deleting history', true);
 
-        foreach ($this->historyRepository->findAll() as $entry) {
-            $this->historyRepository->delete($entry);
-        }
+        $this->historyRepository->truncateAllEntities();
     }
 
     /**

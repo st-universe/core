@@ -39,4 +39,14 @@ final class AllianceBoardRepository extends EntityRepository implements Alliance
             'alliance_id' => $allianceId
         ]);
     }
+
+    public function truncateAllAllianceBoards(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s ab',
+                AllianceBoard::class
+            )
+        )->execute();
+    }
 }

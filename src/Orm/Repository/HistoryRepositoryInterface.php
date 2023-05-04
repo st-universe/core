@@ -10,19 +10,19 @@ use Stu\Orm\Entity\HistoryInterface;
  * @extends ObjectRepository<History>
  *
  * @method null|HistoryInterface find(integer $id)
- * @method array|HistoryInterface[] findAll()
+ * @method HistoryInterface[] findAll()
  */
 interface HistoryRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<HistoryInterface>
+     * @return array<HistoryInterface>
      */
     public function getRecent(): array;
 
     /**
      * @param false|string $search
      *
-     * @return list<HistoryInterface>
+     * @return array<HistoryInterface>
      */
     public function getByTypeAndSearch(int $typeId, int $limit, $search): array;
 
@@ -33,4 +33,6 @@ interface HistoryRepositoryInterface extends ObjectRepository
     public function save(HistoryInterface $history): void;
 
     public function delete(HistoryInterface $history): void;
+
+    public function truncateAllEntities(): void;
 }

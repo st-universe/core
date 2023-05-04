@@ -52,4 +52,6 @@ interface TradePostRepositoryInterface extends ObjectRepository
      * @return list<UserInterface>
      */
     public function getUsersWithStorageOnTradepost(int $tradePostId): array;
+
+    public function truncateAllTradeposts(): void;
 }

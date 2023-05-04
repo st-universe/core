@@ -47,4 +47,14 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
             ['id' => 'asc']
         );
     }
+
+    public function truncateAllAlliances(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s a',
+                Alliance::class
+            )
+        )->execute();
+    }
 }

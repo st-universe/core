@@ -52,7 +52,7 @@ class AllianceJob implements AllianceJobInterface
     /**
      * @var AllianceInterface
      *
-     * @ManyToOne(targetEntity="Alliance", cascade={"persist"})
+     * @ManyToOne(targetEntity="Alliance")
      * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $alliance;
@@ -60,7 +60,7 @@ class AllianceJob implements AllianceJobInterface
     /**
      * @var UserInterface
      *
-     * @OneToOne(targetEntity="User", cascade={"persist"})
+     * @OneToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;

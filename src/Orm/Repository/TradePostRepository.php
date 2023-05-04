@@ -164,4 +164,14 @@ final class TradePostRepository extends EntityRepository implements TradePostRep
             ])
             ->getResult();
     }
+
+    public function truncateAllTradeposts(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s tp',
+                TradePost::class
+            )
+        )->execute();
+    }
 }

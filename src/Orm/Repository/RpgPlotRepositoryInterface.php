@@ -47,4 +47,6 @@ interface RpgPlotRepositoryInterface extends ObjectRepository
      * @return array<RpgPlotInterface>
      */
     public function getOrderedList(): array;
+
+    public function truncateAllEntities(): void;
 }

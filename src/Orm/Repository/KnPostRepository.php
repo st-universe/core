@@ -115,4 +115,14 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             ->setParameters(['content' => sprintf('%%%s%%', $content)])
             ->getResult();
     }
+
+    public function truncateAllEntities(): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s kp',
+                KnPost::class
+            )
+        )->execute();
+    }
 }
