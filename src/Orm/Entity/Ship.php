@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
+use RuntimeException;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -55,7 +56,7 @@ class Ship implements ShipInterface
      * @GeneratedValue(strategy="IDENTITY")
      *
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @Column(type="integer")
@@ -419,6 +420,10 @@ class Ship implements ShipInterface
 
     public function getId(): int
     {
+        if ($this->id === null) {
+            throw new RuntimeException('entity not yet persisted');
+        }
+
         return $this->id;
     }
 
@@ -1733,6 +1738,10 @@ class Ship implements ShipInterface
 
     public function __toString()
     {
+        if ($this->id !== null) {
+            return sprintf('id: %d, name: %s', $this->getId(), $this->getName());
+        }
+
         return $this->getName();
     }
 
