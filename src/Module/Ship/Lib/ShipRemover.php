@@ -335,6 +335,10 @@ final class ShipRemover implements ShipRemoverInterface
         // reset tracker devices
         $this->resetTrackerDevices($ship->getId());
 
+        foreach ($ship->getSystems() as $shipSystem) {
+            $this->shipSystemRepository->delete($shipSystem);
+        }
+
         $this->shipRepository->delete($ship);
     }
 }

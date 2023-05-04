@@ -1360,10 +1360,9 @@ class Ship implements ShipInterface
         return $this->systems;
     }
 
-    // with ShipSystemTypeEnum
-    public function hasShipSystem($system): bool
+    public function hasShipSystem(int $systemType): bool
     {
-        return $this->getSystems()->containsKey($system);
+        return $this->getSystems()->containsKey($systemType);
     }
 
     // with ShipSystemTypeEnum
