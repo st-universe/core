@@ -118,6 +118,8 @@ final class ResetManager implements ResetManagerInterface
     {
         $io->info('starting game reset', true);
 
+        $startTime = hrtime(true);
+
         $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_RESET, $io);
 
         //wait for other processes (e.g. ticks) to finish
@@ -197,7 +199,9 @@ final class ResetManager implements ResetManagerInterface
         $this->entityManager->commit();
         $this->setGameState(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE, $io);
 
-        $io->info('finished game reset', true);
+        $resetMs = hrtime(true) - $startTime;
+
+        $io->info(sprintf('finished game reset, milliseconds: %d', (int) $resetMs / 1000000), true);
     }
 
     private function setGameState(int $stateId, Interactor $io): void
