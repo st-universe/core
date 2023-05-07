@@ -2,7 +2,9 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 interface FightLibInterface
 {
@@ -19,4 +21,6 @@ interface FightLibInterface
     public function filterInactiveShips(array $base): array;
 
     public function canFire(ShipWrapperInterface $wrapper): bool;
+
+    public function canAttackTarget(ShipInterface $ship, ShipInterface|ShipNfsItem $nfsItem): bool;
 }

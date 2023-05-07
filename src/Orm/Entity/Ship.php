@@ -1532,11 +1532,6 @@ class Ship implements ShipInterface
             || $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
     }
 
-    public function canBeAttacked(bool $checkWarpState = true): bool
-    {
-        return !$this->getRump()->isTrumfield() && (!$checkWarpState || !$this->getWarpState());
-    }
-
     public function hasActiveWeapon(): bool
     {
         return $this->getPhaserState() || $this->getTorpedoState();

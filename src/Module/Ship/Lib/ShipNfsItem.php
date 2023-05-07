@@ -62,10 +62,6 @@ final class ShipNfsItem
     {
         return $this->isBase() || $this->isTrumfield() || $this->getCloakState() || $this->getShieldState() || $this->getWarpState();
     }
-    public function canBeAttacked(): bool
-    {
-        return !$this->isTrumfield() && !$this->getWarpState();
-    }
     public function isInterceptable(): bool
     {
         return $this->getWarpState();

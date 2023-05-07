@@ -20,9 +20,9 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -72,6 +72,8 @@ final class ShowShip implements ViewControllerInterface
 
     private ShipCrewCalculatorInterface $shipCrewCalculator;
 
+    private FightLibInterface $fightLib;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
@@ -87,6 +89,7 @@ final class ShowShip implements ViewControllerInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         ShipUiFactoryInterface $shipUiFactory,
         ShipCrewCalculatorInterface $shipCrewCalculator,
+        FightLibInterface $fightLib,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
@@ -105,6 +108,7 @@ final class ShowShip implements ViewControllerInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->shipUiFactory = $shipUiFactory;
         $this->shipCrewCalculator = $shipCrewCalculator;
+        $this->fightLib = $fightLib;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -242,6 +246,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
+        $game->setTemplateVar('FIGHT_LIB', $this->fightLib);
 
         $crewObj = $this->shipCrewCalculator->getCrewObj($rump);
 

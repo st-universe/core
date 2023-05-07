@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessageCollectionInterface;
 use Stu\Module\Ship\Lib\Battle\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
@@ -38,6 +39,8 @@ final class AttackShip implements ActionControllerInterface
 
     private NbsUtilityInterface $nbsUtility;
 
+    private FightLibInterface $fightLib;
+
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
     public function __construct(
@@ -47,6 +50,7 @@ final class AttackShip implements ActionControllerInterface
         InteractionCheckerInterface $interactionChecker,
         AlertRedHelperInterface $alertRedHelper,
         NbsUtilityInterface $nbsUtility,
+        FightLibInterface $fightLib,
         ShipWrapperFactoryInterface $shipWrapperFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -55,6 +59,7 @@ final class AttackShip implements ActionControllerInterface
         $this->interactionChecker = $interactionChecker;
         $this->alertRedHelper = $alertRedHelper;
         $this->nbsUtility = $nbsUtility;
+        $this->fightLib = $fightLib;
         $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
@@ -97,24 +102,13 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
-        $isAttackingActiveTractorShip = false;
-        $isActiveTractorShipWarped = false;
-        if ($ship->isTractored()) {
-            if ($ship->getTractoringShip() !== $target) {
-                return;
-            } else {
-                $isAttackingActiveTractorShip = true;
-                $isActiveTractorShipWarped = $target->getWarpState();
-            }
-        }
-
         if ($target->isDestroyed()) {
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             $game->addInformation(_('Das Ziel ist bereits zerstört'));
             return;
         }
 
-        if (!$target->canBeAttacked(!$isAttackingActiveTractorShip)) {
+        if (!$this->fightLib->canAttackTarget($ship, $target)) {
             throw new SanityCheckException('Target cant be attacked', self::ACTION_IDENTIFIER);
         }
 
@@ -154,7 +148,7 @@ final class AttackShip implements ActionControllerInterface
 
         $msg = $fightMessageCollection->getMessageDump();
 
-        if ($isActiveTractorShipWarped) {
+        if ($this->isActiveTractorShipWarped($ship, $target)) {
             //Alarm-Rot check for ship
             if (!$ship->isDestroyed()) {
                 $msg = array_merge($msg, $this->alertRedHelper->doItAll($ship, null));
@@ -178,6 +172,20 @@ final class AttackShip implements ActionControllerInterface
         } else {
             $game->addInformationMerge($msg);
             $game->setTemplateVar('FIGHT_RESULTS', null);
+        }
+    }
+
+    private function isActiveTractorShipWarped(ShipInterface $ship, ShipInterface $target): bool
+    {
+        $tractoringShip = $ship->getTractoringShip();
+        if ($tractoringShip === null) {
+            return false;
+        }
+
+        if ($tractoringShip !== $target) {
+            return false;
+        } else {
+            return $target->getWarpState();
         }
     }
 
