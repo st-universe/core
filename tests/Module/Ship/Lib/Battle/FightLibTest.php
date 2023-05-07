@@ -361,4 +361,324 @@ class FightLibTest extends StuTestCase
 
         $this->assertTrue($result);
     }
+
+    public function testCanAttackTargetExpectFalseWhenNoActiveWeapon(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanAttackTargetExpectFalseWhenAttackingSelf(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(123);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(123);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanAttackTargetExpectFalseWhenAttackingTrumfield(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(123);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanAttackTargetExpectFalseWhenTractoredAndAttackingOtherTarget(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+        $tractoringShip = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn($tractoringShip);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $tractoringShip->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(999);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanAttackTargetExpectTrueWhenAttackingTractoringShip(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn($target);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertTrue($result);
+    }
+
+    public function testCanAttackTargetExpectFalseWhenAttackingWarpedTarget(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn(null);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanAttackTargetExpectFalseWhenAttackingOwnFleet(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(42);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(42);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertFalse($result);
+    }
+
+    public function testCanAttackTargetExpectTrueWhenAttackingSingleShip(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(42);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(null);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertTrue($result);
+    }
+
+    public function testCanAttackTargetExpectTrueWhenAttackerIsSingleShip(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(null);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(42);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertTrue($result);
+    }
+
+    public function testCanAttackTargetExpectTrueWhenAttackingOtherFleet(): void
+    {
+        $ship = $this->mock(ShipInterface::class);
+        $target = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('hasActiveWeapon')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
+        $ship->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(123);
+        $ship->shouldReceive('getTractoringShip')
+            ->withNoArgs()
+            ->andReturn(null);
+        $ship->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(42);
+
+        $target->shouldReceive('getId')
+            ->withNoArgs()
+            ->andReturn(456);
+        $target->shouldReceive('isTrumfield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getWarpState')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $target->shouldReceive('getFleetId')
+            ->withNoArgs()
+            ->andReturn(43);
+
+        $result = $this->subject->canAttackTarget($ship, $target);
+
+        $this->assertTrue($result);
+    }
 }

@@ -189,7 +189,7 @@
       <tal:block tal:condition="SHIP_NBS">
         <tr>
           <td colspan="2"></td>
-          <td colspan="4">Einzelschiffe</td>
+          <td colspan="5">Einzelschiffe</td>
         </tr>
         <tr tal:repeat="ship SHIP_NBS" tal:attributes="class string:row${repeat/ship/odd}">
           <form id="nbsf_${ship/getId}" method="post" action="ship.php">
@@ -429,26 +429,12 @@
   <tal:block tal:condition="SHIP/displayNbsActions"
     tal:define="sstr string:${THIS/getSessionString}; nameWithoutMarkup bbcode2txt:ship/getName">
     <td style="width: 30px; text-align: center;">
-      <tal:block tal:condition="SHIP/hasActiveWeapon">
-        <tal:block tal:condition="SHIP/isTractored">
-          <tal:block tal:condition="php:ship.getId() EQ SHIP.getTractoringShip().getId()">
-            <div style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"
-              onmouseover="cp('att_${ship/getId}','buttons/phaser2')"
-              onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
-              <img src="assets/buttons/phaser1.png" name="att_${ship/getId}" title="${nameWithoutMarkup} angreifen" />
-            </div>
-          </tal:block>
-        </tal:block>
-        <tal:block
-          tal:condition="php: !SHIP.isTractored() && ship.getId() != SHIP.getId() && ship.getFleetId() != SHIP.getFleetId()">
-          <tal:block tal:condition="php:ship.getCloakState() OR ship.canBeAttacked()">
-            <div style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"
-              onmouseover="cp('att_${ship/getId}','buttons/phaser2')"
-              onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
-              <img src="assets/buttons/phaser1.png" name="att_${ship/getId}" title="${nameWithoutMarkup} angreifen" />
-            </div>
-          </tal:block>
-        </tal:block>
+      <tal:block tal:condition="php: FIGHT_LIB.canAttackTarget(SHIP, ship)">
+        <div style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"
+          onmouseover="cp('att_${ship/getId}','buttons/phaser2')"
+          onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
+          <img src="assets/buttons/phaser1.png" name="att_${ship/getId}" title="${nameWithoutMarkup} angreifen" />
+        </div>
       </tal:block>
     </td>
     <td style="width: 120px;">

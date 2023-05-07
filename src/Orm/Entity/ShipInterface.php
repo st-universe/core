@@ -374,8 +374,6 @@ interface ShipInterface
 
     public function canMove(): bool;
 
-    public function canBeAttacked(bool $checkWarpState = true): bool;
-
     public function hasActiveWeapon(): bool;
 
     public function hasEscapePods(): bool;

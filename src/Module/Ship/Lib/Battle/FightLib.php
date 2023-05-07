@@ -8,7 +8,9 @@ use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 final class FightLib implements FightLibInterface
 {
@@ -97,5 +99,42 @@ final class FightLib implements FightLibInterface
         }
 
         return true;
+    }
+
+    public function canAttackTarget(ShipInterface $ship, ShipInterface|ShipNfsItem $target): bool
+    {
+        if (!$ship->hasActiveWeapon()) {
+            return false;
+        }
+
+        //can't attack itself
+        if ($target->getId() === $ship->getId()) {
+            return false;
+        }
+
+        //can't attack trumfields
+        if ($target->isTrumfield()) {
+            return false;
+        }
+
+        //if tractored, can only attack tractoring ship
+        $tractoringShip = $ship->getTractoringShip();
+        if ($tractoringShip !== null) {
+            return $target->getId() === $tractoringShip->getId();
+        }
+
+        //can't attack target under warp
+        if ($target->getWarpState()) {
+            return false;
+        }
+
+        //can't attack same fleet
+        $ownFleetId = $ship->getFleetId();
+        $targetFleetId = $target->getFleetId();
+        if ($ownFleetId === null || $targetFleetId === null) {
+            return true;
+        }
+
+        return $ownFleetId !== $targetFleetId;
     }
 }
