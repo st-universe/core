@@ -624,6 +624,11 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
     }
 
+    public function getRPGModuleState(): bool
+    {
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_RPG_MODULE);
+    }
+
     public function getConstructionHubState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB);
@@ -1612,6 +1617,11 @@ class Ship implements ShipInterface
     public function hasWarpdrive(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+    }
+
+    public function hasRPGModule(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_RPG_MODULE);
     }
 
     public function hasFusionReactor(): bool

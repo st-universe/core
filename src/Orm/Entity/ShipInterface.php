@@ -79,6 +79,8 @@ interface ShipInterface
 
     public function getAstroState(): bool;
 
+    public function getRPGModuleState(): bool;
+
     public function getConstructionHubState(): bool;
 
     public function getHull(): int;
@@ -405,6 +407,8 @@ interface ShipInterface
     public function hasWarpcore(): bool;
 
     public function hasWarpdrive(): bool;
+
+    public function hasRPGModule(): bool;
 
     public function hasFusionReactor(): bool;
 

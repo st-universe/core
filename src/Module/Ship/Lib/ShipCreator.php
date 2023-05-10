@@ -320,6 +320,9 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_THOLIAN_WEB:
                     $systems[ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB] = $module;
                     break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG:
+                    $systems[ShipSystemTypeEnum::SYSTEM_RPG_MODULE] = $module;
+                    break;
             }
         }
     }

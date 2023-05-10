@@ -36,6 +36,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_TRANSWARP_COIL = 26;
     public const SYSTEM_TRACKER = 27;
     public const SYSTEM_THOLIAN_WEB = 28;
+    public const SYSTEM_RPG_MODULE = 29;
 
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
@@ -115,6 +116,8 @@ final class ShipSystemTypeEnum
                 return _('Tracker');
             case ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB:
                 return _('Netzemitter');
+            case ShipSystemTypeEnum::SYSTEM_RPG_MODULE:
+                return _('RPG-Modul');
         }
         return '';
     }
