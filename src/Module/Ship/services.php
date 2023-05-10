@@ -10,6 +10,7 @@ use Stu\Module\Ship\Action\ActivateCloak\ActivateCloak;
 use Stu\Module\Ship\Action\ActivateLss\ActivateLss;
 use Stu\Module\Ship\Action\ActivateNbs\ActivateNbs;
 use Stu\Module\Ship\Action\ActivatePhaser\ActivatePhaser;
+use Stu\Module\Ship\Action\ActivateRPGModule\ActivateRPGModule;
 use Stu\Module\Ship\Action\ActivateShields\ActivateShields;
 use Stu\Module\Ship\Action\ActivateSubspace\ActivateSubspace;
 use Stu\Module\Ship\Action\ActivateTachyon\ActivateTachyon;
@@ -47,6 +48,7 @@ use Stu\Module\Ship\Action\DeactivateCloak\DeactivateCloak;
 use Stu\Module\Ship\Action\DeactivateLss\DeactivateLss;
 use Stu\Module\Ship\Action\DeactivateNbs\DeactivateNbs;
 use Stu\Module\Ship\Action\DeactivatePhaser\DeactivatePhaser;
+use Stu\Module\Ship\Action\DeactivateRPGModule\DeactivateRPGModule;
 use Stu\Module\Ship\Action\DeactivateShields\DeactivateShields;
 use Stu\Module\Ship\Action\DeactivateSubspace\DeactivateSubspace;
 use Stu\Module\Ship\Action\DeactivateTachyon\DeactivateTachyon;
@@ -290,9 +292,11 @@ return [
         DeactivateAstroLaboratory::ACTION_IDENTIFIER => autowire(DeactivateAstroLaboratory::class),
         ActivateCloak::ACTION_IDENTIFIER => autowire(ActivateCloak::class),
         ActivateSubspace::ACTION_IDENTIFIER => autowire(ActivateSubspace::class),
+        ActivateRPGModule::ACTION_IDENTIFIER => autowire(ActivateRPGModule::class),
         ActivateTachyon::ACTION_IDENTIFIER => autowire(ActivateTachyon::class),
         ActivateUplink::ACTION_IDENTIFIER => autowire(ActivateUplink::class),
         DeactivateCloak::ACTION_IDENTIFIER => autowire(DeactivateCloak::class),
+        DeactivateRPGModule::ACTION_IDENTIFIER => autowire(DeactivateRPGModule::class),
         DeactivateSubspace::ACTION_IDENTIFIER => autowire(DeactivateSubspace::class),
         DeactivateTachyon::ACTION_IDENTIFIER => autowire(DeactivateTachyon::class),
         ActivateLss::ACTION_IDENTIFIER => autowire(ActivateLss::class),

@@ -306,6 +306,25 @@
 				</td>
 			</tr>
 		</tal:block>
+		<tal:block tal:condition="SHIP/hasRPGModule">
+			<tr>
+				<td colspan="2">
+					<a tal:condition="not:SHIP/getRPGModuleState"
+						href="?B_ACTIVATE_RPG_MODULE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+						onmouseover="cp('rpgmodule','buttons/rpg1')" onmouseout="cp('rpgmodule','buttons/rpg3')">
+						<img src="/assets/buttons/rpg3.png" name="rpgmodule" />
+						RPG Modul aktivieren
+					</a>
+
+					<a href="?B_DEACTIVATE_RPG_MODULE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+						tal:condition="SHIP/getRPGModuleState" onmouseover="cp('rpgmodule','buttons/rpg3')"
+						onmouseout="cp('rpgmodule','buttons/rpg1')">
+						<img src="/assets/buttons/rpg1.png" name="rpgmodule" />
+						RPG Modul deaktivieren
+					</a>
+				</td>
+			</tr>
+		</tal:block>
 		<tal:block tal:condition="php: SHIP.hasShuttleRamp() AND SHIP.getStoredShuttles() ">
 			<tr tal:define="defaultId php:current(SHIP.getStoredShuttles()).getId()">
 				<td>
