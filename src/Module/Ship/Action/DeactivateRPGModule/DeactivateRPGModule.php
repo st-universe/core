@@ -15,7 +15,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DeactivateRPGModule implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_DEACTIVATE_RPG_Module';
+    public const ACTION_IDENTIFIER = 'B_DEACTIVATE_RPG_MODULE';
 
     private ActivatorDeactivatorHelperInterface $helper;
 
