@@ -53,7 +53,7 @@ final class ApplyDamage implements ApplyDamageInterface
         }
         $disablemessage = false;
         $damage = (int) $damage_wrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_HULL);
-        if ($ship->getCanBeDisabled() && $ship->getHull() - $damage < round($ship->getMaxHull() / 100 * 10)) {
+        if ($ship->getSystemState(ShipSystemTypeEnum::SYSTEM_RPG_MODULE) && $ship->getHull() - $damage < round($ship->getMaxHull() / 100 * 10)) {
             $damage = (int) round($ship->getHull() - $ship->getMaxHull() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
             $ship->setDisabled(true);
