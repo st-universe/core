@@ -47,8 +47,6 @@ final class ActivateRPGModule implements ActionControllerInterface
         );
 
 
-        $ship->setCanBeDisabled(true);
-
         $this->shipRepository->save($ship);
 
         $game->addInformation("Das RPG Modul wurde aktiviert");

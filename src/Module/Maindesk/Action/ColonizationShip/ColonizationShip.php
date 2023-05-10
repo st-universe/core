@@ -53,7 +53,6 @@ final class ColonizationShip implements ActionControllerInterface
 
         $ship->updateLocation($faction->getStartMap(), null);
         $ship->setReactorLoad((int)floor($ship->getReactorCapacity() * 20));
-        $ship->setCanBeDisabled(true);
         $ship->setSensorRange(5);
         $ship->setReactorOutput((int)floor($ship->getReactorOutput() * 10));
 

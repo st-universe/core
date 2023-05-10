@@ -46,7 +46,6 @@ final class DeactivateRPGModule implements ActionControllerInterface
             $userId
         );
 
-        $ship->setCanBeDisabled(false);
         $ship->setDisabled(false);
 
         $this->shipRepository->save($ship);

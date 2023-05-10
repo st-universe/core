@@ -203,12 +203,6 @@ class Ship implements ShipInterface
     private bool $disabled = false;
 
     /**
-     * @Column(type="boolean")
-     *
-     */
-    private bool $can_be_disabled = false;
-
-    /**
      * @Column(type="smallint", length=3)
      *
      */
@@ -800,16 +794,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getCanBeDisabled(): bool
-    {
-        return $this->can_be_disabled;
-    }
 
-    public function setCanBeDisabled(bool $canbeDisabled): ShipInterface
-    {
-        $this->can_be_disabled = $canbeDisabled;
-        return $this;
-    }
 
     /**
      * proportional to computer system status

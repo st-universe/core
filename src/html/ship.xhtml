@@ -312,14 +312,14 @@
 					<a tal:condition="not:SHIP/getRPGModuleState"
 						href="?B_ACTIVATE_RPG_MODULE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 						onmouseover="cp('rpgmodule','buttons/rpg1')" onmouseout="cp('rpgmodule','buttons/rpg3')">
-						<img src="/assets/buttons/rpg3.png" name="rpgmodule" />
+						<img src="/assets/buttons/rpg3.png" name="rpgmodule" title="Macht das Schiff unzerstörbar" />
 						RPG Modul aktivieren
 					</a>
 
 					<a href="?B_DEACTIVATE_RPG_MODULE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 						tal:condition="SHIP/getRPGModuleState" onmouseover="cp('rpgmodule','buttons/rpg3')"
 						onmouseout="cp('rpgmodule','buttons/rpg1')">
-						<img src="/assets/buttons/rpg1.png" name="rpgmodule" />
+						<img src="/assets/buttons/rpg1.png" name="rpgmodule" title="Macht das Schiff zerstörbar" />
 						RPG Modul deaktivieren
 					</a>
 				</td>
