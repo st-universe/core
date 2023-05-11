@@ -16,6 +16,12 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 {
     private TorpedoHullRepositoryInterface $torpedoHullRepository;
 
+    public function __construct(
+        TorpedoHullRepositoryInterface $torpedoHullRepository
+    ) {
+        $this->torpedoHullRepository = $torpedoHullRepository;
+    }
+
     public function fire(
         ProjectileAttackerInterface $attacker,
         array $targetPool,
