@@ -9,16 +9,21 @@ use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 
 //TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
 {
+    private TorpedoHullRepositoryInterface $torpedoHullRepository;
+
     public function fire(
         ProjectileAttackerInterface $attacker,
+        TorpedoHullRepositoryInterface $torpedoHullRepository,
         array $targetPool,
         bool $isAlertRed = false
     ): array {
         $fightMessages = [];
+        $this->torpedoHullRepository = $torpedoHullRepository;
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
             if (count($targetPool) === 0) {
@@ -64,6 +69,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
+            $damage_wrapper->setModificator($this->torpedoHullRepository->getByModuleAndTorpedo((int)implode($target->getBuildplan()->getModulesByType(1)), $torpedo->getId())->getModificator());
 
             $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
