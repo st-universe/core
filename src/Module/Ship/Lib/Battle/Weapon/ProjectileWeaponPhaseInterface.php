@@ -6,6 +6,7 @@ use Stu\Module\Ship\Lib\Battle\Message\FightMessageInterface;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 
 interface ProjectileWeaponPhaseInterface
 {
@@ -16,6 +17,7 @@ interface ProjectileWeaponPhaseInterface
      */
     public function fire(
         ProjectileAttackerInterface $attacker,
+        TorpedoHullRepositoryInterface $torpedoHullRepository,
         array $targetPool,
         bool $isAlertRed = false
     ): array;

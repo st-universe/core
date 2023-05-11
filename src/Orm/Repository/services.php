@@ -115,6 +115,7 @@ use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\TorpedoHull;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInfo;
 use Stu\Orm\Entity\TradeOffer;
@@ -669,6 +670,11 @@ return [
         ContainerInterface $c
     ): TholianWebRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TholianWeb::class);
+    },
+    TorpedoHullRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TorpedoHullRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TorpedoHull::class);
     },
     TorpedoTypeRepositoryInterface::class => function (
         ContainerInterface $c

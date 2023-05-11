@@ -27,6 +27,7 @@ class DamageWrapper
     private $damage = 0;
     private $source = false;
     private $isCrit = false;
+    private $modificator = 100;
 
     /**
      */
@@ -131,6 +132,16 @@ class DamageWrapper
         return $this->damage;
     } # }}}
 
+    public function getModificator()
+    { #{{{
+        return $this->modificator;
+    } # }}}
+
+    public function setModificator($value)
+    { #{{{
+        $this->modificator = $value;
+    } # }}}
+
     /**
      */
     public function getDamageRelative($target, $mode, $isColony = false)
@@ -183,10 +194,10 @@ class DamageWrapper
     private function calculateDamageHull(ShipInterface $target)
     { #{{{
         $damage = round($this->getDamage() / 100 * $this->getHullDamageFactor());
-        /* ablative huell plating
-         if ($this->getIsPhaserDamage() === true && $target->getRump()->getRoleId() == ShipRoleEnum::ROLE_PHASERSHIP) {
-            $damage = round($damage * 0.6);
-        } */
+        // ablative huell plating
+        if ($this->getIsTorpedoDamage() === true) {
+            $damage = round($damage * ($this->getModificator() / 100));
+        }
         return $damage;
     } # }}}
 
