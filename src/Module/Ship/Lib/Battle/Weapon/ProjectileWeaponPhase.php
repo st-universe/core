@@ -18,12 +18,10 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
     public function fire(
         ProjectileAttackerInterface $attacker,
-        TorpedoHullRepositoryInterface $torpedoHullRepository,
         array $targetPool,
         bool $isAlertRed = false
     ): array {
         $fightMessages = [];
-        $this->torpedoHullRepository = $torpedoHullRepository;
 
         for ($i = 1; $i <= $attacker->getTorpedoVolleys(); $i++) {
             if (count($targetPool) === 0) {
