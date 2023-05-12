@@ -12,6 +12,8 @@ use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 
 //TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
@@ -22,14 +24,22 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
     protected EntryCreatorInterface $entryCreator;
 
+    private CreatePrestigeLogInterface $createPrestigeLog;
+
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         ApplyDamageInterface $applyDamage,
         EntryCreatorInterface $entryCreator,
+        CreatePrestigeLogInterface $createPrestigeLog,
+        PrivateMessageSenderInterface $privateMessageSender,
         TorpedoHullRepositoryInterface $torpedoHullRepository
     ) {
         $this->applyDamage = $applyDamage;
         $this->entryCreator = $entryCreator;
         $this->torpedoHullRepository = $torpedoHullRepository;
+        $this->createPrestigeLog = $createPrestigeLog;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function fire(
