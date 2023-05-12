@@ -12,8 +12,8 @@ use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\Battle\Weapon\AbstractWeaponPhase;
 
 //TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
@@ -26,13 +26,13 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
     protected ShipRemoverInterface $shipRemover;
 
-    private CreatePrestigeLogInterface $createPrestigeLog;
+    private AbstractWeaponPhase $abstractWeaponPhase;
 
 
     public function __construct(
         ApplyDamageInterface $applyDamage,
         EntryCreatorInterface $entryCreator,
-        CreatePrestigeLogInterface $createPrestigeLog,
+        AbstractWeaponPhase $abstractWeaponPhase,
         ShipRemoverInterface $shipRemover,
         TorpedoHullRepositoryInterface $torpedoHullRepository
     ) {
@@ -40,7 +40,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         $this->entryCreator = $entryCreator;
         $this->torpedoHullRepository = $torpedoHullRepository;
         $this->shipRemover = $shipRemover;
-        $this->createPrestigeLog = $createPrestigeLog;
+        $this->abstractWeaponPhase = $abstractWeaponPhase;
     }
 
     public function fire(
@@ -126,7 +126,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
                         );
                     }
                 }
-                $this->checkForPrestige($attacker->getUser(), $target);
+                $this->abstractWeaponPhase->checkForPrestige($attacker->getUser(), $target);
                 $fightMessage->add($this->shipRemover->destroy($targetWrapper));
             }
         }
