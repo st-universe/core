@@ -26,7 +26,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
     protected ShipRemoverInterface $shipRemover;
 
-    protected CreatePrestigeLogInterface $createPrestigeLog;
+    protected ?CreatePrestigeLogInterface $createPrestigeLog = null;
 
 
     public function __construct(
