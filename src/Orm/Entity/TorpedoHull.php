@@ -47,7 +47,7 @@ class TorpedoHull implements TorpedoHullInterface
 
 
     /**
-     * @var ?TorpedoTypeInterface
+     * @var ?TorpedoType
      *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
@@ -55,7 +55,7 @@ class TorpedoHull implements TorpedoHullInterface
     private $torpedo;
 
     /**
-     * @var ?ModuleInterface
+     * @var ?Module
      *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id")
@@ -103,12 +103,12 @@ class TorpedoHull implements TorpedoHullInterface
         return $this;
     }
 
-    public function getTorpedo(): TorpedoTypeInterface
+    public function getTorpedo(): ?TorpedoTypeInterface
     {
         return $this->torpedo;
     }
 
-    public function getModule(): ModuleInterface
+    public function getModule(): ?ModuleInterface
     {
         return $this->module;
     }

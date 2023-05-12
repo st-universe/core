@@ -18,7 +18,7 @@ interface TorpedoHullInterface
 
     public function setModificator(int $Modificator): TorpedoHullInterface;
 
-    public function getTorpedo(): TorpedoTypeInterface;
+    public function getTorpedo(): ?TorpedoTypeInterface;
 
-    public function getModule(): ModuleInterface;
+    public function getModule(): ?ModuleInterface;
 }
