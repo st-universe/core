@@ -94,7 +94,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
-            if ($target->getBuildplan() !== null || $torpedo !== null) {
+            if ($target->getBuildplan() !== null) {
                 $damage_wrapper->setModificator($this->torpedoHullRepository->getByModuleAndTorpedo(current($target->getBuildplan()->getModulesByType(1))->getModule()->getId(), $torpedo->getId())->getModificator());
             }
 
