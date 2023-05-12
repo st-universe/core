@@ -47,7 +47,7 @@ class TorpedoHull implements TorpedoHullInterface
 
 
     /**
-     * @var TorpedoTypeInterface
+     * @var ?TorpedoTypeInterface
      *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
@@ -55,7 +55,7 @@ class TorpedoHull implements TorpedoHullInterface
     private $torpedo;
 
     /**
-     * @var ModuleInterface
+     * @var ?ModuleInterface
      *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id")
