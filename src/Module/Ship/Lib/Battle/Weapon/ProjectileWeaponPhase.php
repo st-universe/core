@@ -14,6 +14,7 @@ use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 
 //TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
@@ -24,6 +25,8 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
     protected EntryCreatorInterface $entryCreator;
 
+    protected ShipRemoverInterface $shipRemover;
+
     private CreatePrestigeLogInterface $createPrestigeLog;
 
     private PrivateMessageSenderInterface $privateMessageSender;
@@ -32,12 +35,14 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         ApplyDamageInterface $applyDamage,
         EntryCreatorInterface $entryCreator,
         CreatePrestigeLogInterface $createPrestigeLog,
+        ShipRemoverInterface $shipRemover,
         PrivateMessageSenderInterface $privateMessageSender,
         TorpedoHullRepositoryInterface $torpedoHullRepository
     ) {
         $this->applyDamage = $applyDamage;
         $this->entryCreator = $entryCreator;
         $this->torpedoHullRepository = $torpedoHullRepository;
+        $this->shipRemover = $shipRemover;
         $this->createPrestigeLog = $createPrestigeLog;
         $this->privateMessageSender = $privateMessageSender;
     }
