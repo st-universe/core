@@ -88,8 +88,9 @@ abstract class AbstractWeaponPhase
             $rump->getName()
         );
 
-        $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
-
+        if ($this->createPrestigeLog !== null) {
+            $this->createPrestigeLog->createLog($amount, $description, $destroyer, time());
+        }
         // system pm only for negative prestige
         if ($amount < 0) {
             $this->sendSystemMessage($description, $destroyer->getId());
