@@ -26,7 +26,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
 
     protected ShipRemoverInterface $shipRemover;
 
-    private CreatePrestigeLogInterface $createPrestigeLog;
+    protected CreatePrestigeLogInterface $createPrestigeLog;
 
 
     public function __construct(
@@ -94,7 +94,9 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
-            $damage_wrapper->setModificator($this->torpedoHullRepository->getByModuleAndTorpedo(current($target->getBuildplan()->getModulesByType(1))->getModule()->getId(), $torpedo->getId())->getModificator());
+            if ($target->getBuildplan() !== null) {
+                $damage_wrapper->setModificator($this->torpedoHullRepository->getByModuleAndTorpedo(current($target->getBuildplan()->getModulesByType(1))->getModule()->getId(), $torpedo->getId())->getModificator());
+            }
 
             $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
