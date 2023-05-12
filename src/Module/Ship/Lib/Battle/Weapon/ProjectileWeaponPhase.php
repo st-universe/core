@@ -10,15 +10,20 @@ use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
+use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 
 //TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
 {
     private TorpedoHullRepositoryInterface $torpedoHullRepository;
 
+    protected ApplyDamageInterface $applyDamage;
+
     public function __construct(
+        ApplyDamageInterface $applyDamage,
         TorpedoHullRepositoryInterface $torpedoHullRepository
     ) {
+        $this->applyDamage = $applyDamage;
         $this->torpedoHullRepository = $torpedoHullRepository;
     }
 
