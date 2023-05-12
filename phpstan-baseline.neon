@@ -287,12 +287,27 @@ parameters:
 			path: src/Lib/DamageWrapper.php
 
 		-
+			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getModificator\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/DamageWrapper.php
+
+		-
+			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setModificator\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Lib/DamageWrapper.php
+
+		-
 			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getDamageRelative\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Lib/DamageWrapper.php
 
 		-
 			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getDamageRelative\\(\\) has parameter \\$isColony with no type specified\\.$#"
+			count: 1
+			path: src/Lib/DamageWrapper.php
+
+				-
+			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setModificator\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Lib/DamageWrapper.php
 
@@ -388,6 +403,11 @@ parameters:
 
 		-
 			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$damage has no type specified\\.$#"
+			count: 1
+			path: src/Lib/DamageWrapper.php
+
+		-
+			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$modificator has no type specified\\.$#"
 			count: 1
 			path: src/Lib/DamageWrapper.php
 
@@ -3070,6 +3090,16 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\Battle\\\\ApplyDamageInterface\\:\\:damageShipSystem\\(\\) has parameter \\$system with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
+
+		-
+			message: "#^Cannot call method getModule\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\|false\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/Weapon/ProjectileWeaponPhase.php 
+
+		-
+			message: "#^Cannot call method getModificator\\(\\) on Stu\\\\Orm\\\\Entity\\\\TorpedoHullInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Ship/Lib/Battle/Weapon/ProjectileWeaponPhase.php 
 
 		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
