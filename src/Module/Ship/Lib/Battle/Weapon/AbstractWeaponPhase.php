@@ -37,7 +37,7 @@ abstract class AbstractWeaponPhase
 
     protected LoggerUtilInterface $loggerUtil;
 
-    private CreatePrestigeLogInterface $createPrestigeLog;
+    protected CreatePrestigeLogInterface $createPrestigeLog;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
