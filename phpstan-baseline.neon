@@ -306,7 +306,7 @@ parameters:
 			count: 1
 			path: src/Lib/DamageWrapper.php
 
-				-
+		-
 			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setModificator\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Lib/DamageWrapper.php
