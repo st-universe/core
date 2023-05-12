@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\TorpedoHullInterface;
+use Stu\Orm\Entity\TorpedoHull;
 
 /**
  * @extends ObjectRepository<TorpedoHull>
