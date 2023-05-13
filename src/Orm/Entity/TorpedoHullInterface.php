@@ -26,7 +26,7 @@ interface TorpedoHullInterface
 
     public function hexToRgb(string $color): array;
 
-    public function calculateGradientRgb(array $rgb1, array $rgb2, int $percent): array;
+    public function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array;
 
     public function rgbToHex(array $rgb): string;
 }

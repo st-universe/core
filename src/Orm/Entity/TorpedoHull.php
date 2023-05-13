@@ -152,11 +152,11 @@ class TorpedoHull implements TorpedoHullInterface
         return array($r, $g, $b);
     }
 
-    public function calculateGradientRgb(array $rgb1, array $rgb2, int $percent): array
+    public function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
     {
-        $r = intval($rgb1[0] + ($rgb2[0] - $rgb1[0]) * $percent / 100);
-        $g = intval($rgb1[1] + ($rgb2[1] - $rgb1[1]) * $percent / 100);
-        $b = intval($rgb1[2] + ($rgb2[2] - $rgb1[2]) * $percent / 100);
+        $r = intval($rgb1[0] + ($rgb2[0] - $rgb1[0]) * round($percent) / 100);
+        $g = intval($rgb1[1] + ($rgb2[1] - $rgb1[1]) * round($percent) / 100);
+        $b = intval($rgb1[2] + ($rgb2[2] - $rgb1[2]) * round($percent) / 100);
 
         return array($r, $g, $b);
     }
