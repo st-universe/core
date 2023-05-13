@@ -168,6 +168,7 @@ class Module implements ModuleInterface
     {
         $this->moduleSpecials = new ArrayCollection();
         $this->buildingCosts = new ArrayCollection();
+        $this->torpedoHull = new ArrayCollection();
     }
 
     public function getId(): int
