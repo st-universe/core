@@ -133,7 +133,7 @@ class TorpedoHull implements TorpedoHullInterface
     }
 
     /**
-     * @param array<mixed> $color
+     * @param array<string> $color
      */
     public function hexToRgb(string $color): array
     {
