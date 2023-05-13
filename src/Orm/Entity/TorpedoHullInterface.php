@@ -21,4 +21,12 @@ interface TorpedoHullInterface
     public function getTorpedo(): ?TorpedoTypeInterface;
 
     public function getModule(): ?ModuleInterface;
+
+    public function calculateGradientColor();
+
+    public function hexToRgb($color);
+
+    public function calculateGradientRgb($rgb1, $rgb2, $percent);
+
+    public function rgbToHex($rgb);
 }
