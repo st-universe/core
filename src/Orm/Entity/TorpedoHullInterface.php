@@ -26,14 +26,16 @@ interface TorpedoHullInterface
 
     /**
      * @param string $color
+     * @return array<string,int>
      */
-    public function hexToRgb($color): array;
+    public function hexToRgb(string $color): array;
     /**
      * @param array<mixed> $rgb1
      * @param array<mixed> $rgb2
      * @param float $percent
+     * @return array<string,int,float>
      */
-    public function calculateGradientRgb(array $rgb1, array $rgb2, $percent): array;
+    public function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array;
     /**
      * @param array<mixed> $rgb
      */
