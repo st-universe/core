@@ -247,7 +247,8 @@
       <div style="display: table-cell; padding-left: 4px;">
         <img src="assets/commodities/${data/getTorpedoType}.png" tal:attributes="title data/getTorpedo/getName" />
       </div>
-      <div style="display: table-cell; vertical-align: middle;" tal:content="data/getModificator">MODIFIKATOR</div>
+      <div style="display: table-cell; vertical-align: middle;color: ${data/calculateGradientColor};"
+        tal:content="data/getModificator">MODIFIKATOR</div>
     </tal:block>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_2">
