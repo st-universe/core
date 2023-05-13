@@ -153,6 +153,7 @@ class Module implements ModuleInterface
      * @var ArrayCollection<int, TorpedoHullInterface>
      *
      * @OneToMany(targetEntity="TorpedoHull", mappedBy="module")
+     * @OrderBy({"torpedo_type": "ASC"})
      */
     private $torpedoHull;
 
