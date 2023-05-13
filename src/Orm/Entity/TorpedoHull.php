@@ -120,14 +120,14 @@ class TorpedoHull implements TorpedoHullInterface
         $percent = 100 / 29 * ($this->getModificator() - 88);
 
         // Konvertiere die Hex-Farbcodes in RGB-Werte
-        $rgb1 = (string) $this->hexToRgb($color1);
-        $rgb2 = (string) $this->hexToRgb($color2);
+        $rgb1 = $this->hexToRgb($color1);
+        $rgb2 = $this->hexToRgb($color2);
 
         // Berechne den RGB-Wert für den gegebenen Prozentwert
         $gradientRgb = $this->calculateGradientRgb($rgb1, $rgb2, $percent);
 
         // Konvertiere den RGB-Wert zurück in einen Hex-Farbcode
-        $gradientColor = $this->rgbToHex((string) $gradientRgb);
+        $gradientColor = $this->rgbToHex($gradientRgb);
 
         return $gradientColor;
     }
@@ -152,7 +152,7 @@ class TorpedoHull implements TorpedoHullInterface
         return array($r, $g, $b);
     }
 
-    public function calculateGradientRgb(string $rgb1, string $rgb2, float $percent): array
+    public function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
     {
         $r = intval($rgb1[0] + ($rgb2[0] - $rgb1[0]) * $percent / 100);
         $g = intval($rgb1[1] + ($rgb2[1] - $rgb1[1]) * $percent / 100);
@@ -161,7 +161,7 @@ class TorpedoHull implements TorpedoHullInterface
         return array($r, $g, $b);
     }
 
-    public function rgbToHex(string $rgb): string
+    public function rgbToHex(array $rgb): string
     {
         $r = str_pad(dechex((int) $rgb[0]), 2, '0', STR_PAD_LEFT);
         $g = str_pad(dechex((int) $rgb[1]), 2, '0', STR_PAD_LEFT);
