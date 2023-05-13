@@ -133,7 +133,7 @@ class TorpedoHull implements TorpedoHullInterface
     }
 
     /**
-     * @param array<mixed>
+     * @param array<mixed> $color
      */
     public function hexToRgb(string $color): array
     {
@@ -156,7 +156,7 @@ class TorpedoHull implements TorpedoHullInterface
     }
 
     /**
-     * @param array<mixed>
+     * @param array<mixed> $rgb1, $rgb2, $percent
      */
     public function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
     {
@@ -168,7 +168,7 @@ class TorpedoHull implements TorpedoHullInterface
     }
 
     /**
-     * @param array<mixed>
+     * @param array<mixed> $rgb
      */
     public function rgbToHex(array $rgb): string
     {
