@@ -245,7 +245,8 @@
       tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseHull')">VALUE</span>
     <tal:block tal:repeat="data module/getModule/getTorpedoHull">
       <div style="display: table-cell; padding-left: 4px;">
-        <img src="assets/commodities/${data/getTorpedoType}.png" tal:attributes="title data/getTorpedo/getName" />
+        <img src="assets/commodities/${data/getTorpedoType}.png"
+          style="border: 2px solid ${data/calculateGradientColor}" tal:attributes="title data/getTorpedo/getName" />
       </div>
       <div style="display: table-cell; vertical-align: middle;color: ${data/calculateGradientColor};"
         tal:content="data/getModificator">MODIFIKATOR</div>
