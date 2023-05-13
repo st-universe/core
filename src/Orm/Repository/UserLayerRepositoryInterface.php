@@ -24,7 +24,5 @@ interface UserLayerRepositoryInterface extends ObjectRepository
      */
     public function getByMappingType(int $mappingType): array;
 
-    public function truncateByUser(int $userId): void;
-
     public function truncateAllUserLayer(): void;
 }

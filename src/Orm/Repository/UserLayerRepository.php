@@ -39,19 +39,6 @@ final class UserLayerRepository extends EntityRepository implements UserLayerRep
         ]);
     }
 
-    public function truncateByUser(int $userId): void
-    {
-        $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s ul
-                WHERE ul.user_id = :userId',
-                UserLayer::class
-            )
-        )->setParameters([
-            'userId' => $userId
-        ])->execute();
-    }
-
     public function truncateAllUserLayer(): void
     {
         $this->getEntityManager()->createQuery(
