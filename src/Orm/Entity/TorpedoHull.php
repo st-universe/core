@@ -132,6 +132,9 @@ class TorpedoHull implements TorpedoHullInterface
         return $gradientColor;
     }
 
+    /**
+     * @param array<mixed>
+     */
     public function hexToRgb(string $color): array
     {
         $color = ltrim($color, '#');
@@ -152,6 +155,9 @@ class TorpedoHull implements TorpedoHullInterface
         return array($r, $g, $b);
     }
 
+    /**
+     * @param array<mixed>
+     */
     public function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
     {
         $r = intval($rgb1[0] + ($rgb2[0] - $rgb1[0]) * round($percent) / 100);
@@ -161,6 +167,9 @@ class TorpedoHull implements TorpedoHullInterface
         return array($r, $g, $b);
     }
 
+    /**
+     * @param array<mixed>
+     */
     public function rgbToHex(array $rgb): string
     {
         $r = str_pad(dechex((int) $rgb[0]), 2, '0', STR_PAD_LEFT);
