@@ -26,7 +26,7 @@ interface TorpedoHullInterface
 
     /**
      * @param string $color
-     * @return array<string,int>
+     * @return array<string, int>
      */
     public function hexToRgb(string $color): array;
     /**
