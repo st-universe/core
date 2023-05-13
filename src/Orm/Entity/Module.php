@@ -150,6 +150,13 @@ class Module implements ModuleInterface
     private $buildingCosts;
 
     /**
+     * @var ArrayCollection<int, TorpedoHullInterface>
+     *
+     * @OneToMany(targetEntity="TorpedoHull", mappedBy="module_id")
+     */
+    private $torpedoHull;
+
+    /**
      * @OneToOne(targetEntity="Weapon", mappedBy="module")
      */
     private ?WeaponInterface $weapon;
@@ -365,5 +372,10 @@ class Module implements ModuleInterface
     public function getDescription(): string
     {
         return ModuleTypeDescriptionMapper::getDescription($this->getType());
+    }
+
+    public function getTorpedoHull(): Collection
+    {
+        return $this->torpedoHull;
     }
 }

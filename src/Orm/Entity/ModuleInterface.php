@@ -78,4 +78,10 @@ interface ModuleInterface
     public function getCommodity(): CommodityInterface;
 
     public function getDescription(): string;
+
+
+    /**
+     * @return Collection<int, TorpedoHullInterface>
+     */
+    public function getTorpedoHull(): Collection;
 }
