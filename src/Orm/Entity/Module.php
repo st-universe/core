@@ -152,7 +152,7 @@ class Module implements ModuleInterface
     /**
      * @var ArrayCollection<int, TorpedoHullInterface>
      *
-     * @OneToMany(targetEntity="TorpedoHull", mappedBy="module_id")
+     * @OneToMany(targetEntity="TorpedoHull", mappedBy="module")
      */
     private $torpedoHull;
 
