@@ -113,30 +113,32 @@ class TorpedoHull implements TorpedoHullInterface
         return $this->module;
     }
 
-    public function calculateGradientColor()
+    public function calculateGradientColor(): string
     {
         $color1 = '#00ff00';
         $color2 = '#FF0000';
         $percent = 100 / 29 * ($this->getModificator() - 88);
 
         // Konvertiere die Hex-Farbcodes in RGB-Werte
-        $rgb1 = $this->hexToRgb($color1);
-        $rgb2 = $this->hexToRgb($color2);
+        $rgb1 = (string) $this->hexToRgb($color1);
+        $rgb2 = (string) $this->hexToRgb($color2);
 
         // Berechne den RGB-Wert für den gegebenen Prozentwert
         $gradientRgb = $this->calculateGradientRgb($rgb1, $rgb2, $percent);
 
         // Konvertiere den RGB-Wert zurück in einen Hex-Farbcode
-        $gradientColor = $this->rgbToHex($gradientRgb);
+        $gradientColor = $this->rgbToHex((string) $gradientRgb);
 
         return $gradientColor;
     }
 
-    public function hexToRgb($color)
+    public function hexToRgb(string $color): array
     {
         $color = ltrim($color, '#');
         $length = strlen($color);
-
+        $b = '';
+        $g = '';
+        $r = '';
         if ($length == 3) {
             $r = hexdec(substr($color, 0, 1) . substr($color, 0, 1));
             $g = hexdec(substr($color, 1, 1) . substr($color, 1, 1));
@@ -150,7 +152,7 @@ class TorpedoHull implements TorpedoHullInterface
         return array($r, $g, $b);
     }
 
-    public function calculateGradientRgb($rgb1, $rgb2, $percent)
+    public function calculateGradientRgb(string $rgb1, string $rgb2, float $percent): array
     {
         $r = intval($rgb1[0] + ($rgb2[0] - $rgb1[0]) * $percent / 100);
         $g = intval($rgb1[1] + ($rgb2[1] - $rgb1[1]) * $percent / 100);
@@ -159,11 +161,11 @@ class TorpedoHull implements TorpedoHullInterface
         return array($r, $g, $b);
     }
 
-    public function rgbToHex($rgb)
+    public function rgbToHex(string $rgb): string
     {
-        $r = str_pad(dechex($rgb[0]), 2, '0', STR_PAD_LEFT);
-        $g = str_pad(dechex($rgb[1]), 2, '0', STR_PAD_LEFT);
-        $b = str_pad(dechex($rgb[2]), 2, '0', STR_PAD_LEFT);
+        $r = str_pad(dechex((int) $rgb[0]), 2, '0', STR_PAD_LEFT);
+        $g = str_pad(dechex((int) $rgb[1]), 2, '0', STR_PAD_LEFT);
+        $b = str_pad(dechex((int) $rgb[2]), 2, '0', STR_PAD_LEFT);
 
         return '#' . $r . $g . $b;
     }

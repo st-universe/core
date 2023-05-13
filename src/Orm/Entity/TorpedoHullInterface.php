@@ -22,11 +22,11 @@ interface TorpedoHullInterface
 
     public function getModule(): ?ModuleInterface;
 
-    public function calculateGradientColor();
+    public function calculateGradientColor(): string;
 
-    public function hexToRgb($color);
+    public function hexToRgb(string $color): array;
 
-    public function calculateGradientRgb($rgb1, $rgb2, $percent);
+    public function calculateGradientRgb(string $rgb1, string $rgb2, float $percent): array;
 
-    public function rgbToHex($rgb);
+    public function rgbToHex(string $rgb): string;
 }
