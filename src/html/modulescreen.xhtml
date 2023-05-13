@@ -243,7 +243,7 @@
     <img src="assets/buttons/modul_screen_1.png" tal:attributes="title module/getModule/getDescription" />
     <span>Hüllenstärke</span>: <span
       tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseHull')">VALUE</span>
-    <tal:block tal:repeat="data module/getTorpedoHull">
+    <tal:block tal:repeat="data module/getModule/getTorpedoHull">
       <div style="display: table-cell; padding-left: 4px;">
         <img src="assets/commodities/${data/getTorpedoType}.png" tal:attributes="title data/getTorpedo/getName" />
       </div>
