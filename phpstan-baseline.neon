@@ -3099,7 +3099,12 @@ parameters:
 		-
 			message: "#^Cannot call method getModificator\\(\\) on Stu\\\\Orm\\\\Entity\\\\TorpedoHullInterface\\|null\\.$#"
 			count: 1
-			path: src/Module/Ship/Lib/Battle/Weapon/ProjectileWeaponPhase.php 
+			path: src/Module/Ship/Lib/Battle/Weapon/ProjectileWeaponPhase.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$torpedoHull type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TorpedoHullInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php 
 
 		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
