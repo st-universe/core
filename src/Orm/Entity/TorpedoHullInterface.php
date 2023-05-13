@@ -23,8 +23,9 @@ interface TorpedoHullInterface
     public function getModule(): ?ModuleInterface;
 
     public function calculateGradientColor(): string;
+
     /**
-     * @param array<mixed> $color
+     * @param array<string> $color
      */
     public function hexToRgb(string $color): array;
     /**
