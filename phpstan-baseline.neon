@@ -252,196 +252,6 @@ parameters:
 			path: src/Lib/ColonyProduction/ColonyProduction.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:__construct\\(\\) has parameter \\$damage with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:__construct\\(\\) has parameter \\$source with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:calculateDamageBuilding\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:calculateDamageColonyShields\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:calculateDamageHull\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:calculateDamageShields\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getDamage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getModificator\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setModificator\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getDamageRelative\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getDamageRelative\\(\\) has parameter \\$isColony with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setModificator\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getDamageRelative\\(\\) has parameter \\$mode with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getDamageRelative\\(\\) has parameter \\$target with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getHullDamageFactor\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getIsPhaserDamage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getIsTorpedoDamage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getShieldDamageFactor\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:getSource\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setCrit\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setDamage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setDamage\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setHullDamageFactor\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setHullDamageFactor\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setIsPhaserDamage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setIsPhaserDamage\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setIsTorpedoDamage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setIsTorpedoDamage\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setShieldDamageFactor\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\DamageWrapper\\:\\:setShieldDamageFactor\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$damage has no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$modificator has no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$hull_damage_factor has no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$isCrit has no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$is_phaser_damage has no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$is_torpedo_damage has no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$shield_damage_factor has no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\DamageWrapper\\:\\:\\$source has no type specified\\.$#"
-			count: 1
-			path: src/Lib/DamageWrapper.php
-
-		-
 			message: "#^Cannot call method setMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperEps.php
@@ -3092,21 +2902,6 @@ parameters:
 			path: src/Module/Ship/Lib/Battle/ApplyDamageInterface.php
 
 		-
-			message: "#^Cannot call method getModule\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\|false\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/Weapon/ProjectileWeaponPhase.php 
-
-		-
-			message: "#^Cannot call method getModificator\\(\\) on Stu\\\\Orm\\\\Entity\\\\TorpedoHullInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/Battle/Weapon/ProjectileWeaponPhase.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$torpedoHull type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TorpedoHullInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\>\\.$#"
-			count: 1
-			path: src/Orm/Entity/Module.php 
-
-		-
 			message: "#^Cannot call method getBlockedColony\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
@@ -5597,6 +5392,11 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$torpedoHull type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TorpedoHullInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$weapon type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Weapon\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
@@ -6540,6 +6340,26 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$webShip type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/TholianWeb.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoHull.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoHull.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\:\\:\\$torpedo type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoHull.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\:\\:\\$torpedo type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoHull.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"

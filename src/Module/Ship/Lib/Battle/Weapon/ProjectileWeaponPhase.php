@@ -4,45 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
 use Stu\Module\Ship\Lib\Battle\Provider\ProjectileAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TorpedoHullInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
-use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
-use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Module\History\Lib\EntryCreatorInterface;
-use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
 
 //TODO unit tests
 final class ProjectileWeaponPhase extends AbstractWeaponPhase implements ProjectileWeaponPhaseInterface
 {
-    private TorpedoHullRepositoryInterface $torpedoHullRepository;
-
-    protected ApplyDamageInterface $applyDamage;
-
-    protected EntryCreatorInterface $entryCreator;
-
-    protected ShipRemoverInterface $shipRemover;
-
-    protected ?CreatePrestigeLogInterface $createPrestigeLog = null;
-
-
-    public function __construct(
-        ApplyDamageInterface $applyDamage,
-        EntryCreatorInterface $entryCreator,
-        CreatePrestigeLogInterface $createPrestigeLog,
-        ShipRemoverInterface $shipRemover,
-        TorpedoHullRepositoryInterface $torpedoHullRepository
-    ) {
-        $this->applyDamage = $applyDamage;
-        $this->entryCreator = $entryCreator;
-        $this->torpedoHullRepository = $torpedoHullRepository;
-        $this->shipRemover = $shipRemover;
-        $this->createPrestigeLog = $createPrestigeLog;
-    }
-
     public function fire(
         ProjectileAttackerInterface $attacker,
         array $targetPool,
@@ -87,16 +60,13 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             $isCritical = $this->isCritical($torpedo, $target->getCloakState());
 
             $damage_wrapper = new DamageWrapper(
-                $attacker->getProjectileWeaponDamage($isCritical),
-                $attacker
+                $attacker->getProjectileWeaponDamage($isCritical)
             );
             $damage_wrapper->setCrit($isCritical);
             $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($torpedo->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
-            if ($target->getBuildplan() !== null) {
-                $damage_wrapper->setModificator($this->torpedoHullRepository->getByModuleAndTorpedo(current($target->getBuildplan()->getModulesByType(1))->getModule()->getId(), $torpedo->getId())->getModificator());
-            }
+            $this->setTorpedoHullModificator($target, $torpedo, $damage_wrapper);
 
             $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
@@ -181,8 +151,7 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             }
             $isCritical = rand(1, 100) <= $torpedo->getCriticalChance();
             $damage_wrapper = new DamageWrapper(
-                $attacker->getProjectileWeaponDamage($isCritical),
-                $attacker
+                $attacker->getProjectileWeaponDamage($isCritical)
             );
             $damage_wrapper->setCrit($isCritical);
             $damage_wrapper->setShieldDamageFactor($torpedo->getShieldDamageFactor());
@@ -226,5 +195,30 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
             return true;
         }
         return false;
+    }
+
+    private function setTorpedoHullModificator(
+        ShipInterface $target,
+        TorpedoTypeInterface $torpedo,
+        DamageWrapper $damageWrapper
+    ): void {
+        $targetBuildplan = $target->getBuildplan();
+        if ($targetBuildplan === null) {
+            return;
+        }
+
+        $targetHullBuildplanModule = current($targetBuildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_HULL));
+        if (!$targetHullBuildplanModule) {
+            return;
+        }
+
+        $targetHullModule = $targetHullBuildplanModule->getModule();
+
+        /** @var TorpedoHullInterface|null */
+        $torpedoHull = $targetHullModule->getTorpedoHull()->get($torpedo->getId());
+
+        if ($torpedoHull !== null) {
+            $damageWrapper->setModificator($torpedoHull->getModificator());
+        }
     }
 }

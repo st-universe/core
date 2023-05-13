@@ -98,7 +98,7 @@ final class ApplyDamage implements ApplyDamageInterface
         $msg = [];
         $colony = $target->getColony();
         if (!$isOrbitField && $this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
-            $damage = (int) $damage_wrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_SHIELDS, true);
+            $damage = (int) $damage_wrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_SHIELDS);
             if ($damage > $colony->getShields()) {
                 $msg[] = "- Schildschaden: " . $colony->getShields();
                 $msg[] = "-- Schilde brechen zusammen!";
@@ -112,7 +112,7 @@ final class ApplyDamage implements ApplyDamageInterface
         if ($damage_wrapper->getDamage() <= 0) {
             return $msg;
         }
-        $damage = (int) $damage_wrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_HULL, true);
+        $damage = (int) $damage_wrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_HULL);
         if ($target->getIntegrity() > $damage) {
             $target->setIntegrity($target->getIntegrity() - $damage);
             $msg[] = "- Gebäudeschaden: " . $damage . " - Status: " . $target->getIntegrity();

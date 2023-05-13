@@ -60,8 +60,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             }
             $isCritical = $this->isCritical($weapon, $target->getCloakState());
             $damage_wrapper = new DamageWrapper(
-                $attacker->getWeaponDamage($isCritical),
-                $attacker
+                $attacker->getWeaponDamage($isCritical)
             );
             $damage_wrapper->setCrit($isCritical);
             $damage_wrapper->setShieldDamageFactor($attacker->getPhaserShieldDamageFactor());
@@ -146,8 +145,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $isCritical = rand(1, 100) <= $weapon->getCriticalChance();
 
             $damage_wrapper = new DamageWrapper(
-                $attacker->getWeaponDamage($isCritical),
-                $attacker
+                $attacker->getWeaponDamage($isCritical)
             );
             $damage_wrapper->setCrit($isCritical);
             $damage_wrapper->setShieldDamageFactor($attacker->getPhaserShieldDamageFactor());

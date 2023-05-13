@@ -47,20 +47,16 @@ class TorpedoHull implements TorpedoHullInterface
 
 
     /**
-     * @var ?TorpedoType
-     *
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
      */
-    private $torpedo;
+    private TorpedoTypeInterface $torpedo;
 
     /**
-     * @var ?Module
-     *
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id")
      */
-    private $module;
+    private ModuleInterface $module;
 
     public function getId(): int
     {
@@ -103,12 +99,12 @@ class TorpedoHull implements TorpedoHullInterface
         return $this;
     }
 
-    public function getTorpedo(): ?TorpedoTypeInterface
+    public function getTorpedo(): TorpedoTypeInterface
     {
         return $this->torpedo;
     }
 
-    public function getModule(): ?ModuleInterface
+    public function getModule(): ModuleInterface
     {
         return $this->module;
     }
@@ -132,16 +128,15 @@ class TorpedoHull implements TorpedoHullInterface
         return $gradientColor;
     }
     /**
-     * @param string $color
-     * @return array<string, int>
+     * @return array<int, int|float>
      */
-    public function hexToRgb($color): array
+    private function hexToRgb(string $color): array
     {
         $color = ltrim($color, '#');
         $length = strlen($color);
-        $b = '';
-        $g = '';
-        $r = '';
+        $b = 0;
+        $g = 0;
+        $r = 0;
         if ($length == 3) {
             $r = hexdec(substr($color, 0, 1) . substr($color, 0, 1));
             $g = hexdec(substr($color, 1, 1) . substr($color, 1, 1));
@@ -158,10 +153,10 @@ class TorpedoHull implements TorpedoHullInterface
     /**
      * @param array<mixed> $rgb1
      * @param array<mixed> $rgb2
-     * @param float $percent
-     * @return array<string,int,float>
+     * 
+     * @return array<int>
      */
-    public function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
+    private function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
     {
         $r = intval($rgb1[0] + ($rgb2[0] - $rgb1[0]) * round($percent) / 100);
         $g = intval($rgb1[1] + ($rgb2[1] - $rgb1[1]) * round($percent) / 100);
@@ -173,7 +168,7 @@ class TorpedoHull implements TorpedoHullInterface
     /**
      * @param array<mixed> $rgb
      */
-    public function rgbToHex(array $rgb): string
+    private function rgbToHex(array $rgb): string
     {
         $r = str_pad(dechex((int) $rgb[0]), 2, '0', STR_PAD_LEFT);
         $g = str_pad(dechex((int) $rgb[1]), 2, '0', STR_PAD_LEFT);
