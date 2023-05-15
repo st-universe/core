@@ -158,6 +158,14 @@ class Module implements ModuleInterface
     private $torpedoHull;
 
     /**
+     * @var ArrayCollection<int, WeaponShieldInterface>
+     *
+     * @OneToMany(targetEntity="WeaponShield", mappedBy="module", indexBy="weapon_id")
+     * @OrderBy({"weapon_id": "ASC"})
+     */
+    private $weaponShield;
+
+    /**
      * @OneToOne(targetEntity="Weapon", mappedBy="module")
      */
     private ?WeaponInterface $weapon;
@@ -170,6 +178,7 @@ class Module implements ModuleInterface
         $this->moduleSpecials = new ArrayCollection();
         $this->buildingCosts = new ArrayCollection();
         $this->torpedoHull = new ArrayCollection();
+        $this->weaponShield = new ArrayCollection();
     }
 
     public function getId(): int
@@ -379,5 +388,11 @@ class Module implements ModuleInterface
     public function getTorpedoHull(): Collection
     {
         return $this->torpedoHull;
+    }
+
+
+    public function getWeaponShield(): Collection
+    {
+        return $this->weaponShield;
     }
 }

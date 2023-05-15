@@ -138,6 +138,10 @@ class DamageWrapper
     {
         $damage = round($this->getDamage() / 100 * $this->getShieldDamageFactor());
 
+        if ($this->getIsPhaserDamage() === true) {
+            $damage = round($damage * ($this->getModificator() / 100));
+        }
+
         if ($damage < $target->getShield()) {
             $this->setDamage(0);
         } else {

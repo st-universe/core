@@ -79,9 +79,13 @@ interface ModuleInterface
 
     public function getDescription(): string;
 
-
     /**
      * @return Collection<int, TorpedoHullInterface>
      */
     public function getTorpedoHull(): Collection;
+
+    /**
+     * @return Collection<int, WeaponShieldInterface>
+     */
+    public function getWeaponShield(): Collection;
 }
