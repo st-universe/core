@@ -132,7 +132,7 @@ class TorpedoHull implements TorpedoHullInterface
             $gradientPercent = $percent * 2;
             $gradientRgb = $this->calculateGradientRgb($rgb1, $rgb2, $gradientPercent);
         } else {
-            $gradientPercent = ($percent / 2);
+            $gradientPercent = (($percent - 50) * 2);
             $gradientRgb = $this->calculateGradientRgb($rgb2, $rgb3, $gradientPercent);
         }
 
