@@ -28,14 +28,14 @@ final class ApplyDamage implements ApplyDamageInterface
     }
 
     public function damage(
-        DamageWrapper $damage_wrapper,
+        DamageWrapper $damageWrapper,
         ShipWrapperInterface $shipWrapper
     ): array {
         $ship = $shipWrapper->get();
         $ship->setShieldRegenerationTimer(time());
         $msg = [];
         if ($ship->getShieldState()) {
-            $damage = (int) $damage_wrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_SHIELDS);
+            $damage = (int) $damageWrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_SHIELDS);
             if ($damage >= $ship->getShield()) {
                 $msg[] = "- Schildschaden: " . $ship->getShield();
                 $msg[] = "-- Schilde brechen zusammen!";
@@ -48,18 +48,18 @@ final class ApplyDamage implements ApplyDamageInterface
                 $msg[] = "- Schildschaden: " . $damage . " - Status: " . $ship->getShield();
             }
         }
-        if ($damage_wrapper->getDamage() <= 0) {
+        if ($damageWrapper->getNetDamage() <= 0) {
             return $msg;
         }
         $disablemessage = false;
-        $damage = (int) $damage_wrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_HULL);
+        $damage = (int) $damageWrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_HULL);
         if ($ship->getSystemState(ShipSystemTypeEnum::SYSTEM_RPG_MODULE) && $ship->getHull() - $damage < round($ship->getMaxHull() / 100 * 10)) {
             $damage = (int) round($ship->getHull() - $ship->getMaxHull() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
             $ship->setDisabled(true);
         }
         if ($ship->getHull() > $damage) {
-            if ($damage_wrapper->isCrit()) {
+            if ($damageWrapper->isCrit()) {
                 $systemName = $this->destroyRandomShipSystem($shipWrapper);
 
                 if ($systemName !== null) {
@@ -91,14 +91,14 @@ final class ApplyDamage implements ApplyDamageInterface
     }
 
     public function damageBuilding(
-        DamageWrapper $damage_wrapper,
+        DamageWrapper $damageWrapper,
         PlanetFieldInterface $target,
         bool $isOrbitField
     ): array {
         $msg = [];
         $colony = $target->getColony();
         if (!$isOrbitField && $this->colonyLibFactory->createColonyShieldingManager($colony)->isShieldingEnabled()) {
-            $damage = (int) $damage_wrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_SHIELDS);
+            $damage = (int) $damageWrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_SHIELDS);
             if ($damage > $colony->getShields()) {
                 $msg[] = "- Schildschaden: " . $colony->getShields();
                 $msg[] = "-- Schilde brechen zusammen!";
@@ -109,10 +109,10 @@ final class ApplyDamage implements ApplyDamageInterface
                 $msg[] = "- Schildschaden: " . $damage . " - Status: " . $colony->getShields();
             }
         }
-        if ($damage_wrapper->getDamage() <= 0) {
+        if ($damageWrapper->getNetDamage() <= 0) {
             return $msg;
         }
-        $damage = (int) $damage_wrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_HULL);
+        $damage = (int) $damageWrapper->getDamageRelative($colony, ShipEnum::DAMAGE_MODE_HULL);
         if ($target->getIntegrity() > $damage) {
             $target->setIntegrity($target->getIntegrity() - $damage);
             $msg[] = "- Gebäudeschaden: " . $damage . " - Status: " . $target->getIntegrity();
