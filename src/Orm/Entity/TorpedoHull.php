@@ -118,15 +118,23 @@ class TorpedoHull implements TorpedoHullInterface
     public function calculateGradientColor(): string
     {
         $color1 = '#00ff00';
-        $color2 = '#FF0000';
+        $color2 = '#ffd500';
+        $color3 = '#FF0000';
         $percent = 100 / 29 * ($this->getModificator() - 88);
 
         // Konvertiere die Hex-Farbcodes in RGB-Werte
         $rgb1 = $this->hexToRgb($color1);
         $rgb2 = $this->hexToRgb($color2);
+        $rgb3 = $this->hexToRgb($color3);
 
-        // Berechne den RGB-Wert für den gegebenen Prozentwert
-        $gradientRgb = $this->calculateGradientRgb($rgb1, $rgb2, $percent);
+        // Verteile den Prozentwert zwischen den Farben
+        if ($percent <= 50) {
+            $gradientPercent = $percent / 50;
+            $gradientRgb = $this->calculateGradientRgb($rgb1, $rgb2, $gradientPercent);
+        } else {
+            $gradientPercent = ($percent - 50) / 50;
+            $gradientRgb = $this->calculateGradientRgb($rgb2, $rgb3, $gradientPercent);
+        }
 
         // Konvertiere den RGB-Wert zurück in einen Hex-Farbcode
         $gradientColor = $this->rgbToHex($gradientRgb);
