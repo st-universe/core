@@ -22,13 +22,13 @@ use Stu\Orm\Entity\ShipInterface;
  */
 class DamageWrapper
 {
-    private float $damage = 0;
+    private float $netDamage = 0;
     private bool $isCrit = false;
     private int $modificator = 100;
 
-    public function __construct(int $damage)
+    public function __construct(int $netDamage)
     {
-        $this->damage = $damage;
+        $this->netDamage = $netDamage;
     }
 
     private int $hull_damage_factor = 100;
@@ -97,14 +97,14 @@ class DamageWrapper
         return $this->is_torpedo_damage;
     }
 
-    public function setDamage(float $value): void
+    public function setNetDamage(float $value): void
     {
-        $this->damage = $value;
+        $this->netDamage = $value;
     }
 
-    public function getDamage(): float
+    public function getNetDamage(): float
     {
-        return $this->damage;
+        return $this->netDamage;
     }
 
     public function getModificator(): int
@@ -136,29 +136,35 @@ class DamageWrapper
 
     private function calculateDamageShields(ShipInterface $target): float
     {
-        $damage = round($this->getDamage() / 100 * $this->getShieldDamageFactor());
+        $netDamage = $this->getNetDamage(); // 100
+        $targetShields = $target->getShield(); // 49
 
-        if ($this->getIsPhaserDamage() === true) {
-            $damage = round($damage * ($this->getModificator() / 100));
+        $grossModificator = round($this->getShieldDamageFactor() / 100); // 1
+        if ($this->getIsPhaserDamage() === true) { //true
+            $grossModificator = round($grossModificator * $this->modificator / 100); // 2 
         }
 
-        if ($damage < $target->getShield()) {
-            $this->setDamage(0);
+        $neededNetDamageForShields = min($netDamage, (int)ceil($targetShields / $grossModificator)); // 25
+        $grossDamage = min($targetShields, $neededNetDamageForShields * $grossModificator);
+
+        if ($neededNetDamageForShields >= $netDamage) {
+            $this->setNetDamage(0);
         } else {
-            $this->setDamage(round($damage - $target->getShield() / $this->getShieldDamageFactor() * 100));
+            $this->setNetDamage($netDamage - $neededNetDamageForShields);
         }
-        return $damage;
+
+        return $grossDamage;
     }
 
 
     private function calculateDamageColonyShields(ColonyInterface $target): float
     {
-        $damage = round($this->getDamage() / 100 * $this->getShieldDamageFactor());
+        $damage = round($this->getNetDamage() / 100 * $this->getShieldDamageFactor());
 
         if ($damage < $target->getShields()) {
-            $this->setDamage(0);
+            $this->setNetDamage(0);
         } else {
-            $this->setDamage(round($damage - $target->getShields() / $this->getShieldDamageFactor() * 100));
+            $this->setNetDamage(round($damage - $target->getShields() / $this->getShieldDamageFactor() * 100));
         }
         return $damage;
     }
@@ -166,7 +172,7 @@ class DamageWrapper
 
     private function calculateDamageHull(): float
     {
-        $damage = round($this->getDamage() / 100 * $this->getHullDamageFactor());
+        $damage = round($this->getNetDamage() / 100 * $this->getHullDamageFactor());
 
         if ($this->getIsTorpedoDamage() === true) {
             $damage = round($damage * ($this->getModificator() / 100));
@@ -177,6 +183,6 @@ class DamageWrapper
 
     private function calculateDamageBuilding(): float
     {
-        return round($this->getDamage() / 100 * $this->getHullDamageFactor());
+        return round($this->getNetDamage() / 100 * $this->getHullDamageFactor());
     }
 }
