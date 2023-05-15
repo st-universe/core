@@ -116,6 +116,7 @@ use Stu\Orm\Entity\TholianWeb;
 use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\TorpedoHull;
+use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInfo;
 use Stu\Orm\Entity\TradeOffer;
@@ -770,6 +771,11 @@ return [
         ContainerInterface $c
     ): WeaponRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Weapon::class);
+    },
+    WeaponShieldRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): WeaponShieldRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(WeaponShield::class);
     },
     WormholeEntryRepositoryInterface::class => function (
         ContainerInterface $c

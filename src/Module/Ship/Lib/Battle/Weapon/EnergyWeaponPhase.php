@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle\Weapon;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Ship\Lib\Battle\Message\FightMessage;
 use Stu\Module\Ship\Lib\Battle\Provider\EnergyAttackerInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
+use Stu\Orm\Entity\WeaponShieldInterface;
 
 //TODO unit tests
 final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeaponPhaseInterface
@@ -66,6 +69,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setShieldDamageFactor($attacker->getPhaserShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($attacker->getPhaserHullDamageFactor());
             $damage_wrapper->setIsPhaserDamage(true);
+            $this->setWeaponShieldModificator($target, $weapon, $damage_wrapper);
 
             $fightMessage->addMessageMerge($this->applyDamage->damage($damage_wrapper, $targetWrapper));
 
@@ -152,6 +156,7 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             $damage_wrapper->setHullDamageFactor($attacker->getPhaserHullDamageFactor());
             $damage_wrapper->setIsPhaserDamage(true);
 
+
             $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
 
             if ($target->getIntegrity() === 0) {
@@ -183,6 +188,31 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
             return true;
         }
         return false;
+    }
+
+    private function setWeaponShieldModificator(
+        ShipInterface $target,
+        WeaponInterface $weapon,
+        DamageWrapper $damageWrapper
+    ): void {
+        $targetBuildplan = $target->getBuildplan();
+        if ($targetBuildplan === null) {
+            return;
+        }
+
+        $targetShieldBuildplanModule = current($targetBuildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SHIELDS));
+        if (!$targetShieldBuildplanModule) {
+            return;
+        }
+
+        $targetShieldModule = $targetShieldBuildplanModule->getModule();
+
+        /** @var WeaponShieldInterface|null */
+        $weaponShield = $targetShieldModule->getWeaponShield()->get($weapon->getId());
+
+        if ($weaponShield !== null) {
+            $damageWrapper->setModificator($weaponShield->getModificator());
+        }
     }
 
     private function getEnergyWeaponEnergyCosts(): int

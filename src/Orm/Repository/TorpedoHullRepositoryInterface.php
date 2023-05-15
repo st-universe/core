@@ -15,9 +15,9 @@ interface TorpedoHullRepositoryInterface extends ObjectRepository
 {
     public function prototype(): TorpedoHullInterface;
 
-    public function save(TorpedoHullInterface $storage): void;
+    public function save(TorpedoHullInterface $torpedohull): void;
 
-    public function delete(TorpedoHullInterface $storage): void;
+    public function delete(TorpedoHullInterface $torpedohull): void;
 
     public function getByModuleAndTorpedo(
         int $moduleId,
