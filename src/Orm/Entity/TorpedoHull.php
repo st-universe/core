@@ -129,10 +129,10 @@ class TorpedoHull implements TorpedoHullInterface
 
         // Verteile den Prozentwert zwischen den Farben
         if ($percent <= 50) {
-            $gradientPercent = $percent;
+            $gradientPercent = $percent * 2;
             $gradientRgb = $this->calculateGradientRgb($rgb1, $rgb2, $gradientPercent);
         } else {
-            $gradientPercent = ($percent - 50);
+            $gradientPercent = ($percent / 2);
             $gradientRgb = $this->calculateGradientRgb($rgb2, $rgb3, $gradientPercent);
         }
 
