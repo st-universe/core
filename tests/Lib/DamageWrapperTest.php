@@ -25,7 +25,8 @@ class DamageWrapperTest extends StuTestCase
             [100, false,  0, 49, ShipEnum::DAMAGE_MODE_SHIELDS, 49, 51],
             [10,  true, 400, 49, ShipEnum::DAMAGE_MODE_SHIELDS, 40,  0],
             [30,  true, 200, 99, ShipEnum::DAMAGE_MODE_SHIELDS, 60,  0],
-            [20, false,   0, 49, ShipEnum::DAMAGE_MODE_SHIELDS, 20,  0]
+            [20, false,   0, 49, ShipEnum::DAMAGE_MODE_SHIELDS, 20,  0],
+            [20, false,   0,  0, ShipEnum::DAMAGE_MODE_SHIELDS, 0,  20]
         ];
     }
 

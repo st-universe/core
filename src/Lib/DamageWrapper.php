@@ -136,15 +136,15 @@ class DamageWrapper
 
     private function calculateDamageShields(ShipInterface $target): float
     {
-        $netDamage = $this->getNetDamage(); // 100
-        $targetShields = $target->getShield(); // 49
+        $netDamage = $this->getNetDamage();
+        $targetShields = $target->getShield();
 
-        $grossModificator = round($this->getShieldDamageFactor() / 100); // 1
-        if ($this->getIsPhaserDamage() === true) { //true
-            $grossModificator = round($grossModificator * $this->modificator / 100); // 2 
+        $grossModificator = round($this->getShieldDamageFactor() / 100);
+        if ($this->getIsPhaserDamage() === true) {
+            $grossModificator = round($grossModificator * $this->modificator / 100);
         }
 
-        $neededNetDamageForShields = min($netDamage, (int)ceil($targetShields / $grossModificator)); // 25
+        $neededNetDamageForShields = min($netDamage, (int)ceil($targetShields / $grossModificator));
         $grossDamage = min($targetShields, $neededNetDamageForShields * $grossModificator);
 
         if ($neededNetDamageForShields >= $netDamage) {
