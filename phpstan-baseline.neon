@@ -5397,12 +5397,12 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$weaponShield type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\WeaponShieldInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\WeaponShield\\>\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$weapon type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Weapon\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$weapon type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Weapon\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$weaponShield type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\WeaponShieldInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\WeaponShield\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
@@ -6802,12 +6802,12 @@ parameters:
 			path: src/Orm/Entity/WeaponShield.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WeaponShield\\:\\:\\$torpedo type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Weapon\\|null but property expects Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WeaponShield\\:\\:\\$weapon type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Weapon\\|null but property expects Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/WeaponShield.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WeaponShield\\:\\:\\$torpedo type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\WeaponInterface but database expects Stu\\\\Orm\\\\Entity\\\\Weapon\\|null\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WeaponShield\\:\\:\\$weapon type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\WeaponInterface but database expects Stu\\\\Orm\\\\Entity\\\\Weapon\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/WeaponShield.php
 
