@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\WeaponShieldRepository")
  * @Table(
- *     name="stu_waepon_shield",
+ *     name="stu_weapon_shield",
  *     indexes={
  *         @Index(name="weapon_shield_module_idx", columns={"module_id"}),
  *         @Index(name="weapon_shield_weapon_idx", columns={"weapon_id"})
