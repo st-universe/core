@@ -48,7 +48,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ->execute();
     }
 
-    public function getByUser(int $userId): iterable
+    public function getByUser(int $userId): array
     {
         return $this->findBy(
             ['user_id' => $userId],
