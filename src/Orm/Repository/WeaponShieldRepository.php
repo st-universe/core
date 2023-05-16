@@ -43,7 +43,7 @@ final class WeaponShieldRepository extends EntityRepository implements WeaponShi
         ]);
     }
 
-    public function getFactionByModule($moduleid): array
+    public function getFactionByModule($moduleid): ?WeaponShieldInterface
     {
         $results = [];
 
