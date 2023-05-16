@@ -19,6 +19,7 @@ use Stu\Orm\Entity\WeaponShieldInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ModuleSelector implements ModuleSelectorInterface
 {
@@ -107,7 +108,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->rump;
     }
 
-    public function getFactionbyWeapon($module): array
+    public function getFactionbyWeapon($module): ArrayCollection
     {
         return $this->weaponshield->getFactionByModule($module);
     }
