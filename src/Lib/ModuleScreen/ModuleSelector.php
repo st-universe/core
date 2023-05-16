@@ -17,6 +17,7 @@ use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
+use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 
 class ModuleSelector implements ModuleSelectorInterface
 {
@@ -31,6 +32,7 @@ class ModuleSelector implements ModuleSelectorInterface
     private ?ColonyInterface $colony;
     private ?ShipInterface $station;
     private ?ShipBuildplanInterface $buildplan;
+    private ?WeaponShieldRepositoryInterface $weaponshield;
 
     private ModuleRepositoryInterface $moduleRepository;
 
@@ -40,6 +42,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function __construct(
         ModuleRepositoryInterface $moduleRepository,
+        ?WeaponShieldRepositoryInterface $weaponshield,
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         TalPageInterface $talPage,
         int $moduleType,
@@ -49,6 +52,7 @@ class ModuleSelector implements ModuleSelectorInterface
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
     ) {
+        $this->weaponshield = $weaponshield;
         $this->moduleType = $moduleType;
         $this->rump = $rump;
         $this->userId = $userId;
@@ -100,6 +104,11 @@ class ModuleSelector implements ModuleSelectorInterface
     public function getRump(): ShipRumpInterface
     {
         return $this->rump;
+    }
+
+    public function getFactionbyWeapon($module): ?WeaponShieldRepositoryInterface
+    {
+        return $this->weaponshield->getFactionByModule($module);
     }
 
     private function getShipRumpRoleId(): int

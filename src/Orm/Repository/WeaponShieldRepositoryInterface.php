@@ -23,4 +23,6 @@ interface WeaponShieldRepositoryInterface extends ObjectRepository
         int $moduleId,
         int $weaponId
     ): ?WeaponShieldInterface;
+
+    public function getFactionByModule($moduleid): ?WeaponShieldInterface;
 }
