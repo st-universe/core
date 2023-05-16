@@ -7,6 +7,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
+use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 
 interface ModuleSelectorInterface
 {
@@ -25,6 +26,8 @@ interface ModuleSelectorInterface
     public function getUserId(): int;
 
     public function getRump(): ShipRumpInterface;
+
+    public function getFactionbyWeapon($module): ?WeaponShieldRepositoryInterface;
 
     /**
      * @return ModuleSelectorWrapperInterface[]
