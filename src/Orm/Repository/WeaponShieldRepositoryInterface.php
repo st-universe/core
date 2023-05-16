@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\WeaponShieldInterface;
 use Stu\Orm\Entity\WeaponShield;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @extends ObjectRepository<WeaponShield>
@@ -24,5 +25,5 @@ interface WeaponShieldRepositoryInterface extends ObjectRepository
         int $weaponId
     ): ?WeaponShieldInterface;
 
-    public function getFactionByModule($moduleid): array;
+    public function getFactionByModule($moduleid): ArrayCollection;
 }

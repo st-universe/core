@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\WeaponShieldRepository")
@@ -206,5 +207,23 @@ class WeaponShield implements WeaponShieldInterface
         $b = str_pad(dechex((int) $rgb[2]), 2, '0', STR_PAD_LEFT);
 
         return '#' . $r . $g . $b;
+    }
+
+    public function getFactionByModule($moduleid): ArrayCollection
+    {
+        $results = new ArrayCollection();
+
+        for ($index = 1; $index <= 5; $index++) {
+            $result = $this->findBy([
+                'faction_id' => $index,
+                'module_id' => $moduleid
+            ]);
+
+            if ($result) {
+                $results->add($result);
+            }
+        }
+
+        return $results;
     }
 }
