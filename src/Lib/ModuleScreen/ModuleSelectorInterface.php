@@ -8,6 +8,7 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
 use Stu\Orm\Entity\WeaponShieldInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 interface ModuleSelectorInterface
 {
@@ -27,7 +28,7 @@ interface ModuleSelectorInterface
 
     public function getRump(): ShipRumpInterface;
 
-    public function getFactionbyWeapon($module): array;
+    public function getFactionbyWeapon($module): ArrayCollection;
 
     /**
      * @return ModuleSelectorWrapperInterface[]
