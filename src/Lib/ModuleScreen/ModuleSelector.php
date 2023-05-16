@@ -107,7 +107,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->rump;
     }
 
-    public function getFactionbyWeapon($module): ?WeaponShieldInterface
+    public function getFactionbyWeapon($module): array
     {
         return $this->weaponshield->getFactionByModule($module);
     }
