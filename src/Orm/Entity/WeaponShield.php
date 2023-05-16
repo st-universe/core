@@ -120,7 +120,7 @@ class WeaponShield implements WeaponShieldInterface
         $color1 = '#00ff00';
         $color2 = '#ffd500';
         $color3 = '#FF0000';
-        $percent = 100 / 29 * ($this->getModificator() - 88);
+        $percent = 100 / 20 * ($this->getModificator() - 100);
 
         // Konvertiere die Hex-Farbcodes in RGB-Werte
         $rgb1 = $this->hexToRgb($color1);
