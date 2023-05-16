@@ -36,12 +36,15 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
+use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private BuildingRepositoryInterface $buildingRepository;
+
+    private WeaponShieldRepositoryInterface $weaponShieldRepository;
 
     private ColonyRepositoryInterface $colonyRepository;
 
@@ -81,6 +84,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ColonyRepositoryInterface $colonyRepository,
         CommodityConsumptionInterface $commodityConsumption,
         ShipRepositoryInterface $shipRepository,
+        WeaponShieldRepositoryInterface $weaponShieldRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ResearchedRepositoryInterface $researchedRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
@@ -97,6 +101,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
+        $this->weaponShieldRepository = $weaponShieldRepository;
         $this->colonyRepository = $colonyRepository;
         $this->commodityConsumption = $commodityConsumption;
         $this->shipRepository = $shipRepository;
@@ -196,6 +201,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     ): ModuleSelector {
         return new ModuleSelector(
             $this->moduleRepository,
+            $this->weaponShieldRepository,
             $this->shipRumpModuleLevelRepository,
             $this->talPage,
             $moduleType,
@@ -217,6 +223,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     ): ModuleSelectorSpecial {
         return new ModuleSelectorSpecial(
             $this->moduleRepository,
+            $this->weaponShieldRepository,
             $this->shipRumpModuleLevelRepository,
             $this->talPage,
             $moduleType,
