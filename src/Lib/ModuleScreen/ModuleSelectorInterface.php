@@ -27,7 +27,7 @@ interface ModuleSelectorInterface
 
     public function getRump(): ShipRumpInterface;
 
-    public function getFactionbyWeapon($module): array;
+    public function getFactionbyWeapon($module): ?WeaponShieldInterface;
 
     /**
      * @return ModuleSelectorWrapperInterface[]
