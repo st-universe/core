@@ -15,6 +15,7 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
+use Stu\Orm\Entity\WeaponShieldInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
@@ -106,7 +107,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->rump;
     }
 
-    public function getFactionbyWeapon($module): ?WeaponShieldRepositoryInterface
+    public function getFactionbyWeapon($module): ?WeaponShieldInterface
     {
         return $this->weaponshield->getFactionByModule($module);
     }
