@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\WeaponShieldInterface;
 use Stu\Orm\Entity\WeaponShield;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @extends EntityRepository<WeaponShield>
@@ -43,15 +43,21 @@ final class WeaponShieldRepository extends EntityRepository implements WeaponShi
         ]);
     }
 
-    public function getFactionByModule($moduleid): array
+    public function getFactionByModule($moduleid): ArrayCollection
     {
+        $results = new ArrayCollection();
+
         for ($index = 1; $index <= 5; $index++) {
-            return $this->findBy(
-                [
-                    'faction_id' => $index,
-                    'module_id' => $moduleid
-                ]
-            );
+            $result = $this->findBy([
+                'faction_id' => $index,
+                'module_id' => $moduleid
+            ]);
+
+            if ($result) {
+                $results->add($result);
+            }
         }
+
+        return $results;
     }
 }
