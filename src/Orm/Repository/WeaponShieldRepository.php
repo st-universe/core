@@ -43,11 +43,9 @@ final class WeaponShieldRepository extends EntityRepository implements WeaponShi
         ]);
     }
 
-
     public function getFactionByModule($moduleid): ?WeaponShieldInterface
     {
-        $numbers = array(1, 2, 3, 4, 5);
-        foreach ($numbers as $index) {
+        for ($index = 1; $index <= 5; $index++) {
             return $this->findOneBy(
                 [
                     'faction_id' => $index,
