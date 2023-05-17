@@ -33,13 +33,22 @@ final class TorpedoHullRepository extends EntityRepository implements TorpedoHul
         $em->remove($torpedohull);
     }
 
-    public function getByModuleAndTorpedo(
-        int $moduleId,
-        int $torpedoId
-    ): ?TorpedoHullInterface {
-        return $this->findOneBy([
-            'module_id' => $moduleId,
-            'torpedo_type' => $torpedoId
-        ]);
+    public function getModificatorMinAndMax(): array
+    {
+        $min =  $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT min(th.modificator) FROM %s th',
+                TorpedoHull::class
+            )
+        )->getSingleScalarResult();
+
+        $max =  $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT max(th.modificator) FROM %s th',
+                TorpedoHull::class
+            )
+        )->getSingleScalarResult();
+
+        return [$min, $max];
     }
 }

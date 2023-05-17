@@ -195,17 +195,11 @@ final class EnergyWeaponPhase extends AbstractWeaponPhase implements EnergyWeapo
         WeaponInterface $weapon,
         DamageWrapper $damageWrapper
     ): void {
-        $targetBuildplan = $target->getBuildplan();
-        if ($targetBuildplan === null) {
+
+        $targetShieldModule = $this->getModule($target, ShipModuleTypeEnum::MODULE_TYPE_SHIELDS);
+        if ($targetShieldModule === null) {
             return;
         }
-
-        $targetShieldBuildplanModule = current($targetBuildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SHIELDS));
-        if (!$targetShieldBuildplanModule) {
-            return;
-        }
-
-        $targetShieldModule = $targetShieldBuildplanModule->getModule();
 
         /** @var WeaponShieldInterface|null */
         $weaponShield = $targetShieldModule->getWeaponShield()->get($weapon->getId());

@@ -3,9 +3,8 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
-use Stu\Orm\Entity\WeaponShieldInterface;
 use Stu\Orm\Entity\WeaponShield;
-use Doctrine\Common\Collections\ArrayCollection;
+use Stu\Orm\Entity\WeaponShieldInterface;
 
 /**
  * @extends ObjectRepository<WeaponShield>
@@ -20,10 +19,8 @@ interface WeaponShieldRepositoryInterface extends ObjectRepository
 
     public function delete(WeaponShieldInterface $weapon): void;
 
-    public function getByModuleAndWeapon(
-        int $moduleId,
-        int $weaponId
-    ): ?WeaponShieldInterface;
-
-    public function getFactionByModule($moduleid): ArrayCollection;
+    /**
+     * @return array<int>
+     */
+    public function getModificatorMinAndMax(): array;
 }

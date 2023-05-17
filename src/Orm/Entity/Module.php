@@ -390,7 +390,6 @@ class Module implements ModuleInterface
         return $this->torpedoHull;
     }
 
-
     public function getWeaponShield(): Collection
     {
         return $this->weaponShield;

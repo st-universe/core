@@ -21,6 +21,4 @@ interface TorpedoHullInterface
     public function getTorpedo(): TorpedoTypeInterface;
 
     public function getModule(): ModuleInterface;
-
-    public function calculateGradientColor(): string;
 }

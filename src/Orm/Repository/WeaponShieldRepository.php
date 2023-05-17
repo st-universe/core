@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\WeaponShieldInterface;
 use Stu\Orm\Entity\WeaponShield;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @extends EntityRepository<WeaponShield>
@@ -33,31 +32,22 @@ final class WeaponShieldRepository extends EntityRepository implements WeaponShi
         $em->remove($weaponshield);
     }
 
-    public function getByModuleAndWeapon(
-        int $moduleId,
-        int $weaponId
-    ): ?WeaponShieldInterface {
-        return $this->findOneBy([
-            'module_id' => $moduleId,
-            'weapon_id' => $weaponId
-        ]);
-    }
-
-    public function getFactionByModule($moduleid): ArrayCollection
+    public function getModificatorMinAndMax(): array
     {
-        $results = new ArrayCollection();
+        $min =  $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT min(ws.modificator) FROM %s ws',
+                WeaponShield::class
+            )
+        )->getSingleScalarResult();
 
-        for ($index = 1; $index <= 5; $index++) {
-            $result = $this->findBy([
-                'faction_id' => $index,
-                'module_id' => $moduleid
-            ]);
+        $max =  $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT max(ws.modificator) FROM %s ws',
+                WeaponShield::class
+            )
+        )->getSingleScalarResult();
 
-            if ($result) {
-                $results->add($result);
-            }
-        }
-
-        return $results;
+        return [$min, $max];
     }
 }

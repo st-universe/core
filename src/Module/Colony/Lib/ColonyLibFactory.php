@@ -15,6 +15,7 @@ use Stu\Component\Colony\Commodity\ColonyProductionSumReducerInterface;
 use Stu\Component\Colony\Shields\ColonyShieldingManager;
 use Stu\Component\Colony\Shields\ColonyShieldingManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -36,15 +37,12 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGeneratorInterface;
-use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private BuildingRepositoryInterface $buildingRepository;
-
-    private WeaponShieldRepositoryInterface $weaponShieldRepository;
 
     private ColonyRepositoryInterface $colonyRepository;
 
@@ -78,13 +76,14 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
+    private ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         ColonyRepositoryInterface $colonyRepository,
         CommodityConsumptionInterface $commodityConsumption,
         ShipRepositoryInterface $shipRepository,
-        WeaponShieldRepositoryInterface $weaponShieldRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ResearchedRepositoryInterface $researchedRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
@@ -97,11 +96,11 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
         CommodityRepositoryInterface $commodityRepository,
         ColonyFunctionManagerInterface $colonyFunctionManager,
+        ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
-        $this->weaponShieldRepository = $weaponShieldRepository;
         $this->colonyRepository = $colonyRepository;
         $this->commodityConsumption = $commodityConsumption;
         $this->shipRepository = $shipRepository;
@@ -118,6 +117,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
         $this->commodityRepository = $commodityRepository;
         $this->colonyFunctionManager = $colonyFunctionManager;
+        $this->moduleSelectorAddonFactory = $moduleSelectorAddonFactory;
     }
 
     public function createBuildingFunctionTal(
@@ -199,9 +199,11 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
     ): ModuleSelector {
+
+        $addon = $this->moduleSelectorAddonFactory->createModuleSelectorAddon($moduleType);
+
         return new ModuleSelector(
             $this->moduleRepository,
-            $this->weaponShieldRepository,
             $this->shipRumpModuleLevelRepository,
             $this->talPage,
             $moduleType,
@@ -209,6 +211,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $station,
             $rump,
             $userId,
+            $addon,
             $buildplan
         );
     }
@@ -223,7 +226,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     ): ModuleSelectorSpecial {
         return new ModuleSelectorSpecial(
             $this->moduleRepository,
-            $this->weaponShieldRepository,
             $this->shipRumpModuleLevelRepository,
             $this->talPage,
             $moduleType,
@@ -231,6 +233,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $station,
             $rump,
             $userId,
+            null,
             $buildplan
         );
     }

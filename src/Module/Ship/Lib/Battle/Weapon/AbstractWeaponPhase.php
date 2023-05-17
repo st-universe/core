@@ -15,6 +15,7 @@ use Stu\Module\Prestige\Lib\CreatePrestigeLogInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
@@ -104,5 +105,20 @@ abstract class AbstractWeaponPhase
             $userId,
             $description
         );
+    }
+
+    protected function getModule(ShipInterface $ship, int $moduleType): ?ModuleInterface
+    {
+        $buildplan = $ship->getBuildplan();
+        if ($buildplan === null) {
+            return null;
+        }
+
+        $buildplanModule = current($buildplan->getModulesByType($moduleType));
+        if (!$buildplanModule) {
+            return null;
+        }
+
+        return $buildplanModule->getModule();
     }
 }

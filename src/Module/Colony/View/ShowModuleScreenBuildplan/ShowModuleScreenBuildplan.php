@@ -58,7 +58,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
             false
         );
 
-        $plan = $this->shipBuildplanRepository->find(request::indInt('planid'), );
+        $plan = $this->shipBuildplanRepository->find(request::indInt('planid'));
         if ($plan === null || $plan->getUserId() !== $userId) {
             throw new SanityCheckException(sprintf('This buildplan belongs to someone else'), null, self::VIEW_IDENTIFIER);
         }
@@ -69,7 +69,6 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
             $moduleScreenTabs->register(new ModuleScreenTab($this->shipRumpModuleLevelRepository, $i, $colony, $rump, $plan));
         }
 
-        $myWrapper = new MyWrapper();
         $moduleSelectors = [];
         for ($i = 1; $i <= ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT; $i++) {
             if ($i == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
@@ -91,7 +90,6 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                     $plan,
                 );
             }
-            $myWrapper->register($moduleSelectors[$i]);
         }
 
         $game->appendNavigationPart(
@@ -122,7 +120,6 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $game->setTemplateVar('PLAN', $plan);
         $game->setTemplateVar('MODULE_SCREEN_TABS', $moduleScreenTabs);
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
-        $game->setTemplateVar('MY_WRAPPER', $myWrapper);
         $game->setTemplateVar('MODULE_SLOTS', range(1, ShipModuleTypeEnum::STANDARD_MODULE_TYPE_COUNT));
         $game->setTemplateVar('HAS_STORAGE', new ColonyStorageCommodityWrapper($colony->getStorage()));
         $game->setTemplateVar(
