@@ -100,7 +100,7 @@ Init::run(function (ContainerInterface $dic): void {
 
                 $crew_usage = $rump->getBaseCrew();
 
-                 ($moduleList as $moduleId) {
+                foreach ($moduleList as $moduleId) {
                     $module = $moduleRepo->find($moduleId);
 
                     if ($module->getLevel() > $rump->getModuleLevel()) {
@@ -119,7 +119,7 @@ Init::run(function (ContainerInterface $dic): void {
 
                 $moduleSpecialList = request::postArray('special_mod');
 
-                 ($moduleSpecialList as $moduleId) {
+                foreach ($moduleSpecialList as $moduleId) {
                     $module = $moduleRepo->find($moduleId);
                     $crew_usage += $module->getCrew();
 
@@ -145,7 +145,7 @@ Init::run(function (ContainerInterface $dic): void {
                 $userId
             );
 
-             ($moduleTypes as $moduleTypeId) {
+            foreach ($moduleTypes as $moduleTypeId) {
                 $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
                     $rump->getId()
                 );
@@ -171,7 +171,7 @@ Init::run(function (ContainerInterface $dic): void {
                     range($min_level, $max_level)
                 );
 
-                 ($modules as $module) {
+                foreach ($modules as $module) {
                     printf(
                         '<div>
                     <input type="radio" name="mod[%d]" value="%d" /> %s
@@ -187,7 +187,7 @@ Init::run(function (ContainerInterface $dic): void {
 
             $specialModules = $moduleRepo->getBySpecialTypeIds($specialModuleTypes);
 
-             ($specialModules as $module) {
+            foreach ($specialModules as $module) {
                 printf(
                     '<div>
                     <input type="checkbox" name="special_mod[%d]" value="%d" /> %s
@@ -204,7 +204,7 @@ Init::run(function (ContainerInterface $dic): void {
         }
     } else {
         if ($userId > 0) {
-             ($shipRumpRepo->getList() as $shipRump) {
+            foreach ($shipRumpRepo->getList() as $shipRump) {
                 printf(
                     '<div><a href="?rumpId=%d&userId=%d"><img src="/assets/ships/%s.png" /> %s</a></div>',
                     $shipRump->getId(),
@@ -214,14 +214,14 @@ Init::run(function (ContainerInterface $dic): void {
                 );
             }
         } else {
-             ($userRepo->getNpcList() as $user) {
+            foreach ($userRepo->getNpcList() as $user) {
                 printf(
                     '<a href="?userId=%d">%s</a><br />',
                     $user->getId(),
                     $user->getName()
                 );
             }
-             ($userRepo->getNonNpcList() as $user) {
+            foreach ($userRepo->getNonNpcList() as $user) {
                 printf(
                     '<a href="?userId=%d">%s</a><br />',
                     $user->getId(),
