@@ -19,8 +19,8 @@ interface TorpedoHullRepositoryInterface extends ObjectRepository
 
     public function delete(TorpedoHullInterface $torpedohull): void;
 
-    public function getByModuleAndTorpedo(
-        int $moduleId,
-        int $torpedoId
-    ): ?TorpedoHullInterface;
+    /**
+     * @return array<int>
+     */
+    public function getModificatorMinAndMax(): array;
 }

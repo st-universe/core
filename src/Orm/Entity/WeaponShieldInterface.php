@@ -18,13 +18,11 @@ interface WeaponShieldInterface
 
     public function setModificator(int $Modificator): WeaponShieldInterface;
 
-    public function getFactionId(): int;
+    public function getFactionId(): ?int;
 
     public function setFactionId(int $factionid): WeaponShieldInterface;
 
     public function getWeapon(): WeaponInterface;
 
     public function getModule(): ModuleInterface;
-
-    public function calculateGradientColor(): string;
 }

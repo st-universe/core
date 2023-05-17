@@ -135,7 +135,8 @@
                     <div id="module_type_${slot}" tal:condition="not:exists:PLAN/getModule/${slot}"
                       style="display: none;">
                     </div>
-                    <tal:block tal:condition="exists:PLAN/getModule/${slot}" tal:define="modSel MY_WRAPPER/${slot}">
+                    <tal:block tal:condition="exists:PLAN/getModule/${slot}"
+                      tal:define="modSel MODULE_SELECTORS/${slot}">
                       <div id="module_type_${slot}" tal:define="module PLAN/getModule/${slot}">
                         <metal:macro metal:use-macro="html/modulescreen.xhtml/moduleselector_stats_type_${slot}" />
                         <script type="text/Javascript" tal:condition="module">
@@ -240,25 +241,38 @@
     </table>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_1">
-    <img src="assets/buttons/modul_screen_1.png" tal:attributes="title module/getModule/getDescription" />
-    <span>Hüllenstärke</span>: <span
-      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseHull')">VALUE</span>
-    <tal:block tal:repeat="data module/getModule/getTorpedoHull">
-      <div style="display: table-cell; padding-left: 4px;">
-        <img src="assets/commodities/${data/getTorpedoType}.png"
-          style="border: 2px solid ${data/calculateGradientColor}" tal:attributes="title data/getTorpedo/getName" />
+    <div>
+      <div style="float: left;"><img src="assets/buttons/modul_screen_1.png"
+          tal:attributes="title module/getModule/getDescription" />
+        <span>Hüllenstärke</span>: <span
+          tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseHull')">VALUE</span>
       </div>
-    </tal:block>
+      <div style="float: left;">
+        <tal:block tal:repeat="data module/getModule/getTorpedoHull">
+          <div style="display: table-cell; padding-left: 4px;">
+            <img src="assets/commodities/${data/getTorpedoType}.png"
+              tal:define="color php:modSel.getAddon().calculateGradientColor(data.getModificator())"
+              style="border: 2px solid ${color}" tal:attributes="title data/getTorpedo/getName" />
+          </div>
+        </tal:block>
+      </div>
+    </div>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_2">
-    <img src="assets/buttons/modul_screen_2.png" tal:attributes="title module/getModule/getDescription" />
-    <span>Schildkapazität</span>: <span
-      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseShield')">VALUE</span>
-    <tal:block tal:repeat="data php:modSel.getFactionbyWeapon(module.getModule())">
-      <div style="display: table-cell; padding-left: 4px;">
-        <img src="assets/rassen/${data/getFactionId}s.png" style="border: 2px solid ${data/calculateGradientColor}" />
+    <div>
+      <div style="float: left;"><img src=" assets/buttons/modul_screen_2.png"
+          tal:attributes="title module/getModule/getDescription" />
+        <span>Schildkapazität</span>: <span
+          tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseShield')">VALUE</span>
       </div>
-    </tal:block>
+      <div style="float: left;">
+        <tal:block tal:repeat="data php:modSel.getAddon().getWeaponEffects(module.getModule())">
+          <div style="display: table-cell; padding-left: 4px;">
+            <img src="assets/rassen/${data/factionId}_s.png" style="border: 2px solid ${data/gradientColor}" />
+          </div>
+        </tal:block>
+      </div>
+    </div>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_3">
     <img src="assets/buttons/modul_screen_3.png" tal:attributes="title module/getModule/getDescription" />

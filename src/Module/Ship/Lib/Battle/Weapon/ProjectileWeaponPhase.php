@@ -202,17 +202,11 @@ final class ProjectileWeaponPhase extends AbstractWeaponPhase implements Project
         TorpedoTypeInterface $torpedo,
         DamageWrapper $damageWrapper
     ): void {
-        $targetBuildplan = $target->getBuildplan();
-        if ($targetBuildplan === null) {
+
+        $targetHullModule = $this->getModule($target, ShipModuleTypeEnum::MODULE_TYPE_HULL);
+        if ($targetHullModule === null) {
             return;
         }
-
-        $targetHullBuildplanModule = current($targetBuildplan->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_HULL));
-        if (!$targetHullBuildplanModule) {
-            return;
-        }
-
-        $targetHullModule = $targetHullBuildplanModule->getModule();
 
         /** @var TorpedoHullInterface|null */
         $torpedoHull = $targetHullModule->getTorpedoHull()->get($torpedo->getId());
