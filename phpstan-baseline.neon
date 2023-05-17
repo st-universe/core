@@ -292,26 +292,6 @@ parameters:
 			path: src/Lib/ModuleScreen/ModuleSelectWrapper.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\MyWrapper\\:\\:__get\\(\\) has parameter \\$moduleType with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/MyWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\MyWrapper\\:\\:register\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/MyWrapper.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ModuleScreen\\\\MyWrapper\\:\\:register\\(\\) has parameter \\$modSel with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/MyWrapper.php
-
-		-
-			message: "#^Property Stu\\\\Lib\\\\ModuleScreen\\\\MyWrapper\\:\\:\\$modSels has no type specified\\.$#"
-			count: 1
-			path: src/Lib/ModuleScreen/MyWrapper.php
-
-		-
 			message: "#^Method NavPanel\\:\\:getDown\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Lib/NavPanel.php
