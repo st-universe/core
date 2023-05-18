@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Starmap\Lib\StarmapUiFactoryInterface;
 use Stu\Module\Starmap\View\RefreshSection\RefreshSection;
+use Stu\Orm\Entity\LayerInterface;
 use Stu\Orm\Repository\LayerRepositoryInterface;
 
 final class ShowSection implements ViewControllerInterface
@@ -37,13 +38,17 @@ final class ShowSection implements ViewControllerInterface
         $layerId = $this->showSectionRequest->getLayerId();
         $layer = $this->layerRepository->find($layerId);
 
+        if (!$layer instanceof LayerInterface) {
+            throw new SanityCheckException('Invalid layer');
+        }
+
         $xCoordinate = $this->showSectionRequest->getXCoordinate($layer);
         $yCoordinate = $this->showSectionRequest->getYCoordinate($layer);
         $sectionId = $this->showSectionRequest->getSectionId();
 
-        //sanity check if user knows layer
+        // Sanity check if user knows layer
         if (!$game->getUser()->hasSeen($layer->getId())) {
-            throw new SanityCheckException('user tried to access unseen layer');
+            throw new SanityCheckException('User tried to access an unseen layer');
         }
 
         $game->setTemplateFile('html/starmap_section.xhtml');
