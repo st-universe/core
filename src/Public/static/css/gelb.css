@@ -437,6 +437,12 @@ div.lssobj {
   transform: translate(-50%, -50%);
 }
 
+.indexedGraphics {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .lssColoShield {
   position: absolute;
   top: 0;
@@ -526,6 +532,7 @@ td.shipimage {
 
 td.shiplistshipimage {
   background-color: #000000 ! important;
+  overflow: hidden;
 }
 
 td.nbsshipimage {
