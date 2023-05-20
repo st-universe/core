@@ -399,7 +399,7 @@
 <metal:macro metal:define-macro="shipimage">
   <tal:block tal:condition="ship/isTrumfield">
     <img src="assets/ships/wrack/${ship/getFormerRumpId}.png" tal:attributes="title ship/getRumpName"
-      onload="adjustCellHeight(this); adjustCellWidth(this);" />
+      onload="adjustCellHeight(this);" />
   </tal:block>
   <tal:block tal:condition="not:ship/isTrumfield">
     <tal:block tal:condition="ship/getWarpState">
@@ -408,10 +408,9 @@
       <img src="assets/buttons/warp_3.png" class="indexedGraphics" style="z-index: 3;" />
       <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png"
         class="indexedGraphicsShips" style="opacity:0.55; z-index: 4;" tal:attributes="title ship/getRumpName"
-        onload="adjustCellHeight(this); adjustCellWidth(this);" />
+        onload="adjustCellHeight(this);" />
       <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png" class="indexedGraphicsShips"
-        style="z-index: 4;" tal:attributes="title ship/getRumpName"
-        onload="adjustCellHeight(this); adjustCellWidth(this);" />
+        style="z-index: 4;" tal:attributes="title ship/getRumpName" onload="adjustCellHeight(this);" />
       <img src="assets/buttons/warp_4.png" class="indexedGraphics" style="z-index: 5;" />
     </tal:block>
     <tal:block tal:condition="not:ship/getWarpState">
@@ -419,10 +418,9 @@
       <img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
       <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png"
         class="indexedGraphicsShips" style="opacity:0.55; z-index: 3;" tal:attributes="title ship/getRumpName"
-        onload="adjustCellHeight(this); adjustCellWidth(this);" />
+        onload="adjustCellHeight(this);" />
       <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png" class="indexedGraphicsShips"
-        style="z-index: 3;" tal:attributes="title ship/getRumpName"
-        onload="adjustCellHeight(this); adjustCellWidth(this);" />
+        style="z-index: 3;" tal:attributes="title ship/getRumpName" onload="adjustCellHeight(this);" />
     </tal:block>
   </tal:block>
 </metal:macro>
