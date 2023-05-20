@@ -436,7 +436,6 @@
     <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
       tal:attributes="title ship/getRumpName" />
   </tal:block>
-  </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shipimagenameastitle">
   <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
