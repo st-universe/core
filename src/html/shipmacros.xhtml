@@ -426,6 +426,18 @@
     </tal:block>
   </tal:block>
 </metal:macro>
+<metal:macro metal:define-macro="shipimagewithoutwarp">
+  <tal:block tal:condition="ship/isTrumfield">
+    <img src="assets/ships/wrack/${ship/getFormerRumpId}.png" tal:attributes="title ship/getRumpName" />
+  </tal:block>
+  <tal:block tal:condition="not:ship/isTrumfield">
+    <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
+      tal:attributes="title ship/getRumpName" />
+    <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+      tal:attributes="title ship/getRumpName" />
+  </tal:block>
+  </tal:block>
+</metal:macro>
 <metal:macro metal:define-macro="shipimagenameastitle">
   <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
     tal:attributes="title bbcode2txt:ship/getName" />
@@ -584,7 +596,7 @@
   <tal:block tal:condition="ship/isOwnedByCurrentUser">
     <td tal:attributes="style ship/getHoldingWebBackgroundStyle" class="nbsshipimage">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-        <metal:macro metal:use-macro="shipimage" />
+        <metal:macro metal:use-macro="shipimagewithoutwarp" />
       </a>
     </td>
     <td><img tal:condition="ship/hasLogBook" src="assets/buttons/log.png" title="Logbuch verfügbar" /></td>
@@ -594,7 +606,7 @@
   </tal:block>
   <tal:block tal:condition="not:ship/isOwnedByCurrentUser">
     <td tal:attributes="style ship/getHoldingWebBackgroundStyle" class="nbsshipimage">
-      <metal:macro metal:use-macro="shipimage" />
+      <metal:macro metal:use-macro="shipimagewithoutwarp" />
     </td>
     <td><img tal:condition="ship/hasLogBook" src="assets/buttons/log.png" title="Logbuch verfügbar" /></td>
     <td>
