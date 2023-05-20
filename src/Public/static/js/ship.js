@@ -355,11 +355,11 @@ function maximizeCommodityAmounts() {
 }
 function adjustCellHeight(image) {
 	var cell = image.parentNode.parentNode;
-	var height = image.offsetHeight + 10;
-	cell.style.height = height + 'px';
+	var height = image.offsetHeight;
+	cell.style.height = height + 10 + 'px';
 }
 function adjustCellWidth(image) {
 	var cell = image.parentNode.parentNode;
-	var width = image.offsetWidth + 10;
-	cell.style.width = width + 'px';
+	var width = image.offsetWidth;
+	cell.style.width = width + 10 + 'px';
 }
