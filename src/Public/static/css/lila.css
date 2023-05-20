@@ -444,8 +444,9 @@ div.lssobj {
 
 .indexedGraphicsShips {
   position: absolute;
-  top: 5;
+  top: 50%;
 }
+
 
 .lssColoShield {
   position: absolute;
