@@ -1478,7 +1478,7 @@ class Ship implements ShipInterface
     public function getHoldingWebBackgroundStyle(): string
     {
         if ($this->getHoldingWeb() === null) {
-            return sprintf('background-image: url(assets/buttons/warp_1.png); vertical-align: middle; text-align: center;');
+            return sprintf('');
         }
 
         if ($this->getHoldingWeb()->isFinished()) {
