@@ -213,6 +213,7 @@
         <metal:macro metal:use-macro="shipimage" />
       </a>
     </td>
+    <script onload="adjustCellHeights()"></script>
     <td>
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
         <img tal:condition="ship/getDockedTo" src="assets/buttons/dock2.png" title="Schiff ist angedockt"
