@@ -353,20 +353,8 @@ function maximizeCommodityAmounts() {
 		list[n].value = 'max';
 	}
 }
-function adjustCellHeight(element) {
-	var cell = element.parentNode;
-	var images = cell.getElementsByTagName('img');
-	var maxHeight = 0;
-	for (var i = 0; i < images.length; i++) {
-		if (images[i].src.includes(`assets/ships/`) && images[i].offsetHeight > maxHeight) {
-			maxHeight = images[i].offsetHeight;
-		}
-	}
-	cell.style.height = maxHeight + 'px';
-}
-
-var shipCells = document.querySelectorAll('.shiplistshipimage');
-for (var i = 0; i < shipCells.length; i++) {
-	var cell = shipCells[i];
-	adjustCellHeight(cell);
+function adjustCellHeight(image) {
+	var cell = image.parentNode.parentNode;
+	var height = image.offsetHeight;
+	cell.style.height = height + 'px';
 }
