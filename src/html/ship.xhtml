@@ -1075,7 +1075,7 @@
 						<img src="assets/buttons/phaser1.png" name="attacktracked" />
 					</a>
 					<metal:macro tal:define="ship targetwrapper/get"
-						metal:use-macro="html/shipmacros.xhtml/shipimage" />
+						metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" />
 				</td>
 				<td>
 					${targetwrapper/get/getSectorString}
@@ -1318,7 +1318,7 @@
 							<td tal:attributes="style SHIP/getHoldingWebBackgroundStyle" rowspan="2"
 								tal:define="ship SHIP" class="shipimage">
 								<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);">
-									<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+									<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" />
 								</a>
 							</td>
 							<td style="text-align: center;">
