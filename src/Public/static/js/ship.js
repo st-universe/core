@@ -356,5 +356,5 @@ function maximizeCommodityAmounts() {
 function adjustCellHeight(image) {
 	var cell = image.parentNode.parentNode;
 	var height = image.offsetHeight;
-	cell.style.height = height + 10 + 'px';
+	cell.style.height = height + 'px';
 }
