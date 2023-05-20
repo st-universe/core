@@ -207,8 +207,7 @@
 <metal:macro metal:define-macro="shiplist_body">
   <tr tal:define="ship wrapper/get; epssystem wrapper/getEpsSystemData;"
     tal:attributes="class string:row${repeat/wrapper/odd}">
-    <td tal:attributes="style string:height:${shipimage/getImageHeight}px; ${ship/getHoldingWebBackgroundStyle}"
-      class="shiplistshipimage">
+    <td tal:attributes="style string:height:1px; ${ship/getHoldingWebBackgroundStyle}" class="shiplistshipimage">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" class="imgOverlayText"
         onmouseover="openStorageInit(this, ${ship/getId});" onmouseout="closeStorage();">
         <metal:macro metal:use-macro="shipimage" />
