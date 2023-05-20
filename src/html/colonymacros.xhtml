@@ -754,7 +754,7 @@
               src="/assets/buttons/dock1.png" title="abdocken" /></a>
         </td>
         <td style="width: 120px; vertical-align: middle;">
-          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" tal:define="ship data" />
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" tal:define="ship data" />
         </td>
         <td style="width: 150px;">
           <table class="tcal">
@@ -1896,7 +1896,8 @@
           <table style="width: 100%; height: 100%;">
             <tr>
               <td style="text-align: center;">
-                <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" tal:define="ship targetShip" />
+                <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp"
+                  tal:define="ship targetShip" />
               </td>
             </tr>
             <tr>
@@ -1961,7 +1962,8 @@
           <table style="width: 100%; height: 100%;">
             <tr>
               <td style="text-align: center;">
-                <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" tal:define="ship targetShip" />
+                <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp"
+                  tal:define="ship targetShip" />
               </td>
             </tr>
             <tr>

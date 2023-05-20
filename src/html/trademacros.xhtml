@@ -14,7 +14,7 @@
 		<metal:macro metal:define-macro="tradepostdetails">
 			<tr tal:define="ship TRADE_POST_INFO/getShip">
 				<td rowspan="5">
-					<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+					<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" />
 				</td>
 				<th>Standort</th>
 				<td>${ship/getCX}|${ship/getCY}</td>
@@ -85,7 +85,7 @@
 		</table>
 	</div>
 </metal:macro>
-<metal:macro metal:define-macro="tradeoffermenu"> 
+<metal:macro metal:define-macro="tradeoffermenu">
 	<br />
 	<div style="width: 400px;">
 		<table class="tcal">

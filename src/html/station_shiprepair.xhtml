@@ -19,7 +19,7 @@
 					<tr tal:define="ship wrapper/get" tal:attributes="class string:row${repeat/wrapper/odd}">
 						<td>
 							<input type="hidden" name="ships[]" tal:attributes="value ship/getId" />
-							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" />
 						</td>
 						<td tal:content="structure bbcode:ship/getName">NAME</td>
 						<td tal:content="structure bbcode:wrapper/getRepairDuration">DURATION</td>
