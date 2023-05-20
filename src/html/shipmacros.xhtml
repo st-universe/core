@@ -404,19 +404,19 @@
       <img src="assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
       <img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
       <img src="assets/buttons/warp_3.png" class="indexedGraphics" style="z-index: 3;" />
-      <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" class="indexedGraphics"
-        style="opacity:0.55; z-index: 4; top: 50% !important" tal:attributes="title ship/getRumpName" />
-      <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png" class="indexedGraphics"
-        style="z-index: 4; top: 50% !important" tal:attributes="title ship/getRumpName" />
+      <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png"
+        class="indexedGraphicsShips" style="opacity:0.55; z-index: 4;" tal:attributes="title ship/getRumpName" />
+      <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png" class="indexedGraphicsShips"
+        style="z-index: 4;" tal:attributes="title ship/getRumpName" />
       <img src="assets/buttons/warp_4.png" class="indexedGraphics" style="z-index: 5;" />
     </tal:block>
     <tal:block tal:condition="not:ship/getWarpState">
       <img src="assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
       <img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
-      <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" class="indexedGraphics"
-        style="opacity:0.55; z-index: 3; top: 50% !important" tal:attributes="title ship/getRumpName" />
-      <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png" class="indexedGraphics"
-        style="z-index: 3; top: 50% !important" tal:attributes="title ship/getRumpName" />
+      <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png"
+        class="indexedGraphicsShips" style="opacity:0.55; z-index: 3;" tal:attributes="title ship/getRumpName" />
+      <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png" class="indexedGraphicsShips"
+        style="z-index: 3;" tal:attributes="title ship/getRumpName" />
     </tal:block>
   </tal:block>
 </metal:macro>
