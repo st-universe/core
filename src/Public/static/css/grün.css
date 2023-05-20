@@ -449,6 +449,13 @@ div.lssobj {
   z-index: 1;
 }
 
+.indexedGraphicsShips {
+  position: absolute;
+  top: 0;
+  left: 0;
+  vertical-align: middle !important;
+}
+
 .lssSubspaceOverShield {
   position: absolute;
   top: 0;
