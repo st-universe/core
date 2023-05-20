@@ -1029,7 +1029,7 @@
     <table class="tcal" id="availableShipsTable">
       <tr tal:repeat="ship AVAILABLE_SHIPS">
         <td tal:attributes="style ship/getHoldingWebBackgroundStyle" class="shiplistshipimage">
-          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" />
         </td>
         <td><input type="checkbox" class="chosenShipsCheckbox" name="chosen[]" value="${ship/getId}" /><span
             tal:content="structure bbcode:ship/getName">NAME</span></td>

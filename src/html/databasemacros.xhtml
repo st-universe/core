@@ -178,7 +178,7 @@
       <td tal:content="storageWrapper/getAmount">AMOUNT</td>
       <td tal:define="ship storageWrapper/getShip">
         <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" /><span
             tal:replace="structure bbcode:ship/getName">NAME</span>
         </a>
       </td>
@@ -193,7 +193,7 @@
       <td tal:content="storageWrapper/getAmount">AMOUNT</td>
       <td tal:define="ship storageWrapper/getShip">
         <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" /><span
             tal:replace="structure bbcode:ship/getName">NAME</span>
         </a>
       </td>
@@ -209,7 +209,7 @@
         <td tal:content="storageWrapper/getAmount">AMOUNT</td>
         <td tal:define="ship storageWrapper/getTradepost/getShip">
           <a href="trade.php?SHOW_ACCOUNTS=1">
-            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span
+            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" /><span
               tal:replace="structure bbcode:ship/getName">NAME</span>
           </a>
         </td>
@@ -224,7 +224,7 @@
         <td tal:content="storageWrapper/getAmount">AMOUNT</td>
         <td tal:define="ship storageWrapper/getTradepost/getShip">
           <a href="trade.php?SHOW_ACCOUNTS=1">
-            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span
+            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimagewithoutwarp" /><span
               tal:replace="structure bbcode:ship/getName">NAME</span>
           </a>
         </td>
