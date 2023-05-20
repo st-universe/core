@@ -450,9 +450,8 @@ div.lssobj {
 }
 
 .indexedGraphicsShips {
-  position: relative;
+  position: absolute;
   top: 50%;
-  transform: translateY(-50%);
 }
 
 .lssSubspaceOverShield {
