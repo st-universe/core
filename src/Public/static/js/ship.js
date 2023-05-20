@@ -353,3 +353,8 @@ function maximizeCommodityAmounts() {
 		list[n].value = 'max';
 	}
 }
+function adjustCellHeight(img) {
+	var cell = img.parentNode;
+	var fourthImageHeight = img.offsetHeight;
+	cell.style.minHeight = fourthImageHeight + 'px';
+}
