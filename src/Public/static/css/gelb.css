@@ -533,6 +533,7 @@ td.shipimage {
 td.shiplistshipimage {
   background-color: #000000 ! important;
   overflow: hidden;
+  Vertical-align: top;
 }
 
 td.nbsshipimage {
