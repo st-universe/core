@@ -447,6 +447,8 @@ div.lssobj {
 
 .indexedGraphicsShips {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 

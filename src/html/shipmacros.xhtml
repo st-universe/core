@@ -415,14 +415,36 @@
       <img src="assets/buttons/warp_4.png" class="indexedGraphics" style="z-index: 5;" />
     </tal:block>
     <tal:block tal:condition="not:ship/getWarpState">
-      <img src="assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
-      <img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
-      <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png"
-        class="indexedGraphicsShips" style="opacity:0.55; z-index: 3;" tal:attributes="title ship/getRumpName"
-        onload="adjustCellHeight(this); adjustCellWidth(this);" />
-      <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png" class="indexedGraphicsShips"
-        style="z-index: 3;" tal:attributes="title ship/getRumpName"
-        onload="adjustCellHeight(this); adjustCellWidth(this);" />
+      <tal:block tal:condition="ship/getDockedTo">
+        <img src="assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+        <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png"
+          class="indexedGraphicsShips" style="opacity:0.55; z-index: 3;" tal:attributes="title ship/getRumpName"
+          onload="adjustCellHeight(this); adjustCellWidth(this);" />
+        <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+          class="indexedGraphicsShips" style="z-index: 3;" tal:attributes="title ship/getRumpName"
+          onload="adjustCellHeight(this); adjustCellWidth(this);" />
+      </tal:block>
+      <tal:block tal:condition="not:ship/getDockedTo">
+        <tal:block tal:condition="ship/isBase">
+          <img src="assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+          <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png"
+            class="indexedGraphicsShips" style="opacity:0.55; z-index: 3;" tal:attributes="title ship/getRumpName"
+            onload="adjustCellHeight(this); adjustCellWidth(this);" />
+          <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+            class="indexedGraphicsShips" style="z-index: 3;" tal:attributes="title ship/getRumpName"
+            onload="adjustCellHeight(this); adjustCellWidth(this);" />
+        </tal:block>
+        <tal:block tal:condition="not:ship/isBase">
+          <img src="assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
+          <img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
+          <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png"
+            class="indexedGraphicsShips" style="opacity:0.55; z-index: 3;" tal:attributes="title ship/getRumpName"
+            onload="adjustCellHeight(this); adjustCellWidth(this);" />
+          <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+            class="indexedGraphicsShips" style="z-index: 3;" tal:attributes="title ship/getRumpName"
+            onload="adjustCellHeight(this); adjustCellWidth(this);" />
+        </tal:block>
+      </tal:block>
     </tal:block>
   </tal:block>
 </metal:macro>
