@@ -6,6 +6,8 @@ namespace Stu\Lib;
 
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
+use Stu\Lib\ModuleScreen\GradientColor;
+use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Lib\ShipManagement\HandleManagers;
 use Stu\Lib\ShipManagement\HandleManagersInterface;
 use Stu\Lib\ShipManagement\Manager\ManageBattery;
@@ -23,6 +25,7 @@ return [
     UuidGeneratorInterface::class => autowire(UuidGenerator::class),
     ManagerProviderFactoryInterface::class => autowire(ManagerProviderFactory::class),
     ModuleSelectorAddonFactoryInterface::class => autowire(ModuleSelectorAddonFactory::class),
+    GradientColorInterface::class => autowire(GradientColor::class),
     HandleManagersInterface::class => create(HandleManagers::class)->constructor(
         [
             autowire(ManageBattery::class),
