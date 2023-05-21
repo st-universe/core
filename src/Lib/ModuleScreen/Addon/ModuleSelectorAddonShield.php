@@ -2,19 +2,26 @@
 
 namespace Stu\Lib\ModuleScreen\Addon;
 
-use Stu\Lib\ModuleScreen\GradientColor;
+use Stu\Lib\ModuleScreen\GradientColorInterface;
 use Stu\Lib\ModuleScreen\ModuleSelectorAddonInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 
-//TODO unit tests
 final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
 {
     private WeaponShieldRepositoryInterface $weaponShieldRepository;
 
-    public function __construct(WeaponShieldRepositoryInterface $weaponShieldRepository)
-    {
+    private GradientColorInterface $gradientColor;
+
+    /** @var array<int> */
+    private ?array $interval = null;
+
+    public function __construct(
+        WeaponShieldRepositoryInterface $weaponShieldRepository,
+        GradientColorInterface $gradientColor
+    ) {
         $this->weaponShieldRepository = $weaponShieldRepository;
+        $this->gradientColor = $gradientColor;
     }
 
     /**
@@ -41,7 +48,11 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
 
         $result = [];
 
-        [$lowest, $highest] = $this->weaponShieldRepository->getModificatorMinAndMax();
+        if ($this->interval === null) {
+            $this->interval = $this->weaponShieldRepository->getModificatorMinAndMax();
+        }
+
+        [$lowest, $highest] = $this->interval;
 
         foreach ($modificatorsPerFaction as $factionId => $modificators) {
 
@@ -51,7 +62,7 @@ final class ModuleSelectorAddonShield implements ModuleSelectorAddonInterface
                 $sum += $modificator;
             }
 
-            $gradientColor = GradientColor::calculateGradientColor((int)round($sum / count($modificators)), $lowest, $highest);
+            $gradientColor = $this->gradientColor->calculateGradientColor((int)round($sum / count($modificators)), $lowest, $highest);
 
             $result[] = ['factionId' => $factionId, 'gradientColor' => $gradientColor];
         }

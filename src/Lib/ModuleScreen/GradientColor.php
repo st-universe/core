@@ -2,10 +2,9 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-
-final class GradientColor
+final class GradientColor implements GradientColorInterface
 {
-    public static function calculateGradientColor(int $modificator, int $lowestValue, int $highestValue): string
+    public function calculateGradientColor(int $modificator, int $lowestValue, int $highestValue): string
     {
         $color1 = '#00ff00';
         $color2 = '#ffd500';
