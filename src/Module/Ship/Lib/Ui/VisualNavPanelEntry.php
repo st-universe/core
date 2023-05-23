@@ -35,6 +35,7 @@ class VisualNavPanelEntry
      *     factioncolor: string,
      *     shieldstate: null|bool,
      *     type: int,
+     *    layer: int,
      *     d1c?: int,
      *     d2c?: int,
      *     d3c?: int,
@@ -67,6 +68,7 @@ class VisualNavPanelEntry
      *     factioncolor: string,
      *     shieldstate: null|bool,
      *     type: int,
+     *     layer: int,
      *     d1c?: int,
      *     d2c?: int,
      *     d3c?: int,
@@ -106,6 +108,11 @@ class VisualNavPanelEntry
     public function getMapfieldType(): int
     {
         return $this->data['type'];
+    }
+
+    public function getLayer(): int
+    {
+        return $this->data['layer'];
     }
 
     public function getShipCount(): int
@@ -180,7 +187,7 @@ class VisualNavPanelEntry
 
     public function getCacheValue(): string
     {
-        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount() . "_" . $this->isClickAble() . "_" . $this->getBorder();
+        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getLayer() . "_" . $this->getDisplayCount() . "_" . $this->isClickAble() . "_" . $this->getBorder();
     }
 
     public function isCurrentShipPosition(): bool

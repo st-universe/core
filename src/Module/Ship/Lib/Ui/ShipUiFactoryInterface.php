@@ -34,6 +34,7 @@ interface ShipUiFactoryInterface
      *     usercolor: string,
      *     factioncolor: string,
      *     type: int,
+     *     layer: int,
      *     d1c?: int,
      *     d2c?: int,
      *     d3c?: int,

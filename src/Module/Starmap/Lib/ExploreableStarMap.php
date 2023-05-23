@@ -31,6 +31,9 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     private ?int $field_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
+    private ?int $layer_id = 0;
+
+    /** @Column(type="integer", nullable=true) * */
     private ?int $bordertype_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
@@ -93,6 +96,11 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     public function getFieldId(): int
     {
         return $this->field_id;
+    }
+
+    public function getLayer(): ?int
+    {
+        return $this->layer_id;
     }
 
     public function getBordertypeId(): ?int

@@ -68,7 +68,7 @@
 						<tal:block tal:condition="entry/isClickable">
 							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
 								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
-								<img src="assets/map/${entry/getMapfieldType}.png"
+								<img src="assets/map/${entry/getLayer}/${entry/getMapfieldType}.png"
 									style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"
@@ -89,7 +89,7 @@
 						</tal:block>
 						<tal:block tal:condition="not:entry/isClickable">
 							<div class="imgOverlayText">
-								<img src="assets/map/${entry/getMapfieldType}.png"
+								<img src="assets/map/${entry/getLayer}/${entry/getMapfieldType}.png"
 									style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"

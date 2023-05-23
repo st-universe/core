@@ -30,6 +30,11 @@ class SignaturePanelEntry
         return $this->data['type'];
     }
 
+    public function getLayer(): int
+    {
+        return $this->data['layer'];
+    }
+
     public function getShipCount(): int
     {
         return $this->data['shipcount'];
@@ -79,7 +84,7 @@ class SignaturePanelEntry
 
     public function getCacheValue(): string
     {
-        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount();
+        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getLayer() . "_" . $this->getDisplayCount();
     }
 
     public $currentShipPosX = null;

@@ -149,12 +149,13 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $rsm->addFieldResult('m', 'region_id', 'region_id');
         $rsm->addFieldResult('m', 'tradepost_id', 'tradepost_id');
         $rsm->addFieldResult('m', 'region_description', 'region_description');
+        $rsm->addFieldResult('m', 'layer_id', 'layer_id');
 
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id,
                     dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
-                    sys.name as system_name,
+                    sys.name as system_name, m.layer_id,
                     (SELECT tp.id FROM stu_ships s JOIN stu_trade_posts tp ON s.id = tp.ship_id WHERE s.map_id = m.id) as tradepost_id,
                     (SELECT mr.description FROM stu_map_regions mr left join stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id where m.region_id = mr.id) as region_description
                 FROM stu_map m
