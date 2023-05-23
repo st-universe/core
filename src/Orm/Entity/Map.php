@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Stu\Component\Map\MapEnum;
+use Stu\Lib\SectorString;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\MapRepository")
@@ -355,6 +356,6 @@ class Map implements MapInterface
 
     public function getSectorString(): string
     {
-        return  $this->getCx() . '|' . $this->getCy();
+        return SectorString::getForMap($this);
     }
 }

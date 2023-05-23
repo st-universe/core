@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Control;
 
+use Stu\Module\Control\Render\Fragments\ColonyFragment;
+use Stu\Module\Control\Render\Fragments\MessageFolderFragment;
+use Stu\Module\Control\Render\Fragments\ResearchFragment;
 use Stu\Module\Control\Render\GameTalRenderer;
 use Stu\Module\Control\Render\GameTalRendererInterface;
 
@@ -18,9 +21,9 @@ return [
         ->constructorParameter(
             'renderFragments',
             [
-                autowire(Render\Fragments\ResearchFragment::class),
-                autowire(Render\Fragments\MessageFolderFragment::class),
-                autowire(Render\Fragments\ColonyFragment::class),
+                autowire(ResearchFragment::class),
+                autowire(MessageFolderFragment::class),
+                autowire(ColonyFragment::class),
             ]
         ),
 ];
