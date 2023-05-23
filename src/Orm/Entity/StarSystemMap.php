@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Stu\Component\Map\MapEnum;
+use Stu\Lib\SectorString;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\StarSystemMapRepository")
@@ -230,12 +231,6 @@ class StarSystemMap implements StarSystemMapInterface
 
     public function getSectorString(): string
     {
-        return sprintf(
-            '%d|%d (%s-%s)',
-            $this->getSx(),
-            $this->getSy(),
-            $this->getSystem()->getName(),
-            $this->getSystem()->isWormhole() ? 'Wurmloch' : 'System'
-        );
+        return SectorString::getForStarSystemMap($this);
     }
 }

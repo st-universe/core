@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyClass;
@@ -154,6 +155,37 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             ->setParameters([
                 'userId' => UserEnum::USER_NOONE,
             ])
+            ->getResult();
+    }
+
+    public function getColonyListForRenderFragment(UserInterface $user): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('colonyid', 'colonyid', 'integer');
+        $rsm->addScalarResult('classid', 'classid', 'integer');
+        $rsm->addScalarResult('type', 'type', 'integer');
+        $rsm->addScalarResult('nameandsector', 'nameandsector', 'string');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                sprintf('SELECT c.id AS colonyid, cc.id AS classid, cc.type AS type,
+                            concat(c.name, \' \', sm.sx, \'|\', sm.sy, \' (\', s.name, \'-\',
+                                    CASE WHEN s.is_wormhole
+                                        THEN \'Wurmloch\'
+                                        ELSE \'System\'
+                                    END, \')\') as nameandsector
+                        FROM stu_colonies c
+                        JOIN stu_colonies_classes cc
+                            ON c.colonies_classes_id = cc.id
+                        JOIN stu_sys_map sm
+                            ON c.starsystem_map_id = sm.id
+                        JOIN stu_systems s
+                            ON sm.systems_id = s.id
+                        WHERE c.user_id = :userId
+                        ORDER BY cc.id ASC, c.id ASC'),
+                $rsm
+            )
+            ->setParameter('userId', $user->getId())
             ->getResult();
     }
 }
