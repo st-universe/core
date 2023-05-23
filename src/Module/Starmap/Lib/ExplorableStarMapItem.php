@@ -45,6 +45,11 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
         return $this->exploreableStarMap->getFieldId();
     }
 
+    public function getLayer(): ?int
+    {
+        return $this->exploreableStarMap->getLayer();
+    }
+
     public function getTitle(): ?string
     {
         if ($this->hide === true) {
@@ -161,11 +166,13 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
     {
         if ($this->hide === true) {
             $type = 0;
+            $layer = '';
         } else {
             $type = $this->getFieldId();
+            $layer = $this->getLayer();
         }
 
-        $style = "background-image: url('assets/map/" . $type . ".png');";
+        $style = "background-image: url('assets/map/" . $layer . "/" . $type . ".png');";
         $style .= $this->getBorder();
         return $style;
     }

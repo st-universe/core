@@ -12,6 +12,8 @@ interface ExplorableStarMapItemInterface
 
     public function getFieldId(): int;
 
+    public function getLayer(): ?int;
+
     public function getTitle(): ?string;
 
     public function getIcon(): ?string;

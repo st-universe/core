@@ -506,6 +506,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
         $rsm->addScalarResult('type', 'type', 'integer');
+        $rsm->addScalarResult('layer', 'layer', 'integer');
 
         if ($doSubspace) {
             $rsm->addScalarResult('d1c', 'd1c', 'integer');
@@ -518,7 +519,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.sx as posx, a.sy AS posy, a.systems_id AS sysid, d.type,
+                'SELECT a.id, a.sx as posx, a.sy AS posy, a.systems_id AS sysid, d.type,  a.layer_id AS layer,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
                     WHERE a.id = b.starsystem_map_id
                     AND NOT EXISTS (SELECT ss.id
@@ -596,6 +597,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('allycolor', 'allycolor');
         $rsm->addScalarResult('usercolor', 'usercolor');
         $rsm->addScalarResult('factioncolor', 'factioncolor');
+        $rsm->addScalarResult('layer', 'layer', 'integer');
 
         if ($doSubspace) {
             $rsm->addScalarResult('d1c', 'd1c', 'integer');
@@ -609,7 +611,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         //TODO increase performance of allycolor/usercolor/factioncolor calculation
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.cx AS posx,a.cy AS posy, d.type,
+                'SELECT a.id, a.cx AS posx,a.cy AS posy, d.type, a.layer_id AS layer,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
                     WHERE b.cx = a.cx AND b.cy = a.cy AND b.layer_id = a.layer_id
                     AND NOT EXISTS (SELECT ss.id
@@ -688,6 +690,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('posy', 'posy', 'integer');
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('type', 'type', 'integer');
+        $rsm->addScalarResult('layer', 'layer', 'integer');
 
         $rsm->addScalarResult('d1c', 'd1c', 'integer');
         $rsm->addScalarResult('d2c', 'd2c', 'integer');
@@ -696,7 +699,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type, a.layer_id AS layer,
                     (SELECT count(distinct b.id)
                         FROM stu_ships b
                         WHERE b.cx = a.cx AND b.cy = a.cy AND b.layer_id = a.layer_id
@@ -754,6 +757,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('posy', 'posy', 'integer');
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('type', 'type', 'integer');
+        $rsm->addScalarResult('layer', 'layer', 'integer');
 
         $rsm->addScalarResult('d1c', 'd1c', 'integer');
         $rsm->addScalarResult('d2c', 'd2c', 'integer');
@@ -762,7 +766,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type, a.layer_id AS layer,
                     (SELECT count(distinct b.id)
                         FROM stu_ships b
                         JOIN stu_user u ON b.user_id = u.id
