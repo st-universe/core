@@ -29,7 +29,8 @@ use Stu\Lib\SectorString;
  *         @Index(name="coordinates_idx", columns={"cx", "cy"}),
  *         @Index(name="coordinates_reverse_idx", columns={"cy", "cx"}),
  *         @Index(name="map_field_type_idx", columns={"field_id"}),
- *         @Index(name="map_layer_idx", columns={"layer_id"})
+ *         @Index(name="map_layer_idx", columns={"layer_id"}),
+ *         @Index(name="map_system_idx", columns={"systems_id"})
  *     },
  *     uniqueConstraints={
  *         @UniqueConstraint(name="map_coordinate_idx", columns={"layer_id", "cx", "cy"})
