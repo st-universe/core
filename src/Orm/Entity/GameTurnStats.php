@@ -15,7 +15,10 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\GameTurnStatsRepository")
  * @Table(
- *     name="stu_game_turn_stats"
+ *     name="stu_game_turn_stats",
+ *     indexes={
+ *         @Index(name="game_turn_stats_turn_idx", columns={"turn_id"})
+ *     }
  * )
  **/
 class GameTurnStats implements GameTurnStatsInterface
