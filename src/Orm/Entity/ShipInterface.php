@@ -366,6 +366,8 @@ interface ShipInterface
      */
     public function getCurrentMapField();
 
+    public function getCurrentMapFieldLayer();
+
     public function getShieldRegenerationRate(): int;
 
     public function canIntercept(): bool;
