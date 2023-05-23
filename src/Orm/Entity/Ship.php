@@ -39,13 +39,15 @@ use Stu\Module\Logging\LoggerUtilInterface;
  * @Table(
  *     name="stu_ships",
  *     indexes={
+ *         @Index(name="ship_fleet_idx", columns={"fleets_id"}),
  *         @Index(name="ship_map_idx", columns={"map_id"}),
  *         @Index(name="ship_starsystem_map_idx", columns={"starsystem_map_id"}),
  *         @Index(name="outer_system_location_idx", columns={"cx", "cy"}),
  *         @Index(name="ship_rump_idx", columns={"rumps_id"}),
  *         @Index(name="ship_web_idx", columns={"holding_web_id"}),
  *         @Index(name="ship_user_idx", columns={"user_id"}),
- *         @Index(name="ship_tractored_idx", columns={"tractored_ship_id"})
+ *         @Index(name="ship_tractored_idx", columns={"tractored_ship_id"}),
+ *         @Index(name="ship_influence_area_idx", columns={"influence_area_id"})
  *     }
  * )
  **/
