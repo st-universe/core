@@ -110,7 +110,7 @@ class VisualNavPanelEntry
         return $this->data['type'];
     }
 
-    public function getLayer(): int
+    public function getLayer(): ?int
     {
         return $this->data['layer'];
     }

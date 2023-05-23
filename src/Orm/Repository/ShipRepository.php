@@ -519,7 +519,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.sx as posx, a.sy AS posy, a.systems_id AS sysid, d.type,  a.layer_id AS layer,
+                'SELECT a.id, a.sx as posx, a.sy AS posy, a.systems_id AS sysid, d.type,  null AS layer,
                 (SELECT count(DISTINCT b.id) FROM stu_ships b
                     WHERE a.id = b.starsystem_map_id
                     AND NOT EXISTS (SELECT ss.id
