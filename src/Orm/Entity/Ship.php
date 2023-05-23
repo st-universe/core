@@ -1504,9 +1504,9 @@ class Ship implements ShipInterface
         return $this->getStarsystemMap() !== null ? $this->getStarsystemMap() : $this->getMap();
     }
 
-    public function getCurrentMapFieldLayer()
+    public function getCurrentMapFieldLayer(): string
     {
-        return $this->getStarsystemMap() !== null ? '' : $this->getMap()->getLayer()->getId();
+        return $this->getStarsystemMap() !== null ? '' : strval($this->getMap()->getLayer()->getId());
     }
 
     private function getShieldRegenerationPercentage(): int

@@ -5678,7 +5678,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method getLayer\\(\\) on Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null\\.$#"
-			count: 1
+			count: 2
 			path: src/Orm/Entity/Ship.php
 
 		-
@@ -5713,6 +5713,11 @@ parameters:
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getCurrentMapField\\(\\) should return Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but returns Stu\\\\Orm\\\\Entity\\\\MapInterface\\|Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:getCurrentMapFieldLayer\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
@@ -5915,6 +5920,11 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getCurrentMapFieldLayer\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipInterface.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipInterface\\:\\:getModules\\(\\) return type has no value type specified in iterable type array\\.$#"
