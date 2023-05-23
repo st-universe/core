@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
@@ -16,7 +17,10 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TorpedoStorageRepository")
  * @Table(
- *     name="stu_torpedo_storage"
+ *     name="stu_torpedo_storage",
+ *     indexes={
+ *         @Index(name="torpedo_storage_ship_idx", columns={"ship_id"})
+ *     }
  * )
  **/
 class TorpedoStorage implements TorpedoStorageInterface

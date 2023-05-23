@@ -44,7 +44,8 @@ use Stu\Module\Logging\LoggerUtilInterface;
  *         @Index(name="outer_system_location_idx", columns={"cx", "cy"}),
  *         @Index(name="ship_rump_idx", columns={"rumps_id"}),
  *         @Index(name="ship_web_idx", columns={"holding_web_id"}),
- *         @Index(name="ship_user_idx", columns={"user_id"})
+ *         @Index(name="ship_user_idx", columns={"user_id"}),
+ *         @Index(name="ship_tractored_idx", columns={"tractored_ship_id"})
  *     }
  * )
  **/

@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
@@ -16,7 +17,16 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\StorageRepository")
  * @Table(
- *     name="stu_storage"
+ *     name="stu_storage",
+ *     indexes={
+ *         @Index(name="storage_user_idx", columns={"user_id"}),
+ *         @Index(name="storage_commodity_idx", columns={"commodity_id"}),
+ *         @Index(name="storage_colony_idx", columns={"colony_id"}),
+ *         @Index(name="storage_ship_idx", columns={"ship_id"}),
+ *         @Index(name="storage_torpedo_idx", columns={"torpedo_storage_id"}),
+ *         @Index(name="storage_tradepost_idx", columns={"tradepost_id"}),
+ *         @Index(name="storage_tradeoffer_idx", columns={"tradeoffer_id"})
+ *     }
  * )
  **/
 class Storage implements StorageInterface
