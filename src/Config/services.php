@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Logging\Middleware;
 use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,10 +18,14 @@ use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
 use JsonMapper\JsonMapperFactory;
 use JsonMapper\JsonMapperInterface;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Level;
+use Monolog\Logger;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Component\Logging\Sql\SqlLogger;
 use Stu\Lib\ParserWithImage;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Lib\Session;
@@ -83,6 +89,25 @@ return [
         $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
         return $manager;
     },
+    SqlLogger::class => function (StuConfigInterface $stuConfig): SqlLogger {
+        $logger = new Logger(
+            'SqlLogger',
+            [
+                new RotatingFileHandler(
+                    sprintf(
+                        '%s/sql.log',
+                        $stuConfig->getDebugSettings()->getSqlLoggingSettings()->getLogDirectory(),
+                    ),
+                    10,
+                    Level::Info,
+                ),
+            ]
+        );
+
+        return new SqlLogger(
+            $logger
+        );
+    },
     Connection::class => function (ContainerInterface $c): Connection {
         $config = $c->get(ConfigInterface::class);
         $stuConfig = $c->get(StuConfigInterface::class);
@@ -96,6 +121,13 @@ return [
             return DriverManager::getConnection($connectionParams);
         }
 
+        $configuration = null;
+        if ($stuConfig->getDebugSettings()->getSqlLoggingSettings()->isActive()) {
+            $logger = $c->get(SqlLogger::class);
+            $configuration = new Configuration();
+            $configuration->setMiddlewares([new Middleware($logger)]);
+        }
+
         return DriverManager::getConnection([
             'driver' => 'pdo_pgsql',
             'user' => $config->get('db.user'),
@@ -103,7 +135,7 @@ return [
             'dbname' => $config->get('db.database'),
             'host'  => $config->get('db.host'),
             'charset' => 'utf8',
-        ]);
+        ], $configuration);
     },
     TalPageInterface::class => autowire(TalPage::class),
     GameControllerInterface::class => autowire(GameController::class),

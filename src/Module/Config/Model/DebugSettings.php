@@ -19,6 +19,11 @@ final class DebugSettings extends AbstractSettings implements DebugSettingsInter
         return $this->getStringConfigValue(self::SETTING_LOGFILE_PATH);
     }
 
+    public function getSqlLoggingSettings(): SqlLoggingSettingsInterface
+    {
+        return new SqlLoggingSettings($this->getPath(), $this->getConfig());
+    }
+
     public function getConfigPath(): string
     {
         return self::CONFIG_PATH;
