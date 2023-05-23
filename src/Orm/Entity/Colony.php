@@ -26,6 +26,7 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
  *     name="stu_colonies",
  *     indexes={
  *         @Index(name="colony_user_idx", columns={"user_id"}),
+ *         @Index(name="colony_classes_idx", columns={"colonies_classes_id"}),
  *         @Index(name="colony_sys_map_idx", columns={"starsystem_map_id"})
  *     }
  * )

@@ -24,7 +24,8 @@ use Stu\Module\PlayerSetting\Lib\UserEnum;
  * @Table(
  *     name="stu_trade_posts",
  *     indexes={
- *         @Index(name="trade_network_idx", columns={"trade_network"})
+ *         @Index(name="trade_network_idx", columns={"trade_network"}),
+ *         @Index(name="trade_post_ship_idx", columns={"ship_id"})
  *     }
  * )
  **/
