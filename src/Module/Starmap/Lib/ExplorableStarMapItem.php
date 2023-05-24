@@ -172,7 +172,7 @@ class ExplorableStarMapItem implements ExplorableStarMapItemInterface
             $layer = $this->getLayer();
         }
 
-        $style = "background-image: url('assets/map/" . $layer . "/" . $type . ".png'); transform: translateZ(0);";
+        $style = "background-image: url('assets/map/" . $layer . "/" . $type . ".png'); opacity:1;";
         $style .= $this->getBorder();
         return $style;
     }

@@ -321,7 +321,7 @@ class Map implements MapInterface
     public function getFieldStyle(): string
     {
         // @todo hide unexplored fields
-        $style = "background-image: url('/assets/map/" . $this->getLayer()->getId() . "/" . $this->getFieldId() . ".png'); transform: translateZ(0);";
+        $style = "background-image: url('/assets/map/" . $this->getLayer()->getId() . "/" . $this->getFieldId() . ".png'); opacity:1;";
         $style .= $this->getBorder();
         return $style;
     }
