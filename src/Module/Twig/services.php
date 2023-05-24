@@ -23,10 +23,6 @@ return [
             )
         );
 
-        if (!$templatePath) {
-            throw new RuntimeException('template path could not be checked');
-        }
-
         $cache = false;
         if (!$stuConfig->getDebugSettings()->isDebugMode()) {
             $cache = sprintf(
@@ -36,7 +32,7 @@ return [
             );
         }
 
-        $loader = new FilesystemLoader($templatePath);
+        $loader = new FilesystemLoader($templatePath ? $templatePath : []);
         $environment = new Environment($loader, [
             'cache' => $cache,
         ]);
