@@ -57,7 +57,8 @@
     "php-di/php-di": "^7",
     "scn/phptal": "^3",
     "st-universe/planet-generator": "dev-master",
-    "st-universe/starsystem-generator": "dev-master"
+    "st-universe/starsystem-generator": "dev-master",
+    "twig/twig": "^3.6"
   },
   "require-dev": {
     "bnf/phpstan-psr-container": "^1.0",
