@@ -1,0 +1,29 @@
+{% extends "html/sitedefaults.twig" %}
+
+{% block body %}
+{% from 'html/sitemacros.twig' import breadcrumb %}
+{% from 'html/shipmacros.twig' import shiplist_fleetform, shiplist_singles %}
+{{ breadcrumb(THIS) }}
+{% if not SHIPS_AVAILABLE %}
+<table class="tcal">
+	<tr>
+		<th>Meldung</th>
+	</tr>
+	<tr>
+		<td>Du besitzt derzeit keine Schiffe</td>
+	</tr>
+</table>
+{% else %}
+<script type="text/javascript" src="{{ THIS.getJavascriptPath }}/js/ship.js"></script>
+{% for fleetwrapper in FLEETWRAPPERS %}
+{{ shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET) }}
+<br />
+{% endfor %}
+
+{% if SINGLESHIPWRAPPERS %}
+{{ shiplist_singles(SINGLESHIPWRAPPERS) }}
+{% else %}
+<table class="tcal" id="shiplist_singles_table" style="display: none;"></table>
+{% endif %}
+{% endif %}
+{% endblock %}

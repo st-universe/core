@@ -7,6 +7,7 @@ namespace Stu\Module\Control\Render\Fragments;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalComponentFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -33,7 +34,7 @@ final class ResearchFragment implements RenderFragmentInterface
 
     public function render(
         UserInterface $user,
-        TalPageInterface $talPage
+        TalPageInterface|TwigPageInterface $page
     ): void {
         $researchStatusBar = '';
         $currentResearchReference = $this->researchedRepository->getCurrentResearch($user);
@@ -51,7 +52,7 @@ final class ResearchFragment implements RenderFragmentInterface
                 ->setValue($researchPoints - $currentResearchReference->getActive())
                 ->setSizeModifier(2);
 
-            $talPage->setVar(
+            $page->setVar(
                 'CURRENT_RESEARCH_PRODUCTION_COMMODITY',
                 max(
                     0,
@@ -63,7 +64,7 @@ final class ResearchFragment implements RenderFragmentInterface
             );
         }
 
-        $talPage->setVar('CURRENT_RESEARCH', $currentResearchReference);
-        $talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
+        $page->setVar('CURRENT_RESEARCH', $currentResearchReference);
+        $page->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
     }
 }

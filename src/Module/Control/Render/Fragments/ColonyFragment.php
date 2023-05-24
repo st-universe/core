@@ -6,6 +6,7 @@ namespace Stu\Module\Control\Render\Fragments;
 
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
@@ -24,9 +25,9 @@ final class ColonyFragment implements RenderFragmentInterface
 
     public function render(
         UserInterface $user,
-        TalPageInterface $talPage
+        TalPageInterface|TwigPageInterface $page
     ): void {
-        $talPage->setVar(
+        $page->setVar(
             'COLONIES',
             $user->getId() === UserEnum::USER_NOONE ? [] : $this->colonyRepository->getColonyListForRenderFragment($user)
         );

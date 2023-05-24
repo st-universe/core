@@ -8,6 +8,7 @@ use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Tal\TalHelper;
+use Stu\Module\Twig\TwigHelper;
 
 /**
  * Inits the application by calling the provided callable and injecting the DIC
@@ -67,7 +68,8 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/../Module/Tal/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Tick/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Trade/services.php');
-        $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php', );
+        $builder->addDefinitions(__DIR__ . '/../Module/Twig/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Orm/Repository/services.php',);
 
         /** @var ContainerInterface $container */
         $container = $builder->build();
@@ -78,6 +80,8 @@ final class Init
         set_include_path(get_include_path() . PATH_SEPARATOR . $config->getGameSettings()->getWebroot());
 
         TalHelper::register($container);
+        $twigHelper = $container->get(TwigHelper::class);
+        $twigHelper->registerMethodsAndFilters();
 
         $app($container);
     }

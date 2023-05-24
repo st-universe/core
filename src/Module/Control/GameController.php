@@ -25,6 +25,7 @@ use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
 use Stu\Module\Control\Render\GameTalRendererInterface;
+use Stu\Module\Control\Render\GameTwigRendererInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
@@ -34,6 +35,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameRequestInterface;
 use Stu\Orm\Entity\GameTurnInterface;
@@ -60,6 +62,8 @@ final class GameController implements GameControllerInterface
 
     private TalPageInterface $talPage;
 
+    private TwigPageInterface $twigPage;
+
     private DatabaseUserRepositoryInterface $databaseUserRepository;
 
     private StuConfigInterface $stuConfig;
@@ -84,11 +88,15 @@ final class GameController implements GameControllerInterface
 
     private GameTalRendererInterface $gameTalRenderer;
 
+    private GameTwigRendererInterface $gameTwigRenderer;
+
     private UuidGeneratorInterface $uuidGenerator;
 
     private GameRequestSaverInterface $gameRequestSaver;
 
     private EventDispatcherInterface $eventDispatcher;
+
+    private bool $isTwig = false;
 
     /** @var array<Notification> */
     private array $gameInformations = [];
@@ -127,6 +135,7 @@ final class GameController implements GameControllerInterface
         SessionInterface $session,
         SessionStringRepositoryInterface $sessionStringRepository,
         TalPageInterface $talPage,
+        TwigPageInterface $twigPage,
         DatabaseUserRepositoryInterface $databaseUserRepository,
         StuConfigInterface $stuConfig,
         GameTurnRepositoryInterface $gameTurnRepository,
@@ -138,6 +147,7 @@ final class GameController implements GameControllerInterface
         CreateDatabaseEntryInterface $createDatabaseEntry,
         GameRequestRepositoryInterface $gameRequestRepository,
         GameTalRendererInterface $gameTalRenderer,
+        GameTwigRendererInterface $gameTwigRenderer,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         UuidGeneratorInterface $uuidGenerator,
         EventDispatcherInterface $eventDispatcher,
@@ -146,6 +156,7 @@ final class GameController implements GameControllerInterface
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
         $this->talPage = $talPage;
+        $this->twigPage = $twigPage;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->stuConfig = $stuConfig;
         $this->gameTurnRepository = $gameTurnRepository;
@@ -158,6 +169,7 @@ final class GameController implements GameControllerInterface
         $this->gameRequestRepository = $gameRequestRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->gameTalRenderer = $gameTalRenderer;
+        $this->gameTwigRenderer = $gameTwigRenderer;
         $this->uuidGenerator = $uuidGenerator;
         $this->gameRequestSaver = $gameRequestSaver;
         $this->eventDispatcher = $eventDispatcher;
@@ -186,9 +198,14 @@ final class GameController implements GameControllerInterface
         return $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
     }
 
-    public function setTemplateFile(string $tpl): void
+    public function setTemplateFile(string $tpl, bool $isTwig = false): void
     {
-        $this->talPage->setTemplate($tpl);
+        if ($isTwig) {
+            $this->isTwig = true;
+            $this->twigPage->setTemplate($tpl);
+        } else {
+            $this->talPage->setTemplate($tpl);
+        }
     }
 
     public function setMacroAndTemplate($macro, string $tpl): void
@@ -308,7 +325,11 @@ final class GameController implements GameControllerInterface
 
     public function setTemplateVar(string $key, $variable): void
     {
-        $this->talPage->setVar($key, $variable);
+        if ($this->isTwig) {
+            $this->twigPage->setVar($key, $variable);
+        } else {
+            $this->talPage->setVar($key, $variable);
+        }
     }
 
     public function getUser(): UserInterface
@@ -547,29 +568,29 @@ final class GameController implements GameControllerInterface
             $this->loginError = $e->getMessage(); //TODO kann weg?
 
             $this->setTemplateFile('html/accountlocked.xhtml');
-            $this->talPage->setVar('THIS', $this);
-            $this->talPage->setVar('REASON', $e->getDetails());
+            $this->setTemplateVar('THIS', $this);
+            $this->setTemplateVar('REASON', $e->getDetails());
         } catch (AccountNotVerifiedException $e) {
             $this->setTemplateFile('html/smsverification.xhtml');
-            $this->talPage->setVar('THIS', $this);
+            $this->setTemplateVar('THIS', $this);
             if ($e->getMessage() !== '') {
-                $this->talPage->setVar('REASON', $e->getMessage());
+                $this->setTemplateVar('REASON', $e->getMessage());
             }
         } catch (TickGameStateException $e) {
             $this->setPageTitle(_('Rundenwechsel aktiv'));
             $this->setTemplateFile('html/tick.xhtml');
 
-            $this->talPage->setVar('THIS', $this);
+            $this->setTemplateVar('THIS', $this);
         } catch (MaintenanceGameStateException $e) {
             $this->setPageTitle(_('Wartungsmodus'));
             $this->setTemplateFile('html/maintenance.xhtml');
 
-            $this->talPage->setVar('THIS', $this);
+            $this->setTemplateVar('THIS', $this);
         } catch (RelocationGameStateException $e) {
             $this->setPageTitle(_('Umzugsmodus'));
             $this->setTemplateFile('html/relocation.xhtml');
 
-            $this->talPage->setVar('THIS', $this);
+            $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException $e) {
             $this->addInformation(_('Dieses Schiff existiert nicht!'));
             $this->setTemplateFile('html/ship.xhtml');
@@ -591,7 +612,9 @@ final class GameController implements GameControllerInterface
             throw $e;
         }
 
-        if (!$this->talPage->isTemplateSet()) {
+        $isTemplateSet = $this->isTwig ? $this->twigPage->isTemplateSet() : $this->talPage->isTemplateSet();
+
+        if (!$isTemplateSet) {
             $this->loggerUtil->init('tal', LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(sprintf('NO TEMPLATE FILE SPECIFIED, Method: %s', request::isPost() ? 'POST' : 'GET'));
             $this->loggerUtil->log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
@@ -605,7 +628,7 @@ final class GameController implements GameControllerInterface
         // RENDER!
         $startTime = hrtime(true);
 
-        $renderResult = $this->gameTalRenderer->render($this, $user, $this->talPage);
+        $renderResult = $this->isTwig ? $this->gameTwigRenderer->render($this, $user, $this->twigPage) : $this->gameTalRenderer->render($this, $user, $this->talPage);
 
         $renderMs = hrtime(true) - $startTime;
 

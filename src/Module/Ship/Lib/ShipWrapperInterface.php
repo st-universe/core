@@ -65,6 +65,11 @@ interface ShipWrapperInterface
 
     public function getTractoringShipWrapper(): ?ShipWrapperInterface;
 
+    /**
+     * @return array<string>|null
+     */
+    public function getStateIconAndTitle(): ?array;
+
     public function getHullSystemData(): HullSystemData;
 
     public function getShieldSystemData(): ?ShieldSystemData;
