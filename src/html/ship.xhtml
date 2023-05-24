@@ -69,7 +69,7 @@
 							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
 								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
 								<img src="assets/map/${entry/getLayer}/${entry/getMapfieldType}.png"
-									style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+									style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw; transform: translateZ(0);" />
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="z-index:2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />

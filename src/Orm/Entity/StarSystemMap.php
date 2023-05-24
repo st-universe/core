@@ -197,7 +197,7 @@ class StarSystemMap implements StarSystemMapInterface
 
     public function getFieldStyle(): string
     {
-        return "background-image: url('/assets/map/" . $this->getFieldId() . ".png');";
+        return "background-image: url('/assets/map/" . $this->getFieldId() . ".png'); transform: translateZ(0);";
     }
 
     public function getShips(): Collection
