@@ -7,6 +7,7 @@ namespace Stu\Module\Control\Render\Fragments;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageUiFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Twig\TwigPageInterface;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -30,7 +31,7 @@ final class MessageFolderFragment implements RenderFragmentInterface
 
     public function render(
         UserInterface $user,
-        TalPageInterface $talPage
+        TalPageInterface|TwigPageInterface $page
     ): void {
         $userId = $user->getId();
 
@@ -58,6 +59,6 @@ final class MessageFolderFragment implements RenderFragmentInterface
             $folder[$specialId] = $this->commUiFactory->createPrivateMessageFolderItem($specialFolder);
         }
 
-        $talPage->setVar('PM_NAVLET', $folder);
+        $page->setVar('PM_NAVLET', $folder);
     }
 }

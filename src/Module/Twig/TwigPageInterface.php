@@ -1,0 +1,14 @@
+<?php
+
+namespace Stu\Module\Twig;
+
+interface TwigPageInterface
+{
+    public function setVar(string $var, mixed $value): void;
+
+    public function setTemplate(string $file): void;
+
+    public function isTemplateSet(): bool;
+
+    public function render(): string;
+}

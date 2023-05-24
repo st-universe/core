@@ -10,6 +10,7 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Data\AbstractSystemData;
 use Stu\Component\Ship\System\Data\EpsSystemData;
 use Stu\Component\Ship\System\Data\HullSystemData;
@@ -374,6 +375,25 @@ final class ShipWrapper implements ShipWrapperInterface
         }
 
         return $this->shipWrapperFactory->wrapShip($tractoringShip);
+    }
+
+    public function getStateIconAndTitle(): ?array
+    {
+        $state = $this->get()->getState();
+        $isBase = $this->get()->isBase();
+        $repairDuration = $this->getRepairDuration();
+
+        if ($state === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+            return ['rep2', sprintf('%s wird repariert (noch %s Runden)', $isBase ? 'Station' : 'Schiff', $repairDuration)];
+        }
+        if ($state === ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
+            return ['rep2', sprintf('%s repariert die Station', $isBase ? 'Stationscrew' : 'Schiffscrew')];
+        }
+        if ($state === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+            return ['map1', 'Schiff kartographiert'];
+        }
+
+        return null;
     }
 
     public function getHullSystemData(): HullSystemData

@@ -1,0 +1,69 @@
+{% macro breadcrumb(THIS) %}
+<div class="box">
+  <div class="box_title" style="text-align: left">/
+    {% for key, item in THIS.getNavigation %}
+    <a href="#" href="{{ key }}">
+      {% autoescape false %}
+      {{ item|bbcode2txt }}
+      {% endautoescape %}</a>
+    {% if not loop.last %}
+    <span> / </span>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+<br />
+{% if THIS.getInformation %}
+{{ _self.systeminformation(THIS) }}
+{% endif %}
+{{ _self.achievements(THIS) }}
+{% if not THIS.getInformation %}
+<div id="result" style="display: none;">..</div>
+{% endif %}
+{% endmacro %}
+
+{% macro systeminformation(THIS) %}
+{% if THIS.getExecuteJS %}
+<script language="Javascript">
+  {% for item in THIS.getExecuteJS %}
+  { { item } }
+  {% endfor %}
+</script>
+{% endif %}
+<div id="result">
+  <table class="use">
+    <tr>
+      <th>Meldung</th>
+    </tr>
+    <tr>
+      <td>
+        {% for notification in THIS.getInformation %}
+        <div>
+          {% autoescape false %}
+          {{ notification.getText|bbcode }}
+          {% endautoescape %}
+        </div>
+        {% endfor %}
+        {% for notification in THIS.getInformation %}
+        {% if notification.getLink %}
+        <a href="{{ notification.getLink }}" class="linkbutton">
+          Zum Schiff wechseln
+        </a>
+        {% endif %}
+        {% endfor %}
+      </td>
+    </tr>
+  </table>
+</div>
+<br />
+{% endmacro %}
+
+{% macro achievements(THIS) %}
+{% if THIS.getAchievements %}
+<script type="text/Javascript" defer="defer">
+  {% for achievement in THIS.getAchievements %}
+  showAchievement('{{ achievement|jsquote }}');
+  {% endfor %}
+</script>
+{% endif %}
+{% endmacro %}

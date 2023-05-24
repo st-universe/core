@@ -16,7 +16,7 @@ interface GameControllerInterface
 
     public function getGameState(): int;
 
-    public function setTemplateFile(string $tpl): void;
+    public function setTemplateFile(string $tpl, bool $isTwig = false): void;
 
     public function setMacroAndTemplate($macro, string $tpl): void;
 
