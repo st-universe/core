@@ -89,8 +89,7 @@ final class LandShip implements ActionControllerInterface
         }
 
         $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
-            $colony,
-            $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+            $colony
         )->getFreeAssignmentCount();
 
         if ($ship->getCrewCount() > $freeAssignmentCount) {

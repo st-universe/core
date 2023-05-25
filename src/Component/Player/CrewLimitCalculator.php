@@ -21,10 +21,7 @@ final class CrewLimitCalculator implements CrewLimitCalculatorInterface
     {
         $limit = 0;
         foreach ($user->getColonies() as $colony) {
-            $limit += $this->colonyLibFactory->createColonyPopulationCalculator(
-                $colony,
-                $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
-            )->getCrewLimit();
+            $limit += $this->colonyLibFactory->createColonyPopulationCalculator($colony)->getCrewLimit();
         }
         return $limit;
     }

@@ -272,16 +272,14 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         return new ColonyProductionSumReducer();
     }
 
-    /**
-     * @param array<int, ColonyProduction> $production
-     */
     public function createColonyPopulationCalculator(
         ColonyInterface $colony,
-        array $production
+        array $production = null
     ): ColonyPopulationCalculatorInterface {
+
         return new ColonyPopulationCalculator(
             $colony,
-            $production
+            $production === null ? $this->createColonyCommodityProduction($colony)->getProduction() : $production
         );
     }
 }

@@ -134,8 +134,7 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
             $colony = $obj->getColony();
 
             $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
-                $colony,
-                $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+                $colony
             )->getFreeAssignmentCount();
 
             //colony can't hold more crew

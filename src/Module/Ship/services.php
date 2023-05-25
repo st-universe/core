@@ -111,6 +111,8 @@ use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequest;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequestInterface;
 use Stu\Module\Ship\Action\SalvageCrew\SalvageCrew;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPods;
+use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPodsRequest;
+use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPodsRequestInterface;
 use Stu\Module\Ship\Action\SelfDestruct\SelfDestruct;
 use Stu\Module\Ship\Action\Selfrepair\Selfrepair;
 use Stu\Module\Ship\Action\SendBroadcast\SendBroadcast;
@@ -279,6 +281,7 @@ return [
     AttackerProviderFactoryInterface::class => autowire(AttackerProviderFactory::class),
     AttackMatchupInterface::class => autowire(AttackMatchup::class),
     AlertLevelBasedReactionInterface::class => autowire(AlertLevelBasedReaction::class),
+    SalvageEmergencyPodsRequestInterface::class => autowire(SalvageEmergencyPodsRequest::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),

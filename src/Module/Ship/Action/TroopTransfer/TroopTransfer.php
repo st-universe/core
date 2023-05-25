@@ -226,8 +226,7 @@ final class TroopTransfer implements ActionControllerInterface
     private function transferToColony(int $requestedTransferCount, ShipInterface $ship, ColonyInterface $colony): int
     {
         $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
-            $colony,
-            $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+            $colony
         )->getFreeAssignmentCount();
 
         $amount = min(
