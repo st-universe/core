@@ -83,10 +83,10 @@ interface ColonyLibFactoryInterface
     public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface;
 
     /**
-     * @param array<int, ColonyProduction> $production
+     * @param array<int, ColonyProduction> $production if null, use production of colony itself
      */
     public function createColonyPopulationCalculator(
         ColonyInterface $colony,
-        array $production
+        array $production = null
     ): ColonyPopulationCalculatorInterface;
 }

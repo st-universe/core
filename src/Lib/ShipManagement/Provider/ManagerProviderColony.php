@@ -80,8 +80,7 @@ class ManagerProviderColony implements ManagerProviderInterface
     public function isAbleToStoreCrew(int $amount): bool
     {
         $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
-            $this->colony,
-            $this->colonyLibFactory->createColonyCommodityProduction($this->colony)->getProduction()
+            $this->colony
         )->getFreeAssignmentCount();
 
         return $freeAssignmentCount >= $amount;

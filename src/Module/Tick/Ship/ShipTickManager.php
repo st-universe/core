@@ -246,8 +246,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
             }
 
             $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
-                $colony,
-                $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+                $colony
             )->getFreeAssignmentCount();
 
             if ($freeAssignmentCount === 0) {

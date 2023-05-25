@@ -84,8 +84,7 @@ final class DisassembleShip implements ActionControllerInterface
         }
 
         $freeAssignmentCount = $this->colonyLibFactory->createColonyPopulationCalculator(
-            $colony,
-            $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction()
+            $colony
         )->getFreeAssignmentCount();
 
         $ship_id = request::getIntFatal('ship_id');
