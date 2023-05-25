@@ -1,4 +1,4 @@
-{% macro useravatar(USER) %}
+{% macro useravatar() %}
 <div class="userAvatar">
     <a href="/userprofile.php?uid={{ USER.getId }}">
         {% if USER.getAvatar %}
@@ -23,7 +23,7 @@
 {% macro navigation() %}
 {{ _self.navigation_item('Kolonien', 'colony.php', 'planets') }}
 {{ _self.navigation_item('Schiffe', 'ship.php', 'ships') }}
-{% if THIS.getUser.hasStationsNavigation %}
+{% if USER.hasStationsNavigation %}
 {{ _self.navigation_item('Stationen', 'station.php', 'station') }}
 {% endif %}
 {{ _self.navigation_item('KommNet', 'comm.php', 'comm') }}
@@ -34,7 +34,7 @@
 {{ _self.navigation_item('Datenbank', 'database.php', 'data') }}
 {{ _self.navigation_item('Ereignisse', 'history.php', 'history') }}
 {{ _self.navigation_item('Karte', 'starmap.php', 'map') }}
-{% if THIS.isAdmin %}
+{% if GAME.isAdmin %}
 {{ _self.navigation_item('Admin', '/admin', 'ticks') }}
 {% endif %}
 {% endmacro %}

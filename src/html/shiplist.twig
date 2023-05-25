@@ -3,7 +3,7 @@
 {% block body %}
 {% from 'html/sitemacros.twig' import breadcrumb %}
 {% from 'html/shipmacros.twig' import shiplist_fleetform, shiplist_singles %}
-{{ breadcrumb(THIS) }}
+{{ breadcrumb() }}
 {% if not SHIPS_AVAILABLE %}
 <table class="tcal">
 	<tr>
@@ -14,7 +14,7 @@
 	</tr>
 </table>
 {% else %}
-<script type="text/javascript" src="{{ THIS.getJavascriptPath }}/js/ship.js"></script>
+<script type="text/javascript" src="{{ GAME.getJavascriptPath }}/js/ship.js"></script>
 {% for fleetwrapper in FLEETWRAPPERS %}
 {{ shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET) }}
 <br />

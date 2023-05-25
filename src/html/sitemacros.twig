@@ -1,7 +1,7 @@
-{% macro breadcrumb(THIS) %}
+{% macro breadcrumb() %}
 <div class="box">
   <div class="box_title" style="text-align: left">/
-    {% for key, item in THIS.getNavigation %}
+    {% for key, item in GAME.getNavigation %}
     <a href="#" href="{{ key }}">
       {% autoescape false %}
       {{ item|bbcode2txt }}
@@ -13,19 +13,19 @@
   </div>
 </div>
 <br />
-{% if THIS.getInformation %}
-{{ _self.systeminformation(THIS) }}
+{% if GAME.getInformation %}
+{{ _self.systeminformation() }}
 {% endif %}
-{{ _self.achievements(THIS) }}
-{% if not THIS.getInformation %}
+{{ _self.achievements() }}
+{% if not GAME.getInformation %}
 <div id="result" style="display: none;">..</div>
 {% endif %}
 {% endmacro %}
 
-{% macro systeminformation(THIS) %}
-{% if THIS.getExecuteJS %}
+{% macro systeminformation() %}
+{% if GAME.getExecuteJS %}
 <script language="Javascript">
-  {% for item in THIS.getExecuteJS %}
+  {% for item in GAME.getExecuteJS %}
   { { item } }
   {% endfor %}
 </script>
@@ -37,14 +37,14 @@
     </tr>
     <tr>
       <td>
-        {% for notification in THIS.getInformation %}
+        {% for notification in GAME.getInformation %}
         <div>
           {% autoescape false %}
           {{ notification.getText|bbcode }}
           {% endautoescape %}
         </div>
         {% endfor %}
-        {% for notification in THIS.getInformation %}
+        {% for notification in GAME.getInformation %}
         {% if notification.getLink %}
         <a href="{{ notification.getLink }}" class="linkbutton">
           Zum Schiff wechseln
@@ -58,10 +58,10 @@
 <br />
 {% endmacro %}
 
-{% macro achievements(THIS) %}
-{% if THIS.getAchievements %}
+{% macro achievements() %}
+{% if GAME.getAchievements %}
 <script type="text/Javascript" defer="defer">
-  {% for achievement in THIS.getAchievements %}
+  {% for achievement in GAME.getAchievements %}
   showAchievement('{{ achievement|jsquote }}');
   {% endfor %}
 </script>

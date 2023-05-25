@@ -138,13 +138,13 @@
     <td style="text-align: center;">
         {% if ship.getFleet %}
         {% if ship.isFleetLeader %}
-        <a href="?B_DELETE_FLEET=1&id={{ shipid }}&sstr={{ THIS.getSessionString }}"
+        <a href="?B_DELETE_FLEET=1&id={{ shipid }}&sstr={{ GAME.getSessionString }}"
             onmouseover="cp('fleet_{{ shipid }}','buttons/fl_flag3')"
             onmouseout="cp('fleet_{{ shipid }}','buttons/fl_flag2')">
             <img src="assets/buttons/fl_flag2.png" name="fleet_{{ shipid }}" title="Flotte auflösen" />
         </a>
         {% else %}
-        <a href="javascript:void(0);" onclick="leaveFleetInShiplist({{ shipid }}, '{{ THIS.getSessionString }}');"
+        <a href="javascript:void(0);" onclick="leaveFleetInShiplist({{ shipid }}, '{{ GAME.getSessionString }}');"
             onmouseover="cp('fleet_{{ shipid }}','buttons/fl_raus2')"
             onmouseout="cp('fleet_{{ shipid }}','buttons/fl_raus1')">
             <img src="assets/buttons/fl_raus1.png" name="fleet_{{ shipid }}" title="Flotte verlassen" />

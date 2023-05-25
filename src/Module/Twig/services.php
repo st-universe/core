@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Twig;
 
 use Psr\Container\ContainerInterface;
-use RuntimeException;
 use Stu\Module\Config\StuConfigInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
