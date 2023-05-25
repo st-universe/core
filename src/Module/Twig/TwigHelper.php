@@ -45,7 +45,7 @@ class TwigHelper
 
         $bbcodeFilter = new TwigFilter('bbcode', function ($string) {
             return $this->parser->parse($string)->getAsHTML();
-        });
+        }, ['is_safe' => ['html']]);
         $this->environment->addFilter($bbcodeFilter);
 
         $jsquoteFilter = new TwigFilter('jsquote', function ($string) {

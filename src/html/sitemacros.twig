@@ -3,13 +3,11 @@
   <div class="box_title" style="text-align: left">/
     {% for key, item in GAME.getNavigation %}
     <a href="#" href="{{ key }}">
-      {% autoescape false %}
       {{ item|bbcode2txt }}
-      {% endautoescape %}</a>
-    {% if not loop.last %}
-    <span> / </span>
-    {% endif %}
-    {% endfor %}
+      {% if not loop.last %}
+      <span> / </span>
+      {% endif %}
+      {% endfor %}
   </div>
 </div>
 <br />
@@ -39,9 +37,7 @@
       <td>
         {% for notification in GAME.getInformation %}
         <div>
-          {% autoescape false %}
           {{ notification.getText|bbcode }}
-          {% endautoescape %}
         </div>
         {% endfor %}
         {% for notification in GAME.getInformation %}

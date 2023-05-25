@@ -32,9 +32,7 @@
                         </div>
                         <div class="user_box_details">
                             <div class="userBoxDetailName">
-                                {% autoescape false %}
                                 {{ USER.getName|bbcode }}
-                                {% endautoescape %}
                             </div>
                             <span>ID:</span> {{ USER.getId }}<span>,
                                 Prestige:</span> {{ USER.getPrestige }}<br />
