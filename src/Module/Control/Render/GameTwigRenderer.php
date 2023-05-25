@@ -38,7 +38,6 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         ?UserInterface $user,
         TwigPageInterface $twigPage
     ): string {
-        $twigPage->setVar('THIS', $game);
         $twigPage->setVar('USER', $user);
         $twigPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         $twigPage->setVar('WIKI', $this->config->get('wiki.base_url'));

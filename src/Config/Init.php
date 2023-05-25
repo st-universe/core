@@ -79,9 +79,13 @@ final class Init
 
         set_include_path(get_include_path() . PATH_SEPARATOR . $config->getGameSettings()->getWebroot());
 
+        // PHPTAL
         TalHelper::register($container);
+
+        // TWIG
         $twigHelper = $container->get(TwigHelper::class);
         $twigHelper->registerMethodsAndFilters();
+        $twigHelper->registerGlobalVariables();
 
         $app($container);
     }
