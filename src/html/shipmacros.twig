@@ -40,10 +40,7 @@
             <img src="assets/buttons/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
                 style="height:20px;" />
             {% endif %}
-            <span>{% autoescape false %}
-                {{ ship.getName|bbcode }}
-                {% endautoescape %}
-            </span>
+            <span>{{ ship.getName|bbcode }}</span>
         </a>
     </td>
     <td style="text-align: center;">
@@ -180,9 +177,7 @@
                                 </a>
                             </div>
                             <div style="display: table-cell; vertical-align:middle;">
-                                {% autoescape false %}
                                 {{ fleet.getName|bbcode }}
-                                {% endautoescape %}
                                 <span>
                                     ({{ fleet.getCrewSum }}/{{ MAX_CREW_PER_FLEET }} Crew)
                                 </span>
@@ -191,15 +186,11 @@
                         <td style="width: 25%;">
                             {% if fleet.getDefendedColony %}
                             <img src="/assets/buttons/defend1.png" title="verteidigt die Kolonie" />
-                            {% autoescape false %}
                             {{ fleet.getDefendedColony.getName|bbcode }}
-                            {% endautoescape %}
                             {% endif %}
                             {% if fleet.getBlockedColony %}
                             <img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
-                            {% autoescape false %}
                             {{ fleet.getBlockedColony.getName|bbcode }}
-                            {% endautoescape %}
                             {% endif %}
                         </td>
                         <td style="width: 20%;">
