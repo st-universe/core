@@ -451,7 +451,7 @@ div.lssobj {
 
 .indexedGraphicsShips {
   position: absolute;
-  top: 5px;
+  top: 50%;
 }
 
 
@@ -537,8 +537,9 @@ td.shipimage {
 
 td.shiplistshipimage {
   background-color: #000000 ! important;
+  display: table-cell;
   overflow: hidden;
-  Vertical-align: top;
+  Vertical-align: middle;
 }
 
 td.nbsshipimage {
