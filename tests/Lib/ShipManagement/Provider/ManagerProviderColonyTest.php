@@ -131,23 +131,12 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testIsAbleToStoreCrewExpectFalseWhenSpaceInsufficient(): void
     {
-        $production = [];
         $populationCalculator = $this->mock(ColonyPopulationCalculatorInterface::class);
-        $commodityProduction = $this->mock(ColonyCommodityProductionInterface::class);
 
-        $this->colonyLibFactory->shouldReceive('createColonyCommodityProduction')
+        $this->colonyLibFactory->shouldReceive('createColonyPopulationCalculator')
             ->with($this->colony)
             ->once()
-            ->andReturn($commodityProduction);
-        $this->colonyLibFactory->shouldReceive('createColonyPopulationCalculator')
-            ->with($this->colony, $production)
-            ->once()
             ->andReturn($populationCalculator);
-
-        $commodityProduction->shouldReceive('getProduction')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($production);
 
         $populationCalculator->shouldReceive('getFreeAssignmentCount')
             ->withNoArgs()
@@ -159,23 +148,12 @@ class ManagerProviderColonyTest extends StuTestCase
 
     public function testIsAbleToStoreCrewExpectTrueWhenSpaceSufficient(): void
     {
-        $production = [];
         $populationCalculator = $this->mock(ColonyPopulationCalculatorInterface::class);
-        $commodityProduction = $this->mock(ColonyCommodityProductionInterface::class);
 
-        $this->colonyLibFactory->shouldReceive('createColonyCommodityProduction')
+        $this->colonyLibFactory->shouldReceive('createColonyPopulationCalculator')
             ->with($this->colony)
             ->once()
-            ->andReturn($commodityProduction);
-        $this->colonyLibFactory->shouldReceive('createColonyPopulationCalculator')
-            ->with($this->colony, $production)
-            ->once()
             ->andReturn($populationCalculator);
-
-        $commodityProduction->shouldReceive('getProduction')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($production);
 
         $populationCalculator->shouldReceive('getFreeAssignmentCount')
             ->withNoArgs()
