@@ -19,7 +19,7 @@
 </tr>
 {% endmacro %}
 
-{% macro shiplist_body(wrapper, odd) %}
+{% macro shiplist_body(wrapper, GAME) %}
 {% set ship = wrapper.get %}
 {% set shipid = ship.getId %}
 {% set epssystem = wrapper.getEpsSystemData %}
@@ -159,7 +159,7 @@
 </tr>
 {% endmacro %}
 
-{% macro shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET) %}
+{% macro shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET, GAME) %}
 {% set fleet = fleetwrapper.get %}
 {% set fleetid = fleet.getId %}
 <form action="ship.php" method="post" id="shiplist_fleet_form_{{ fleet.getId }}">
@@ -215,24 +215,20 @@
     <table style="{{ fleet.getHiddenStyle }}" class="tcal" id="fleetbody_{{ fleetid }}">
         {{ _self.shiplist_header() }}
         {% for wrapper in fleetwrapper.getShipWrappers %}
-        {{ _self.shiplist_body(wrapper, 1) }}
+        {{ _self.shiplist_body(wrapper, GAME) }}
         {% endfor %}
     </table>
 </form>
 {% endmacro %}
 
-{% macro shiplist_singles(SINGLESHIPWRAPPERS) %}
+{% macro shiplist_singles(SINGLESHIPWRAPPERS, GAME) %}
 <table class="tcal" id="shiplist_singles_table">
     <tr>
         <td colspan="11">Einzelschiffe</td>
     </tr>
     {{ _self.shiplist_header() }}
     {% for wrapper in SINGLESHIPWRAPPERS %}
-    {% if loop.index is odd %}
-    {{ _self.shiplist_body(wrapper, 1) }}
-    {% else %}
-    {{ _self.shiplist_body(wrapper, ) }}
-    {% endif %}
+    {{ _self.shiplist_body(wrapper, GAME) }}
     {% endfor %}
 </table>
 {% endmacro %}
