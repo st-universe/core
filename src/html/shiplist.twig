@@ -3,7 +3,7 @@
 {% block body %}
 {% from 'html/sitemacros.twig' import breadcrumb %}
 {% from 'html/shipmacros.twig' import shiplist_fleetform, shiplist_singles %}
-{{ breadcrumb(GAME) }}
+{{ breadcrumb(NAVIGATION, INFORMATION, ACHIEVEMENTS, EXECUTEJS) }}
 {% if not SHIPS_AVAILABLE %}
 <table class="tcal">
 	<tr>
@@ -14,14 +14,14 @@
 	</tr>
 </table>
 {% else %}
-<script type="text/javascript" src="{{ GAME.getJavascriptPath }}/js/ship.js"></script>
+<script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
 {% for fleetwrapper in FLEETWRAPPERS %}
-{{ shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET, GAME) }}
+{{ shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET, SESSIONSTRING) }}
 <br />
 {% endfor %}
 
 {% if SINGLESHIPWRAPPERS %}
-{{ shiplist_singles(SINGLESHIPWRAPPERS, GAME) }}
+{{ shiplist_singles(SINGLESHIPWRAPPERS, SESSIONSTRING) }}
 {% else %}
 <table class="tcal" id="shiplist_singles_table" style="display: none;"></table>
 {% endif %}
