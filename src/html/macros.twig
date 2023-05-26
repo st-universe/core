@@ -23,7 +23,7 @@
 {% macro navigation() %}
 {{ _self.navigation_item('Kolonien', 'colony.php', 'planets') }}
 {{ _self.navigation_item('Schiffe', 'ship.php', 'ships') }}
-{% if USER.hasStationsNavigation %}
+{% if GAME.getUser.hasStationsNavigation %}
 {{ _self.navigation_item('Stationen', 'station.php', 'station') }}
 {% endif %}
 {{ _self.navigation_item('KommNet', 'comm.php', 'comm') }}
