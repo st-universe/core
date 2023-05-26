@@ -137,7 +137,7 @@
             <div class="sidebar">
                 <div style="width: 100%; padding-left: 12px; padding-right: 10px">
                     {% from 'html/macros.twig' import navigation %}
-                    {{ navigation() }}
+                    {{ navigation(GAME) }}
                     <div class="border_box navigation_item_servertime">
                         <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
                         <span id="servertime" style="display: none;">{{ date()|date('M, d Y G:i:s') }}</span>

@@ -1,4 +1,4 @@
-{% macro breadcrumb() %}
+{% macro breadcrumb(GAME) %}
 <div class="box">
   <div class="box_title" style="text-align: left">/
     {% for key, item in GAME.getNavigation %}
@@ -12,15 +12,15 @@
 </div>
 <br />
 {% if GAME.getInformation %}
-{{ _self.systeminformation() }}
+{{ _self.systeminformation(GAME) }}
 {% endif %}
-{{ _self.achievements() }}
+{{ _self.achievements(GAME) }}
 {% if not GAME.getInformation %}
 <div id="result" style="display: none;">..</div>
 {% endif %}
 {% endmacro %}
 
-{% macro systeminformation() %}
+{% macro systeminformation(GAME) %}
 {% if GAME.getExecuteJS %}
 <script language="Javascript">
   {% for item in GAME.getExecuteJS %}
@@ -54,7 +54,7 @@
 <br />
 {% endmacro %}
 
-{% macro achievements() %}
+{% macro achievements(GAME) %}
 {% if GAME.getAchievements %}
 <script type="text/Javascript" defer="defer">
   {% for achievement in GAME.getAchievements %}
