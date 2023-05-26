@@ -4,10 +4,11 @@
     {% for key, item in GAME.getNavigation %}
     <a href="#" href="{{ key }}">
       {{ item|bbcode2txt }}
-      {% if not loop.last %}
-      <span> / </span>
-      {% endif %}
-      {% endfor %}
+    </a>
+    {% if not loop.last %}
+    <span> / </span>
+    {% endif %}
+    {% endfor %}
   </div>
 </div>
 <br />
