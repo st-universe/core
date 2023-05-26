@@ -3,7 +3,7 @@
 {% block body %}
 {% from 'html/sitemacros.twig' import breadcrumb %}
 {% from 'html/shipmacros.twig' import shiplist_fleetform, shiplist_singles %}
-{{ breadcrumb() }}
+{{ breadcrumb(GAME) }}
 {% if not SHIPS_AVAILABLE %}
 <table class="tcal">
 	<tr>

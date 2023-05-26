@@ -85,7 +85,6 @@ final class Init
         // TWIG
         $twigHelper = $container->get(TwigHelper::class);
         $twigHelper->registerMethodsAndFilters();
-        $twigHelper->registerGlobalVariables();
 
         $app($container);
     }

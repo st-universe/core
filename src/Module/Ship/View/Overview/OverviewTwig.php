@@ -9,7 +9,6 @@ use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
@@ -47,8 +46,6 @@ final class OverviewTwig implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
         $this->loggerUtil->log(sprintf('Shiplist-start, timestamp: %F', microtime(true)));
 

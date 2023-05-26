@@ -20,7 +20,7 @@
 </div>
 {% endmacro %}
 
-{% macro navigation() %}
+{% macro navigation(GAME) %}
 {{ _self.navigation_item('Kolonien', 'colony.php', 'planets') }}
 {{ _self.navigation_item('Schiffe', 'ship.php', 'ships') }}
 {% if GAME.getUser.hasStationsNavigation %}
