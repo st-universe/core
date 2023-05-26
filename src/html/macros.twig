@@ -20,10 +20,10 @@
 </div>
 {% endmacro %}
 
-{% macro navigation(GAME) %}
+{% macro navigation(hasStationsNavigation, isAdmin) %}
 {{ _self.navigation_item('Kolonien', 'colony.php', 'planets') }}
 {{ _self.navigation_item('Schiffe', 'ship.php', 'ships') }}
-{% if GAME.getUser.hasStationsNavigation %}
+{% if hasStationsNavigation %}
 {{ _self.navigation_item('Stationen', 'station.php', 'station') }}
 {% endif %}
 {{ _self.navigation_item('KommNet', 'comm.php', 'comm') }}
@@ -34,7 +34,7 @@
 {{ _self.navigation_item('Datenbank', 'database.php', 'data') }}
 {{ _self.navigation_item('Ereignisse', 'history.php', 'history') }}
 {{ _self.navigation_item('Karte', 'starmap.php', 'map') }}
-{% if GAME.isAdmin %}
+{% if isAdmin %}
 {{ _self.navigation_item('Admin', '/admin', 'ticks') }}
 {% endif %}
 {% endmacro %}

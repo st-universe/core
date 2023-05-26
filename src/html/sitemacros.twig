@@ -1,7 +1,7 @@
-{% macro breadcrumb(GAME) %}
+{% macro breadcrumb(navigation, information, achievements, executeJS) %}
 <div class="box">
   <div class="box_title" style="text-align: left">/
-    {% for key, item in GAME.getNavigation %}
+    {% for key, item in navigation %}
     <a href="#" href="{{ key }}">
       {{ item|bbcode2txt }}
     </a>
@@ -12,19 +12,19 @@
   </div>
 </div>
 <br />
-{% if GAME.getInformation %}
-{{ _self.systeminformation(GAME) }}
+{% if information %}
+{{ _self.systeminformation(information, executeJS) }}
 {% endif %}
-{{ _self.achievements(GAME) }}
-{% if not GAME.getInformation %}
+{{ _self.achievements(achievements) }}
+{% if not information %}
 <div id="result" style="display: none;">..</div>
 {% endif %}
 {% endmacro %}
 
-{% macro systeminformation(GAME) %}
-{% if GAME.getExecuteJS %}
+{% macro systeminformation(information, executeJS) %}
+{% if executeJS %}
 <script language="Javascript">
-  {% for item in GAME.getExecuteJS %}
+  {% for item in executeJS %}
   { { item } }
   {% endfor %}
 </script>
@@ -36,12 +36,12 @@
     </tr>
     <tr>
       <td>
-        {% for notification in GAME.getInformation %}
+        {% for notification in information %}
         <div>
           {{ notification.getText|bbcode }}
         </div>
         {% endfor %}
-        {% for notification in GAME.getInformation %}
+        {% for notification in information %}
         {% if notification.getLink %}
         <a href="{{ notification.getLink }}" class="linkbutton">
           Zum Schiff wechseln
@@ -55,10 +55,10 @@
 <br />
 {% endmacro %}
 
-{% macro achievements(GAME) %}
-{% if GAME.getAchievements %}
+{% macro achievements(achievements) %}
+{% if achievements %}
 <script type="text/Javascript" defer="defer">
-  {% for achievement in GAME.getAchievements %}
+  {% for achievement in achievements %}
   showAchievement('{{ achievement|jsquote }}');
   {% endfor %}
 </script>

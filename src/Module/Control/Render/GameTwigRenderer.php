@@ -38,8 +38,10 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         ?UserInterface $user,
         TwigPageInterface $twigPage
     ): string {
-        $twigPage->setVar('GAME', $game);
-        $twigPage->setVar('USER', $user);
+
+        $this->setGameVariables($twigPage, $game);
+        $this->setUserVariables($user, $twigPage);
+
         $twigPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         $twigPage->setVar('WIKI', $this->config->get('wiki.base_url'));
         $twigPage->setVar('FORUM', $this->config->get('board.base_url'));
@@ -61,5 +63,36 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         }
 
         return $twigPage->render();
+    }
+
+    private function setGameVariables(TwigPageInterface $twigPage, GameControllerInterface $game): void
+    {
+        $twigPage->setVar('NAVIGATION', $game->getNavigation());
+        $twigPage->setVar('PAGETITLE', $game->getPageTitle());
+        $twigPage->setVar('INFORMATION', $game->getInformation());
+        $twigPage->setVar('ACHIEVEMENTS', $game->getAchievements());
+        $twigPage->setVar('EXECUTEJS', $game->getExecuteJS());
+        $twigPage->setVar('SESSIONSTRING', $game->getSessionString());
+        $twigPage->setVar('JAVASCRIPTPATH', $game->getJavascriptPath());
+        $twigPage->setVar('ISADMIN', $game->isAdmin());
+        $twigPage->setVar('GAMETURN', $game->getCurrentRound()->getTurn());
+        $twigPage->setVar('BENCHMARK', $game->getBenchmarkResult());
+    }
+
+    private function setUserVariables(?UserInterface $user, TwigPageInterface $twigPage): void
+    {
+        if ($user === null) {
+            $twigPage->setVar('USER', null);
+        } else {
+            $twigPage->setVar('USER', new UserContainer(
+                $user->getId(),
+                $user->getAvatar(),
+                $user->getName(),
+                $user->getFactionId(),
+                $user->getCss(),
+                $user->getPrestige(),
+                $user->hasStationsNavigation()
+            ));
+        }
     }
 }
