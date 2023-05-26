@@ -16,12 +16,12 @@
 {% else %}
 <script type="text/javascript" src="{{ GAME.getJavascriptPath }}/js/ship.js"></script>
 {% for fleetwrapper in FLEETWRAPPERS %}
-{{ shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET) }}
+{{ shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET, GAME) }}
 <br />
 {% endfor %}
 
 {% if SINGLESHIPWRAPPERS %}
-{{ shiplist_singles(SINGLESHIPWRAPPERS) }}
+{{ shiplist_singles(SINGLESHIPWRAPPERS, GAME) }}
 {% else %}
 <table class="tcal" id="shiplist_singles_table" style="display: none;"></table>
 {% endif %}
