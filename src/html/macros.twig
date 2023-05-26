@@ -1,4 +1,4 @@
-{% macro useravatar(USER) %}
+{% macro useravatar(USER, ASSET_PATHS) %}
 <div class="userAvatar">
     <a href="/userprofile.php?uid={{ USER.getId }}">
         {% if USER.getAvatar %}
