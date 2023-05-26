@@ -899,7 +899,7 @@ div.navigation_item {
 }
 
 div.navitem_title {
-  margin-top: 0.5vh;
+  margin-top: -0.5vh;
 }
 
 div.navigation_item_servertime {
@@ -1891,7 +1891,7 @@ div.userAvatar img {
   }
 
   div.navitem_title {
-    margin-top: 0vh;
+    margin-top: -0.5vh;
   }
 
   div.navigation_item {
