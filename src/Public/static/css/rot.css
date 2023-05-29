@@ -426,6 +426,7 @@ div.lssobj {
   position: relative;
   text-align: center;
   color: white;
+  top: -50%;
 }
 
 .centered {
@@ -444,7 +445,7 @@ div.lssobj {
 
 .indexedGraphicsShips {
   position: absolute;
-  top: 50%;
+  top: 100%;
 }
 
 .lssColoShield {

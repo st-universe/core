@@ -16,12 +16,12 @@
 {% endif %}
 
 {% if BASES %}
-<script type="text/javascript" src="{{ THIS/getJavascriptPath }}/js/ship.js"></script>
+<script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
 <table class="tcal">
     <tr>
         <td colspan="11">Stationen</td>
     </tr>
-    {% include "html/shipmacros.twig/shiplist_header" %}
+    {{ shiplist_header(wrapper, SESSIONSTRING)}}
     {% for wrapper in BASES %}
     {{ shiplist_body(wrapper, SESSIONSTRING) }}
     {% endfor %}
