@@ -48,12 +48,14 @@
 			tal:define="panel VISUAL_NAV_PANEL; viewportFont panel/getViewportForFont; viewportScale panel/getViewportPerColumn"
 			class="lssarea" cellpadding="0" cellspacing="0">
 			<tr>
-				<td style="text-align: center; height: ${viewportScale}vw;">
-					<a href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss1.png"
-							name="lss_panel" style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
+				<td style="text-align: center; height: ${viewportScale}vw; position: relative !important; top: 0px">
+					<a href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"
+						style="width: ${viewportScale}vw; height: ${viewportScale}vw; position: absolute !important; top: 0px; left: 0px;"><img
+							src="assets/buttons/lss1.png" name="lss_panel"
+							style="width: ${viewportScale}vw; height: ${viewportScale}vw; position: relative !important; top: 0px"
 							title="Langstreckensensoren deaktivieren" /></a>
 				</td>
-				<td style="font-size: ${viewportFont}vw; width: ${viewportScale}vw; height: ${viewportScale}vw;"
+				<td style="font-size: ${viewportFont}vw; width: ${viewportScale}vw; height: ${viewportScale}vw; position: relative !important; top: 0px"
 					class="th" tal:repeat="row panel/getHeadRow" tal:content="row/value">.
 				</td>
 			</tr>
@@ -66,7 +68,7 @@
 						tal:attributes="class entry/getCSSClass"
 						style="border:1px solid ${entry/getBorder}; width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
 						<tal:block tal:condition="entry/isClickable">
-							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
+							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw; position: relative !important; top: 0px"
 								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
 								<img src="assets/map/${entry/getLayer}/${entry/getMapfieldType}.png"
 									style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw; opacity:1;" />
@@ -88,7 +90,8 @@
 							</div>
 						</tal:block>
 						<tal:block tal:condition="not:entry/isClickable">
-							<div class="imgOverlayText">
+							<div class="imgOverlayText"
+								style="width: ${viewportScale}vw; height: ${viewportScale}vw; position: relative !important; top: 0px">
 								<img src="assets/map/${entry/getLayer}/${entry/getMapfieldType}.png"
 									style="z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw; opacity:1;" />
 								<tal:block tal:condition="entry/getShieldState">
