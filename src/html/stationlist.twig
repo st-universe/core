@@ -1,0 +1,30 @@
+{% extends "html/sitedefaults.twig" %}
+
+{% block body %}
+{% from 'html/sitemacros.twig' import breadcrumb %}
+{% from 'html/shipmacros.twig' import shiplist_header, shiplist_body %}
+{{ breadcrumb(NAVIGATION, INFORMATION, ACHIEVEMENTS, EXECUTEJS) }}
+{% if not BASES %}
+<table class="tcal">
+    <tr>
+        <th>Meldung</th>
+    </tr>
+    <tr>
+        <td>Du besitzt derzeit keine Stationen</td>
+    </tr>
+</table>
+{% endif %}
+
+{% if BASES %}
+<script type="text/javascript" src="{{ THIS/getJavascriptPath }}/js/ship.js"></script>
+<table class="tcal">
+    <tr>
+        <td colspan="11">Stationen</td>
+    </tr>
+    {% include "html/shipmacros.twig/shiplist_header" %}
+    {% for wrapper in BASES %}
+    {{ shiplist_body(wrapper, SESSIONSTRING) }}
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}
