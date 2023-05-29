@@ -361,5 +361,10 @@ function adjustCellHeight(image) {
 function adjustCellWidth(image) {
 	var cell = image.parentNode.parentNode;
 	var width = image.offsetWidth;
-	cell.style.width = width + 5 + 'px';
+	var cellWidth = cell.offsetWidth;
+
+	if (width > cellWidth) {
+		cell.style.minWidth = width + 5 + 'px';
+	}
+	else { cell.style.minWidth = cellWidth + 'px'; }
 }
