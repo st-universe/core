@@ -38,7 +38,7 @@ final class Overview implements ViewControllerInterface
             _('Stationen')
         );
         $game->setPageTitle(_('/ Stationen'));
-        $game->setTemplateFile('html/stationlist.xhtml');
+        $game->setTemplateFile('html/stationlist.twig', true);
 
         $game->setTemplateVar(
             'BASES',
