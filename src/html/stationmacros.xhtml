@@ -431,8 +431,8 @@
             tal:attributes="class entry/getCSSClass"
             style="background-image: url(assets/map/${entry/getMapfieldType}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
             <tal:block tal:condition="entry/isClickable">
-              <div style="width: ${viewportScale}vw; height: ${viewportScale}vw;" class="lssobj imgOverlayText"
-                onclick="${entry/getOnClick}">
+              <div style="width: ${viewportScale}vw; height: ${viewportScale}vw; top: 0px !important;"
+                class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
                 <tal:block tal:condition="entry/getShieldState">
                   <img src="assets/planets/s1.png" class="lssColoShield"
                     style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
@@ -449,7 +449,7 @@
               </div>
             </tal:block>
             <tal:block tal:condition="not:entry/isClickable">
-              <div class="imgOverlayText">
+              <div class="imgOverlayText" style="top: 0px !important;">
                 <tal:block tal:condition="entry/getShieldState">
                   <img src="assets/planets/s1.png" class="lssColoShield"
                     style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
