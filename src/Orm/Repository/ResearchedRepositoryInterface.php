@@ -13,7 +13,7 @@ use Stu\Orm\Entity\UserInterface;
 interface ResearchedRepositoryInterface extends ObjectRepository
 {
     /**
-     * @param list<int> $researchIds
+     * @param array<int> $researchIds
      */
     public function hasUserFinishedResearch(UserInterface $user, array $researchIds): bool;
 

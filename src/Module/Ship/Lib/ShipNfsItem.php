@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Game\TimeConstants;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\SpacecraftTypeEnum;
+use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 
 final class ShipNfsItem
 {
@@ -58,9 +59,9 @@ final class ShipNfsItem
     {
         return $this->values['warpstate'] > 1;
     }
-    public function tractorbeamNotPossible(): bool
+    public function isTractorbeamPossible(): bool
     {
-        return $this->isBase() || $this->isTrumfield() || $this->getCloakState() || $this->getShieldState() || $this->getWarpState();
+        return TractorBeamShipSystem::isTractorBeamPossible($this);
     }
     public function isInterceptable(): bool
     {

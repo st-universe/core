@@ -325,11 +325,8 @@ final class GameController implements GameControllerInterface
 
     public function setTemplateVar(string $key, $variable): void
     {
-        if ($this->isTwig) {
-            $this->twigPage->setVar($key, $variable);
-        } else {
-            $this->talPage->setVar($key, $variable);
-        }
+        $this->twigPage->setVar($key, $variable);
+        $this->talPage->setVar($key, $variable);
     }
 
     public function getUser(): UserInterface

@@ -546,7 +546,7 @@
             </a>
           </div>
           <div style="float:left; margin-right:4px;"
-            tal:condition="php:!ship.tractorbeamNotPossible() AND !SHIP.isTractoring()">
+            tal:condition="php:ship.isTractorbeamPossible() AND !SHIP.isTractoring()">
             <a href="?B_ACTIVATE_TRACTOR=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}"
               onmouseover="cp('tra_${ship/getId}','buttons/trak2')"
               onmouseout="cp('tra_${ship/getId}','buttons/trak1')">

@@ -63,7 +63,7 @@ final class Overview implements ViewControllerInterface
             _('Schiffe')
         );
         $game->setPageTitle(_('/ Schiffe'));
-        $game->setTemplateFile('html/shiplist.xhtml');
+        $game->setTemplateFile('html/shiplist.twig', true);
 
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
         $game->setTemplateVar('SHIPS_AVAILABLE', $fleets !== [] || $ships !== []);

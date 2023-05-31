@@ -30,6 +30,7 @@ use Stu\Component\Ship\SpacecraftTypeEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
+use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Component\Station\StationUtility;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -1382,9 +1383,9 @@ class Ship implements ShipInterface
         return $this->getCloakState() == 0 && $this->getWarpstate() == 0;
     }
 
-    public function tractorbeamNotPossible(): bool
+    public function isTractorbeamPossible(): bool
     {
-        return $this->isBase() || $this->getRump()->isTrumfield() || $this->getCloakState() || $this->getShieldState() || $this->getWarpState();
+        return TractorBeamShipSystem::isTractorBeamPossible($this);
     }
 
     public function isInterceptAble(): bool

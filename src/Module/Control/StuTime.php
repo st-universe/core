@@ -7,6 +7,8 @@ namespace Stu\Module\Control;
  */
 class StuTime
 {
+    public const STU_YEARS_IN_FUTURE_OFFSET = 370;
+
     public function time(): int
     {
         return time();
@@ -14,6 +16,6 @@ class StuTime
 
     public function transformToStuDate(int $unixTimestamp): string
     {
-        return date("d.m.", $unixTimestamp) . (date("Y", $unixTimestamp) + 370) . " " . date("H:i", $unixTimestamp);
+        return date("d.m.", $unixTimestamp) . (date("Y", $unixTimestamp) + self::STU_YEARS_IN_FUTURE_OFFSET) . " " . date("H:i", $unixTimestamp);
     }
 }

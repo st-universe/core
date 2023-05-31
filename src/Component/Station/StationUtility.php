@@ -144,18 +144,19 @@ final class StationUtility implements StationUtilityInterface
         return $dockedWorkbees;
     }
 
-    public function hasEnoughDockedWorkbees(ShipInterface $station, ShipRumpInterface $rump): bool
+    public function getNeededWorkbeeCount(ShipInterface $station, ShipRumpInterface $rump): int
     {
+        if ($rump->getNeededWorkbees() === null) {
+            return 0;
+        }
+
         switch ($station->getState()) {
             case ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION:
-                $neededWorkbees = $rump->getNeededWorkbees();
-                break;
+                return $rump->getNeededWorkbees();
             case ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING:
-                $neededWorkbees = (int)ceil($rump->getNeededWorkbees() / 2);
-                break;
+                return (int)ceil($rump->getNeededWorkbees() / 2);
             case ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE:
-                $neededWorkbees = (int)ceil($rump->getNeededWorkbees() / 5);
-                break;
+                return (int)ceil($rump->getNeededWorkbees() / 5);
             default:
                 throw new RuntimeException(sprintf(
                     'shipState %d of shipId %d is not supported',
@@ -163,8 +164,11 @@ final class StationUtility implements StationUtilityInterface
                     $station->getId()
                 ));
         }
+    }
 
-        return $this->getDockedWorkbeeCount($station) >= $neededWorkbees;
+    public function hasEnoughDockedWorkbees(ShipInterface $station, ShipRumpInterface $rump): bool
+    {
+        return $this->getDockedWorkbeeCount($station) >= $this->getNeededWorkbeeCount($station, $rump);
     }
 
     public function getConstructionProgress(ShipInterface $ship): ?ConstructionProgressInterface

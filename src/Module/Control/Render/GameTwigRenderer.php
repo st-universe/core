@@ -46,14 +46,6 @@ final class GameTwigRenderer implements GameTwigRendererInterface
         $twigPage->setVar('WIKI', $this->config->get('wiki.base_url'));
         $twigPage->setVar('FORUM', $this->config->get('board.base_url'));
         $twigPage->setVar('CHAT', $this->config->get('discord.url'));
-        $twigPage->setVar(
-            'ASSET_PATHS',
-            [
-                'alliance' => $this->config->get('game.alliance_avatar_path'),
-                'user' => $this->config->get('game.user_avatar_path'),
-                'faction' => 'assets/rassen/',
-            ]
-        );
 
         // render fragments are user related, so render them only if a user is available
         if ($user !== null) {

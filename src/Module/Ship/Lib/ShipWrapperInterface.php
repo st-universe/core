@@ -70,6 +70,8 @@ interface ShipWrapperInterface
      */
     public function getStateIconAndTitle(): ?array;
 
+    public function canBeScrapped(): bool;
+
     public function getHullSystemData(): HullSystemData;
 
     public function getShieldSystemData(): ?ShieldSystemData;
