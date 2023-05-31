@@ -2,7 +2,7 @@
 
 {% block body %}
 {% from 'html/sitemacros.twig' import breadcrumb %}
-{% from 'html/shipmacros.twig' import shiplist_fleetform, shiplist_singles %}
+{% from 'html/shiplistmacros.twig' import shiplist_fleetform, shiplist_singles %}
 {{ breadcrumb(NAVIGATION, INFORMATION, ACHIEVEMENTS, EXECUTEJS) }}
 {% if not SHIPS_AVAILABLE %}
 <table class="tcal">

@@ -1,0 +1,235 @@
+{% macro shiplist_header() %}
+<tr>
+    <th style="width: 140px;">Klasse</th>
+    <th>Name</th>
+    <th style="width: 30px;"></th>
+    <th style="width: 70px;" title="im System (außerhalb)">x|y <img src="assets/buttons/info2.png"
+            style="height:16px;" /></th>
+    <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="assets/buttons/info2.png" style="height:16px;" />
+    </th>
+    <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img
+            src="assets/buttons/info2.png" style="height:16px;" /></th>
+    <th style="width: 160px;" title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">Energie <img
+            src="assets/buttons/info2.png" style="height:16px;" /></th>
+    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="assets/buttons/info2.png"
+            style="height:16px;" /></th>
+    <th style="width: 90px; text-align: center;">Crew</th>
+    <th style="width: 125px; text-align: center;">Systeme</th>
+    <th style="width: 35px;"></th>
+</tr>
+{% endmacro %}
+
+{% macro shiplist_body(wrapper, sessionString) %}
+{% set ship = wrapper.get %}
+{% set shipid = ship.getId %}
+{% set epssystem = wrapper.getEpsSystemData %}
+<tr>
+    <td style="height:1px; width:1px; {{ ship.getHoldingWebBackgroundStyle }}" class="shiplistshipimage">
+        <a href="ship.php?SHOW_SHIP=1&id={{ shipid }}" class="imgOverlayText"
+            onmouseover="openStorageInit(this, {{ shipid }});" onmouseout="closeStorage();">
+            {% from 'html/shipmacros.twig' import shipimage %}
+            {{ shipimage(ship) }}
+        </a>
+    </td>
+    <td>
+        <a href="ship.php?SHOW_SHIP=1&id={{ shipid }}">
+            {% if ship.getDockedTo %}
+            <img src="assets/buttons/dock2.png" title="Schiff ist angedockt" style="height:20px;" />
+            {% endif %}
+            {% set stateIconAndTitle = wrapper.getStateIconAndTitle %}
+            {% if stateIconAndTitle %}
+            <img src="assets/buttons/{{ stateIconAndTitle[0] }}.png" title="{{ stateIconAndTitle[1] }}"
+                style="height:20px;" />
+            {% endif %}
+            <span>{{ ship.getName|bbcode }}</span>
+        </a>
+    </td>
+    <td style="text-align: center;">
+        <img src="assets/buttons/alert{{ ship.getAlertState }}_1.png" title="Alarmstufe" />
+    </td>
+    {% if ship.getSystem %}
+    <td align="center">
+        {{ ship.getPosX }}|{{ ship.getPosY }}<br />
+        {% if not ship.getSystem.isWormhole %}
+        ({{ ship.getCx }}|{{ ship.getCy }})
+        {% else %}
+        <img src="assets/buttons/wormh2.png" title="befindet sich im Wurmloch '{{ ship.getSystem.getName }}'" />
+        {% endif %}
+    </td>
+    {% else %}
+    <td align="center">
+        ({{ ship.getCx }}|{{ ship.getCy }})
+    </td>
+    {% endif %}
+    <td>
+        <span style="{{ ship.getHullColorStyle }}">{{ ship.getHull }}</span>/{{ ship.getMaxHull }}
+    </td>
+    <td>
+        {% if ship.getShieldState %}
+        <span class="activeshield">{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
+        {% else %}
+        <span>{{ ship.getShield }}/{{ ship.getMaxShield }}</span>
+        {% endif %}
+        (+{{ ship.getShieldRegenerationRate }})
+    </td>
+    <td>
+        {% if epssystem %}
+        {{ epssystem.getEps }}/{{ epssystem.getMaxEps }}
+        <span>{{ wrapper.getEffectiveEpsProduction|addPlusCharacter }}</span>
+        (<span class="neg">{{ wrapper.getEpsUsage }}</span>/<span class="neg">{{ wrapper.getWarpcoreUsage }}</span>)
+        {% endif %}
+    </td>
+    <td>
+        <div style="float: left; width: 50%">
+            {% if ship.hasWarpcore %}
+            <img src="assets/buttons/warpk.png" title="Warpkern" /> <span>{{ ship.getReactorLoad }}</span>
+            {% endif %}
+            {% if ship.hasFusionReactor %}
+            <img src="assets/buttons/fusrkt.png" title="Fusionsreaktor" /> <span>{{ ship.getReactorLoad }}</span>
+            {% endif %}
+        </div>
+        {% if epssystem %}
+        <div style="float: left; width: 50%">
+            {% if epssystem.isEBattUseable %}
+            <img src="assets/buttons/batt.png" title="Ersatzbatterie" />
+            {% else %}<img src="assets/buttons/batt2.png" title="Ersatzbatterie (gesperrt)" />
+            {% endif %} {{ epssystem.getBattery }}
+        </div>
+        {% endif %}
+    </td>
+    <td style="text-align: center;">{{ ship.getCrewCount }}</td>
+    <td>
+        {% if ship.getNbs %}
+        <img src="assets/buttons/kss1.png" title="Nahbereichssensoren aktiviert" />
+        {% else %}
+        <img src="assets/buttons/kss2.png" title="Nahbereichssensoren deaktiviert" />
+        {% endif %}
+        {% if ship.getLss %}
+        <img src="assets/buttons/lss1.png" title="Langstreckensensoren aktiviert" />
+        {% else %}
+        <img src="assets/buttons/lss2.png" title="Langstreckensensoren deaktiviert" />
+        {% endif %}
+        {% if ship.hasPhaser %}
+        {% if ship.getPhaserState %}
+        <img src="assets/buttons/act_phaser1.png" title="Strahlenwaffe aktiviert" />
+        {% else %}
+        <img src="assets/buttons/act_phaser2.png" title="Strahlenwaffe deaktiviert" />
+        {% endif %}
+        {% endif %}
+        {% if ship.hasTorpedo %}
+        {% if ship.getTorpedoState %}
+        <img src="assets/buttons/act_torp1.png"
+            title="Torpedobänke aktiviert ({{ ship.getTorpedoCount }}/{{ ship.getMaxTorpedos }})" />
+        {% else %}
+        <img src="assets/buttons/act_torp2.png"
+            title="Torpedobänke deaktiviert ({{ ship.getTorpedoCount }}/{{ ship.getMaxTorpedos }})" />
+        {% endif %}
+        {% endif %}
+        {% if ship.hasCloak %}
+        {% if ship.getCloakState %}
+        <img src="assets/buttons/tarn1.png" title="Tarnung aktiviert" />
+        {% else %}
+        <img src="assets/buttons/tarn2.png" title="Tarnung deaktiviert" />
+        {% endif %}
+        {% endif %}
+    </td>
+    <td style="text-align: center;">
+        {% if ship.getFleet %}
+        {% if ship.isFleetLeader %}
+        <a href="?B_DELETE_FLEET=1&id={{ shipid }}&sstr={{ sessionString }}"
+            onmouseover="cp('fleet_{{ shipid }}','buttons/fl_flag3')"
+            onmouseout="cp('fleet_{{ shipid }}','buttons/fl_flag2')">
+            <img src="assets/buttons/fl_flag2.png" name="fleet_{{ shipid }}" title="Flotte auflösen" />
+        </a>
+        {% else %}
+        <a href="javascript:void(0);" onclick="leaveFleetInShiplist({{ shipid }}, '{{ sessionString }}');"
+            onmouseover="cp('fleet_{{ shipid }}','buttons/fl_raus2')"
+            onmouseout="cp('fleet_{{ shipid }}','buttons/fl_raus1')">
+            <img src="assets/buttons/fl_raus1.png" name="fleet_{{ shipid }}" title="Flotte verlassen" />
+        </a>
+        {% endif %}
+        {% else %}
+        {% if not ship.isBase %}
+        <a href="?B_NEW_FLEET=1&id={{ shipid }}" onmouseover="cp('fleet_{{ shipid }}','buttons/fl_flag2')"
+            onmouseout="cp('fleet_{{ shipid }}','buttons/fl_flag1')">
+            <img src="assets/buttons/fl_flag1.png" name="fleet_{{ shipid }}" title="Flotte erstellen" />
+        </a>
+        {% endif %}
+        {% endif %}
+    </td>
+</tr>
+{% endmacro %}
+
+{% macro shiplist_fleetform(fleetwrapper, MAX_CREW_PER_FLEET, sessionString) %}
+{% set fleet = fleetwrapper.get %}
+{% set fleetid = fleet.getId %}
+<form action="ship.php" method="post" id="shiplist_fleet_form_{{ fleet.getId }}">
+    <input type="hidden" name="fleetid" value="{{ fleetid }}" />
+    <table class="tcal">
+        <tr>
+            <td colspan="11">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 35%;">
+                            <div style="display: table-cell;">
+                                <a href="javascript:void(0);" onclick="toggleFleet({{ fleetid }});"
+                                    title="zuklappen/aufklappen">
+                                    <img src="assets/buttons/fleet.png" />
+                                </a>
+                            </div>
+                            <div style="display: table-cell; vertical-align:middle;">
+                                {{ fleet.getName|bbcode }}
+                                <span>
+                                    ({{ fleet.getCrewSum }}/{{ MAX_CREW_PER_FLEET }} Crew)
+                                </span>
+                            </div>
+                        </td>
+                        <td style="width: 25%;">
+                            {% if fleet.getDefendedColony %}
+                            <img src="/assets/buttons/defend1.png" title="verteidigt die Kolonie" />
+                            {{ fleet.getDefendedColony.getName|bbcode }}
+                            {% endif %}
+                            {% if fleet.getBlockedColony %}
+                            <img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
+                            {{ fleet.getBlockedColony.getName|bbcode }}
+                            {% endif %}
+                        </td>
+                        <td style="width: 20%;">
+                            <input type="text" name="fleetname" style="width: 150px;" value="{{ fleet.getName }}" />
+                            <button type="submit" name="B_FLEET_CHANGE_NAME" value="Name ändern" title="Name ändern">
+                                <img src="assets/buttons/knedit2.png" alt="Name ändern" />
+                            </button>
+                        </td>
+                        <td style="width: 20%; text-align: right;">
+                            <a href="javascript:void(0);" onclick="showAvailableShips({{ fleetid }});"
+                                title="Schiff hinzufügen"><img src="assets/buttons/fl_join2.png"
+                                    alt="Schiff hinzufügen" /></a>
+                            <a href="?B_FLEET_UP=1&id={{ fleetid }}">
+                                <img src="assets/buttons/bt_up1.png" title="Flotte nach oben schieben" />
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table style="{{ fleet.getHiddenStyle }}" class="tcal" id="fleetbody_{{ fleetid }}">
+        {{ _self.shiplist_header() }}
+        {% for wrapper in fleetwrapper.getShipWrappers %}
+        {{ _self.shiplist_body(wrapper, sessionString) }}
+        {% endfor %}
+    </table>
+</form>
+{% endmacro %}
+
+{% macro shiplist_singles(SINGLESHIPWRAPPERS, sessionString) %}
+<table class="tcal" id="shiplist_singles_table">
+    <tr>
+        <td colspan="11">Einzelschiffe</td>
+    </tr>
+    {{ _self.shiplist_header() }}
+    {% for wrapper in SINGLESHIPWRAPPERS %}
+    {{ _self.shiplist_body(wrapper, sessionString) }}
+    {% endfor %}
+</table>
+{% endmacro %}

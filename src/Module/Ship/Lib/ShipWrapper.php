@@ -396,6 +396,13 @@ final class ShipWrapper implements ShipWrapperInterface
         return null;
     }
 
+    public function canBeScrapped(): bool
+    {
+        $ship = $this->get();
+
+        return $ship->isBase() && $ship->getState() !== ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING;
+    }
+
     public function getHullSystemData(): HullSystemData
     {
         $hullSystemData = $this->getSpecificShipSystem(

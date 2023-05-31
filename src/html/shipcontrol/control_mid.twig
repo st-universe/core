@@ -1,0 +1,595 @@
+{% macro control_mid(ship, astroState, isTachyonActive, starSystemEntryTal, currentColony, sessionString) %}
+
+{% set shipId = ship.getId %}
+{% set starSystem = ship.getSystem %}
+<table class="tcal">
+    <tr>
+        {% set header = ship.isBase ? 'Stationskontrolle' : 'Schiffskontrolle' %}
+        <th colspan="2"><img src="assets/buttons/gefecht.png" /> {{ header }}</th>
+    </tr>
+    <tr>
+        <td colspan="2">
+            {{ _self.onOffToggle('SHIELDS', shipId, ship.getShieldState, 'shldac', 'Schilde', sessionString) }}
+        </td>
+    </tr>
+    {% if ship.hasPhaser %}
+    <tr>
+        {% if ship.isAlertGreen %}
+        <td colspan="2">
+            <img src="assets/buttons/act_phaser2.png" name="actphaser" /> bei Alarmstufe
+            deaktiviert
+        </td>
+        {% else %}
+        <td colspan="2">
+            {{ _self.onOffToggle('PHASER', shipId, ship.getPhaserState, 'act_phaser', 'Strahlenwaffe', sessionString) }}
+        </td>
+        {% endif %}
+    </tr>
+    {% endif %}
+    {% if ship.hasTorpedo %}
+    <tr>
+        {% if ship.isAlertGreen %}
+        <td>
+            <img src="assets/buttons/act_torp2.png" name="acttorp" /> bei Alarmstufe
+            deaktiviert
+        </td>
+        {% else %}
+        <td>
+            {{ _self.onOffToggle('TORPEDO', shipId, ship.getTorpedoState, 'act_torp', 'Torpedobänke', sessionString) }}
+        </td>
+        {% endif %}
+        {{ _self.torpedoDisplay(ship.getTorpedo, ship.getTorpedoCount) }}
+    </tr>
+    {% elseif ship.isTorpedoStorageHealthy %}
+    <tr>
+        {{ _self.torpedoDisplay(ship.getTorpedo, ship.getTorpedoCount) }}
+    </tr>
+    {% endif %}
+    {% if ship.hasSubspaceScanner %}
+    <tr>
+        <td colspan="2">
+            {{ _self.onOffToggle('SUBSPACE', shipId, ship.getSubspaceState, 'subspace', 'Subraumfeldsensoren',
+            sessionString) }}
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.hasCloak %}
+    <tr>
+        <td colspan="2">
+            {{ _self.onOffToggle('CLOAK', shipId, ship.getCloakState, 'tarn', 'Tarnung', sessionString) }}
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.isWebEmitterHealthy %}
+    <tr>
+        <td title="Webemitter Einstellungen" colspan="2">
+            <a href="javascript:void(0);" onclick="showWebEmitterWindow();"
+                onmouseover="cp('webemitter','buttons/net_2')" onmouseout="cp('webemitter','buttons/net_1')">
+                <img style="width: 20px;" src="assets/buttons/net_1.png" name="webemitter" /> Webemitter
+                Einstellungen
+            </a>
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.hasTachyonScanner %}
+    <tr>
+        <td colspan="2">
+            {{ _self.onOffToggle('TACHYON', shipId, ship.getTachyonState, 'decloak', 'Tachyon-Scanner'
+            , sessionString) }}
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.hasUplink %}
+    <tr>
+        <td colspan="2">
+            <a href="?B_ACTIVATE_UPLINK=1&id={{ shipId }}&sstr={{ sessionString }}"
+                onmouseover="cp('uplink','buttons/uplink1')" onmouseout="cp('uplink','buttons/uplink2')">
+                <img src="/assets/buttons/uplink2.png" name="uplink" />
+                Uplink aktivieren
+            </a>
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.hasRPGModule %}
+    <tr>
+        <td colspan="2">
+            {{ _self.onOffToggle('RPG_MODULE', shipId, ship.getRPGModuleState, 'rpg', 'RPG Modul', sessionString) }}
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.hasShuttleRamp and ship.getStoredShuttles %}
+    {% set defaultId = ship.getStoredShuttles[0].getId %}
+    <tr>
+        <td>
+            <select name="shid" onchange="cp('shuttle','commodities/' + this.value, 'png')">
+                {% for data in ship.getStoredShuttles %}
+                <option value="{{ data.getId }}">{{ data.getName }}
+                </option>
+                {% endfor %}
+            </select>
+            <img src="/assets/commodities/{{ defaultId }}.png" name="shuttle" />
+            <input type="submit" class="button" name="B_START_SHUTTLE" value="Shuttle starten" />
+        </td>
+        <td>
+            {{ ship.getStoredShuttleCount }} / {{ ship.getRump.getShuttleSlots }} geladen
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.canBuildConstruction %}
+    <tr>
+        <td colspan="2">
+            <input type="submit" class="button" name="B_BUILD_CONSTRUCTION" value="Konstrukt errichten" />
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.hasAstroLaboratory %}
+    <tr>
+        <td colspan="2">
+            {{ _self.onOffToggle('ASTRO', shipId, ship.getAstroState, 'map', 'Astrometrisches Labor', sessionString) }}
+        </td>
+    </tr>
+    {% endif %}
+    {% if ship.getRump.isshipyard %}
+    <tr>
+        <td colspan="2">
+            {{ _self.onOffToggle('HUB', shipId, ship.getConstructionHubState, 'rep', 'Werfthub', sessionString) }}
+        </td>
+    </tr>
+    {% endif %}
+</table>
+{% if ship.isFleetLeader %}
+<br />
+<table class="tcal">
+    <tr>
+        <th colspan="3">
+            <img src="assets/buttons/fleet.png" title="Flottenkontrolle" />
+            <span>Flottenkontrolle</span>
+        </th>
+    </tr>
+    <tr>
+        <td class="darkbg" style="width: 40%;">Aktivieren</td>
+        <td class="darkbg" style="width: 40%;">Deaktivieren</td>
+        <td class="darkbg" style="width: 20%;">Alarmstufe</td>
+    </tr>
+    <tr>
+        <td>
+            <a href="?B_FLEET_ACTIVATE_NBS=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/kss1.png" name="fl_ksson" title="Nahbereichssensoren aktivieren" />
+            </a>
+            <a href="?B_FLEET_ACTIVATE_SHIELDS=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/shldac1.png" name="fl_shieldon" title="Schilde aktivieren" />
+            </a>
+            <a href="?B_FLEET_ACTIVATE_PHASER=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/act_phaser1.png" name="fl_phaseron" title="Strahlenwaffen aktivieren" />
+            </a>
+            <a href="?B_FLEET_ACTIVATE_TORPEDO=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/act_torp1.png" name="fl_torpon" title="Torpedobänke aktivieren" />
+            </a>
+            <a href="?B_FLEET_ACTIVATE_CLOAK=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/tarn1.png" name="fl_cloakon" title="Tarnung aktivieren" />
+            </a>
+            {% if ship.isWarpPossible %}
+            <a href="?B_FLEET_ACTIVATE_WARP=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/warp1.png" name="fl_cloakon" title="Warpantrieb aktivieren" />
+            </a>
+            {% endif %}
+        </td>
+        <td>
+            <a href="?B_FLEET_DEACTIVATE_NBS=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/kss2.png" name="fl_kssoff" title="Nahbereichssensoren deaktivieren" />
+            </a>
+            <a href="?B_FLEET_DEACTIVATE_SHIELDS=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/shldac2.png" name="fl_shieldoff" title="Schilde deaktivieren" />
+            </a>
+            <a href="?B_FLEET_DEACTIVATE_PHASER=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/act_phaser2.png" name="fl_phaseroff" title="Strahlenwaffen deaktivieren" />
+            </a>
+            <a href="?B_FLEET_DEACTIVATE_TORPEDO=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/act_torp2.png" name="fl_torpoff" title="Torpedobänke deaktivieren" />
+            </a>
+            <a href="?B_FLEET_DEACTIVATE_CLOAK=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/tarn2.png" name="fl_cloakoff" title="Tarnung deaktivieren" />
+            </a>
+            <a href="?B_FLEET_DEACTIVATE_WARP=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/warp2.png" name="fl_cloakoff" title="Warpantrieb deaktivieren" />
+            </a>
+        </td>
+        <td>
+            <a href="?B_FLEET_ALERT_GREEN=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/alert1_2.png" title="Flotte: Alarmstufe Grün" />
+            </a>
+            <a href="?B_FLEET_ALERT_YELLOW=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/alert2_2.png" title="Flotte: Alarmstufe Gelb" />
+            </a>
+            <a href="?B_FLEET_ALERT_RED=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/alert3_2.png" title="Flotte: Alarmstufe Rot" />
+            </a>
+        </td>
+    </tr>
+</table>
+{% endif %}
+{% set dockedTo = ship.getDockedTo %}
+{% if dockedTo %}
+<br />
+<table class="tcal">
+    <tr>
+        <th>Angedockt</th>
+    </tr>
+    <tr>
+        <td>
+            <a href="?B_UNDOCK=1&id={{ shipId }}&sstr={{ sessionString }}" onmouseover="cp('dock','buttons/dock1')"
+                onmouseout="cp('dock','buttons/dock2')">
+                <img src="assets/buttons/dock2.png" title="Abdocken" name="dock" />
+            </a>
+            {% if ship.getUser.getId == dockedTo.getUser.getId %}
+            <a href="?SHOW_ship=1&id={{ dockedTo.getId }}" onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
+                onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
+                <img src="assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation"
+                    style="height: 20px;" />
+            </a>
+            {% endif %}
+            {% if ship.dockedOnTradepost %}
+            <a href="javascript:void(0);" onclick="openTradeMenu({{ dockedTo.getTradePost.getId }});"
+                onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
+                <img src="assets/buttons/menu_trade0.png" title="Handel" name="trade" />
+                Handelstransferfenster öffnen
+            </a>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+{% endif %}
+<br />
+<table class="tcal">
+    {% set system = starSystem %}
+    <tr>
+        <th style="width: 50%;">Informationen</th>
+        {% if system %}
+        {% set header = system.isWormhole ? 'Wurmloch' : 'Sternensystem' %}
+        <th>{{ header }}</th>
+        {% else %}
+        {% if ship.isOverSystem %}
+        <th>Sternensystem</th>
+        {% elseif ship.isOverWormhole %}
+        <th>Wurmloch</th>
+        {% endif %}
+        {% endif %}
+    </tr>
+    <tr>
+        <td>
+            <a href="javascript:void(0);" onclick="showSectorScanWindow(this)"
+                onmouseover="cp('sectorScanButton','buttons/lupe2')"
+                onmouseout="cp('sectorScanButton','buttons/lupe1')">
+                <img src="/assets/buttons/lupe1.png" name="sectorScanButton" />
+                <span>Sektor {{ ship.getPosX }}|{{ ship.getPosY }} scannen</span>
+            </a>
+            {{ _self.astroStates(ship, astroState) }}
+            {% if isTachyonActive %}
+            <br />
+            {% if ship.getTachyonState %}
+            <a href="?B_TACHYON_SCAN=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="/assets/buttons/ascan1.png" name="tachyonScanButton" />
+                <span>Tachyon-Scan in Sektor {{ ship.getPosX }}|{{ ship.getPosY }} noch
+                    aktiv</span>
+            </a>
+            {% else %}
+            <img src="/assets/buttons/ascan1.png" />
+            <span>Tachyon-Scan in Sektor {{ ship.getPosX }}|{{ ship.getPosY }} noch
+                aktiv</span>
+            {% endif %}
+            {% else %}
+            {% if ship.getTachyonState %}
+            <br />
+            <a href="?B_TACHYON_SCAN=1&id={{ shipId }}&sstr={{ sessionString }}"
+                onmouseover="cp('tachyonScanButton','buttons/ascan1')"
+                onmouseout="cp('tachyonScanButton','buttons/ascan')">
+                <img src="/assets/buttons/ascan.png" name="tachyonScanButton" />
+                <span>Tachyon-Scan in Sektor {{ ship.getPosX }}|{{ ship.getPosY }}
+                    starten</span>
+            </a>
+            {% endif %}
+            {% endif %}
+            {% set administratedRegion = ship.getCurrentMapField.getAdministratedRegion %}
+            {% if administratedRegion %}
+            <br />
+            <a href="javascript:void(0);" onclick="showRegionInfo({{ administratedRegion.getId }})"
+                onmouseover="cp('adminRegionButton','buttons/info2')"
+                onmouseout="cp('adminRegionButton','buttons/info1')">
+                <img src="/assets/buttons/info1.png" name="adminRegionButton" />
+                {{ administratedRegion.getDescription }}
+            </a>
+            {% endif %}
+            {% set mapRegion = ship.getCurrentMapField.getMapRegion %}
+            {% if mapRegion %}
+            <br />
+            <a href="javascript:void(0);" onclick="showRegionInfo({{ mapRegion.getId }})"
+                onmouseover="cp('mapRegionButton','buttons/info2')" onmouseout="cp('mapRegionButton','buttons/info1')">
+                <img src="/assets/buttons/info1.png" name="mapRegionButton" />
+                {{ mapRegion.getDescription }}
+            </a>
+            {% endif %}
+            {% if ship.getCurrentMapField.getInfluenceArea and ship.getCurrentMapField.getInfluenceArea.getBase %}
+            {{ _self.influenceArea(ship.getCurrentMapField.getInfluenceArea.getBase.getUser) }}
+            {% endif %}
+        </td>
+        {% if starSystem %}
+        <td>
+            {% if starSystem.isWormhole %}
+            <span>{{ starSystem.getName }}</span>
+            <br />
+            {% if ship.getStarsystemMap.getRandomWormholeEntry %}
+            <a href="ship.php?B_LEAVE_WORMHOLE=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/sysleave1.png" title="Wurmloch verlassen" /> verlassen
+            </a>
+            {% endif %}
+            {% else %}
+            {% if starSystemEntryTal.wasDiscovered %}
+            <a href="database.php?SHOW_ENTRY=1&cat=7&ent={{ starSystemEntryTal.getId }}" target="_blank"
+                title="Karte des Systems öffnen">
+                <img src="assets/map/{{ starSystem.getMapField.getFieldId }}.png" style="width: 15px; height: 15px;" />
+                <span>{{ starSystem.getName }}
+                    ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
+            </a>
+            {% else %}
+            <img src="assets/map/{{ starSystem.getMapField.getFieldId }}.png" style="width: 15px; height: 15px;"
+                title="Sternensystem" />
+            <span>{{ starSystem.getName }}
+                ({{ starSystem.getCx }}|{{ starSystem.getCy }})</span>
+            {% endif %}
+            <br />
+            {% if ship.hasWarpdrive %}
+            <a href="ship.php?B_LEAVE_STARSYSTEM=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/sysleave1.png" name="sysleave" title="System verlassen" /> verlassen
+            </a>
+            {% endif %}
+            {% endif %}
+        </td>
+        {% else %}
+        {% if ship.isOverSystem %}
+        <td>
+            <img src="assets/map/{{ ship.isOverSystem.getMapField.getFieldId }}.png" style="width: 15px; height: 15px;"
+                title="Sternensystem" />
+            {{ ship.isOverSystem.getName }}<br />
+            {% if ship.hasWarpdrive %}
+            <a href="ship.php?B_ENTER_STARSYSTEM=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/sysenter1.png" name="sysleave" title="Ins System einfliegen" />
+                einfliegen
+            </a>
+            {% endif %}
+        </td>
+        {% endif %}
+        {% set wormholeEntry = ship.getMap.getRandomWormholeEntry %}
+        {% if wormholeEntry %}
+        <td>
+            {{ wormholeEntry.getSystem.getName }}<br />
+            {% if not ship.getWarpState and not ship.isBase %}
+            <a href="ship.php?B_ENTER_WORMHOLE=1&id={{ shipId }}&sstr={{ sessionString }}">
+                <img src="assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
+                einfliegen
+            </a>
+            {% endif %}
+        </td>
+        {% endif %}
+        {% endif %}
+    </tr>
+</table>
+{% if currentColony %}
+{% set colonyId = currentColony.getId %}
+{% set colonyClassId = currentColony.getColonyClassId %}
+<br />
+<table class="tcal">
+    <tr>
+        <th colspan="2">{{ currentColony.getPlanetName }}</th>
+    </tr>
+    <tr>
+        <td style="width: 50%;">
+            {{ _self.colonyImageAndName(currentColony, ownsCurrentColony) }}
+            <div>
+                {% set fromType = ship.isBase ? 4 : 2 %}
+                <a href="javascript:void(0);" onmouseover="cp('pm_to_colony','buttons/msg2', 'png');"
+                    onmouseout="cp('pm_to_colony','buttons/msg1', 'png');"
+                    onclick="closePopup();openPmWindow({{ shipId }}, {{ colonyId }}, {{ fromType }},5);"><img
+                        src="/assets/buttons/msg1.png" name="pm_to_colony" title="Nachricht an Kolonie senden" /></a>
+                {{ currentColony.getUser.getName|bbcode }}
+            </div>
+        </td>
+        <td style="width: 50%;">
+            {% if not ownsCurrentColony and ship.isMatrixScannerHealthy and not ship.getCloakState %}
+            <div style="float: left; margin-top: 5px; margin-right: 5px;">
+                <a href="javascript:void(0);" onclick="showColonyScan();"
+                    onmouseover="cp('coloScanButton','buttons/lupe2')"
+                    onmouseout="cp('coloScanButton','buttons/lupe1')">
+                    <img src="/assets/buttons/lupe1.png" name="coloScanButton" title="Kolonie-Oberfläche scannen" />
+                </a>
+            </div>
+            {% endif %}
+            {% if not currentColony.isFree %}
+            <div style="margin-top: 5px; margin-right: 20px; float: left;">
+                <a href="javascript:void(0);" onclick="showBToColonyWindow({{ colonyId }});"
+                    onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
+                    <img src="assets/buttons/b_down1.png" name="beamfrom" title="Zu der Kolonie beamen" />
+                </a>
+                <a href="javascript:void(0);" onclick="showBFromColonyWindow({{ colonyId }});"
+                    onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
+                    <img src="assets/buttons/b_up1.png" name="beamto" title="Von der Kolonie beamen" />
+                </a>
+            </div>^
+            {% endif %}
+            {% if ownsCurrentColony and ship.isTroopQuartersHealthy %}
+            <div style="margin-top: 5px;">
+                <a href="javascript:void(0);" onclick="showBTroopTransferWindow({{ colonyId }}, true, true);">
+                    <img src="assets/buttons/bt_down1.png" title="Truppen zu der Kolonie beamen" />
+                </a>
+                <a href="javascript:void(0);" onclick="showBTroopTransferWindow({{ colonyId }}, true, false);">
+                    <img src="assets/buttons/bt_up1.png" title="Truppen von der Kolonie beamen" />
+                </a>
+            </div>
+            {% endif %}
+            {% if ship.isFleetLeader and not currentColony.isFree %}
+            <div style="margin-top: 5px;">
+                {% if ship.getFleet.getDefendedColony %}
+                <a href="?B_STOP_DEFENDING=1&id={{ shipId }}&sstr={{ sessionString }}"
+                    onmouseover="cp('defend','buttons/defend2')" onmouseout="cp('defend','buttons/defend1')">
+                    <img src="/assets/buttons/defend1.png" name="defend" title="Verteidigung der Kolonie beenden" />
+                </a>
+                {% elseif ship.getFleet.getBlockedColony %}
+                <a href="?B_STOP_BLOCKING=1&id={{ shipId }}&sstr={{ sessionString }}"
+                    onmouseover="cp('block','buttons/block2','png')" onmouseout="cp('block','buttons/block1','png')">
+                    <img src="/assets/buttons/block1.png" name="block" title="Blockierung der Kolonie beenden" />
+                </a>
+                {% else %}
+                <a href="?B_START_DEFENDING=1&id={{ shipId }}&sstr={{ sessionString }}"
+                    onmouseover="cp('defend','buttons/defend1')" onmouseout="cp('defend','buttons/defend2')">
+                    <img src="/assets/buttons/defend2.png" name="defend" title="Kolonie verteidigen" />
+                </a>
+
+                <a href="?B_START_BLOCKING=1&id={{ shipId }}&sstr={{ sessionString }}"
+                    onmouseover="cp('block','buttons/block1','png')" onmouseout="cp('block','buttons/block2','png')">
+                    <img src="/assets/buttons/block2.png" name="block" title="Kolonie blockieren" />
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% if not ownsCurrentColony %}
+            <img src="assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
+            {% if canColonize %}
+            <a onclick="showColonization({{ colonyId }});" href="javascript:void(0);">
+                Kolonie gründen
+            </a>
+            {% endif %}
+            {% endif %}
+            {% if WRAPPER.canLandOnCurrentColony %}
+            <div>
+                <a
+                    href="colony.php?B_LAND_ship=1&id={{ colonyId }}&shipid={{ shipId }}&sstr={{ sessionString }}">Landen</a>
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+{% endif %}
+{% endmacro %}
+
+{% macro onOffToggle(action, shipId, isActive, icon, name, sessionString) %}
+{% if isActive %}
+<a href="?B_DEACTIVATE_{{ action }}=1&id={{ shipId }}&sstr={{ sessionString }}"
+    onmouseover="cp('{{ icon }}','buttons/{{ icon }}2');" onmouseout="cp('{{ icon }}','buttons/{{ icon }}1');">
+    <img src="assets/buttons/{{ icon }}1.png" name="{{ icon }}" /> {{ name }} deaktivieren</a>
+{% else %}
+<a href="?B_ACTIVATE_{{ action }}=1&id={{ shipId }}&sstr={{ sessionString }}"
+    onmouseover="cp('{{ icon }}','buttons/{{ icon }}1');" onmouseout="cp('{{ icon }}','buttons/{{ icon }}2');">
+    <img src="assets/buttons/{{ icon }}2.png" name="{{ icon }}" /> {{ name }} aktivieren</a>
+{% endif %}
+{% endmacro %}
+
+{% macro torpedoDisplay(torpedo, torpedoCount) %}
+<td>
+    {% if torpedo %}
+    <img src="assets/commodities/{{ torpedo.getCommodityId }}.png" />
+    {{ torpedo.getName }}: {{ torpedoCount }}
+    {% else %}
+    <img src="assets/buttons/torp.png" /> Torpedos: {{ torpedoCount }}
+    {% endif %}
+</td>
+{% endmacro %}
+
+{% macro astroStates(ship, astroStateWrapper) %}
+{% set shipAstroState = ship.getAstroState %}
+{% if astroStateWrapper.isPlannable %}
+<br />
+{% if starSystem and shipAstroState %}
+<a href="?B_PLAN_ASTRO=1&id={{ shipId }}&sstr={{ sessionString }}" onmouseover="cp('astroButton','buttons/map2')"
+    onmouseout="cp('astroButton','buttons/map1')">
+    <img src="/assets/buttons/map1.png" name="astroButton" />
+    <span>System kartographieren</span>
+</a>
+{% endif %}
+{% if ship.isOverSystem or not shipAstroState %}
+<img src="/assets/buttons/map1.png" />
+<span>System nicht kartographiert</span>
+{% endif %}
+{% elseif astroStateWrapper.isPlanned %}
+<br />
+{% if ship.getAstroState %}
+<a href="javascript:void(0);" onclick="showAstroEntryWindow()" onmouseover="cp('astroButton','buttons/map1')"
+    onmouseout="cp('astroButton','buttons/map2')">
+    <img src="/assets/buttons/map2.png" name="astroButton" />
+    <span>Messpunkte ansehen</span>
+</a>
+{% else %}
+<img src="/assets/buttons/map2.png" />
+<span>Kartographierung ist geplant</span>
+{% endif %}
+{% elseif astroStateWrapper.isMeasured %}
+<br />
+{% if starSystem and shipAstroState %}
+<a href="?B_START_ASTRO=1&id={{ shipId }}&sstr={{ sessionString }}" onmouseover="cp('astroButton','buttons/map2')"
+    onmouseout="cp('astroButton','buttons/map1')">
+    <img src="/assets/buttons/map1.png" name="astroButton" />
+    <span>Kartographierung finalisieren</span>
+</a>
+{% endif %}
+{% if ship.isOverSystem or not shipAstroState %}
+<img src="/assets/buttons/map1.png" />
+<span>Kartographierung ist geplant</span>
+{% endif %}
+{% elseif astroStateWrapper.isFinishing %}
+{% set turnsLeft = astroStateWrapper.getTurnsLeft %}
+<br />
+<img src="/assets/buttons/map1.png" />
+{% if turnsLeft > 1 %}
+<span>Kartographierung wird finalisiert
+    (noch {{ turnsLeft }} Ticks)</span>
+{% else %}
+<span>Kartographierung wird finalisiert
+    (noch 1 Tick)</span>
+{% endif %}
+{% elseif astroStateWrapper.isDone %}
+<br />
+<img src="/assets/buttons/map1.png" />
+<span>System ist kartographiert</span>
+{% endif %}
+{% endmacro %}
+
+{% macro influenceArea(user, allianceAssetsPath) %}
+{% from 'html/macros.twig' import useravatar %}
+{% from 'html/alliancemacros.twig' import alliance_avatar %}
+{% set alliance = user.getAlliance %}
+{% if alliance %}
+<a href="alliance.php?SHOW_ALLIANCE=1&id={{ alliance.getId }}">
+    <div class="shipTerritoryView">
+        {{ alliance_avatar(alliance) }}
+    </div>
+    {% if ship.getCurrentMapField.getAdministratedRegion %}
+    <span>Einflussbereich der Allianz {{ alliance.getName|bbcode }}</span>
+    {% else %}
+    <span>Territorium der Allianz {{ alliance.getName|bbcode }}</span>
+    {% endif %}
+</a>
+{% else %}
+<div class="userTerritory">
+    {{ useravatar(user) }}
+    <a href="userprofile.php?uid={{ user.getId }}">
+        {% if ship.getCurrentMapField.getAdministratedRegion %}
+        <span>Territorium des Siedlers {{ user.getName|bbcode }}</span>
+        {% else %}
+        <span>Einflussbereich des Siedlers {{ user.getName|bbcode }}</span>
+        {% endif %}
+    </a>
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro colonyImageAndName(currentColony, ownsCurrentColony) %}
+{% set colonyClassId = currentColony.getColonyClassId %}
+{% set lable = currentColony.isFree ? currentColony.getColonyClass.getName : currentColony.getName %}
+{% if ownsCurrentColony %}
+<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}&target={{ shipId }}">
+    <img src="assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
+    {{ lable|bbcode }}
+</a>
+{% else %}
+<img src="assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
+{{ lable|bbcode }}
+{% endif %}
+{% endmacro %}

@@ -23,6 +23,8 @@ interface StationUtilityInterface
 
     public function getDockedWorkbeeCount(ShipInterface $ship): int;
 
+    public function getNeededWorkbeeCount(ShipInterface $station, ShipRumpInterface $rump): int;
+
     public function hasEnoughDockedWorkbees(ShipInterface $station, ShipRumpInterface $rump): bool;
 
     public function getConstructionProgress(ShipInterface $ship): ?ConstructionProgressInterface;

@@ -9,6 +9,7 @@ use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Psr\Container\ContainerInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Tal\Exception\DiContainerNotSetException;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -207,11 +208,11 @@ final class TalHelper
         );
         TalesRegistry::registerPrefix(
             'datetime',
-            fn ($src, $nothrow): string => 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370) . " " . date("H:i", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
+            fn ($src, $nothrow): string => 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+' . StuTime::STU_YEARS_IN_FUTURE_OFFSET . ') . " " . date("H:i", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')'
         );
         TalesRegistry::registerPrefix(
             'date',
-            fn ($src, $nothrow): string => 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370)'
+            fn ($src, $nothrow): string => 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+' . StuTime::STU_YEARS_IN_FUTURE_OFFSET . ')'
         );
         TalesRegistry::registerPrefix(
             'nl2br',

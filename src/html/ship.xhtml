@@ -551,10 +551,10 @@
 				<tal:block tal:condition="ASTRO_STATE/isFinishing">
 					<br />
 					<img src="/assets/buttons/map1.png" />
-					<span tal:condition="php:ASTRO_LEFT > 1">Kartographierung wird finalisiert
+					<span tal:condition="php:ASTRO_STATE.getTurnsLeft() > 1">Kartographierung wird finalisiert
 						(noch
-						${ASTRO_LEFT} Ticks)</span>
-					<span tal:condition="php:ASTRO_LEFT EQ 1">Kartographierung wird finalisiert
+						${ASTRO_STATE/getTurnsLeft} Ticks)</span>
+					<span tal:condition="php:ASTRO_STATE.getTurnsLeft() EQ 1">Kartographierung wird finalisiert
 						(noch 1 Tick)</span>
 				</tal:block>
 				<tal:block tal:condition="ASTRO_STATE/isDone">
@@ -816,7 +816,7 @@
 						<img src="assets/planets/${CURRENT_COLONY/getColonyClassId}.png"
 							style="width: 15px; height: 15px;" />
 						<a onclick="showColonization(${CURRENT_COLONY/getId});" href="javascript:void(0);"
-							tal:condition="CAN_COLONIZE_CURRENT_COLONY">
+							tal:condition="CAN_COLONIZE">
 							Kolonie gründen
 						</a>
 					</tal:block>

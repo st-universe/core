@@ -12,6 +12,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\ShipNfsItem;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -119,5 +120,20 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         if ($ship->isTractoring()) {
             $this->deactivate($wrapper);
         }
+    }
+
+    public static function isTractorBeamPossible(ShipInterface|ShipNfsItem $ship): bool
+    {
+        if (
+            $ship->isBase()
+            || $ship->isTrumfield()
+            || $ship->getCloakState()
+            || $ship->getShieldState()
+            || $ship->getWarpState()
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }

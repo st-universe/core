@@ -12,7 +12,6 @@ use Stu\Component\Ship\Crew\ShipCrewCalculatorInterface;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Lib\ColonyStorageCommodityWrapper\ColonyStorageCommodityWrapper;
 use Stu\Lib\SessionInterface;
@@ -113,15 +112,9 @@ final class ShowShip implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->log(sprintf('ShowShip.handle-start, timestamp: %F', microtime(true)));
-
         $user = $game->getUser();
         $userId = $user->getId();
         $ownsCurrentColony = false;
-
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
 
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
@@ -130,14 +123,6 @@ final class ShowShip implements ViewControllerInterface
         );
         $ship = $wrapper->get();
 
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tmark1, seconds: %F", $endTime - $startTime));
-        }
-
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
         $tachyonFresh = $game->getViewContext()['TACHYON_SCAN_JUST_HAPPENED'] ?? false;
         $tachyonActive = $tachyonFresh;
 
@@ -157,19 +142,11 @@ final class ShowShip implements ViewControllerInterface
             $ownsCurrentColony = $colony->getUser() === $user;
         }
 
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tmark2, seconds: %F", $endTime - $startTime));
-        }
-
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-
         //Forschungseintrag erstellen, damit System-Link optional erstellt werden kann
-        $starsystem = null;
-        if ($ship->getSystem() !== null) {
-            $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($ship->getSystem()->getDatabaseEntry(), $user);
+        $starSystem = $ship->getSystem();
+        if ($starSystem !== null && $starSystem->getDatabaseEntry() !== null) {
+            $starSystemEntryTal = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($starSystem->getDatabaseEntry(), $user);
+            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starSystemEntryTal);
         }
 
         $isBase = $ship->isBase();
@@ -183,16 +160,11 @@ final class ShowShip implements ViewControllerInterface
             $ship->getName()
         );
         $game->setPagetitle($ship->getName());
-        $game->setTemplateFile('html/ship.xhtml');
+
+        $game->setTemplateFile('html/ship.twig', true);
 
         $game->setTemplateVar('WRAPPER', $wrapper);
 
-        if ($ship->isFleetLeader()) {
-            $game->setTemplateVar('FLEETWRAPPER', $wrapper->getFleetWrapper());
-        }
-        if ($starsystem !== null) {
-            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
-        }
         if ($ship->getLss()) {
             $game->setTemplateVar('VISUAL_NAV_PANEL', $this->shipUiFactory->createVisualNavPanel(
                 $ship,
@@ -204,49 +176,20 @@ final class ShowShip implements ViewControllerInterface
         }
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
 
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tmark3, seconds: %F", $endTime - $startTime));
-        }
-
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-
         $this->doConstructionStuff($ship, $game);
         $this->doStationStuff($ship, $game);
 
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tmark4, seconds: %F", $endTime - $startTime));
-        }
-
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-
         $this->nbsUtility->setNbsTemplateVars($ship, $game, $this->session, $tachyonActive);
 
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tmark5, seconds: %F", $endTime - $startTime));
-        }
-
-        if ($this->loggerUtil->doLog()) {
-            $startTime = microtime(true);
-        }
-
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
-
-        if ($this->loggerUtil->doLog()) {
-            $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tmark6, seconds: %F", $endTime - $startTime));
-        }
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
-        $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
+        $game->setTemplateVar('CAN_COLONIZE', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
         $game->setTemplateVar('FIGHT_LIB', $this->fightLib);
+        if ($ship->hasTranswarp()) {
+            $game->setTemplateVar('USER_LAYERS', $user->getUserLayers());
+        }
 
         $crewObj = $this->shipCrewCalculator->getCrewObj($rump);
 
@@ -269,11 +212,12 @@ final class ShowShip implements ViewControllerInterface
         return $ship->getStarsystemMap()->getColony();
     }
 
-    private function getAstroState(ShipInterface $ship, GameControllerInterface $game)
+    private function getAstroState(ShipInterface $ship, GameControllerInterface $game): AstroStateWrapper
     {
         $system = $ship->getSystem() !== null ? $ship->getSystem() : $ship->isOverSystem();
 
-        if ($system === null) {
+        $astroEntry = null;
+        if ($system === null || $system->getDatabaseEntry() === null) {
             $state = AstronomicalMappingEnum::NONE;
         } else {
             if ($this->databaseUserRepository->exists($game->getUser()->getId(), $system->getDatabaseEntry()->getId())) {
@@ -291,11 +235,11 @@ final class ShowShip implements ViewControllerInterface
                 }
             }
         }
-        if ($state === AstronomicalMappingEnum::FINISHING) {
+        $turnsLeft = null;
+        if ($state === AstronomicalMappingEnum::FINISHING && $astroEntry !== null) {
             $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
-            $game->setTemplateVar('ASTRO_LEFT', $turnsLeft);
         }
-        return new AstroStateWrapper($state);
+        return new AstroStateWrapper($state, $turnsLeft);
     }
 
     private function doConstructionStuff(ShipInterface $ship, GameControllerInterface $game): void
@@ -305,21 +249,19 @@ final class ShowShip implements ViewControllerInterface
         }
 
         $progress =  $this->stationUtility->getConstructionProgress($ship);
-        if ($progress !== null && $progress->getRemainingTicks() === 0) {
-            $progress = null;
+        if ($progress === null || $progress->getRemainingTicks() === 0) {
+            $game->setTemplateVar('CONSTRUCTION_PROGRESS_WRAPPER', null);
         } else {
             $dockedWorkbees = $this->stationUtility->getDockedWorkbeeCount($ship);
-            $neededWorkbees = $ship->getState() === ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION
-                ? $ship->getRump()->getNeededWorkbees() :
-                (int)ceil($ship->getRump()->getNeededWorkbees() / 2);
+            $neededWorkbees = $this->stationUtility->getNeededWorkbeeCount($ship, $ship->getRump());
 
-            $game->setTemplateVar('DOCKED', $dockedWorkbees);
-            $game->setTemplateVar('NEEDED', $neededWorkbees);
-            $game->setTemplateVar('WORKBEECOLOR', $dockedWorkbees < $neededWorkbees ? 'red' : 'green');
+            $game->setTemplateVar('CONSTRUCTION_PROGRESS_WRAPPER', new ConstructionProgressWrapper(
+                $progress,
+                $ship,
+                $dockedWorkbees,
+                $neededWorkbees
+            ));
         }
-        $game->setTemplateVar('PROGRESS', $progress);
-        $game->setTemplateVar('SHIP_STATE_UNDER_CONSTRUCTION', ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
-        $game->setTemplateVar('SHIP_STATE_UNDER_SCRAPPING', ShipStateEnum::SHIP_STATE_UNDER_SCRAPPING);
 
         if ($progress === null) {
             $plans = $this->stationUtility->getStationBuildplansByUser($game->getUser()->getId());

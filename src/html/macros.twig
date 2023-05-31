@@ -1,10 +1,10 @@
-{% macro useravatar(USER, ASSET_PATHS) %}
+{% macro useravatar(user) %}
 <div class="userAvatar">
-    <a href="/userprofile.php?uid={{ USER.getId }}">
-        {% if USER.getAvatar %}
-        <img src="/{{ ASSET_PATHS.user }}/{{ USER.getAvatar }}.png" title="{{ USER.getName|bbcode2txt }}" />
+    <a href="/userprofile.php?uid={{ user.getId }}">
+        {% if user.getAvatar %}
+        <img src="/{{ ASSET_PATHS.user }}/{{ user.getAvatar }}.png" title="{{ user.getName|bbcode2txt }}" />
         {% else %}
-        <img src="/{{ ASSET_PATHS.faction }}/{{ USER.getFactionId }}kn.png" title"{{ USER.getName|bbcode2txt }}" />
+        <img src="/{{ ASSET_PATHS.faction }}/{{ user.getFactionId }}kn.png" title"{{ user.getName|bbcode2txt }}" />
         {% endif %}
     </a>
 </div>

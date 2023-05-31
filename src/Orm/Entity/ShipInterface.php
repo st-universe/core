@@ -322,7 +322,7 @@ interface ShipInterface
 
     public function displayNbsActions(): bool;
 
-    public function tractorbeamNotPossible(): bool;
+    public function isTractorbeamPossible(): bool;
 
     public function isInterceptAble(): bool;
 

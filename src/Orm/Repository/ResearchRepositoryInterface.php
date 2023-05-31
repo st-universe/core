@@ -15,19 +15,19 @@ use Stu\Orm\Entity\UserInterface;
 interface ResearchRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<ResearchInterface>
+     * @return array<ResearchInterface>
      */
     public function getAvailableResearch(int $userId): array;
 
     /**
-     * @return list<ResearchInterface>
+     * @return array<ResearchInterface>
      */
     public function getForFaction(int $factionId): array;
 
     public function getColonyTypeLimitByUser(UserInterface $user, int $colonyType): int;
 
     /**
-     * @return list<ResearchInterface>
+     * @return array<ResearchInterface>
      */
     public function getPossibleResearchByParent(int $researchId): array;
 

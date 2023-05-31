@@ -1,0 +1,114 @@
+{% macro shipselector(SHIP, wrapper, sessionString) %}
+{% set ship = wrapper.get %}
+{% set shipId = ship.getId %}
+<li>
+  <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this)" onmouseout="shipSelectorHoverEnd(this)"
+    onclick="shipSelectorChoose(this);">
+    <tr>
+      <td class="darkbg" colspan="5">
+        {% if wrapper.isOwnedByCurrentUser %}
+        <a type="hidden" href="ship.php?SHOW_SHIP=1&id={{ shipId }}" />
+        {% endif %}
+        {{ data.getName|bbcode }} | {{ data.getUserName|bbcode }}
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 20px; vertical-align: middle;">
+        {% if CAN_UNDOCK %}
+        <a href="ship.php?id={{ SHIP.getId }}&B_UNDOCK_SHIP=1&target={{ shipId }}&sstr={{ sessionString }}"><img
+            src="/assets/buttons/dock1.png" title="abdocken" /></a>
+        {% endif %}
+      </td>
+      <td style="width: 120px; vertical-align: middle;">
+        {% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
+        {{ shipimagewithoutwarp(ship) }}
+      </td>
+      <td style="width: 150px;">
+        <table class="tcal">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="assets/buttons/modul_1.png" />
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+              {% autoescape false %}
+              {{ wrapper.getHullSystemData.getHullStatusBar }}
+              {% endautoescape %}
+            </td>
+            <td style="text-align: center;">
+              {{ ship.getHull }}
+            </td>
+          </tr>
+        </table>
+      </td>
+      {% if ship.isDestroyed %}
+      <td colspan="2"></td>
+      {% else %}
+      <td style="width: 150px;">
+        {% set shields = wrapper.getShieldSystemData %}
+        {% if shields %}
+        <table class="tcal">
+          <tr>
+            <th style="width: 20px; text-align: center;">
+              <img src="assets/buttons/modul_2.png" />
+            </th>
+            <td style="text-align: center; vertical-align: middle;">
+              {% autoescape false %}
+              {{ shields.getShieldStatusBar }}
+              {% endautoescape %}
+            </td>
+            <td style="text-align: center;">
+              {{ ship.getShield }}
+            </td>
+          </tr>
+        </table>
+        {% endif %}
+      </td>
+      <td style="width: 150px;">
+        {% set eps = wrapper.getEpsSystemData %}
+        {% if eps %}
+        <table class="tcal">
+          <tr>
+            <th style="text-align: center; width: 20px;">
+              <img src="assets/buttons/modul_8.png" />
+            </th>
+            <td style="vertical-align: middle; text-align: center;">
+              {% autoescape false %}
+              {{ eps.getEpsStatusBar }}
+              {% endautoescape %}
+            </td>
+            <td style="text-align: center;">
+              {{ eps.getEps }}
+            </td>
+          </tr>
+        </table>
+        {% endif %}
+      </td>
+      {% endif %}
+    </tr>
+  </table>
+  <input type="hidden" name="selshipid" id="selshipid" value="{{ shipId }}" />
+</li>
+{% endmacro %}
+
+{% macro ship_buildprogress(shipBuildProgress) %}
+<table class="tcal">
+  <tr>
+    <th colspan="3">Schiffe in Bau</th>
+  </tr>
+  {% for data in shipBuildProgress %}
+  <tr style="height: 50px" class="row">
+    <td style="text-align: center; vertical-align: middle;">
+      <img src="assets/ships/{{ data.getRump.getId }}.png" />
+    </td>
+    <td style="text-align: center; vertical-align: middle">{{ data.getRump.getName }}</td>
+    {% if data.getStopDate %}
+    <td colspan="2" style="text-align: center; vertical-align: middle">Angehalten</td>
+    {% else %}
+    <td style="text-align: center; vertical-align: middle">
+      {{ data.getFinishDate|datetime }}
+    </td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+{% endmacro %}
