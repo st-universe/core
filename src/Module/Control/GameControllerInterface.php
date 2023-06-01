@@ -22,7 +22,7 @@ interface GameControllerInterface
 
     public function setMacroInAjaxWindow($macro): void;
 
-    public function showMacro($macro): void;
+    public function showMacro(string $macro, bool $isTwig = false): void;
 
     public function getMacro(): string;
 

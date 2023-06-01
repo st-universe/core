@@ -1,10 +1,10 @@
-{% macro control_nav(ship, navPanel) %}
+{% macro control_nav(ship, navPanel, visualNavPanel) %}
 {% if ship.getLss %}
 
-{% set viewportFont = navPanel.getViewportForFont %}
+{% set viewportFont = visualNavPanel.getViewportForFont %}
 {% set fontSize = 'font-size: ' ~ viewportFont ~ 'vw;' %}
 
-{% set viewportScale = navPanel.getViewportPerColumn %}
+{% set viewportScale = visualNavPanel.getViewportPerColumn %}
 {% set height = 'height: ' ~ viewportScale ~ 'vw;' %}
 {% set width = 'width: ' ~ viewportScale ~ 'vw;' %}
 {% set heightAndWidth = height ~ width %}
@@ -19,13 +19,13 @@
                         style="{{ heightAndWidth }} position: relative !important; top: 0px;"
                         title="Langstreckensensoren deaktivieren" /></a>
             </td>
-            {% for row in navPanel.getHeadRow %}
+            {% for row in visualNavPanel.getHeadRow %}
             <td style="{{ fontSize }} {{ heightAndWidth }} position: relative !important; top: 0px;" class="th">{{
                 row.value }}
             </td>
             {% endfor %}
         </tr>
-        {% for row in navPanel.getRows %}
+        {% for row in visualNavPanel.getRows %}
         <tr>
             {% for entry in row.getEntries %}
             {% if entry.getRow %}
@@ -57,28 +57,41 @@
     <table class="tcal">
         <tr>
             <td colspan="3" style="text-align: center;">
-                <input type="submit" value="&nbsp;" class="button upButton" name="B_MOVE_UP"
-                    disabled="{{ navPanel.getUp.isDisabled }}" />
+                {% if navPanel.getUp.isDisabled %}
+                <input type="submit" value="&nbsp;" class="button upButton" name="B_MOVE_UP" disabled="disabled" />
+                {% else %}
+                <input type="submit" value="&nbsp;" class="button upButton" name="B_MOVE_UP" />
+                {% endif %}
             </td>
         </tr>
         <tr>
             <td>
-                <input type="submit" value="&nbsp;" class="button leftButton" name="B_MOVE_LEFT"
-                    disabled="{{ navPanel.getLeft.isDisabled }}" />
+                {% if navPanel.getLeft.isDisabled %}
+                <input type="submit" value="&nbsp;" class="button leftButton" name="B_MOVE_LEFT" disabled="disabled" />
+                {% else %}
+                <input type="submit" value="&nbsp;" class="button leftButton" name="B_MOVE_LEFT" />
+                {% endif %}
             </td>
             <td style="text-align: center; font-weight: bold;">
                 <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" name="navapp"
                     style="text-align: center;" size="1" value="1" />
             </td>
             <td>
+                {% if navPanel.getRight.isDisabled %}
                 <input type="submit" value="&nbsp;" class="button rightButton" name="B_MOVE_RIGHT"
-                    disabled="{{ navPanel.getRight.isDisabled }}" />
+                    disabled="disabled" />
+                {% else %}
+                <input type="submit" value="&nbsp;" class="button rightButton" name="B_MOVE_RIGHT" />
+                {% endif %}
             </td>
         </tr>
         <tr>
             <td colspan="3" style="text-align: center;">
-                <input type="submit" value="&nbsp;" class="button downButton" name="B_MOVE_DOWN"
-                    disabled="{{ navPanel.getDown.isDisabled }}" />
+                {% if navPanel.getDown.isDisabled %}
+                <input type="submit" value="&nbsp;" class="button downButton" name="B_MOVE_DOWN" disabled="disabled" />
+                {% else %}
+                <input type="submit" value="&nbsp;" class="button downButton" name="B_MOVE_DOWN" />
+                {% endif %}
             </td>
         </tr>
     </table>
@@ -107,8 +120,12 @@
     {% set down = navPanel.getDown %}
     <tr>
         <td colspan="3" style="text-align: center;">
+            {% if up.isDisabled %}
             <input type="submit" class="button" name="B_MOVE_UP" style="width: 100px;" value="{{ up.getLabel }}"
-                disabled="{{ up.isDisabled }}" />
+                disabled="disabled" />
+            {% else %}
+            <input type="submit" class="button" name="B_MOVE_UP" style="width: 100px;" value="{{ up.getLabel }}" />
+            {% endif %}
         </td>
     </tr>
     <tr>
@@ -121,14 +138,23 @@
                 style="text-align: center;" size="7" value="{{ ship.getPosX }}|{{ ship.getPosY }}" />
         </td>
         <td style="text-align: center;">
+            {% if right.isDisabled %}
             <input type="submit" class="button" style="width: 100px;" name="B_MOVE_RIGHT" value="{{ right.getLabel }}"
-                disabled="{{ right.isDisabled }}" />
+                disabled="disabled" />
+            {% else %}
+            <input type="submit" class="button" style="width: 100px;" name="B_MOVE_RIGHT"
+                value="{{ right.getLabel }}" />
+            {% endif %}
         </td>
     </tr>
     <tr>
         <td colspan="3" style="text-align: center;">
+            {% if down.isDisabled %}
             <input type="submit" class="button" style="width: 100px;" name="B_MOVE_DOWN" value="{{ down.getLabel }}"
-                disabled="{{ down.isDisabled }}" />
+                disabled="disabled" />
+            {% else %}
+            <input type="submit" class="button" style="width: 100px;" name="B_MOVE_DOWN" value="{{ down.getLabel }}" />
+            {% endif %}
         </td>
     </tr>
     {% endif %}

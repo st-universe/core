@@ -222,7 +222,7 @@
                 <img src="assets/buttons/dock2.png" title="Abdocken" name="dock" />
             </a>
             {% if ship.getUser.getId == dockedTo.getUser.getId %}
-            <a href="?SHOW_ship=1&id={{ dockedTo.getId }}" onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
+            <a href="?SHOW_SHIP=1&id={{ dockedTo.getId }}" onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
                 onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
                 <img src="assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation"
                     style="height: 20px;" />
@@ -376,6 +376,7 @@
 {% if currentColony %}
 {% set colonyId = currentColony.getId %}
 {% set colonyClassId = currentColony.getColonyClassId %}
+{% set ownsCurrentColony = currentColony.getUser.getId == ship.getUser.getId %}
 <br />
 <table class="tcal">
     <tr>
@@ -383,7 +384,7 @@
     </tr>
     <tr>
         <td style="width: 50%;">
-            {{ _self.colonyImageAndName(currentColony, ownsCurrentColony) }}
+            {{ _self.colonyImageAndName(shipId, currentColony, ownsCurrentColony) }}
             <div>
                 {% set fromType = ship.isBase ? 4 : 2 %}
                 <a href="javascript:void(0);" onmouseover="cp('pm_to_colony','buttons/msg2', 'png');"
@@ -413,7 +414,7 @@
                     onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
                     <img src="assets/buttons/b_up1.png" name="beamto" title="Von der Kolonie beamen" />
                 </a>
-            </div>^
+            </div>
             {% endif %}
             {% if ownsCurrentColony and ship.isTroopQuartersHealthy %}
             <div style="margin-top: 5px;">
@@ -461,7 +462,7 @@
             {% if WRAPPER.canLandOnCurrentColony %}
             <div>
                 <a
-                    href="colony.php?B_LAND_ship=1&id={{ colonyId }}&shipid={{ shipId }}&sstr={{ sessionString }}">Landen</a>
+                    href="colony.php?B_LAND_SHIP=1&id={{ colonyId }}&shipid={{ shipId }}&sstr={{ sessionString }}">Landen</a>
             </div>
             {% endif %}
         </td>
@@ -580,11 +581,11 @@
 {% endif %}
 {% endmacro %}
 
-{% macro colonyImageAndName(currentColony, ownsCurrentColony) %}
+{% macro colonyImageAndName(shipId, currentColony, ownsCurrentColony) %}
 {% set colonyClassId = currentColony.getColonyClassId %}
 {% set lable = currentColony.isFree ? currentColony.getColonyClass.getName : currentColony.getName %}
 {% if ownsCurrentColony %}
-<a href="colony.php?SHOW_COLONY=1&id={{ colonyId }}&target={{ shipId }}">
+<a href="colony.php?SHOW_COLONY=1&id={{ currentColony.getId }}&target={{ shipId }}">
     <img src="assets/planets/{{ colonyClassId }}.png" style="width: 15px; height: 15px;" />
     {{ lable|bbcode }}
 </a>

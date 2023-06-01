@@ -366,13 +366,14 @@
 {% endif %}
 <br />
 {% if ship.getFleet %}
-{{ _self.fleetInfo(ship) }}
+{{ _self.fleetInfo(wrapper) }}
 {% endif %}
 {% endmacro %}
 
-{% macro fleetInfo(ship) %}
+{% macro fleetInfo(wrapper) %}
 {% from 'html/shipmacros.twig' import shipimagenameastitle %}
 
+{% set ship = wrapper.get %}
 {% set fleet = ship.getFleet %}
 
 {% if not ship.isFleetLeader %}
@@ -380,7 +381,7 @@
     <tr>
         <th>
             <div style="display: inline-block;width: 80%;">
-                <a href="?SHOW_ship=1&id={{ fleet/getLeadShip.getId }}">
+                <a href="?SHOW_SHIP=1&id={{ fleet.getLeadShip.getId }}">
                     <img src="assets/buttons/fleet.png" title="zum Führungsschiff wechseln" />
                     <span>zum Führungsschiff wechseln</span></a>
             </div>
@@ -411,7 +412,7 @@
     {% if fleetShip.getId != ship.getId %}
     <tr>
         <td style="background-color: #000000 ! important">
-            <a href="ship.php?SHOW_ship=1&id={{ fleetShip.getId }}"
+            <a href="ship.php?SHOW_SHIP=1&id={{ fleetShip.getId }}"
                 onmouseover="openStorageInit(this, {{ fleetShip.getId }});" onmouseout="closeStorage();">
                 {{ shipimagenameastitle(fleetShip) }}
             </a>

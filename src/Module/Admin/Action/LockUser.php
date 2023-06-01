@@ -48,7 +48,7 @@ final class LockUser implements ActionControllerInterface
         $this->loggerUtil->log('A');
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 

@@ -86,31 +86,31 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         } catch (AlreadyActiveException $e) {
             $game->addInformation(sprintf(_('%s: System %s ist bereits aktiviert'), $ship->getName(), $systemName));
         } catch (SystemNotActivatableException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s besitzt keinen Aktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s besitzt keinen Aktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
         } catch (InsufficientEnergyException $e) {
             $game->addInformation(sprintf(
-                _('%s: [b][color=FF2626]System %s kann aufgrund Energiemangels (%d benötigt) nicht aktiviert werden[/color][/b]'),
+                _('%s: [b][color=#ff2626]System %s kann aufgrund Energiemangels (%d benötigt) nicht aktiviert werden[/color][/b]'),
                 $ship->getName(),
                 $systemName,
                 $e->getNeededEnergy()
             ));
         } catch (SystemCooldownException $e) {
             $game->addInformation(sprintf(
-                _('%s: [b][color=FF2626]System %s kann nicht aktiviert werden, Cooldown noch %s[/color][/b]'),
+                _('%s: [b][color=#ff2626]System %s kann nicht aktiviert werden, Cooldown noch %s[/color][/b]'),
                 $ship->getName(),
                 $systemName,
                 TalHelper::formatSeconds(strval($e->getRemainingSeconds()))
             ));
         } catch (SystemDamagedException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         } catch (ActivationConditionsNotMetException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht aktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht aktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
         } catch (SystemNotFoundException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s nicht vorhanden[/color][/b]'), $ship->getName(), $systemName));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s nicht vorhanden[/color][/b]'), $ship->getName(), $systemName));
         } catch (InsufficientCrewException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte wegen Mangel an Crew nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s konnte wegen Mangel an Crew nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         } catch (ShipSystemException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         }
 
         return false;
@@ -187,9 +187,9 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         } catch (AlreadyOffException $e) {
             $game->addInformation(sprintf(_('%s: System %s ist bereits deaktiviert'), $ship->getName(), $systemName));
         } catch (SystemNotDeactivatableException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s besitzt keinen Deaktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s besitzt keinen Deaktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
         } catch (DeactivationConditionsNotMetException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht deaktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]System %s konnte nicht deaktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
         } catch (SystemNotFoundException $e) {
             $game->addInformation(sprintf(_('%s: System %s nicht vorhanden'), $ship->getName(), $systemName));
         }
@@ -320,18 +320,18 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
         // station constructions can't change alert state
         if ($ship->isConstruction()) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Konstrukte können die Alarmstufe nicht ändern[/color][/b]'), $ship->getName()));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]Konstrukte können die Alarmstufe nicht ändern[/color][/b]'), $ship->getName()));
             return false;
         }
 
         // can only change when there is enough crew
         if (!$ship->hasEnoughCrew()) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Mangel an Crew verhindert den Wechsel der Alarmstufe[/color][/b]'), $ship->getName()));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]Mangel an Crew verhindert den Wechsel der Alarmstufe[/color][/b]'), $ship->getName()));
             return false;
         }
 
         if ($alertState === ShipAlertStateEnum::ALERT_RED && $ship->getCloakState()) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]'), $ship->getName()));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]'), $ship->getName()));
             return false;
         }
 
@@ -343,7 +343,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
                 $game->addInformation(sprintf(_('%s: [b][color=FAFA03]%s[/color][/b]'), $ship->getName(), $alertMsg));
             }
         } catch (InsufficientEnergyException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Nicht genügend Energie um die Alarmstufe zu wechseln (%d benötigt)[/color][/b]'), $ship->getName(), $e->getNeededEnergy()));
+            $game->addInformation(sprintf(_('%s: [b][color=#ff2626]Nicht genügend Energie um die Alarmstufe zu wechseln (%d benötigt)[/color][/b]'), $ship->getName(), $e->getNeededEnergy()));
             return false;
         }
 

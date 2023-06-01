@@ -250,7 +250,7 @@
 				<div id="systemsensorscan"></div>
 			</td>
 			<td style="vertical-align: top; width: 67%;">
-				{{ control_nav(SHIP, VISUAL_NAV_PANEL) }}
+				{{ control_nav(SHIP, NAV_PANEL, VISUAL_NAV_PANEL) }}
 				{% if SHIP_REPAIR_PROGRESS %}
 				{{ ship_repairprogress(SHIP, SHIP_REPAIR_PROGRESS, SESSIONSTRING) }}
 				{% endif %}
@@ -265,7 +265,7 @@
 		{% else %}
 		<tr>
 			<td style="width: 33%; vertical-align: top;">
-				{{ control_nav(SHIP, VISUAL_NAV_PANEL) }}
+				{{ control_nav(SHIP, NAV_PANEL, VISUAL_NAV_PANEL) }}
 			</td>
 			<td style="vertical-align: top; width: 33%;">
 				{{ control_mid(SHIP, ASTRO_STATE, TACHYON_ACTIVE, STARSYSTEM_ENTRY_TAL, CURRENT_COLONY, SESSIONSTRING)

@@ -1,0 +1,12 @@
+{# needs following variables: SINGLESHIPWRAPPERS, SESSIONSTRING) #}
+{% from 'html/shiplistmacros.twig' import shiplist_header, shiplist_body %}
+
+<table class="tcal" id="shiplist_singles_table">
+    <tr>
+        <td colspan="11">Einzelschiffe</td>
+    </tr>
+    {{ shiplist_header() }}
+    {% for wrapper in SINGLESHIPWRAPPERS %}
+    {{ shiplist_body(wrapper, SESSIONSTRING) }}
+    {% endfor %}
+</table>

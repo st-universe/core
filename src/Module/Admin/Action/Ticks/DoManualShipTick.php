@@ -44,7 +44,7 @@ final class DoManualShipTick implements ActionControllerInterface
 
         // only Admins can trigger ticks
         if (!$game->isAdmin()) {
-            $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
+            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 

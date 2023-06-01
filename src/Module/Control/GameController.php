@@ -220,10 +220,16 @@ final class GameController implements GameControllerInterface
         $this->setTemplateFile('html/ajaxwindow.xhtml');
     }
 
-    public function showMacro($macro): void
+    public function showMacro(string $macro, bool $isTwig = false): void
     {
         $this->macro = $macro;
-        $this->setTemplateFile('html/ajaxempty.xhtml');
+
+        if ($isTwig) {
+            $this->setTemplateFile('html/ajaxempty.twig', true);
+            $this->setTemplateVar('TEMPLATE', $macro);
+        } else {
+            $this->setTemplateFile('html/ajaxempty.xhtml');
+        }
     }
 
     public function getMacro(): string
@@ -590,10 +596,10 @@ final class GameController implements GameControllerInterface
             $this->setTemplateVar('THIS', $this);
         } catch (ShipDoesNotExistException $e) {
             $this->addInformation(_('Dieses Schiff existiert nicht!'));
-            $this->setTemplateFile('html/ship.xhtml');
+            $this->setTemplateFile('html/ship.twig', true);
         } catch (ShipIsDestroyedException $e) {
             $this->addInformation('Dieses Schiff wurde zerstört!');
-            $this->setTemplateFile('html/ship.xhtml');
+            $this->setTemplateFile('html/ship.twig', true);
         } catch (ItemNotFoundException $e) {
             $this->addInformation('Das angeforderte Item wurde nicht gefunden');
             $this->setTemplateFile('html/notfound.xhtml');
@@ -603,7 +609,7 @@ final class GameController implements GameControllerInterface
             if (request::isAjaxRequest()) {
                 $this->setMacroInAjaxWindow('html/sitemacros.xhtml/systeminformation');
             } else {
-                $this->setTemplateFile('html/ship.xhtml');
+                $this->setTemplateFile('html/ship.twig', true);
             }
         } catch (\Throwable $e) {
             throw $e;

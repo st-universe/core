@@ -1,0 +1,62 @@
+{# needs following variables: FLEETWRAPPER, MAX_CREW_PER_FLEET, SESSIONSTRING) #}
+{% from 'html/shiplistmacros.twig' import shiplist_header, shiplist_body %}
+
+{% set fleet = FLEETWRAPPER.get %}
+{% set fleetid = fleet.getId %}
+<form action="ship.php" method="post" id="shiplist_fleet_form_{{ fleet.getId }}">
+    <input type="hidden" name="fleetid" value="{{ fleetid }}" />
+    <table class="tcal">
+        <tr>
+            <td colspan="11">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 35%;">
+                            <div style="display: table-cell;">
+                                <a href="javascript:void(0);" onclick="toggleFleet({{ fleetid }});"
+                                    title="zuklappen/aufklappen">
+                                    <img src="assets/buttons/fleet.png" />
+                                </a>
+                            </div>
+                            <div style="display: table-cell; vertical-align:middle;">
+                                {{ fleet.getName|bbcode }}
+                                <span>
+                                    ({{ fleet.getCrewSum }}/{{ MAX_CREW_PER_FLEET }} Crew)
+                                </span>
+                            </div>
+                        </td>
+                        <td style="width: 25%;">
+                            {% if fleet.getDefendedColony %}
+                            <img src="/assets/buttons/defend1.png" title="verteidigt die Kolonie" />
+                            {{ fleet.getDefendedColony.getName|bbcode }}
+                            {% endif %}
+                            {% if fleet.getBlockedColony %}
+                            <img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
+                            {{ fleet.getBlockedColony.getName|bbcode }}
+                            {% endif %}
+                        </td>
+                        <td style="width: 20%;">
+                            <input type="text" name="fleetname" style="width: 150px;" value="{{ fleet.getName }}" />
+                            <button type="submit" name="B_FLEET_CHANGE_NAME" value="Name ändern" title="Name ändern">
+                                <img src="assets/buttons/knedit2.png" alt="Name ändern" />
+                            </button>
+                        </td>
+                        <td style="width: 20%; text-align: right;">
+                            <a href="javascript:void(0);" onclick="showAvailableShips({{ fleetid }});"
+                                title="Schiff hinzufügen"><img src="assets/buttons/fl_join2.png"
+                                    alt="Schiff hinzufügen" /></a>
+                            <a href="?B_FLEET_UP=1&id={{ fleetid }}">
+                                <img src="assets/buttons/bt_up1.png" title="Flotte nach oben schieben" />
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table style="{{ fleet.getHiddenStyle }}" class="tcal" id="fleetbody_{{ fleetid }}">
+        {{ shiplist_header() }}
+        {% for wrapper in FLEETWRAPPER.getShipWrappers %}
+        {{ shiplist_body(wrapper, SESSIONSTRING) }}
+        {% endfor %}
+    </table>
+</form>
