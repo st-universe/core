@@ -139,8 +139,13 @@
         {% endif %}
         <td style="text-align: right; width: 30%;">
             {% if ship.isBase %}
-            <input type="checkbox" checked="{{ eps.reloadBattery }}"
+            {% if eps.reloadBattery %}
+            <input type="checkbox" checked="checked"
                 onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ sessionString }}'" />
+            {% else %}
+            <input type="checkbox"
+                onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ sessionString }}'" />
+            {% endif %}
             reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="assets/buttons/info2.png"
                 style="height:16px;" />
             {% endif %}
@@ -398,9 +403,16 @@
                     <span>Flottenstatus</span>
                 </div>
                 <div style="display: inline-block;" title="Schiffe gehen nicht verloren">
-                    <span><input style="display: none;" type="submit" class="button" name="B_CHANGE_FLEET_FIXATION"
+                    <span>
+                        {% if ship.getFleet.isFleetFixed %}
+                        <input style="display: none;" type="submit" class="button" name="B_CHANGE_FLEET_FIXATION"
+                            id="changefixationbutton" /><input type="checkbox" name="fleetfixed" checked="checked"
+                            onchange="$('changefixationbutton').click();" />
+                        {% else %}
+                        <input style="display: none;" type="submit" class="button" name="B_CHANGE_FLEET_FIXATION"
                             id="changefixationbutton" /><input type="checkbox" name="fleetfixed"
-                            checked="{{ ship.getFleet.isFleetFixed }}" onchange="$('changefixationbutton').click();" />
+                            onchange="$('changefixationbutton').click();" />
+                        {% endif %}
                         fixiert
                         <img src="assets/buttons/info2.png" style="height:16px;" /></span>
                 </div>
