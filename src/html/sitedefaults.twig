@@ -65,7 +65,9 @@
                     </div>
                     <div class="researchNavletDetails">
                         <div>
+                            {% autoescape false %}
                             {{ CURRENT_RESEARCH_STATUS }}
+                            {% endautoescape %}
                         </div>
                         <div style="padding-top: 5px;">
                             <img style="width: 15px"
