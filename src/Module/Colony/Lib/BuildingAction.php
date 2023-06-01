@@ -115,7 +115,7 @@ final class BuildingAction implements BuildingActionInterface
                 $amount = $halfAmount;
             }
             if ($amount <= 0) {
-                $game->addInformation(_('[b][color=FF2626]Keine weiteren Lagerkapazitäten vorhanden![/color][/b]'));
+                $game->addInformation(_('[b][color=#ff2626]Keine weiteren Lagerkapazitäten vorhanden![/color][/b]'));
                 break;
             }
             $this->colonyStorageManager->upperStorage($colony, $value->getCommodity(), $amount);

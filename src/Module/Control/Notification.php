@@ -6,8 +6,7 @@ final class Notification implements NotificationInterface
 {
     private string $text = '';
 
-    /** @var null|string */
-    private $link;
+    private ?string $link = null;
 
     public function getText(): string
     {

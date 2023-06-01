@@ -33,6 +33,6 @@ final class ShowShiplistSingles implements ViewControllerInterface
         $ships = $this->shipRepository->getByUserAndFleetAndType($userId, null, SpacecraftTypeEnum::SPACECRAFT_TYPE_SHIP);
 
         $game->setTemplateVar('SINGLESHIPWRAPPERS', $this->shipWrapperFactory->wrapShips($ships));
-        $game->showMacro('html/shipmacros.xhtml/shiplist_singles');
+        $game->showMacro('html/shiplistSingles.twig', true);
     }
 }

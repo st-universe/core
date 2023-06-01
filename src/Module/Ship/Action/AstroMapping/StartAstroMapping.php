@@ -69,7 +69,7 @@ final class StartAstroMapping implements ActionControllerInterface
 
         // system needs to be active
         if (!$ship->getAstroState()) {
-            $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
+            $game->addInformation(_('[b][color=#ff2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
             return;
         }
 
@@ -77,7 +77,7 @@ final class StartAstroMapping implements ActionControllerInterface
 
         // check for energy
         if ($epsSystem === null || $epsSystem->getEps() < AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST) {
-            $game->addInformation(sprintf(_('[b][color=FF2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST));
+            $game->addInformation(sprintf(_('[b][color=#ff2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST));
             return;
         }
 
