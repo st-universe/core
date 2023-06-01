@@ -130,8 +130,12 @@
     </tr>
     <tr>
         <td style="text-align: center;">
+            {% if left.isDisabled %}
             <input type="submit" class="button" name="B_MOVE_LEFT" style="width: 100px;" value="{{ left.getLabel }}"
-                disabled="{{ left.isDisabled }}" />
+                disabled="disabled" />
+            {% else %}
+            <input type="submit" class="button" name="B_MOVE_LEFT" style="width: 100px;" value="{{ left.getLabel }}" />
+            {% endif %}
         </td>
         <td style="width: 100px; text-align: center; font-weight: bold;">
             <input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" name="navapp"

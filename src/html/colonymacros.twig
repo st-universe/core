@@ -9,7 +9,7 @@
         {% if wrapper.isOwnedByCurrentUser %}
         <a type="hidden" href="ship.php?SHOW_SHIP=1&id={{ shipId }}" />
         {% endif %}
-        {{ data.getName|bbcode }} | {{ data.getUserName|bbcode }}
+        {{ ship.getName|bbcode }} | {{ ship.getUserName|bbcode }}
       </td>
     </tr>
     <tr>
