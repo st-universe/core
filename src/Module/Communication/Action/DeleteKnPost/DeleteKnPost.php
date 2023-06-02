@@ -41,9 +41,6 @@ final class DeleteKnPost implements ActionControllerInterface
             return;
         }
 
-        // @todo foreign key
-        //KnComment::truncate('WHERE post_id=' . $post->getId());
-
         $this->knPostRepository->delete($post);
 
         $game->addInformation(_('Der Beitrag wurde gelöscht'));
