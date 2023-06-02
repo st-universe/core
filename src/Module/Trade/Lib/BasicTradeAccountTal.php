@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\BasicTradeInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TradePostInterface;
@@ -19,30 +18,35 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
 
     private TradePostInterface $tradePost;
 
+    /**
+     * @var array<BasicTradeInterface>
+     */
     private array $basicTrades;
 
     private int $userId;
 
-    private $storage;
+    /**
+     * @var array<StorageInterface>|null
+     */
+    private ?array $storage;
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
+    /**
+     * @param array<BasicTradeInterface> $basicTrades
+     */
     public function __construct(
         StorageRepositoryInterface $storageRepository,
         TradePostInterface $tradePost,
         array $basicTrades,
         int $userId,
-        CommodityRepositoryInterface $commodityRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->storageRepository = $storageRepository;
         $this->tradePost = $tradePost;
         $this->basicTrades = $basicTrades;
         $this->userId = $userId;
         $this->commodityRepository = $commodityRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getId(): int
@@ -81,6 +85,9 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
         return new BasicTradeItem(null, $latinumStorage, $latinumCommodity);
     }
 
+    /**
+     * @return array<StorageInterface>
+     */
     private function getStorage(): array
     {
         if ($this->storage === null) {
