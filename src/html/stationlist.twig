@@ -1,9 +1,8 @@
 {% extends "html/sitedefaults.twig" %}
 
 {% block body %}
-{% from 'html/sitemacros.twig' import breadcrumb %}
 {% from 'html/shiplistmacros.twig' import shiplist_header, shiplist_body %}
-{{ breadcrumb(NAVIGATION, INFORMATION, ACHIEVEMENTS, EXECUTEJS) }}
+{% include 'html/breadcrumb.twig' %}
 {% if BASES %}
 <script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
 <table class="tcal">
@@ -12,7 +11,7 @@
     </tr>
     {{ shiplist_header()}}
     {% for wrapper in BASES %}
-    {{ shiplist_body(wrapper, SESSIONSTRING) }}
+    {{ shiplist_body(wrapper) }}
     {% endfor %}
 </table>
 {% else %}

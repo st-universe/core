@@ -1,8 +1,7 @@
 {% extends "html/sitedefaults.twig" %}
 
 {% block body %}
-{% from 'html/sitemacros.twig' import breadcrumb %}
-{{ breadcrumb(NAVIGATION, INFORMATION, ACHIEVEMENTS, EXECUTEJS) }}
+{% include 'html/breadcrumb.twig' %}
 {% if not SHIPS_AVAILABLE %}
 <table class="tcal">
 	<tr>

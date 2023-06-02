@@ -1,4 +1,4 @@
-{% macro shipselector(SHIP, wrapper, sessionString) %}
+{% macro shipselector(SHIP, wrapper) %}
 {% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
 <li>
@@ -15,7 +15,7 @@
     <tr>
       <td style="width: 20px; vertical-align: middle;">
         {% if CAN_UNDOCK %}
-        <a href="ship.php?id={{ SHIP.getId }}&B_UNDOCK_SHIP=1&target={{ shipId }}&sstr={{ sessionString }}"><img
+        <a href="ship.php?id={{ SHIP.getId }}&B_UNDOCK_SHIP=1&target={{ shipId }}&sstr={{ SESSIONSTRING }}"><img
             src="/assets/buttons/dock1.png" title="abdocken" /></a>
         {% endif %}
       </td>

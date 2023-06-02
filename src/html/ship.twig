@@ -1,14 +1,13 @@
 {% extends "html/sitedefaults.twig" %}
 {% from 'html/colonymacros.twig' import shipselector, ship_buildprogress %}
 {% from 'html/shipmacros.twig' import nbsblock, shipimagewithoutwarp, shipstorage, initial_js %}
-{% from 'html/sitemacros.twig' import breadcrumb %}
 {% from 'html/shipcontrol/control_nav.twig' import control_nav %}
 {% from 'html/shipcontrol/control_mid.twig' import control_mid %}
 {% from 'html/shipcontrol/control_right.twig' import control_right %}
 {% from 'html/stationmacros.twig' import shipyardoptions, ship_repairprogress %}
 
 {% block body %}
-{{ breadcrumb(NAVIGATION, INFORMATION, ACHIEVEMENTS, EXECUTEJS) }}
+{% include 'html/breadcrumb.twig' %}
 {% if FIGHT_RESULTS %}
 <div style="width: 150px;">
 	<div class="divhead">Kampflog</div>
@@ -37,7 +36,7 @@
 {% if WRAPPER %}
 {% set SHIP = WRAPPER.get %}
 {% set shipId = SHIP.getId %}
-{{ initial_js(WRAPPER.get.getId, SESSIONSTRING, JAVASCRIPTPATH) }}
+{{ initial_js(WRAPPER.get.getId) }}
 <form action="ship.php" method="post" name="shipform" id="shipform" onkeydown="return event.key != 'Enter';">
 	<input type="hidden" name="id" value="{{ SHIP.getId }}" />
 	<input type="hidden" name="sstr" value"{{ SESSIONSTRING }}" />
@@ -206,7 +205,7 @@
 					<div class="box_body">
 						<ul id="shipselector">
 							{% if FIRST_MANAGE_SHIP %}
-							{{ shipselector(SHIP, FIRST_MANAGE_SHIP, SESSIONSTRING) }}
+							{{ shipselector(SHIP, FIRST_MANAGE_SHIP) }}
 							{% else %}
 							<li style="text-align: center">Keine Schiffe angedockt</li>
 							{% endif %}
@@ -242,17 +241,17 @@
 					</div>
 				</div>
 				<br />
-				{{ control_mid(SHIP, ASTRO_STATE, TACHYON_ACTIVE, STARSYSTEM_ENTRY_TAL, CURRENT_COLONY, SESSIONSTRING)
+				{{ control_mid(SHIP, ASTRO_STATE, TACHYON_ACTIVE, STARSYSTEM_ENTRY_TAL, CURRENT_COLONY)
 				}}
 				{{ control_right(WRAPPER, CONSTRUCTION_PROGRESS_WRAPPER, POSSIBLE_STATIONS, MODULE_SELECTORS,
-				USER_LAYERS, SESSIONSTRING)
+				USER_LAYERS)
 				}}
 				<div id="systemsensorscan"></div>
 			</td>
 			<td style="vertical-align: top; width: 67%;">
 				{{ control_nav(SHIP, NAV_PANEL, VISUAL_NAV_PANEL) }}
 				{% if SHIP_REPAIR_PROGRESS %}
-				{{ ship_repairprogress(SHIP, SHIP_REPAIR_PROGRESS, SESSIONSTRING) }}
+				{{ ship_repairprogress(SHIP, SHIP_REPAIR_PROGRESS) }}
 				{% endif %}
 				{% if SHIP.getRump.isShipyard and SHIP.getConstructionHubState %}
 				{% if SHIP_BUILD_PROGRESS %}
@@ -268,12 +267,12 @@
 				{{ control_nav(SHIP, NAV_PANEL, VISUAL_NAV_PANEL) }}
 			</td>
 			<td style="vertical-align: top; width: 33%;">
-				{{ control_mid(SHIP, ASTRO_STATE, TACHYON_ACTIVE, STARSYSTEM_ENTRY_TAL, CURRENT_COLONY, SESSIONSTRING)
+				{{ control_mid(SHIP, ASTRO_STATE, TACHYON_ACTIVE, STARSYSTEM_ENTRY_TAL, CURRENT_COLONY)
 				}}
 			</td>
 			<td style="vertical-align: top; width: 33%;">
 				{{ control_right(WRAPPER, CONSTRUCTION_PROGRESS_WRAPPER, POSSIBLE_STATIONS, MODULE_SELECTORS,
-				USER_LAYERS, SESSIONSTRING)
+				USER_LAYERS)
 				}}
 			</td>
 		</tr>
@@ -297,7 +296,7 @@
 </table>
 {% endif %}
 {% if SHIP.getNbs %}
-{{ nbsblock(WRAPPER, HAS_NBS, CLOAK_NBS, STATION_NBS, FLEET_NBS, SHIP_NBS, SESSIONSTRING) }}
+{{ nbsblock(WRAPPER, HAS_NBS, CLOAK_NBS, STATION_NBS, FLEET_NBS, SHIP_NBS) }}
 {% endif %}
 <br />
 {{ shipstorage(SHIP) }}

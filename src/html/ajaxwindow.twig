@@ -1,4 +1,3 @@
-{% from 'html/sitemacros.twig' import achievements %}
 <html lang="de">
 
 <head>
@@ -7,7 +6,7 @@
 
 <body>
   <div class="ajaxwin">
-    {{ achievements(achievements) }}
+    {% include 'html/achievements.twig' %}
     <table class="tcal">
       <tr>
         <th onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">{{ PAGETITLE|bbcode }}</th>

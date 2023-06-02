@@ -1,4 +1,4 @@
-{# needs following variables: FLEETWRAPPER, MAX_CREW_PER_FLEET, SESSIONSTRING) #}
+{# needs following variables: FLEETWRAPPER, MAX_CREW_PER_FLEET) #}
 {% from 'html/shiplistmacros.twig' import shiplist_header, shiplist_body %}
 
 {% set fleet = FLEETWRAPPER.get %}
@@ -56,7 +56,7 @@
     <table style="{{ fleet.getHiddenStyle }}" class="tcal" id="fleetbody_{{ fleetid }}">
         {{ shiplist_header() }}
         {% for wrapper in FLEETWRAPPER.getShipWrappers %}
-        {{ shiplist_body(wrapper, SESSIONSTRING) }}
+        {{ shiplist_body(wrapper) }}
         {% endfor %}
     </table>
 </form>

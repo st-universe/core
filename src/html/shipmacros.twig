@@ -1,11 +1,11 @@
-{% macro initial_js(shipId, sessionString, jsPath) %}
+{% macro initial_js(shipId) %}
 <script language="Javascript">
-    var sstr = '{{ sessionString }}';
+    var sstr = '{{ SESSIONSTRING }}';
     var shipid = {{ shipId }};
 </script>
-<script type="text/javascript" src="{{ jsPath }}/js/ship.js"></script>
-<script type="text/javascript" src="{{ jsPath }}/js/shipmanagement.js"></script>
-<script type="text/javascript" src="{{ jsPath }}/js/station.js"></script>
+<script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
+<script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/shipmanagement.js"></script>
+<script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/station.js"></script>
 {% endmacro %}
 
 {% macro shipimage(ship) %}
@@ -58,7 +58,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro nbsblock(WRAPPER, hasNbs, cloakNbs, stationNbs, fleetNbs, shipNbs, sessionString) %}
+{% macro nbsblock(WRAPPER, hasNbs, cloakNbs, stationNbs, fleetNbs, shipNbs) %}
 {% set SHIP = WRAPPER.get %}
 {% if not hasNbs and not cloakNbs %}
 <table class="tcal">
@@ -84,7 +84,7 @@
     </tr>
     {% for station in stationNbs %}
     <tr class="row">
-        {{ _self.attackShipForm(WRAPPER, station, sessionString) }}
+        {{ _self.attackShipForm(WRAPPER, station) }}
     </tr>
     {% endfor %}
     {% endif %}
@@ -127,7 +127,7 @@
             {% if SHIP.isBase and data.getLeadShip.isOwnedByCurrentUser %}
             <span>
                 (<a
-                    href="station.php?B_DOCK_FLEET=1&id={{ SHIP.getId }}&fid={{ data.getId }}&sstr={{ sessionString }}">andocken</a>)
+                    href="station.php?B_DOCK_FLEET=1&id={{ SHIP.getId }}&fid={{ data.getId }}&sstr={{ SESSIONSTRING }}">andocken</a>)
             </span>
             {% endif %}
         </td>
@@ -149,7 +149,7 @@
     {% for nbsItem in data.getVisibleShips %}
     {% set style = data.isHidden ? 'display: none;' : '' %}
     <tr class="row fleet{{ data.getId }}" style="{{ style }}">
-        {{ _self.attackShipForm(WRAPPER, nbsItem, sessionString) }}
+        {{ _self.attackShipForm(WRAPPER, nbsItem) }}
     </tr>
     {% endfor %}
     {% endfor %}
@@ -161,7 +161,7 @@
     </tr>
     {% for nbsItem in shipNbs %}
     <tr class="row">
-        {{ _self.attackShipForm(WRAPPER, nbsItem, sessionString) }}
+        {{ _self.attackShipForm(WRAPPER, nbsItem) }}
     </tr>
     {% endfor %}
     {% endif %}
@@ -169,13 +169,13 @@
 {% endif %}
 {% endmacro %}
 
-{% macro attackShipForm(wrapper, nbsItem, sessionString) %}
+{% macro attackShipForm(wrapper, nbsItem) %}
 <form id="nbsf_{{ nbsItem.getId }}" method="post" action="ship.php">
     <input type="hidden" name="id" value="{{ wrapper.get.getId }}" />
     <input type="hidden" name="target" value="{{ nbsItem.getId }}" />
     <input type="hidden" name="B_ATTACK_SHIP" value="1" />
-    <input type="hidden" name="sstr" value="{{ sessionString }}" />
-    {{ _self.nbslist_body(wrapper, nbsItem, sessionString) }}
+    <input type="hidden" name="sstr" value="{{ SESSIONSTRING }}" />
+    {{ _self.nbslist_body(wrapper, nbsItem) }}
 </form>
 {% endmacro %}
 
@@ -190,7 +190,7 @@
 </tr>
 {% endmacro %}
 
-{% macro nbslist_body(WRAPPER, nbsItem, sessionString) %}
+{% macro nbslist_body(WRAPPER, nbsItem) %}
 {% set SHIP = WRAPPER.get %}
 {% if SHIP.displayNbsActions %}
 {% set nameWithoutMarkup = nbsItem.getName|bbcode2txt %}
@@ -217,7 +217,7 @@
     {% endif %}
     {% if SHIP.canIntercept and nbsItem.isInterceptable and SHIP.hasWarpdrive %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_INTERCEPT=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ sessionString }}"
+        <a href="?B_INTERCEPT=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('int_{{ nbsItem.getId }}','buttons/inc2')"
             onmouseout="cp('int_{{ nbsItem.getId }}','buttons/inc1')">
             <img src="assets/buttons/inc1.png" name="int_{{ nbsItem.getId }}"
@@ -275,7 +275,7 @@
     {% endif %}
     {% if nbsItem.isTractorbeamPossible and not SHIP.isTractoring %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_ACTIVATE_TRACTOR=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ sessionString }}"
+        <a href="?B_ACTIVATE_TRACTOR=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('tra_{{ nbsItem.getId }}','buttons/trak2')"
             onmouseout="cp('tra_{{ nbsItem.getId }}','buttons/trak1')">
             <img src="assets/buttons/trak1.png" name="tra_{{ nbsItem.getId }}"
@@ -285,7 +285,7 @@
     {% endif %}
     {% if nbsItem.isOwnedByCurrentUser and nbsItem.isShuttle and SHIP.hasFreeShuttleSpace %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_STORE_SHUTTLE=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ sessionString }}"
+        <a href="?B_STORE_SHUTTLE=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('store_{{ nbsItem.getId }}','buttons/landshuttle2', 'png')"
             onmouseout="cp('store_{{ nbsItem.getId }}','buttons/landshuttle1', 'png')">
             <img src="assets/buttons/landshuttle1.png" name="store_{{ nbsItem.getId }}" title="Shuttle aufsammeln" />
@@ -294,7 +294,7 @@
     {% endif %}
     {% if SHIP.isShuttle and nbsItem.isOwnedByCurrentUser %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_LAND_SHUTTLE=1&id={{ nbsItem.getId }}&shuttle={{ SHIP.getId }}&sstr={{ sessionString }}"
+        <a href="?B_LAND_SHUTTLE=1&id={{ nbsItem.getId }}&shuttle={{ SHIP.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('land_{{ nbsItem.getId }}','buttons/landshuttle2', 'png')"
             onmouseout="cp('land_{{ nbsItem.getId }}','buttons/landshuttle1', 'png')">
             <img src="assets/buttons/landshuttle1.png" name="land_{{ nbsItem.getId }}"
@@ -304,7 +304,7 @@
     {% endif %}
     {% if wrapper.getTrackerSystemData and wrapper.getTrackerSystemData.isUseable and not nbsItem.isDestroyed %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_TRACK=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ sessionString }}"
+        <a href="?B_TRACK=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('track_{{ nbsItem.getId }}','buttons/mark_1', 'png')"
             onmouseout="cp('track_{{ nbsItem.getId }}','buttons/mark', 'png')">
             <img src="assets/buttons/mark.png" name="track_{{ nbsItem.getId }}" title="Ziel markieren" />
@@ -314,7 +314,7 @@
     {% endif %}
     {% if nbsItem.isBase and not nbsItem.isDestroyed and not SHIP.getDockedTo %}
     <div style="float:left; margin-right:4px;">
-        <a href="?B_DOCK=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ sessionString }}"
+        <a href="?B_DOCK=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
             onmouseover="cp('dock_{{ nbsItem.getId }}','buttons/dock2')"
             onmouseout="cp('dock_{{ nbsItem.getId }}','buttons/dock1')">
             <img src="assets/buttons/dock1.png" name="dock_{{ nbsItem.getId }}"
@@ -328,7 +328,7 @@
 <td colspan="2" style="text-align: center;">
     {% if SHIP.getWarpState %}
     {% if SHIP.canIntercept and nbsItem.isInterceptable and SHIP.hasWarpdrive %}
-    <a href="?B_INTERCEPT=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ sessionString }}"
+    <a href="?B_INTERCEPT=1&id={{ SHIP.getId }}&target={{ nbsItem.getId }}&sstr={{ SESSIONSTRING }}"
         onmouseover="cp('int_{{ nbsItem.getId }}','buttons/inc2')"
         onmouseout="cp('int_{{ nbsItem.getId }}','buttons/inc1')">
         <img src="assets/buttons/inc1.png" name="int_{{ nbsItem.getId }}"

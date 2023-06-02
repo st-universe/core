@@ -1,5 +1,4 @@
-{% macro control_right(wrapper, constructionProgressWrapper, possibleStations, moduleSelectors, userLayers
-, sessionString) %}
+{% macro control_right(wrapper, constructionProgressWrapper, possibleStations, moduleSelectors, userLayers) %}
 {% from 'html/shipmacros.twig' import shipimagewithoutwarp %}
 
 {% set ship = wrapper.get %}
@@ -44,9 +43,9 @@
         </td>
         <td>
             {% if ship.getWarpState %}
-            <a href="?B_DEACTIVATE_WARP=1&id={{ shipId }}&sstr={{ sessionString }}" class="linkbutton">deaktivieren</a>
+            <a href="?B_DEACTIVATE_WARP=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">deaktivieren</a>
             {% else %}
-            <a href="?B_ACTIVATE_WARP=1&id={{ shipId }}&sstr={{ sessionString }}" class="linkbutton">aktivieren</a>
+            <a href="?B_ACTIVATE_WARP=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" class="linkbutton">aktivieren</a>
             {% endif %}
         </td>
     </tr>
@@ -141,10 +140,10 @@
             {% if ship.isBase %}
             {% if eps.reloadBattery %}
             <input type="checkbox" checked="checked"
-                onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ sessionString }}'" />
+                onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}'" />
             {% else %}
             <input type="checkbox"
-                onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ sessionString }}'" />
+                onchange="document.location.href='?B_TOGGLE_BATT_RELOAD=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}'" />
             {% endif %}
             reload <img title="Ersatzbatterie wird vom Reaktor geladen" src="assets/buttons/info2.png"
                 style="height:16px;" />
@@ -253,7 +252,7 @@
         <td>
             {% if ship.isTractoring %}
             {% if ship.isBase and not ship.getTractoredShip.isDestroyed %}
-            <a href="?B_DOCK_TRACTORED=1&id={{ shipId }}&sstr={{ sessionString }}"
+            <a href="?B_DOCK_TRACTORED=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('docktractored','buttons/dock2')" onmouseout="cp('docktractored','buttons/dock1')">
                 <img src="assets/buttons/dock1.png" name="docktractored" title="Gezogenes Schiff andocken" />
             </a>
@@ -289,7 +288,7 @@
     <tr>
         <td>
             {% if wrapper.getTrackerSystemData.canAttackCloakedTarget %}
-            <a href="?B_ATTACK_TRACKED=1&id={{ shipId }}&target={{ targetShip.getId }}&sstr={{ sessionString }}"
+            <a href="?B_ATTACK_TRACKED=1&id={{ shipId }}&target={{ targetShip.getId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('attacktracked','buttons/phaser2')" onmouseout="cp('attacktracked','buttons/phaser1')"
                 title="Getarntes Ziel angreifen">
                 <img src="assets/buttons/phaser1.png" name="attacktracked" />
