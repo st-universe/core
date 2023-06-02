@@ -1,6 +1,5 @@
 <?php
 
-// @todo enable strict typing
 declare(strict_types=0);
 
 namespace Stu\Module\Colony\Lib;

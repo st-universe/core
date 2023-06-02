@@ -4,6 +4,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\ColonyClassInterface;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StorageInterface;
 
@@ -46,6 +47,9 @@ interface ColonyListItemInterface
 
     public function getProductionSum(): int;
 
+    /**
+     * @return array<int, array{turnsleft:int, commodity:CommodityInterface}>
+     */
     public function getCommodityUseView(): array;
 
     public function isDefended(): bool;
