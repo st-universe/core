@@ -24,7 +24,7 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
     public function truncateByUser(int $userId): void;
 
     /**
-     * @return list<TradeOfferInterface>
+     * @return array<TradeOfferInterface>
      */
     public function getByTradePostAndUserAndOfferedCommodity(
         int $tradePostId,
@@ -33,7 +33,7 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return list<TradeOfferInterface>
+     * @return array<TradeOfferInterface>
      */
     public function getByTradePostAndUserAndCommodities(
         int $tradePostId,
@@ -43,19 +43,19 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return list<TradeOfferInterface>
+     * @return array<TradeOfferInterface>
      */
     public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, int $direction): array;
 
     public function getSumByTradePostAndUser(int $tradePostId, int $userId): int;
 
     /**
-     * @return list<array{commodity_id: int, amount: int, commodity_name: string}>
+     * @return array<array{commodity_id: int, amount: int, commodity_name: string}>
      */
     public function getGroupedSumByTradePostAndUser(int $tradePostId, int $userId): array;
 
     /**
-     * @return list<TradeOfferInterface>
+     * @return array<TradeOfferInterface>
      */
     public function getOldOffers(int $threshold): array;
 

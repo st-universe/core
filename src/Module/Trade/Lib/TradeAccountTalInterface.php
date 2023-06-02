@@ -23,7 +23,7 @@ interface TradeAccountTalInterface
     public function getStorageSum(): int;
 
     /**
-     * @return list<array{commodity_id: int, amount: int, commodity_name: string}>
+     * @return array<array{commodity_id: int, amount: int, commodity_name: string}>
      */
     public function getOfferStorage(): array;
 
