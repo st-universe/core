@@ -21,6 +21,7 @@ use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
+use Stu\Lib\UserLockedException;
 use Stu\Lib\UuidGeneratorInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\Exception\ItemNotFoundException;
@@ -568,7 +569,11 @@ final class GameController implements GameControllerInterface
             }
             return;
         } catch (LoginException $e) {
-            $this->loginError = $e->getMessage(); //TODO kann weg?
+            $this->loginError = $e->getMessage();
+            $this->setTemplateVar('THIS', $this);
+            $this->setTemplateFile('html/index.xhtml');
+        } catch (UserLockedException $e) {
+            $this->loginError = $e->getMessage();
 
             $this->setTemplateFile('html/accountlocked.xhtml');
             $this->setTemplateVar('THIS', $this);
@@ -654,7 +659,7 @@ final class GameController implements GameControllerInterface
                 $userLock = $this->getUser()->getUserLock();
                 $this->session->logout();
 
-                throw new LoginException(
+                throw new UserLockedException(
                     _('Dein Spieleraccount wurde gesperrt'),
                     sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
                 );
