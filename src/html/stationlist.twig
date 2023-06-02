@@ -4,7 +4,18 @@
 {% from 'html/sitemacros.twig' import breadcrumb %}
 {% from 'html/shiplistmacros.twig' import shiplist_header, shiplist_body %}
 {{ breadcrumb(NAVIGATION, INFORMATION, ACHIEVEMENTS, EXECUTEJS) }}
-{% if not BASES %}
+{% if BASES %}
+<script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
+<table class="tcal">
+    <tr>
+        <td colspan="11">Stationen</td>
+    </tr>
+    {{ shiplist_header()}}
+    {% for wrapper in BASES %}
+    {{ shiplist_body(wrapper, SESSIONSTRING) }}
+    {% endfor %}
+</table>
+{% else %}
 <table class="tcal">
     <tr>
         <th>Meldung</th>
@@ -12,19 +23,6 @@
     <tr>
         <td>Du besitzt derzeit keine Stationen</td>
     </tr>
-</table>
-{% endif %}
-
-{% if BASES %}
-<script type="text/javascript" src="{{ JAVASCRIPTPATH }}/js/ship.js"></script>
-<table class="tcal">
-    <tr>
-        <td colspan="11">Stationen</td>
-    </tr>
-    {{ shiplist_header(wrapper, SESSIONSTRING)}}
-    {% for wrapper in BASES %}
-    {{ shiplist_body(wrapper, SESSIONSTRING) }}
-    {% endfor %}
 </table>
 {% endif %}
 {% endblock %}
