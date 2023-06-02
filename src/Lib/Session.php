@@ -121,13 +121,13 @@ final class Session implements SessionInterface
             /** @var UserLockInterface $userLock */
             $userLock = $result->getUserLock();
 
-            throw new LoginException(
+            throw new UserLockedException(
                 _('Dein Spieleraccount wurde gesperrt'),
                 sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
             );
         }
         if ($result->getDeletionMark() === UserEnum::DELETION_CONFIRMED) {
-            throw new LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
+            throw new LoginException(_('Dein Spieleraccount ist zur Löschung vorgesehen'));
         }
 
         if ($result->isVacationMode()) {
