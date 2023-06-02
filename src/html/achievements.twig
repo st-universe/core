@@ -1,0 +1,7 @@
+{% if ACHIEVEMENTS %}
+<script type="text/Javascript" defer="defer">
+  {% for achievement in ACHIEVEMENTS %}
+  showAchievement('{{ achievement|jsquote }}');
+  {% endfor %}
+</script>
+{% endif %}

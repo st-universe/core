@@ -1,0 +1,31 @@
+{% if EXECUTEJS %}
+<script language="Javascript">
+    {% for item in EXECUTEJS %}
+    { { item } }
+    {% endfor %}
+</script>
+{% endif %}
+<div id="result">
+    <table class="use">
+        <tr>
+            <th>Meldung</th>
+        </tr>
+        <tr>
+            <td>
+                {% for notification in INFORMATION %}
+                <div>
+                    {{ notification.getText|bbcode }}
+                </div>
+                {% endfor %}
+                {% for notification in INFORMATION %}
+                {% if notification.getLink %}
+                <a href="{{ notification.getLink }}" class="linkbutton">
+                    Zum Schiff wechseln
+                </a>
+                {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+</div>
+<br />

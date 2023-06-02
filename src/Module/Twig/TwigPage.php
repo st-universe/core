@@ -8,14 +8,11 @@ use RuntimeException;
 use Twig\Environment;
 use Twig\TemplateWrapper;
 
-//TODO unit tests
 final class TwigPage implements TwigPageInterface
 {
     private Environment $environment;
 
-    private ?TemplateWrapper $template = null;
-
-    private bool $isTemplateSet = false;
+    private ?string $template = null;
 
     /** @var array<mixed> */
     private array $variables = [];
@@ -26,37 +23,36 @@ final class TwigPage implements TwigPageInterface
         $this->environment = $environment;
     }
 
-    public function setVar(string $var, mixed $value): void
+    public function setVar(string $var, mixed $value, bool $isGlobal = false): void
     {
-        $this->variables[$var] = $value;
+        if ($isGlobal) {
+            $this->environment->addGlobal($var, $value);
+        } else {
+            $this->variables[$var] = $value;
+        }
     }
 
     public function setTemplate(string $file): void
     {
-        $this->loadTemplate($file);
-        $this->isTemplateSet = true;
+        $this->template = $file;
     }
 
     public function isTemplateSet(): bool
     {
-        return $this->isTemplateSet;
+        return $this->template !== null;
     }
 
     public function render(): string
     {
-        if ($this->template === null) {
-            throw new RuntimeException('can not render before template loaded');
-        }
-
-        return $this->template->render($this->variables);
+        return $this->loadTemplate()->render($this->variables);
     }
 
-    private function loadTemplate(string $file): TemplateWrapper
+    private function loadTemplate(): TemplateWrapper
     {
         if ($this->template === null) {
-
-            $this->template = $this->environment->load($file);
+            throw new RuntimeException('render not possible if template is not set');
         }
-        return $this->template;
+
+        return  $this->environment->load($this->template);
     }
 }

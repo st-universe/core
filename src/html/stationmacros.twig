@@ -50,7 +50,7 @@
 </table>
 {% endmacro %}
 
-{% macro ship_repairprogress(station, shipRepairProgress, sessionString) %}
+{% macro ship_repairprogress(station, shipRepairProgress) %}
 {% if shipRepairProgress %}
 <table class="tcal">
   <tr>
@@ -77,7 +77,7 @@
       {% endfor %}
     </td>
     <td>
-      <a href="station.php?id={{ station.getId }}&B_CANCEL_REPAIR=1&shipid={{ shipId }}&sstr={{ sessionString }}"
+      <a href="station.php?id={{ station.getId }}&B_CANCEL_REPAIR=1&shipid={{ shipId }}&sstr={{ SESSIONSTRING }}"
         onmouseover="cp('cancel{{ shipId }}','buttons/x2');" onmouseout="cp('cancel{{ shipId }}','buttons/x1');">
         <span>{{ wrapper.getRepairDuration }}</span> Ticks
         <img src="assets/buttons/x1.png" name="cancel{{ shipId }}" title="Reparatur abbrechen" />

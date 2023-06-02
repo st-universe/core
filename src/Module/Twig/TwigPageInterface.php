@@ -4,7 +4,7 @@ namespace Stu\Module\Twig;
 
 interface TwigPageInterface
 {
-    public function setVar(string $var, mixed $value): void;
+    public function setVar(string $var, mixed $value, bool $isGlobal = false): void;
 
     public function setTemplate(string $file): void;
 

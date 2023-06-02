@@ -1,4 +1,4 @@
-{% macro control_mid(ship, astroState, isTachyonActive, starSystemEntryTal, currentColony, sessionString) %}
+{% macro control_mid(ship, astroState, isTachyonActive, starSystemEntryTal, currentColony) %}
 
 {% set shipId = ship.getId %}
 {% set starSystem = ship.getSystem %}
@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            {{ _self.onOffToggle('SHIELDS', shipId, ship.getShieldState, 'shldac', 'Schilde', sessionString) }}
+            {{ _self.onOffToggle('SHIELDS', shipId, ship.getShieldState, 'shldac', 'Schilde') }}
         </td>
     </tr>
     {% if ship.hasPhaser %}
@@ -21,7 +21,7 @@
         </td>
         {% else %}
         <td colspan="2">
-            {{ _self.onOffToggle('PHASER', shipId, ship.getPhaserState, 'act_phaser', 'Strahlenwaffe', sessionString) }}
+            {{ _self.onOffToggle('PHASER', shipId, ship.getPhaserState, 'act_phaser', 'Strahlenwaffe') }}
         </td>
         {% endif %}
     </tr>
@@ -35,7 +35,7 @@
         </td>
         {% else %}
         <td>
-            {{ _self.onOffToggle('TORPEDO', shipId, ship.getTorpedoState, 'act_torp', 'Torpedobänke', sessionString) }}
+            {{ _self.onOffToggle('TORPEDO', shipId, ship.getTorpedoState, 'act_torp', 'Torpedobänke') }}
         </td>
         {% endif %}
         {{ _self.torpedoDisplay(ship.getTorpedo, ship.getTorpedoCount) }}
@@ -48,15 +48,14 @@
     {% if ship.hasSubspaceScanner %}
     <tr>
         <td colspan="2">
-            {{ _self.onOffToggle('SUBSPACE', shipId, ship.getSubspaceState, 'subspace', 'Subraumfeldsensoren',
-            sessionString) }}
+            {{ _self.onOffToggle('SUBSPACE', shipId, ship.getSubspaceState, 'subspace', 'Subraumfeldsensoren') }}
         </td>
     </tr>
     {% endif %}
     {% if ship.hasCloak %}
     <tr>
         <td colspan="2">
-            {{ _self.onOffToggle('CLOAK', shipId, ship.getCloakState, 'tarn', 'Tarnung', sessionString) }}
+            {{ _self.onOffToggle('CLOAK', shipId, ship.getCloakState, 'tarn', 'Tarnung') }}
         </td>
     </tr>
     {% endif %}
@@ -74,15 +73,14 @@
     {% if ship.hasTachyonScanner %}
     <tr>
         <td colspan="2">
-            {{ _self.onOffToggle('TACHYON', shipId, ship.getTachyonState, 'decloak', 'Tachyon-Scanner'
-            , sessionString) }}
+            {{ _self.onOffToggle('TACHYON', shipId, ship.getTachyonState, 'decloak', 'Tachyon-Scanner') }}
         </td>
     </tr>
     {% endif %}
     {% if ship.hasUplink %}
     <tr>
         <td colspan="2">
-            <a href="?B_ACTIVATE_UPLINK=1&id={{ shipId }}&sstr={{ sessionString }}"
+            <a href="?B_ACTIVATE_UPLINK=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('uplink','buttons/uplink1')" onmouseout="cp('uplink','buttons/uplink2')">
                 <img src="/assets/buttons/uplink2.png" name="uplink" />
                 Uplink aktivieren
@@ -93,7 +91,7 @@
     {% if ship.hasRPGModule %}
     <tr>
         <td colspan="2">
-            {{ _self.onOffToggle('RPG_MODULE', shipId, ship.getRPGModuleState, 'rpg', 'RPG Modul', sessionString) }}
+            {{ _self.onOffToggle('RPG_MODULE', shipId, ship.getRPGModuleState, 'rpg', 'RPG Modul') }}
         </td>
     </tr>
     {% endif %}
@@ -125,14 +123,14 @@
     {% if ship.hasAstroLaboratory %}
     <tr>
         <td colspan="2">
-            {{ _self.onOffToggle('ASTRO', shipId, ship.getAstroState, 'map', 'Astrometrisches Labor', sessionString) }}
+            {{ _self.onOffToggle('ASTRO', shipId, ship.getAstroState, 'map', 'Astrometrisches Labor') }}
         </td>
     </tr>
     {% endif %}
     {% if ship.getRump.isshipyard %}
     <tr>
         <td colspan="2">
-            {{ _self.onOffToggle('HUB', shipId, ship.getConstructionHubState, 'rep', 'Werfthub', sessionString) }}
+            {{ _self.onOffToggle('HUB', shipId, ship.getConstructionHubState, 'rep', 'Werfthub') }}
         </td>
     </tr>
     {% endif %}
@@ -153,55 +151,55 @@
     </tr>
     <tr>
         <td>
-            <a href="?B_FLEET_ACTIVATE_NBS=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ACTIVATE_NBS=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/kss1.png" name="fl_ksson" title="Nahbereichssensoren aktivieren" />
             </a>
-            <a href="?B_FLEET_ACTIVATE_SHIELDS=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ACTIVATE_SHIELDS=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/shldac1.png" name="fl_shieldon" title="Schilde aktivieren" />
             </a>
-            <a href="?B_FLEET_ACTIVATE_PHASER=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ACTIVATE_PHASER=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/act_phaser1.png" name="fl_phaseron" title="Strahlenwaffen aktivieren" />
             </a>
-            <a href="?B_FLEET_ACTIVATE_TORPEDO=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ACTIVATE_TORPEDO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/act_torp1.png" name="fl_torpon" title="Torpedobänke aktivieren" />
             </a>
-            <a href="?B_FLEET_ACTIVATE_CLOAK=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ACTIVATE_CLOAK=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/tarn1.png" name="fl_cloakon" title="Tarnung aktivieren" />
             </a>
             {% if ship.isWarpPossible %}
-            <a href="?B_FLEET_ACTIVATE_WARP=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ACTIVATE_WARP=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/warp1.png" name="fl_cloakon" title="Warpantrieb aktivieren" />
             </a>
             {% endif %}
         </td>
         <td>
-            <a href="?B_FLEET_DEACTIVATE_NBS=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_DEACTIVATE_NBS=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/kss2.png" name="fl_kssoff" title="Nahbereichssensoren deaktivieren" />
             </a>
-            <a href="?B_FLEET_DEACTIVATE_SHIELDS=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_DEACTIVATE_SHIELDS=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/shldac2.png" name="fl_shieldoff" title="Schilde deaktivieren" />
             </a>
-            <a href="?B_FLEET_DEACTIVATE_PHASER=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_DEACTIVATE_PHASER=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/act_phaser2.png" name="fl_phaseroff" title="Strahlenwaffen deaktivieren" />
             </a>
-            <a href="?B_FLEET_DEACTIVATE_TORPEDO=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_DEACTIVATE_TORPEDO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/act_torp2.png" name="fl_torpoff" title="Torpedobänke deaktivieren" />
             </a>
-            <a href="?B_FLEET_DEACTIVATE_CLOAK=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_DEACTIVATE_CLOAK=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/tarn2.png" name="fl_cloakoff" title="Tarnung deaktivieren" />
             </a>
-            <a href="?B_FLEET_DEACTIVATE_WARP=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_DEACTIVATE_WARP=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/warp2.png" name="fl_cloakoff" title="Warpantrieb deaktivieren" />
             </a>
         </td>
         <td>
-            <a href="?B_FLEET_ALERT_GREEN=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ALERT_GREEN=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/alert1_2.png" title="Flotte: Alarmstufe Grün" />
             </a>
-            <a href="?B_FLEET_ALERT_YELLOW=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ALERT_YELLOW=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/alert2_2.png" title="Flotte: Alarmstufe Gelb" />
             </a>
-            <a href="?B_FLEET_ALERT_RED=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_FLEET_ALERT_RED=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/alert3_2.png" title="Flotte: Alarmstufe Rot" />
             </a>
         </td>
@@ -217,7 +215,7 @@
     </tr>
     <tr>
         <td>
-            <a href="?B_UNDOCK=1&id={{ shipId }}&sstr={{ sessionString }}" onmouseover="cp('dock','buttons/dock1')"
+            <a href="?B_UNDOCK=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('dock','buttons/dock1')"
                 onmouseout="cp('dock','buttons/dock2')">
                 <img src="assets/buttons/dock2.png" title="Abdocken" name="dock" />
             </a>
@@ -267,7 +265,7 @@
             {% if isTachyonActive %}
             <br />
             {% if ship.getTachyonState %}
-            <a href="?B_TACHYON_SCAN=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="?B_TACHYON_SCAN=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="/assets/buttons/ascan1.png" name="tachyonScanButton" />
                 <span>Tachyon-Scan in Sektor {{ ship.getPosX }}|{{ ship.getPosY }} noch
                     aktiv</span>
@@ -280,7 +278,7 @@
             {% else %}
             {% if ship.getTachyonState %}
             <br />
-            <a href="?B_TACHYON_SCAN=1&id={{ shipId }}&sstr={{ sessionString }}"
+            <a href="?B_TACHYON_SCAN=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
                 onmouseover="cp('tachyonScanButton','buttons/ascan1')"
                 onmouseout="cp('tachyonScanButton','buttons/ascan')">
                 <img src="/assets/buttons/ascan.png" name="tachyonScanButton" />
@@ -318,7 +316,7 @@
             <span>{{ starSystem.getName }}</span>
             <br />
             {% if ship.getStarsystemMap.getRandomWormholeEntry %}
-            <a href="ship.php?B_LEAVE_WORMHOLE=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="ship.php?B_LEAVE_WORMHOLE=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/sysleave1.png" title="Wurmloch verlassen" /> verlassen
             </a>
             {% endif %}
@@ -338,7 +336,7 @@
             {% endif %}
             <br />
             {% if ship.hasWarpdrive %}
-            <a href="ship.php?B_LEAVE_STARSYSTEM=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="ship.php?B_LEAVE_STARSYSTEM=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/sysleave1.png" name="sysleave" title="System verlassen" /> verlassen
             </a>
             {% endif %}
@@ -351,7 +349,7 @@
                 title="Sternensystem" />
             {{ ship.isOverSystem.getName }}<br />
             {% if ship.hasWarpdrive %}
-            <a href="ship.php?B_ENTER_STARSYSTEM=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="ship.php?B_ENTER_STARSYSTEM=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/sysenter1.png" name="sysleave" title="Ins System einfliegen" />
                 einfliegen
             </a>
@@ -363,7 +361,7 @@
         <td>
             {{ wormholeEntry.getSystem.getName }}<br />
             {% if not ship.getWarpState and not ship.isBase %}
-            <a href="ship.php?B_ENTER_WORMHOLE=1&id={{ shipId }}&sstr={{ sessionString }}">
+            <a href="ship.php?B_ENTER_WORMHOLE=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}">
                 <img src="assets/buttons/wlenter1.png" title="Ins Wurmloch einfliegen" />
                 einfliegen
             </a>
@@ -429,22 +427,22 @@
             {% if ship.isFleetLeader and not currentColony.isFree %}
             <div style="margin-top: 5px;">
                 {% if ship.getFleet.getDefendedColony %}
-                <a href="?B_STOP_DEFENDING=1&id={{ shipId }}&sstr={{ sessionString }}"
+                <a href="?B_STOP_DEFENDING=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
                     onmouseover="cp('defend','buttons/defend2')" onmouseout="cp('defend','buttons/defend1')">
                     <img src="/assets/buttons/defend1.png" name="defend" title="Verteidigung der Kolonie beenden" />
                 </a>
                 {% elseif ship.getFleet.getBlockedColony %}
-                <a href="?B_STOP_BLOCKING=1&id={{ shipId }}&sstr={{ sessionString }}"
+                <a href="?B_STOP_BLOCKING=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
                     onmouseover="cp('block','buttons/block2','png')" onmouseout="cp('block','buttons/block1','png')">
                     <img src="/assets/buttons/block1.png" name="block" title="Blockierung der Kolonie beenden" />
                 </a>
                 {% else %}
-                <a href="?B_START_DEFENDING=1&id={{ shipId }}&sstr={{ sessionString }}"
+                <a href="?B_START_DEFENDING=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
                     onmouseover="cp('defend','buttons/defend1')" onmouseout="cp('defend','buttons/defend2')">
                     <img src="/assets/buttons/defend2.png" name="defend" title="Kolonie verteidigen" />
                 </a>
 
-                <a href="?B_START_BLOCKING=1&id={{ shipId }}&sstr={{ sessionString }}"
+                <a href="?B_START_BLOCKING=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
                     onmouseover="cp('block','buttons/block1','png')" onmouseout="cp('block','buttons/block2','png')">
                     <img src="/assets/buttons/block2.png" name="block" title="Kolonie blockieren" />
                 </a>
@@ -462,7 +460,7 @@
             {% if WRAPPER.canLandOnCurrentColony %}
             <div>
                 <a
-                    href="colony.php?B_LAND_SHIP=1&id={{ colonyId }}&shipid={{ shipId }}&sstr={{ sessionString }}">Landen</a>
+                    href="colony.php?B_LAND_SHIP=1&id={{ colonyId }}&shipid={{ shipId }}&sstr={{ SESSIONSTRING }}">Landen</a>
             </div>
             {% endif %}
         </td>
@@ -471,13 +469,13 @@
 {% endif %}
 {% endmacro %}
 
-{% macro onOffToggle(action, shipId, isActive, icon, name, sessionString) %}
+{% macro onOffToggle(action, shipId, isActive, icon, name) %}
 {% if isActive %}
-<a href="?B_DEACTIVATE_{{ action }}=1&id={{ shipId }}&sstr={{ sessionString }}"
+<a href="?B_DEACTIVATE_{{ action }}=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
     onmouseover="cp('{{ icon }}','buttons/{{ icon }}2');" onmouseout="cp('{{ icon }}','buttons/{{ icon }}1');">
     <img src="assets/buttons/{{ icon }}1.png" name="{{ icon }}" /> {{ name }} deaktivieren</a>
 {% else %}
-<a href="?B_ACTIVATE_{{ action }}=1&id={{ shipId }}&sstr={{ sessionString }}"
+<a href="?B_ACTIVATE_{{ action }}=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}"
     onmouseover="cp('{{ icon }}','buttons/{{ icon }}1');" onmouseout="cp('{{ icon }}','buttons/{{ icon }}2');">
     <img src="assets/buttons/{{ icon }}2.png" name="{{ icon }}" /> {{ name }} aktivieren</a>
 {% endif %}
@@ -500,7 +498,7 @@
 {% if astroStateWrapper.isPlannable %}
 <br />
 {% if starSystem and shipAstroState %}
-<a href="?B_PLAN_ASTRO=1&id={{ shipId }}&sstr={{ sessionString }}" onmouseover="cp('astroButton','buttons/map2')"
+<a href="?B_PLAN_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
     onmouseout="cp('astroButton','buttons/map1')">
     <img src="/assets/buttons/map1.png" name="astroButton" />
     <span>System kartographieren</span>
@@ -525,7 +523,7 @@
 {% elseif astroStateWrapper.isMeasured %}
 <br />
 {% if starSystem and shipAstroState %}
-<a href="?B_START_ASTRO=1&id={{ shipId }}&sstr={{ sessionString }}" onmouseover="cp('astroButton','buttons/map2')"
+<a href="?B_START_ASTRO=1&id={{ shipId }}&sstr={{ SESSIONSTRING }}" onmouseover="cp('astroButton','buttons/map2')"
     onmouseout="cp('astroButton','buttons/map1')">
     <img src="/assets/buttons/map1.png" name="astroButton" />
     <span>Kartographierung finalisieren</span>
