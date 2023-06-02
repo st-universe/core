@@ -12,6 +12,9 @@ interface BasicTradeAccountTalInterface
 
     public function getTradePostDescription(): string;
 
+    /**
+     * @return array<BasicTradeItemInterface>
+     */
     public function getBasicTradeItems(): array;
 
     public function getLatinumItem(): BasicTradeItem;

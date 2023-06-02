@@ -90,8 +90,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
             $tradePost,
             $filteredBasicTrades,
             $userId,
-            $this->commodityRepository,
-            $this->loggerUtilFactory
+            $this->commodityRepository
         );
     }
 
