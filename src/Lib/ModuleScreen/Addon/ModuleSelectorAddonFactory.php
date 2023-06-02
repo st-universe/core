@@ -8,7 +8,6 @@ use Stu\Lib\ModuleScreen\ModuleSelectorAddonInterface;
 use Stu\Orm\Repository\TorpedoHullRepositoryInterface;
 use Stu\Orm\Repository\WeaponShieldRepositoryInterface;
 
-//TODO unit tests
 final class ModuleSelectorAddonFactory implements ModuleSelectorAddonFactoryInterface
 {
     private TorpedoHullRepositoryInterface $torpedoHullRepository;
