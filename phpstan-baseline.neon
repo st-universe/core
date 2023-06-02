@@ -3832,41 +3832,6 @@ parameters:
 			path: src/Module/Trade/Action/TransferCommodities/TransferCommodities.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\BasicTradeAccountTal\\:\\:__construct\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/BasicTradeAccountTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\BasicTradeAccountTal\\:\\:getBasicTradeItems\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/BasicTradeAccountTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\BasicTradeAccountTal\\:\\:getStorage\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/BasicTradeAccountTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\BasicTradeAccountTal\\:\\:\\$basicTrades type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/BasicTradeAccountTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\BasicTradeAccountTal\\:\\:\\$loggerUtil is never read, only written\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/BasicTradeAccountTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\BasicTradeAccountTal\\:\\:\\$storage has no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/BasicTradeAccountTal.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\BasicTradeAccountTalInterface\\:\\:getBasicTradeItems\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/BasicTradeAccountTalInterface.php
-
-		-
 			message: "#^Cannot call method getCommodity\\(\\) on Stu\\\\Orm\\\\Entity\\\\BasicTradeInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/BasicTradeItem.php
@@ -3910,11 +3875,6 @@ parameters:
 			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\DealAccountTal\\:\\:\\$storage has no type specified\\.$#"
 			count: 1
 			path: src/Module/Trade/Lib/DealAccountTal.php
-
-		-
-			message: "#^Property Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeAccountTal\\:\\:\\$storage has no type specified\\.$#"
-			count: 1
-			path: src/Module/Trade/Lib/TradeAccountTal.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Trade\\\\Lib\\\\TradeLibFactory\\:\\:createBasicTradeAccountTal\\(\\) has parameter \\$basicTrades with no value type specified in iterable type array\\.$#"

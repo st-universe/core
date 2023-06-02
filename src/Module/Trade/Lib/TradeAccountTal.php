@@ -1,7 +1,6 @@
 <?php
 
-// @todo activate strict typing
-declare(strict_types=0);
+declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
@@ -27,6 +26,9 @@ final class TradeAccountTal implements TradeAccountTalInterface
 
     private int $userId;
 
+    /**
+     * @var array<StorageInterface>
+     */
     private $storage;
 
     public function __construct(
