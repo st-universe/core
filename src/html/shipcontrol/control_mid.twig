@@ -493,6 +493,7 @@
 {% endmacro %}
 
 {% macro astroStates(ship, astroStateWrapper) %}
+{% set shipId = ship.getId %}
 {% set starSystem = ship.getSystem %}
 {% set shipAstroState = ship.getAstroState %}
 {% if astroStateWrapper.isPlannable %}
@@ -551,7 +552,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro influenceArea(user, allianceAssetsPath) %}
+{% macro influenceArea(user) %}
 {% from 'html/macros.twig' import useravatar %}
 {% from 'html/alliancemacros.twig' import alliance_avatar %}
 {% set alliance = user.getAlliance %}
