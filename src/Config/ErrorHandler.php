@@ -11,9 +11,6 @@ use Stu\Component\Logging\GameRequest\GameRequestSaverInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Config\StuConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Throwable;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -35,72 +32,69 @@ final class ErrorHandler
 
     private SessionInterface $session;
 
-    private LoggerUtilInterface $loggerUtil;
-
     public function __construct(
         Connection $database,
         GameRequestSaverInterface $gameRequestSaver,
         GameControllerInterface $game,
         StuConfigInterface $stuConfig,
-        SessionInterface $session,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        SessionInterface $session
     ) {
         $this->database = $database;
         $this->gameRequestSaver = $gameRequestSaver;
         $this->game = $game;
         $this->stuConfig = $stuConfig;
         $this->session = $session;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function register(): void
     {
-        $this->loggerUtil->init('ERRHAND', LoggerEnum::LEVEL_INFO);
-
-        $this->loggerUtil->log('A');
-
         $this->setErrorReporting();
 
         $whoops = new Run();
-        $whoops->prependHandler(function () {
 
-            $this->loggerUtil->log('D');
+        $whoops->appendHandler($this->outputHandler());
+        $whoops->prependHandler($this->transactionHandler());
+        $whoops->prependHandler($this->logfileHandler());
 
-            if (
-                $this->stuConfig->getDebugSettings()->isDebugMode()
-                || $this->isAdminUser()
-            ) {
-                $this->loggerUtil->log('E');
+        $whoops->register();
+    }
 
-                if (Misc::isCommandLine()) {
-                    $this->loggerUtil->log('F');
-                    $handler = new PlainTextHandler();
-                } else {
-                    $this->loggerUtil->log('G');
-                    $handler = new PrettyPageHandler();
-                    $handler->setPageTitle('Error - Star Trek Universe');
-                }
+    private function outputHandler(): mixed
+    {
+
+        if (
+            $this->stuConfig->getDebugSettings()->isDebugMode()
+            || $this->isAdminUser()
+        ) {
+
+            if (Misc::isCommandLine()) {
+                $handler = new PlainTextHandler();
             } else {
-                $this->loggerUtil->log('H');
-                if (Misc::isCommandLine()) {
-                    $handler = new PlainTextHandler();
-                } else {
-                    $this->loggerUtil->log('I');
-                    $handler = function (): void {
-                        echo str_replace(
-                            '$REQUESTID',
-                            $this->game->getGameRequestId(),
-                            (string) file_get_contents(__DIR__ . '/../html/error.html')
-                        );
-                    };
-                }
+                $handler = new PrettyPageHandler();
+                $handler->setPageTitle('Error - Star Trek Universe');
             }
+        } else {
+            if (Misc::isCommandLine()) {
+                $handler = new PlainTextHandler();
+            } else {
+                $handler = function (): void {
 
-            $this->loggerUtil->log('J');
+                    echo str_replace(
+                        '$REQUESTID',
+                        $this->game->getGameRequestId(),
+                        (string) file_get_contents(__DIR__ . '/../html/error.html')
+                    );
+                };
+            }
+        }
 
-            return $handler;
-        });
-        $whoops->prependHandler(function (): void {
+        return $handler;
+    }
+
+    private function transactionHandler(): callable
+    {
+        return function (): void {
+
             // end transaction if still active
             if ($this->database->isTransactionActive()) {
                 $this->database->rollBack();
@@ -111,14 +105,17 @@ final class ErrorHandler
                 $this->game->getGameRequest(),
                 true
             );
-        });
+        };
+    }
 
+    private function logfileHandler(): callable
+    {
         $logger = new Logger('stu');
         $logger->pushHandler(
             new StreamHandler($this->stuConfig->getDebugSettings()->getLogfilePath())
         );
 
-        $whoops->prependHandler(function (Throwable $e) use ($logger) {
+        return function (Throwable $e) use ($logger) {
             $logger->error(
                 $e->getMessage(),
                 [
@@ -127,8 +124,7 @@ final class ErrorHandler
                     'trace' => $e->getTrace()
                 ]
             );
-        });
-        $whoops->register();
+        };
     }
 
     private function setErrorReporting(): void
@@ -137,10 +133,8 @@ final class ErrorHandler
             $this->stuConfig->getDebugSettings()->isDebugMode()
             || $this->isAdminUser()
         ) {
-            $this->loggerUtil->log('B');
             error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
         } else {
-            $this->loggerUtil->log('C');
             error_reporting(E_ERROR | E_WARNING | E_PARSE);
         }
     }
@@ -151,6 +145,7 @@ final class ErrorHandler
 
         // load the session handler only if a session has been started
         if (session_id() !== '') {
+
             $user = $this->session->getUser();
 
             $isAdminUser = $user !== null
