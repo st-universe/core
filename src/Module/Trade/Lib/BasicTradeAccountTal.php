@@ -28,7 +28,7 @@ final class BasicTradeAccountTal implements BasicTradeAccountTalInterface
     /**
      * @var array<StorageInterface>|null
      */
-    private ?array $storage;
+    private ?array $storage = null;
 
     private CommodityRepositoryInterface $commodityRepository;
 
