@@ -42,4 +42,21 @@ final class ColonyCommodityProduction implements ColonyCommodityProductionInterf
 
         return $production;
     }
+
+    public function getProductionWithoutEffects(): array
+    {
+        $result = $this->buildingCommodityRepository->getProductionByColonyWithoutEffects(
+            $this->colony->getId(),
+            $this->colony->getColonyClass()->getId()
+        );
+
+        $production = [];
+        foreach ($result as $data) {
+            if (($data['gc'] + $data['pc']) != 0) {
+                $production[(int) $data['commodity_id']] = $this->colonyLibFactory->createColonyProduction($data);
+            }
+        }
+
+        return $production;
+    }
 }
