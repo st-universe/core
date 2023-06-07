@@ -365,13 +365,15 @@
     {% endif %}
 </td>
 <td>
-    <a href="ship.php?SHOW_SHIP=1&id={{ SHIP.getId }}"><span>{{ nbsItem.getName|bbcode }}</span></a>
+    {% if nbsItem.isOwnedByCurrentUser %}
+    <a href="ship.php?SHOW_SHIP=1&id={{ nbsItem.getId }}"><span>{{ nbsItem.getName|bbcode }}</span></a>
+    {% else %}
+    {{ nbsItem.getName|bbcode }}
+    {% endif %}
 </td>
 {% if nbsItem.isTrumfield %}
 <td style="width: 160px;">{{ nbsItem.getHull }}</td>
-<td>
-    {{ nbsItem.getUserName|bbcode }}
-</td>
+<td>{{ nbsItem.getUserName|bbcode }}</td>
 {% else %}
 <td style="width: 160px;">
     {{ nbsItem.getHull }}/{{ nbsItem.getMaxHull }}
