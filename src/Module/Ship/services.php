@@ -110,9 +110,11 @@ use Stu\Module\Ship\Action\RenameFleet\RenameFleet;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequest;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequestInterface;
 use Stu\Module\Ship\Action\SalvageCrew\SalvageCrew;
+use Stu\Module\Ship\Action\SalvageEmergencyPods\ClosestLocations;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPods;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPodsRequest;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPodsRequestInterface;
+use Stu\Module\Ship\Action\SalvageEmergencyPods\TransferToClosestLocation;
 use Stu\Module\Ship\Action\SelfDestruct\SelfDestruct;
 use Stu\Module\Ship\Action\Selfrepair\Selfrepair;
 use Stu\Module\Ship\Action\SendBroadcast\SendBroadcast;
@@ -369,7 +371,13 @@ return [
         EscapeTractorBeam::ACTION_IDENTIFIER => autowire(EscapeTractorBeam::class),
         Colonize::ACTION_IDENTIFIER => autowire(Colonize::class),
         RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),
-        SalvageEmergencyPods::ACTION_IDENTIFIER => autowire(SalvageEmergencyPods::class),
+        SalvageEmergencyPods::ACTION_IDENTIFIER => autowire(SalvageEmergencyPods::class)->constructorParameter(
+            'transferToClosestLocation',
+            autowire(TransferToClosestLocation::class)->constructorParameter(
+                'closestLocations',
+                autowire(ClosestLocations::class)
+            )
+        ),
         TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class),
         StartDefending::ACTION_IDENTIFIER => autowire(StartDefending::class),
         StopDefending::ACTION_IDENTIFIER => autowire(StopDefending::class),
