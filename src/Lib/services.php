@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Stu\Lib\Map\DistanceCalculation;
+use Stu\Lib\Map\DistanceCalculationInterface;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactory;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\GradientColor;
@@ -26,6 +28,7 @@ return [
     ManagerProviderFactoryInterface::class => autowire(ManagerProviderFactory::class),
     ModuleSelectorAddonFactoryInterface::class => autowire(ModuleSelectorAddonFactory::class),
     GradientColorInterface::class => autowire(GradientColor::class),
+    DistanceCalculationInterface::class => autowire(DistanceCalculation::class),
     HandleManagersInterface::class => create(HandleManagers::class)->constructor(
         [
             autowire(ManageBattery::class),
