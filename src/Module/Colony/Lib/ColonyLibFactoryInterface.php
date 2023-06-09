@@ -10,6 +10,7 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -65,11 +66,9 @@ interface ColonyLibFactoryInterface
         ?ShipBuildplanInterface $buildplan = null
     ): ModuleSelectorSpecial;
 
-    /**
-     * @param array{gc?: int, pc?: int, commodity_id?: int} $production
-     */
     public function createColonyProduction(
-        array &$production = []
+        CommodityInterface $commodity,
+        int $production
     ): ColonyProduction;
 
     public function createColonyShieldingManager(
