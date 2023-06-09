@@ -2,20 +2,16 @@
 
 namespace Stu\Lib\ColonyProduction;
 
-use RuntimeException;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 /**
  * @Entity
  */
 class ColonyProduction
 {
-    private CommodityRepositoryInterface $commodityRepository;
-
     /** @Id @Column(type="integer") * */
     private int $colony_id = 0;
 
@@ -31,15 +27,23 @@ class ColonyProduction
     /** @Column(type="integer", nullable=true) * */
     private ?int $pc = null;
 
+    /**
+     * @var array<int, CommodityInterface>
+     */
+    private array $commodityCache;
+
     private int $preview = 0;
     private ?CommodityInterface $commodity = null;
 
+    /**
+     * @param array<int, CommodityInterface> $commodityCache
+     */
     public function __construct(
-        CommodityRepositoryInterface $commodityRepository,
+        array $commodityCache,
         CommodityInterface $commodity,
         int $production
     ) {
-        $this->commodityRepository = $commodityRepository;
+        $this->commodityCache = $commodityCache;
 
         $this->commodity = $commodity;
         $this->production = $production;
@@ -130,11 +134,7 @@ class ColonyProduction
     public function getCommodity(): CommodityInterface
     {
         if ($this->commodity === null) {
-            $this->commodity =  $this->commodityRepository->find($this->getCommodityId());
-
-            if ($this->commodity === null) {
-                throw new RuntimeException(sprintf('commodityId: %d does not exist', $this->getCommodityId()));
-            }
+            $this->commodity =  $this->commodityCache[$this->getCommodityId()];
         }
 
         return $this->commodity;
