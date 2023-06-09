@@ -122,6 +122,27 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
+    public function getWorkerConsumingByColonyAndState(
+        int $colonyId,
+        array $state = [0, 1],
+        ?int $limit = null
+    ): iterable {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
+                    SELECT b.id FROM %s b WHERE b.bev_use > 0 AND f.aktiv IN (:state)
+                )',
+                PlanetField::class,
+                Building::class
+            )
+        )->setParameters([
+            'colonyId' => $colonyId,
+            'state' => $state
+        ])
+            ->setMaxResults($limit)
+            ->getResult();
+    }
+
     public function getCommodityConsumingByColonyAndCommodity(
         int $colonyId,
         int $commodityId,

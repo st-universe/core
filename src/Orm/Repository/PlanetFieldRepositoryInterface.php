@@ -70,6 +70,12 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      */
     public function getWorkerConsumingByColony(int $colonyId): iterable;
 
+    public function getWorkerConsumingByColonyAndState(
+        int $colonyId,
+        array $state = [0, 1],
+        ?int $limit = null
+    ): iterable;
+
     public function getCountByColonyAndBuilding(int $colonyId, int $buildingId): int;
 
     public function getCountByBuildingAndUser(int $buildingId, int $userId): int;
