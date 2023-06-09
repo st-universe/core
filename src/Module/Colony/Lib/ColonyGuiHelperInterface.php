@@ -9,5 +9,5 @@ interface ColonyGuiHelperInterface
 {
     public function getColonyMenu(int $menuId): string;
 
-    public function register(ColonyInterface $colony, GameControllerInterface $game);
+    public function register(ColonyInterface $colony, GameControllerInterface $game): void;
 }

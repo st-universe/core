@@ -108,6 +108,6 @@ class DistanceCalculation implements DistanceCalculationInterface
         int $y2,
         int $multiplier
     ): int {
-        return (abs($x1 - $x2) + abs($y1 - $y2)) * $multiplier;
+        return (int)(abs($x1 - $x2) + abs($y1 - $y2)) * $multiplier;
     }
 }
