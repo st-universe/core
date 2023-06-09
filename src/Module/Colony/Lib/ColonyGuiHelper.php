@@ -51,7 +51,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         }
     }
 
-    public function register(ColonyInterface $colony, GameControllerInterface $game)
+    public function register(ColonyInterface $colony, GameControllerInterface $game): void
     {
         $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
         $width = 360;
@@ -102,7 +102,6 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         $commodities = $this->commodityRepository->getByType(CommodityTypeEnum::COMMODITY_TYPE_STANDARD);
         $stor = $colony->getStorage();
         $prod = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
-        $prodwithouteffects = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProductionWithoutEffects();
         $storage = [];
         foreach ($commodities as $value) {
             $commodityId = $value->getId();
@@ -158,10 +157,13 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         $game->setTemplateVar('EFFECTS', $effects);
         $game->setTemplateVar(
             'PRODUCTION_SUM',
-            $this->colonyLibFactory->createColonyProductionSumReducer()->reduce($prodwithouteffects)
+            $this->colonyLibFactory->createColonyProductionSumReducer()->reduce($prod)
         );
     }
 
+    /**
+     * @return array<string>
+     */
     private function buildShieldBar(
         ColonyShieldingManagerInterface $colonyShieldingManager,
         ColonyInterface $colony

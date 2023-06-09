@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\BuildingCommodityInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -13,20 +14,14 @@ use Stu\Orm\Entity\UserInterface;
 interface BuildingCommodityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<BuildingCommodityInterface>
+     * @return array<BuildingCommodityInterface>
      */
     public function getByBuilding(int $buildingId): array;
 
     /**
-     * @return iterable<array{commodity_id: int, gc: int, pc: int}>
+     * @return iterable<ColonyProduction>
      */
     public function getProductionByColony(int $colonyId, int $colonyClassId): iterable;
-
-
-    /**
-     * @return iterable<array{commodity_id: int, gc: int, pc: int}>
-     */
-    public function getProductionByColonyWithoutEffects(int $colonyId, int $colonyClassId): iterable;
 
     /**
      * Returns the production sum of default commodities of all colonies for the given user

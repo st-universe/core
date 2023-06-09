@@ -12,9 +12,4 @@ interface ColonyCommodityProductionInterface
      * @return array<int, ColonyProduction>
      */
     public function getProduction(): array;
-
-    /**
-     * @return array<int, ColonyProduction>
-     */
-    public function getProductionWithoutEffects(): array;
 }

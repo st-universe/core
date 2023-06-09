@@ -2,47 +2,71 @@
 
 namespace Stu\Lib\ColonyProduction;
 
+use RuntimeException;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
+/**
+ * @Entity
+ */
 class ColonyProduction
 {
-    /** @var int */
-    private $preview = 0;
-
     private CommodityRepositoryInterface $commodityRepository;
 
-    /** @var array{gc?: int, pc?: int, commodity_id?: int} */
-    private array $data;
+    /** @Id @Column(type="integer") * */
+    private int $colony_id = 0;
 
-    /**
-     * @param array{gc?: int, pc?: int, commodity_id?: int} $data
-     */
+    /** @Id @Column(type="integer") * */
+    private int $commodity_id = 0;
+
+    /** @Column(type="integer") * */
+    private int $production = 0;
+
+    /** @Column(type="integer", nullable=true) * */
+    private ?int $type = null;
+
+    /** @Column(type="integer", nullable=true) * */
+    private ?int $pc = null;
+
+    private int $preview = 0;
+    private ?CommodityInterface $commodity = null;
+
     public function __construct(
         CommodityRepositoryInterface $commodityRepository,
-        &$data = []
+        CommodityInterface $commodity,
+        int $production
     ) {
         $this->commodityRepository = $commodityRepository;
-        $this->data = $data;
 
-        if (!empty($data)) {
-            $this->data['gc'] += $this->data['pc'];
-        }
+        $this->commodity = $commodity;
+        $this->production = $production;
     }
 
     public function getCommodityId(): int
     {
-        return $this->data['commodity_id'];
+        return $this->commodity_id;
     }
 
-    public function setCommodityId($value): void
+    public function getCommodityType(): ?int
     {
-        $this->data['commodity_id'] = $value;
+        return $this->type;
     }
 
     public function getProduction(): int
     {
-        return $this->data['gc'];
+        if ($this->pc !== null) {
+            return $this->production + $this->pc;
+        }
+
+        return $this->production;
+    }
+
+    public function setProduction(int $production): void
+    {
+        $this->production = $production;
     }
 
     public function getProductionDisplay(): string
@@ -64,28 +88,14 @@ class ColonyProduction
         return '';
     }
 
-    /**
-     * @param int $value
-     */
-    public function lowerProduction($value): void
+    public function lowerProduction(int $value): void
     {
         $this->setProduction($this->getProduction() - $value);
     }
 
-    /**
-     * @param int $value
-     */
-    public function upperProduction($value): void
+    public function upperProduction(int $value): void
     {
         $this->setProduction($this->getProduction() + $value);
-    }
-
-    /**
-     * @param int $value
-     */
-    public function setProduction($value): void
-    {
-        $this->data['gc'] = $value;
     }
 
     /**
@@ -119,6 +129,14 @@ class ColonyProduction
 
     public function getCommodity(): CommodityInterface
     {
-        return $this->commodityRepository->find($this->getCommodityId());
+        if ($this->commodity === null) {
+            $this->commodity =  $this->commodityRepository->find($this->getCommodityId());
+
+            if ($this->commodity === null) {
+                throw new RuntimeException(sprintf('commodityId: %d does not exist', $this->getCommodityId()));
+            }
+        }
+
+        return $this->commodity;
     }
 }
