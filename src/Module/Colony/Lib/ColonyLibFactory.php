@@ -21,6 +21,7 @@ use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -239,10 +240,12 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     }
 
     public function createColonyProduction(
-        array &$production = []
+        CommodityInterface $commodity,
+        int $production
     ): ColonyProduction {
         return new ColonyProduction(
             $this->commodityRepository,
+            $commodity,
             $production
         );
     }
@@ -262,7 +265,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     ): ColonyCommodityProductionInterface {
         return new ColonyCommodityProduction(
             $this->buildingCommodityRepository,
-            $this,
             $colony
         );
     }

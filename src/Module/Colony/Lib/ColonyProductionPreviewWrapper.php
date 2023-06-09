@@ -53,9 +53,7 @@ class ColonyProductionPreviewWrapper
                 $ret[$commodityId] = clone $this->production[$commodityId];
                 $ret[$commodityId]->upperProduction($prod->getAmount());
             } else {
-                $obj = $this->colonyLibFactory->createColonyProduction();
-                $obj->setCommodityId($commodityId);
-                $obj->setProduction($prod->getAmount());
+                $obj = $this->colonyLibFactory->createColonyProduction($prod->getCommodity(), $prod->getAmount());
                 $ret[$commodityId] = $obj;
             }
             $ret[$commodityId]->setPreviewProduction($prod->getAmount());

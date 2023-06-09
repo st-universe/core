@@ -520,11 +520,11 @@ final class ColonyTick implements ColonyTickInterface
         array &$production
     ): void {
         foreach ($buildingProduction as $obj) {
-            $commodityId = $obj->getCommodityId();
+            $commodity = $obj->getCommodity();
+            $commodityId = $commodity->getId();
+
             if (!array_key_exists($commodityId, $production)) {
-                $data = $this->colonyLibFactory->createColonyProduction();
-                $data->setCommodityId($commodityId);
-                $data->setProduction($obj->getAmount() * -1);
+                $data = $this->colonyLibFactory->createColonyProduction($commodity, $obj->getAmount() * -1);
 
                 $production[$commodityId] = $data;
             } else {
