@@ -14,22 +14,22 @@ use Stu\Orm\Entity\CommodityInterface;
 interface CommodityRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<CommodityInterface>
+     * @return array<CommodityInterface>
      */
     public function getByBuildingsOnColony(int $colonyId): array;
 
     /**
-     * @return list<CommodityInterface>
+     * @return array<CommodityInterface>
      */
     public function getByType(int $typeId): array;
 
     /**
-     * @return list<CommodityInterface>
+     * @return array<CommodityInterface>
      */
     public function getViewable(): array;
 
     /**
-     * @return list<CommodityInterface>
+     * @return array<CommodityInterface>
      */
     public function getTradeable(): array;
 
