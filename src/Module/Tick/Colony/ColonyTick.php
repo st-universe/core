@@ -412,6 +412,7 @@ final class ColonyTick implements ColonyTickInterface
             $this->proceedEmigration($colony);
             return;
         }
+
         if ($colony->getPopulationLimit() > 0 && $colony->getPopulation() > $colony->getPopulationLimit() && $colony->getWorkless()) {
             if (($free = ($colony->getPopulationLimit() - $colony->getWorkers())) > 0) {
                 $this->msg[] = sprintf(
