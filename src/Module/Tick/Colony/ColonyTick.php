@@ -180,8 +180,16 @@ final class ColonyTick implements ColonyTickInterface
                 }
                 //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
                 $field = $this->getBuildingToDeactivateByCommodity($colony, $commodityId);
+                $name = '';
                 // echo $i." hit by commodity ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
-                $this->deactivateBuilding($field, $production, $this->commodityArray[$commodityId]);
+                $this->deactivateBuilding($field, $production, $this->commodityArray[$commodityId], $name);
+                $rewind = 1;
+            }
+
+            if ($rewind == 0 && $colony->getWorkers() > $colony->getMaxBev()) {
+                $field = $this->getBuildingToDeactivateByLivingSpace($colony);
+                $name = 'Wohnraum';
+                $this->deactivateBuilding($field, $production, null, $name);
                 $rewind = 1;
             }
 
@@ -189,8 +197,9 @@ final class ColonyTick implements ColonyTickInterface
 
             if ($rewind == 0 && $energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
                 $field = $this->getBuildingToDeactivateByEpsUsage($colony);
+                $name = 'Energie';
                 //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
-                $this->deactivateBuilding($field, $production);
+                $this->deactivateBuilding($field, $production, null, $name);
                 $rewind = 1;
             }
             if ($rewind == 1) {
@@ -225,10 +234,11 @@ final class ColonyTick implements ColonyTickInterface
     private function deactivateBuilding(
         PlanetFieldInterface $field,
         array &$production,
-        CommodityInterface $commodity = null
+        CommodityInterface $commodity = null,
+        string $name
     ): void {
-        if ($commodity === null) {
-            $ext = "Energie";
+        if ($name != '') {
+            $ext = $name;
         } else {
             $ext = $commodity->getName();
         }
@@ -256,6 +266,13 @@ final class ColonyTick implements ColonyTickInterface
     private function getBuildingToDeactivateByEpsUsage(ColonyInterface $colony): PlanetFieldInterface
     {
         $fields = $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId(), [1], 1);
+
+        return current($fields);
+    }
+
+    private function getBuildingToDeactivateByLivingSpace(ColonyInterface $colony): PlanetFieldInterface
+    {
+        $fields = $this->planetFieldRepository->getWorkerConsumingByColonyAndState($colony->getId(), [1], 1);
 
         return current($fields);
     }
