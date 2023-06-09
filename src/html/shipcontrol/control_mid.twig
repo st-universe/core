@@ -1,5 +1,6 @@
-{% macro control_mid(ship, astroState, isTachyonActive, starSystemEntryTal, currentColony, canColonize) %}
+{% macro control_mid(wrapper, astroState, isTachyonActive, starSystemEntryTal, currentColony, canColonize) %}
 
+{% set ship = wrapper.get %}
 {% set shipId = ship.getId %}
 {% set starSystem = ship.getSystem %}
 <table class="tcal">
@@ -457,7 +458,7 @@
             </a>
             {% endif %}
             {% endif %}
-            {% if WRAPPER.canLandOnCurrentColony %}
+            {% if wrapper.canLandOnCurrentColony %}
             <div>
                 <a
                     href="colony.php?B_LAND_SHIP=1&id={{ colonyId }}&shipid={{ shipId }}&sstr={{ SESSIONSTRING }}">Landen</a>
