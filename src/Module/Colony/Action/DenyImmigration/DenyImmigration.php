@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\DenyImmigration;
 
 use request;
 use Stu\Component\Colony\ColonyEnum;
+use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
@@ -18,13 +19,17 @@ final class DenyImmigration implements ActionControllerInterface
 
     private ColonyLoaderInterface $colonyLoader;
 
+    private ColonyGuiHelperInterface $colonyGuiHelper;
+
     private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
+        ColonyGuiHelperInterface $colonyGuiHelper,
         ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->colonyGuiHelper = $colonyGuiHelper;
         $this->colonyRepository = $colonyRepository;
     }
 
