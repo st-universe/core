@@ -79,6 +79,11 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory;
 
+    /**
+     * @var array<CommodityInterface>|null
+     */
+    private ?array $commodityCache = null;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
@@ -243,8 +248,12 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         CommodityInterface $commodity,
         int $production
     ): ColonyProduction {
+        if ($this->commodityCache === null) {
+            $this->commodityCache = $this->commodityRepository->getAll();
+        }
+
         return new ColonyProduction(
-            $this->commodityRepository,
+            $this->commodityCache,
             $commodity,
             $production
         );
