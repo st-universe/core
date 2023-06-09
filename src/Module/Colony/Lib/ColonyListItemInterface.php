@@ -48,8 +48,6 @@ interface ColonyListItemInterface
     public function getProductionSum(): int;
 
     /**
-     * List of commodites, that get consumed in a certain time
-     * 
      * @return array<int, array{turnsleft:int, commodity:CommodityInterface}>
      */
     public function getCommodityUseView(): array;

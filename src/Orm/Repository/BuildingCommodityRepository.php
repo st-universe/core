@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Colony\ColonyFunctionManager;
-use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\UserInterface;
@@ -27,22 +26,46 @@ final class BuildingCommodityRepository extends EntityRepository implements Buil
     public function getProductionByColony(int $colonyId, int $colonyClassId): iterable
     {
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(ColonyProduction::class, 'cp');
-        $rsm->addFieldResult('cp', 'colony_id', 'colony_id');
-        $rsm->addFieldResult('cp', 'commodity_id', 'commodity_id');
-        $rsm->addFieldResult('cp', 'type', 'type');
-        $rsm->addFieldResult('cp', 'production', 'production');
-        $rsm->addFieldResult('cp', 'pc', 'pc');
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('gc', 'gc', 'integer');
+        $rsm->addScalarResult('pc', 'pc', 'integer');
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT b.colonies_id as colony_id, a.id as commodity_id, a.type as type,  COALESCE(SUM(c.count), 0) as production, COALESCE(MAX(d.count),0) as pc
+                'SELECT a.id as commodity_id, SUM(c.count) as gc, COALESCE(MAX(d.count),0) as pc
                 FROM stu_commodity a
                     LEFT JOIN stu_colonies_fielddata b ON b.colonies_id = :colonyId AND b.aktiv = :state
                     LEFT JOIN stu_buildings_commodity c ON c.commodity_id = a.id AND c.buildings_id = b.buildings_id
                     LEFT JOIN stu_planets_commodity d ON d.commodity_id = a.id AND d.planet_classes_id = :colonyClassId
                 WHERE c.count != 0 OR d.count != 0
-                GROUP BY a.id, b.colonies_id
+                GROUP BY a.id
+                ORDER BY a.sort ASC',
+                $rsm
+            )
+            ->setParameters([
+                'state' => 1,
+                'colonyId' => $colonyId,
+                'colonyClassId' => $colonyClassId
+            ])
+            ->getResult();
+    }
+
+    public function getProductionByColonyWithoutEffects(int $colonyId, int $colonyClassId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('gc', 'gc', 'integer');
+        $rsm->addScalarResult('pc', 'pc', 'integer');
+
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT a.id as commodity_id, SUM(c.count) as gc, COALESCE(MAX(d.count),0) as pc
+                FROM stu_commodity a
+                    LEFT JOIN stu_colonies_fielddata b ON b.colonies_id = :colonyId AND b.aktiv = :state
+                    LEFT JOIN stu_buildings_commodity c ON c.commodity_id = a.id AND c.buildings_id = b.buildings_id
+                    LEFT JOIN stu_planets_commodity d ON d.commodity_id = a.id AND d.planet_classes_id = :colonyClassId
+                WHERE (c.count != 0 OR d.count != 0) AND a.type = 1
+                GROUP BY a.id
                 ORDER BY a.sort ASC',
                 $rsm
             )
