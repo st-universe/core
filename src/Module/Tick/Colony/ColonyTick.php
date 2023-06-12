@@ -272,7 +272,7 @@ final class ColonyTick implements ColonyTickInterface
         return current($fields);
     }
 
-    private function getBuildingToDeactivateByLivingSpace(ColonyInterface $colony): PlanetFieldInterface
+    private function getBuildingToDeactivateByLivingSpace(ColonyInterface $colony): ?PlanetFieldInterface
     {
         $fields = $this->planetFieldRepository->getWorkerConsumingByColonyAndState($colony->getId(), [1], 1);
 
