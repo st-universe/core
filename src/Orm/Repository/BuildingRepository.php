@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\Building;
@@ -25,10 +24,6 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         int $offset
     ): iterable {
         if ($userId === UserEnum::USER_NOONE) {
-            $rsm = new ResultSetMapping();
-            $rsm->addEntityResult(Building::class, 'b');
-            $rsm->addFieldResult('b', 'id', 'id');
-            $rsm->addFieldResult('b', 'name', 'name');
 
             return $this->getEntityManager()
                 ->createQuery(
@@ -54,11 +49,6 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 ])
                 ->getResult();
         }
-
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(Building::class, 'b');
-        $rsm->addFieldResult('b', 'id', 'id');
-        $rsm->addFieldResult('b', 'name', 'name');
 
         return $this->getEntityManager()
             ->createQuery(
