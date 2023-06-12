@@ -52,9 +52,9 @@ final class ShowModuleFab implements ViewControllerInterface
             false
         );
 
-        $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
+        $func = $this->buildingFunctionRepository->find(request::getIntFatal('func'));
         $modules = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
-            (int) $func->getFunction(),
+            $func->getFunction(),
             $userId
         );
 
