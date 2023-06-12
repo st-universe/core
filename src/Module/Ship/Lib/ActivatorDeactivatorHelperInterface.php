@@ -7,7 +7,7 @@ use Stu\Module\Control\GameControllerInterface;
 interface ActivatorDeactivatorHelperInterface
 {
     public function activate(
-        ShipWrapperInterface|int $shipId,
+        int $shipId,
         int $systemId,
         GameControllerInterface $game,
         bool $allowUplink = false

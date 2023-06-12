@@ -97,7 +97,7 @@ final class TrackShip implements ActionControllerInterface
         }
 
         // activate system
-        if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TRACKER, $game)) {
+        if (!$this->helper->activate($ship->getId(), ShipSystemTypeEnum::SYSTEM_TRACKER, $game)) {
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;
         }
