@@ -188,9 +188,11 @@ final class ColonyTick implements ColonyTickInterface
 
             if ($rewind == 0 && $colony->getWorkers() > $colony->getMaxBev()) {
                 $field = $this->getBuildingToDeactivateByLivingSpace($colony);
-                $name = 'Wohnraum';
-                $this->deactivateBuilding($field, $production, null, $name);
-                $rewind = 1;
+                if ($field !== null) {
+                    $name = 'Wohnraum';
+                    $this->deactivateBuilding($field, $production, null, $name);
+                    $rewind = 1;
+                }
             }
 
             $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
@@ -274,7 +276,7 @@ final class ColonyTick implements ColonyTickInterface
     {
         $fields = $this->planetFieldRepository->getWorkerConsumingByColonyAndState($colony->getId(), [1], 1);
 
-        return current($fields);
+        return empty($fields) ? null : current($fields);
     }
 
     /**
