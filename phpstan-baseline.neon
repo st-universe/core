@@ -3532,11 +3532,6 @@ parameters:
 			path: src/Module/Tick/Colony/ColonyTick.php
 
 		-
-			message: "#^Strict comparison using \\!\\=\\= between Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface and null will always evaluate to true\\.$#"
-			count: 1
-			path: src/Module/Tick/Colony/ColonyTick.php
-
-		-
 			message: "#^Variable \\$startTimeC might not be defined\\.$#"
 			count: 1
 			path: src/Module/Tick/Colony/ColonyTick.php
