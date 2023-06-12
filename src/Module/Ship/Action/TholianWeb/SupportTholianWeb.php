@@ -105,7 +105,7 @@ final class SupportTholianWeb implements ActionControllerInterface
         }
 
         // activate system
-        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
+        if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_THOLIAN_WEB, $game)) {
             return;
         }
 
