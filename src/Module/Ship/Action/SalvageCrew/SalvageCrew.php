@@ -104,15 +104,6 @@ final class SalvageCrew implements ActionControllerInterface
             $tradepost->getCrewCountOfUser($user)
         );
 
-        if (
-            $ship->getCrewCount() + $crewToTransfer > $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump())
-            && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF
-        ) {
-            if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
-                return;
-            }
-        }
-
         $game->addInformation(sprintf('Es wurden %d Crewman geborgen', $crewToTransfer));
 
         foreach ($tradepost->getCrewAssignments() as $crewAssignment) {
@@ -128,6 +119,15 @@ final class SalvageCrew implements ActionControllerInterface
             $this->shipCrewRepository->save($crewAssignment);
 
             $crewToTransfer--;
+        }
+
+        if (
+            $ship->getCrewCount() > $this->shipCrewCalculator->getMaxCrewCountByRump($ship->getRump())
+            && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF
+        ) {
+            if (!$this->helper->activate($shipId, ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
+                throw new SystemNotActivatableException();
+            }
         }
 
         $epsSystem->lowerEps(1)->update();

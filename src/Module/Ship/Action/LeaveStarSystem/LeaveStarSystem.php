@@ -18,6 +18,7 @@ use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\MapInterface;
@@ -43,6 +44,8 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -53,6 +56,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         AstroEntryLibInterface $astroEntryLib,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -62,6 +66,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->astroEntryLib = $astroEntryLib;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
+        $this->shipWrapperFactory = $shipWrapperFactory;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -120,9 +125,15 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
 
-        if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game)) {
+        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game)) {
             return;
         }
+
+        //reload ship because it got saved in helper class
+        $ship = $this->shipLoader->getByIdAndUser(
+            request::indInt('id'),
+            $userId
+        );
 
         $this->leaveStarSystem($wrapper, $starsystemMap, $outerMap, $game);
 
@@ -130,34 +141,46 @@ final class LeaveStarSystem implements ActionControllerInterface
         if ($tractoredShipWrapper !== null) {
             $this->leaveStarSystemTraktor($tractoredShipWrapper, $starsystemMap, $wrapper, $outerMap, $game);
         }
-
-        $fleetWrapper = $wrapper->getFleetWrapper();
-        if ($ship->isFleetLeader() && $fleetWrapper !== null) {
+        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $msg = [];
 
-            foreach ($fleetWrapper->getShipWrappers() as $wrapper) {
+            /** @var ShipInterface[] $result */
+            $result = array_filter(
+                $ship->getFleet()->getShips()->toArray(),
+                function (ShipInterface $fleetShip) use ($ship): bool {
+                    return $ship !== $fleetShip;
+                }
+            );
+            foreach ($result as $fleetShip) {
+                $wrapper = $this->shipWrapperFactory->wrapShip($fleetShip);
 
-                if (!$this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game)) {
+                if (!$this->helper->activate($fleetShip->getId(), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game)) {
                     $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: Warpantrieb kann nicht aktiviert werden";
-                    $wrapper->leaveFleet();
-                    $this->shipRepository->save($wrapper->get());
+                    $this->shipWrapperFactory->wrapShip($fleetShip)->leaveFleet();
+                    $this->shipRepository->save($fleetShip);
                 } else {
-                    $this->leaveStarSystem($wrapper, $starsystemMap, $outerMap, $game);
+                    //reload ship because it got saved in helper class
+                    $reloadedShipWrapper = $this->shipLoader->getWrapperByIdAndUser(
+                        $fleetShip->getId(),
+                        $userId
+                    );
 
-                    $ship = $wrapper->get();
+                    $this->leaveStarSystem($reloadedShipWrapper, $starsystemMap, $outerMap, $game);
 
-                    $tractoredShipWrapper = $wrapper->getTractoredShipWrapper();
+                    $reloadedShip = $reloadedShipWrapper->get();
+
+                    $tractoredShipWrapper = $reloadedShipWrapper->getTractoredShipWrapper();
                     if ($tractoredShipWrapper !== null) {
                         $this->leaveStarSystemTraktor($tractoredShipWrapper, $starsystemMap, $wrapper, $outerMap, $game);
                     }
-                    $this->shipRepository->save($ship);
+                    $this->shipRepository->save($reloadedShip);
                 }
             }
             $game->addInformation("Die Flotte hat das Sternsystem verlassen");
             $game->addInformationMerge($msg);
         } else {
-            if ($ship->getFleetId() !== null) {
-                $wrapper->leaveFleet();
+            if ($ship->getFleetId()) {
+                $this->shipWrapperFactory->wrapShip($ship)->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
             $game->addInformation("Das Sternsystem wurde verlassen");

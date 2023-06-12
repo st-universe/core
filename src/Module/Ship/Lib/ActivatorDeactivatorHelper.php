@@ -50,15 +50,15 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     }
 
     public function activate(
-        ShipWrapperInterface|int $target,
+        int $shipId,
         int $systemId,
         GameControllerInterface $game,
         bool $allowUplink = false
     ): bool {
         $userId = $game->getUser()->getId();
 
-        $wrapper = $this->getTargetWrapper(
-            $target,
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
+            $shipId,
             $userId,
             $allowUplink
         );
@@ -69,22 +69,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         } else {
             return false;
         }
-    }
-
-    private function getTargetWrapper(
-        ShipWrapperInterface|int $target,
-        int $userId,
-        bool $allowUplink
-    ): ShipWrapperInterface {
-        if ($target instanceof ShipWrapperInterface) {
-            return $target;
-        }
-
-        return $this->shipLoader->getWrapperByIdAndUser(
-            $target,
-            $userId,
-            $allowUplink
-        );
     }
 
     private function activateIntern(
