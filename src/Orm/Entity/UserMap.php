@@ -53,11 +53,6 @@ class UserMap implements UserMapInterface
      */
     private int $map_id = 0;
 
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
     /**
      * @var UserInterface
      *

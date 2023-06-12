@@ -6,24 +6,35 @@ namespace Stu\Component\Colony\Commodity;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 final class ColonyCommodityProduction implements ColonyCommodityProductionInterface
 {
     private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
 
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
     private ColonyInterface $colony;
 
+    private ColonyLibFactoryInterface $colonyLibFactory;
+
+    /**
+     * @var array<int, CommodityInterface>
+     */
+    private array $commodityCache;
+
+    /**
+     * @param array<int, CommodityInterface> $commodityCache
+     */
     public function __construct(
         BuildingCommodityRepositoryInterface $buildingCommodityRepository,
+        ColonyInterface $colony,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyInterface $colony
+        array $commodityCache
     ) {
         $this->buildingCommodityRepository = $buildingCommodityRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->colony = $colony;
+        $this->colonyLibFactory = $colonyLibFactory;
+        $this->commodityCache = $commodityCache;
     }
 
     public function getProduction(): array
@@ -35,25 +46,18 @@ final class ColonyCommodityProduction implements ColonyCommodityProductionInterf
 
         $production = [];
         foreach ($result as $data) {
-            if (($data['gc'] + $data['pc']) != 0) {
-                $production[(int) $data['commodity_id']] = $this->colonyLibFactory->createColonyProduction($data);
-            }
-        }
+            $commodityId = $data['commodity_id'];
 
-        return $production;
-    }
+            $commodity = $this->commodityCache[$commodityId];
 
-    public function getProductionWithoutEffects(): array
-    {
-        $result = $this->buildingCommodityRepository->getProductionByColonyWithoutEffects(
-            $this->colony->getId(),
-            $this->colony->getColonyClass()->getId()
-        );
+            $colonyProduction = $this->colonyLibFactory->createColonyProduction(
+                $commodity,
+                $data['production'],
+                $data['pc']
+            );
 
-        $production = [];
-        foreach ($result as $data) {
-            if (($data['gc'] + $data['pc']) != 0) {
-                $production[(int) $data['commodity_id']] = $this->colonyLibFactory->createColonyProduction($data);
+            if ($colonyProduction->getProduction() != 0) {
+                $production[$commodityId] = $colonyProduction;
             }
         }
 

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Entity\BuildingCommodity;
 use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\PlanetField;
 
 /**
  * @extends EntityRepository<Commodity>
@@ -16,19 +17,23 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
 {
     public function getByBuildingsOnColony(int $colonyId): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(Commodity::class, 'c');
-        $rsm->addFieldResult('c', 'id', 'id');
-        $rsm->addFieldResult('c', 'name', 'name');
-
         return $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT c.id,c.name,c.sort,c.view,c.type, c.npc_commodity FROM stu_commodity c WHERE c.id IN (
-                            SELECT bg.commodity_id FROM stu_buildings_commodity bg WHERE bg.buildings_id IN (
-                                SELECT cfd.buildings_id FROM stu_colonies_fielddata cfd WHERE cfd.colonies_id = :colonyId
-                    )
-                ) ORDER BY c.name ASC',
-                $rsm
+            ->createQuery(
+                sprintf(
+                    'SELECT c FROM %s c
+                    WHERE c.id IN (
+                        SELECT bg.commodity_id
+                        FROM %s bg
+                        WHERE bg.buildings_id IN (
+                            SELECT cfd.buildings_id
+                            FROM %s cfd
+                            WHERE cfd.colonies_id = :colonyId
+                        )
+                    ) ORDER BY c.name ASC',
+                    Commodity::class,
+                    BuildingCommodity::class,
+                    PlanetField::class
+                )
             )
             ->setParameter('colonyId', $colonyId)
             ->getResult();

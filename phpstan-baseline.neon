@@ -227,31 +227,6 @@ parameters:
 			path: src/Lib/CleanTextUtils.php
 
 		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:getCommodity\\(\\) should return Stu\\\\Orm\\\\Entity\\\\CommodityInterface but returns Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\ColonyProduction\\\\ColonyProduction\\:\\:setCommodityId\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Offset 'commodity_id' might not exist on array\\{gc\\?\\: int, pc\\?\\: int, commodity_id\\?\\: int\\}\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Offset 'gc' might not exist on array\\{gc\\?\\: int, pc\\?\\: int, commodity_id\\?\\: int\\}\\.$#"
-			count: 2
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
-			message: "#^Offset 'pc' might not exist on array\\{gc\\?\\: int, pc\\?\\: int, commodity_id\\?\\: int\\}\\.$#"
-			count: 1
-			path: src/Lib/ColonyProduction/ColonyProduction.php
-
-		-
 			message: "#^Cannot call method setMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Lib/ModuleRumpWrapper/ModuleRumpWrapperEps.php
@@ -6565,11 +6540,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserLock.php
-
-		-
-			message: "#^Access to an undefined property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$id\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cy has no type specified\\.$#"
