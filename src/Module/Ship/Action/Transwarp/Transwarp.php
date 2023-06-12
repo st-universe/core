@@ -41,10 +41,11 @@ final class Transwarp implements ActionControllerInterface
 
         $shipId = request::postIntFatal('id');
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             $shipId,
             $userId
         );
+        $ship = $wrapper->get();
 
         $layerId = request::postIntFatal('transwarplayer');
 
@@ -109,7 +110,7 @@ final class Transwarp implements ActionControllerInterface
             return;
         }
 
-        $activated = $this->helper->activate($shipId, ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL, $game);
+        $activated = $this->helper->activate($wrapper, ShipSystemTypeEnum::SYSTEM_TRANSWARP_COIL, $game);
 
         if (!$activated) {
             return;
