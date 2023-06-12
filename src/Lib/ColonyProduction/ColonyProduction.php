@@ -3,46 +3,42 @@
 namespace Stu\Lib\ColonyProduction;
 
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 class ColonyProduction
 {
-    /** @var int */
-    private $preview = 0;
+    private CommodityInterface $commodity;
+    private int $production;
+    private ?int $pc = null;
 
-    private CommodityRepositoryInterface $commodityRepository;
+    private int $preview = 0;
 
-    /** @var array{gc?: int, pc?: int, commodity_id?: int} */
-    private array $data;
-
-    /**
-     * @param array{gc?: int, pc?: int, commodity_id?: int} $data
-     */
     public function __construct(
-        CommodityRepositoryInterface $commodityRepository,
-        &$data = []
+        CommodityInterface $commodity,
+        int $production,
+        ?int $pc
     ) {
-        $this->commodityRepository = $commodityRepository;
-        $this->data = $data;
-
-        if (!empty($data)) {
-            $this->data['gc'] += $this->data['pc'];
-        }
+        $this->commodity = $commodity;
+        $this->production = $production;
+        $this->pc = $pc;
     }
 
     public function getCommodityId(): int
     {
-        return $this->data['commodity_id'];
+        return $this->commodity->getId();
     }
 
-    public function setCommodityId($value): void
+    public function getCommodityType(): int
     {
-        $this->data['commodity_id'] = $value;
+        return $this->commodity->getType();
     }
 
     public function getProduction(): int
     {
-        return $this->data['gc'];
+        if ($this->pc !== null) {
+            return $this->production + $this->pc;
+        }
+
+        return $this->production;
     }
 
     public function getProductionDisplay(): string
@@ -80,18 +76,12 @@ class ColonyProduction
         $this->setProduction($this->getProduction() + $value);
     }
 
-    /**
-     * @param int $value
-     */
-    public function setProduction($value): void
+    private function setProduction(int $value): void
     {
-        $this->data['gc'] = $value;
+        $this->production = $value;
     }
 
-    /**
-     * @param int $value
-     */
-    public function setPreviewProduction($value): void
+    public function setPreviewProduction(int $value): void
     {
         $this->preview = $value;
     }
@@ -119,6 +109,6 @@ class ColonyProduction
 
     public function getCommodity(): CommodityInterface
     {
-        return $this->commodityRepository->find($this->getCommodityId());
+        return $this->commodity;
     }
 }

@@ -10,6 +10,7 @@ use Stu\Orm\Entity\CommodityInterface;
  * @extends ObjectRepository<Commodity>
  *
  * @method null|CommodityInterface find(integer $commodityId)
+ * @method CommodityInterface[] findAll()
  */
 interface CommodityRepositoryInterface extends ObjectRepository
 {

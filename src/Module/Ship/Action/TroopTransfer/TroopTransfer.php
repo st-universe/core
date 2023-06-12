@@ -34,6 +34,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
+//TODO replace helper calls with wrapper argument
 final class TroopTransfer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TROOP_TRANSFER';

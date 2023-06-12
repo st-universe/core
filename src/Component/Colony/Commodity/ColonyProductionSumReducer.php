@@ -15,10 +15,11 @@ final class ColonyProductionSumReducer implements ColonyProductionSumReducerInte
     public function reduce(
         array $production
     ): int {
+
         return array_reduce(
             array_filter(
                 $production,
-                fn (ColonyProduction $item): bool => $item->getCommodity()->getType() !== CommodityTypeEnum::COMMODITY_TYPE_EFFECT
+                fn (ColonyProduction $item): bool => $item->getCommodityType() !== CommodityTypeEnum::COMMODITY_TYPE_EFFECT
             ),
             fn (int $value, ColonyProduction $item): int => $value + $item->getProduction(),
             0
