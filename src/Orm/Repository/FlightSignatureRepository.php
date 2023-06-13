@@ -43,7 +43,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT count(distinct fs.ship_id) as count
+                    'SELECT count(DISTINCT CONCAT(fs.ship_id, fs.ship_name)) as count
                     FROM %s fs
                     JOIN %s ssm
                     WITH fs.starsystem_map_id = ssm.id
@@ -67,6 +67,9 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ])
             ->getSingleScalarResult();
     }
+
+
+
 
     public function getVisibleSignatures(int $fieldId, bool $isSystem, int $ignoreId): array
     {
