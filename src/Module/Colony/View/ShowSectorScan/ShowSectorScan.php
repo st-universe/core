@@ -73,7 +73,7 @@ final class ShowSectorScan implements ViewControllerInterface
             $id = $sig->getShipId();
             $name = $sig->getShipName();
 
-            if (!array_key_exists($id, $filteredSigs)) {
+            if (!array_key_exists($id . '_' . $name, $filteredSigs)) {
                 $wrapper = new SignatureWrapper($sig);
 
                 if ($wrapper->getRump() === null) {
@@ -85,13 +85,7 @@ final class ShowSectorScan implements ViewControllerInterface
                         $this->fadedSignaturesUncloaked[$id] = $id;
                     }
                 } else {
-                    $filteredSigs[$id] = $wrapper;
-                }
-            } else {
-                $existingSig = $filteredSigs[$id];
-                if ($existingSig->getShipName() !== $name) {
-                    $wrapper = new SignatureWrapper($sig);
-                    $filteredSigs[$id] = $wrapper;
+                    $filteredSigs[$id . '_' . $name] = $wrapper;
                 }
             }
         }

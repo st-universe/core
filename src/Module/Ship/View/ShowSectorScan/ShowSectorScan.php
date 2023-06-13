@@ -98,20 +98,21 @@ final class ShowSectorScan implements ViewControllerInterface
 
         foreach ($allSigs as $sig) {
             $id = $sig->getShipId();
+            $name = $sig->getShipName();
 
-            if (!in_array($id, $filteredSigs)) {
+            if (!array_key_exists($id . '_' . $name, $filteredSigs)) {
                 $wrapper = new SignatureWrapper($sig);
 
-                if ($wrapper->getRump() == null) {
+                if ($wrapper->getRump() === null) {
                     if ($sig->isCloaked()) {
                         if ($sig->getTime() > (time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_CLOAKED)) {
-                            $this->fadedSignaturesCloaked[] = $id;
+                            $this->fadedSignaturesCloaked[$id] = $id;
                         }
                     } else {
-                        $this->fadedSignaturesUncloaked[] = $id;
+                        $this->fadedSignaturesUncloaked[$id] = $id;
                     }
                 } else {
-                    $filteredSigs[$id] = $wrapper;
+                    $filteredSigs[$id . '_' . $name] = $wrapper;
                 }
             }
         }
