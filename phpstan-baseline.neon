@@ -3162,6 +3162,11 @@ parameters:
 			path: src/Module/Ship/View/ShowColonization/ShowColonization.php
 
 		-
+			message: "#^Method Stu\\\\Module\\\\Ship\\\\View\\\\ShowSectorScan\\\\ShowSectorScan\\:\\:getSignatures\\(\\) should return array\\<int, Stu\\\\Lib\\\\SignatureWrapper\\> but returns array\\<string, Stu\\\\Lib\\\\SignatureWrapper\\>\\.$#"
+			count: 1
+			path: src/Module/Ship/View/ShowSectorScan/ShowSectorScan.php
+
+		-
 			message: "#^Call to Stu\\\\Exception\\\\AccessViolation\\:\\:__construct\\(\\) on a separate line has no effect\\.$#"
 			count: 1
 			path: src/Module/Ship/View/ShowTradeMenu/ShowTradeMenu.php
