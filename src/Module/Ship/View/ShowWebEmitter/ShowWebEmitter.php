@@ -45,10 +45,6 @@ final class ShowWebEmitter implements ViewControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        if ($userId === 126) {
-            //$this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
-        }
-
         $wrapper = $this->shipLoader->getWrapperByIdAndUser(
             request::indInt('id'),
             $userId
