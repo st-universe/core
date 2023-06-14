@@ -54,14 +54,12 @@ final class TholianWebUtil implements TholianWebUtilInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
-        $this->loggerUtil->init('WEB', LoggerEnum::LEVEL_WARNING);
     }
 
     public function releaseShipFromWeb(ShipWrapperInterface $wrapper): void
     {
-        if ($wrapper->get()->getUser()->getId() === 126) {
-            $this->loggerUtil->log(sprintf('releaseShipFromWeb, shipId: %d', $wrapper->get()->getId()));
-        }
+        $this->loggerUtil->log(sprintf('releaseShipFromWeb, shipId: %d', $wrapper->get()->getId()));
+
         $ship = $wrapper->get();
         $web = $ship->getHoldingWeb();
 
@@ -97,18 +95,15 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     public function removeWeb(TholianWebInterface $web): void
     {
-        if ($web->getUser()->getId() === 126) {
-            $this->loggerUtil->log(sprintf('removeWeb, webId: %d', $web->getId()));
-        }
+        $this->loggerUtil->log(sprintf('removeWeb, webId: %d', $web->getId()));
+
         $this->tholianWebRepository->delete($web);
         $this->shipRepository->delete($web->getWebShip());
     }
 
     public function releaseWebHelper(ShipWrapperInterface $wrapper): void
     {
-        if ($wrapper->get()->getUser()->getId() === 126) {
-            $this->loggerUtil->log(sprintf('releaseWebHelper, shipId: %d', $wrapper->get()->getId()));
-        }
+        $this->loggerUtil->log(sprintf('releaseWebHelper, shipId: %d', $wrapper->get()->getId()));
 
         $emitter = $wrapper->getWebEmitterSystemData();
         $web = $emitter->getWebUnderConstruction();
@@ -143,9 +138,8 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     public function resetWebHelpers(TholianWebInterface $web, ShipWrapperFactoryInterface $shipWrapperFactory, $isFinished = false): void
     {
-        if ($web->getWebShip()->getUser()->getId() === 126) {
-            $this->loggerUtil->log(sprintf('resetWebHelpers, webId: %d', $web->getId()));
-        }
+        $this->loggerUtil->log(sprintf('resetWebHelpers, webId: %d', $web->getId()));
+
         $systems = $this->shipSystemRepository->getWebConstructingShipSystems($web->getId());
         foreach ($systems as $system) {
             $wrapper = $shipWrapperFactory->wrapShip($system->getShip());
@@ -189,9 +183,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
 
     public function updateWebFinishTime(TholianWebInterface $web, ?int $helperModifier = null): void
     {
-        if ($web->getWebShip()->getUser()->getId() === 126) {
-            $this->loggerUtil->log(sprintf('updateWebFinishTime, webId: %d', $web->getId()));
-        }
+        $this->loggerUtil->log(sprintf('updateWebFinishTime, webId: %d', $web->getId()));
 
         //flush to read persistent webIds from system data
         $this->entityManager->flush();
@@ -232,9 +224,7 @@ final class TholianWebUtil implements TholianWebUtilInterface
             0
         );
 
-        if ($web->getWebShip()->getUser()->getId() === 126) {
-            $this->loggerUtil->log(sprintf('targetWeightSum: %d, webSpinnerWeightSum: %d', $targetWeightSum, $webSpinnerWeightSum));
-        }
+        $this->loggerUtil->log(sprintf('targetWeightSum: %d, webSpinnerWeightSum: %d', $targetWeightSum, $webSpinnerWeightSum));
 
         //only update if web spinners left
         if ($webSpinnerWeightSum !== 0) {
