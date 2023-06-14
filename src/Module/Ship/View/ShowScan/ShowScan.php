@@ -49,19 +49,22 @@ final class ShowScan implements ViewControllerInterface
         $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
+
         $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
         }
+
         $target = $targetWrapper->get();
+        if ($target->getCloakState()) {
+            return;
+        }
+
         $game->setPageTitle(_('Scan'));
         $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_ship_scan');
         if (!$this->interactionChecker->checkPosition($ship, $target)) {
             $game->addInformation(_('Das Schiff befindet sich nicht in diesem Sektor'));
-            return;
-        }
-
-        if ($target->getCloakState()) {
             return;
         }
 
