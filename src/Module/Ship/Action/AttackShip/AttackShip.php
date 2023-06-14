@@ -144,7 +144,12 @@ final class AttackShip implements ActionControllerInterface
             $isWebSituation
         );
 
-        $this->sendPms($ship, $fightMessageCollection, !$isWebSituation && $isTargetBase);
+        $this->sendPms(
+            $userId,
+            $ship->getSectorString(),
+            $fightMessageCollection,
+            !$isWebSituation && $isTargetBase
+        );
 
         $msg = $fightMessageCollection->getMessageDump();
 
@@ -205,18 +210,22 @@ final class AttackShip implements ActionControllerInterface
         return $targetFleet === $ownFleet;
     }
 
-    private function sendPms(ShipInterface $ship, FightMessageCollectionInterface $messageCollection, bool $isTargetBase): void
-    {
+    private function sendPms(
+        int $userId,
+        string $sectorString,
+        FightMessageCollectionInterface $messageCollection,
+        bool $isTargetBase
+    ): void {
         foreach ($messageCollection->getRecipientIds() as $recipientId) {
             $messageDump = $messageCollection->getMessageDump($recipientId);
 
-            $pm = sprintf(_('Kampf in Sektor %s') . "\n", $ship->getSectorString());
+            $pm = sprintf(_('Kampf in Sektor %s') . "\n", $sectorString);
             foreach ($messageDump as $value) {
                 $pm .= $value . "\n";
             }
 
             $this->privateMessageSender->send(
-                $ship->getUser()->getId(),
+                $userId,
                 $recipientId,
                 $pm,
                 $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
