@@ -11,6 +11,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ShowScan implements ViewControllerInterface
@@ -75,7 +76,7 @@ final class ShowScan implements ViewControllerInterface
             $game->checkDatabaseItem($target->getRump()->getDatabaseId());
         }
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
 
         $this->privateMessageSender->send(
             $game->getUser()->getId(),

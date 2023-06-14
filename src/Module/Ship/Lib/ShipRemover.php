@@ -15,6 +15,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Torpedo\ClearTorpedoInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -183,7 +184,7 @@ final class ShipRemover implements ShipRemoverInterface
             $tractoringShip = $tractoringShipWrapper->get();
             $this->shipSystemManager->deactivate($tractoringShipWrapper, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
 
-            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
+            $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,

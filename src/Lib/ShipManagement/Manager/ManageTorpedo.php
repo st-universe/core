@@ -11,6 +11,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\Lib\Torpedo\ShipTorpedoManagerInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
@@ -216,7 +217,7 @@ class ManageTorpedo implements ManagerInterface
         ManagerProviderInterface $managerProvider,
         ShipInterface $ship
     ): void {
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
 
         $this->privateMessageSender->send(
             $managerProvider->getUser()->getId(),

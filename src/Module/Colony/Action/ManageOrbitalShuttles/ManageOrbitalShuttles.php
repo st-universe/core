@@ -16,6 +16,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -173,7 +174,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             foreach ($msgArray as $value) {
                 $pm .= $value . "\n";
             }
-            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+            $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
             $this->privateMessageSender->send(
                 $userId,
                 $ship->getUser()->getId(),

@@ -117,7 +117,7 @@ final class InterceptShip implements ActionControllerInterface
             $this->shipLoader->save($target);
         }
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
 
         $this->privateMessageSender->send(
             $userId,

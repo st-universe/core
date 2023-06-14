@@ -19,6 +19,7 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -450,7 +451,7 @@ final class ShipTick implements ShipTickInterface
             $text .= $msg . "\n";
         }
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
 
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,

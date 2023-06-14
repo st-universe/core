@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -40,7 +41,7 @@ final class RepairTaskJobs implements ProcessTickHandlerInterface
         foreach ($result as $repairTask) {
             $ship = $repairTask->getShip();
 
-            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+            $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
 
             if (!$ship->hasEnoughCrew()) {
                 $this->privateMessageSender->send(

@@ -420,7 +420,7 @@ final class TroopTransfer implements ActionControllerInterface
 
     private function sendUplinkMessage(bool $isUnload, bool $isOn, ShipInterface $ship, ShipInterface $target): void
     {
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
 
         $msg = sprintf(
             _('Die %s von Spieler %s hat 1 Crewman %s deiner Station %s gebeamt. Der Uplink ist %s'),

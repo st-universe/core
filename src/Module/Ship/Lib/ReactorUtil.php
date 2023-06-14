@@ -11,6 +11,7 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StorageInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -143,7 +144,7 @@ final class ReactorUtil implements ReactorUtilInterface
                     $loadUnits
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-                sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId())
+                sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $ship->getId())
             );
         }
 
