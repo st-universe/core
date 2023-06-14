@@ -45,6 +45,8 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
         $wrapper = $wrappers->getSource();
         $ship = $wrapper->get();
 
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
+
         $targetWrapper = $wrappers->getTarget();
         if ($targetWrapper === null) {
             return;
@@ -73,9 +75,6 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
             );
             $game->setPageTitle(_('Torpedos von Schiff beamen'));
         }
-
-        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
-
 
         if (
             $target->getUser() !== $ship->getUser()
