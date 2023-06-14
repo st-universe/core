@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\InteractionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class BeamTo implements ActionControllerInterface
@@ -102,7 +103,7 @@ final class BeamTo implements ActionControllerInterface
 
         $isOwnedByCurrentUser = $game->getUser() === $target->getUser();
         if ($isOwnedByCurrentUser) {
-            $link = "ship.php?SHOW_SHIP=1&id=" . $target->getId();
+            $link = sprintf("ship.php?%s=1&id=%d", ShowShip::VIEW_IDENTIFIER, $target->getId());
 
             $game->addInformationfWithLink(
                 _('Die Kolonie %s hat folgende Waren zur %s transferiert'),
@@ -175,7 +176,7 @@ final class BeamTo implements ActionControllerInterface
             $target->getUser()->getId(),
             $userId,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId())
+            sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId())
         );
 
         $this->colonyRepository->save($colony);

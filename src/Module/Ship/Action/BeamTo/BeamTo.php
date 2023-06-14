@@ -205,7 +205,7 @@ final class BeamTo implements ActionControllerInterface
             $target->getUser()->getId(),
             $ship->getUser()->getId(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId())
+            sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId())
         );
         $this->shipRepository->save($ship);
     }

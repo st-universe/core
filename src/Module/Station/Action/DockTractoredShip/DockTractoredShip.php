@@ -92,7 +92,7 @@ final class DockTractoredShip implements ActionControllerInterface
         $game->addInformation('Andockvorgang abgeschlossen');
         $this->helper->deactivate($stationId, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoredShip->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoredShip->getId());
 
         $this->privateMessageSender->send(
             $userId,

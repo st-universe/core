@@ -10,6 +10,7 @@ use Stu\Lib\ShipManagement\Provider\ManagerProviderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 
 class ManageBattery implements ManagerInterface
@@ -83,7 +84,7 @@ class ManageBattery implements ManagerInterface
 
     private function sendMessageToOwner(ShipInterface $ship, ManagerProviderInterface $managerProvider, int $load): void
     {
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $ship->getId());
 
         $this->privateMessageSender->send(
             $managerProvider->getUser()->getId(),

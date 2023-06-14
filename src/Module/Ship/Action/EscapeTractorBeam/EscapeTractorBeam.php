@@ -142,7 +142,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $this->shipRepository->save($tractoringShip);
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
         $this->privateMessageSender->send(
             $ship->getUser()->getId(),
@@ -172,7 +172,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $game->addInformationMergeDown($msg);
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
         $this->privateMessageSender->send(
             $ship->getUser()->getId(),
@@ -197,7 +197,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * rand(10, 25) / 100)), $wrapper);
         $game->addInformationMergeDown($damageMsg);
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
+        $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
         if ($ship->isDestroyed()) {
             $this->entryCreator->addShipEntry(

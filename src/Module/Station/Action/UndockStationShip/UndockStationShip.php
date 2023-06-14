@@ -67,7 +67,7 @@ final class UndockStationShip implements ActionControllerInterface
         }
 
         if ($target->getUser() !== $game->getUser()) {
-            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+            $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $target->getId());
 
             $this->privateMessageSender->send(
                 $userId,
