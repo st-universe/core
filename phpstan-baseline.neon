@@ -5307,6 +5307,16 @@ parameters:
 			path: src/Orm/Entity/PrivateMessage.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$inboxMessage type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\PrivateMessageInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$outboxMessage type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\PrivateMessageInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessage.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$receivingUser type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrivateMessage.php
