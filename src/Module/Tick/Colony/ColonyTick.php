@@ -8,21 +8,15 @@ use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Module\Award\Lib\CreateUserAwardInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Crew\Lib\CrewCreatorInterface;
-use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Module\Research\ResearchState;
-use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Module\Research\ResearchStateFactoryInterface;
 use Stu\Orm\Entity\BuildingCommodityInterface;
-use Stu\Orm\Entity\ColonyDepositMiningInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -31,14 +25,10 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
     private ResearchedRepositoryInterface $researchedRepository;
-
-    private ShipRumpUserRepositoryInterface $shipRumpUserRepository;
 
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
@@ -50,29 +40,19 @@ final class ColonyTick implements ColonyTickInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
-    private CreateDatabaseEntryInterface $createDatabaseEntry;
-
     private BuildingManagerInterface $buildingManager;
-
-    private CrewCreatorInterface $crewCreator;
-
-    private ShipCreatorInterface $shipCreator;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
-
-    private CreateUserAwardInterface $createUserAward;
 
     private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository;
 
     private EntityManagerInterface $entityManager;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private ColonyLibFactoryInterface $colonyLibFactory;
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
+
+    private ResearchStateFactoryInterface $researchStateFactory;
+
+    private LoggerUtilInterface $loggerUtil;
 
     private array $commodityArray;
 
@@ -80,44 +60,32 @@ final class ColonyTick implements ColonyTickInterface
 
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
-        ShipRumpUserRepositoryInterface $shipRumpUserRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
-        CreateDatabaseEntryInterface $createDatabaseEntry,
         BuildingManagerInterface $buildingManager,
-        CrewCreatorInterface $crewCreator,
-        ShipCreatorInterface $shipCreator,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
-        CreateUserAwardInterface $createUserAward,
         ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
         EntityManagerInterface $entityManager,
         ColonyLibFactoryInterface $colonyLibFactory,
         ColonyFunctionManagerInterface $colonyFunctionManager,
+        ResearchStateFactoryInterface $researchStateFactory,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->researchedRepository = $researchedRepository;
-        $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
-        $this->createDatabaseEntry = $createDatabaseEntry;
         $this->buildingManager = $buildingManager;
-        $this->crewCreator = $crewCreator;
-        $this->shipCreator = $shipCreator;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
-        $this->createUserAward = $createUserAward;
         $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
         $this->entityManager = $entityManager;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
+        $this->researchStateFactory = $researchStateFactory;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(ColonyInterface $colony, array $commodityArray): void
@@ -129,9 +97,7 @@ final class ColonyTick implements ColonyTickInterface
 
         $this->commodityArray = $commodityArray;
 
-        $userDepositMinings = $colony->getUserDepositMinings();
-
-        $this->mainLoop($colony, $userDepositMinings);
+        $this->mainLoop($colony);
 
         $this->colonyRepository->save($colony);
 
@@ -144,10 +110,7 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    /**
-     * @param ColonyDepositMiningInterface[] $userDepositMinings
-     */
-    private function mainLoop(ColonyInterface $colony, array $userDepositMinings)
+    private function mainLoop(ColonyInterface $colony)
     {
         $doLog = $this->loggerUtil->doLog();
 
@@ -156,55 +119,15 @@ final class ColonyTick implements ColonyTickInterface
         }
 
         $i = 1;
-        $storage = $colony->getStorage();
-
         $production = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
 
         while (true) {
-            $rewind = 0;
-            foreach ($production as $commodityId => $pro) {
-                if ($pro->getProduction() >= 0) {
-                    continue;
-                }
 
-                $depositMining = $userDepositMinings[$commodityId] ?? null;
-                if ($depositMining !== null) {
-                    if ($depositMining->isEnoughLeft((int) abs($pro->getProduction()))) {
-                        continue;
-                    }
-                }
+            $rewind = $this->checkStorage($colony, $production);
+            $rewind |= $this->checkLivingSpace($colony, $production);
+            $rewind |= $this->checkEnergyProduction($colony, $production);
 
-                $storageItem = $storage[$pro->getCommodityId()] ?? null;
-                if ($storageItem !== null && $storageItem->getAmount() + $pro->getProduction() >= 0) {
-                    continue;
-                }
-                //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
-                $field = $this->getBuildingToDeactivateByCommodity($colony, $commodityId);
-                $name = '';
-                // echo $i." hit by commodity ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
-                $this->deactivateBuilding($field, $production, $this->commodityArray[$commodityId], $name);
-                $rewind = 1;
-            }
-
-            if ($rewind == 0 && $colony->getWorkers() > $colony->getMaxBev()) {
-                $field = $this->getBuildingToDeactivateByLivingSpace($colony);
-                if ($field !== null) {
-                    $name = 'Wohnraum';
-                    $this->deactivateBuilding($field, $production, null, $name);
-                    $rewind = 1;
-                }
-            }
-
-            $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
-
-            if ($rewind == 0 && $energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
-                $field = $this->getBuildingToDeactivateByEpsUsage($colony);
-                $name = 'Energie';
-                //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
-                $this->deactivateBuilding($field, $production, null, $name);
-                $rewind = 1;
-            }
-            if ($rewind == 1) {
+            if ($rewind) {
                 $i++;
                 if ($i == 100) {
                     // SECURITY
@@ -227,7 +150,82 @@ final class ColonyTick implements ColonyTickInterface
             $this->loggerUtil->log(sprintf("\tmainLoop, seconds: %F", $endTime - $startTime));
         }
 
-        $this->proceedStorage($colony, $userDepositMinings, $production);
+        $this->proceedStorage($colony, $production);
+    }
+
+    /**
+     * @param array<int, ColonyProduction> $production
+     */
+    private function checkStorage(
+        ColonyInterface $colony,
+        array &$production
+    ): bool {
+
+        $result = false;
+
+        foreach ($production as $pro) {
+            if ($pro->getProduction() >= 0) {
+                continue;
+            }
+
+            $commodityId = $pro->getCommodityId();
+
+            $depositMining = $colony->getUserDepositMinings()[$commodityId] ?? null;
+            if ($depositMining !== null) {
+                if ($depositMining->isEnoughLeft((int) abs($pro->getProduction()))) {
+                    continue;
+                }
+            }
+
+            $storage = $colony->getStorage();
+            $storageItem = $storage[$commodityId] ?? null;
+            if ($storageItem !== null && $storageItem->getAmount() + $pro->getProduction() >= 0) {
+                continue;
+            }
+            //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
+            $field = $this->getBuildingToDeactivateByCommodity($colony, $commodityId);
+            // echo $i." hit by commodity ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
+            $this->deactivateBuilding($field, $production, $this->commodityArray[$commodityId], '');
+
+            $result = true;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array<int, ColonyProduction> $production
+     */
+    private function checkLivingSpace(ColonyInterface $colony, array &$production): bool
+    {
+        if ($colony->getWorkers() > $colony->getMaxBev()) {
+            $field = $this->getBuildingToDeactivateByLivingSpace($colony);
+            if ($field !== null) {
+                $this->deactivateBuilding($field, $production, null, 'Wohnraum');
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array<int, ColonyProduction> $production
+     */
+    private function checkEnergyProduction(ColonyInterface $colony, array &$production): bool
+    {
+        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
+
+        if ($energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
+            $field = $this->getBuildingToDeactivateByEpsUsage($colony);
+            //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
+            $this->deactivateBuilding($field, $production, null, 'Energie');
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -280,12 +278,10 @@ final class ColonyTick implements ColonyTickInterface
     }
 
     /**
-     * @param ColonyDepositMiningInterface[] $userDepositMinings
      * @param array<ColonyProduction> $production
      */
     private function proceedStorage(
         ColonyInterface $colony,
-        array $userDepositMinings,
         array $production
     ): void {
         $doLog = $this->loggerUtil->doLog();
@@ -317,7 +313,7 @@ final class ColonyTick implements ColonyTickInterface
                     $sum -= $amount;
                 } else {
                     // EFFECTS
-                    $depositMining = $userDepositMinings[$commodityId];
+                    $depositMining = $colony->getUserDepositMinings()[$commodityId];
 
                     $depositMining->setAmountLeft($depositMining->getAmountLeft() - $amount);
                     $this->colonyDepositMiningRepository->save($depositMining);
@@ -388,18 +384,7 @@ final class ColonyTick implements ColonyTickInterface
 
         if ($current_research && $current_research->getActive()) {
             if (isset($production[$current_research->getResearch()->getCommodityId()])) {
-                (new ResearchState(
-                    $this->researchedRepository,
-                    $this->shipRumpUserRepository,
-                    $this->privateMessageSender,
-                    $this->createDatabaseEntry,
-                    $this->crewCreator,
-                    $this->shipCreator,
-                    $this->shipRepository,
-                    $this->shipSystemManager,
-                    $this->createUserAward,
-                    $this->entityManager,
-                ))->advance(
+                $this->researchStateFactory->createResearchState()->advance(
                     $current_research,
                     $production[$current_research->getResearch()->getCommodityId()]->getProduction()
                 );
@@ -443,7 +428,7 @@ final class ColonyTick implements ColonyTickInterface
         foreach ($this->moduleQueueRepository->getByColony((int) $colony->getId()) as $queue) {
             $buildingFunction = $queue->getBuildingFunction();
 
-            //spare parts and system components are generated by ship tick, to avoid dead locks
+            //spare parts and system components are generated by ship tick manager, to avoid dead locks
             if (
                 $buildingFunction === BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL ||
                 $buildingFunction === BuildingEnum::BUILDING_FUNCTION_TECH_CENTER
