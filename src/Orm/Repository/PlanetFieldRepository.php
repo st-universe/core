@@ -59,19 +59,25 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getEnergyConsumingByColony(
         int $colonyId,
         array $state = [0, 1],
-        ?int $limit = null
+        ?int $limit = null,
+        array $excludedFields = [-1]
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
+                'SELECT f FROM %s f
+                WHERE f.colonies_id = :colonyId
+                AND f.aktiv IN (:state)
+                AND f.field_id NOT IN (:excluded)
+                AND f.buildings_id IN (
                     SELECT b.id FROM %s b WHERE b.eps_proc < 0
-                ) AND f.aktiv IN (:state)',
+                )',
                 PlanetField::class,
                 Building::class
             )
         )->setParameters([
             'colonyId' => $colonyId,
-            'state' => $state
+            'state' => $state,
+            'excluded' => $excludedFields
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -125,19 +131,25 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getWorkerConsumingByColonyAndState(
         int $colonyId,
         array $state = [0, 1],
-        ?int $limit = null
+        ?int $limit = null,
+        array $excludedFields = [-1]
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
-                    SELECT b.id FROM %s b WHERE b.bev_use > 0 AND f.aktiv IN (:state)
+                'SELECT f FROM %s f
+                WHERE f.colonies_id = :colonyId
+                AND f.aktiv IN (:state)
+                AND f.field_id NOT IN (:excluded)
+                AND f.buildings_id IN (
+                    SELECT b.id FROM %s b WHERE b.bev_use > 0
                 )',
                 PlanetField::class,
                 Building::class
             )
         )->setParameters([
             'colonyId' => $colonyId,
-            'state' => $state
+            'state' => $state,
+            'excluded' => $excludedFields
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -147,11 +159,15 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         int $colonyId,
         int $commodityId,
         array $state = [0, 1],
-        ?int $limit = null
+        ?int $limit = null,
+        array $excludedFields = [-1]
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
+                'SELECT f FROM %s f
+                WHERE f.colonies_id = :colonyId
+                AND f.field_id NOT IN (:excluded)
+                AND f.buildings_id IN (
                     SELECT bg.buildings_id FROM %s bg WHERE bg.commodity_id = :commodityId AND bg.count < 0
                 ) AND f.aktiv IN (:state)',
                 PlanetField::class,
@@ -160,7 +176,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         )->setParameters([
             'colonyId' => $colonyId,
             'commodityId' => $commodityId,
-            'state' => $state
+            'state' => $state,
+            'excluded' => $excludedFields
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -312,18 +329,23 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    public function getEnergyProductionByColony(int $colonyId): int
+    public function getEnergyProductionByColony(int $colonyId, array $excludedFields = [-1]): int
     {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT SUM(b.eps_proc) FROM %s cfd LEFT JOIN %s b WITH b.id = cfd.buildings_id WHERE
-                cfd.aktiv = :state AND cfd.colonies_id = :colonyId',
+                'SELECT SUM(b.eps_proc)
+                FROM %s cfd
+                LEFT JOIN %s b WITH b.id = cfd.buildings_id
+                WHERE cfd.aktiv = :state
+                AND cfd.field_id NOT IN (:excluded)
+                AND cfd.colonies_id = :colonyId',
                 PlanetField::class,
                 Building::class
             )
         )->setParameters([
             'state' => 1,
             'colonyId' => $colonyId,
+            'excluded' => $excludedFields
         ])->getSingleScalarResult();
     }
 

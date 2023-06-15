@@ -29,13 +29,15 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
 
     /**
      * @param array<int> $state
+     * @param array<int> $excludedFields
      *
      * @return iterable<PlanetFieldInterface>
      */
     public function getEnergyConsumingByColony(
         int $colonyId,
         array $state = [0, 1],
-        ?int $limit = null
+        ?int $limit = null,
+        array $excludedFields = []
     ): iterable;
 
     /**
@@ -45,6 +47,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
 
     /**
      * @param array<int> $state
+     * @param array<int> $excludedFields
      *
      * @return iterable<PlanetFieldInterface>
      */
@@ -52,7 +55,8 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
         int $colonyId,
         int $commodityId,
         array $state = [0, 1],
-        ?int $limit = null
+        ?int $limit = null,
+        array $excludedFields = []
     ): iterable;
 
     /**
@@ -70,10 +74,14 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      */
     public function getWorkerConsumingByColony(int $colonyId): iterable;
 
+    /**
+     * @param array<int> $excludedFields
+     */
     public function getWorkerConsumingByColonyAndState(
         int $colonyId,
         array $state = [0, 1],
-        ?int $limit = null
+        ?int $limit = null,
+        array $excludedFields = []
     ): iterable;
 
     public function getCountByColonyAndBuilding(int $colonyId, int $buildingId): int;
@@ -117,7 +125,10 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      */
     public function getByColonyWithBuilding(int $colonyId): array;
 
-    public function getEnergyProductionByColony(int $colonyId): int;
+    /**
+     * @param array<int> $excludedFields
+     */
+    public function getEnergyProductionByColony(int $colonyId, array $excludedFields = [-1]): int;
 
     public function truncateByColony(ColonyInterface $colony): void;
 }

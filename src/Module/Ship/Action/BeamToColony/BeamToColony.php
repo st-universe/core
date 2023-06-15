@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -212,7 +213,7 @@ final class BeamToColony implements ActionControllerInterface
             $target->getUser()->getId(),
             $ship->getUser()->getId(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-            sprintf(_('colony.php?SHOW_COLONY=1&id=%d'), $target->getId())
+            sprintf(_('colony.php?%s=1&id=%d'), ShowColony::VIEW_IDENTIFIER, $target->getId())
         );
 
         $epsSystem->update();
