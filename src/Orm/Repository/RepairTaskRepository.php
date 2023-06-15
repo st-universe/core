@@ -31,7 +31,6 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        //$em->flush();
     }
 
     public function getByShip(int $shipId): ?ShipInterface
