@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Component\Colony\Commodity;
 
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 
 final class ColonyCommodityProduction implements ColonyCommodityProductionInterface
@@ -17,19 +17,13 @@ final class ColonyCommodityProduction implements ColonyCommodityProductionInterf
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
-    /**
-     * @var array<int, CommodityInterface>
-     */
-    private array $commodityCache;
+    private CommodityCacheInterface $commodityCache;
 
-    /**
-     * @param array<int, CommodityInterface> $commodityCache
-     */
     public function __construct(
         BuildingCommodityRepositoryInterface $buildingCommodityRepository,
         ColonyInterface $colony,
         ColonyLibFactoryInterface $colonyLibFactory,
-        array $commodityCache
+        CommodityCacheInterface $commodityCache
     ) {
         $this->buildingCommodityRepository = $buildingCommodityRepository;
         $this->colony = $colony;
@@ -48,7 +42,7 @@ final class ColonyCommodityProduction implements ColonyCommodityProductionInterf
         foreach ($result as $data) {
             $commodityId = $data['commodity_id'];
 
-            $commodity = $this->commodityCache[$commodityId];
+            $commodity = $this->commodityCache->get($commodityId);
 
             $colonyProduction = $this->colonyLibFactory->createColonyProduction(
                 $commodity,

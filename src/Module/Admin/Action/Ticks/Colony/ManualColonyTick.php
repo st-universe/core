@@ -12,7 +12,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ManualColonyTick implements ActionControllerInterface
 {
@@ -26,8 +25,6 @@ final class ManualColonyTick implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
-    private CommodityRepositoryInterface $commodityRepository;
-
     private StuConfigInterface $config;
 
     public function __construct(
@@ -35,14 +32,12 @@ final class ManualColonyTick implements ActionControllerInterface
         ColonyTickManagerInterface $colonyTickManager,
         ColonyTickInterface $colonyTick,
         ColonyRepositoryInterface $colonyRepository,
-        CommodityRepositoryInterface $commodityRepository,
         StuConfigInterface $config
     ) {
         $this->request = $request;
         $this->colonyTickManager = $colonyTickManager;
         $this->colonyTick = $colonyTick;
         $this->colonyRepository = $colonyRepository;
-        $this->commodityRepository = $commodityRepository;
         $this->config = $config;
     }
 
@@ -88,8 +83,6 @@ final class ManualColonyTick implements ActionControllerInterface
 
     private function executeTickForSingleColony(int $colonyId, GameControllerInterface $game): void
     {
-        $commodityArray = $this->commodityRepository->getAll();
-
         $colony = $this->colonyRepository->find($colonyId);
 
         if ($colony === null) {
@@ -97,7 +90,7 @@ final class ManualColonyTick implements ActionControllerInterface
             return;
         }
 
-        $this->colonyTick->work($colony, $commodityArray);
+        $this->colonyTick->work($colony);
 
         $game->addInformationf("Der Kolonie-Tick für die Kolonie mit der ID %d wurde durchgeführt!", $colonyId);
     }

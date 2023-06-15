@@ -6,5 +6,5 @@ use Stu\Orm\Entity\ColonyInterface;
 
 interface ColonyTickInterface
 {
-    public function work(ColonyInterface $colony, array $commodityArray): void;
+    public function work(ColonyInterface $colony): void;
 }

@@ -47,6 +47,7 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/../Module/Award/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Building/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Colony/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Module/Commodity/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Communication/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Control/services.php');
         $builder->addDefinitions(__DIR__ . '/../Module/Crew/services.php');
