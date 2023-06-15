@@ -15,7 +15,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Tick\Lock\LockEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\StuTestCase;
 use Ubench;
@@ -36,9 +35,6 @@ class ColonyTickManagerTest extends StuTestCase
 
     /** @var MockInterface&PrivateMessageSenderInterface */
     private PrivateMessageSenderInterface $privateMessageSender;
-
-    /** @var MockInterface&CommodityRepositoryInterface */
-    private CommodityRepositoryInterface $commodityRepository;
 
     /** @var MockInterface&CrewCountRetrieverInterface */
     private CrewCountRetrieverInterface $crewCountRetriever;
@@ -67,7 +63,6 @@ class ColonyTickManagerTest extends StuTestCase
         $this->crewTrainingRepository = $this->mock(CrewTrainingRepositoryInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
-        $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
         $this->crewCountRetriever = $this->mock(CrewCountRetrieverInterface::class);
         $this->lockManager = $this->mock(LockManagerInterface::class);
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
@@ -81,7 +76,6 @@ class ColonyTickManagerTest extends StuTestCase
             $this->crewTrainingRepository,
             $this->colonyRepository,
             $this->privateMessageSender,
-            $this->commodityRepository,
             $this->crewCountRetriever,
             $this->colonyFunctionManager,
             $this->crewLimitCalculator,
@@ -98,8 +92,8 @@ class ColonyTickManagerTest extends StuTestCase
 
         static::expectException(Exception::class);
 
-        $this->commodityRepository->shouldReceive('getAll')
-            ->withNoArgs()
+        $this->colonyRepository->shouldReceive('getByBatchGroup')
+            ->with($groupId, 1)
             ->once()
             ->andThrow(new Exception(''));
 

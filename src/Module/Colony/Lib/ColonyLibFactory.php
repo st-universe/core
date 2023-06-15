@@ -18,6 +18,7 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ModuleScreen\Addon\ModuleSelectorAddonFactoryInterface;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
+use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -29,7 +30,6 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingCommodityRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -61,8 +61,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private EntityManagerInterface $entityManager;
 
-    private LoggerUtilFactoryInterface $loggerUtilFactory;
-
     private BuildingCommodityRepositoryInterface $buildingCommodityRepository;
 
     private ModuleRepositoryInterface $moduleRepository;
@@ -73,16 +71,13 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
-    private CommodityRepositoryInterface $commodityRepository;
-
     private ColonyFunctionManagerInterface $colonyFunctionManager;
 
     private ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory;
 
-    /**
-     * @var array<int, CommodityInterface>|null
-     */
-    private ?array $commodityCache = null;
+    private CommodityCacheInterface $commodityCache;
+
+    private LoggerUtilFactoryInterface $loggerUtilFactory;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -100,9 +95,9 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ShipRumpModuleLevelRepositoryInterface $shipRumpModuleLevelRepository,
         TalPageInterface $talPage,
         PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
-        CommodityRepositoryInterface $commodityRepository,
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ModuleSelectorAddonFactoryInterface $moduleSelectorAddonFactory,
+        CommodityCacheInterface $commodityCache,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
@@ -115,15 +110,15 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->planetGenerator = $planetGenerator;
         $this->entityManager = $entityManager;
-        $this->loggerUtilFactory = $loggerUtilFactory;
         $this->buildingCommodityRepository = $buildingCommodityRepository;
         $this->moduleRepository = $moduleRepository;
         $this->shipRumpModuleLevelRepository = $shipRumpModuleLevelRepository;
         $this->talPage = $talPage;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
-        $this->commodityRepository = $commodityRepository;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->moduleSelectorAddonFactory = $moduleSelectorAddonFactory;
+        $this->commodityCache = $commodityCache;
+        $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
     public function createBuildingFunctionTal(
@@ -273,20 +268,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->buildingCommodityRepository,
             $colony,
             $this,
-            $this->getCommodityCache()
+            $this->commodityCache
         );
-    }
-
-    /**
-     * @return array<int, CommodityInterface>
-     */
-    private function getCommodityCache(): array
-    {
-        if ($this->commodityCache === null) {
-            $this->commodityCache = $this->commodityRepository->getAll();
-        }
-
-        return $this->commodityCache;
     }
 
     public function createColonyProductionSumReducer(): ColonyProductionSumReducerInterface

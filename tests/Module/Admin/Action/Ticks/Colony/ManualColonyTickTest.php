@@ -13,7 +13,6 @@ use Stu\Module\Tick\Colony\ColonyTickInterface;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\StuTestCase;
 
 class ManualColonyTickTest extends StuTestCase
@@ -30,9 +29,6 @@ class ManualColonyTickTest extends StuTestCase
     /** @var MockInterface&ColonyRepositoryInterface */
     private ColonyRepositoryInterface $colonyRepository;
 
-    /** @var MockInterface&CommodityRepositoryInterface */
-    private CommodityRepositoryInterface $commodityRepository;
-
     /** @var MockInterface&StuConfigInterface */
     private StuConfigInterface $config;
 
@@ -47,7 +43,6 @@ class ManualColonyTickTest extends StuTestCase
         $this->colonyTickManager = $this->mock(ColonyTickManagerInterface::class);
         $this->colonyTick = $this->mock(ColonyTickInterface::class);
         $this->colonyRepository = $this->mock(ColonyRepositoryInterface::class);
-        $this->commodityRepository = $this->mock(CommodityRepositoryInterface::class);
         $this->config = $this->mock(StuConfigInterface::class);
 
         $this->game = $this->mock(GameControllerInterface::class);
@@ -57,7 +52,6 @@ class ManualColonyTickTest extends StuTestCase
             $this->colonyTickManager,
             $this->colonyTick,
             $this->colonyRepository,
-            $this->commodityRepository,
             $this->config
         );
     }
@@ -169,11 +163,6 @@ class ManualColonyTickTest extends StuTestCase
             ->once()
             ->andReturn($colonyId);
 
-        $this->commodityRepository->shouldReceive('getAll')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([42]);
-
         $this->colonyRepository->shouldReceive('find')
             ->with($colonyId)
             ->once()
@@ -205,18 +194,13 @@ class ManualColonyTickTest extends StuTestCase
             ->once()
             ->andReturn($colonyId);
 
-        $this->commodityRepository->shouldReceive('getAll')
-            ->withNoArgs()
-            ->once()
-            ->andReturn([42]);
-
         $this->colonyRepository->shouldReceive('find')
             ->with($colonyId)
             ->once()
             ->andReturn($colony);
 
         $this->colonyTick->shouldReceive('work')
-            ->with($colony, [42])
+            ->with($colony)
             ->once();
 
         $this->game->shouldReceive('addInformationf')

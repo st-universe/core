@@ -20,7 +20,6 @@ use Stu\Module\Tick\AbstractTickManager;
 use Stu\Module\Tick\Lock\LockEnum;
 use Stu\Module\Tick\Lock\LockManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Ubench;
 
@@ -35,8 +34,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
     private ColonyRepositoryInterface $colonyRepository;
 
     private PrivateMessageSenderInterface $privateMessageSender;
-
-    private CommodityRepositoryInterface $commodityRepository;
 
     private CrewCountRetrieverInterface $crewCountRetriever;
 
@@ -58,7 +55,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
         CrewTrainingRepositoryInterface $crewTrainingRepository,
         ColonyRepositoryInterface $colonyRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        CommodityRepositoryInterface $commodityRepository,
         CrewCountRetrieverInterface $crewCountRetriever,
         ColonyFunctionManagerInterface $colonyFunctionManager,
         CrewLimitCalculatorInterface $crewLimitCalculator,
@@ -72,7 +68,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
         $this->crewTrainingRepository = $crewTrainingRepository;
         $this->colonyRepository = $colonyRepository;
         $this->privateMessageSender = $privateMessageSender;
-        $this->commodityRepository = $commodityRepository;
         $this->crewCountRetriever = $crewCountRetriever;
         $this->lockManager = $lockManager;
         $this->colonyFunctionManager = $colonyFunctionManager;
@@ -102,7 +97,6 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
 
     private function colonyLoop(int $batchGroup, int $batchGroupCount): int
     {
-        $commodityArray = $this->commodityRepository->getAll();
         $colonyList = $this->colonyRepository->getByBatchGroup($batchGroup, $batchGroupCount);
 
         $entityCount = 0;
@@ -111,7 +105,7 @@ final class ColonyTickManager extends AbstractTickManager implements ColonyTickM
 
             //handle colony only if vacation mode not active
             if (!$colony->getUser()->isVacationRequestOldEnough()) {
-                $this->colonyTick->work($colony, $commodityArray);
+                $this->colonyTick->work($colony);
             }
 
             $entityCount++;

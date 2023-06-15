@@ -4,12 +4,15 @@ namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
+use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -52,10 +55,13 @@ final class ColonyTick implements ColonyTickInterface
 
     private ResearchStateFactoryInterface $researchStateFactory;
 
+    private CommodityCacheInterface $commodityCache;
+
     private LoggerUtilInterface $loggerUtil;
 
-    private array $commodityArray;
-
+    /**
+     * @var array<string>
+     */
     private array $msg = [];
 
     public function __construct(
@@ -71,6 +77,7 @@ final class ColonyTick implements ColonyTickInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ResearchStateFactoryInterface $researchStateFactory,
+        CommodityCacheInterface $commodityCache,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->researchedRepository = $researchedRepository;
@@ -85,17 +92,16 @@ final class ColonyTick implements ColonyTickInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->researchStateFactory = $researchStateFactory;
+        $this->commodityCache = $commodityCache;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
-    public function work(ColonyInterface $colony, array $commodityArray): void
+    public function work(ColonyInterface $colony): void
     {
         $doLog = $this->loggerUtil->doLog();
         if ($doLog) {
             $startTime = microtime(true);
         }
-
-        $this->commodityArray = $commodityArray;
 
         $this->mainLoop($colony);
 
@@ -110,7 +116,7 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    private function mainLoop(ColonyInterface $colony)
+    private function mainLoop(ColonyInterface $colony): void
     {
         $doLog = $this->loggerUtil->doLog();
 
@@ -182,10 +188,10 @@ final class ColonyTick implements ColonyTickInterface
             if ($storageItem !== null && $storageItem->getAmount() + $pro->getProduction() >= 0) {
                 continue;
             }
-            //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
+            //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityCache->get($commodityId)->getName() . "\n";
             $field = $this->getBuildingToDeactivateByCommodity($colony, $commodityId);
             // echo $i." hit by commodity ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
-            $this->deactivateBuilding($field, $production, $this->commodityArray[$commodityId], '');
+            $this->deactivateBuilding($field, $production, $this->commodityCache->get($commodityId));
 
             $result = true;
         }
@@ -201,7 +207,7 @@ final class ColonyTick implements ColonyTickInterface
         if ($colony->getWorkers() > $colony->getMaxBev()) {
             $field = $this->getBuildingToDeactivateByLivingSpace($colony);
             if ($field !== null) {
-                $this->deactivateBuilding($field, $production, null, 'Wohnraum');
+                $this->deactivateBuilding($field, $production, 'Wohnraum');
 
                 return true;
             }
@@ -220,7 +226,7 @@ final class ColonyTick implements ColonyTickInterface
         if ($energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
             $field = $this->getBuildingToDeactivateByEpsUsage($colony);
             //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
-            $this->deactivateBuilding($field, $production, null, 'Energie');
+            $this->deactivateBuilding($field, $production, 'Energie');
 
             return true;
         }
@@ -234,15 +240,18 @@ final class ColonyTick implements ColonyTickInterface
     private function deactivateBuilding(
         PlanetFieldInterface $field,
         array &$production,
-        CommodityInterface $commodity = null,
-        string $name
+        CommodityInterface|string $cause
     ): void {
-        if ($name != '') {
-            $ext = $name;
+        if ($cause instanceof CommodityInterface) {
+            $ext = $cause->getName();
         } else {
-            $ext = $commodity->getName();
+            $ext = $cause;
         }
         $building = $field->getBuilding();
+
+        if ($building === null) {
+            throw new InvalidArgumentException('can not deactivate field without building');
+        }
 
         $this->buildingManager->deactivate($field);
         $this->entityManager->flush();
@@ -260,14 +269,24 @@ final class ColonyTick implements ColonyTickInterface
             [1]
         );
 
-        return current($fields);
+        $result = current($fields);
+        if (!$result) {
+            throw new RuntimeException('no building found');
+        }
+
+        return $result;
     }
 
     private function getBuildingToDeactivateByEpsUsage(ColonyInterface $colony): PlanetFieldInterface
     {
         $fields = $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId(), [1], 1);
 
-        return current($fields);
+        $result = current($fields);
+        if (!$result) {
+            throw new RuntimeException('no building found');
+        }
+
+        return $result;
     }
 
     private function getBuildingToDeactivateByLivingSpace(ColonyInterface $colony): ?PlanetFieldInterface
@@ -298,7 +317,7 @@ final class ColonyTick implements ColonyTickInterface
         //DECREASE
         foreach ($production as $commodityId => $obj) {
             $amount = $obj->getProduction();
-            $commodity = $this->commodityArray[$commodityId];
+            $commodity = $this->commodityCache->get($commodityId);
 
             if ($amount < 0) {
                 $amount = (int) abs($amount);
@@ -307,7 +326,7 @@ final class ColonyTick implements ColonyTickInterface
                     // STANDARD
                     $this->colonyStorageManager->lowerStorage(
                         $colony,
-                        $this->commodityArray[$commodityId],
+                        $this->commodityCache->get($commodityId),
                         $amount
                     );
                     $sum -= $amount;
@@ -329,11 +348,9 @@ final class ColonyTick implements ColonyTickInterface
             $startTime = microtime(true);
         }
         foreach ($production as $commodityId => $obj) {
-            if ($doLog) {
-                $startTimeC = microtime(true);
-            }
+            $startTimeC = microtime(true);
 
-            $commodity = $this->commodityArray[$commodityId];
+            $commodity = $this->commodityCache->get($commodityId);
             if ($obj->getProduction() <= 0 || !$commodity->isSaveable()) {
                 continue;
             }
@@ -354,9 +371,7 @@ final class ColonyTick implements ColonyTickInterface
                 }
                 break;
             }
-            if ($doLog) {
-                $startTimeM = microtime(true);
-            }
+            $startTimeM = microtime(true);
             $this->colonyStorageManager->upperStorage(
                 $colony,
                 $commodity,
@@ -467,7 +482,7 @@ final class ColonyTick implements ColonyTickInterface
         );
     }
 
-    private function proceedEmigration(ColonyInterface $colony)
+    private function proceedEmigration(ColonyInterface $colony): void
     {
         if ($colony->getWorkless()) {
             $bev = rand(1, $colony->getWorkless());
