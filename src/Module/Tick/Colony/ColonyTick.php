@@ -3,7 +3,6 @@
 namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use RuntimeException;
 use Stu\Component\Building\BuildingEnum;
@@ -12,6 +11,7 @@ use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Commodity\Lib\CommodityCacheInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -47,8 +47,6 @@ final class ColonyTick implements ColonyTickInterface
 
     private ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository;
 
-    private EntityManagerInterface $entityManager;
-
     private ColonyLibFactoryInterface $colonyLibFactory;
 
     private ColonyFunctionManagerInterface $colonyFunctionManager;
@@ -73,7 +71,6 @@ final class ColonyTick implements ColonyTickInterface
         ColonyRepositoryInterface $colonyRepository,
         BuildingManagerInterface $buildingManager,
         ColonyDepositMiningRepositoryInterface $colonyDepositMiningRepository,
-        EntityManagerInterface $entityManager,
         ColonyLibFactoryInterface $colonyLibFactory,
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ResearchStateFactoryInterface $researchStateFactory,
@@ -88,7 +85,6 @@ final class ColonyTick implements ColonyTickInterface
         $this->colonyRepository = $colonyRepository;
         $this->buildingManager = $buildingManager;
         $this->colonyDepositMiningRepository = $colonyDepositMiningRepository;
-        $this->entityManager = $entityManager;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->researchStateFactory = $researchStateFactory;
@@ -127,11 +123,13 @@ final class ColonyTick implements ColonyTickInterface
         $i = 1;
         $production = $this->colonyLibFactory->createColonyCommodityProduction($colony)->getProduction();
 
+        $deactivatedFields = [-1];
+
         while (true) {
 
-            $rewind = $this->checkStorage($colony, $production);
-            $rewind |= $this->checkLivingSpace($colony, $production);
-            $rewind |= $this->checkEnergyProduction($colony, $production);
+            $rewind = $this->checkStorage($colony, $production, $deactivatedFields);
+            $rewind |= $this->checkLivingSpace($colony, $production, $deactivatedFields);
+            $rewind |= $this->checkEnergyProduction($colony, $production, $deactivatedFields);
 
             if ($rewind) {
                 $i++;
@@ -147,7 +145,7 @@ final class ColonyTick implements ColonyTickInterface
         $colony->setEps(
             min(
                 $colony->getMaxEps(),
-                $colony->getEps() + $this->planetFieldRepository->getEnergyProductionByColony($colony->getId())
+                $colony->getEps() + $this->planetFieldRepository->getEnergyProductionByColony($colony->getId(), $deactivatedFields)
             )
         );
 
@@ -161,10 +159,12 @@ final class ColonyTick implements ColonyTickInterface
 
     /**
      * @param array<int, ColonyProduction> $production
+     * @param array<int> $deactivatedFields
      */
     private function checkStorage(
         ColonyInterface $colony,
-        array &$production
+        array &$production,
+        array &$deactivatedFields
     ): bool {
 
         $result = false;
@@ -189,9 +189,10 @@ final class ColonyTick implements ColonyTickInterface
                 continue;
             }
             //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityCache->get($commodityId)->getName() . "\n";
-            $field = $this->getBuildingToDeactivateByCommodity($colony, $commodityId);
+            $field = $this->getBuildingToDeactivateByCommodity($colony, $commodityId, $deactivatedFields);
             // echo $i." hit by commodity ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
             $this->deactivateBuilding($field, $production, $this->commodityCache->get($commodityId));
+            $deactivatedFields[] = $field->getFieldId();
 
             $result = true;
         }
@@ -201,13 +202,18 @@ final class ColonyTick implements ColonyTickInterface
 
     /**
      * @param array<int, ColonyProduction> $production
+     * @param array<int> $deactivatedFields
      */
-    private function checkLivingSpace(ColonyInterface $colony, array &$production): bool
-    {
+    private function checkLivingSpace(
+        ColonyInterface $colony,
+        array &$production,
+        array &$deactivatedFields
+    ): bool {
         if ($colony->getWorkers() > $colony->getMaxBev()) {
-            $field = $this->getBuildingToDeactivateByLivingSpace($colony);
+            $field = $this->getBuildingToDeactivateByLivingSpace($colony, $deactivatedFields);
             if ($field !== null) {
                 $this->deactivateBuilding($field, $production, 'Wohnraum');
+                $deactivatedFields[] = $field->getFieldId();
 
                 return true;
             }
@@ -218,15 +224,20 @@ final class ColonyTick implements ColonyTickInterface
 
     /**
      * @param array<int, ColonyProduction> $production
+     * @param array<int> $deactivatedFields
      */
-    private function checkEnergyProduction(ColonyInterface $colony, array &$production): bool
-    {
-        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId());
+    private function checkEnergyProduction(
+        ColonyInterface $colony,
+        array &$production,
+        array &$deactivatedFields
+    ): bool {
+        $energyProduction = $this->planetFieldRepository->getEnergyProductionByColony($colony->getId(), $deactivatedFields);
 
         if ($energyProduction < 0 && $colony->getEps() + $energyProduction < 0) {
-            $field = $this->getBuildingToDeactivateByEpsUsage($colony);
+            $field = $this->getBuildingToDeactivateByEpsUsage($colony, $deactivatedFields);
             //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
             $this->deactivateBuilding($field, $production, 'Energie');
+            $deactivatedFields[] = $field->getFieldId();
 
             return true;
         }
@@ -254,19 +265,26 @@ final class ColonyTick implements ColonyTickInterface
         }
 
         $this->buildingManager->deactivate($field);
-        $this->entityManager->flush();
 
         $this->mergeProduction($building->getCommodities(), $production);
 
         $this->msg[] = $building->getName() . " auf Feld " . $field->getFieldId() . " deaktiviert (Mangel an " . $ext . ")";
     }
 
-    private function getBuildingToDeactivateByCommodity(ColonyInterface $colony, int $commodityId): PlanetFieldInterface
-    {
+    /**
+     * @param array<int> $deactivatedFields
+     */
+    private function getBuildingToDeactivateByCommodity(
+        ColonyInterface $colony,
+        int $commodityId,
+        array $deactivatedFields
+    ): PlanetFieldInterface {
         $fields = $this->planetFieldRepository->getCommodityConsumingByColonyAndCommodity(
             $colony->getId(),
             $commodityId,
-            [1]
+            [1],
+            1,
+            $deactivatedFields
         );
 
         $result = current($fields);
@@ -277,9 +295,19 @@ final class ColonyTick implements ColonyTickInterface
         return $result;
     }
 
-    private function getBuildingToDeactivateByEpsUsage(ColonyInterface $colony): PlanetFieldInterface
-    {
-        $fields = $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId(), [1], 1);
+    /**
+     * @param array<int> $deactivatedFields
+     */
+    private function getBuildingToDeactivateByEpsUsage(
+        ColonyInterface $colony,
+        array $deactivatedFields
+    ): PlanetFieldInterface {
+        $fields = $this->planetFieldRepository->getEnergyConsumingByColony(
+            $colony->getId(),
+            [1],
+            1,
+            $deactivatedFields
+        );
 
         $result = current($fields);
         if (!$result) {
@@ -289,9 +317,19 @@ final class ColonyTick implements ColonyTickInterface
         return $result;
     }
 
-    private function getBuildingToDeactivateByLivingSpace(ColonyInterface $colony): ?PlanetFieldInterface
-    {
-        $fields = $this->planetFieldRepository->getWorkerConsumingByColonyAndState($colony->getId(), [1], 1);
+    /**
+     * @param array<int> $deactivatedFields
+     */
+    private function getBuildingToDeactivateByLivingSpace(
+        ColonyInterface $colony,
+        array $deactivatedFields
+    ): ?PlanetFieldInterface {
+        $fields = $this->planetFieldRepository->getWorkerConsumingByColonyAndState(
+            $colony->getId(),
+            [1],
+            1,
+            $deactivatedFields
+        );
 
         return empty($fields) ? null : current($fields);
     }
@@ -501,11 +539,11 @@ final class ColonyTick implements ColonyTickInterface
             $text .= $msg . "\n";
         }
 
-        $href = sprintf(_('colony.php?SHOW_COLONY=1&id=%d'), $colony->getId());
+        $href = sprintf(_('colony.php?%s=1&id=%d'), ShowColony::VIEW_IDENTIFIER, $colony->getId());
 
         $this->privateMessageSender->send(
             UserEnum::USER_NOONE,
-            (int) $colony->getUserId(),
+            $colony->getUserId(),
             $text,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
             $href
