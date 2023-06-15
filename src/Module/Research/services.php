@@ -21,6 +21,7 @@ return [
     TechlistRetrieverInterface::class => autowire(TechlistRetriever::class),
     ShowResearchRequestInterface::class => autowire(ShowResearchRequest::class),
     StartResearchRequestInterface::class => autowire(StartResearchRequest::class),
+    ResearchStateFactoryInterface::class => autowire(ResearchStateFactory::class),
     'RESEARCH_ACTIONS' => [
         CancelResearch::ACTION_IDENTIFIER => autowire(CancelResearch::class),
         StartResearch::ACTION_IDENTIFIER => autowire(StartResearch::class),
