@@ -15,6 +15,10 @@ use Stu\Module\Tick\Maintenance\MaintenanceTickRunner;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactory;
 use Stu\Module\Tick\Maintenance\MaintenanceTickRunnerFactoryInterface;
 use Stu\Module\Tick\Process\ProcessTickRunner;
+use Stu\Module\Tick\Ship\Crew\CrewLimitations;
+use Stu\Module\Tick\Ship\Crew\CrewLimitationsInterface;
+use Stu\Module\Tick\Ship\Repair\RepairActions;
+use Stu\Module\Tick\Ship\Repair\RepairActionsInterface;
 use Stu\Module\Tick\Ship\ShipTick;
 use Stu\Module\Tick\Ship\ShipTickInterface;
 use Stu\Module\Tick\Ship\ShipTickManager;
@@ -29,6 +33,8 @@ return [
     ColonyTickInterface::class => autowire(ColonyTick::class),
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
     ShipTickInterface::class => autowire(ShipTick::class),
+    RepairActionsInterface::class => autowire(RepairActions::class),
+    CrewLimitationsInterface::class => autowire(CrewLimitations::class),
     ShipTickManagerInterface::class => autowire(ShipTickManager::class),
     TickManagerInterface::class => autowire(TickManager::class),
     LockManagerInterface::class => autowire(LockManager::class),
