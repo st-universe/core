@@ -27,11 +27,12 @@ final class Init
         $builder->addDefinitions(__DIR__ . '/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Admin/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Alliance/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Component/Anomaly/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Building/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Cli/services.php');
-        $builder->addDefinitions(__DIR__ . '/../Component/Crew/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Colony/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Communication/services.php');
+        $builder->addDefinitions(__DIR__ . '/../Component/Crew/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/Game/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/GrapViz/services.php');
         $builder->addDefinitions(__DIR__ . '/../Component/History/services.php');
