@@ -24,7 +24,7 @@
 {% set shipid = ship.getId %}
 {% set epssystem = wrapper.getEpsSystemData %}
 <tr>
-    <td style="height:1px; width:1px; {{ ship.getHoldingWebBackgroundStyle }}" class="shiplistshipimage">
+    <td style="height:1px; width:1px;" class="shiplistshipimage">
         <a href="ship.php?SHOW_SHIP=1&id={{ shipid }}" class="imgOverlayText"
             onmouseover="openStorageInit(this, {{ shipid }});" onmouseout="closeStorage();">
             {% from 'html/shipmacros.twig' import shipimage %}

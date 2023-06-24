@@ -18,10 +18,10 @@
 
 {% if ship.getCloakState %}
 {% set imagesrc = 'assets/ships/' ~ rumpid ~ '_cloaked.png' %}
-{% set imagestyle = 'opacity:0.55; z-index: 4;' %}
+{% set imagestyle = 'opacity:0.55; z-index: 5;' %}
 {% else %}
 {% set imagesrc = 'assets/ships/' ~ rumpid ~ '.png' %}
-{% set imagestyle = 'z-index: 4;' %}
+{% set imagestyle = 'z-index: 5;' %}
 {% endif %}
 
 <img src="assets/buttons/warp_1.png" class="indexedGraphics" style="z-index: 1;" />
@@ -30,11 +30,16 @@
 {% if ship.getWarpState %}
 <img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
 <img src="assets/buttons/warp_3.png" class="indexedGraphics" style="z-index: 3;" />
-<img src="assets/buttons/warp_4.png" class="indexedGraphics" style="z-index: 5;" />
+<img src="assets/buttons/warp_4.png" class="indexedGraphics" style="z-index: 6;" />
 {% endif %}
 {% if ship.getImpulseState %}
 <img src="assets/buttons/warp_2.png" class="indexedGraphics" style="z-index: 2;" />
 {% endif %}
+{% if ship.getWebState %}
+<img src="assets/buttons/{{ ship.getHoldingWebImageStyle
+}}" class="indexedGraphics" style="z-index: 4;" />
+{% endif %}
+
 {% endif %}
 {% endmacro %}
 
