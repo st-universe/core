@@ -591,6 +591,11 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
+    public function getWebState(): bool
+    {
+        return $this->getHoldingWeb() === null ? false : true;
+    }
+
     public function getReactorLoad(): int
     {
         return $this->warpcore;
@@ -1497,7 +1502,28 @@ class Ship implements ShipInterface
             }
         }
 
-        return sprintf('background-image: url(assets/buttons/%s); vertical-align: middle; text-align: center;', $icon);
+        return sprintf('src="assets/buttons/%s"; class="indexedGraphics" style="z-index: 5;"', $icon);
+    }
+
+    public function getHoldingWebImageStyle(): string
+    {
+        if ($this->getHoldingWeb() === null) {
+            return sprintf('');
+        }
+
+        if ($this->getHoldingWeb()->isFinished()) {
+            $icon =  'webfill.png';
+        } else {
+            $closeTofinish = $this->getHoldingWeb()->getFinishedTime() - time() < TimeConstants::ONE_HOUR_IN_SECONDS;
+
+            if ($closeTofinish) {
+                $icon = 'web_ufill.png';
+            } else {
+                $icon = 'web_ufill2.png';
+            }
+        }
+
+        return sprintf('%s', $icon);
     }
 
     public function getCurrentMapField()

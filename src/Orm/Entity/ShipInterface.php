@@ -67,6 +67,8 @@ interface ShipInterface
 
     public function getWarpState(): bool;
 
+    public function getWebState(): bool;
+
     public function getReactorLoad(): int;
 
     public function setReactorLoad(int $reactorload): ShipInterface;
