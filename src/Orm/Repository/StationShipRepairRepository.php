@@ -66,6 +66,7 @@ final class StationShipRepairRepository extends EntityRepository implements Stat
         $em = $this->getEntityManager();
 
         $em->remove($stationShipRepair);
+        //$em->flush();
     }
 
     public function truncateByShipId(int $shipId): void

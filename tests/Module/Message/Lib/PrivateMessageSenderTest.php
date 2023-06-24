@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Doctrine\ORM\EntityManager;
 use JBBCode\Parser;
 use Mockery\MockInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\StuTime;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -38,6 +40,8 @@ class PrivateMessageSenderTest extends StuTestCase
 
     private StuTime $stuTime;
 
+    private EntityManager $entityManager;
+
     private PrivateMessageSenderInterface $messageSender;
 
     public function setUp(): void
@@ -48,6 +52,7 @@ class PrivateMessageSenderTest extends StuTestCase
         $this->config = $this->mock(ConfigInterface::class);
         $this->parser = $this->mock(Parser::class);
         $this->stuTime = $this->mock(StuTime::class);
+        $this->entityManager = $this->mock(EntityManager::class);
 
         $loggerUtil = $this->mock(LoggerUtilInterface::class);
         $loggerUtilFactory = $this->mock(LoggerUtilFactoryInterface::class);
@@ -67,6 +72,7 @@ class PrivateMessageSenderTest extends StuTestCase
             $this->config,
             $this->parser,
             $this->stuTime,
+            $this->entityManager,
             $loggerUtilFactory
         );
     }
@@ -168,11 +174,18 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with(false)
             ->once();
 
-        $recipientpm->shouldReceive('setInboxPm')
+        $recipientpm->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()->andReturn(123);
+        $recipientpm->shouldReceive('setInboxPmId')
             ->with(null)
             ->once();
-        $outboxPm->shouldReceive('setInboxPm')
-            ->with($recipientpm)
+        $outboxPm->shouldReceive('setInboxPmId')
+            ->with(123)
+            ->once();
+
+        $this->entityManager->shouldReceive('flush')
+            ->withNoArgs()
             ->once();
 
         $this->messageRepository->shouldReceive('save')
@@ -321,13 +334,13 @@ class PrivateMessageSenderTest extends StuTestCase
             ->with(false)
             ->once();
 
-        $recipient1pm->shouldReceive('setInboxPm')
+        $recipient1pm->shouldReceive('setInboxPmId')
             ->with(null)
             ->once();
-        $recipient2pm->shouldReceive('setInboxPm')
+        $recipient2pm->shouldReceive('setInboxPmId')
             ->with(null)
             ->once();
-        $outboxPm->shouldReceive('setInboxPm')
+        $outboxPm->shouldReceive('setInboxPmId')
             ->with(null)
             ->once();
 

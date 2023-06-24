@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
 /**
@@ -118,17 +117,6 @@ class PrivateMessage implements PrivateMessageInterface
      */
     private $receivingUser;
 
-    /**
-     * @OneToOne(targetEntity="PrivateMessage")
-     * @JoinColumn(name="inbox_pm_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private ?PrivateMessageInterface $inboxMessage;
-
-    /**
-     * @OneToOne(targetEntity="PrivateMessage", mappedBy="inboxMessage", cascade={"remove"})
-     */
-    private ?PrivateMessageInterface $outboxMessage;
-
     public function getId(): int
     {
         return $this->id;
@@ -207,17 +195,6 @@ class PrivateMessage implements PrivateMessageInterface
     public function setInboxPmId(?int $pmId): PrivateMessageInterface
     {
         $this->inbox_pm_id = $pmId;
-        return $this;
-    }
-
-    public function getInboxPm(): ?PrivateMessageInterface
-    {
-        return $this->inboxMessage;
-    }
-
-    public function setInboxPm(?PrivateMessageInterface $inboxPm): PrivateMessageInterface
-    {
-        $this->inboxMessage = $inboxPm;
         return $this;
     }
 

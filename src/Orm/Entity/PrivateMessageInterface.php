@@ -34,10 +34,6 @@ interface PrivateMessageInterface
 
     public function setInboxPmId(?int $pmId): PrivateMessageInterface;
 
-    public function getInboxPm(): ?PrivateMessageInterface;
-
-    public function setInboxPm(?PrivateMessageInterface $inboxPm): PrivateMessageInterface;
-
     public function getHref(): ?string;
 
     public function setHref(?string $href): PrivateMessageInterface;

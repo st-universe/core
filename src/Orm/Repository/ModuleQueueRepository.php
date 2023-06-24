@@ -79,6 +79,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         $em = $this->getEntityManager();
 
         $em->remove($moduleQueue);
+        //$em->flush();
     }
 
     public function getAmountByColonyAndModule(int $colonyId, int $moduleId): int
