@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use JBBCode\Parser;
 use Laminas\Mail\Exception\RuntimeException;
@@ -37,6 +38,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private StuTime $stuTime;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
@@ -44,6 +47,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         ConfigInterface $config,
         Parser $bbcodeParser,
         StuTime $stuTime,
+        EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
@@ -52,6 +56,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $this->config = $config;
         $this->bbcodeParser = $bbcodeParser;
         $this->stuTime = $stuTime;
+        $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -84,6 +89,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         }
 
         if ($senderId != UserEnum::USER_NOONE) {
+            $this->entityManager->flush();
+
             $this->createPrivateMessage(
                 $recipient,
                 $sender,
@@ -92,7 +99,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
                 $text,
                 null,
                 false,
-                $pm
+                $pm->getId()
             );
         }
     }
@@ -143,7 +150,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         string $text,
         ?string $href,
         bool $new,
-        ?PrivateMessageInterface $inboxPm
+        ?int $inboxPmId
     ): PrivateMessageInterface {
         $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($recipient->getId(), $category);
 
@@ -159,7 +166,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $pm->setRecipient($recipient);
         $pm->setSender($sender);
         $pm->setNew($new);
-        $pm->setInboxPm($inboxPm);
+        $pm->setInboxPmId($inboxPmId);
 
         $this->privateMessageRepository->save($pm);
 

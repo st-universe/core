@@ -30,6 +30,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
         $em = $this->getEntityManager();
 
         $em->remove($post);
+        //$em->flush();
     }
 
     public function getByUser(int $userId): array
