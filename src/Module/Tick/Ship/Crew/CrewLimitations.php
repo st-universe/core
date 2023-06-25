@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Ship\Crew;
 
 use InvalidArgumentException;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\CrewLimitCalculatorInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\Battle\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -123,7 +123,7 @@ final class CrewLimitations implements CrewLimitationsInterface
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d Crewman ihren Dienst auf deinen Kolonien quittiert'), $amount);
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $userId,
                 $msg,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
@@ -149,7 +149,7 @@ final class CrewLimitations implements CrewLimitationsInterface
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Handelsposten ihren Dienst quittiert'), $amount);
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $userId,
                 $msg,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
@@ -175,7 +175,7 @@ final class CrewLimitations implements CrewLimitationsInterface
         if ($amount > 0) {
             $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d deiner Crewman auf Fluchtkapseln ihren Dienst quittiert'), $amount);
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $userId,
                 $msg,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
@@ -240,7 +240,7 @@ final class CrewLimitations implements CrewLimitationsInterface
 
         $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
         $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
+            UserEnum::USER_NOONE,
             $userId,
             $msg,
             $randomShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP

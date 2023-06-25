@@ -7,7 +7,6 @@ namespace Stu\Module\Tick\Ship\Repair;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\Repair\RepairUtilInterface;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -15,6 +14,7 @@ use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -112,7 +112,7 @@ final class RepairActions implements RepairActionsInterface
                     );
 
                     $this->privateMessageSender->send(
-                        GameEnum::USER_NOONE,
+                        UserEnum::USER_NOONE,
                         $colony->getUser()->getId(),
                         sprintf(
                             _('Es wurden %d %s hergestellt'),
@@ -285,7 +285,7 @@ final class RepairActions implements RepairActionsInterface
             );
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $ship->getUser()->getId(),
                 $shipOwnerMessage,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
@@ -307,7 +307,7 @@ final class RepairActions implements RepairActionsInterface
             );
 
             $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
+                UserEnum::USER_NOONE,
                 $entity->getUser()->getId(),
                 $entityOwnerMessage,
                 $isColony ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY :
