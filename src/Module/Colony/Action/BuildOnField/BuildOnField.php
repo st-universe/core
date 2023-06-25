@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildOnField;
 
-use Doctrine\ORM\EntityManagerInterface;
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
@@ -44,8 +43,6 @@ final class BuildOnField implements ActionControllerInterface
 
     private BuildingActionInterface $buildingAction;
 
-    private EntityManagerInterface $entityManager;
-
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
     public function __construct(
@@ -57,8 +54,7 @@ final class BuildOnField implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         BuildingActionInterface $buildingAction,
-        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever,
-        EntityManagerInterface $entityManager
+        PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
@@ -68,7 +64,6 @@ final class BuildOnField implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->buildingAction = $buildingAction;
-        $this->entityManager = $entityManager;
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
     }
 
@@ -177,15 +172,6 @@ final class BuildOnField implements ActionControllerInterface
             }
             $this->buildingAction->remove($colony, $field, $game);
         }
-
-        $this->colonyRepository->save($colony);
-        $this->entityManager->flush();
-
-        /**
-         * @todo wtf? why is the colony being loaded again?
-         * @var ColonyInterface $colony
-         */
-        $colony = $this->colonyRepository->find(request::indInt('id'));
 
         if ($userId !== UserEnum::USER_NOONE) {
             foreach ($building->getCosts() as $cost) {
