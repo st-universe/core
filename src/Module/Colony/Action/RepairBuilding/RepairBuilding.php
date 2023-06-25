@@ -77,8 +77,14 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
 
-        $integrity = round((100 / $field->getBuilding()->getIntegrity()) * $field->getIntegrity());
-        $eps = (int) round(($field->getBuilding()->getEpsCost() / 100) * $integrity);
+        $integrityInPercent = (int) floor($field->getIntegrity() / $field->getBuilding()->getIntegrity() * 100);
+        $damageInPercent = 100 - $integrityInPercent;
+
+        if ($damageInPercent === 0) {
+            return;
+        }
+
+        $eps = (int) ceil($field->getBuilding()->getEpsCost() * $damageInPercent / 100);
         if ($eps > $colony->getEps()) {
             $game->addInformationf(
                 _('Zur Reparatur wird %d Energie benötigt - Es sind jedoch nur %d vorhanden'),
@@ -92,7 +98,8 @@ final class RepairBuilding implements ActionControllerInterface
         $costs = $field->getBuilding()->getCosts();
 
         foreach ($costs as $cost) {
-            $amount = (int) ceil(($cost->getAmount() / 100) * $integrity);
+            $amount = (int) ceil($cost->getAmount() * $damageInPercent / 100);
+
             $commodityId = $cost->getCommodityId();
 
             if (!$storage->containsKey($commodityId)) {
@@ -117,7 +124,7 @@ final class RepairBuilding implements ActionControllerInterface
             $this->colonyStorageManager->lowerStorage(
                 $colony,
                 $cost->getCommodity(),
-                (int) ceil(($cost->getAmount() / 100) * $integrity)
+                (int) ceil($cost->getAmount() * $damageInPercent / 100)
             );
         }
         $colony->lowerEps($eps);
