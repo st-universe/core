@@ -71,7 +71,8 @@ final class ShowOrbitManagement implements ViewControllerInterface
 
         foreach ($groupedList as $fleetId => $shipList) {
             $fleetWrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipList, $fleetId === 0);
-            $list[$fleetWrapper->get()->getSort()] = $fleetWrapper;
+            $key = sprintf('%d.%d', $fleetWrapper->get()->getSort(), $fleetWrapper->get()->getUser()->getId());
+            $list[$key] = $fleetWrapper;
         }
 
         $game->appendNavigationPart(

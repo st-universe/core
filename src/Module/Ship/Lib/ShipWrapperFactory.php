@@ -18,6 +18,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 {
@@ -41,6 +42,8 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
 
     private ShipStateChangerInterface $shipStateChanger;
 
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
         ColonyFunctionManagerInterface $colonyFunctionManager,
         ShipSystemManagerInterface $shipSystemManager,
@@ -51,7 +54,8 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         GameControllerInterface $game,
         JsonMapperInterface $jsonMapper,
         ShipSystemDataFactoryInterface $shipSystemDataFactory,
-        ShipStateChangerInterface $shipStateChanger
+        ShipStateChangerInterface $shipStateChanger,
+        UserRepositoryInterface $userRepository
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->shipRepository = $shipRepository;
@@ -63,6 +67,7 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         $this->shipSystemDataFactory = $shipSystemDataFactory;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->shipStateChanger = $shipStateChanger;
+        $this->userRepository = $userRepository;
     }
 
     public function wrapShip(ShipInterface $ship): ShipWrapperInterface
@@ -106,8 +111,9 @@ final class ShipWrapperFactory implements ShipWrapperFactoryInterface
         }
 
         if ($isSingleShips) {
-            $fleet->setSort(PHP_INT_MAX);
             $fleet->setName(_('Einzelschiffe'));
+            $fleet->setUser($this->userRepository->getFallbackUser());
+            $fleet->setSort(PHP_INT_MAX);
         } else {
             $originalFleet = current($ships)->getFleet();
             if ($originalFleet === null) {

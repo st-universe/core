@@ -18,6 +18,7 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\StuTestCase;
 
 class ShipWrapperFactoryTest extends StuTestCase
@@ -40,6 +41,8 @@ class ShipWrapperFactoryTest extends StuTestCase
 
     private ShipStateChangerInterface $shipStateChanger;
 
+    private UserRepositoryInterface $userRepository;
+
     /** @var MockInterface&ColonyFunctionManagerInterface */
     private MockInterface $colonyFunctionManager;
 
@@ -58,6 +61,7 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->shipSystemDataFactory = $this->mock(ShipSystemDataFactoryInterface::class);
         $this->colonyFunctionManager = $this->mock(ColonyFunctionManagerInterface::class);
         $this->shipStateChanger = $this->mock(ShipStateChangerInterface::class);
+        $this->userRepository = $this->mock(UserRepositoryInterface::class);
 
         $this->shipWrapperFactory = new ShipWrapperFactory(
             $this->colonyFunctionManager,
@@ -69,7 +73,8 @@ class ShipWrapperFactoryTest extends StuTestCase
             $this->game,
             $this->jsonMapper,
             $this->shipSystemDataFactory,
-            $this->shipStateChanger
+            $this->shipStateChanger,
+            $this->userRepository
         );
     }
 
@@ -92,6 +97,17 @@ class ShipWrapperFactoryTest extends StuTestCase
         $shipB = $this->mock(ShipInterface::class);
         $shipArray = [12 => $shipA, 27 => $shipB];
 
+        $fallbackUser = $this->mock(UserInterface::class);
+
+        $this->userRepository->shouldReceive('getFallbackUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($fallbackUser);
+        $fallbackUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+
         $fleetwrapper = $this->shipWrapperFactory->wrapShipsAsFleet($shipArray, true);
 
         $this->assertEquals(2, count($fleetwrapper->getShipWrappers()));
@@ -99,6 +115,7 @@ class ShipWrapperFactoryTest extends StuTestCase
         $this->assertEquals($shipB, $fleetwrapper->getShipWrappers()[27]->get());
         $this->assertEquals('Einzelschiffe', $fleetwrapper->get()->getName());
         $this->assertEquals(PHP_INT_MAX, $fleetwrapper->get()->getSort());
+        $this->assertEquals(42, $fleetwrapper->get()->getUser()->getId());
     }
 
     public function testWrapShipsAsFleetIfNotSingleShipMode(): void
