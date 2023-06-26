@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Class Stu\\\\Component\\\\Anomaly\\\\Type\\\\SubspaceEllipseHandler not found\\.$#"
+			count: 1
+			path: src/Component/Anomaly/services.php
+
+		-
 			message: "#^Constant _IMG_HANDLER not found\\.$#"
 			count: 1
 			path: src/Component/Image/ImageCreation.php
