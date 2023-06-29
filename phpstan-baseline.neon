@@ -1203,7 +1203,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method getEpsCost\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
+			count: 2
 			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
 
 		-
@@ -1213,6 +1213,11 @@ parameters:
 
 		-
 			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
+			count: 1
+			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
+
+		-
+			message: "#^Cannot call method isRemovable\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
 
