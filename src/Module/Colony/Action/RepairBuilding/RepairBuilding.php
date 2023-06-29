@@ -85,6 +85,9 @@ final class RepairBuilding implements ActionControllerInterface
         }
 
         $eps = (int) ceil($field->getBuilding()->getEpsCost() * $damageInPercent / 100);
+        if ($field->getBuilding()->isRemovable() === false && $field->getBuilding()->getEpsCost() > $colony->getEps()) {
+            $eps = (int) $colony->getEps();
+        }
         if ($eps > $colony->getEps()) {
             $game->addInformationf(
                 _('Zur Reparatur wird %d Energie benötigt - Es sind jedoch nur %d vorhanden'),
