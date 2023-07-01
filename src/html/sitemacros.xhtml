@@ -464,8 +464,8 @@
 
 <metal:block metal:define-macro="navigation_item">
   <tal:block tal:define="linkid string:nav_item_${icon_url}">
-    <div class="navigation_item border_box">
-      <a href="${url}" onclick="goToUrl('${url}'); return false;">
+    <div class="navigation_item border_box" onclick="goToUrl('${url}'); return false;">
+      <a href="${url}">
         <img class="navitem_img" src="/assets/navigation/menu_${icon_url}0.png" id="${linkid}" title="${title}" />
         <div class="navitem_title" tal:content="title">TITLE</div>
       </a>
@@ -474,26 +474,29 @@
 </metal:block>
 
 
+
 <metal:macro metal:define-macro="coloniesnavlet">
   <tal:block tal:repeat="item COLONIES">
-    <div tal:condition="php: item['type'] EQ 1" style="margin: 7px 5px 7px 5px; text-align: center; float: left"
-      class="action" onclick="goToUrl('colony.php?SHOW_COLONY=1&id=${item/colonyid}')">
-      <img src="assets/planets/${item/classid}.png" tal:attributes="title bbcode2txt:item/nameandsector" />
-    </div>
-    <div tal:condition="php: item['type'] EQ 2"
-      style="height: 50px; width: 30px; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action"
-      onclick="goToUrl('colony.php?SHOW_COLONY=1&id=${item/colonyid}')">
-      <img src="assets/planets/${item/classid}.png" tal:attributes="title bbcode2txt:item/nameandsector"
-        style="position:relative; margin-top: 10px;" />
-    </div>
-    <div tal:condition="php: item['type'] EQ 3"
-      style="height: 50px; width: 40px; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action"
-      onclick="goToUrl('colony.php?SHOW_COLONY=1&id=${item/colonyid}')">
-      <img src="assets/planets/${item/classid}.png" tal:attributes="title bbcode2txt:item/nameandsector"
-        style="position:relative; margin-top: 10px;" />
-    </div>
+    <a tal:condition="php: item['type'] EQ 1" href="colony.php?SHOW_COLONY=1&amp;id=${item/colonyid}">
+      <div style="margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+        <img src="assets/planets/${item/classid}.png" tal:attributes="title bbcode2txt:item/nameandsector" />
+      </div>
+    </a>
+    <a tal:condition="php: item['type'] EQ 2" href="colony.php?SHOW_COLONY=1&amp;id=${item/colonyid}">
+      <div style="height: 50px; width: 30px; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+        <img src="assets/planets/${item/classid}.png" tal:attributes="title bbcode2txt:item/nameandsector"
+          style="position:relative; margin-top: 10px;" />
+      </div>
+    </a>
+    <a tal:condition="php: item['type'] EQ 3" href="colony.php?SHOW_COLONY=1&amp;id=${item/colonyid}">
+      <div style="height: 50px; width: 40px; margin: 7px 5px 7px 5px; text-align: center; float: left" class="action">
+        <img src="assets/planets/${item/classid}.png" tal:attributes="title bbcode2txt:item/nameandsector"
+          style="position:relative; margin-top: 10px;" />
+      </div>
+    </a>
   </tal:block>
 </metal:macro>
+
 
 <tal:block metal:define-macro="navigation">
   <metal:macro metal:use-macro="navigation_item"
@@ -560,9 +563,9 @@
 </metal:block>
 <metal:block metal:define-macro="systeminformation">
   <script language="Javascript" tal:condition="THIS/getExecuteJS">
-	<tal:block tal:repeat="item THIS/getExecuteJS">
-  		<div>${item}</div>
-	</tal:block>
+    <tal:block tal:repeat="item THIS/getExecuteJS">
+      <div>${item}</div>
+    </tal:block>
 
 
   </script>
