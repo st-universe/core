@@ -59,7 +59,8 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
 
-        if (!$field->hasBuilding()) {
+        $building =  $field->getBuilding();
+        if ($building === null) {
             return;
         }
         if (!$field->isDamaged()) {
@@ -77,16 +78,16 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
 
-        $integrityInPercent = (int) floor($field->getIntegrity() / $field->getBuilding()->getIntegrity() * 100);
+        $integrityInPercent = (int) floor($field->getIntegrity() / $building->getIntegrity() * 100);
         $damageInPercent = 100 - $integrityInPercent;
 
         if ($damageInPercent === 0) {
             return;
         }
 
-        $eps = (int) ceil($field->getBuilding()->getEpsCost() * $damageInPercent / 100);
-        if ($field->getBuilding()->isRemovable() === false && $field->getBuilding()->getEpsCost() > $colony->getEps()) {
-            $eps = (int) $colony->getEps();
+        $eps = (int) ceil($building->getEpsCost() * $damageInPercent / 100);
+        if ($building->isRemovable() === false && $building->getEpsCost() > $colony->getEps()) {
+            $eps = $colony->getEps();
         }
         if ($eps > $colony->getEps()) {
             $game->addInformationf(
@@ -97,15 +98,16 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
 
-        $storage = $colony->getStorage();
-        $costs = $field->getBuilding()->getCosts();
+        $storages = $colony->getStorage();
+        $costs = $building->getCosts();
 
         foreach ($costs as $cost) {
             $amount = (int) ceil($cost->getAmount() * $damageInPercent / 100);
 
             $commodityId = $cost->getCommodityId();
 
-            if (!$storage->containsKey($commodityId)) {
+            $storage = $storages->get($commodityId);
+            if ($storage === null) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $amount,
@@ -113,12 +115,12 @@ final class RepairBuilding implements ActionControllerInterface
                 );
                 return;
             }
-            if ($amount > $storage[$commodityId]->getAmount()) {
+            if ($amount > $storage->getAmount()) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $amount,
                     $cost->getCommodity()->getName(),
-                    $storage[$commodityId]->getAmount()
+                    $storage->getAmount()
                 );
                 return;
             }
@@ -134,13 +136,13 @@ final class RepairBuilding implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $field->setIntegrity($field->getBuilding()->getIntegrity());
+        $field->setIntegrity($building->getIntegrity());
 
         $this->planetFieldRepository->save($field);
 
         $game->addInformationf(
             _('%s auf Feld %d wurde repariert'),
-            $field->getBuilding()->getName(),
+            $building->getName(),
             $field->getFieldId()
         );
     }
