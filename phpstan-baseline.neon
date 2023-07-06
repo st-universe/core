@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Class Stu\\\\Component\\\\Anomaly\\\\Type\\\\SubspaceEllipseHandler not found\\.$#"
-			count: 1
-			path: src/Component/Anomaly/services.php
-
-		-
 			message: "#^Constant _IMG_HANDLER not found\\.$#"
 			count: 1
 			path: src/Component/Image/ImageCreation.php
@@ -1190,36 +1185,6 @@ parameters:
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
 			count: 2
 			path: src/Module/Colony/Action/RemoveWaste/RemoveWaste.php
-
-		-
-			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
-
-		-
-			message: "#^Cannot call method getCosts\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
-
-		-
-			message: "#^Cannot call method getEpsCost\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
-
-		-
-			message: "#^Cannot call method getIntegrity\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
-
-		-
-			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
-
-		-
-			message: "#^Cannot call method isRemovable\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Colony/Action/RepairBuilding/RepairBuilding.php
 
 		-
 			message: "#^Cannot call method getAmount\\(\\) on Stu\\\\Orm\\\\Entity\\\\StorageInterface\\|null\\.$#"
@@ -4125,16 +4090,6 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
-
-		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\Building\\:\\:getFunctions\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
-
-		-
-			message: "#^PHPDoc tag @return with type array\\<Stu\\\\Orm\\\\Entity\\\\BuildingFunctionInterface\\> is incompatible with native type Doctrine\\\\Common\\\\Collections\\\\Collection\\.$#"
-			count: 1
-			path: src/Orm/Entity/Building.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$commodities type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildingCommodityInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\>\\.$#"

@@ -385,7 +385,7 @@ class Building implements BuildingInterface
     }
 
     /**
-     * @return BuildingFunctionInterface[]
+     * @return Collection<int, BuildingFunctionInterface>
      */
     public function getFunctions(): Collection
     {
