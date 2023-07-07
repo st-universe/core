@@ -18,7 +18,9 @@ use Doctrine\ORM\Mapping\Table;
  * @Table(
  *     name="stu_anomaly",
  *     indexes={
- *         @Index(name="anomaly_to_type_idx", columns={"anomaly_type_id"})
+ *         @Index(name="anomaly_to_type_idx", columns={"anomaly_type_id"}),
+ *         @Index(name="anomaly_map_idx", columns={"map_id"}),
+ *         @Index(name="anomaly_starsystem_map_idx", columns={"starsystem_map_id"})
  *     }
  * )
  **/
@@ -45,10 +47,34 @@ class Anomaly implements AnomalyInterface
     private int $anomaly_type_id;
 
     /**
+     * @Column(type="integer", nullable=true) *
+     *
+     */
+    private ?int $map_id = null;
+
+    /**
+     * @Column(type="integer", nullable=true) *
+     *
+     */
+    private ?int $starsystem_map_id = null;
+
+    /**
      * @ManyToOne(targetEntity="AnomalyType")
      * @JoinColumn(name="anomaly_type_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private AnomalyTypeInterface $anomalyType;
+
+    /**
+     * @ManyToOne(targetEntity="Map")
+     * @JoinColumn(name="map_id", referencedColumnName="id")
+     */
+    private ?MapInterface $map;
+
+    /**
+     * @ManyToOne(targetEntity="StarSystemMap")
+     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
+     */
+    private ?StarSystemMapInterface $starsystem_map;
 
     public function getId(): int
     {
@@ -75,6 +101,30 @@ class Anomaly implements AnomalyInterface
     public function setAnomalyType(AnomalyTypeInterface $anomalyType): AnomalyInterface
     {
         $this->anomalyType = $anomalyType;
+
+        return $this;
+    }
+
+    public function getMap(): ?MapInterface
+    {
+        return $this->map;
+    }
+
+    public function setMap(?MapInterface $map): AnomalyInterface
+    {
+        $this->map = $map;
+
+        return $this;
+    }
+
+    public function getStarsystemMap(): ?StarSystemMapInterface
+    {
+        return $this->starsystem_map;
+    }
+
+    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): AnomalyInterface
+    {
+        $this->starsystem_map = $starsystem_map;
 
         return $this;
     }

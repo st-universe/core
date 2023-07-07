@@ -17,7 +17,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
-use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -49,8 +48,6 @@ final class ShipTick implements ShipTickInterface
 
     private RepairUtilInterface $repairUtil;
 
-    private ShipWrapperFactoryInterface $shipWrapperFactory;
-
     /**
      * @var array<string>
      */
@@ -66,8 +63,7 @@ final class ShipTick implements ShipTickInterface
         DatabaseUserRepositoryInterface $databaseUserRepository,
         CreateDatabaseEntryInterface $createDatabaseEntry,
         StationUtilityInterface $stationUtility,
-        RepairUtilInterface $repairUtil,
-        ShipWrapperFactoryInterface $shipWrapperFactory
+        RepairUtilInterface $repairUtil
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
@@ -79,7 +75,6 @@ final class ShipTick implements ShipTickInterface
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->stationUtility = $stationUtility;
         $this->repairUtil = $repairUtil;
-        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function work(ShipWrapperInterface $wrapper): void
@@ -95,7 +90,7 @@ final class ShipTick implements ShipTickInterface
 
         // repair station
         if ($ship->isBase() && $ship->getState() === ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            $this->doRepairStation($ship);
+            $this->doRepairStation($wrapper);
         }
 
         // leave ship
@@ -263,8 +258,10 @@ final class ShipTick implements ShipTickInterface
         return true;
     }
 
-    private function doRepairStation(ShipInterface $station): void
+    private function doRepairStation(ShipWrapperInterface $wrapper): void
     {
+        $station = $wrapper->get();
+
         if (!$this->stationUtility->hasEnoughDockedWorkbees($station, $station->getRump())) {
             $neededWorkbees = (int)ceil($station->getRump()->getNeededWorkbees() / 5);
 
@@ -288,8 +285,6 @@ final class ShipTick implements ShipTickInterface
         if ($station->getHull() > $station->getMaxHull()) {
             $station->setHuell($station->getMaxHull());
         }
-
-        $wrapper = $this->shipWrapperFactory->wrapShip($station);
 
         //repair station systems
         $damagedSystems = $wrapper->getDamagedSystems();
