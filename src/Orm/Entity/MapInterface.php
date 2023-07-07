@@ -62,6 +62,11 @@ interface MapInterface
      */
     public function getSignatures(): Collection;
 
+    /**
+     * @return Collection<int, AnomalyInterface>
+     */
+    public function getAnomalies(): Collection;
+
     public function getRandomWormholeEntry(): ?WormholeEntryInterface;
 
     public function getSectorString(): string;

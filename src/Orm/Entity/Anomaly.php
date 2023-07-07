@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Stu\Lib\Map\Location;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AnomalyRepository")
@@ -68,13 +69,13 @@ class Anomaly implements AnomalyInterface
      * @ManyToOne(targetEntity="Map")
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
-    private ?MapInterface $map;
+    private ?MapInterface $map = null;
 
     /**
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
-    private ?StarSystemMapInterface $starsystem_map;
+    private ?StarSystemMapInterface $starsystem_map = null;
 
     public function getId(): int
     {
@@ -127,5 +128,10 @@ class Anomaly implements AnomalyInterface
         $this->starsystem_map = $starsystem_map;
 
         return $this;
+    }
+
+    public function getLocation(): Location
+    {
+        return new Location($this->getMap(), $this->getStarsystemMap());
     }
 }

@@ -6,6 +6,10 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
+use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
 use Stu\Orm\Entity\Layer;
 use Stu\Orm\Entity\Map;
@@ -178,6 +182,76 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'startX' => $startX,
                 'endX' => $endX,
                 'cy' => $cy
+            ])
+            ->getResult();
+    }
+
+    public function getForSubspaceEllipseCreation(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('map_id', 'map_id', 'integer');
+        $rsm->addScalarResult('descriminator', 'descriminator', 'integer');
+
+        $mapIds = $this->getEntityManager()
+            ->createNativeQuery(
+                'select map_id, descriminator from (
+                    select coalesce(sum(r1.tractor_mass) / 10, 0)
+                            + coalesce(sum(r2.tractor_mass), 0)
+                            + coalesce((select count(ca.id)
+                                            from stu_crew_assign ca
+                                            join stu_ships s
+                                            on ca.ship_id = s.id
+                                            where s.user_id >= :firstUserId
+                                            and s.map_id = m.id)
+                                        * (select count(ss.id)
+                                            from stu_ship_system ss
+                                            join stu_ships s
+                                            on ss.ship_id = s.id
+                                            where s.user_id >= :firstUserId
+                                            and s.map_id = m.id
+                                            and ss.mode > :mode)
+                                        * 100, 0) - :threshold as descriminator,
+                        m.id as map_id from stu_map m
+                        join stu_ships s
+                        on s.map_id = m.id
+                        left join stu_rumps r1
+                        on s.rumps_id = r1.id
+                        and r1.category_id = :rumpCategory
+                        left join stu_rumps r2
+                        on s.rumps_id = r2.id
+                        and r2.category_id != :rumpCategory
+                        where s.user_id >= :firstUserId
+                        group by m.id) as foo
+                    where descriminator > 0',
+                $rsm
+            )
+            ->setParameters([
+                'threshold' => SubspaceEllipseHandler::MASS_CALCULATION_THRESHOLD,
+                'rumpCategory' => ShipRumpEnum::SHIP_CATEGORY_STATION,
+                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'mode' => ShipSystemModeEnum::MODE_OFF
+            ])
+            ->getResult();
+
+        $finalIds = [];
+        foreach ($mapIds as $entry) {
+            $descriminator = $entry['descriminator'];
+
+            if ((int)ceil($descriminator / 500000 + 25) > rand(1, 100)) {
+                $finalIds[] = $entry['map_id'];
+            }
+        }
+
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT m FROM %s m
+                    WHERE m.id in (:ids)',
+                    Map::class
+                )
+            )
+            ->setParameters([
+                'ids' => $finalIds
             ])
             ->getResult();
     }

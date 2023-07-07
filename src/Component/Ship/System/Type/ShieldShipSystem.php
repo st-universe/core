@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -47,6 +48,11 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
 
         if ($ship->getShield() === 0) {
             $reason = _('die Schildemitter erschöpft sind');
+            return false;
+        }
+
+        if ($ship->getLocation()->hasAnomaly(AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE)) {
+            $reason = _('in diesem Sektor eine Subraumellipse vorhanden ist');
             return false;
         }
 

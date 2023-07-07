@@ -62,4 +62,9 @@ interface MapRepositoryInterface extends ObjectRepository
      * }>
      */
     public function getExplored(int $userId, int $layerId, int $startX, int $endX, int $cy): array;
+
+    /**
+     * @return array<MapInterface>
+     */
+    public function getForSubspaceEllipseCreation(): array;
 }

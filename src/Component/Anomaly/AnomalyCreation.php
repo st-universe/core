@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Anomaly;
 
 use RuntimeException;
+use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\AnomalyRepositoryInterface;
@@ -27,11 +28,11 @@ final class AnomalyCreation implements AnomalyCreationInterface
     public function create(
         int $anomalyType,
         MapInterface|StarSystemMapInterface $map
-    ): void {
+    ): AnomalyInterface {
         $type = $this->anomalyTypeRepository->find($anomalyType);
 
         if ($type === null) {
-            throw new RuntimeException(sprintf('no handler defined for type: %d', $anomalyType));
+            throw new RuntimeException(sprintf('no anomaly type defined for: %d', $anomalyType));
         }
 
         $anomaly = $this->anomalyRepository->prototype();
@@ -45,5 +46,7 @@ final class AnomalyCreation implements AnomalyCreationInterface
         }
 
         $this->anomalyRepository->save($anomaly);
+
+        return $anomaly;
     }
 }

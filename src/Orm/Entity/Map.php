@@ -173,16 +173,25 @@ class Map implements MapInterface
     private $signatures;
 
     /**
+     * @var ArrayCollection<int, AnomalyInterface>
+     *
+     * @OneToMany(targetEntity="Anomaly", mappedBy="map", fetch="EXTRA_LAZY")
+     */
+    private $anomalies;
+
+    /**
      * @var ArrayCollection<int, WormholeEntryInterface>
      *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="map")
      */
     private $wormholeEntries;
 
+
     public function __construct()
     {
         $this->ships = new ArrayCollection();
         $this->signatures = new ArrayCollection();
+        $this->anomalies = new ArrayCollection();
         $this->wormholeEntries = new ArrayCollection();
     }
 
@@ -329,6 +338,11 @@ class Map implements MapInterface
     public function getShips(): Collection
     {
         return $this->ships;
+    }
+
+    public function getAnomalies(): Collection
+    {
+        return $this->anomalies;
     }
 
     public function getSignatures(): Collection

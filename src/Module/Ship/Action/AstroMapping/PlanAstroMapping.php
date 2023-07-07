@@ -78,13 +78,13 @@ final class PlanAstroMapping implements ActionControllerInterface
 
     private function obtainMeasurementFields(AstronomicalEntryInterface $entry)
     {
-        $mapArray = $this->starSystemMapRepository->getRandomFieldsForAstroMeasurement($entry->getSystem()->getId());
+        $idArray = $this->starSystemMapRepository->getRandomFieldsForAstroMeasurement($entry->getSystem()->getId());
 
-        $entry->setStarsystemMap1($mapArray[0]);
-        $entry->setStarsystemMap2($mapArray[1]);
-        $entry->setStarsystemMap3($mapArray[2]);
-        $entry->setStarsystemMap4($mapArray[3]);
-        $entry->setStarsystemMap5($mapArray[4]);
+        $entry->setStarsystemMap1($this->starSystemMapRepository->find($idArray[0]['id']));
+        $entry->setStarsystemMap2($this->starSystemMapRepository->find($idArray[1]['id']));
+        $entry->setStarsystemMap3($this->starSystemMapRepository->find($idArray[2]['id']));
+        $entry->setStarsystemMap4($this->starSystemMapRepository->find($idArray[3]['id']));
+        $entry->setStarsystemMap5($this->starSystemMapRepository->find($idArray[4]['id']));
     }
 
     public function performSessionCheck(): bool
