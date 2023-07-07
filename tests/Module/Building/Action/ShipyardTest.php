@@ -8,8 +8,9 @@ use Mockery;
 use Mockery\MockInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
+use Stu\StuTestCase;
 
-class ShipyardTest extends Mockery\Adapter\Phpunit\MockeryTestCase
+class ShipyardTest extends StuTestCase
 {
     /**
      * @var null|MockInterface|ColonyShipQueueRepositoryInterface
@@ -32,14 +33,14 @@ class ShipyardTest extends Mockery\Adapter\Phpunit\MockeryTestCase
 
     public function testDestructTruncatesQueue(): void
     {
-        $colonyId = 666;
+        $colony = $this->mock(ColonyInterface::class);
         $buildingFunctionId = 42;
 
         $this->colonyShipQueueRepository->shouldReceive('truncateByColonyAndBuildingFunction')
-            ->with($colonyId, $buildingFunctionId)
+            ->with($colony, $buildingFunctionId)
             ->once();
 
-        $this->shipyard->destruct($buildingFunctionId, $colonyId);
+        $this->shipyard->destruct($buildingFunctionId, $colony);
     }
 
     public function testDeactivateStopsBuildProcesses(): void

@@ -17,10 +17,10 @@ final class Shipyard implements BuildingActionHandlerInterface
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
     }
 
-    public function destruct(int $buildingFunctionId, int $colonyId): void
+    public function destruct(int $buildingFunctionId, ColonyInterface $colony): void
     {
         $this->colonyShipQueueRepository->truncateByColonyAndBuildingFunction(
-            $colonyId,
+            $colony,
             $buildingFunctionId
         );
     }

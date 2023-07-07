@@ -492,7 +492,6 @@ class BuildingManagerTest extends StuTestCase
         $currentEps = 33;
         $eps = 22;
         $functionId = 123;
-        $colonyId = 456;
 
         $field->shouldReceive('getBuilding')
             ->withNoArgs()
@@ -542,7 +541,7 @@ class BuildingManagerTest extends StuTestCase
             ->andReturn($buildingAction);
 
         $buildingAction->shouldReceive('destruct')
-            ->with($colonyId, $functionId)
+            ->with($functionId, $colony)
             ->once();
 
         $colony->shouldReceive('getMaxStorage')
@@ -560,10 +559,6 @@ class BuildingManagerTest extends StuTestCase
         $colony->shouldReceive('setMaxEps')
             ->with($currentEps - $eps)
             ->once();
-        $colony->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($colonyId);
 
         $this->planetFieldRepository->shouldReceive('save')
             ->with($field)

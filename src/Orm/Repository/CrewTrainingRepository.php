@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\CrewTrainingInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -27,7 +28,6 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         $em = $this->getEntityManager();
 
         $em->remove($researched);
-        //$em->flush();
     }
 
     public function prototype(): CrewTrainingInterface
@@ -35,16 +35,16 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         return new CrewTraining();
     }
 
-    public function truncateByColony(int $colonyId): void
+    public function truncateByColony(ColonyInterface $colony): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s t WHERE t.colony_id = :colonyId',
+                    'DELETE FROM %s ct WHERE ct.colony = :colony',
                     CrewTraining::class
                 )
             )
-            ->setParameter('colonyId', $colonyId)
+            ->setParameter('colony', $colony)
             ->execute();
     }
 

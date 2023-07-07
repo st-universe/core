@@ -17,9 +17,9 @@ final class Academy implements BuildingActionHandlerInterface
         $this->crewTrainingRepository = $crewTrainingRepository;
     }
 
-    public function destruct(int $buildingFunctionId, int $colonyId): void
+    public function destruct(int $buildingFunctionId, ColonyInterface $colony): void
     {
-        $this->crewTrainingRepository->truncateByColony($colonyId);
+        $this->crewTrainingRepository->truncateByColony($colony);
     }
 
     public function deactivate(int $buildingFunctionId, ColonyInterface $colony): void

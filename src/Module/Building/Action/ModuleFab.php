@@ -17,7 +17,7 @@ final class ModuleFab implements BuildingActionHandlerInterface
         $this->moduleQueueLib = $moduleQueueLib;
     }
 
-    public function destruct(int $buildingFunctionId, int $colonyId): void
+    public function destruct(int $buildingFunctionId, ColonyInterface $colony): void
     {
         //nothing to do here
     }
