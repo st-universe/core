@@ -4002,6 +4002,16 @@ parameters:
 			path: src/Orm/Entity/Anomaly.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Anomaly.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Anomaly.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starSystem type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php

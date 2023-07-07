@@ -13,4 +13,12 @@ interface AnomalyInterface
     public function getAnomalyType(): AnomalyTypeInterface;
 
     public function setAnomalyType(AnomalyTypeInterface $anomalyType): AnomalyInterface;
+
+    public function getMap(): ?MapInterface;
+
+    public function setMap(?MapInterface $map): AnomalyInterface;
+
+    public function getStarsystemMap(): ?StarSystemMapInterface;
+
+    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): AnomalyInterface;
 }
