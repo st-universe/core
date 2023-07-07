@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
@@ -196,42 +197,46 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
 
         $sysMapIds = $this->getEntityManager()
             ->createNativeQuery(
-                'select sys_map_id, descriminator from (
-                    select coalesce(sum(r1.tractor_mass) / 10, 0)
+                'SELECT sys_map_id, descriminator FROM (
+                    SELECT coalesce(sum(r1.tractor_mass) / 10, 0)
                             + coalesce(sum(r2.tractor_mass), 0)
-                            + coalesce((select count(ca.id)
-                                            from stu_crew_assign ca
-                                            join stu_ships s
-                                            on ca.ship_id = s.id
-                                            where s.user_id >= :firstUserId
-                                            and s.starsystem_map_id = sm.id)
-                                        * (select count(ss.id)
-                                            from stu_ship_system ss
-                                            join stu_ships s
-                                            on ss.ship_id = s.id
-                                            where s.user_id >= :firstUserId
-                                            and s.starsystem_map_id = sm.id
-                                            and ss.mode > :mode)
-                                        * 100, 0) - :threshold as descriminator,
-                        sm.id as sys_map_id from stu_sys_map sm
-                        join stu_ships s
-                        on s.starsystem_map_id = sm.id
-                        left join stu_rumps r1
-                        on s.rumps_id = r1.id
-                        and r1.category_id = :rumpCategory
-                        left join stu_rumps r2
-                        on s.rumps_id = r2.id
-                        and r2.category_id != :rumpCategory
-                        where s.user_id >= :firstUserId
-                        group by sm.id) as foo
-                    where descriminator > 0',
+                            + coalesce((SELECT count(ca.id)
+                                            FROM stu_crew_assign ca
+                                            JOIN stu_ships s
+                                            ON ca.ship_id = s.id
+                                            WHERE s.user_id >= :firstUserId
+                                            AND s.state != :state
+                                            AND s.starsystem_map_id = sm.id)
+                                        * (SELECT count(ss.id)
+                                            FROM stu_ship_system ss
+                                            JOIN stu_ships s
+                                            ON ss.ship_id = s.id
+                                            WHERE s.user_id >= :firstUserId
+                                            AND s.state != :state
+                                            AND s.starsystem_map_id = sm.id
+                                            AND ss.mode > :mode)
+                                        * 100, 0) - :threshold AS descriminator,
+                        sm.id AS sys_map_id FROM stu_sys_map sm
+                        JOIN stu_ships s
+                        ON s.starsystem_map_id = sm.id
+                        LEFT JOIN stu_rumps r1
+                        ON s.rumps_id = r1.id
+                        AND r1.category_id = :rumpCategory
+                        LEFT JOIN stu_rumps r2
+                        ON s.rumps_id = r2.id
+                        AND r2.category_id != :rumpCategory
+                        WHERE s.user_id >= :firstUserId
+                        AND s.state != :state
+                        GROUP BY sm.id) AS foo
+                    WHERE descriminator > 0',
                 $rsm
             )
             ->setParameters([
                 'threshold' => SubspaceEllipseHandler::MASS_CALCULATION_THRESHOLD,
                 'rumpCategory' => ShipRumpEnum::SHIP_CATEGORY_STATION,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
-                'mode' => ShipSystemModeEnum::MODE_OFF
+                'mode' => ShipSystemModeEnum::MODE_OFF,
+                'state' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION
             ])
             ->getResult();
 
