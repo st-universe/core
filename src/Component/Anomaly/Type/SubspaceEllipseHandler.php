@@ -21,6 +21,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
+//TODO unit tests 
 final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 {
     public const MASS_CALCULATION_THRESHOLD = 33333333;
