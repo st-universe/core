@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Lib\Map\Location;
 use Stu\Module\Ship\Lib\ShipStateChangerInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -118,8 +120,47 @@ class ShieldShipSystemTest extends StuTestCase
         $this->assertEquals('die Schildemitter erschöpft sind', $reason);
     }
 
+    public function testCheckActivationConditionsReturnsFalseIfSubspaceEllipseIsExistent(): void
+    {
+        $location = $this->mock(Location::class);
+
+        $this->ship->shouldReceive('getCloakState')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $this->ship->shouldReceive('isTractoring')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+        $this->ship->shouldReceive('getShield')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(42);
+        $this->ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($location);
+
+        $location->shouldReceive('hasAnomaly')
+            ->with(AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE)
+            ->once()
+            ->andReturn(true);
+
+        $reason = null;
+        $this->assertFalse(
+            $this->system->checkActivationConditions($this->ship, $reason)
+        );
+        $this->assertEquals('in diesem Sektor eine Subraumellipse vorhanden ist', $reason);
+    }
+
     public function testCheckActivationConditionsReturnsTrueIfActivateable(): void
     {
+        $location = $this->mock(Location::class);
+
         $this->ship->shouldReceive('getCloakState')
             ->withNoArgs()
             ->once()
@@ -136,6 +177,15 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(1);
+        $this->ship->shouldReceive('getLocation')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($location);
+
+        $location->shouldReceive('hasAnomaly')
+            ->with(AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE)
+            ->once()
+            ->andReturn(false);
 
         $reason = null;
         $this->assertTrue(

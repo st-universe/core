@@ -32,6 +32,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Component\Station\StationUtility;
+use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
@@ -1307,6 +1308,11 @@ class Ship implements ShipInterface
         }
 
         return $this;
+    }
+
+    public function getLocation(): Location
+    {
+        return new Location($this->getMap(), $this->getStarsystemMap());
     }
 
     public function getInfluenceArea(): ?StarSystemInterface

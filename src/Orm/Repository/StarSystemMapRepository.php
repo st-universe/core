@@ -6,7 +6,10 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -71,16 +74,11 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         $result = [];
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(StarSystemMap::class, 'm');
-        $rsm->addFieldResult('m', 'id', 'id');
-        $rsm->addFieldResult('m', 'sx', 'sx');
-        $rsm->addFieldResult('m', 'sy', 'sy');
-        $rsm->addFieldResult('m', 'systems_id', 'systems_id');
-        $rsm->addFieldResult('m', 'field_id', 'field_id');
+        $rsm->addScalarResult('id', 'id', 'integer');
 
         $userColonyFields = $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT sm.id as id, sm.sx as sx, sm.sy as sy, sm.systems_id as systems_id, sm.field_id as field_id
+                'SELECT sm.id as id
                 FROM stu_sys_map sm
                 WHERE sm.systems_id = :systemId
                 AND EXISTS (SELECT c.id
@@ -101,7 +99,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
 
         $otherColonyFields = $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT sm.id as id, sm.sx as sx, sm.sy as sy, sm.systems_id as systems_id, sm.field_id as field_id
+                'SELECT sm.id as id
                 FROM stu_sys_map sm
                 JOIN stu_map_ftypes ft
                 ON sm.field_id = ft.id
@@ -127,7 +125,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         if (count($result) < AstronomicalMappingEnum::MEASUREMENT_COUNT) {
             $otherFields = $this->getEntityManager()
                 ->createNativeQuery(
-                    'SELECT sm.id as id, sm.sx as sx, sm.sy as sy, sm.systems_id as systems_id, sm.field_id as field_id
+                    'SELECT sm.id as id
                     FROM stu_sys_map sm
                     JOIN stu_map_ftypes ft
                     ON sm.field_id = ft.id
@@ -188,5 +186,75 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         $em = $this->getEntityManager();
 
         $em->persist($starSystemMap);
+    }
+
+    public function getForSubspaceEllipseCreation(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('sys_map_id', 'sys_map_id', 'integer');
+        $rsm->addScalarResult('descriminator', 'descriminator', 'integer');
+
+        $sysMapIds = $this->getEntityManager()
+            ->createNativeQuery(
+                'select sys_map_id, descriminator from (
+                    select coalesce(sum(r1.tractor_mass) / 10, 0)
+                            + coalesce(sum(r2.tractor_mass), 0)
+                            + coalesce((select count(ca.id)
+                                            from stu_crew_assign ca
+                                            join stu_ships s
+                                            on ca.ship_id = s.id
+                                            where s.user_id >= :firstUserId
+                                            and s.starsystem_map_id = sm.id)
+                                        * (select count(ss.id)
+                                            from stu_ship_system ss
+                                            join stu_ships s
+                                            on ss.ship_id = s.id
+                                            where s.user_id >= :firstUserId
+                                            and s.starsystem_map_id = sm.id
+                                            and ss.mode > :mode)
+                                        * 100, 0) - :threshold as descriminator,
+                        sm.id as sys_map_id from stu_sys_map sm
+                        join stu_ships s
+                        on s.starsystem_map_id = sm.id
+                        left join stu_rumps r1
+                        on s.rumps_id = r1.id
+                        and r1.category_id = :rumpCategory
+                        left join stu_rumps r2
+                        on s.rumps_id = r2.id
+                        and r2.category_id != :rumpCategory
+                        where s.user_id >= :firstUserId
+                        group by sm.id) as foo
+                    where descriminator > 0',
+                $rsm
+            )
+            ->setParameters([
+                'threshold' => SubspaceEllipseHandler::MASS_CALCULATION_THRESHOLD,
+                'rumpCategory' => ShipRumpEnum::SHIP_CATEGORY_STATION,
+                'firstUserId' => UserEnum::USER_FIRST_ID,
+                'mode' => ShipSystemModeEnum::MODE_OFF
+            ])
+            ->getResult();
+
+        $finalIds = [];
+        foreach ($sysMapIds as $entry) {
+            $descriminator = $entry['descriminator'];
+
+            if ((int)ceil($descriminator / 500000 + 25) > rand(1, 100)) {
+                $finalIds[] = $entry['sys_map_id'];
+            }
+        }
+
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT sm FROM %s sm
+                    WHERE sm.id in (:ids)',
+                    StarSystemMap::class
+                )
+            )
+            ->setParameters([
+                'ids' => $finalIds
+            ])
+            ->getResult();
     }
 }

@@ -38,7 +38,7 @@ class AnomalyCreationTest extends StuTestCase
 
     public function testCreateExpectExceptionWhenAnomalyTypeUnknown(): void
     {
-        static::expectExceptionMessage('no handler defined for type: 666');
+        static::expectExceptionMessage('no anomaly type defined for: 666');
         static::expectException(RuntimeException::class);
 
         $this->anomalyTypeRepository->shouldReceive('find')
@@ -83,7 +83,9 @@ class AnomalyCreationTest extends StuTestCase
             ->with($anomaly)
             ->once();
 
-        $this->subject->create(42, $map);
+        $result = $this->subject->create(42, $map);
+
+        $this->assertSame($anomaly, $result);
     }
 
     public function testCreateExpectNewEntityWithStarsystemMapLocation(): void
@@ -120,6 +122,8 @@ class AnomalyCreationTest extends StuTestCase
             ->with($anomaly)
             ->once();
 
-        $this->subject->create(42, $map);
+        $result = $this->subject->create(42, $map);
+
+        $this->assertSame($anomaly, $result);
     }
 }

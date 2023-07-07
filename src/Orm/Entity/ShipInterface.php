@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Lib\Map\Location;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
@@ -284,6 +285,8 @@ interface ShipInterface
     public function getStarsystemMap(): ?StarSystemMapInterface;
 
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface;
+
+    public function getLocation(): Location;
 
     public function getInfluenceArea(): ?StarSystemInterface;
 

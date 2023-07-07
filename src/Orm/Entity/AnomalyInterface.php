@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Stu\Lib\Map\Location;
+
 interface AnomalyInterface
 {
     public function getId(): int;
@@ -21,4 +23,6 @@ interface AnomalyInterface
     public function getStarsystemMap(): ?StarSystemMapInterface;
 
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): AnomalyInterface;
+
+    public function getLocation(): Location;
 }

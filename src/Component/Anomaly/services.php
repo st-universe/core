@@ -14,6 +14,7 @@ return [
     'anomaly_handler' => [
         AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE => autowire(SubspaceEllipseHandler::class)
     ],
+    AnomalyCreationInterface::class => autowire(AnomalyCreation::class),
     AnomalyHandlingInterface::class => autowire(AnomalyHandling::class)
         ->constructorParameter(
             'handlerList',

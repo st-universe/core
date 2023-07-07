@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Anomaly\Type\AnomalyTypeEnum;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -16,6 +17,7 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Orm\Entity\Anomaly;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\Map;
@@ -348,17 +350,20 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.is_destroyed = :destroyedState
                 AND s.schilde<s.max_schilde
                 AND s.shield_regeneration_timer <= :regenerationThreshold
-                AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.ship_id) >= bp.crew',
+                AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.ship_id) >= bp.crew
+                AND NOT EXISTS (SELECT a FROM %s a WHERE (a.map_id = s.map_id or a.starsystem_map_id = s.starsystem_map_id) AND a.anomaly_type_id = :anomalyType)',
                 Ship::class,
                 ShipSystem::class,
                 ShipBuildplan::class,
-                ShipCrew::class
+                ShipCrew::class,
+                Anomaly::class
             )
         )->setParameters([
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
             'modeOn' => ShipSystemModeEnum::MODE_ON,
             'regenerationThreshold' => $regenerationThreshold,
             'destroyedState' => 0,
+            'anomalyType' => AnomalyTypeEnum::ANOMALY_TYPE_SUBSPACE_ELLIPSE
         ])->getResult();
     }
 

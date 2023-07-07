@@ -5012,6 +5012,11 @@ parameters:
 			path: src/Orm/Entity/Map.php
 
 		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$anomalies type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AnomalyInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Anomaly\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$influenceArea type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
@@ -5910,6 +5915,11 @@ parameters:
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$systemType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemType\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$anomalies type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AnomalyInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Anomaly\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"

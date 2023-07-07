@@ -99,6 +99,13 @@ class StarSystemMap implements StarSystemMapInterface
     private $signatures;
 
     /**
+     * @var ArrayCollection<int, AnomalyInterface>
+     *
+     * @OneToMany(targetEntity="Anomaly", mappedBy="starsystem_map", fetch="EXTRA_LAZY")
+     */
+    private $anomalies;
+
+    /**
      * @var ArrayCollection<int, WormholeEntryInterface>
      *
      * @OneToMany(targetEntity="WormholeEntry", mappedBy="systemMap")
@@ -109,6 +116,7 @@ class StarSystemMap implements StarSystemMapInterface
     {
         $this->ships = new ArrayCollection();
         $this->signatures = new ArrayCollection();
+        $this->anomalies = new ArrayCollection();
         $this->wormholeEntries = new ArrayCollection();
     }
 
@@ -208,6 +216,11 @@ class StarSystemMap implements StarSystemMapInterface
     public function getSignatures(): Collection
     {
         return $this->signatures;
+    }
+
+    public function getAnomalies(): Collection
+    {
+        return $this->anomalies;
     }
 
     public function getRandomWormholeEntry(): ?WormholeEntryInterface
