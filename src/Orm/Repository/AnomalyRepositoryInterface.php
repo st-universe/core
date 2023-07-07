@@ -17,4 +17,6 @@ interface AnomalyRepositoryInterface extends ObjectRepository
     public function prototype(): AnomalyInterface;
 
     public function save(AnomalyInterface $anomaly): void;
+
+    public function delete(AnomalyInterface $anomaly): void;
 }

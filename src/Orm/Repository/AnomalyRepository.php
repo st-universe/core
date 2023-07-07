@@ -24,4 +24,11 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
 
         $em->persist($anomaly);
     }
+
+    public function delete(AnomalyInterface $anomaly): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->remove($anomaly);
+    }
 }

@@ -8,5 +8,9 @@ use Stu\Orm\Entity\AnomalyInterface;
 
 interface AnomalyHandlerInterface
 {
+    public function checkForCreation(): void;
+
     public function handleShipTick(AnomalyInterface $anomaly): void;
+
+    public function letAnomalyDisappear(AnomalyInterface $anomaly): void;
 }
