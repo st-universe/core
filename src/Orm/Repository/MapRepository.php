@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
@@ -161,7 +162,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                     dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id,
                     sys.name as system_name, m.layer_id,
                     (SELECT tp.id FROM stu_ships s JOIN stu_trade_posts tp ON s.id = tp.ship_id WHERE s.map_id = m.id) as tradepost_id,
-                    (SELECT mr.description FROM stu_map_regions mr left join stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id where m.region_id = mr.id) as region_description
+                    (SELECT mr.description FROM stu_map_regions mr left JOIN stu_database_user dbu on dbu.user_id = :userId and mr.database_id = dbu.database_id WHERE m.region_id = mr.id) as region_description
                 FROM stu_map m
                 LEFT JOIN stu_user_map um
                     ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId AND um.layer_id = m.layer_id
@@ -194,42 +195,46 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         $mapIds = $this->getEntityManager()
             ->createNativeQuery(
-                'select map_id, descriminator from (
-                    select coalesce(sum(r1.tractor_mass) / 10, 0)
+                'SELECT map_id, descriminator FROM (
+                    SELECT coalesce(sum(r1.tractor_mass) / 10, 0)
                             + coalesce(sum(r2.tractor_mass), 0)
-                            + coalesce((select count(ca.id)
-                                            from stu_crew_assign ca
-                                            join stu_ships s
-                                            on ca.ship_id = s.id
-                                            where s.user_id >= :firstUserId
-                                            and s.map_id = m.id)
-                                        * (select count(ss.id)
-                                            from stu_ship_system ss
-                                            join stu_ships s
-                                            on ss.ship_id = s.id
-                                            where s.user_id >= :firstUserId
-                                            and s.map_id = m.id
-                                            and ss.mode > :mode)
+                            + coalesce((SELECT count(ca.id)
+                                            FROM stu_crew_assign ca
+                                            JOIN stu_ships s
+                                            ON ca.ship_id = s.id
+                                            WHERE s.user_id >= :firstUserId
+                                            AND s.state != :state
+                                            AND s.map_id = m.id)
+                                        * (SELECT count(ss.id)
+                                            FROM stu_ship_system ss
+                                            JOIN stu_ships s
+                                            ON ss.ship_id = s.id
+                                            WHERE s.user_id >= :firstUserId
+                                            AND s.state != :state
+                                            AND s.map_id = m.id
+                                            AND ss.mode > :mode)
                                         * 100, 0) - :threshold as descriminator,
-                        m.id as map_id from stu_map m
-                        join stu_ships s
-                        on s.map_id = m.id
-                        left join stu_rumps r1
-                        on s.rumps_id = r1.id
+                        m.id AS map_id FROM stu_map m
+                        JOIN stu_ships s
+                        ON s.map_id = m.id
+                        LEFT JOIN stu_rumps r1
+                        ON s.rumps_id = r1.id
                         and r1.category_id = :rumpCategory
-                        left join stu_rumps r2
-                        on s.rumps_id = r2.id
-                        and r2.category_id != :rumpCategory
-                        where s.user_id >= :firstUserId
-                        group by m.id) as foo
-                    where descriminator > 0',
+                        LEFT JOIN stu_rumps r2
+                        ON s.rumps_id = r2.id
+                        AND r2.category_id != :rumpCategory
+                        WHERE s.user_id >= :firstUserId
+                        AND s.state != :state
+                        GROUP BY m.id) AS foo
+                    WHERE descriminator > 0',
                 $rsm
             )
             ->setParameters([
                 'threshold' => SubspaceEllipseHandler::MASS_CALCULATION_THRESHOLD,
                 'rumpCategory' => ShipRumpEnum::SHIP_CATEGORY_STATION,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
-                'mode' => ShipSystemModeEnum::MODE_OFF
+                'mode' => ShipSystemModeEnum::MODE_OFF,
+                'state' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION
             ])
             ->getResult();
 
