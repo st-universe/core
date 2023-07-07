@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
+use Stu\Component\Anomaly\AnomalyHandlingInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -48,6 +49,8 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
 
     private RepairActionsInterface $repairActions;
 
+    private AnomalyHandlingInterface $anomalyHandling;
+
     private LoggerUtilInterface $loggerUtil;
 
     private Ubench $benchmark;
@@ -64,6 +67,7 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         EntryCreatorInterface $entryCreator,
         ColonyLibFactoryInterface $colonyLibFactory,
         RepairActionsInterface $repairActions,
+        AnomalyHandlingInterface $anomalyHandling,
         LoggerUtilFactoryInterface $loggerUtilFactory,
         Ubench $benchmark
     ) {
@@ -78,12 +82,14 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
         $this->entryCreator = $entryCreator;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->repairActions = $repairActions;
+        $this->anomalyHandling = $anomalyHandling;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->benchmark = $benchmark;
     }
 
     public function work(): void
     {
+        $this->anomalyHandling->processExistingAnomalies();
         $this->crewLimitations->work();
 
         $startTime = microtime(true);
@@ -125,6 +131,8 @@ final class ShipTickManager extends AbstractTickManager implements ShipTickManag
 
         $this->loggerUtil->init('SHIPTICK', LoggerEnum::LEVEL_WARNING);
         $this->logBenchmarkResult($entityCount);
+
+        $this->anomalyHandling->createNewAnomalies();
     }
 
     private function handleEscapePods(): void
