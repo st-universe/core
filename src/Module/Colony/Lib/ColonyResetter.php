@@ -13,6 +13,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
+use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -37,6 +38,8 @@ final class ColonyResetter implements ColonyResetterInterface
 
     private CrewRepositoryInterface $crewRepository;
 
+    private CrewTrainingRepositoryInterface $crewTrainingRepository;
+
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
     private PrivateMessageSenderInterface $privateMessageSender;
@@ -50,6 +53,7 @@ final class ColonyResetter implements ColonyResetterInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         FleetRepositoryInterface $fleetRepository,
         CrewRepositoryInterface $crewRepository,
+        CrewTrainingRepositoryInterface $crewTrainingRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
@@ -61,6 +65,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->planetFieldRepository = $planetFieldRepository;
         $this->fleetRepository = $fleetRepository;
         $this->crewRepository = $crewRepository;
+        $this->crewTrainingRepository = $crewTrainingRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->privateMessageSender = $privateMessageSender;
     }
@@ -72,6 +77,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->resetBlockers($colony, $sendMessage);
         $this->resetDefenders($colony, $sendMessage);
         $this->resetCrew($colony);
+        $this->resetCrewTraining($colony);
 
         $colony->setEps(0)
             ->setMaxEps(0)
@@ -126,6 +132,11 @@ final class ColonyResetter implements ColonyResetterInterface
             $this->shipCrewRepository->delete($crewAssignment);
             $this->crewRepository->delete($crewAssignment->getCrew());
         }
+    }
+
+    private function resetCrewTraining(ColonyInterface $colony): void
+    {
+        $this->crewTrainingRepository->truncateByColony($colony);
     }
 
     private function sendMessage(ColonyInterface $colony, FleetInterface $fleet, bool $isDefending): void

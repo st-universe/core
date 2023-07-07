@@ -17,7 +17,7 @@ final class ShieldBattery implements BuildingActionHandlerInterface
         $this->colonyLibFactory = $colonyLibFactory;
     }
 
-    public function destruct(int $buildingFunctionId, int $colonyId): void
+    public function destruct(int $buildingFunctionId, ColonyInterface $colony): void
     {
         //nothing to do here
     }

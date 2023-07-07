@@ -43,5 +43,5 @@ interface ColonyShipQueueRepositoryInterface extends ObjectRepository
 
     public function truncateByColony(ColonyInterface $colony): void;
 
-    public function truncateByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void;
+    public function truncateByColonyAndBuildingFunction(ColonyInterface $colony, int $buildingFunctionId): void;
 }

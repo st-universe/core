@@ -132,17 +132,17 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->execute();
     }
 
-    public function truncateByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void
+    public function truncateByColonyAndBuildingFunction(ColonyInterface $colony, int $buildingFunctionId): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s sq WHERE sq.colony_id = :colonyId AND sq.building_function_id = :buildingFunctionId',
+                    'DELETE FROM %s sq WHERE sq.colony = :colony AND sq.building_function_id = :buildingFunctionId',
                     ColonyShipQueue::class
                 )
             )
             ->setParameters([
-                'colonyId' => $colonyId,
+                'colony' => $colony,
                 'buildingFunctionId' => $buildingFunctionId
             ])
             ->execute();

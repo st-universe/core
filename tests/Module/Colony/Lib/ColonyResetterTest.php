@@ -19,6 +19,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
+use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -69,6 +70,11 @@ class ColonyResetterTest extends StuTestCase
     private $crewRepository;
 
     /**
+     * @var null|MockInterface|CrewTrainingRepositoryInterface
+     */
+    private $crewTrainingRepository;
+
+    /**
      * @var null|MockInterface|ShipCrewRepositoryInterface
      */
     private $shipCrewRepository;
@@ -93,6 +99,7 @@ class ColonyResetterTest extends StuTestCase
         $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
         $this->fleetRepository = $this->mock(FleetRepositoryInterface::class);
         $this->crewRepository = $this->mock(CrewRepositoryInterface::class);
+        $this->crewTrainingRepository = $this->mock(CrewTrainingRepositoryInterface::class);
         $this->shipCrewRepository = $this->mock(ShipCrewRepositoryInterface::class);
         $this->privateMessageSender = $this->mock(PrivateMessageSenderInterface::class);
 
@@ -105,6 +112,7 @@ class ColonyResetterTest extends StuTestCase
             $this->planetFieldRepository,
             $this->fleetRepository,
             $this->crewRepository,
+            $this->crewTrainingRepository,
             $this->shipCrewRepository,
             $this->privateMessageSender
         );
@@ -172,6 +180,9 @@ class ColonyResetterTest extends StuTestCase
             ->once();
         $this->shipCrewRepository->shouldReceive('delete')
             ->with($crewAssignment)
+            ->once();
+        $this->crewTrainingRepository->shouldReceive('truncateByColony')
+            ->with($colony)
             ->once();
 
         //OTHER

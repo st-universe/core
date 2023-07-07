@@ -129,7 +129,6 @@ final class BuildingManager implements BuildingManagerInterface
         }
 
         $colony = $field->getColony();
-        $colonyId = $colony->getId();
 
         if (!$field->isUnderConstruction()) {
             $this->deactivate($field);
@@ -143,7 +142,7 @@ final class BuildingManager implements BuildingManagerInterface
 
             $handler = $this->buildingFunctionActionMapper->map($buildingFunctionId);
             if ($handler !== null) {
-                $handler->destruct($colonyId, $buildingFunctionId);
+                $handler->destruct($buildingFunctionId, $colony);
             }
         }
 
