@@ -364,7 +364,7 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //add info about anomalies
-        foreach ($leadShipWrapper->get()->getLocation()->getAnomalies() as $anomaly) {
+        foreach ($leadShipWrapper->get()->getLocation()->getAnomaly() as $anomaly) {
             $this->addInformation(sprintf('[b][color=yellow]In diesem Sektor befindet sich eine %s[/color][/b]', $anomaly->getAnomalyType()->getName()));
         }
 
