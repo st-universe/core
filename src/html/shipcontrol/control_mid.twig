@@ -310,8 +310,14 @@
             {% if ship.getCurrentMapField.getInfluenceArea and ship.getCurrentMapField.getInfluenceArea.getBase %}
             {{ _self.influenceArea(ship.getCurrentMapField.getInfluenceArea.getBase.getUser) }}
             {% endif %}
-        </td>
-        {% if starSystem %}
+            {% set map = ship.getCurrentMapField %}
+            {% if map and map.getAnomalies %}
+            <br />
+            <a <img src="/assets/anomalies/{{ map.getAnomalies.getAnomalyType.getId}}.png"
+                name="{{ map.getAnomalies.getAnomalyType.getName}}" /> {{ map.getAnomalies.getAnomalyType.getName}}
+            </a>
+            {% endif %}
+            {% if starSystem %}
         <td>
             {% if starSystem.isWormhole %}
             <span>{{ starSystem.getName }}</span>
@@ -552,6 +558,7 @@
 <span>System ist kartographiert</span>
 {% endif %}
 {% endmacro %}
+
 
 {% macro influenceArea(user) %}
 {% from 'html/macros.twig' import useravatar %}
