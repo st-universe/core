@@ -169,7 +169,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             $this->privateMessageSender->send(
                 UserEnum::USER_NOONE,
                 $user->getId(),
-                sprintf('[b][color=yellow]In Sektor %s ist aufgrund des immensen Energiepotentials eine Subraumellipse entstanden[/color][/b]', $location->getSectorString())
+                sprintf('[b][color=yellow]In Sektor %s ist aufgrund des immensen Energiepotentials eine Subraumellipse entstanden![/color][/b]', $location->getSectorString())
             );
         }
     }
