@@ -363,6 +363,11 @@ final class ShipMover implements ShipMoverInterface
             $this->addInformation(sprintf(_('Die %s fliegt in Sektor %d|%d ein'), $leadShip->getName(), $leadShip->getPosX(), $leadShip->getPosY()));
         }
 
+        //add info about anomalies
+        foreach ($leadShipWrapper->get()->getLocation()->getAnomalies() as $anomaly) {
+            $this->addInformation(sprintf('[b][color=yellow]In diesem Sektor befindet sich eine %s[/color][/b]', $anomaly->getAnomalyType()->getName()));
+        }
+
         return $this->informations;
     }
 
