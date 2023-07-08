@@ -39,6 +39,14 @@ class Location
         return $this->location->getSectorString();
     }
 
+    /**
+     * @return Collection<int, AnomalyInterface>
+     */
+    public function getAnomaly(): Collection
+    {
+        return $this->location->getAnomalies();
+    }
+
     public function hasAnomaly(int $anomalyType): bool
     {
         foreach ($this->location->getAnomalies() as $anomaly) {
