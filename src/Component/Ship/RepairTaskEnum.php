@@ -29,11 +29,11 @@ final class RepairTaskEnum
 
     // repair parts for shipyards per module level
     public const SHIPYARD_PARTS_USAGE = [
-        1 => [self::SPARE_PARTS_ONLY => 2, self::SYSTEM_COMPONENTS_ONLY => 0],
-        2 => [self::SPARE_PARTS_ONLY => 4, self::SYSTEM_COMPONENTS_ONLY => 0],
-        3 => [self::SPARE_PARTS_ONLY => 6, self::SYSTEM_COMPONENTS_ONLY => 1],
-        4 => [self::SPARE_PARTS_ONLY => 8, self::SYSTEM_COMPONENTS_ONLY => 3],
-        5 => [self::SPARE_PARTS_ONLY => 9, self::SYSTEM_COMPONENTS_ONLY => 10],
-        6 => [self::SPARE_PARTS_ONLY => 10, self::SYSTEM_COMPONENTS_ONLY => 20]
+        1 => [self::SPARE_PARTS_ONLY => 1, self::SYSTEM_COMPONENTS_ONLY => 0],
+        2 => [self::SPARE_PARTS_ONLY => 2, self::SYSTEM_COMPONENTS_ONLY => 0],
+        3 => [self::SPARE_PARTS_ONLY => 4, self::SYSTEM_COMPONENTS_ONLY => 1],
+        4 => [self::SPARE_PARTS_ONLY => 5, self::SYSTEM_COMPONENTS_ONLY => 3],
+        5 => [self::SPARE_PARTS_ONLY => 6, self::SYSTEM_COMPONENTS_ONLY => 5],
+        6 => [self::SPARE_PARTS_ONLY => 8, self::SYSTEM_COMPONENTS_ONLY => 8]
     ];
 }
