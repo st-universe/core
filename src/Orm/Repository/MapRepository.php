@@ -253,7 +253,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         foreach ($mapIds as $entry) {
             $descriminator = $entry['descriminator'];
 
-            if ((int)ceil($descriminator / 500000 + 15) > rand(1, 100)) {
+            if ((int)ceil($descriminator / 1000000 + 5) > rand(1, 100)) {
                 $finalIds[] = $entry['map_id'];
             }
         }
