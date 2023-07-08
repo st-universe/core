@@ -10,6 +10,7 @@ use Stu\Component\Anomaly\Type\SubspaceEllipseHandler;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
 use Stu\Orm\Entity\Layer;
@@ -223,8 +224,11 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                         LEFT JOIN stu_rumps r2
                         ON s.rumps_id = r2.id
                         AND r2.category_id != :rumpCategory
+                        LEFT JOIN stu_ship_system ss
+						ON s.id = ss.ship_id
                         WHERE s.user_id >= :firstUserId
                         AND s.state != :state
+                        AND (ss.system_type = :systemwarp AND ss.mode = :mode)
                         GROUP BY m.id) AS foo
                     WHERE descriminator > 0',
                 $rsm
@@ -234,7 +238,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'rumpCategory' => ShipRumpEnum::SHIP_CATEGORY_STATION,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'mode' => ShipSystemModeEnum::MODE_OFF,
-                'state' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION
+                'state' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
+                'systemwarp' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE
             ])
             ->getResult();
 
