@@ -313,10 +313,15 @@
             {% set map = ship.getCurrentMapField %}
             {% if map.getAnomalies %}
             <br />
-            <a <img src="/assets/anomalies/{{ map.getAnomalies.getAnomalyType.getId}}.png"
-                name="{{ map.getAnomalies.getAnomalyType.getName}}" /> {{ map.getAnomalies.getAnomalyType.getName}}
+            {% for anomaly in map.getAnomalies %}
+            <a>
+                <img src="/assets/anomalies/{{ anomaly.getAnomalyType.getId }}.png"
+                    name="{{ anomaly.getAnomalyType.getName }}" />
+                {{ anomaly.getAnomalyType.getName }}
             </a>
+            {% endfor %}
             {% endif %}
+
         </td>
         {% if starSystem %}
         <td>
