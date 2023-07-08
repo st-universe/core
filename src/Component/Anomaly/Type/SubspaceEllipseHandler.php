@@ -126,7 +126,8 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             if ($shieldSystem->getStatus() > 0) {
                 $wrapper = $this->shipWrapperFactory->wrapShip($spacecraft);
                 $msg = [];
-                $this->applyDamage->damageShipSystem($wrapper, $shieldSystem, rand(20, 80), $msg);
+                $damage = $this->generateRandomValue(); // 
+                $this->applyDamage->damageShipSystem($wrapper, $shieldSystem, $damage, $msg);
                 $fightMessage->addMessageMerge($msg);
             }
 
@@ -144,6 +145,23 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
             $fightMessagesForShips,
             $fightMessagesForBases
         );
+    }
+
+    function generateRandomValue(): int
+    {
+        $mean = 25; // MW
+        $stdDeviation = 10; // FWHM
+
+        do {
+            $value = random_int(1, 50);
+            $probability = exp(-0.5 * pow(($value - $mean) / $stdDeviation, 2)); // normal distribution
+            $randomProbability = mt_rand() / mt_getrandmax();
+
+
+            if ($randomProbability <= $probability) {
+                return $value;
+            }
+        } while (true);
     }
 
     public function letAnomalyDisappear(AnomalyInterface $anomaly): void
