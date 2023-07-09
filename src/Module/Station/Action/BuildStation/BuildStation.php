@@ -12,8 +12,6 @@ use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerUtilFactoryInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ModuleInterface;
@@ -35,8 +33,6 @@ final class BuildStation implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private LoggerUtilInterface $loggerUtil;
-
     private ModuleRepositoryInterface $moduleRepository;
 
     private ShipStorageManagerInterface $shipStorageManager;
@@ -52,13 +48,11 @@ final class BuildStation implements ActionControllerInterface
         ModuleRepositoryInterface $moduleRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
-        LoggerUtilFactoryInterface $loggerUtilFactory
+        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository
     ) {
         $this->stationUtility = $stationUtility;
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->moduleRepository = $moduleRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->constructionProgressRepository = $constructionProgressRepository;
@@ -143,7 +137,7 @@ final class BuildStation implements ActionControllerInterface
         ));
     }
 
-    private function locationAllowed(ShipInterface $ship, $location): bool
+    private function locationAllowed(ShipInterface $ship, string $location): bool
     {
         if ($location === StationEnum::BUILDABLE_EVERYWHERE) {
             return true;
@@ -168,6 +162,9 @@ final class BuildStation implements ActionControllerInterface
         return false;
     }
 
+    /**
+     * @param array<ModuleInterface> $wantedSpecialModules
+     */
     private function startTransformation(
         ShipInterface $ship,
         ShipBuildplanInterface $plan,
@@ -203,7 +200,10 @@ final class BuildStation implements ActionControllerInterface
         }
     }
 
-    private function getModuleIfAllowed(int $wantedModId, array $availableMods): ModuleInterface
+    /**
+     * @param array<ModuleInterface> $availableMods
+     */
+    private function getModuleIfAllowed(int $wantedModId, array $availableMods): ?ModuleInterface
     {
         foreach ($availableMods as $mod) {
             if ($mod->getId() === $wantedModId) {
@@ -214,18 +214,32 @@ final class BuildStation implements ActionControllerInterface
         return null;
     }
 
+    /**
+     * @return array<ModuleInterface>
+     */
     private function getSpecialModules(ShipInterface $ship, ShipRumpInterface $rump): array
     {
+        $shipRumpRole = $rump->getShipRumpRole();
+        if ($shipRumpRole === null) {
+            return [];
+        }
+
         return $this->moduleRepository->getBySpecialTypeShipAndRump(
             $ship->getId(),
             ShipModuleTypeEnum::MODULE_TYPE_SPECIAL,
             $rump->getId(),
-            $rump->getShipRumpRole()->getId()
+            $shipRumpRole
         );
     }
 
-    public function consumeNeededModules(ShipInterface $ship, ShipBuildplanInterface $plan, array $wantedSpecialModules): bool
-    {
+    /**
+     * @param array<ModuleInterface> $wantedSpecialModules
+     */
+    public function consumeNeededModules(
+        ShipInterface $ship,
+        ShipBuildplanInterface $plan,
+        array $wantedSpecialModules
+    ): bool {
         // check if everything is available in required numbers
         foreach ($plan->getModules() as $buildplanModule) {
             $commodity = $buildplanModule->getModule()->getCommodity();

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleSpecial;
+use Stu\Orm\Entity\ShipRumpRoleInterface;
 
 /**
  * @extends EntityRepository<Module>
@@ -61,7 +62,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         int $shipId,
         int $moduleTypeId, // 1 bis 9: ShipModuleTypeEnum
         int $shipRumpId,
-        int $shipRumpRoleId
+        ShipRumpRoleInterface $shipRumpRole
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
@@ -91,7 +92,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->setParameters([
                 'typeId' => $moduleTypeId,
                 'shipId' => $shipId,
-                'shipRumpRoleId' => $shipRumpRoleId,
+                'shipRumpRoleId' => $shipRumpRole->getId(),
                 'shipRumpId' => $shipRumpId,
                 'state' => 1
             ])
