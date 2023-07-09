@@ -224,16 +224,13 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                         LEFT JOIN stu_rumps r2
                         ON s.rumps_id = r2.id
                         AND r2.category_id != :rumpCategory
-                        LEFT JOIN stu_rumps r3
-						ON s.rumps_id = r3.id
-						AND s.id IN (
-                            SELECT ship_id
-                            FROM stu_ship_system
-                             WHERE system_type = :systemwarp
-                              AND mode = :modeon    
-                 )
                         WHERE s.user_id >= :firstUserId
                         AND s.state != :state
+                        AND NOT EXISTS (SELECT ss.id
+                                        FROM stu_ship_system ss
+                                        WHERE ss.ship_id = s.id
+                                        AND ss.system_type = :systemwarp
+                                        AND ss.mode > :mode)
                         GROUP BY m.id) AS foo
                     WHERE descriminator > 0',
                 $rsm
@@ -243,7 +240,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 'rumpCategory' => ShipRumpEnum::SHIP_CATEGORY_STATION,
                 'firstUserId' => UserEnum::USER_FIRST_ID,
                 'mode' => ShipSystemModeEnum::MODE_OFF,
-                'modeon' => ShipSystemModeEnum::MODE_ON,
                 'state' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
                 'systemwarp' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE
             ])
