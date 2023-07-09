@@ -16,6 +16,14 @@ parameters:
 			path: src/Component/Image/ImageCreationInterface.php
 
 		-
+			message: """
+				#^Fetching class constant class of deprecated class Stu\\\\Component\\\\Logging\\\\GameRequest\\\\Adapter\\\\DatabaseAdapter\\:
+				Use LogfileAdapter$#
+			"""
+			count: 2
+			path: src/Component/Logging/services.php
+
+		-
 			message: "#^Parameter \\#1 \\$ships of class Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsIterator constructor expects array, iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> given\\.$#"
 			count: 2
 			path: src/Component/Ship/Nbs/NbsUtility.php
@@ -201,6 +209,14 @@ parameters:
 			path: src/Component/Station/StationUtility.php
 
 		-
+			message: """
+				#^Call to deprecated method createAnnotationMetadataConfiguration\\(\\) of class Doctrine\\\\ORM\\\\ORMSetup\\:
+				Use another mapping driver\\.$#
+			"""
+			count: 1
+			path: src/Config/services.php
+
+		-
 			message: "#^Method Stu\\\\Exception\\\\SanityCheckException\\:\\:__construct\\(\\) has parameter \\$message with no type specified\\.$#"
 			count: 1
 			path: src/Exception/SanityCheckException.php
@@ -209,16 +225,6 @@ parameters:
 			message: "#^Method Stu\\\\Lib\\\\CleanTextUtils\\:\\:clearUnicode\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
 			path: src/Lib/CleanTextUtils.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\Map\\\\Location\\:\\:getAnomaly\\(\\) has invalid return type Stu\\\\Lib\\\\Map\\\\AnomalyInterface\\.$#"
-			count: 1
-			path: src/Lib/Map/Location.php
-
-		-
-			message: "#^Method Stu\\\\Lib\\\\Map\\\\Location\\:\\:getAnomaly\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Lib\\\\Map\\\\AnomalyInterface\\> but returns Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\AnomalyInterface\\>\\.$#"
-			count: 1
-			path: src/Lib/Map/Location.php
 
 		-
 			message: "#^Cannot call method setMaxEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
@@ -2996,11 +3002,6 @@ parameters:
 			path: src/Module/Ship/Lib/ShipLeaver.php
 
 		-
-			message: "#^Call to method getAnomalyType\\(\\) on an unknown class Stu\\\\Lib\\\\Map\\\\AnomalyInterface\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipMover.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsItem\\:\\:__construct\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ShipNfsItem.php
@@ -3211,12 +3212,17 @@ parameters:
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
 		-
+			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$adminRegion type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapRegionInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapRegion\\|null\\.$#"
+			count: 1
+			path: src/Module/Starmap/Lib/ExploreableStarMap.php
+
+		-
 			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$influenceArea is never written, only read\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$influence_area_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$influenceArea type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
@@ -3226,7 +3232,7 @@ parameters:
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$region_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Module\\\\Starmap\\\\Lib\\\\ExploreableStarMap\\:\\:\\$mapBorderType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapBorderTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapBorderType\\|null\\.$#"
 			count: 1
 			path: src/Module/Starmap/Lib/ExploreableStarMap.php
 
@@ -3841,104 +3847,404 @@ parameters:
 			path: src/Orm/Entity/Alliance.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Faction\\|null but property expects Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Alliance.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$alliance_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Alliance.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$jobs type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AllianceJobInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AllianceJob\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Alliance.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Alliance\\:\\:\\$members type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\UserInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\User\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Alliance.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$alliance type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Alliance\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoard.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$alliance type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceInterface but database expects Stu\\\\Orm\\\\Entity\\\\Alliance\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoard.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$posts type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AllianceBoardPostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoard.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\:\\:\\$topics type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoard.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$board type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$board type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface but database expects Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$topic type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$topic type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopicInterface but database expects Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$alliance type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Alliance\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardTopic.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$alliance type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceInterface but database expects Stu\\\\Orm\\\\Entity\\\\Alliance\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardTopic.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$board type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardTopic.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$board type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceBoardInterface but database expects Stu\\\\Orm\\\\Entity\\\\AllianceBoard\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardTopic.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$posts type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AllianceBoardPostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AllianceBoardPost\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardTopic.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardTopic.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceBoardTopic\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceBoardTopic.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$alliance type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Alliance\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/AllianceJob.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$anomaly_type_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$alliance type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceInterface but database expects Stu\\\\Orm\\\\Entity\\\\Alliance\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceJob.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceJob.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceJob\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceJob.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$alliance type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Alliance\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceRelation.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$alliance type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceInterface but database expects Stu\\\\Orm\\\\Entity\\\\Alliance\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceRelation.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$opponent type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Alliance\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceRelation.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AllianceRelation\\:\\:\\$opponent type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceInterface but database expects Stu\\\\Orm\\\\Entity\\\\Alliance\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AllianceRelation.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$anomalyType type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\AnomalyType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AnomalyTypeInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Anomaly.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$map_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$anomalyType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AnomalyTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\AnomalyType\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Anomaly.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$starsystem_map_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Anomaly.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_1 is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Anomaly\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Anomaly.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starSystem type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_2 is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starSystem type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_3 is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_1 type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_4 is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_2 type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_id_5 is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_3 type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$systems_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_4 type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/AstronomicalEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$commodity_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$starsystem_map_5 type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AstronomicalEntry\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AstronomicalEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$auction type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Deals\\|null but property expects Stu\\\\Orm\\\\Entity\\\\DealsInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AuctionBid.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$auction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DealsInterface but database expects Stu\\\\Orm\\\\Entity\\\\Deals\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AuctionBid.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/AuctionBid.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\AuctionBid\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/AuctionBid.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$faction_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$user_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$date_ms type mapping mismatch\\: database can contain string\\|null but property expects int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BasicTrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$building is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$faction type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Faction\\|null but property expects Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BasicTrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BasicTrade\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BasicTrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$commodities type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildingCommodityInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Building.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$costs type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildingCostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildingCost\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Building.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$functions type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildingFunctionInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Building.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Building\\:\\:\\$possibleFieldTypes type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuildingInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Building.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$building type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Building\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingCommodity.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$building is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$building type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingCommodity.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingCommodity.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCommodity\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingCommodity.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$building type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Building\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$building is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$building type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingCost\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$alternateBuilding type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Building\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingFieldAlternative.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$alternateBuilding type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingFieldAlternative.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$building type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Building\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingFieldAlternative.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFieldAlternative\\:\\:\\$building type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingFieldAlternative.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$building type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Building\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingFunction.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$energy_cost is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingFunction\\:\\:\\$building type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingFunction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$id type mapping mismatch\\: database can contain string but property expects int\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingUpgrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeCosts is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeCosts type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingUpgrade.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeFromBuilding is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeFromBuilding type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Building\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildingUpgrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeFromBuilding type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeToBuilding type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Building\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\:\\:\\$upgradeToBuilding type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgrade.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$buildings_upgrades_id type mapping mismatch\\: database can contain string but property expects int\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgradeCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgradeCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgradeCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$upgrade type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgradeCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeCost\\:\\:\\$upgrade type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingUpgradeInterface but database expects Stu\\\\Orm\\\\Entity\\\\BuildingUpgrade\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildingUpgradeCost.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:getDefaultTorpedoTypeId\\(\\) should return int but returns int\\|null\\.$#"
@@ -3946,17 +4252,47 @@ parameters:
 			path: src/Orm/Entity/BuildplanHangar.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$rump_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$buildplan type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanHangar.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$shipRump is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$buildplan type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanHangar.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$buildplan_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$defaultTorpedoType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanHangar.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$shipRump type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanHangar.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanHangar.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$buildplan type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanModule.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$buildplan type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanModule.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/BuildplanModule.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/BuildplanModule.php
 
@@ -3981,12 +4317,77 @@ parameters:
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$blockers type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Fleet\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$torpedo_type is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$colonyClass type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ColonyClass\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$colonyClass type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface but database expects Stu\\\\Orm\\\\Entity\\\\ColonyClass\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$crewAssignments type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipCrew\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$crewTrainings type mapping mismatch\\: database can contain Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\CrewTraining\\> but property expects Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$crewTrainings type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\CrewTraining\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$defenders type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Fleet\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$depositMinings type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ColonyDepositMiningInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$planetFields type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\PlanetField\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$storage type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\StorageInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Storage\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$torpedo type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Colony.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Colony\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Colony.php
 
@@ -4006,17 +4407,32 @@ parameters:
 			path: src/Orm/Entity/ColonyClass.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$databaseEntry is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$colonyClassDeposits type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ColonyClassDepositInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClass.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$colony_class_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClass\\:\\:\\$databaseEntry type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClass.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$colonyClass type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ColonyClass\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassDeposit.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$commodity_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$colonyClass type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface but database expects Stu\\\\Orm\\\\Entity\\\\ColonyClass\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassDeposit.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassDeposit.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassDeposit\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassDeposit.php
 
@@ -4026,39 +4442,154 @@ parameters:
 			path: src/Orm/Entity/ColonyClassInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$planet_type_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$colonyClass type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ColonyClass\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassResearch.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$research_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$colonyClass type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface but database expects Stu\\\\Orm\\\\Entity\\\\ColonyClass\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyClassResearch.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$colony_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$research type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Research\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassResearch.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyClassResearch\\:\\:\\$research type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ResearchInterface but database expects Stu\\\\Orm\\\\Entity\\\\Research\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyClassResearch.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$colony type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Colony\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyDepositMining.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$commodity_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyDepositMining.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$user_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyDepositMining.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$buildplan_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyDepositMining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyDepositMining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyDepositMining\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyDepositMining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyScan\\:\\:\\$colony type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Colony\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyScan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyScan\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyScan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyScan\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyScan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyScan\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyScan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$colony type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Colony\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyShipQueue.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$colony_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ColonyShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$shipBuildplan type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$shipBuildplan type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$shipRump type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipQueue\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$colony type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Colony\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipRepair.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipRepair.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipRepair.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyShipRepair\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyShipRepair.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$colony type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Colony\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyTerraforming.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyTerraforming.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$field type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\PlanetField\\|null but property expects Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyTerraforming.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$field type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\PlanetFieldInterface but database expects Stu\\\\Orm\\\\Entity\\\\PlanetField\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyTerraforming.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$terraforming type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Terraforming\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyTerraforming.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ColonyTerraforming\\:\\:\\$terraforming type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TerraformingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Terraforming\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ColonyTerraforming.php
 
 		-
 			message: "#^Access to an undefined property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$getId\\.$#"
@@ -4066,19 +4597,164 @@ parameters:
 			path: src/Orm/Entity/ConstructionProgress.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$module_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ConstructionProgress.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ConstructionProgress.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\:\\:\\$specialModules type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModuleInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/ConstructionProgress.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ConstructionProgressModule.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$progress_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ConstructionProgressModule.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$progress type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ConstructionProgressInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ConstructionProgressModule.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ConstructionProgressModule\\:\\:\\$progress type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ConstructionProgressInterface but database expects Stu\\\\Orm\\\\Entity\\\\ConstructionProgress\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ConstructionProgressModule.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$opponent type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Contact.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$opponent type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Contact.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Contact.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Contact\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Contact.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$race type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\CrewRace\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Crew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$race type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CrewRaceInterface but database expects Stu\\\\Orm\\\\Entity\\\\CrewRace\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Crew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Crew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Crew\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Crew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$faction type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Faction\\|null but property expects Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/CrewRace.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewRace\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/CrewRace.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$colony type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Colony\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/CrewTraining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/CrewTraining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/CrewTraining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\CrewTraining\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/CrewTraining.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Award\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AwardInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/DatabaseCategory.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$award type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AwardInterface but database expects Stu\\\\Orm\\\\Entity\\\\Award\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseCategory.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\:\\:\\$entries type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseCategory.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$category type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\|null but property expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$category type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategory\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$type_object type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\DatabaseType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\:\\:\\$type_object type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$databaseEntry type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null but property expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseUser.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$databaseEntry type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseUser.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseUser.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DatabaseUser\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/DatabaseUser.php
 
 		-
 			message: "#^Cannot call method getModules\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
@@ -4101,27 +4777,52 @@ parameters:
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auction_user is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$auctionBids type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AuctionBidInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\AuctionBid\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$faction_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$buildplan type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Deals.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$ships_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$giveCommodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$giveCommodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$wantedCommodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Deals\\:\\:\\$wantedCommodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Deals.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/DockingPrivilege.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_map_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/DockingPrivilege.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Faction.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_research_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Faction\\:\\:\\$start_research type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Research\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Faction.php
 
@@ -4141,17 +4842,7 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$blocked_colony_id is unused\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$defendedColony has no type specified\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$defended_colony_id is unused\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
 
@@ -4166,11 +4857,6 @@ parameters:
 			path: src/Orm/Entity/Fleet.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$ships_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/Fleet.php
-
-		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Fleet\\:\\:\\$user has no type specified\\.$#"
 			count: 1
 			path: src/Orm/Entity/Fleet.php
@@ -4181,22 +4867,22 @@ parameters:
 			path: src/Orm/Entity/FleetInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$map_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$rump_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$rump type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$starsystem_map_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$rump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$user_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\FlightSignature\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/FlightSignature.php
 
@@ -4206,14 +4892,59 @@ parameters:
 			path: src/Orm/Entity/GameRequest.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameRequest\\:\\:\\$params is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurn\\:\\:\\$stats type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\GameTurnStatsInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\|null\\.$#"
 			count: 1
-			path: src/Orm/Entity/GameRequest.php
+			path: src/Orm/Entity/GameTurn.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\:\\:\\$turn_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\:\\:\\$turn type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\GameTurn\\|null but property expects Stu\\\\Orm\\\\Entity\\\\GameTurnInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/GameTurnStats.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\GameTurnStats\\:\\:\\$turn type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\GameTurnInterface but database expects Stu\\\\Orm\\\\Entity\\\\GameTurn\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/GameTurnStats.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\IgnoreList\\:\\:\\$opponent type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/IgnoreList.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\IgnoreList\\:\\:\\$opponent type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/IgnoreList.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\IgnoreList\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/IgnoreList.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\IgnoreList\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/IgnoreList.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$post type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\KnPost\\|null but property expects Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnComment.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$post type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\KnPostInterface but database expects Stu\\\\Orm\\\\Entity\\\\KnPost\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnComment.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnComment.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnComment\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnComment.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#"
@@ -4221,22 +4952,52 @@ parameters:
 			path: src/Orm/Entity/KnPost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$plot_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$comments type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\KnCommentInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\KnComment\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$rpgPlot type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\RpgPlot\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPost\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$knPost type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\KnPost\\|null but property expects Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPostToPlotApplication.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$post_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$knPost type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\KnPostInterface but database expects Stu\\\\Orm\\\\Entity\\\\KnPost\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/KnPostToPlotApplication.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$is_winner is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$rpgPlot type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\RpgPlot\\|null but property expects Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPostToPlotApplication.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\KnPostToPlotApplication\\:\\:\\$rpgPlot type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface but database expects Stu\\\\Orm\\\\Entity\\\\RpgPlot\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/KnPostToPlotApplication.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/LotteryTicket.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$user_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\LotteryTicket\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/LotteryTicket.php
 
@@ -4246,12 +5007,67 @@ parameters:
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$admin_region_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$administratedRegion type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapRegionInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapRegion\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$layer_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$anomalies type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AnomalyInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Anomaly\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$influenceArea type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$layer type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Layer\\|null but property expects Stu\\\\Orm\\\\Entity\\\\LayerInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$layer type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\LayerInterface but database expects Stu\\\\Orm\\\\Entity\\\\Layer\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapBorderType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapBorderTypeInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapBorderType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapFieldType type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\MapFieldTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapFieldType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapFieldTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$mapRegion type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapRegionInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\MapRegion\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$ships type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$signatures type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\FlightSignatureInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\FlightSignature\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$starSystem type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Map.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Map\\:\\:\\$wormholeEntries type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\WormholeEntryInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Map.php
 
@@ -4261,7 +5077,12 @@ parameters:
 			path: src/Orm/Entity/MapFieldType.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$database_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapFieldType\\:\\:\\$colonyClass type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ColonyClass\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/MapFieldType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\MapRegion\\:\\:\\$databaseEntry type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/MapRegion.php
 
@@ -4281,17 +5102,87 @@ parameters:
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$research is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$buildingCosts type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ModuleCostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ModuleCost\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$shipRumpRole is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Module.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$moduleSpecials type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ModuleSpecialInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$research type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Research\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$research type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ResearchInterface but database expects Stu\\\\Orm\\\\Entity\\\\Research\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$shipRumpRole type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$shipRumpRole type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$torpedoHull type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TorpedoHullInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$weapon type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Weapon\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Module\\:\\:\\$weaponShield type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\WeaponShieldInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\WeaponShield\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Module.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleBuildingFunction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleBuildingFunction\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleBuildingFunction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleCost\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleCost.php
 
@@ -4301,34 +5192,44 @@ parameters:
 			path: src/Orm/Entity/ModuleInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$colony_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$colony type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Colony\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleQueue.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$module is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleQueue\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ModuleQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ModuleSpecial.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetCommodity\\:\\:\\$commodity_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ModuleSpecial\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
 			count: 1
-			path: src/Orm/Entity/PlanetCommodity.php
+			path: src/Orm/Entity/ModuleSpecial.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetCommodity\\:\\:\\$count is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
 			count: 1
-			path: src/Orm/Entity/PlanetCommodity.php
+			path: src/Orm/Entity/Note.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetCommodity\\:\\:\\$id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Note\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
-			path: src/Orm/Entity/PlanetCommodity.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetCommodity\\:\\:\\$planet_classes_id is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/PlanetCommodity.php
+			path: src/Orm/Entity/Note.php
 
 		-
 			message: "#^Cannot call method getBuildTime\\(\\) on Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null\\.$#"
@@ -4356,29 +5257,194 @@ parameters:
 			path: src/Orm/Entity/PlanetField.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$building is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$building type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$colony type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Colony\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetField\\:\\:\\$terraforming type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Terraforming\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetField.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$building type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Building\\|null but property expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$deleted is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PlanetFieldTypeBuilding\\:\\:\\$building type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\BuildingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Building\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PlanetFieldTypeBuilding.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$category type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\|null but property expects Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/PrivateMessage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$finish_time is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$category type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolderInterface but database expects Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$receivingUser type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$receivingUser type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$sendingUser type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessage\\:\\:\\$sendingUser type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessageFolder.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\PrivateMessageFolder\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/PrivateMessageFolder.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/RepairTask.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/RepairTask.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/RepairTask.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RepairTask\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/RepairTask.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$award type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AwardInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Award\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Research.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Research.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Research.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Research\\:\\:\\$rewardBuildplan type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Research.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Research\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ResearchDependency.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ResearchInterface but database expects Stu\\\\Orm\\\\Entity\\\\Research\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ResearchDependency.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research_depends_on type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Research\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ResearchDependency.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ResearchDependency\\:\\:\\$research_depends_on type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ResearchInterface but database expects Stu\\\\Orm\\\\Entity\\\\Research\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ResearchDependency.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$research type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Research\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ResearchInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Researched.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$research type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ResearchInterface but database expects Stu\\\\Orm\\\\Entity\\\\Research\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Researched.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Researched.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Researched\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Researched.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$members type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\RpgPlotMemberInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/RpgPlot.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$posts type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\KnPostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\KnPost\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/RpgPlot.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/RpgPlot.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlot\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/RpgPlot.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$rpgPlot type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\RpgPlot\\|null but property expects Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/RpgPlotMember.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$rpgPlot type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\RpgPlotInterface but database expects Stu\\\\Orm\\\\Entity\\\\RpgPlot\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/RpgPlotMember.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/RpgPlotMember.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\RpgPlotMember\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/RpgPlotMember.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:getDate\\(\\) should return DateTimeInterface but returns DateTimeInterface\\|null\\.$#"
@@ -4386,7 +5452,12 @@ parameters:
 			path: src/Orm/Entity/SessionString.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/SessionString.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SessionString\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/SessionString.php
 
@@ -4451,39 +5522,139 @@ parameters:
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dock is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$buildplan type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$holding_web_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$crew type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipCrew\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$influence_area_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dockedShips type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$map_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dockedTo type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$plans_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$dockingPrivileges type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\DockingPrivilegeInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\DockingPrivilege\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$starsystem_map_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$fleet type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Fleet\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractored_ship_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$holdingWeb type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TholianWebInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TholianWeb\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$influenceArea type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$logbook type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipLogInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipLog\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$rump type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$rump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$storage type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\StorageInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Storage\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$systems type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipSystemInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipSystem\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$torpedoStorage type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TorpedoStorageInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractoredShip type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tractoringShip type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$tradePost type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TradePost\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Ship\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Ship.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$modules type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildplanModule\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipBuildplan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$shipRump type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipBuildplan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipBuildplan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$ships type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipBuildplan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipBuildplan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipBuildplan.php
 
 		-
 			message: "#^Cannot call method getUser\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
@@ -4496,17 +5667,42 @@ parameters:
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$colony_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$repair_task_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$crew type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Crew\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CrewInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$tradepost_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$crew type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CrewInterface but database expects Stu\\\\Orm\\\\Entity\\\\Crew\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$repairTask type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\RepairTaskInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\RepairTask\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$tradepost type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TradePost\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipCrew\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipCrew.php
 
@@ -4521,19 +5717,54 @@ parameters:
 			path: src/Orm/Entity/ShipInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$is_private is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipLog.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipLog.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipLog\\:\\:\\$ship_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$buildingCosts type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipRumpCostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\>\\.$#"
 			count: 1
-			path: src/Orm/Entity/ShipLog.php
+			path: src/Orm/Entity/ShipRump.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$databaseEntry type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$shipRumpCategory type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$shipRumpCategory type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$shipRumpRole type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$specialAbilities type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecialInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRump\\:\\:\\$startHangar type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\BuildplanHangarInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\BuildplanHangar\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRump.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:getDatabaseId\\(\\) should return int but returns int\\|null\\.$#"
@@ -4541,12 +5772,42 @@ parameters:
 			path: src/Orm/Entity/ShipRumpCategory.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategory\\:\\:\\$databaseEntry type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCategory.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$shiprumpRole type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCategoryRoleCrew\\:\\:\\$shiprumpRole type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRumpRole\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCategoryRoleCrew.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpCost.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpCost\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipRumpCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipRumpSpecial\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipRumpSpecial.php
 
@@ -4561,22 +5822,57 @@ parameters:
 			path: src/Orm/Entity/ShipSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$ship_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$buildplan_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipSystem\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipyardShipQueue.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$ship_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/ShipyardShipQueue.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SpacecraftEmergency\\:\\:\\$ship_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$shipBuildplan type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipyardShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$shipBuildplan type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipBuildplan\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipyardShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$shipRump type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipyardShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\ShipyardShipQueue\\:\\:\\$shipRump type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface but database expects Stu\\\\Orm\\\\Entity\\\\ShipRump\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/ShipyardShipQueue.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SpacecraftEmergency\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/SpacecraftEmergency.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\SpacecraftEmergency\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/SpacecraftEmergency.php
 
@@ -4586,9 +5882,49 @@ parameters:
 			path: src/Orm/Entity/StarSystem.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$database_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$base type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$databaseEntry type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$fields type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Map\\|null but property expects Stu\\\\Orm\\\\Entity\\\\MapInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$systemType type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystemType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystem\\:\\:\\$systemType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystem.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$anomalies type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\AnomalyInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Anomaly\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$id has no type specified\\.$#"
@@ -4596,7 +5932,77 @@ parameters:
 			path: src/Orm/Entity/StarSystemMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$colony_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$mapFieldType type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\MapFieldTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$mapFieldType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapFieldTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\MapFieldType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$ships type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$signatures type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\FlightSignatureInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\FlightSignature\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$starSystem type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$starSystem type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\:\\:\\$wormholeEntries type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\WormholeEntryInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemMap.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StarSystemType\\:\\:\\$databaseEntry type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\DatabaseEntry\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StarSystemType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/StationShipRepair.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StationShipRepair.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$station type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/StationShipRepair.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\StationShipRepair\\:\\:\\$station type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/StationShipRepair.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$colony type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Colony\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
@@ -4606,54 +6012,209 @@ parameters:
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$ship_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$torpedo_storage_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$torpedoStorage type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TorpedoStorageInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradeoffer_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradeOffer type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TradeOfferInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TradeOffer\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradepost_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$tradePost type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\TradePost\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Storage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$map_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Storage\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Storage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/TachyonScan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$starsystem_map_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$starsystem_map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/TachyonScan.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$ship_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TachyonScan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TachyonScan\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TachyonScan.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Terraforming\\:\\:\\$costs type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TerraformingCostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\TerraformingCost\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/Terraforming.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TerraformingCost\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TerraformingCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TerraformingCost\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TerraformingCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TerraformingCost\\:\\:\\$terraforming type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Terraforming\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TerraformingInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TerraformingCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TerraformingCost\\:\\:\\$terraforming type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TerraformingInterface but database expects Stu\\\\Orm\\\\Entity\\\\Terraforming\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TerraformingCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$capturedShips type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Ship\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/TholianWeb.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$ship_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$webShip type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TholianWeb.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TholianWeb\\:\\:\\$webShip type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TholianWeb.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoHull.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoHull.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\:\\:\\$torpedo type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoHull.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoHull\\:\\:\\$torpedo type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoHull.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoStorage.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$torpedo_type is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/TorpedoStorage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$storage type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Storage\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StorageInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoStorage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$storage type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StorageInterface but database expects Stu\\\\Orm\\\\Entity\\\\Storage\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoStorage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$torpedo type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoStorage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoStorage\\:\\:\\$torpedo type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoStorage.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoType\\:\\:\\$productionCosts type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCostInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoType.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoTypeCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoTypeCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$torpedoType type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoTypeCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TorpedoTypeCost\\:\\:\\$torpedoType type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TorpedoTypeInterface but database expects Stu\\\\Orm\\\\Entity\\\\TorpedoType\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TorpedoTypeCost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$tradePost type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TradePost\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeLicense.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$tradePost type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TradePostInterface but database expects Stu\\\\Orm\\\\Entity\\\\TradePost\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeLicense.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeLicense.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicense\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeLicense.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$commodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeLicenseInfo.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$commodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeLicenseInfo.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$id has no type specified\\.$#"
@@ -4661,14 +6222,149 @@ parameters:
 			path: src/Orm/Entity/TradeLicenseInfo.php
 
 		-
-			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:getLatestLicenseInfo\\(\\) should return Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|null but returns Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\|false\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$tradePost type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TradePost\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeLicenseInfo.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\:\\:\\$tradePost type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TradePostInterface but database expects Stu\\\\Orm\\\\Entity\\\\TradePost\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeLicenseInfo.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$offeredCommodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$offeredCommodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$storage type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Storage\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StorageInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$storage type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StorageInterface but database expects Stu\\\\Orm\\\\Entity\\\\Storage\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$tradePost type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TradePost\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$tradePost type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TradePostInterface but database expects Stu\\\\Orm\\\\Entity\\\\TradePost\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$wantedCommodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeOffer\\:\\:\\$wantedCommodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeOffer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$crewAssignments type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Stu\\\\Orm\\\\Entity\\\\ShipCrewInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\ShipCrew\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradePost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$licenseInfos type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfoInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\TradeLicenseInfo\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradePost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$ship type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Ship\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ShipInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradePost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$ship type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ShipInterface but database expects Stu\\\\Orm\\\\Entity\\\\Ship\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradePost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradePost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradePost\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradePost.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeShoutbox\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeShoutbox.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeShoutbox\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeShoutbox.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:getTradePostId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/TradeTransaction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:\\$offeredCommodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransaction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:\\$offeredCommodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransaction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:\\$wantedCommodity type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Commodity\\|null but property expects Stu\\\\Orm\\\\Entity\\\\CommodityInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransaction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransaction\\:\\:\\$wantedCommodity type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\CommodityInterface but database expects Stu\\\\Orm\\\\Entity\\\\Commodity\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransaction.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransfer\\:\\:\\$tradePost type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\TradePost\\|null but property expects Stu\\\\Orm\\\\Entity\\\\TradePostInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransfer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransfer\\:\\:\\$tradePost type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\TradePostInterface but database expects Stu\\\\Orm\\\\Entity\\\\TradePost\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransfer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransfer\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransfer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\TradeTransfer\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/TradeTransfer.php
 
 		-
 			message: "#^Cannot call method isExplored\\(\\) on Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\|null\\.$#"
@@ -4681,14 +6377,59 @@ parameters:
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$allys_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$alliance type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AllianceInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\Alliance\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$maptype is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$awards type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\UserAwardInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\UserAward\\>\\.$#"
 			count: 1
 			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$colonies type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\ColonyInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\Colony\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$faction type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Faction\\|null but property expects Stu\\\\Orm\\\\Entity\\\\FactionInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$faction type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\FactionInterface but database expects Stu\\\\Orm\\\\Entity\\\\Faction\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$userLayers type mapping mismatch\\: property can contain Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, Stu\\\\Orm\\\\Entity\\\\UserLayerInterface\\> but database expects Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<Stu\\\\Orm\\\\Entity\\\\UserLayer\\>\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\User\\:\\:\\$userLock type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserLockInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\UserLock\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/User.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$award type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Award\\|null but property expects Stu\\\\Orm\\\\Entity\\\\AwardInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserAward.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$award type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\AwardInterface but database expects Stu\\\\Orm\\\\Entity\\\\Award\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserAward.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserAward.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserAward\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserAward.php
 
 		-
 			message: "#^Method Stu\\\\Orm\\\\Entity\\\\UserInterface\\:\\:getSessionDataUnserialized\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -4696,12 +6437,32 @@ parameters:
 			path: src/Orm/Entity/UserInterface.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$layer_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserIpTable\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserIpTable.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserIpTable\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserIpTable.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$layer type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Layer\\|null but property expects Stu\\\\Orm\\\\Entity\\\\LayerInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserLayer.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$user_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$layer type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\LayerInterface but database expects Stu\\\\Orm\\\\Entity\\\\Layer\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserLayer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserLayer.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLayer\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserLayer.php
 
@@ -4711,14 +6472,9 @@ parameters:
 			path: src/Orm/Entity/UserLock.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:\\$former_user_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserLock\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserLock.php
-
-		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cx is never read, only written\\.$#"
-			count: 1
-			path: src/Orm/Entity/UserMap.php
 
 		-
 			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cy has no type specified\\.$#"
@@ -4726,52 +6482,112 @@ parameters:
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$cy is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Layer\\|null but property expects Stu\\\\Orm\\\\Entity\\\\LayerInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\LayerInterface but database expects Stu\\\\Orm\\\\Entity\\\\Layer\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$layer_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$map_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/UserMap.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$opponent type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
 			count: 1
-			path: src/Orm/Entity/UserMap.php
+			path: src/Orm/Entity/UserProfileVisitor.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserMap\\:\\:\\$user_id is never read, only written\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$opponent type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
 			count: 1
-			path: src/Orm/Entity/UserMap.php
+			path: src/Orm/Entity/UserProfileVisitor.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Weapon\\:\\:\\$module is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserProfileVisitor.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserProfileVisitor\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserProfileVisitor.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$user type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\User\\|null but property expects Stu\\\\Orm\\\\Entity\\\\UserInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserTag.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\UserTag\\:\\:\\$user type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\UserInterface but database expects Stu\\\\Orm\\\\Entity\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/UserTag.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Weapon\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/Weapon.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\Weapon\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/Weapon.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WeaponShield\\:\\:\\$module type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Module\\|null but property expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/WeaponShield.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WeaponShield\\:\\:\\$module type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\ModuleInterface but database expects Stu\\\\Orm\\\\Entity\\\\Module\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/WeaponShield.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WeaponShield\\:\\:\\$weapon type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Weapon\\|null but property expects Stu\\\\Orm\\\\Entity\\\\WeaponInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/WeaponShield.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WeaponShield\\:\\:\\$weapon type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\WeaponInterface but database expects Stu\\\\Orm\\\\Entity\\\\Weapon\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/WeaponShield.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\Map\\|null but property expects Stu\\\\Orm\\\\Entity\\\\MapInterface\\.$#"
 			count: 1
 			path: src/Orm/Entity/WormholeEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$system_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$map type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\MapInterface but database expects Stu\\\\Orm\\\\Entity\\\\Map\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/WormholeEntry.php
 
 		-
-			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$system_map_id is unused\\.$#"
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$starSystem type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/WormholeEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$starSystem type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemInterface but database expects Stu\\\\Orm\\\\Entity\\\\StarSystem\\|null\\.$#"
+			count: 1
+			path: src/Orm/Entity/WormholeEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$systemMap type mapping mismatch\\: database can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null but property expects Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface\\.$#"
+			count: 1
+			path: src/Orm/Entity/WormholeEntry.php
+
+		-
+			message: "#^Property Stu\\\\Orm\\\\Entity\\\\WormholeEntry\\:\\:\\$systemMap type mapping mismatch\\: property can contain Stu\\\\Orm\\\\Entity\\\\StarSystemMapInterface but database expects Stu\\\\Orm\\\\Entity\\\\StarSystemMap\\|null\\.$#"
 			count: 1
 			path: src/Orm/Entity/WormholeEntry.php
 
@@ -4836,9 +6652,92 @@ parameters:
 			path: src/Orm/Repository/ShipRepository.php
 
 		-
+			message: """
+				#^Return type of anonymous function has typehint with deprecated class Stu\\\\Orm\\\\Repository\\\\GameRequestRepository\\:
+				Use logfile logging$#
+			"""
+			count: 1
+			path: src/Orm/Repository/services.php
+
+		-
+			message: "#^Cannot call method getBaseCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
+			count: 3
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 3
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpRoleInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getLevel\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
 			message: "#^Cannot call method getMandatoryModulesCount\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpModuleLevelInterface\\|null\\.$#"
 			count: 1
 			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getModuleLevel\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getShipRumpRole\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getSpecials\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getType\\(\\) on Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null\\.$#"
+			count: 2
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Parameter \\#1 \\$module of method Stu\\\\Orm\\\\Entity\\\\BuildplanModuleInterface\\:\\:setModule\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ModuleInterface, Stu\\\\Orm\\\\Entity\\\\ModuleInterface\\|null given\\.$#"
+			count: 2
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Parameter \\#1 \\$shipRump of method Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\:\\:setRump\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface, Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\|null given\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\:\\:setUser\\(\\) expects Stu\\\\Orm\\\\Entity\\\\UserInterface, Stu\\\\Orm\\\\Entity\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Public/admin/help/createBuildplan.php
+
+		-
+			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createShip.php
+
+		-
+			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 1
+			path: src/Public/admin/help/createShip.php
 
 		-
 			message: "#^Cannot call method getMaxBattery\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
@@ -4851,6 +6750,81 @@ parameters:
 			path: src/Public/admin/help/createShip.php
 
 		-
+			message: "#^Cannot call method getRump\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
+			count: 2
+			path: src/Public/admin/help/createShip.php
+
+		-
 			message: "#^Cannot call method setEps\\(\\) on Stu\\\\Component\\\\Ship\\\\System\\\\Data\\\\EpsSystemData\\|null\\.$#"
 			count: 1
 			path: src/Public/admin/help/createShip.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\ColonyClassInterface\\:\\:save\\(\\)\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_colonyclass_dbentries.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\ShipRumpInterface\\:\\:save\\(\\)\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_rump_dbentries.php
+
+		-
+			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_rump_dbentries.php
+
+		-
+			message: "#^Parameter \\#1 \\$typeObject of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setTypeObject\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface\\|null given\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_rump_dbentries.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\:\\:save\\(\\)\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_starsystem_dbentries.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\StarSystemInterface\\:\\:setDatabaseId\\(\\)\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_starsystem_dbentries.php
+
+		-
+			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_starsystem_dbentries.php
+
+		-
+			message: "#^Parameter \\#1 \\$typeObject of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setTypeObject\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface\\|null given\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_starsystem_dbentries.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\StarSystemTypeInterface\\:\\:save\\(\\)\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_starsystemtype_dbentries.php
+
+		-
+			message: "#^Call to an undefined method Stu\\\\Orm\\\\Entity\\\\StarSystemTypeInterface\\:\\:setDatabaseId\\(\\)\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_starsystemtype_dbentries.php
+
+		-
+			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_starsystemtype_dbentries.php
+
+		-
+			message: "#^Parameter \\#1 \\$typeObject of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setTypeObject\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface\\|null given\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_starsystemtype_dbentries.php
+
+		-
+			message: "#^Parameter \\#1 \\$category of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setCategory\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseCategoryInterface\\|null given\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_tradepost_dbentries.php
+
+		-
+			message: "#^Parameter \\#1 \\$typeObject of method Stu\\\\Orm\\\\Entity\\\\DatabaseEntryInterface\\:\\:setTypeObject\\(\\) expects Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface, Stu\\\\Orm\\\\Entity\\\\DatabaseTypeInterface\\|null given\\.$#"
+			count: 1
+			path: src/admin/scripts/generate_tradepost_dbentries.php
