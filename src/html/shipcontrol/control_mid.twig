@@ -310,10 +310,10 @@
             {% if ship.getCurrentMapField.getInfluenceArea and ship.getCurrentMapField.getInfluenceArea.getBase %}
             {{ _self.influenceArea(ship.getCurrentMapField.getInfluenceArea.getBase.getUser) }}
             {% endif %}
-            {% set map = ship.getCurrentMapField %}
-            {% if map.getAnomalies %}
+            {% set anomalies = ship.getLocation.getAnomalies %}
+            {% if anomalies %}
             <br />
-            {% for anomaly in map.getAnomalies %}
+            {% for anomaly in anomalies %}
             <a>
                 <img src="/assets/anomalies/{{ anomaly.getAnomalyType.getId }}.png"
                     name="{{ anomaly.getAnomalyType.getName }}" />

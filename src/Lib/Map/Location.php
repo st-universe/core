@@ -6,6 +6,7 @@ namespace Stu\Lib\Map;
 
 use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
+use Stu\Orm\Entity\AnomalyInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
@@ -42,14 +43,14 @@ class Location
     /**
      * @return Collection<int, AnomalyInterface>
      */
-    public function getAnomaly(): Collection
+    public function getAnomalies(): Collection
     {
         return $this->location->getAnomalies();
     }
 
     public function hasAnomaly(int $anomalyType): bool
     {
-        foreach ($this->location->getAnomalies() as $anomaly) {
+        foreach ($this->getAnomalies() as $anomaly) {
             if ($anomaly->getAnomalyType()->getId() === $anomalyType) {
                 return true;
             }
