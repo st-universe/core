@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\ShipRumpRoleInterface;
 
 /**
  * @extends ObjectRepository<Module>
@@ -14,7 +15,7 @@ use Stu\Orm\Entity\ModuleInterface;
 interface ModuleRepositoryInterface extends ObjectRepository
 {
     /**
-     * @return list<ModuleInterface>
+     * @return array<ModuleInterface>
      */
     public function getBySpecialTypeColonyAndRump(
         int $colonyId,
@@ -24,19 +25,19 @@ interface ModuleRepositoryInterface extends ObjectRepository
     ): array;
 
     /**
-     * @return list<ModuleInterface>
+     * @return array<ModuleInterface>
      */
     public function getBySpecialTypeShipAndRump(
         int $shipId,
         int $moduleTypeId, // 1 bis 9: ShipModuleTypeEnum
         int $shipRumpId,
-        int $shipRumpRoleId
+        ShipRumpRoleInterface $shipRumpRole
     ): array;
 
     /**
      * @param array<int> $moduleLevel
      *
-     * @return list<ModuleInterface>
+     * @return array<ModuleInterface>
      */
     public function getByTypeColonyAndLevel(
         int $colonyId,
@@ -48,7 +49,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @param array<int> $moduleLevel
      *
-     * @return list<ModuleInterface>
+     * @return array<ModuleInterface>
      */
     public function getByTypeAndLevel(
         int $moduleTypeId,
@@ -57,7 +58,7 @@ interface ModuleRepositoryInterface extends ObjectRepository
     ): iterable;
 
     /**
-     * @param list<int> $specialTypeIds
+     * @param array<int> $specialTypeIds
      *
      * @return iterable<ModuleInterface>
      */

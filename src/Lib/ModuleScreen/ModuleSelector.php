@@ -15,6 +15,7 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipRumpModuleLevelInterface;
+use Stu\Orm\Entity\ShipRumpRoleInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
@@ -105,7 +106,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->rump;
     }
 
-    private function getShipRumpRoleId(): int
+    private function getShipRumpRole(): ShipRumpRoleInterface
     {
         $shipRumpRole = $this->getRump()->getShipRumpRole();
 
@@ -113,7 +114,7 @@ class ModuleSelector implements ModuleSelectorInterface
             throw new InvalidArgumentException('invalid rump without rump role');
         }
 
-        return $shipRumpRole->getId();
+        return $shipRumpRole;
     }
 
     public function getAvailableModules(): array
@@ -127,14 +128,14 @@ class ModuleSelector implements ModuleSelectorInterface
                         $this->getColony()->getId(),
                         $this->getModuleType(),
                         $this->getRump()->getId(),
-                        $this->getShipRumpRoleId()
+                        $this->getShipRumpRole()->getId()
                     );
                 } elseif ($this->station !== null) {
                     $modules = $this->moduleRepository->getBySpecialTypeShipAndRump(
                         $this->station->getId(),
                         $this->getModuleType(),
                         $this->getRump()->getId(),
-                        $this->getShipRumpRoleId()
+                        $this->getShipRumpRole()
                     );
                 }
             } else {
@@ -149,7 +150,7 @@ class ModuleSelector implements ModuleSelectorInterface
                     $modules = $this->moduleRepository->getByTypeColonyAndLevel(
                         $this->getColony()->getId(),
                         $this->getModuleType(),
-                        $this->getShipRumpRoleId(),
+                        $this->getShipRumpRole()->getId(),
                         range($min_level, $max_level)
                     );
                 }
