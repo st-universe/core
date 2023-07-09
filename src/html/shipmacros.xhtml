@@ -1572,9 +1572,31 @@
       <div class="box" tal:condition="SHIP/isBase">
         <div class="box_title">Passive Reparatur <img title="Wird durch angedockte Workbees durchgeführt"
             src="assets/buttons/info2.png" style="height:16px;" /></div>
-        <div class="box_body"><input type="submit" class="button" value="Passive Reparatur starten"
-            name="B_STATION_REPAIR" id="repair_button" /></div>
+        <div class="box_body">
+          <table class="tcal">
+            <tr>
+              <th>Workbees <img title="Anzahl der benötigten und aktuell angedockten Workbees für die Reparatur"
+                  src="assets/buttons/info2.png" style="height:16px;" /></th>
+
+              <th>Runden <img title="Anzahl der benötigten Runden um die Reparatur zu beenden"
+                  src="assets/buttons/info2.png" style="height:16px;" /></th>
+            </tr>
+            <tr>
+              <td style="text-align: center;">
+                (${SHIP/getDockedWorkbeeCount}/${SHIP/getRump/getNeededRepairWorkbees})</td>
+              <td style="text-align: center;">
+                <span tal:replace="ROUNDS"></span>
+              </td>
+            </tr>
+
+            <tr style="text-align: center;">
+              <td colspan="3"> <input type="submit" class="button" value="Passive Reparatur starten"
+                  name="B_STATION_REPAIR" id="repair_button" /></td>
+            </tr>
+          </table>
+        </div>
       </div>
+      <br />
       <div class="box">
         <div class="box_title">Aktive Reparatur <img title="Wird durch die Crew des Schiffes durchgeführt"
             src="assets/buttons/info2.png" style="height:16px;" /></div>

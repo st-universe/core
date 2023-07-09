@@ -1742,6 +1742,19 @@ class Ship implements ShipInterface
         return $count;
     }
 
+    public function getDockedWorkbeeCount(): int
+    {
+        $count = 0;
+
+        foreach ($this->getDockedShips() as $ships) {
+            if ($ships->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_SHUTTLE) {
+                $count += 1;
+            }
+        }
+
+        return $count;
+    }
+
     public function canMan(): bool
     {
         return $this->getCrewCount() === 0
