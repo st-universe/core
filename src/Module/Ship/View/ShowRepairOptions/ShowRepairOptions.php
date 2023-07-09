@@ -10,6 +10,7 @@ use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipWrapperFactoryInterface;
 
 final class ShowRepairOptions implements ViewControllerInterface
 {
@@ -19,12 +20,16 @@ final class ShowRepairOptions implements ViewControllerInterface
 
     private RepairUtilInterface $repairUtil;
 
+    private ShipWrapperFactoryInterface $shipWrapperFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        ShipWrapperFactoryInterface $shipWrapperFactory,
         RepairUtilInterface $repairUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->repairUtil = $repairUtil;
+        $this->shipWrapperFactory = $shipWrapperFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,6 +57,7 @@ final class ShowRepairOptions implements ViewControllerInterface
         $game->setTemplateVar('REPAIR_OPTIONS', $repairOptions);
         $game->setTemplateVar('ENGINEER_COUNT', $this->repairUtil->determineFreeEngineerCount($ship));
         $game->setTemplateVar('ERROR', false);
+        $game->setTemplateVar('ROUNDS', $this->shipWrapperFactory->wrapShip($ship)->getRepairDuration());
 
         $game->setTemplateVar('SPARE_PARTS_ONLY', (int)((RepairTaskEnum::SPARE_PARTS_ONLY_MIN + RepairTaskEnum::SPARE_PARTS_ONLY_MAX) / 2));
         $game->setTemplateVar('SYSTEM_COMPONENTS_ONLY', (int)((RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MIN + RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MAX) / 2));

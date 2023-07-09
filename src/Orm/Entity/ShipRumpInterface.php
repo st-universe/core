@@ -184,4 +184,6 @@ interface ShipRumpInterface
      * @return Collection<int, ShipRumpSpecialInterface>
      */
     public function getSpecialAbilities(): Collection;
+
+    public function getNeededRepairWorkbees(): ?int;
 }

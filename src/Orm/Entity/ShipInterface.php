@@ -453,4 +453,6 @@ interface ShipInterface
     public function getIsInEmergency(): bool;
 
     public function setIsInEmergency(bool $inEmergency): ShipInterface;
+
+    public function getDockedWorkbeeCount(): int;
 }
