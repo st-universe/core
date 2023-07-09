@@ -285,7 +285,7 @@ final class RepairActions implements RepairActionsInterface
             );
 
             $this->privateMessageSender->send(
-                UserEnum::USER_NOONE,
+                $entity->getUser()->getId(),
                 $ship->getUser()->getId(),
                 $shipOwnerMessage,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
