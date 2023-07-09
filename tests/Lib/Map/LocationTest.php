@@ -77,6 +77,21 @@ class LocationTest extends StuTestCase
         $this->assertSame('SECTOR', $location->getSectorString());
     }
 
+    public function testGetAnomalies(): void
+    {
+        $map = $this->mock(MapInterface::class);
+        $anomalies = $this->mock(Collection::class);
+
+        $map->shouldReceive('getAnomalies')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($anomalies);
+
+        $location = new Location($map, null);
+
+        $this->assertSame($anomalies, $location->getAnomalies());
+    }
+
     public function testHasAnomalyExpectFalseWhenNoAnomaliesPresent(): void
     {
         $map = $this->mock(MapInterface::class);
