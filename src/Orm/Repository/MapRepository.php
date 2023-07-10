@@ -205,6 +205,11 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                             ON ca.ship_id = s.id
                                             WHERE s.user_id >= :firstUserId
                                             AND s.state != :state
+                                            AND NOT EXISTS (SELECT ss.id
+                                                            FROM stu_ship_system ss
+                                                            WHERE ss.ship_id = s.id
+                                                            AND ss.system_type = :systemwarp
+                                                            AND ss.mode > :mode)
                                             AND s.map_id = m.id)
                                         * (SELECT count(ss.id)
                                             FROM stu_ship_system ss
@@ -212,6 +217,11 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                                             ON ss.ship_id = s.id
                                             WHERE s.user_id >= :firstUserId
                                             AND s.state != :state
+                                            AND NOT EXISTS (SELECT ss.id
+                                                            FROM stu_ship_system ss
+                                                            WHERE ss.ship_id = s.id
+                                                            AND ss.system_type = :systemwarp
+                                                            AND ss.mode > :mode)
                                             AND s.map_id = m.id
                                             AND ss.mode > :mode)
                                         * 100, 0) - :threshold as descriminator,
