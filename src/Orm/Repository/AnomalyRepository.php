@@ -31,4 +31,21 @@ final class AnomalyRepository extends EntityRepository implements AnomalyReposit
 
         $em->remove($anomaly);
     }
+
+    /**
+     * @return array<AnomalyInterface>
+     */
+    public function findAllActive(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT a
+                        FROM %s a
+                        WHERE a.remaining_ticks > 0',
+                    Anomaly::class
+                )
+            )
+            ->getResult();
+    }
 }
