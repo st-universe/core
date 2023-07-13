@@ -43,7 +43,7 @@ class AnomalyHandlingTest extends StuTestCase
             ->withNoArgs()
             ->andReturn(666);
 
-        $this->anomalyRepository->shouldReceive('findAll')
+        $this->anomalyRepository->shouldReceive('findAllActive')
             ->withNoArgs()
             ->once()
             ->andReturn([$anomaly]);
@@ -51,7 +51,7 @@ class AnomalyHandlingTest extends StuTestCase
         $this->subject->processExistingAnomalies();
     }
 
-    public function testProcessExistingAnomaliesExpectDeletionWhenLifespanIsOver(): void
+    public function testProcessExistingAnomaliesExpectDisappearWhenLifespanIsOver(): void
     {
         $anomaly = $this->mock(AnomalyInterface::class);
 
@@ -62,12 +62,15 @@ class AnomalyHandlingTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(1);
+        $anomaly->shouldReceive('setRemainingTicks')
+            ->with(0)
+            ->once();
 
-        $this->anomalyRepository->shouldReceive('findAll')
+        $this->anomalyRepository->shouldReceive('findAllActive')
             ->withNoArgs()
             ->once()
             ->andReturn([$anomaly]);
-        $this->anomalyRepository->shouldReceive('delete')
+        $this->anomalyRepository->shouldReceive('save')
             ->with($anomaly)
             ->once();
         $this->handler->shouldReceive('handleShipTick')
@@ -95,7 +98,7 @@ class AnomalyHandlingTest extends StuTestCase
             ->with(1)
             ->once();
 
-        $this->anomalyRepository->shouldReceive('findAll')
+        $this->anomalyRepository->shouldReceive('findAllActive')
             ->withNoArgs()
             ->once()
             ->andReturn([$anomaly]);

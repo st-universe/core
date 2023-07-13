@@ -29,7 +29,7 @@ final class AnomalyHandling implements AnomalyHandlingInterface
 
     public function processExistingAnomalies(): void
     {
-        foreach ($this->anomalyRepository->findAll() as $anomaly) {
+        foreach ($this->anomalyRepository->findAllActive() as $anomaly) {
             if (!array_key_exists($anomaly->getAnomalyType()->getId(), $this->handlerList)) {
                 throw new RuntimeException(sprintf('no handler defined for type: %d', $anomaly->getAnomalyType()->getId()));
             }
@@ -54,10 +54,8 @@ final class AnomalyHandling implements AnomalyHandlingInterface
 
         if ($remainingTicks === 1) {
             $handler->letAnomalyDisappear($anomaly);
-            $this->anomalyRepository->delete($anomaly);
-        } else {
-            $anomaly->setRemainingTicks($remainingTicks - 1);
-            $this->anomalyRepository->save($anomaly);
         }
+        $anomaly->setRemainingTicks($remainingTicks - 1);
+        $this->anomalyRepository->save($anomaly);
     }
 }
