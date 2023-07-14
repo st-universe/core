@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\MoveShip;
 
 use Mockery\MockInterface;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
@@ -24,11 +27,15 @@ class DirectedMovementTest extends StuTestCase
     /** @var MockInterface&ShipMoverInterface */
     private MockInterface $shipMover;
 
+    /** @var MockInterface&FlightRouteFactoryInterface */
+    private FlightRouteFactoryInterface $flightRouteFactory;
+
     protected function setUp(): void
     {
         $this->moveShipRequest = $this->mock(MoveShipRequestInterface::class);
         $this->shipLoader = $this->mock(ShipLoaderInterface::class);
         $this->shipMover = $this->mock(ShipMoverInterface::class);
+        $this->flightRouteFactory = $this->mock(FlightRouteFactoryInterface::class);
     }
 
     public static function moveDataProvider(): array
@@ -63,12 +70,15 @@ class DirectedMovementTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
+        $flightRoute = $this->mock(FlightRouteInterface::class);
+        $informationWrapper = $this->mock(InformationWrapper::class);
 
         /** @var AbstractDirectedMovement $subject */
         $subject = new $className(
             $this->moveShipRequest,
             $this->shipLoader,
-            $this->shipMover
+            $this->shipMover,
+            $this->flightRouteFactory
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -100,15 +110,23 @@ class DirectedMovementTest extends StuTestCase
 
         $shipWrapper->shouldReceive('get')
             ->withNoArgs()
-            ->once()
             ->andReturn($ship);
+
+        $this->flightRouteFactory->shouldReceive('getRouteForCoordinateDestination')
+            ->with($ship, $destX, $destY)
+            ->once()
+            ->andReturn($flightRoute);
 
         $this->shipMover->shouldReceive('checkAndMove')
             ->with(
                 $shipWrapper,
-                $destX,
-                $destY
+                $flightRoute
             )
+            ->once()
+            ->andReturn($informationWrapper);
+
+        $informationWrapper->shouldReceive('getInformations')
+            ->withNoArgs()
             ->once()
             ->andReturn([$message]);
 
@@ -144,11 +162,14 @@ class DirectedMovementTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
+        $flightRoute = $this->mock(FlightRouteInterface::class);
+        $informationWrapper = $this->mock(InformationWrapper::class);
 
         $subject = new MoveShipRight(
             $this->moveShipRequest,
             $this->shipLoader,
-            $this->shipMover
+            $this->shipMover,
+            $this->flightRouteFactory
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -180,15 +201,23 @@ class DirectedMovementTest extends StuTestCase
 
         $shipWrapper->shouldReceive('get')
             ->withNoArgs()
-            ->once()
             ->andReturn($ship);
+
+        $this->flightRouteFactory->shouldReceive('getRouteForCoordinateDestination')
+            ->with($ship, $destX, $destY)
+            ->once()
+            ->andReturn($flightRoute);
 
         $this->shipMover->shouldReceive('checkAndMove')
             ->with(
                 $shipWrapper,
-                $destX,
-                $destY
+                $flightRoute
             )
+            ->once()
+            ->andReturn($informationWrapper);
+
+        $informationWrapper->shouldReceive('getInformations')
+            ->withNoArgs()
             ->once()
             ->andReturn([$message]);
 
@@ -218,11 +247,14 @@ class DirectedMovementTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $shipWrapper = $this->mock(ShipWrapperInterface::class);
         $game = $this->mock(GameControllerInterface::class);
+        $flightRoute = $this->mock(FlightRouteInterface::class);
+        $informationWrapper = $this->mock(InformationWrapper::class);
 
         $subject = new MoveShip(
             $this->moveShipRequest,
             $this->shipLoader,
-            $this->shipMover
+            $this->shipMover,
+            $this->flightRouteFactory
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -250,15 +282,23 @@ class DirectedMovementTest extends StuTestCase
 
         $shipWrapper->shouldReceive('get')
             ->withNoArgs()
-            ->once()
             ->andReturn($ship);
+
+        $this->flightRouteFactory->shouldReceive('getRouteForCoordinateDestination')
+            ->with($ship, $destX, $destY)
+            ->once()
+            ->andReturn($flightRoute);
 
         $this->shipMover->shouldReceive('checkAndMove')
             ->with(
                 $shipWrapper,
-                $destX,
-                $destY
+                $flightRoute
             )
+            ->once()
+            ->andReturn($informationWrapper);
+
+        $informationWrapper->shouldReceive('getInformations')
+            ->withNoArgs()
             ->once()
             ->andReturn([$message]);
 

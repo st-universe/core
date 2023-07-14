@@ -6,14 +6,18 @@ namespace Stu\Module\Ship\Action\MoveShip;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
+use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
 
 abstract class AbstractDirectedMovement implements ActionControllerInterface
 {
     protected MoveShipRequestInterface $moveShipRequest;
+
+    protected  FlightRouteFactoryInterface $flightRouteFactory;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -22,11 +26,13 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
     public function __construct(
         MoveShipRequestInterface $moveShipRequest,
         ShipLoaderInterface $shipLoader,
-        ShipMoverInterface $shipMover
+        ShipMoverInterface $shipMover,
+        FlightRouteFactoryInterface $flightRouteFactory
     ) {
         $this->moveShipRequest = $moveShipRequest;
         $this->shipLoader = $shipLoader;
         $this->shipMover = $shipMover;
+        $this->flightRouteFactory = $flightRouteFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,14 +43,18 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
             $this->moveShipRequest->getShipId(),
             $userId
         );
+
+        if ($this->isSanityCheckFaulty($wrapper, $game)) {
+            return;
+        }
+
         $ship = $wrapper->get();
 
-        $informations = $this->shipMover->checkAndMove(
+        $informationWrapper = $this->shipMover->checkAndMove(
             $wrapper,
-            $this->getPosX($ship),
-            $this->getPosY($ship)
+            $this->getFlightRoute($wrapper)
         );
-        $game->addInformationMerge($informations);
+        $game->addInformationMerge($informationWrapper->getInformations());
 
         if ($ship->isDestroyed()) {
             return;
@@ -53,9 +63,9 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
-    abstract protected function getPosX(ShipInterface $ship): int;
+    abstract protected function isSanityCheckFaulty(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool;
 
-    abstract protected function getPosY(ShipInterface $ship): int;
+    abstract protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface;
 
     public function performSessionCheck(): bool
     {
