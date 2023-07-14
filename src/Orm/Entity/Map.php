@@ -211,6 +211,11 @@ class Map implements MapInterface
         return $this;
     }
 
+    public function getX(): int
+    {
+        return $this->getCx();
+    }
+
     public function getCy(): int
     {
         return $this->cy;
@@ -220,6 +225,11 @@ class Map implements MapInterface
     {
         $this->cy = $cy;
         return $this;
+    }
+
+    public function getY(): int
+    {
+        return $this->getCy();
     }
 
     public function getFieldId(): int

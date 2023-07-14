@@ -137,6 +137,11 @@ class StarSystemMap implements StarSystemMapInterface
         return $this;
     }
 
+    public function getX(): int
+    {
+        return $this->getSx();
+    }
+
     public function getSy(): int
     {
         return $this->sy;
@@ -147,6 +152,11 @@ class StarSystemMap implements StarSystemMapInterface
         $this->sy = $sy;
 
         return $this;
+    }
+
+    public function getY(): int
+    {
+        return $this->getSy();
     }
 
     public function getSystemId(): int
