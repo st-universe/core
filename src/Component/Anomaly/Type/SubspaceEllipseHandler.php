@@ -98,6 +98,11 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 
         foreach ($spacecrafts as $spacecraft) {
 
+            if ($spacecraft->getUser()->isVacationRequestOldEnough())
+            {
+                continue;
+            }
+
             if (!$spacecraft->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
                 continue;
             }
