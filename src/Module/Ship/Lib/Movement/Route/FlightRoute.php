@@ -68,7 +68,9 @@ final class FlightRoute implements FlightRouteInterface
         $start = $ship->getCurrentMapField();
         $destination = $this->checkDestination->validate($ship, $x, $y);
 
-        $this->waypoints = $this->loadWaypoints->load($start, $destination);
+        if ($start !== $destination) {
+            $this->waypoints = $this->loadWaypoints->load($start, $destination);
+        }
 
         return $this;
     }

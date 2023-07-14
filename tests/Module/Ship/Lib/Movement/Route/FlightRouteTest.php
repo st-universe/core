@@ -129,6 +129,25 @@ class FlightRouteTest extends StuTestCase
         $this->assertTrue($this->subject->isDestinationArrived());
     }
 
+    public function testSetDestinationViaCoordinatesExpectValidationOnlyWhenStartEqualsDestination(): void
+    {
+        $start = $this->mock(MapInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+
+        $ship->shouldReceive('getCurrentMapField')
+            ->withNoArgs()
+            ->andReturn($start);
+
+        $this->checkDestination->shouldReceive('validate')
+            ->with($ship, 42, 5)
+            ->once()
+            ->andReturn($start);
+
+        $this->subject->setDestinationViaCoordinates($ship, 42, 5);
+
+        $this->assertTrue($this->subject->isDestinationArrived());
+    }
+
     public function testSetDestinationViaCoordinatesExpectValidationAndWaypointLoading(): void
     {
         $start = $this->mock(MapInterface::class);
