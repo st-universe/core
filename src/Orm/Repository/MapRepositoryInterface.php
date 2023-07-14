@@ -40,7 +40,8 @@ interface MapRepositoryInterface extends ObjectRepository
         int $startSx,
         int $endSx,
         int $startSy,
-        int $endSy
+        int $endSy,
+        bool $sortAscending = true
     ): array;
 
     public function save(MapInterface $map): void;

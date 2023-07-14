@@ -109,17 +109,19 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         int $startCx,
         int $endCx,
         int $startCy,
-        int $endCy
+        int $endCy,
+        bool $sortAscending = true
     ): array {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT m FROM %s m
+                    'SELECT m FROM %1$s m
                     WHERE m.cx BETWEEN :startCx AND :endCx
                     AND m.cy BETWEEN :startCy AND :endCy
                     AND m.layer_id = :layerId
-                    ORDER BY m.cy, m.cx',
-                    Map::class
+                    ORDER BY m.cy %2$s, m.cx %2$s',
+                    Map::class,
+                    $sortAscending ? 'ASC' : 'DESC'
                 )
             )
             ->setParameters([

@@ -47,17 +47,19 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         int $startSx,
         int $endSx,
         int $startSy,
-        int $endSy
+        int $endSy,
+        bool $sortAscending = true
     ): array {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT m FROM %s m
+                    'SELECT m FROM %1$s m
                     WHERE m.systems_id = :starSystemId AND
                         m.sx BETWEEN :startSx AND :endSx AND
                         m.sy BETWEEN :startSy AND :endSy
-                    ORDER BY m.sy, m.sx',
-                    StarSystemMap::class
+                    ORDER BY m.sy %2$s, m.sx %2$s',
+                    StarSystemMap::class,
+                    $sortAscending ? 'ASC' : 'DESC'
                 )
             )
             ->setParameters([
