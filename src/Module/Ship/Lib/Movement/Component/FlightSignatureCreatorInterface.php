@@ -11,22 +11,12 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 interface FlightSignatureCreatorInterface
 {
     /**
-     * Create signature for inner-system flight paths
+     * Create signature for flight paths
      */
-    public function createInnerSystemSignatures(
+    public function createSignatures(
         ShipInterface $ship,
         int $flightMethod,
-        StarSystemMapInterface $currentField,
-        StarSystemMapInterface $nextField
-    ): void;
-
-    /**
-     * Create signature for outer-system flight paths
-     */
-    public function createOuterSystemSignatures(
-        ShipInterface $ship,
-        int $flightDirection,
-        MapInterface $currentField,
-        MapInterface $nextField
+        MapInterface|StarSystemMapInterface $currentField,
+        MapInterface|StarSystemMapInterface $nextField
     ): void;
 }

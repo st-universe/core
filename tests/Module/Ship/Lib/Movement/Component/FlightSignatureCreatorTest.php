@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
+use InvalidArgumentException;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Component\Ship\ShipEnum;
@@ -30,6 +31,32 @@ class FlightSignatureCreatorTest extends StuTestCase
         );
     }
 
+    public function testCreateSignaturesExpectExceptionWhenDifferentType1(): void
+    {
+        static::expectExceptionMessage('wayopints have different type');
+        static::expectException(InvalidArgumentException::class);
+
+        $this->subject->createSignatures(
+            $this->mock(ShipInterface::class),
+            42,
+            $this->mock(MapInterface::class),
+            $this->mock(StarSystemMapInterface::class)
+        );
+    }
+
+    public function testCreateSignaturesExpectExceptionWhenDifferentType2(): void
+    {
+        static::expectExceptionMessage('wayopints have different type');
+        static::expectException(InvalidArgumentException::class);
+
+        $this->subject->createSignatures(
+            $this->mock(ShipInterface::class),
+            42,
+            $this->mock(StarSystemMapInterface::class),
+            $this->mock(MapInterface::class)
+        );
+    }
+
     public static function directionDataProvider(): array
     {
         return [
@@ -43,7 +70,7 @@ class FlightSignatureCreatorTest extends StuTestCase
     /**
      * @dataProvider directionDataProvider
      */
-    public function testCreateOuterSystemSignaturesCreates(
+    public function testCreateSignaturesCreatesForMapFields(
         int $fromDirection,
         int $toDirection
     ): void {
@@ -145,7 +172,7 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->with($toSignature)
             ->once();
 
-        $this->subject->createOuterSystemSignatures(
+        $this->subject->createSignatures(
             $ship,
             $toDirection,
             $currentField,
@@ -156,7 +183,7 @@ class FlightSignatureCreatorTest extends StuTestCase
     /**
      * @dataProvider directionDataProvider
      */
-    public function testCreateInnerSystemSignaturesCreates(
+    public function testCreateSignaturesCreatesForSystemMapFields(
         int $fromDirection,
         int $toDirection
     ): void {
@@ -258,7 +285,7 @@ class FlightSignatureCreatorTest extends StuTestCase
             ->with($toSignature)
             ->once();
 
-        $this->subject->createInnerSystemSignatures(
+        $this->subject->createSignatures(
             $ship,
             $toDirection,
             $currentField,

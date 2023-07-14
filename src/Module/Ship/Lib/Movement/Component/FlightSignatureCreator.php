@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Movement\Component;
 
+use InvalidArgumentException;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\MapInterface;
@@ -32,39 +33,32 @@ final class FlightSignatureCreator implements FlightSignatureCreatorInterface
         $this->flightSignatureRepository = $flightSignatureRepository;
     }
 
-    public function createOuterSystemSignatures(
+    public function createSignatures(
         ShipInterface $ship,
         int $flightDirection,
-        MapInterface $currentField,
-        MapInterface $nextField
+        MapInterface|StarSystemMapInterface $currentField,
+        MapInterface|StarSystemMapInterface $nextField
     ): void {
+        if ($currentField instanceof MapInterface !== $nextField instanceof MapInterface) {
+            throw new InvalidArgumentException('wayopints have different type');
+        }
+
         $fromSignature = $this->createSignature($ship);
-        $fromSignature->setMap($currentField);
+        if ($currentField instanceof MapInterface) {
+            $fromSignature->setMap($currentField);
+        } else {
+            $fromSignature->setStarsystemMap($currentField);
+        }
 
         $toSignature = $this->createSignature($ship);
-        $toSignature->setMap($nextField);
+        if ($nextField instanceof MapInterface) {
+            $toSignature->setMap($nextField);
+        } else {
+            $toSignature->setStarsystemMap($nextField);
+        }
 
         $this->create(
             $flightDirection,
-            $fromSignature,
-            $toSignature
-        );
-    }
-
-    public function createInnerSystemSignatures(
-        ShipInterface $ship,
-        int $flightMethod,
-        StarSystemMapInterface $currentField,
-        StarSystemMapInterface $nextField
-    ): void {
-        $fromSignature = $this->createSignature($ship);
-        $fromSignature->setStarsystemMap($currentField);
-
-        $toSignature = $this->createSignature($ship);
-        $toSignature->setStarsystemMap($nextField);
-
-        $this->create(
-            $flightMethod,
             $fromSignature,
             $toSignature
         );
