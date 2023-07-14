@@ -8,9 +8,13 @@ interface StarSystemMapInterface
 {
     public function getId(): int;
 
+    public function getX(): int;
+
     public function getSx(): int;
 
     public function setSx(int $sx): StarSystemMapInterface;
+
+    public function getY(): int;
 
     public function getSy(): int;
 

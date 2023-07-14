@@ -8,9 +8,13 @@ interface MapInterface
 {
     public function getId(): int;
 
+    public function getX(): int;
+
     public function getCx(): int;
 
     public function setCx(int $cx): MapInterface;
+
+    public function getY(): int;
 
     public function getCy(): int;
 
