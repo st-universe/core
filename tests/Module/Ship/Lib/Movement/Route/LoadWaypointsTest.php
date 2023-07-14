@@ -112,10 +112,10 @@ class LoadWaypointsTest extends StuTestCase
         $this->mapRepository->shouldReceive('getByCoordinateRange')
             ->with(
                 42,
-                $startX,
-                $destX,
-                $startY,
-                $destY,
+                min($startX, $destX),
+                max($startX, $destX),
+                min($startY, $destY),
+                max($startY, $destY),
                 $sortAscending
             )
             ->once()
@@ -177,10 +177,10 @@ class LoadWaypointsTest extends StuTestCase
         $this->starSystemMapRepository->shouldReceive('getByCoordinateRange')
             ->with(
                 $system,
-                $startX,
-                $destX,
-                $startY,
-                $destY,
+                min($startX, $destX),
+                max($startX, $destX),
+                min($startY, $destY),
+                max($startY, $destY),
                 $sortAscending
             )
             ->once()

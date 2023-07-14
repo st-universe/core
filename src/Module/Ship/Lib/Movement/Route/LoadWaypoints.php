@@ -51,19 +51,19 @@ final class LoadWaypoints implements LoadWaypointsInterface
         if ($start instanceof MapInterface) {
             $waypoints = $this->mapRepository->getByCoordinateRange(
                 $start->getLayer()->getId(),
-                $startX,
-                $destinationX,
-                $startY,
-                $destinationY,
+                min($startX, $destinationX),
+                max($startX, $destinationX),
+                min($startY, $destinationY),
+                max($startY, $destinationY),
                 $sortAscending
             );
         } else {
             $waypoints = $this->starSystemMapRepository->getByCoordinateRange(
                 $start->getSystem(),
-                $startX,
-                $destinationX,
-                $startY,
-                $destinationY,
+                min($startX, $destinationX),
+                max($startX, $destinationX),
+                min($startY, $destinationY),
+                max($startY, $destinationY),
                 $sortAscending
             );
         }
