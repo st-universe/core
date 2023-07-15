@@ -37,4 +37,6 @@ interface FlightRouteInterface
     ): void;
 
     public function isDestinationArrived(): bool;
+
+    public function getRouteMode(): int;
 }

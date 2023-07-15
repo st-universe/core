@@ -40,7 +40,7 @@ class FlightRouteTest extends StuTestCase
         );
     }
 
-    public function testSetDestinationExpectOneWaypoint(): void
+    public function testSetDestinationExpectOneMapWaypoint(): void
     {
         $map = $this->mock(MapInterface::class);
         $ship = $this->mock(ShipInterface::class);
@@ -65,6 +65,35 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
+        $this->assertEquals(RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT, $this->subject->getRouteMode());
+    }
+
+    public function testSetDestinationExpectOneSystemMapWaypoint(): void
+    {
+        $map = $this->mock(StarSystemMapInterface::class);
+        $ship = $this->mock(ShipInterface::class);
+        $informationWrapper = $this->mock(InformationWrapper::class);
+
+        $this->subject->setDestination($map);
+
+        $this->assertSame($map, $this->subject->getNextWaypoint());
+
+        $this->enterWaypoint->shouldReceive('enterNextWaypoint')
+            ->with(
+                $ship,
+                false,
+                $map,
+                null,
+                $informationWrapper
+            )
+            ->once();
+
+        $this->subject->enterNextWaypoint($ship, $informationWrapper);
+
+        $this->subject->stepForward();
+
+        $this->assertTrue($this->subject->isDestinationArrived());
+        $this->assertEquals(RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY, $this->subject->getRouteMode());
     }
 
     public function testSetDestinationViaWormholeExpectSystemMapAsWaypointWhenEntry(): void
@@ -96,6 +125,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
+        $this->assertEquals(RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY, $this->subject->getRouteMode());
     }
 
     public function testSetDestinationViaWormholeExpectSystemMapAsWaypointWhenExit(): void
@@ -127,6 +157,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
+        $this->assertEquals(RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT, $this->subject->getRouteMode());
     }
 
     public function testSetDestinationViaCoordinatesExpectValidationOnlyWhenStartEqualsDestination(): void
@@ -184,6 +215,7 @@ class FlightRouteTest extends StuTestCase
         $this->subject->stepForward();
 
         $this->assertTrue($this->subject->isDestinationArrived());
+        $this->assertEquals(RouteModeEnum::ROUTE_MODE_FLIGHT, $this->subject->getRouteMode());
     }
 
     public function testGetNextWaypointExpectExceptionWhenWaypointsEmpty(): void
