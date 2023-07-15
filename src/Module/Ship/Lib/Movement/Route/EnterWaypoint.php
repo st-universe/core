@@ -64,7 +64,11 @@ final class EnterWaypoint implements EnterWaypointInterface
         }
 
         if ($isTraversing) {
-            $flightDirection = $this->updateFlightDirection->update($oldWaypoint, $waypoint, $ship);
+            $flightDirection = $this->updateFlightDirection->updateWhenTraversing(
+                $oldWaypoint,
+                $waypoint,
+                $ship
+            );
 
             //create flight signatures
             $this->flightSignatureCreator->createSignatures(
@@ -75,7 +79,15 @@ final class EnterWaypoint implements EnterWaypointInterface
             );
         }
 
-        //check astro stuff for tractor
+        //leaving star system
+        if (
+            $oldWaypoint instanceof StarSystemMapInterface
+            && $waypoint instanceof MapInterface
+            && !$oldWaypoint->getSystem()->isWormhole()
+        ) {
+            $this->updateFlightDirection->updateWhenSystemExit($ship, $oldWaypoint);
+        }
+
         if ($waypoint instanceof StarSystemMapInterface) {
             $this->checkAstronomicalWaypoints->checkWaypoint($ship, $waypoint, $informations);
         }

@@ -12,12 +12,15 @@ use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 abstract class AbstractDirectedMovement implements ActionControllerInterface
 {
     protected MoveShipRequestInterface $moveShipRequest;
 
-    protected  FlightRouteFactoryInterface $flightRouteFactory;
+    protected FlightRouteFactoryInterface $flightRouteFactory;
+
+    protected StarSystemMapRepositoryInterface $starSystemMapRepository;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -27,12 +30,14 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         MoveShipRequestInterface $moveShipRequest,
         ShipLoaderInterface $shipLoader,
         ShipMoverInterface $shipMover,
-        FlightRouteFactoryInterface $flightRouteFactory
+        FlightRouteFactoryInterface $flightRouteFactory,
+        StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {
         $this->moveShipRequest = $moveShipRequest;
         $this->shipLoader = $shipLoader;
         $this->shipMover = $shipMover;
         $this->flightRouteFactory = $flightRouteFactory;
+        $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
     public function handle(GameControllerInterface $game): void

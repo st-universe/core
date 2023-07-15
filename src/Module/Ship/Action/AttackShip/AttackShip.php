@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\AttackShip;
 use request;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -102,7 +103,7 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
-        if ($target->isDestroyed()) {
+        if ($this->isTargetDestroyed($target)) {
             $game->setView(ShowShip::VIEW_IDENTIFIER);
             $game->addInformation(_('Das Ziel ist bereits zerstört'));
             return;
@@ -151,33 +152,46 @@ final class AttackShip implements ActionControllerInterface
             !$isWebSituation && $isTargetBase
         );
 
-        $msg = $fightMessageCollection->getMessageDump();
+        $informations = new InformationWrapper($fightMessageCollection->getMessageDump());
 
         if ($this->isActiveTractorShipWarped($ship, $target)) {
             //Alarm-Rot check for ship
             if (!$ship->isDestroyed()) {
-                $msg = array_merge($msg, $this->alertRedHelper->doItAll($ship, null));
+                $alertRedInformations = $this->alertRedHelper->doItAll($ship, null);
+
+                if ($alertRedInformations !== null) {
+                    $informations->addInformationMerge($alertRedInformations->getInformations());
+                }
             }
 
             //Alarm-Rot check for traktor ship
-            if (!$target->isDestroyed()) {
-                $msg = array_merge($msg, $this->alertRedHelper->doItAll($target, null));
+            if (!$this->isTargetDestroyed($target)) {
+                $alertRedInformations = $this->alertRedHelper->doItAll($target, null);
+
+                if ($alertRedInformations !== null) {
+                    $informations->addInformationMerge($alertRedInformations->getInformations());
+                }
             }
         }
 
         if ($ship->isDestroyed()) {
-            $game->addInformationMerge($msg);
+            $game->addInformationMerge($informations->getInformations());
             return;
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $msg);
+            $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
-            $game->addInformationMerge($msg);
+            $game->addInformationMerge($informations->getInformations());
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
+    }
+
+    private function isTargetDestroyed(ShipInterface $ship): bool
+    {
+        return $ship->isDestroyed();
     }
 
     private function isActiveTractorShipWarped(ShipInterface $ship, ShipInterface $target): bool

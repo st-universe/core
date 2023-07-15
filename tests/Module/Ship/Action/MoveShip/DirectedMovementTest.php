@@ -14,6 +14,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\StuTestCase;
 
 class DirectedMovementTest extends StuTestCase
@@ -30,12 +31,16 @@ class DirectedMovementTest extends StuTestCase
     /** @var MockInterface&FlightRouteFactoryInterface */
     private FlightRouteFactoryInterface $flightRouteFactory;
 
+    /** @var MockInterface&StarSystemMapRepositoryInterface */
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
+
     protected function setUp(): void
     {
         $this->moveShipRequest = $this->mock(MoveShipRequestInterface::class);
         $this->shipLoader = $this->mock(ShipLoaderInterface::class);
         $this->shipMover = $this->mock(ShipMoverInterface::class);
         $this->flightRouteFactory = $this->mock(FlightRouteFactoryInterface::class);
+        $this->starSystemMapRepository = $this->mock(StarSystemMapRepositoryInterface::class);
     }
 
     public static function moveDataProvider(): array
@@ -78,7 +83,8 @@ class DirectedMovementTest extends StuTestCase
             $this->moveShipRequest,
             $this->shipLoader,
             $this->shipMover,
-            $this->flightRouteFactory
+            $this->flightRouteFactory,
+            $this->starSystemMapRepository
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -169,7 +175,8 @@ class DirectedMovementTest extends StuTestCase
             $this->moveShipRequest,
             $this->shipLoader,
             $this->shipMover,
-            $this->flightRouteFactory
+            $this->flightRouteFactory,
+            $this->starSystemMapRepository
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')
@@ -254,7 +261,8 @@ class DirectedMovementTest extends StuTestCase
             $this->moveShipRequest,
             $this->shipLoader,
             $this->shipMover,
-            $this->flightRouteFactory
+            $this->flightRouteFactory,
+            $this->starSystemMapRepository
         );
 
         $this->moveShipRequest->shouldReceive('getShipId')

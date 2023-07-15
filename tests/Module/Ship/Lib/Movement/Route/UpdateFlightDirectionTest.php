@@ -77,7 +77,7 @@ class UpdateFlightDirectionTest extends StuTestCase
                 ->once();
         }
 
-        $result = $this->subject->update($oldWaypoint, $waypoint, $ship);
+        $result = $this->subject->updateWhenTraversing($oldWaypoint, $waypoint, $ship);
 
         if (!$expectException) {
             $this->assertEquals($expectedFlightDirection, $result);
