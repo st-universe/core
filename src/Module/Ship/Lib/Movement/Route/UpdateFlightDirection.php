@@ -12,7 +12,7 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 
 final class UpdateFlightDirection implements UpdateFlightDirectionInterface
 {
-    public function update(
+    public function updateWhenTraversing(
         MapInterface|StarSystemMapInterface $oldWaypoint,
         MapInterface|StarSystemMapInterface $waypoint,
         ShipInterface $ship
@@ -50,5 +50,34 @@ final class UpdateFlightDirection implements UpdateFlightDirectionInterface
         $ship->setFlightDirection($flightDirection);
 
         return $flightDirection;
+    }
+
+    public function updateWhenSystemExit(ShipInterface $ship, StarSystemMapInterface $starsystemMap): void
+    {
+        $system = $starsystemMap->getSystem();
+
+        $shipX = $starsystemMap->getSx();
+        $shipY = $starsystemMap->getSy();
+
+        $rad12or34 = atan($shipY / $shipX);
+        $rad14or23 = atan(($system->getMaxX() - $shipX) / $shipY);
+
+        $flightDirection = null;
+
+        if ($rad12or34 < M_PI_4) {
+            if ($rad14or23 < M_PI_4) {
+                $flightDirection = ShipEnum::DIRECTION_LEFT;
+            } else {
+                $flightDirection = ShipEnum::DIRECTION_BOTTOM;
+            }
+        } else {
+            if ($rad14or23 < M_PI_4) {
+                $flightDirection = ShipEnum::DIRECTION_TOP;
+            } else {
+                $flightDirection = ShipEnum::DIRECTION_RIGHT;
+            }
+        }
+
+        $ship->setFlightDirection($flightDirection);
     }
 }

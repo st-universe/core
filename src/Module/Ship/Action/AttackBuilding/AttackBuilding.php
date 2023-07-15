@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyFunctionManager;
 use Stu\Component\Colony\ColonyFunctionManagerInterface;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -50,7 +51,7 @@ final class AttackBuilding implements ActionControllerInterface
 
     private ShipWrapperFactoryInterface $shipWrapperFactory;
 
-    private array $messages = [];
+    private InformationWrapper $informations;
 
     private PlanetFieldTypeRetrieverInterface $planetFieldTypeRetriever;
 
@@ -86,6 +87,8 @@ final class AttackBuilding implements ActionControllerInterface
         $this->planetFieldTypeRetriever = $planetFieldTypeRetriever;
         $this->colonyFunctionManager = $colonyFunctionManager;
         $this->attackerProviderFactory = $attackerProviderFactory;
+
+        $this->informations = new InformationWrapper();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -152,15 +155,13 @@ final class AttackBuilding implements ActionControllerInterface
         }
 
         foreach ($attacker as $attackship) {
-            $this->addMessageMerge($this->fightLib->ready($attackship));
+            $this->informations->addInformationMerge($this->fightLib->ready($attackship));
         }
 
         // DEFENDING FLEETS
-        $informations = [];
         foreach ($colony->getDefenders() as $fleet) {
-            $this->alertRedHelper->performAttackCycle($fleet->getLeadShip(), $ship, $informations, true);
+            $this->alertRedHelper->performAttackCycle($fleet->getLeadShip(), $ship, $this->informations, true);
         }
-        $this->addMessageMerge($informations);
 
         // ORBITAL DEFENSE
         $count = $this->colonyFunctionManager->getBuildingWithFunctionCount(
@@ -208,13 +209,13 @@ final class AttackBuilding implements ActionControllerInterface
             $shipAttacker = $this->attackerProviderFactory->getShipAttacker($attackerWrapper);
 
             if ($isOrbitField) {
-                $this->addMessageMerge($this->energyWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField));
+                $this->informations->addInformationMerge($this->energyWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField));
 
                 if ($field->getIntegrity() === 0) {
                     break;
                 }
             }
-            $this->addMessageMerge($this->projectileWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField, $count));
+            $this->informations->addInformationMerge($this->projectileWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField, $count));
 
             if ($field->getIntegrity() === 0) {
                 break;
@@ -224,27 +225,27 @@ final class AttackBuilding implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         $pm = sprintf(_('Kampf in Sektor %s, Kolonie %s') . "\n", $ship->getSectorString(), $colony->getName());
-        foreach ($this->messages as $value) {
+        foreach ($this->informations->getInformations() as $value) {
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
             $userId,
-            (int) $colony->getUserId(),
+            $colony->getUserId(),
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
         );
 
         if ($ship->isDestroyed()) {
-            $game->addInformationMerge($this->messages);
+            $game->addInformationMerge($this->informations->getInformations());
             return;
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $this->messages);
+            $game->setTemplateVar('FIGHT_RESULTS', $this->informations->getInformations());
         } else {
-            $game->addInformationMerge($this->messages);
+            $game->addInformationMerge($this->informations->getInformations());
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }
@@ -255,16 +256,8 @@ final class AttackBuilding implements ActionControllerInterface
     private function addFightMessageMerge(array $fightMessages): void
     {
         foreach ($fightMessages as $message) {
-            $this->messages = array_merge($this->messages, $message->getMessage());
+            $this->informations->addInformationMerge($message->getMessage());
         }
-    }
-
-    /**
-     * @param string[] $msg
-     */
-    private function addMessageMerge($msg): void
-    {
-        $this->messages = array_merge($this->messages, $msg);
     }
 
     public function performSessionCheck(): bool

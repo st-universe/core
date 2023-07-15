@@ -10,9 +10,14 @@ use Stu\Orm\Entity\StarSystemMapInterface;
 
 interface UpdateFlightDirectionInterface
 {
-    public function update(
+    public function updateWhenTraversing(
         MapInterface|StarSystemMapInterface $oldWaypoint,
         MapInterface|StarSystemMapInterface $waypoint,
         ShipInterface $ship
     ): int;
+
+    public function updateWhenSystemExit(
+        ShipInterface $ship,
+        StarSystemMapInterface $starsystemMap
+    ): void;
 }

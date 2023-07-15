@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Component\Player\PlayerRelationDeterminatorInterface;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -47,11 +48,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->playerRelationDeterminator = $playerRelationDeterminator;
     }
 
-    public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): array
+    public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): ?InformationWrapper
     {
         //$this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
 
-        $informations = [];
+        $informations = new InformationWrapper();
 
         $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations, $tractoringShip);
         shuffle($shipsToShuffle);
@@ -74,8 +75,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
 
         if ($game !== null) {
-            $game->addInformationMergeDown($informations);
-            return [];
+            $game->addInformationMergeDown($informations->getInformations());
+            return null;
         } else {
             return $informations;
         }
@@ -118,8 +119,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
     }
 
-    public function checkForAlertRedShips(ShipInterface $leadShip, &$informations, ?ShipInterface $tractoringShip = null): array
-    {
+    public function checkForAlertRedShips(
+        ShipInterface $leadShip,
+        InformationWrapper $informations,
+        ?ShipInterface $tractoringShip = null
+    ): array {
         if ($leadShip->getUser()->getId() === UserEnum::USER_NOONE) {
             return [];
         }
@@ -192,16 +196,34 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->informAboutTrojanHorse($usersToInformAboutTrojanHorse);
 
         if ($fleetCount == 1) {
-            $informations[] = sprintf(_('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+            $informations->addInformation(sprintf(
+                _('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n",
+                $leadShip->getPosX(),
+                $leadShip->getPosY()
+            ));
         }
         if ($fleetCount > 1) {
-            $informations[] = sprintf(_('In Sektor %d|%d befinden sich %d Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY(), $fleetCount);
+            $informations->addInformation(sprintf(
+                _('In Sektor %d|%d befinden sich %d Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n",
+                $leadShip->getPosX(),
+                $leadShip->getPosY(),
+                $fleetCount
+            ));
         }
         if ($singleShipCount == 1) {
-            $informations[] = sprintf(_('In Sektor %d|%d befindet sich 1 Einzelschiff auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+            $informations->addInformation(sprintf(
+                _('In Sektor %d|%d befindet sich 1 Einzelschiff auf [b][color=red]Alarm-Rot![/color][/b]') . "\n",
+                $leadShip->getPosX(),
+                $leadShip->getPosY()
+            ));
         }
         if ($singleShipCount > 1) {
-            $informations[] = sprintf(_('In Sektor %d|%d befinden sich %d Einzelschiffe auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY(), $singleShipCount);
+            $informations->addInformation(sprintf(
+                _('In Sektor %d|%d befinden sich %d Einzelschiffe auf [b][color=red]Alarm-Rot![/color][/b]') . "\n",
+                $leadShip->getPosX(),
+                $leadShip->getPosY(),
+                $singleShipCount
+            ));
         }
 
         return $shipsToShuffle;
@@ -258,7 +280,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
     public function performAttackCycle(
         ShipInterface $alertShip,
         ShipInterface $leadShip,
-        &$informations,
+        InformationWrapper $informations,
         bool $isColonyDefense = false
     ): void {
         $alert_user_id = $alertShip->getUser()->getId();
@@ -340,11 +362,16 @@ final class AlertRedHelper implements AlertRedHelperInterface
         );
 
         if ($leadShip->isDestroyed()) {
-            $informations = array_merge($informations, $messages);
+            $informations->addInformationMerge($messages);
             return;
         }
 
-        $informations[] = sprintf(_('[b][color=red]%s[/color][/b] fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());
-        $informations = array_merge($informations, $messages);
+        $informations->addInformation(sprintf(
+            _('[b][color=red]%s[/color][/b] fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n",
+            $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot',
+            $leadShip->getPosX(),
+            $leadShip->getPosY()
+        ));
+        $informations->addInformationMerge($messages);
     }
 }

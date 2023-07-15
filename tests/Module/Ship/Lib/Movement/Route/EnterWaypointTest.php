@@ -66,6 +66,15 @@ class EnterWaypointTest extends StuTestCase
             ->with($waypoint, null)
             ->once();
 
+        $oldWaypoint->shouldReceive('getSystem->isWormhole')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(false);
+
+        $this->updateFlightDirection->shouldReceive('updateWhenSystemExit')
+            ->with($ship, $oldWaypoint)
+            ->once();
+
         $this->subject->enterNextWaypoint(
             $ship,
             false,
@@ -90,6 +99,11 @@ class EnterWaypointTest extends StuTestCase
         $ship->shouldReceive('updateLocation')
             ->with($waypoint, null)
             ->once();
+
+        $oldWaypoint->shouldReceive('getSystem->isWormhole')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(true);
 
         $this->stuTime->shouldReceive('time')
             ->withNoArgs()
@@ -205,7 +219,7 @@ class EnterWaypointTest extends StuTestCase
             ->once()
             ->andReturn(false);
 
-        $this->updateFlightDirection->shouldReceive('update')
+        $this->updateFlightDirection->shouldReceive('updateWhenTraversing')
             ->with($oldWaypoint, $waypoint, $ship)
             ->once()
             ->andReturn(42);
