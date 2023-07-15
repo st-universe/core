@@ -8,8 +8,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
 use Stu\Module\Ship\Lib\Movement\Route\FlightRouteInterface;
+use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 

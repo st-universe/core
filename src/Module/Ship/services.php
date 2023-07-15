@@ -180,7 +180,25 @@ use Stu\Module\Ship\Lib\LeaveFleet as LibLeaveFleet;
 use Stu\Module\Ship\Lib\LeaveFleetInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
+use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreator;
+use Stu\Module\Ship\Lib\Movement\Component\FlightSignatureCreatorInterface;
+use Stu\Module\Ship\Lib\Movement\Route\CheckAstronomicalWaypoints;
+use Stu\Module\Ship\Lib\Movement\Route\CheckAstronomicalWaypointsInterface;
+use Stu\Module\Ship\Lib\Movement\Route\CheckDestination;
+use Stu\Module\Ship\Lib\Movement\Route\CheckDestinationInterface;
+use Stu\Module\Ship\Lib\Movement\Route\EnterWaypoint;
+use Stu\Module\Ship\Lib\Movement\Route\EnterWaypointInterface;
+use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactory;
+use Stu\Module\Ship\Lib\Movement\Route\FlightRouteFactoryInterface;
+use Stu\Module\Ship\Lib\Movement\Route\LoadWaypoints;
+use Stu\Module\Ship\Lib\Movement\Route\LoadWaypointsInterface;
+use Stu\Module\Ship\Lib\Movement\Route\UpdateFlightDirection;
+use Stu\Module\Ship\Lib\Movement\Route\UpdateFlightDirectionInterface;
 use Stu\Module\Ship\Lib\Movement\ShipMovementComponentsFactory;
+use Stu\Module\Ship\Lib\Movement\ShipMovementInformationAdder;
+use Stu\Module\Ship\Lib\Movement\ShipMovementInformationAdderInterface;
+use Stu\Module\Ship\Lib\Movement\ShipMover;
+use Stu\Module\Ship\Lib\Movement\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ReactorUtil;
 use Stu\Module\Ship\Lib\ReactorUtilInterface;
 use Stu\Module\Ship\Lib\ShipCreator;
@@ -189,8 +207,6 @@ use Stu\Module\Ship\Lib\ShipLeaver;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipMover;
-use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipStateChanger;
@@ -283,6 +299,14 @@ return [
     AttackMatchupInterface::class => autowire(AttackMatchup::class),
     AlertLevelBasedReactionInterface::class => autowire(AlertLevelBasedReaction::class),
     SalvageEmergencyPodsRequestInterface::class => autowire(SalvageEmergencyPodsRequest::class),
+    FlightSignatureCreatorInterface::class => autowire(FlightSignatureCreator::class),
+    FlightRouteFactoryInterface::class => autowire(FlightRouteFactory::class),
+    EnterWaypointInterface::class => autowire(EnterWaypoint::class),
+    CheckDestinationInterface::class => autowire(CheckDestination::class),
+    LoadWaypointsInterface::class => autowire(LoadWaypoints::class),
+    UpdateFlightDirectionInterface::class => autowire(UpdateFlightDirection::class),
+    CheckAstronomicalWaypointsInterface::class => autowire(CheckAstronomicalWaypoints::class),
+    ShipMovementInformationAdderInterface::class => autowire(ShipMovementInformationAdder::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
