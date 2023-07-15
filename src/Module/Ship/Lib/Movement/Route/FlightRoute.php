@@ -15,13 +15,17 @@ use Stu\Orm\Entity\WormholeEntryInterface;
 
 final class FlightRoute implements FlightRouteInterface
 {
+    //Components
     private CheckDestinationInterface $checkDestination;
 
     private LoadWaypointsInterface $loadWaypoints;
 
     private EnterWaypointInterface $enterWaypoint;
 
+    //Members
     private bool $isTraversing = false;
+
+    private int $routeMode = RouteModeEnum::ROUTE_MODE_FLIGHT;
 
     private MapInterface|StarSystemMapInterface $current;
 
@@ -48,6 +52,12 @@ final class FlightRoute implements FlightRouteInterface
     {
         $this->waypoints->add($destination);
 
+        if ($destination instanceof MapInterface) {
+            $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_EXIT;
+        } else {
+            $this->routeMode = RouteModeEnum::ROUTE_MODE_SYSTEM_ENTRY;
+        }
+
         return $this;
     }
 
@@ -56,8 +66,10 @@ final class FlightRoute implements FlightRouteInterface
         $this->wormholeEntry = $wormholeEntry;
         if ($isEntry) {
             $this->waypoints->add($wormholeEntry->getSystemMap());
+            $this->routeMode = RouteModeEnum::ROUTE_MODE_WORMHOLE_ENTRY;
         } else {
             $this->waypoints->add($wormholeEntry->getMap());
+            $this->routeMode = RouteModeEnum::ROUTE_MODE_WORMHOLE_EXIT;
         }
 
         return $this;
@@ -115,5 +127,10 @@ final class FlightRoute implements FlightRouteInterface
     public function isDestinationArrived(): bool
     {
         return $this->waypoints->isEmpty();
+    }
+
+    public function getRouteMode(): int
+    {
+        return $this->routeMode;
     }
 }
