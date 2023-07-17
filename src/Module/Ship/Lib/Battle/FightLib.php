@@ -66,10 +66,10 @@ final class FightLib implements FightLibInterface
 
         $this->cancelRepair->cancelRepair($ship);
 
-        $informations->addInformationMerge($this->alertLevelBasedReaction->react($wrapper)->getInformations());
+        $informations->addInformationWrapper($this->alertLevelBasedReaction->react($wrapper));
 
         if ($informations->getInformations() !== []) {
-            $informations->addInformationMerge([sprintf(_('Aktionen der %s'), $ship->getName())], true);
+            $informations->addInformationArray([sprintf(_('Aktionen der %s'), $ship->getName())], true);
         }
 
         return $informations;

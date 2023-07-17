@@ -151,7 +151,7 @@ final class AttackBuilding implements ActionControllerInterface
         }
 
         foreach ($attackers as $attackship) {
-            $this->informations->addInformationMerge($this->fightLib->ready($attackship)->getInformations());
+            $this->informations->addInformationWrapper($this->fightLib->ready($attackship));
         }
 
         // DEFENDING FLEETS
@@ -205,13 +205,13 @@ final class AttackBuilding implements ActionControllerInterface
             $shipAttacker = $this->attackerProviderFactory->getShipAttacker($attackerWrapper);
 
             if ($isOrbitField) {
-                $this->informations->addInformationMerge($this->energyWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField)->getInformations());
+                $this->informations->addInformationWrapper($this->energyWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField));
 
                 if ($field->getIntegrity() === 0) {
                     break;
                 }
             }
-            $this->informations->addInformationMerge($this->projectileWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField, $count)->getInformations());
+            $this->informations->addInformationWrapper($this->projectileWeaponPhase->fireAtBuilding($shipAttacker, $field, $isOrbitField, $count));
 
             if ($field->getIntegrity() === 0) {
                 break;
@@ -252,7 +252,7 @@ final class AttackBuilding implements ActionControllerInterface
     private function addFightMessageMerge(array $fightMessages): void
     {
         foreach ($fightMessages as $message) {
-            $this->informations->addInformationMerge($message->getMessage());
+            $this->informations->addInformationArray($message->getMessage());
         }
     }
 
