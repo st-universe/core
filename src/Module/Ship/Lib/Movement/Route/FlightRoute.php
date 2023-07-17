@@ -101,7 +101,7 @@ final class FlightRoute implements FlightRouteInterface
         $first =  $this->waypoints->first();
 
         if (!$first) {
-            throw new RuntimeException('isDestinationArrived has to be called beforehand');
+            return;
         }
 
         $this->current = $first;
@@ -113,12 +113,15 @@ final class FlightRoute implements FlightRouteInterface
         $this->waypoints->clear();
     }
 
-    public function enterNextWaypoint(ShipInterface $ship, InformationWrapper $informations): void
-    {
+    public function enterNextWaypoint(
+        ShipInterface $ship,
+        MapInterface|StarSystemMapInterface $nextWaypoint,
+        InformationWrapper $informations
+    ): void {
         $this->enterWaypoint->enterNextWaypoint(
             $ship,
             $this->isTraversing,
-            $this->getNextWaypoint(),
+            $nextWaypoint,
             $this->wormholeEntry,
             $informations
         );

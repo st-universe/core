@@ -14,6 +14,13 @@ interface ShipMovementInformationAdderInterface
         InformationWrapper $informations
     ): void;
 
+    public function reachedDestinationDestroyed(
+        ShipInterface $ship,
+        bool $isFleetMode,
+        int $routeMode,
+        InformationWrapper $informations
+    ): void;
+
     public function pulledTractoredShip(
         string $tractoredShipName,
         int $routeMode,

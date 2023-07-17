@@ -33,6 +33,7 @@ interface FlightRouteInterface
 
     public function enterNextWaypoint(
         ShipInterface $ship,
+        MapInterface|StarSystemMapInterface $nextWaypoint,
         InformationWrapper $informations
     ): void;
 
