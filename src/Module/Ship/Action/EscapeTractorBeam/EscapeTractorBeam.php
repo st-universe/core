@@ -170,7 +170,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $system = $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR);
         $this->applyDamage->damageShipSystem($wrapper, $system, rand(5, 25), $informations);
 
-        $game->addInformationMergeDown($informations->getInformations());
+        $game->addInformationWrapper($informations);
 
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 
@@ -195,7 +195,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
         $informations = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHull() * rand(10, 25) / 100)), $wrapper);
-        $game->addInformationMergeDown($informations->getInformations());
+        $game->addInformationWrapper($informations);
 
         $href = sprintf('ship.php?%s=1&id=%d', ShowShip::VIEW_IDENTIFIER, $tractoringShip->getId());
 

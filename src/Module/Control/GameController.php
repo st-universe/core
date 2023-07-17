@@ -19,6 +19,7 @@ use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\TickGameStateException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Lib\AccountNotVerifiedException;
+use Stu\Lib\InformationWrapper;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
 use Stu\Lib\UserLockedException;
@@ -299,6 +300,19 @@ final class GameController implements GameControllerInterface
         }
 
         $this->gameInformations = array_merge($this->getInformation(), $notificationArray);
+    }
+
+    public function addInformationWrapper(?InformationWrapper $informations, bool $isHead = false): void
+    {
+        if ($informations === null) {
+            return;
+        }
+
+        if ($isHead) {
+            $this->addInformationMerge($informations->getInformations());
+        } else {
+            $this->addInformationMergeDown($informations->getInformations());
+        }
     }
 
     public function getInformation(): array

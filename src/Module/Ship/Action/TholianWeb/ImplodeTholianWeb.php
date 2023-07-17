@@ -114,7 +114,7 @@ final class ImplodeTholianWeb implements ActionControllerInterface
                 $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
 
-            $game->addInformationMergeDown($informations->getInformations());
+            $game->addInformationWrapper($informations);
         }
 
 

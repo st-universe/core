@@ -232,7 +232,7 @@ final class AttackBuilding implements ActionControllerInterface
         );
 
         if ($ship->isDestroyed()) {
-            $game->addInformationMerge($this->informations->getInformations());
+            $game->addInformationWrapper($this->informations);
             return;
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
@@ -241,7 +241,7 @@ final class AttackBuilding implements ActionControllerInterface
             $game->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $this->informations->getInformations());
         } else {
-            $game->addInformationMerge($this->informations->getInformations());
+            $game->addInformationWrapper($this->informations);
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }
