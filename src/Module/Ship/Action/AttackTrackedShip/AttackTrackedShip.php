@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\AttackTrackedShip;
 
 use request;
 use Stu\Exception\SanityCheckException;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -131,29 +132,37 @@ final class AttackTrackedShip implements ActionControllerInterface
             $isTargetBase ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
 
-        $msg = $messageDump;
+        $informations = new InformationWrapper($messageDump);
 
         //Alarm-Rot check for ship
         if ($isShipWarped && !$ship->isDestroyed()) {
-            $msg = array_merge($msg, $this->alertRedHelper->doItAll($ship, null));
+            $alertRedInformations = $this->alertRedHelper->doItAll($ship, null);
+
+            if ($alertRedInformations !== null) {
+                $informations->addInformationMerge($alertRedInformations->getInformations());
+            }
         }
 
         //Alarm-Rot check for traktor ship
         if ($isTargetWarped && !$target->isDestroyed()) {
-            $msg = array_merge($msg, $this->alertRedHelper->doItAll($target, null));
+            $alertRedInformations = $this->alertRedHelper->doItAll($target, null);
+
+            if ($alertRedInformations !== null) {
+                $informations->addInformationMerge($alertRedInformations->getInformations());
+            }
         }
 
         if ($ship->isDestroyed()) {
-            $game->addInformationMerge($msg);
+            $game->addInformationMerge($informations->getInformations());
             return;
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $msg);
+            $game->setTemplateVar('FIGHT_RESULTS', $informations->getInformations());
         } else {
-            $game->addInformationMerge($msg);
+            $game->addInformationMerge($informations->getInformations());
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }

@@ -2457,11 +2457,6 @@ parameters:
 			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
 
 		-
-			message: "#^Property Stu\\\\Module\\\\Ship\\\\Action\\\\AttackBuilding\\\\AttackBuilding\\:\\:\\$messages type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/AttackBuilding/AttackBuilding.php
-
-		-
 			message: "#^Parameter \\#3 \\$building of method Stu\\\\Module\\\\Colony\\\\Lib\\\\PlanetColonizationInterface\\:\\:colonize\\(\\) expects Stu\\\\Orm\\\\Entity\\\\BuildingInterface, Stu\\\\Orm\\\\Entity\\\\BuildingInterface\\|null given\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/Colonize/Colonize.php
