@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\Action\UndockShip;
 use request;
 use Stu\Component\Ship\Repair\CancelRepairInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Exception\InvalidParamException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;

@@ -6,11 +6,11 @@ namespace Stu\Module\Maindesk\Action\ColonizationShip;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\UserEnum;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 

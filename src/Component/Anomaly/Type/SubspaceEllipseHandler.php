@@ -22,7 +22,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
-//TODO unit tests 
+//TODO unit tests
 final class SubspaceEllipseHandler implements AnomalyHandlerInterface
 {
     public const MASS_CALCULATION_THRESHOLD = 33333333;
@@ -157,7 +157,7 @@ final class SubspaceEllipseHandler implements AnomalyHandlerInterface
         );
     }
 
-    function generateRandomValue(): int
+    public function generateRandomValue(): int
     {
         $mean = 25; // MW
         $stdDeviation = 10; // FWHM

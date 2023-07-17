@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\ChangeSettings;
 
 use Stu\Component\Game\ModuleViewEnum;
-use Stu\Component\Player\UserRpgEnum;
 use Stu\Component\Player\UserCssEnum;
+use Stu\Component\Player\UserRpgEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\UserInterface;

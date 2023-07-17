@@ -53,7 +53,7 @@ class WeaponShield implements WeaponShieldInterface
 
     /**
      * @Column(type="integer", nullable=true)
-     * 
+     *
      */
     private ?int $faction_id = 0;
 

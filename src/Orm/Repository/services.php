@@ -115,10 +115,9 @@ use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TholianWeb;
+use Stu\Orm\Entity\TorpedoHull;
 use Stu\Orm\Entity\TorpedoStorage;
 use Stu\Orm\Entity\TorpedoType;
-use Stu\Orm\Entity\TorpedoHull;
-use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeLicenseInfo;
 use Stu\Orm\Entity\TradeOffer;
@@ -136,6 +135,7 @@ use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\Weapon;
+use Stu\Orm\Entity\WeaponShield;
 use Stu\Orm\Entity\WormholeEntry;
 
 return [

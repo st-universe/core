@@ -12,7 +12,7 @@ use Stu\Orm\Entity\UserInterface;
  *
  * @method null|TradePostInterface find(integer $id)
  * @method TradePostInterface[] findAll()
- * 
+ *
  */
 interface TradePostRepositoryInterface extends ObjectRepository
 {

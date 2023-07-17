@@ -22,7 +22,7 @@ class DistanceCalculationTest extends StuTestCase
     public static function shipToShipDistanceTestData()
     {
         return [
-            //?ship1systemX, ?ship1systemY, ship1posX, ship1posY, ?ship2systemX, ?ship2systemY, ship2posX, ship2posY, expectedDistance 
+            //?ship1systemX, ?ship1systemY, ship1posX, ship1posY, ?ship2systemX, ?ship2systemY, ship2posX, ship2posY, expectedDistance
             // both outside system
             [null, null, 1, 1, null, null, 1, 1, 0],
             [null, null, 2, 1, null, null, 1, 1, 1000],
@@ -90,7 +90,7 @@ class DistanceCalculationTest extends StuTestCase
     public static function shipToColonyDistanceTestData()
     {
         return [
-            //?shipSystemX, ?shipSystemY, shipPosX, shipPosY, colonySystemX, colonySystemY, colonyPosX, colonyPosY, expectedDistance 
+            //?shipSystemX, ?shipSystemY, shipPosX, shipPosY, colonySystemX, colonySystemY, colonyPosX, colonyPosY, expectedDistance
 
             // both inside same system
             [1, 1, 1, 1, 1, 1, 1, 1, 0],

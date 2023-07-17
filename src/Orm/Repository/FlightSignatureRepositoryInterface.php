@@ -6,8 +6,6 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
-use Stu\Orm\Entity\MapInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
 
 /**
  * @extends ObjectRepository<FlightSignature>

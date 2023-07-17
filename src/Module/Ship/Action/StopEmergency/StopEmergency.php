@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\StopEmergency;
 
-use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\StuTime;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Module\Control\StuTime;
+use Stu\Orm\Repository\SpacecraftEmergencyRepositoryInterface;
 
 /**
  * Stops a ship's emergency call

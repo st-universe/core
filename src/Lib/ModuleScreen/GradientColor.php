@@ -53,13 +53,13 @@ final class GradientColor implements GradientColorInterface
             $b = hexdec(substr($color, 4, 2));
         }
 
-        return array($r, $g, $b);
+        return [$r, $g, $b];
     }
 
     /**
      * @param array<mixed> $rgb1
      * @param array<mixed> $rgb2
-     * 
+     *
      * @return array<int>
      */
     private static function calculateGradientRgb(array $rgb1, array $rgb2, float $percent): array
@@ -68,7 +68,7 @@ final class GradientColor implements GradientColorInterface
         $g = intval($rgb1[1] + ($rgb2[1] - $rgb1[1]) * $percent / 100);
         $b = intval($rgb1[2] + ($rgb2[2] - $rgb1[2]) * $percent / 100);
 
-        return array($r, $g, $b);
+        return [$r, $g, $b];
     }
 
     /**

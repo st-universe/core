@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\History;
 
-
 final class HistoryTypeEnum
 {
     public const HISTORY_TYPE_SHIP = 1;

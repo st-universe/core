@@ -112,8 +112,7 @@ final class DockFleet implements ActionControllerInterface
         $epsSystem = $stationWrapper->getEpsSystemData();
 
         $this->loggerUtil->log('F');
-        $msg = [];
-        $msg[] = _("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName();;
+        $msg = [_("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName()];
         $freeSlots = $station->getFreeDockingSlotCount();
         foreach ($targetFleet->getShips() as $ship) {
             $this->loggerUtil->log('G');
