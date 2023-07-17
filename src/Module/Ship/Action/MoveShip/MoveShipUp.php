@@ -15,7 +15,7 @@ final class MoveShipUp extends AbstractDirectedMovement
 {
     public const ACTION_IDENTIFIER = 'B_MOVE_UP';
 
-    protected function isSanityCheckFaulty(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         return false;
     }
