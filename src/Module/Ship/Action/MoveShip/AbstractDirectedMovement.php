@@ -40,6 +40,10 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
+    abstract protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool;
+
+    abstract protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface;
+
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
@@ -68,12 +72,29 @@ abstract class AbstractDirectedMovement implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
-    abstract protected function isSanityCheckFaulty(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool;
-
-    abstract protected function getFlightRoute(ShipWrapperInterface $wrapper): FlightRouteInterface;
-
     public function performSessionCheck(): bool
     {
         return true;
+    }
+
+    private function isSanityCheckFaulty(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
+    {
+        $ship = $wrapper->get();
+
+        if (!$ship->hasEnoughCrew($game)) {
+            return true;
+        }
+
+        if ($ship->isTractored()) {
+            $game->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
+            return true;
+        }
+
+        if ($ship->getHoldingWeb() !== null && $ship->getHoldingWeb()->isFinished()) {
+            $game->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
+            return true;
+        }
+
+        return $this->isSanityCheckFaultyConcrete($wrapper, $game);
     }
 }

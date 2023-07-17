@@ -14,7 +14,7 @@ final class LeaveStarSystem extends AbstractDirectedMovement
 {
     public const ACTION_IDENTIFIER = 'B_LEAVE_STARSYSTEM';
 
-    protected function isSanityCheckFaulty(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         $ship = $wrapper->get();
 
@@ -26,20 +26,6 @@ final class LeaveStarSystem extends AbstractDirectedMovement
         //the destination map field
         $outerMap = $starsystemMap->getSystem()->getMapField();
         if ($outerMap === null) {
-            return true;
-        }
-
-        if (!$ship->hasEnoughCrew($game)) {
-            return true;
-        }
-
-        if ($ship->isTractored()) {
-            $game->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
-            return true;
-        }
-
-        if ($ship->getHoldingWeb() !== null && $ship->getHoldingWeb()->isFinished()) {
-            $game->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
             return true;
         }
 

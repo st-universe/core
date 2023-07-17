@@ -14,7 +14,7 @@ final class LeaveWormhole extends AbstractDirectedMovement
 {
     public const ACTION_IDENTIFIER = 'B_LEAVE_WORMHOLE';
 
-    protected function isSanityCheckFaulty(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         $ship = $wrapper->get();
 
@@ -29,20 +29,6 @@ final class LeaveWormhole extends AbstractDirectedMovement
 
         $wormholeEntry = $starsystemMap->getRandomWormholeEntry();
         if ($wormholeEntry === null) {
-            return true;
-        }
-
-        if (!$ship->hasEnoughCrew($game)) {
-            return true;
-        }
-
-        if ($ship->isTractored()) {
-            $game->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
-            return true;
-        }
-
-        if ($ship->getHoldingWeb() !== null && $ship->getHoldingWeb()->isFinished()) {
-            $game->addInformation(_('Das Schiff ist in einem Energienetz gefangen'));
             return true;
         }
 

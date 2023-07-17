@@ -14,6 +14,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipWrapperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\TholianWebInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -77,6 +78,7 @@ class DirectedMovementTest extends StuTestCase
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
+        $holdingWeb = $this->mock(TholianWebInterface::class);
 
         /** @var AbstractDirectedMovement $subject */
         $subject = new $className(
@@ -108,6 +110,22 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($shipPosY);
+        $ship->shouldReceive('hasEnoughCrew')
+            ->with($game)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->andReturn($holdingWeb);
+
+        $holdingWeb->shouldReceive('isFinished')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
             ->with($shipId, $userId)
@@ -154,6 +172,161 @@ class DirectedMovementTest extends StuTestCase
         );
     }
 
+    public function testHandleExpectNoMovementWhenNotEnoughCrew(): void
+    {
+        $userId = 666;
+        $shipId = 42;
+
+        $ship = $this->mock(ShipInterface::class);
+        $shipWrapper = $this->mock(ShipWrapperInterface::class);
+        $game = $this->mock(GameControllerInterface::class);
+
+        $subject = new MoveShipRight(
+            $this->moveShipRequest,
+            $this->shipLoader,
+            $this->shipMover,
+            $this->flightRouteFactory,
+            $this->starSystemMapRepository
+        );
+
+        $this->moveShipRequest->shouldReceive('getShipId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipId);
+
+        $ship->shouldReceive('hasEnoughCrew')
+            ->with($game)
+            ->once()
+            ->andReturnFalse();
+
+        $game->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+
+        $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
+            ->with($shipId, $userId)
+            ->once()
+            ->andReturn($shipWrapper);
+
+        $shipWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $subject->handle($game);
+    }
+
+    public function testHandleExpectNoMovementWhenShipIsTractored(): void
+    {
+        $userId = 666;
+        $shipId = 42;
+
+        $ship = $this->mock(ShipInterface::class);
+        $shipWrapper = $this->mock(ShipWrapperInterface::class);
+        $game = $this->mock(GameControllerInterface::class);
+
+        $subject = new MoveShipRight(
+            $this->moveShipRequest,
+            $this->shipLoader,
+            $this->shipMover,
+            $this->flightRouteFactory,
+            $this->starSystemMapRepository
+        );
+
+        $this->moveShipRequest->shouldReceive('getShipId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipId);
+
+        $ship->shouldReceive('hasEnoughCrew')
+            ->with($game)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $game->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+        $game->shouldReceive('addInformation')
+            ->with('Das Schiff wird von einem Traktorstrahl gehalten')
+            ->once();
+
+        $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
+            ->with($shipId, $userId)
+            ->once()
+            ->andReturn($shipWrapper);
+
+        $shipWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $subject->handle($game);
+    }
+
+    public function testHandleExpectNoMovementWhenShipIsInWeb(): void
+    {
+        $userId = 666;
+        $shipId = 42;
+
+        $ship = $this->mock(ShipInterface::class);
+        $shipWrapper = $this->mock(ShipWrapperInterface::class);
+        $game = $this->mock(GameControllerInterface::class);
+        $holdingWeb = $this->mock(TholianWebInterface::class);
+
+        $subject = new MoveShipRight(
+            $this->moveShipRequest,
+            $this->shipLoader,
+            $this->shipMover,
+            $this->flightRouteFactory,
+            $this->starSystemMapRepository
+        );
+
+        $this->moveShipRequest->shouldReceive('getShipId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($shipId);
+
+        $ship->shouldReceive('hasEnoughCrew')
+            ->with($game)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->andReturn($holdingWeb);
+
+        $holdingWeb->shouldReceive('isFinished')
+            ->withNoArgs()
+            ->once()
+            ->andReturnTrue();
+
+        $game->shouldReceive('getUser->getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+        $game->shouldReceive('addInformation')
+            ->with('Das Schiff ist in einem Energienetz gefangen')
+            ->once();
+
+        $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
+            ->with($shipId, $userId)
+            ->once()
+            ->andReturn($shipWrapper);
+
+        $shipWrapper->shouldReceive('get')
+            ->withNoArgs()
+            ->andReturn($ship);
+
+        $subject->handle($game);
+    }
+
     public function testHandleEndsIfDestroyed(): void
     {
         $userId = 666;
@@ -170,6 +343,7 @@ class DirectedMovementTest extends StuTestCase
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
+        $holdingWeb = $this->mock(TholianWebInterface::class);
 
         $subject = new MoveShipRight(
             $this->moveShipRequest,
@@ -200,6 +374,22 @@ class DirectedMovementTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($shipPosY);
+        $ship->shouldReceive('hasEnoughCrew')
+            ->with($game)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->andReturn($holdingWeb);
+
+        $holdingWeb->shouldReceive('isFinished')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
 
         $this->shipLoader->shouldReceive('getWrapperByIdAndUser')
             ->with($shipId, $userId)
@@ -256,6 +446,7 @@ class DirectedMovementTest extends StuTestCase
         $game = $this->mock(GameControllerInterface::class);
         $flightRoute = $this->mock(FlightRouteInterface::class);
         $informationWrapper = $this->mock(InformationWrapper::class);
+        $holdingWeb = $this->mock(TholianWebInterface::class);
 
         $subject = new MoveShip(
             $this->moveShipRequest,
@@ -279,6 +470,22 @@ class DirectedMovementTest extends StuTestCase
             ->andReturn($destY);
 
         $ship->shouldReceive('isDestroyed')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $ship->shouldReceive('hasEnoughCrew')
+            ->with($game)
+            ->once()
+            ->andReturnTrue();
+        $ship->shouldReceive('isTractored')
+            ->withNoArgs()
+            ->once()
+            ->andReturnFalse();
+        $ship->shouldReceive('getHoldingWeb')
+            ->withNoArgs()
+            ->andReturn($holdingWeb);
+
+        $holdingWeb->shouldReceive('isFinished')
             ->withNoArgs()
             ->once()
             ->andReturnFalse();

@@ -15,7 +15,7 @@ final class MoveShipLeft extends AbstractDirectedMovement
 {
     public const ACTION_IDENTIFIER = 'B_MOVE_LEFT';
 
-    protected function isSanityCheckFaulty(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
+    protected function isSanityCheckFaultyConcrete(ShipWrapperInterface $wrapper, GameControllerInterface $game): bool
     {
         return false;
     }
