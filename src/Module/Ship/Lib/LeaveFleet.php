@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use RuntimeException;
+use Stu\Lib\InformationWrapper;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -61,9 +63,14 @@ final class LeaveFleet implements LeaveFleetInterface
     {
         $this->loggerUtil->log('changeFleetLeader');
 
+        $fleet = $oldLeader->getFleet();
+        if ($fleet === null) {
+            throw new RuntimeException('no fleet available');
+        }
+
         $ship = current(
             array_filter(
-                $oldLeader->getFleet()->getShips()->toArray(),
+                $fleet->getShips()->toArray(),
                 function (ShipInterface $ship) use ($oldLeader): bool {
                     return $ship !== $oldLeader;
                 }
@@ -71,10 +78,8 @@ final class LeaveFleet implements LeaveFleetInterface
         );
 
         if (!$ship) {
-            $this->cancelColonyBlockOrDefend->work($oldLeader);
+            $this->cancelColonyBlockOrDefend->work($oldLeader, new InformationWrapper());
         }
-
-        $fleet = $oldLeader->getFleet();
 
         $oldLeader->setFleet(null);
         $oldLeader->setIsFleetLeader(false);

@@ -2559,16 +2559,6 @@ parameters:
 		-
 			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
 			count: 1
-			path: src/Module/Ship/Action/DeleteFleet/DeleteFleet.php
-
-		-
-			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:delete\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/DeleteFleet/DeleteFleet.php
-
-		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
 			path: src/Module/Ship/Action/FleetDeactivateWarp/FleetDeactivateWarp.php
 
 		-
@@ -2580,11 +2570,6 @@ parameters:
 			message: "#^Cannot call method getCrew\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipBuildplanInterface\\|null\\.$#"
 			count: 1
 			path: src/Module/Ship/Action/JoinFleet/AbstractJoinFleet.php
-
-		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Action/LeaveFleet/LeaveFleet.php
 
 		-
 			message: "#^Access to an undefined property Stu\\\\Module\\\\Ship\\\\Action\\\\LoadReactor\\\\LoadReactor\\:\\:\\$shipRepository\\.$#"
@@ -2772,19 +2757,9 @@ parameters:
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
 
 		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\CancelColonyBlockOrDefend\\:\\:work\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
-
-		-
 			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
 			count: 2
 			path: src/Module/Ship/Lib/CancelColonyBlockOrDefend.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\CancelColonyBlockOrDefendInterface\\:\\:work\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/CancelColonyBlockOrDefendInterface.php
 
 		-
 			message: "#^Cannot call method getId\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
@@ -2832,26 +2807,6 @@ parameters:
 			path: src/Module/Ship/Lib/InteractionCheckerInterface.php
 
 		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/LeaveFleet.php
-
-		-
-			message: "#^Cannot call method setLeadShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/LeaveFleet.php
-
-		-
-			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:delete\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/LeaveFleet.php
-
-		-
-			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/LeaveFleet.php
-
-		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculator\\:\\:calculateModuleValue\\(\\) has parameter \\$callback with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ModuleValueCalculator.php
@@ -2875,61 +2830,6 @@ parameters:
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ModuleValueCalculatorInterface\\:\\:calculateModuleValue\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Module/Ship/Lib/ModuleValueCalculatorInterface.php
-
-		-
-			message: "#^Cannot call method getCrewlist\\(\\) on Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Cannot call method getShips\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 2
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Cannot call method setLeadShip\\(\\) on Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLeaver\\:\\:fly1\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLeaver\\:\\:fly2\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLeaver\\:\\:fly3\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLeaver\\:\\:fly4\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLeaver\\:\\:returnToSafety\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:delete\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Parameter \\#1 \\$fleet of method Stu\\\\Orm\\\\Repository\\\\FleetRepositoryInterface\\:\\:save\\(\\) expects Stu\\\\Orm\\\\Entity\\\\FleetInterface, Stu\\\\Orm\\\\Entity\\\\FleetInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
-
-		-
-			message: "#^Parameter \\#1 \\$ship of method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipLeaver\\:\\:launchEscapePods\\(\\) expects Stu\\\\Orm\\\\Entity\\\\ShipInterface, Stu\\\\Orm\\\\Entity\\\\ShipInterface\\|null given\\.$#"
-			count: 1
-			path: src/Module/Ship/Lib/ShipLeaver.php
 
 		-
 			message: "#^Method Stu\\\\Module\\\\Ship\\\\Lib\\\\ShipNfsItem\\:\\:__construct\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
